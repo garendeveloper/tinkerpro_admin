@@ -27,5 +27,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="assets/images/favicon.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+ 
 </head>
 <body>
