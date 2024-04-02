@@ -1,4 +1,4 @@
-<style>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <style>
 
 #add_category_modal {
   display: none;
@@ -144,7 +144,7 @@
         <div class="catBtns">
         <button  class="cat_btns">Del</button>
         <button onclick="addBtnCategory()" class="cat_btns">Add</button>
-        <button  class="cat_btns">Edit</button>
+        <button onclick="" id="editCat" name="editBtn" class="editCat cat_btns">Edit</button>
         </div>
         <div class="productsHeader">
     <a href="#" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
@@ -153,9 +153,9 @@
         $productFacade = new ProductFacade;
         $categories = $productFacade->getCategories();
         while ($row = $categories->fetch(PDO::FETCH_ASSOC)) {
-            echo '<p><a href="#" onclick="toggleCheckbox(' . htmlspecialchars($row['id']) . ', \'' . htmlspecialchars($row['category_name']). '\')" 
+            echo '<p onclick="highlightRow(this)"><a href="#" onclick="toggleCheckbox(' . htmlspecialchars($row['id']) . ', \'' . htmlspecialchars($row['category_name']). '\');" 
             class="productCategory" style="text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '"><span id="mainSpanCategory_' . htmlspecialchars($row['id']) . '">+</span>&nbsp' . htmlspecialchars($row['category_name']) . '</a>
-            <input hidden type="checkbox" class="categoryCheckbox" id="catCheckbox_' . htmlspecialchars($row['id']) . '"/></p>';
+            <input hidden  type="checkbox" class="categoryCheckbox" id="catCheckbox_' . htmlspecialchars($row['id']) . '"/></p>';
             echo '<div id="variants_' . htmlspecialchars($row['id']) . '"></div>';
            
         }
@@ -179,7 +179,6 @@ document.addEventListener("DOMContentLoaded", function() {
     var spanIcon = showCategoriesBtn.querySelector('span');
     var addCategoryCheckbox = document.getElementById('addCategoryCheckbox');
     var inputCatSpan = document.querySelector('.inputCat');
-
     showCategoriesBtn.addEventListener('click', function() {
         // Hide all category variants
         var variantContainers = document.querySelectorAll('[id^="variants_"]');
@@ -204,44 +203,46 @@ document.addEventListener("DOMContentLoaded", function() {
             spanIcon.textContent = '+';
             addCategoryCheckbox.checked = false; 
             inputCatSpan.setAttribute('hidden','hidden'); 
+            
+            // Uncheck all category checkboxes
+            var categoryCheckboxes = document.querySelectorAll('.categoryCheckbox');
+            categoryCheckboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
         }
     });
 });
 
-// function toggleCheckbox(id, name){
-//     console.log(name)
-//     getVariants(id);
-//     editBtnCategory(id,name)
-//     var checkboxes = document.querySelectorAll('.categoryCheckbox');
-//     checkboxes.forEach(function(checkbox) {
-//         if (checkbox.id !== 'catCheckbox_' + id) {
-//             checkbox.checked = false;
-//         }
-//     });
+function toggleSpanVisibility() {
+        var span = document.querySelector('.inputCat');
+        var input = document.getElementById('inputCat');
+        
+        if (input === document.activeElement) {
+            span.removeAttribute('hidden');
+        } else {
+            span.setAttribute('hidden', 'true');
+            input.value=""
+        } 
+    }
+    
+ 
+    document.getElementById('inputCat').addEventListener('focus', toggleSpanVisibility);
+    document.getElementById('inputCat').addEventListener('blur', toggleSpanVisibility);
 
-   
-//     var checkbox = document.getElementById('catCheckbox_' + id);
-//     if (checkbox) {
-//         checkbox.checked = !checkbox.checked; 
-//     } else {
-//         console.error('Checkbox element not found for id: ' + id);
-//     }
-// }
+
+
 
 function toggleCheckbox(id, name) {
     console.log(name);
     getVariants(id);
-
-    // Find and remove the previous input element
+    var checkbox = document.getElementById('catCheckbox_' + id);
+    editBtnCategory(id, name, checkbox);
     var previousInput = document.querySelector('.categoryInput');
     if (previousInput) {
         var previousAnchor = previousInput.nextElementSibling;
-        previousAnchor.style.display = ''; // Show the anchor element
-        previousInput.parentNode.removeChild(previousInput); // Remove the previous input element
+        previousAnchor.style.display = '';
+        previousInput.parentNode.removeChild(previousInput);
     }
-
-    // Create and display the input element for the clicked category
-    editBtnCategory(id, name);
 
     // Uncheck checkboxes except for the clicked one
     var checkboxes = document.querySelectorAll('.categoryCheckbox');
@@ -254,16 +255,32 @@ function toggleCheckbox(id, name) {
     // Toggle the clicked checkbox
     var checkbox = document.getElementById('catCheckbox_' + id);
     if (checkbox) {
-        checkbox.checked = !checkbox.checked; 
+        checkbox.checked = !checkbox.checked;
     } else {
         console.error('Checkbox element not found for id: ' + id);
     }
+  
 }
+
+
 
 
 function getVariants(catID) {
     const variantsContainer = document.getElementById(`variants_${catID}`);
     const mainSpanCategory = document.getElementById(`mainSpanCategory_${catID}`);
+
+    // Hide all variant containers except the one being clicked
+    const allVariantsContainers = document.querySelectorAll('[id^="variants_"]');
+    allVariantsContainers.forEach(container => {
+        if (container.id !== `variants_${catID}`) {
+            container.style.display = 'none';
+            const categoryId = container.id.split('_')[1];
+            const mainSpan = document.getElementById(`mainSpanCategory_${categoryId}`);
+            if (mainSpan) {
+                mainSpan.textContent = '+';
+            }
+        }
+    });
 
     if (variantsContainer.style.display === 'none') {
         axios.get(`api.php?action=getVariantsData&cat_id=${catID}`)
@@ -292,7 +309,33 @@ function getVariants(catID) {
     }
 }
 
+
 let previouslyClicked = null;
+
+// function highlightRow(element) {
+//     if (previouslyClicked && previouslyClicked !== element) {
+//         previouslyClicked.classList.remove('highlighted');
+//         const previousSpan = previouslyClicked.querySelector('span');
+//         if (previousSpan) {
+//             previousSpan.textContent = "+";
+//         }
+//         previouslyClicked.style.color = "white";
+//     }
+//     element.classList.toggle('highlighted');
+
+//     const spanElement = element.querySelector('span');
+//     if (spanElement) {
+//         if (element.classList.contains('highlighted')) {
+//             spanElement.textContent = "-";
+//             element.style.color = "black";
+//         } else {
+//             spanElement.textContent = "+";
+//             element.style.color = "white";
+//         }
+//     }
+
+//     previouslyClicked = element;
+// }
 
 function highlightRow(element) {
     if (previouslyClicked && previouslyClicked !== element) {
@@ -300,6 +343,7 @@ function highlightRow(element) {
         const previousSpan = previouslyClicked.querySelector('span');
         if (previousSpan) {
             previousSpan.textContent = "+";
+            previousSpan.style.color = "black"; 
         }
         previouslyClicked.style.color = "white";
     }
@@ -309,116 +353,198 @@ function highlightRow(element) {
     if (spanElement) {
         if (element.classList.contains('highlighted')) {
             spanElement.textContent = "-";
-            element.style.color = "black";
+            spanElement.style.color = "black";
+            element.style.color = "black"; 
         } else {
             spanElement.textContent = "+";
-            element.style.color = "white";
+            spanElement.style.color = "black";
+            element.style.color = "white"; 
         }
     }
 
     previouslyClicked = element;
 }
 
-function addBtnCategory(){
+
+function addBtnCategory() {
     var addCategoryCheckbox = document.getElementById('addCategoryCheckbox');
+    var inputCategory = document.getElementById('inputCat');
     var inputCatSpan = document.querySelector('.inputCat');
-    if(addCategoryCheckbox.checked === true){
-        inputCatSpan.removeAttribute('hidden'); 
+    var categoryCheckboxes = document.querySelectorAll('.categoryCheckbox');
+    var anyChecked = false;
+
+   
+    categoryCheckboxes.forEach(function(checkbox) {
+        if (checkbox.checked) {
+            anyChecked = true;
+        }
+    });
+
+    if (addCategoryCheckbox.checked && !anyChecked) {
+        inputCatSpan.removeAttribute('hidden');
+        inputCategory.focus();
+    } else {
+        inputCatSpan.setAttribute('hidden', 'hidden'); 
+        inputCategory.value = ""; 
     }
 }
 
 
-document.getElementById('inputCat').addEventListener('keydown', function(e) {
-    switch(e.which) {
-        case 13:
-            var addCategoryCheckbox = document.getElementById('addCategoryCheckbox');
-            var dataValue = document.getElementById('inputCat').value
-            if(addCategoryCheckbox.checked === true && dataValue) {
-               axios.post('api.php?action=addCategory',{
-                category: dataValue
-               }).then(function(response){
-                  getCategories()
-               }).catch(function(error){
-                console.log(error)
-               })
-            } 
-            break;
-        default: 
-            return; 
-    }
-    e.preventDefault(); 
-});
+function addEventListenerToInput() {
+    document.getElementById('inputCat').addEventListener('keydown', function(e) {
+        switch(e.which) {
+            case 13:
+                var addCategoryCheckbox = document.getElementById('addCategoryCheckbox');
+                var dataValue = document.getElementById('inputCat').value
+                if(addCategoryCheckbox.checked === true && dataValue) {
+                    axios.post('api.php?action=addCategory', {
+                        category: dataValue
+                    }).then(function(response) {
+                        getCategories();
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+                }
+                break;
+            default:
+                return;
+        }
+        e.preventDefault();
+    });
+}
 
-function getCategories(){
+// Call this function whenever new input field is added
+addEventListenerToInput();
+
+
+function getCategories() {
     $.ajax({
-            url: 'api.php?action=getDataCategory', 
-            type: 'GET',
-            success: function(response) {
+        url: 'api.php?action=getDataCategory',
+        type: 'GET',
+        success: function (response) {
             $('#categories').empty();
-            $.each(response.categories, function(index, category) {
-                var categoryHTML = '<p><a href="#" onclick="getVariants(' + category.id + ')" class="productCategory" style="text-decoration: none;" data-value="' + category.id + '">';
-                categoryHTML += '<span id="mainSpanCategory_' + category.id + '">+</span>&nbsp' + category.category_name + '</a>&nbsp';
-                categoryHTML += '<input type="checkbox"  class="categoryCheckbox" id="catCheckbox_' + category.id + '"></p>';
-                categoryHTML += '<div id="variants_' + category.id + '"></div>';
+            $.each(response.categories, function (index, category) {
+                var categoryId = category.id;
+                var categoryName = category.category_name
+                var categoryHTML = '<p><a href="#" onclick="getVariants(' + categoryId + ')" class="productCategory" style="text-decoration: none;" data-value="' + categoryId + '" data-checkbox-id="catCheckbox_' + categoryId + '" data-category-name="' + categoryName + '">';
+                categoryHTML += '<span id="mainSpanCategory_' + categoryId + '">+</span>&nbsp' + category.category_name + '</a>&nbsp';
+                categoryHTML += '<input hidden type="checkbox" class="categoryCheckbox" id="catCheckbox_' + categoryId + '"></p>';
+                categoryHTML += '<div id="variants_' + categoryId + '"></div>';
                 $('#categories').append(categoryHTML);
+                
             });
-            $('input[type="checkbox"]').change(function() {
+       
+            $('input[type="checkbox"]').change(function () {
                 if ($(this).is(':checked')) {
                     $('input[type="checkbox"]').not(this).prop('checked', false);
                 }
             });
-         
+
+            $('a.productCategory').click(function (e) {
+                e.preventDefault();
+                var checkboxId = $(this).data('checkbox-id');
+                var categoryId = checkboxId.split('_')[1];
+                var categoryName = $(this).data('category-name');
+                var checkbox = $('#' + checkboxId);
+                var checkbox2 = document.getElementById('catCheckbox_' + categoryId);
+                editBtnCategory(categoryId,categoryName, checkbox2)
+                if (!checkbox.prop('checked')) {
+                    $('input[type="checkbox"]').prop('checked', false);
+                    checkbox.prop('checked', true);
+                }
+            });
+    
             var inputHTML = '<span hidden class="inputCat">+<input type="text" id="inputCat" name="category_input" placeholder="Enter Category"></span>';
             $('#categories').append(inputHTML);
             var addCategoryCheckbox = document.getElementById('addCategoryCheckbox');
             addBtnCategory.checked = false
             $('#categories').show();
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText); 
-            }
-        });
+            addEventListenerToInput();
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
 }
-getCategories()
+getCategories();
 
-// function editBtnCategory(id, name) {
-//     if (id) {
-//         var categoryName = document.getElementById('mainSpanCategory_' + id).textContent.trim();
-//         var inputElement = document.createElement('input');
-//         inputElement.type = 'text';
-//         inputElement.value = categoryName;
-//         var anchorElement = document.getElementById('mainSpanCategory_' + id).parentNode;
-//         anchorElement.style.display = 'none';
-//         anchorElement.parentNode.insertBefore(inputElement, anchorElement);
+
+
+
+function editBtnCategory(id, name, checkbox) {
+    $(document).off('click', '.editCat').on('click', '.editCat', function() {
+        if (id && name && checkbox.checked === true) {
+            var categoryName = $('#mainSpanCategory_' + id).text().trim();
+            if (categoryName.startsWith('+')) {
+                categoryName = categoryName.substring(1);
+            }
+            var anchorElement = $('#mainSpanCategory_' + id).parent();
+            var spanElement = anchorElement.find('span');
+
+          
+            var inputElement = $('<input>').attr({
+                type: 'text',
+                value: name,
+                style: 'margin: 0; padding: 0;'
+            });
+
+            
+            var spanPlus = $('<span>').text('+').css({
+                'color': 'white',
+                'margin-right': '5px'
+            });
+            anchorElement.hide();
+            spanElement.hide();
+            anchorElement.after(inputElement).after(spanPlus);
+            inputElement.focus(); 
+
         
+            inputElement.val(inputElement.val());
+            inputElement[0].selectionStart = inputElement[0].selectionEnd = inputElement.val().length;
 
-//         inputElement.focus();
-//         inputElement.addEventListener('input', function(event) {
-//             if (!inputElement.value.startsWith(categoryName)) {
-//                 inputElement.value = categoryName + inputElement.value.substring(categoryName.length);
-//             }
-//         });
-//     }
-// }
-// function editBtnCategory(id, name) {
-//     if (id) {
-//         var categoryName = document.getElementById('mainSpanCategory_' + id).textContent.trim();
-//         var inputElement = document.createElement('input');
-//         inputElement.type = 'text';
-//         inputElement.value = name; // Set the value of the input box to the provided name
-//         var anchorElement = document.getElementById('mainSpanCategory_' + id).parentNode;
-//         anchorElement.style.display = 'none';
-//         anchorElement.parentNode.insertBefore(inputElement, anchorElement);
+            inputElement.on('blur', function(event) {
+                var newValue = inputElement.val().trim();
+                if (newValue !== '' && newValue !== name) {
+                    name = newValue; 
+                    spanElement.text(newValue);
+                    forCategoryUpdate(id, newValue);
+                }
+                inputElement.remove();
+                spanPlus.remove();
+                anchorElement.show();
+                spanElement.show();
+            });
 
-//         inputElement.focus();
-//         inputElement.addEventListener('input', function(event) {
-//             if (!inputElement.value.startsWith(categoryName)) {
-//                 inputElement.value = categoryName + inputElement.value.substring(categoryName.length);
-//             }
-//         });
-//     }
-// }
+            inputElement.on('keydown', function(e) {
+                if (e.which === 13) {
+                    e.preventDefault(); 
+                    var newValue = inputElement.val().trim();
+                    if (newValue !== '' && newValue !== name) {
+                        name = newValue; 
+                        spanElement.text(newValue);
+                        forCategoryUpdate(id, newValue);
+                    }
+                    inputElement.remove();
+                    spanPlus.remove();
+                    anchorElement.show();
+                    spanElement.show();
+                }
+            });
+        }
+    });
+}
 
+function forCategoryUpdate(id, newValue) {
+    axios.post('api.php?action=updateDataCategory', {
+        id: id,
+        name: newValue
+    }).then(function(response) {
+        getCategories();
+       
+    }).catch(function(error) {
+        console.log(error);
+    });
+}
 
 
 </script>
