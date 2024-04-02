@@ -49,6 +49,12 @@
             $result = $categories->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'categories' => $result]);
             break;
+        case 'updateDataCategory':// updateCategory($categoryname, $categoryid)
+            $postData = json_decode(file_get_contents('php://input'), true);
+            $categoryid = isset($postData['id']) ? $postData['id'] : null;
+            $categoryname =  isset($postData['name']) ? $postData['name'] : null;
+            $products->updateCategory($categoryname, $categoryid);
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

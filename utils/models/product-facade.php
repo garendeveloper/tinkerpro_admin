@@ -48,11 +48,15 @@
       return $nextSKU;
   }
   public function getCategories(){
-    $query = "SELECT * FROM category";
+    $query = "SELECT * FROM category ORDER BY CASE 
+               WHEN category_name REGEXP '^[0-9]' THEN 1 
+               WHEN category_name REGEXP '^[A-Za-z]' THEN 2 
+               ELSE 3 END, category_name";
     $category = $this->connect()->prepare($query);
     $category->execute();
     return $category;
-  }
+}
+
 
   public function getVariants($catID){
     $query = "SELECT * FROM variants WHERE category_id = :category_id";
@@ -63,12 +67,58 @@
     return $variants->fetchAll(PDO::FETCH_ASSOC);
 }
 
- public function addCategory($category){
+//  public function addCategory($category){
+//   $sql = $this->connect()->prepare("INSERT INTO category(category_name) VALUES (?)");
+//   $sql->execute([$category]);
+//   return $sql;
+//  } 
+public function addCategory($category){
+  
+  $category_lowercase = strtolower($category);
+  $category_formatted = ucwords(strtolower($category));
+
+  $sql_check = $this->connect()->prepare("SELECT category_name FROM category");
+  $sql_check->execute();
+  $existing_categories = $sql_check->fetchAll(PDO::FETCH_COLUMN);
+
+  $original_category = $category_formatted;
+  $count = 1;
+  while (in_array(strtolower($category_formatted), array_map('strtolower', $existing_categories))) {
+      $category_formatted = $original_category . $count++;
+  }
+
+
   $sql = $this->connect()->prepare("INSERT INTO category(category_name) VALUES (?)");
-  $sql->execute([$category]);
+  $sql->execute([$category_formatted]);
   return $sql;
- } 
-  }  
+}
+
+public function updateCategory($categoryname, $categoryid) {
+  // Format the category name with the first letter capitalized and the rest lowercase
+  $category_formatted = ucwords(strtolower($categoryname));
+
+  // Check if the category name already exists
+  $sql_check = $this->connect()->prepare("SELECT category_name FROM category WHERE category_name LIKE :categoryname");
+  $sql_check->bindParam(':categoryname', $category_formatted);
+  $sql_check->execute();
+  $existing_categories = $sql_check->fetchAll(PDO::FETCH_COLUMN);
+
+  // If the category name already exists, append a number to make it unique
+  $original_category = $category_formatted;
+  $count = 0;
+  while (in_array($category_formatted, $existing_categories)) {
+      $category_formatted = $original_category . ++$count;
+  }
+
+  // Update the category name in the database
+  $sql_update = $this->connect()->prepare("UPDATE category SET category_name = :categoryname WHERE id = :categoryid");
+  $sql_update->bindParam(':categoryname', $category_formatted);
+  $sql_update->bindParam(':categoryid', $categoryid);
+  $sql_update->execute();
+  return $sql_update;
+}
+
+}  
 
 
 ?>

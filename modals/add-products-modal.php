@@ -1194,7 +1194,7 @@ document.getElementById("generate").addEventListener("click", function() {
     
 })
 function generateRandomNumber(minDigits) {
-    const numberOfDigits = Math.floor(Math.random() * (30 - minDigits + 1)) + minDigits; 
+    const numberOfDigits = Math.floor(Math.random() * (9 - minDigits + 1)) + minDigits; 
     let randomNumber = '';
 
     for (let i = 0; i < numberOfDigits; i++) {
