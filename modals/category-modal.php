@@ -138,8 +138,12 @@
     <div class="modal-content categoryAdd">
       <div class="modal-title">
         <div class="warning-container">
-        <div style="margin-top: 40px; margin-left: 10px">
+        <!-- <div style="margin-top: 40px; margin-left: 10px">
            <h6 class="text-custom" style="color:#FF6900;">Category</h6>
+        </div> -->
+        <div style="margin-top: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: space-between;">
+            <h6 class="text-custom" style="color:#FF6900; margin-right: 10px;">Category</h6>
+            <button style="margin-right: 20px;" id = "btn_minimizeCategory" class="cat_btns" style ="height: 20px"> <i class="mdi mdi-arrow-right"></i>&nbsp; </button>
         </div>
         <div class="catBtns">
         <button  class="cat_btns">Del</button>

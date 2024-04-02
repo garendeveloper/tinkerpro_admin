@@ -55,19 +55,20 @@
   }
 
   public function getVariants($catID){
-    $query = "SELECT * FROM variants WHERE category_id = :category_id";
-    $variants = $this->connect()->prepare($query);
-    $variants->bindParam(':category_id', $catID);
-    $variants->execute();
+      $query = "SELECT * FROM variants WHERE category_id = :category_id";
+      $variants = $this->connect()->prepare($query);
+      $variants->bindParam(':category_id', $catID);
+      $variants->execute();
 
-    return $variants->fetchAll(PDO::FETCH_ASSOC);
-}
+      return $variants->fetchAll(PDO::FETCH_ASSOC);
+  }
 
- public function addCategory($category){
-  $sql = $this->connect()->prepare("INSERT INTO category(category_name) VALUES (?)");
-  $sql->execute([$category]);
-  return $sql;
- } 
+    public function addCategory($category)
+    {
+      $sql = $this->connect()->prepare("INSERT INTO category(category_name) VALUES (?)");
+      $sql->execute([$category]);
+      return $sql;
+    } 
   }  
 
 

@@ -25,5 +25,15 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
 
+  <script>
+    $(document).ready(function(){
+      $("#btn_logout").click(function(){
+        if(confirm("Do you wish to proceed to logout?"))
+        {
+          window.location.href = "logout.php";
+        }
+      })
+    })
+  </script>
 </body>
 </html>

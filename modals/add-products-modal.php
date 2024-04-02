@@ -857,26 +857,27 @@ font-weight: bold;
   <div class="modal-dialog ">
     <div class="modal-content user-modal">
       <div class="modal-title">
-        <div style="margin-top: 10px; margin-left: 20px">
-           <h2 class="text-custom" style="color:#FF6900;">Add New Product</h2>
+        <div style="margin-top: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: space-between;">
+            <h2 class="text-custom" style="color:#FF6900; margin-right: 10px;">Add New Product</h2>
+            <button style="margin-right: 20px;" id = "btn_minimizeProduct" type="button"> <i class="mdi mdi-arrow-right"></i>&nbsp;</button>
         </div>
         <div class="warning-container">
           <div class="tableCard">
           <div style="margin-left: 20px;margin-right: 20px">
+            <form id = "product-form">
             <table id="addProducts" class="text-color table-border"> 
                 <tbody>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<sup>*</sup></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input /></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input name = "name"/></td>
                     </tr>
                     <tr>
                         <td  class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Code / SKU<sup>*</sup></td>
-                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input readonly class="skunNumber" id="skunNumber" /></td>
+                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input readonly class="skunNumber" name = "skunNumber" /></td>
                     </tr>
-                  
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="barcode" id="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="barcode" name = "barcode" id="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Unit of measure</td>
@@ -1076,17 +1077,18 @@ font-weight: bold;
   </div>
 </div>
 <script>
-    function toggleStatus(checkbox) {
-            var slider = checkbox.parentNode.querySelector('.slider'); 
-            var statusLabel = document.getElementById('statusActive');
-            if (checkbox.checked) {
-                slider.style.backgroundColor = '#00CC00'; 
-                statusLabel.style.color = '#00CC00'; 
-            } else {
-                slider.style.backgroundColor = '#262626'; 
-                statusLabel.style.color = '#fefefe'; 
-            }
-        }
+    function toggleStatus(checkbox) 
+    {
+      var slider = checkbox.parentNode.querySelector('.slider'); 
+      var statusLabel = document.getElementById('statusActive');
+      if (checkbox.checked) {
+          slider.style.backgroundColor = '#00CC00'; 
+          statusLabel.style.color = '#00CC00'; 
+      } else {
+          slider.style.backgroundColor = '#262626'; 
+          statusLabel.style.color = '#fefefe'; 
+      }
+    }
     function toggleDisplayOnReceipt(checkbox){
       var otherChargesDisplayOnReceipt = document.getElementById('otherChargesDisplayOnReceipt')
       var spanDisplayReceipt = checkbox.parentNode.querySelector('.spanDisplayReceipt'); 
@@ -1242,8 +1244,14 @@ function clearImageProduct() {
     }
 }
 
-function openCategoryModal(){
-   $('#add_category_modal').show()
+function openCategoryModal()
+{
+  $("#add_category_modal").addClass('slideInRight');
+  $(".categoryAdd").addClass('slideInRight');
+  setTimeout(function() {
+      $("#add_category_modal").show();
+      $(".categoryAdd").show();
+  }, 100); 
 }
 
 

@@ -36,152 +36,17 @@
     array_push($info, $error);
 	}
 
+
   include('./modals/add-products-modal.php');
   include('./modals/category-modal.php');
 ?>
-<style>
-  #topBar{
-  background-color:#262626
-}
-.content-wrapper{
-    background-color: #262626;
-  
-  }
-  .searchProducts{
-  background-color: #7C7C7C;
-  }
-  .text-color::placeholder {
-  color: #ffff;
-}
-.btn-control{
-  font-family: Century Gothic;
-  border-radius: 10px;
-  border-color: #33557F;
-}
-.btn-success-custom{
-  background-color: #00B050
-}
-.btn-error-custom{
-  background-color: red;
-}
-.btn-control:hover {
-    border-color: #FF6900; 
-    color: #FF6900; 
-}
-.productTable{
-    position: absolute; 
-    left: 2px;
-    right:2px;
-    top:2px;
-    
-}
-.table-border{
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid white;
-}
 
-.table-border th, td {
-  border: 1px solid white;
-  padding: 8px;
-}
-.table-border th{
-  background-color: #FF6900;
-}
-.text-color{
-    color: #ffff;
-    font-family: Century Gothic;
-  }
-  .table-responsive {
-    max-height: 600px;
-    width: 200%; 
-   
-}
-
-.table-responsive table {
-    width: 100%;
-    border-collapse: collapse;
-}
-.card{
-    background-color:#151515;
-    border-color: #242424;
-    height: 200px; 
-    overflow: auto; 
-    border-radius: 8px;
-    padding: 16px; 
-  }
-
-</style>
+<?php include "layout/admin/css.php"?>
 
   <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
-    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-      <div class="navbar-brand-wrapper d-flex justify-content-center">
-        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">  
-          <a class="navbar-brand brand-logo" href="index"><img src="assets/img/transak-pos-logo.png" alt="logo"/></a>
-          <a class="navbar-brand brand-logo-mini" href="index"><img src="assets/img/logo-mini.png" alt="logo"/></a>
-          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-            <span class="mdi mdi-sort-variant"></span>
-          </button>
-        </div>  
-      </div>
-      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end" id="topBar">
-        <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item nav-profile dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img width="60" height="60" avatar="<?= $firstName . ' ' . $lastName ?>">
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a href="logout.php" class="dropdown-item">
-                <i class="mdi mdi-logout text-primary"></i>
-                Logout
-              </a>
-            </div>
-          </li>
-        </ul>
-        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-          <span class="mdi mdi-menu"></span>
-        </button>
-      </div>
-    </nav>
-    <!-- partial -->
+   <?php include 'layout/admin/header.php' ?>
     <div class="container-fluid page-body-wrapper">
-      <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="index">
-              <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="my-shop">
-              <i class="mdi mdi-home menu-icon"></i>
-              <span class="menu-title">My Shop</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="users">
-              <i class="mdi mdi-account menu-icon"></i>
-              <span class="menu-title">Users</span>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="products">
-              <i class="mdi mdi-view-headline menu-icon"></i>
-              <span class="menu-title">Products</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="logout.php">
-              <i class="mdi mdi-logout text-primary menu-icon"></i>
-              <span class="menu-title">Logout</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <!-- partial -->
+      <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
@@ -202,14 +67,14 @@
             <rect x="409.379" y="442.628" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 1084.9951 449.4294)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
             <rect x="260.671" y="293.889" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 725.9606 300.6683)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
                 </g>
-                </svg>&nbsp;Search</button>
-           <button onclick="addproducts()"  class="btn-control addProducts" style="margin-right:10px;width:150px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
-              .cls-1 {
-                fill: #699f4c;
-                fill-rule: evenodd;
-              }
-            </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp;Add Product</button>
-            <button class="btn-control clearBtn" style="width:120px;order: 1" ><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
+                </svg>&nbsp;</button>
+                <button onclick="addproducts()"  class="btn-control addProducts" style="margin-right:10px;width:150px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
+                  .cls-1 {
+                    fill: #699f4c;
+                    fill-rule: evenodd;
+                  }
+            </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp;</button>
+            <button class="btn-control clearBtn" style="width:80px;order: 1" ><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;</button>
             </div>
           <div>
           <div class="row">
@@ -218,7 +83,7 @@
                 <div class="card-body">
                   <?php include('errors.php'); ?>
                   <div class="table-responsive productTable">
-                    <table id="recentusers" class="text-color table-border">
+                    <table id="tbl_products" class="text-color table-border">
                       <thead>
                         <tr>
                           <th class="text-center" style="width: 2%;">No.</th>
@@ -260,31 +125,84 @@
 
 <?php include("layout/footer.php") ?>
 <script>
-  function addproducts(){
-    getSku();
-     $('#add_products_modal').show()
-     if( $('#add_products_modal').is(':visible')){
-      var toggle = document.getElementById('statusValue');
-      var statusLabel = document.getElementById('statusActive');
-      var defaultStatus = toggle.checked ? 'Active' : 'Inactive';
-          if(defaultStatus == 'Active'){
-            statusLabel.style.color = '#00CC00'; 
-          }
-            return defaultStatus;
-     }
-  }
-  function getSku() {
-    $.ajax({
-        url: 'api.php?action=getlatestSkuData', 
-        type: 'GET',
-        success: function(response) {
-            var latestSku = response.nextSKU; 
-            document.getElementById('skunNumber').value = latestSku;
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
+  $(document).ready(function()
+  {
+    function hideModals()
+    {
+      $("#add_products_modal").addClass('slideOutRight');
+        $(".user-modal").addClass('slideOutRight');
+        setTimeout(function() {
+            $("#add_products_modal").removeClass('slideOutRight');
+            $("#add_products_modal").hide();
+            $(".user-modal").removeClass('slideOutRight');
+            $(".user-modal").hide();
+        }, 100);
+
+      $("#add_category_modal").addClass('slideOutRight');
+      $(".categoryAdd").addClass('slideOutRight');
+      setTimeout(function() {
+          $("#add_category_modal").removeClass('slideOutRight');
+          $("#add_category_modal").hide();
+          $(".categoryAdd").removeClass('slideOutRight');
+          $(".categoryAdd").hide();
+      }, 100);
+    }
+    $('#btn_minimizeProduct').click(function() 
+    {
+      hideModals();
     });
-}
+    $('#btn_minimizeCategory').click(function() 
+    {
+        $("#add_category_modal").addClass('slideOutRight');
+        $(".categoryAdd").addClass('slideOutRight');
+        setTimeout(function() {
+            $("#add_category_modal").removeClass('slideOutRight');
+            $("#add_category_modal").hide();
+            $(".categoryAdd").removeClass('slideOutRight');
+            $(".categoryAdd").hide();
+        }, 100);
+    });
+  })
+</script>
+<script>
+  
+  $("#product-form").on("submit", function(e){
+    e.preventDefault();
+    var formData = $(this).serialize();
+    console.log(ata);
+  })
+    function addproducts()
+    {
+      getSku();
+      $("#add_products_modal").addClass('slideInRight');
+      $(".user-modal").addClass('slideInRight');
+      setTimeout(function() {
+          $("#add_products_modal").show();
+          $(".user-modal").show();
+      }, 100); 
+
+      if( $('#add_products_modal').is(':visible')){
+        var toggle = document.getElementById('statusValue');
+        var statusLabel = document.getElementById('statusActive');
+        var defaultStatus = toggle.checked ? 'Active' : 'Inactive';
+            if(defaultStatus == 'Active'){
+              statusLabel.style.color = '#00CC00'; 
+            }
+              return defaultStatus;
+      }
+    }
+    function getSku() {
+      $.ajax({
+          url: 'api.php?action=getlatestSkuData', 
+          type: 'GET',
+          success: function(response) {
+              var latestSku = response.nextSKU; 
+              document.getElementById('skunNumber').value = latestSku;
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+          }
+      });
+  }
 
 </script>
