@@ -82,8 +82,7 @@
 <?php include "layout/admin/css.php"?>
 
   <div class="container-scroller">
-    <?php include "layout/admin/header.php"?>
-    <div class="container-fluid page-body-wrapper">
+    <div class="">
       <?php include "layout/admin/sidebar.php"?>
       <div class="main-panel">
         <div class="content-wrapper">

@@ -855,29 +855,25 @@ font-weight: bold;
   margin-left: 10px;
   margin-right: 10px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Create 3 columns with equal width */
+  grid-template-columns: repeat(3, 1fr); 
   grid-gap: 7px; /* Adjust the gap between grid items as needed */
 }
 
 .grid-item {
-  padding: 6px 10px; /* Adjust padding as needed */
-  border-color:  #FF6900;
-  border-radius: 20px; /* Adjust border-radius to control the roundness */
-  color: #fff; /* Button text color */
-  font-size: 12px; /* Adjust font size as needed */
+  padding: 6px 10px; 
+  border: 1px solid #4B413E;
+  border-radius: 20px; 
+  color: #fff; 
+  font-size: 12px;
   cursor: pointer;
   outline: none;
-  
 }
-
 .fieldContainer{
   margin-top: 8px;
   margin-left: 10px;
   margin-right: 10px;
   color: white;
 }
-
-
 .flex-container {
   display: flex;
 }
@@ -964,34 +960,34 @@ input{
             </div>
             <p></p>
             <div class="fcontainer">
-            <div class="fieldContainer">
-              <label>PC#</label>
-              <input type="text" name="id" value="" style="width: 100px; height: 25px"/>
-              <label for="paidSwitch" class="switch-label">Paid</label>
-              <label class="switch">
-                <input id="paidSwitch" type="checkbox" style="height: 25px">
-                <span class="slider"></span>
-              </label>
-              <input type="date" name="id" value="" style="width: 140px; height: 25px"/>
-            </div>
-            <div class="fieldContainer">
-              <label>Supplier</label>
-              <input type="text" name="id" value="" style="width: 315px; height: 25px"/>
-            </div>
-            <div class="fieldContainer">
-              <label><img src="assets/img/barcode.jpg" style="color: white; height: 20px; width: 40px;"></label>
-              <input type="text" name="id" value="" style="width: 180px; height: 25px;"/>
-              <button style="border-color: #FF6900; font-size: 12px;" id="btn_addProduct">Add Product</button>
-            </div>
+              <div class="fieldContainer">
+                <label>PC#</label>
+                <input type="text" name="id" value="" style="width: 100px; height: 25px"/>
+                <label for="paidSwitch" class="switch-label">Paid</label>
+                <label class="switch">
+                  <input id="paidSwitch" type="checkbox" style="height: 25px">
+                  <span class="slider"></span>
+                </label>
+                <input type="date" name="id" value="" style="width: 140px; height: 25px"/>
+              </div>
+              <div class="fieldContainer">
+                <label>Supplier</label>
+                <input type="text" name="id" value="" style="width: 315px; height: 25px"/>
+              </div>
+              <div class="fieldContainer">
+                <label><img src="assets/img/barcode.jpg" style="color: white; height: 20px; width: 40px;"></label>
+                <input type="text" name="id" value="" style="width: 180px; height: 25px;"/>
+                <button style="border-color: #FF6900; font-size: 12px;" id="btn_addProduct">Add Product</button>
+              </div>
             <div>
             <p></p>
             <style>
                 tbody td,
                 tbody th {
-                  border: none; /* Remove border from table cells */
+                  border: none; 
                 }
                 thead th {
-                  border: 1px solid #FF6900; /* Add border to every cell in the thead */
+                  border: 1px solid #FF6900; 
                   padding: 10px
                 }
               </style>

@@ -35,100 +35,75 @@
 		$error = $_GET["delete_product"];
     array_push($info, $error);
 	}
-
-
   include('./modals/optionModal.php');
 
 ?>
 <?php include "layout/admin/css.php"?>
 <?php include "layout/admin/table.php"?>
-
-  <div class="container-scroller" style = "margin-top: 0">
-   <?php include 'layout/admin/header.php' ?>
-    <div class="container-fluid page-body-wrapper" >
+  <div class="container-scroller">
+    <div class="" >
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
-        <div class="content-wrapper">
+        <div class="content-wrapper" >
           <div style="display: flex; margin-bottom: 20px;">
-           <input  class="text-color searchProducts" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
-           <button class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-              viewBox="0 0 491.52 491.52" xml:space="preserve">
-            <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
-            <path style="opacity:0.5;fill:#FFFFFF;enable-background:new    ;" d="M98.081,234.62c-43.316-43.315-43.882-112.979-1.264-155.595
-              c9.509-9.511,20.41-16.745,32.021-21.96c-16.497,4.812-32.056,13.702-45.064,26.71c-41.288,41.289-41.289,108.231,0,149.521
-              c18.282,18.281,41.596,28.431,65.483,30.523C130.561,258.986,112.79,249.33,98.081,234.62z"/>
-            <path style="fill:#3A556A;" d="M270.636,46.433c-61.912-61.912-162.291-61.911-224.202,0.001s-61.912,162.291-0.001,224.202
-              c57.054,57.054,146.703,61.394,208.884,13.294l14.18,14.182l28.615-28.613l-14.182-14.182
-              C332.029,193.137,327.69,103.487,270.636,46.433z M250.301,250.302c-50.681,50.681-132.852,50.681-183.534,0
-              c-50.68-50.681-50.68-132.852,0.002-183.533s132.85-50.681,183.531,0C300.982,117.45,300.982,199.621,250.301,250.302z"/>
-            <path style="fill:#E56353;" d="M305.823,258.865l-46.959,46.958c-2.669,2.67-2.669,6.996,0,9.665l174.339,174.338
-              c12.132,12.133,68.755-44.49,56.623-56.623L315.488,258.865C312.819,256.196,308.493,256.196,305.823,258.865z"/>
-            <g>
-            <rect x="409.379" y="442.628" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 1084.9951 449.4294)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
-            <rect x="260.671" y="293.889" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 725.9606 300.6683)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
-                </g>
-                </svg>&nbsp;</button>
-                <button   class="btn-control" style="margin-right:10px;width:150px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
-                  .cls-1 {
-                    fill: #699f4c;
-                    fill-rule: evenodd;
-                  }
-            </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp; Add Qty</button>
-            <button class="btn-control" onclick="openOptionModal()" style="width:80px;order: 1" >OPTION</button>
-            </div>
+            <label><img src="assets/img/barcode.jpg" style="color: white; height: 35px; width: 50px;"></label>
+            <input  class="text-color searchProducts" style="width: 60%; height: 35px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
+            <button class="icon-button">
+              <span class="search-icon"></span>
+              Search
+            </button>
+            <button class="icon-button" style = "width: 200px;">
+              <span class="plus-icon"></span>
+              Add Qty
+            </button>
+            <button class="icon-button" onclick="openOptionModal()">
+              <span class="plus-icon"></span>
+               Option
+            </button>
+          </div>
           <div>
             <style>
-              .container {
-                      display: flex; /* Arrange divisions horizontally */
-                  }
-
-                  .division {
-                      flex-grow: 1; /* Each division takes equal space */
-                      margin: 0 10px; /* Add spacing between divisions */
-                  }
-
-                  .grid-container {
-                      display: grid;
-                      grid-template-columns: repeat(3, auto); /* Three columns with auto width */
-                      gap: 10px; /* Add spacing between grid items */
-                  }
-
-                  /* .grid-item {
-                      padding: 10px;
-                      border: 1px solid #ccc;
-                      border-radius: 5px;
-                      background-color: #f0f0f0;
-                  } */
-                  .division-button {
-                      display: block;
-                      margin-top: 10px; /* Add spacing between grid and button */
-                  }
-
+              .tbl_buttonsContainer {
+                display: flex; 
+              }
+              .division {
+                  flex-grow: 1; 
+                  margin: 0 10px;
+              }
+              .grid-container {
+                  display: grid;
+                  grid-template-columns: repeat(3, auto); 
+                  gap: 10px; 
+              }
+              .grid-item{
+                height: 35px;
+                border-radius: 10px;
+              }
             </style>
-          <div class="container">
+          <div class="tbl_buttonsContainer">
               <div class="division">
                   <div class="grid-container">
-                      <button class="grid-item">Stocks</button>
-                      <button class="grid-item">Purchase Order</button>
-                      <button class="grid-item">Inventory Count</button>
-                      <button class="grid-item">B.O.M</button>
-                      <button class="grid-item">Low Stocks</button>
-                      <button class="grid-item">Re-order Point</button>
+                      <button id="stocks" class="grid-item text-color">Stocks</button>
+                      <button id="purchase-order" class="grid-item text-color">Purchase Order</button>
+                      <button id="inventory-count" class="grid-item text-color">Inventory Count</button>
+                      <button id="bom" class="grid-item text-color">B.O.M</button>
+                      <button id="low-stocks" class="grid-item text-color">Low Stocks</button>
+                      <button id="reorder-point" class="grid-item text-color">Re-order Point</button>
                   </div>
               </div>
               <div class="division">
                   <div class="grid-container">
-                      <button class="grid-item">Loss & Damage</button>
-                      <button class="grid-item">Stocks Transfer</button>
-                      <button class="grid-item">Expiration</button>
-                      <button class="grid-item">Loss & Damage</button>
-                      <button class="grid-item">B.O.M</button>
-                      <button class="grid-item">Print Price Tags</button>
+                      <button id="loss-damage1" class="grid-item text-color">Loss & Damage</button>
+                      <button id="stock-transfer" class="grid-item text-color">Stocks Transfer</button>
+                      <button id="expiration" class="grid-item text-color">Expiration</button>
+                      <button id="loss-damage2" class="grid-item text-color">Loss & Damage</button>
+                      <button id="bom2" class="grid-item text-color">B.O.M</button>
+                      <button id="print-price-tags" class="grid-item text-color">Print Price Tags</button>
                   </div>
               </div>
               <div class="division">
                   <div class="grid-container">
-                      <button class="grid-item">Recalculate Stocks</button>
+                      <button id="recalculate-stocks" class="grid-item text-color">Recalculate Stocks</button>
                   </div>
               </div>
           </div>
@@ -140,7 +115,7 @@
                 <div class="card-body">
                   <?php include('errors.php'); ?>
                   <div class="table-responsive productTable">
-                    <table id="tbl_products" class="text-color table-border">
+                    <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
                       <thead>
                         <tr>
                           <th class="text-center" style="width: 2%;">No.</th>
@@ -184,6 +159,10 @@
 <script>
   $(document).ready(function()
   {
+    var url = window.location.href;
+    var urlEnding = url.substring(url.lastIndexOf('/') + 1);
+    $("#"+urlEnding).css('background-color', '#FF6700');
+
     function hideModals()
     {
       $("#optionModal").addClass('slideOutRight');
@@ -203,11 +182,16 @@
 </script>
 <script>
   
-  $("#product-form").on("submit", function(e){
-    e.preventDefault();
-    var formData = $(this).serialize();
-    console.log(formData);
-  })
+    $("#product-form").on("submit", function(e){
+      e.preventDefault();
+      var formData = $(this).serialize();
+      console.log(formData);
+    })
+    $("#purchase-order").on('click', function(){
+      openOptionModal();
+      $(this).addClass('active');
+      $("#btn_createPO").addClass('active');
+    })
     function openOptionModal()
     {
       getSku();

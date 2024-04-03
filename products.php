@@ -44,8 +44,7 @@
 <?php include "layout/admin/css.php"?>
 
   <div class="container-scroller">
-   <?php include 'layout/admin/header.php' ?>
-    <div class="container-fluid page-body-wrapper">
+    <div class="">
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
         <div class="content-wrapper">
@@ -127,6 +126,10 @@
 <script>
   $(document).ready(function()
   {
+    var url = window.location.href;
+    var urlEnding = url.substring(url.lastIndexOf('/') + 1);
+    $("#"+urlEnding).css('background-color', '#FF6700');
+
     function hideModals()
     {
       $("#add_products_modal").addClass('slideOutRight');
