@@ -1020,18 +1020,4 @@ input{
     </div>
   </div>
 </div>
-<script>
-$(document).ready(function()
-{
-  function openCategoryModal()
-  {
-    $("#add_category_modal").addClass('slideInRight');
-    $(".categoryAdd").addClass('slideInRight');
-    setTimeout(function() {
-        $("#add_category_modal").show();
-        $(".categoryAdd").show();
-    }, 100); 
-  }
-})
-</script>
 

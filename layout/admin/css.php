@@ -3,9 +3,14 @@
   background-color:#262626
 }
 .content-wrapper{
+  position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     background-color: #262626;
-  
-  }
+    padding: 20px; /* Optional: Add padding to the container */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
   .searchProducts{
     background-color: #7C7C7C;
   }
@@ -119,7 +124,7 @@ button:active {
 }
 .main-panel {
     position: absolute;
-    top: 0;
+    top: 30px;
     left: 190px; 
     right: 0;
     bottom: 0;
@@ -132,11 +137,11 @@ button:active {
       }
       .main-panel {
           margin-left: 100px;
-          width: calc(100% - 100px);
+          width: calc(100% - 190px);
       }
   }
 
-  .icon-button {
+.icon-button {
     display: inline-flex; /* Use flexbox */
     align-items: center; /* Align items vertically */
     justify-content: center; /* Align items horizontally */

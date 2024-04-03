@@ -27,7 +27,6 @@
 <style>
         /* Header styles */
         .site-header {
-            background-color: #333; 
             color: #fff; 
             padding: 10px 0; 
             background-color: #1E1C11;
@@ -79,7 +78,7 @@
     </div>
 </header>
 <div class="sidebar">
-    <a href="index" id = "dashboard"><i class = "bi bi-house-door"></i>&nbsp; Dashboard</a>
+    <a href="index" id = "index"><i class = "bi bi-house-door"></i>&nbsp; Dashboard</a>
     <a href="inventory" id = "inventory"><i class = "bi bi-box-seam"></i>&nbsp; Inventory</a>
     <a href="products" id = "products"><i class = "bi bi-bag-check"></i>&nbsp; Products</a>
     <a href="expiry" id = "expiry"><i class = "bi bi-calendar-x"></i>&nbsp; Expiry</a>

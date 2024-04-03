@@ -83,27 +83,27 @@
           <div class="tbl_buttonsContainer">
               <div class="division">
                   <div class="grid-container">
-                      <button id="stocks" class="grid-item text-color">Stocks</button>
-                      <button id="purchase-order" class="grid-item text-color">Purchase Order</button>
-                      <button id="inventory-count" class="grid-item text-color">Inventory Count</button>
-                      <button id="bom" class="grid-item text-color">B.O.M</button>
-                      <button id="low-stocks" class="grid-item text-color">Low Stocks</button>
-                      <button id="reorder-point" class="grid-item text-color">Re-order Point</button>
+                      <button id="stocks" class="grid-item text-color"><i class="bi bi-graph-up"></i>&nbsp; Stocks</button>
+                      <button id="purchase-order" class="grid-item text-color"><i class="bi bi-cart-check"></i>&nbsp; Purchase Order</button>
+                      <button id="inventory-count" class="grid-item text-color"><i class="bi bi-archive"></i>&nbsp; Inventory Count</button>
+                      <button id="bom" class="grid-item text-color"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button>
+                      <button id="low-stocks" class="grid-item text-color"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
+                      <button id="reorder-point" class="grid-item text-color"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button>
                   </div>
               </div>
               <div class="division">
                   <div class="grid-container">
-                      <button id="loss-damage1" class="grid-item text-color">Loss & Damage</button>
-                      <button id="stock-transfer" class="grid-item text-color">Stocks Transfer</button>
-                      <button id="expiration" class="grid-item text-color">Expiration</button>
-                      <button id="loss-damage2" class="grid-item text-color">Loss & Damage</button>
-                      <button id="bom2" class="grid-item text-color">B.O.M</button>
-                      <button id="print-price-tags" class="grid-item text-color">Print Price Tags</button>
+                      <button id="loss-damage1" class="grid-item text-color"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button>
+                      <button id="stock-transfer" class="grid-item text-color"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button>
+                      <button id="expiration" class="grid-item text-color"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration</button>
+                      <button id="loss-damage2" class="grid-item text-color"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button>
+                      <button id="bom2" class="grid-item text-color"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button>
+                      <button id="print-price-tags" class="grid-item text-color"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button>
                   </div>
               </div>
               <div class="division">
                   <div class="grid-container">
-                      <button id="recalculate-stocks" class="grid-item text-color">Recalculate Stocks</button>
+                      <button id="recalculate-stocks" class="grid-item text-color"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button>
                   </div>
               </div>
           </div>
@@ -159,10 +159,6 @@
 <script>
   $(document).ready(function()
   {
-    var url = window.location.href;
-    var urlEnding = url.substring(url.lastIndexOf('/') + 1);
-    $("#"+urlEnding).css('background-color', '#FF6700');
-
     function hideModals()
     {
       $("#optionModal").addClass('slideOutRight');

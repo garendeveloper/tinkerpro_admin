@@ -1,5 +1,7 @@
   <!-- plugins:js -->
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <!-- endinject -->
   <!-- Plugin js for this page-->
   <script src="assets/vendors/chart.js/Chart.min.js"></script>
@@ -10,7 +12,7 @@
   <!-- inject:js -->
   <script src="assets/js/off-canvas.js"></script>
   <script src="assets/js/hoverable-collapse.js"></script>
-  <script src="assets/js/template.js"></script>
+  <!-- <script src="assets/js/template.js"></script> -->
   <!-- endinject -->
   <!-- Custom js for this page-->
   <script src="assets/js/dashboard.js"></script>
@@ -27,6 +29,10 @@
 
   <script>
     $(document).ready(function(){
+      var url = window.location.href;
+      var urlEnding = url.substring(url.lastIndexOf('/') + 1);
+      $("#"+urlEnding).css('background-color', '#FF6700');
+
       $("#btn_logout").click(function(){
         if(confirm("Do you wish to proceed to logout?"))
         {
