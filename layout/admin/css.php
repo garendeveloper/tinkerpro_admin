@@ -49,7 +49,13 @@
     width: 100%;
     border: 1px solid white;
 }
-
+td, tr, th {
+    border: 1px solid white;
+    padding: 8px; 
+}
+.table{
+  border-collapse: collapse; 
+}
 .table-border th, td {
   border: 1px solid white;
   padding: 8px;
@@ -77,8 +83,10 @@
     max-width: 100%; /* Ensure the card can't exceed the width of its container */
     border: 1px solid #ccc;
     border-radius: 8px;
+    padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color:#151515;
+    background-color: #262626;
+    color: #fff;
     border-color: #242424;
   }
   @keyframes slideOutRight {
@@ -129,6 +137,7 @@ button:active {
     right: 0;
     bottom: 0;
     overflow-y: auto; 
+    background-color: #262626;
     width: calc(100% - 190px); */
   }
   @media (max-width: 100%) {

@@ -975,7 +975,7 @@ input{
                 <input type="text" name="id" value="" style="width: 315px; height: 25px"/>
               </div>
               <div class="fieldContainer">
-                <label><img src="assets/img/barcode.jpg" style="color: white; height: 20px; width: 40px;"></label>
+                <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 40px;"></label>
                 <input type="text" name="id" value="" style="width: 180px; height: 25px;"/>
                 <button style="border-color: #FF6900; font-size: 12px;" id="btn_addProduct">Add Product</button>
               </div>

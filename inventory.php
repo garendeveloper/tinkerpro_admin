@@ -36,7 +36,7 @@
     array_push($info, $error);
 	}
   include('./modals/optionModal.php');
-
+  include('./layout/admin/table-pagination-css.php');
 ?>
 <?php include "layout/admin/css.php"?>
 <?php include "layout/admin/table.php"?>
@@ -46,8 +46,8 @@
       <div class="main-panel">
         <div class="content-wrapper" >
           <div style="display: flex; margin-bottom: 20px;">
-            <label><img src="assets/img/barcode.jpg" style="color: white; height: 35px; width: 50px;"></label>
-            <input  class="text-color searchProducts" style="width: 60%; height: 35px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
+            <label><img src="assets/img/barcode.png" style="color: white; height: 35px; width: 50px;"></label>
+            <input  class="text-color" id = "searchInput" style="width: 60%; height: 35px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
             <button class="icon-button">
               <span class="search-icon"></span>
               Search
@@ -108,36 +108,31 @@
               </div>
           </div>
           </div>
-          <p></p>
           <div class="row">
-            <div>
-              <div class="card">
-                <div class="card-body">
-                  <?php include('errors.php'); ?>
-                  <div class="table-responsive productTable">
-                    <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
-                      <thead>
-                        <tr>
-                          <th class="text-center" style="width: 2%;">No.</th>
-                          <th class="text-center" style="width: 12%;">Name</th>
-                          <th class="text-center" style="width: 6%;">Barcode</th>
-                          <th class="text-center" style="width: 6%;">Unit</th>
-                          <th class="text-center" style="width: 2%;">Qty in Store</th>
-                          <th class="text-center" style="width: 2%;">Qty in Warehouse</th>
-                          <th class="text-center" style="width: 3%;">Amount Before Tax </th>
-                          <th class="text-center" style="width: 3%;">Amount After Tax</th>
-                          <th class="text-center" style="width: 3%;">Markup Profit</th>
-                          <th class="text-center" style="width: 7%;">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody id="productTable">
-                        
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+            <div class="card" style = "width: 100%; ">
+              <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 2%;">ID</th>
+                    <th class="text-center" style="width: 12%;">Name</th>
+                    <th class="text-center" style="width: 6%;">Barcode</th>
+                    <th class="text-center" style="width: 6%;">Unit</th>
+                    <th class="text-center" style="width: 2%;">Qty in Store</th>
+                    <th class="text-center" style="width: 2%;">Qty in Warehouse</th>
+                    <th class="text-center" style="width: 3%;">Amount Before Tax </th>
+                    <th class="text-center" style="width: 3%;">Amount After Tax</th>
+                    <th class="text-center" style="width: 3%;">Markup Profit</th>
+                    <th class="text-center" style="width: 7%;">Action</th>
+                  </tr>
+                </thead>
+                <tbody >
+                  
+                </tbody>
+              </table>
+              <div id="pagination" class="pagination-container">
+                  <button class="paginate grid-item text-color" id="previous"><i class="bi bi-arrow-left"></i>&nbsp; Previous</button> |
+                  <button class="paginate grid-item text-color" id="next">Next <i class="bi bi-arrow-right"></i>&nbsp;</button>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -156,9 +151,75 @@
   
 
 <?php include("layout/footer.php") ?>
+<?php include("layout/admin/keyboardfunction.php") ?>
+
 <script>
   $(document).ready(function()
   {
+    var perPage = 10;
+    show_allInventories(1, perPage); 
+
+    $("#pagination").on("click", "#previous", function() 
+    {
+      var currentPage = $(this).data("page");
+      if (currentPage > 1) 
+      {
+        show_allInventories(currentPage - 1, perPage);
+      }
+    });
+    $("#pagination").on("click", "#next", function() 
+    {
+        var currentPage = $(this).data("page");
+        show_allInventories(currentPage + 1, perPage);
+    });
+    function show_allInventories(currentPage, perPage)
+    {
+        $.ajax({
+            type: 'GET',
+            url: 'api.php?action=get_allInventories&currentPage=' + currentPage + '&perPage=' + perPage,
+            success: function(data)
+            {
+                var tbl_data = "";
+                if(data.length > 0)
+                {
+                  for(var i = 0; i < data.length; i++)
+                  {
+                      tbl_data += "<tr>";
+                      tbl_data += "<td>"+data[i].id+"</td>";
+                      tbl_data += "<td>"+data[i].prod_desc+"</td>";
+                      tbl_data += "<td>"+data[i].barcode+"</td>";
+                      tbl_data += "</tr>";
+                  }
+                }
+                else
+                {
+                  tbl_data = "<tr><td colspan = '10'>No more available data.</td></tr>";
+                }
+                $("#tbl_products tbody").html(tbl_data);
+                $("#previous, #next").data("page", currentPage);
+            }
+        });
+    }
+    $('#searchInput').on('input', function() {
+        var barcode = $(this).val().trim().toLowerCase();
+        filterTable(barcode); 
+    });
+    function filterTable(barcode) 
+    {
+      $('#tbl_products tbody tr').each(function() 
+      { 
+        var $row = $(this);
+        var rowBarcode = $row.find('td:eq(2)').text().trim().toLowerCase();
+        if (rowBarcode.includes(barcode)) 
+        {
+          $row.show(); 
+        }
+        else 
+        {
+          $row.hide(); 
+        }
+      });
+    }
     function hideModals()
     {
       $("#optionModal").addClass('slideOutRight');
@@ -172,6 +233,7 @@
     }
     $('#btn_minimizeModal').click(function() 
     {
+      $("button").removeClass('active');
       hideModals();
     });
   })
@@ -190,7 +252,6 @@
     })
     function openOptionModal()
     {
-      getSku();
       $("#optionModal").addClass('slideInRight');
       $(".optionmodal-content").addClass('slideInRight');
       setTimeout(function() {
@@ -199,18 +260,5 @@
       }, 100); 
 
     }
-    function getSku() {
-      $.ajax({
-          url: 'api.php?action=getlatestSkuData', 
-          type: 'GET',
-          success: function(response) {
-              var latestSku = response.nextSKU; 
-              document.getElementById('skunNumber').value = latestSku;
-          },
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-          }
-      });
-  }
 
 </script>

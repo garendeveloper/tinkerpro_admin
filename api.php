@@ -2,9 +2,11 @@
     include( __DIR__ . '/utils/db/connector.php');
     include( __DIR__ . '/utils/models/user-facade.php');
     include( __DIR__ . '/utils/models/product-facade.php');
+    include( __DIR__ . '/utils/models/inventory-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
+    $inventory = new InventoryFacade();
    
 
     header("Content-Type: application/json");
@@ -48,6 +50,11 @@
             $categories = $products->getCategories();
             $result = $categories->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'categories' => $result]);
+            break;
+        case 'get_allInventories':
+            $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
+            $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
+            echo json_encode($inventory->get_allInventories($currentPage, $perPage));
             break;
         default:
             header("HTTP/1.0 400 Bad Request");

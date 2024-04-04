@@ -22,10 +22,9 @@
   <!-- End custom js for this page-->
 
   <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+  <script src="assets/js/others/flatpicker.js"></script>
+  <script src="assets/js/others/axios.min.js"></script>
+  <script src="assets/js/sweetalert.js"></script>
 
   <script>
     $(document).ready(function(){
@@ -39,6 +38,12 @@
           window.location.href = "logout.php";
         }
       })
+      $('#searchInput').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $('table tbody tr').filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
     })
   </script>
 </body>

@@ -26,9 +26,10 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="assets/images/favicon.png" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
- <!-- Option 1: Include in HTML -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <link rel="icon" href="assets/img/tinkerpro-logo-dark.png" type="image/png">
+  <link rel="stylesheet" href="assets/css/others/flatpicker.min.css">
+   <!-- Option 1: Include in HTML -->
+  <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.css">
 </head>
 <body>

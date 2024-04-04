@@ -29,7 +29,7 @@
         .site-header {
             color: #fff; 
             padding: 10px 0; 
-            background-color: #1E1C11;
+            background-color: #151515; 
         }
 
      
@@ -42,7 +42,7 @@
         .sidebar {
             height: 100%;
             width: 200px;
-            background-color: #1E1C11;
+            background-color: #151515; ;
             position: fixed;
             top: 30px; 
             left: 0;
