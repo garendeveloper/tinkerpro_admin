@@ -16,7 +16,7 @@
 }
 
 
-.modal-content {
+.product-modal {
   background-color: #fefefe;
   margin: 0 auto; 
   border: none;
@@ -40,6 +40,17 @@
     opacity: 1;
   }
 }
+@keyframes slideOutRight {
+  from {
+    margin-right: 0;
+    opacity: 1;
+  }
+  to {
+    margin-right: -100%;
+    opacity: 0;
+  }
+}
+
 .text-custom{
    color: #fefefe;
    font-family: Century Gothic;
@@ -855,7 +866,7 @@ font-weight: bold;
 
 <div class="modal" id="add_products_modal" tabindex="0">
   <div class="modal-dialog ">
-    <div class="modal-content user-modal">
+    <div class="modal-content product-modal">
       <div class="modal-title">
         <div style="margin-top: 10px; margin-left: 20px">
            <h2 class="text-custom" style="color:#FF6900;">Add New Product</h2>
@@ -866,17 +877,20 @@ font-weight: bold;
             <table id="addProducts" class="text-color table-border"> 
                 <tbody>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<sup>*</sup></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input /></td>
+                        <td class="nameTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<sup>*</sup></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="productname" id="productname" name="productname"/></td>
                     </tr>
                     <tr>
-                        <td  class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Code / SKU<sup>*</sup></td>
-                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input readonly class="skunNumber" id="skunNumber" /></td>
+                        <td  class="skuTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">SKU</td>
+                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input oninput="validateInputs(this)"  class="skunNumber" id="skunNumber" name="skunNumber" /></td>
                     </tr>
-                  
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="barcode" id="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
+                        <td class="codeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Code</td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input oninput="validateInputs(this)"  class="code" id="code" name="code"/></td>
+                    </tr>
+                    <tr>
+                        <td class="barcodeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode<sup>*</sup></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input  oninput="validateNumber(this)" class="barcode" id="barcode" name="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Unit of measure</td>
@@ -909,15 +923,15 @@ font-weight: bold;
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Brand</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input /></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="brand" id="brand"/></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Serial No.</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="serial" placeholder="For serialized products"/></td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Category</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input  style="width: 242px"/><button onclick="openCategoryModal()" class="addCategory">+Add</button></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="categoriesInput" name="categoriesInput" id="categoreisInput" style="width: 242px"/><button onclick="openCategoryModal()" class="addCategory">+Add</button></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Discount (SR/PWD/UP)</td>
@@ -952,34 +966,34 @@ font-weight: bold;
                       </td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Cost Price (Php)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input /></td>
+                        <td class="costTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Cost Price (Php)<sup>*</sup></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="cost" name="cost" id="cost"  oninput="validateNumber(this)"/></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Mark-up (%)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input /></td>
+                        <td class="markupTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Mark-up (%)<sup>*</sup></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="markup" name="markup" id="markup"  oninput="validateNumber(this)" /></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Selling Price (Php)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input /></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input readonly class="selling_price" name="selling_price" id="selling_price"/></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Tax (VAT) 12%</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px">  <?php
-                          $taxVat = "no"; 
-                          $other_Charge = ($taxVat== "no") ? "yes" : "no";
+                          $taxVat = "yes"; 
+                          $other_Charge = ($taxVat== "yes") ? "no" : "yes";
                           ?>
                           <label class="taxVat" style="margin-left: 5px">
-                              <input type="checkbox" id="taxVatToggle"<?php if($taxVat == "no") ?> onclick="toggleTaxVat(this)">
+                              <input type="checkbox" id="taxVatToggle"<?php if($taxVat == "yes") echo ' checked'?> onclick="toggleTaxVat(this)">
                               <span class="taxVatSpan round"></span>
                           </label>
                           <small id="showTaxVatLbl" style="margin-left: 100px">Price Includes Tax</small>
                           <?php
-                          $showTheTaxVat = 'no'; 
-                          $showOn= (  $showTheTaxVat== 'no') ? 'yes' :' no';
+                          $showTheTaxVat = 'yes'; 
+                          $showOn = ($showTheTaxVat == 'yes') ? 'no' : 'yes';
                           ?>
                           <label class="showIncludesTaxVat" style="display:flex;float: right; margin-right: 5px">
-                              <input type="checkbox" id="showIncludesTaxVatToggle"<?php if($showTheTaxVat== 'no') echo ' disabled'; ?> onclick="toggleChangeColor(this)" >
+                              <input type="checkbox" id="showIncludesTaxVatToggle"<?php if($showTheTaxVat == 'yes') echo ' checked'; ?> onclick="toggleChangeColor(this)">
                               <span class="spanShowTaxVat round"></span>
                           </label>
                         </td>
@@ -1036,7 +1050,7 @@ font-weight: bold;
                   $opposite_status = ($status == 'Active') ? 'Inactive' : 'Active';
                   ?>
                   <label class="switch" style="margin-left: 5px">
-                      <input readonly type="checkbox" id="statusValue"<?php if($status == 'Active')?> onclick="toggleStatus(this)">
+                      <input readonly type="checkbox" id="statusValue"<?php if($status == 'Active') echo ' checked' ?> onclick="toggleStatus(this)">
                       <span class="slider round"></span>
                   </label>
               </td>
@@ -1062,13 +1076,13 @@ font-weight: bold;
             <h4 class="descripTion" style="color:#FF6900;">Description</h4>
           </div>
           <div style="margin-left: 20px;width: 100%; margin-right: 20px">
-            <textarea style="width: 92%; height: 120px; background-color: transparent; color:#fefefe"></textarea>
+            <textarea style="width: 92%; height: 120px; background-color: transparent; color:#fefefe" name="description" id="description" class="description"></textarea>
           </div>
         
             <div class="button-container" style="display:flex;justify-content: right">
-                <button  class="btn-success-custom saveProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
+                <button onclick="addProduct()" class="btn-success-custom saveProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
                 <button hidden class="btn-success-custom updateProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
-                <button  class="cancelAddProducts btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
+                <button onclick="closeAddProductsModal()" class="cancelAddProducts btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
             </div>
         </div>
       </div>
@@ -1244,6 +1258,275 @@ function clearImageProduct() {
 
 function openCategoryModal(){
    $('#add_category_modal').show()
+}
+
+function closeAddProductsModal(){
+  closeModal()
+  $('#add_products_modal').css('animation', 'slideOutRight 0.5s forwards');
+  $('.product-modal').css('animation', 'slideOutRight 0.5s forwards');
+  // $('.highlighted').removeClass('highlighted');
+ 
+  $('#add_products_modal').one('animationend', function() {
+    $(this).hide();
+    $(this).css('animation', '');
+    $('.product-modal').css('animation', '');
+     clearProductsInputs()
+     clearFileInput()
+  });
+  
+}
+
+   
+    const costInput = document.getElementById('cost');
+    const markupInput = document.getElementById('markup');
+    const sellingPriceInput = document.getElementById('selling_price');
+
+   
+    costInput.addEventListener('input', calculateSellingPrice);
+    markupInput.addEventListener('input', calculateSellingPrice);
+    sellingPriceInput.addEventListener('input', calculateCostPrice);
+
+   
+    function calculateSellingPrice() {
+        const cost = parseFloat(costInput.value);
+        const markup = parseFloat(markupInput.value);
+        const selling = parseFloat(sellingPriceInput.value);
+            if (!isNaN(cost) && !isNaN(markup)) {
+                const sellingPrice = cost + (cost * markup / 100);
+                sellingPriceInput.value = sellingPrice.toFixed(2); 
+            } else {
+                sellingPriceInput.value = '';
+            }
+        }
+        
+    
+    function calculateCostPrice() {
+        const sellingPrice = parseFloat(sellingPriceInput.value);
+        const markup = parseFloat(markupInput.value);
+
+        
+        if (!isNaN(sellingPrice) && !isNaN(markup)) {
+            const cost = sellingPrice / (1 + (markup / 100));
+            costInput.value = cost.toFixed(2); 
+        } else {
+            costInput.value = ''; 
+        }
+    }
+    function validateNumber(input) {
+   
+    input.value = input.value.replace(/[^0-9.]/g, '');
+    if (input.value.startsWith('-')) {
+        input.value = input.value.slice(1);
+    }
+}function validateInputs(input) {
+    // Remove any non-alphanumeric characters
+    input.value = input.value.replace(/[^a-zA-Z0-9]/g, '');
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var skunNumberInput = document.getElementById('skunNumber');
+    var skuLabel = document.querySelector('.skuTd');
+
+    skunNumberInput.addEventListener('input', function() {
+        var sku = skunNumberInput.value.trim(); 
+        if (sku) {
+          axios.get(`api.php?action=checkSKU&sku=${sku}`)
+                .then(function(response) {
+                    var data = response.data;
+                    if (data.success && data.sku) {
+                        skunNumberInput.style.color = 'red';
+                        skuLabel.style.color = 'red';
+                    } else {
+                        skunNumberInput.style.color = ''; 
+                        skuLabel.style.color = '';
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        } else {
+            skunNumberInput.style.color = ''; 
+            skuLabel.style.color = '';
+        }
+    });
+    var barcodeInput =  document.getElementById('barcode');
+    var barcodeLabel = document.querySelector('.barcodeTd');
+    barcodeInput.addEventListener('input', function() {
+        var barcode = barcodeInput.value.trim(); 
+        if (barcode) {
+            axios.get(`api.php?action=checkSKU&barcode=${barcode}`)
+                .then(function(response) {
+                    var data = response.data;
+                    if (data.success && data.sku) {
+                        barcodeInput.style.color = 'red';
+                        barcodeLabel.style.color = 'red';
+                    } else {
+                        barcodeInput.style.color = ''; 
+                        barcodeLabel.style.color = '';
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        } else {
+            barcodeInput.style.color = ''; 
+            barcodeLabel.style.color = '';
+        }
+    });
+    var codeInput =  document.getElementById('code');
+    var codeLabel = document.querySelector('.codeTd');
+    codeInput.addEventListener('input', function() {
+        var code = codeInput.value.trim(); 
+        if (code) {
+            axios.get(`api.php?action=checkSKU&code=${code}`)
+                .then(function(response) {
+                    var data = response.data;
+                    if (data.success && data.sku) {
+                       codeInput.style.color = 'red';
+                        codeLabel.style.color = 'red';
+                    } else {
+                       codeInput.style.color = ''; 
+                        codeLabel.style.color = '';
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        } else {
+           codeInput.style.color = ''; 
+            codeLabel.style.color = '';
+        }
+    });
+    var productInput =  document.getElementById('productname');
+    var nameLabel = document.querySelector('.nameTd');
+    productInput.addEventListener('input', function() {
+       var productname =  productInput.value.trim();
+       if(productInput){
+         nameLabel.style.color = '';
+       }
+    })
+  var costLabel  = document.querySelector('.costTd');
+  var costInput = document.getElementById('cost');
+  costInput.addEventListener('input', function(){
+    var cost =  costInput.value.trim();
+    if(cost){
+      costLabel.style.color = '';
+    }
+  })
+  var markupLabel = document.querySelector('.markupTd');
+  var markupInput = document.getElementById('markup')
+  markupInput.addEventListener('input', function(){
+     var markup = markupInput.value.trim();
+     if(markup){
+      markupLabel.style.color = '';
+     }
+  })
+});
+function clearFileInput() {
+    var fileInput = document.getElementById('fileInputs');
+    fileInput.value = '';
+    if(fileInput.value == ''){
+        displayImage(defaultImageUrl);
+    }
+}
+
+function clearProductsInputs(){
+  document.getElementById('productname').value = "";
+  document.getElementById('skunNumber').value = "";
+  document.getElementById('code').value = "";
+  document.getElementById('barcode').value = "";
+  document.getElementById('uomID').value = "";
+  document.getElementById('brand').value = "";
+  document.getElementById('cost').value = "";
+  document.getElementById('markup').value = "";
+  document.getElementById('selling_price').value = "";
+  document.getElementById('uomType').value = ""
+  document.getElementById('categoriesInput').value = "";
+  document.getElementById('description').value = "";
+}
+
+
+function addProduct(){
+  //products
+  var productname = document.getElementById('productname').value;
+  var sku = document.getElementById('skunNumber').value;
+  var code = document.getElementById('code').value;
+  var barcode = document.getElementById('barcode').value;
+  var oum_id = document.getElementById('uomID').value;
+  var brand = document.getElementById('brand').value;
+  var cost = document.getElementById('cost').value;
+  var markup = document.getElementById('markup').value;
+  var sellingPrice = document.getElementById('selling_price').value
+  //discount
+  var discountCheckbox = document.getElementById('discountToggle');
+  var discount = discountCheckbox.checked ? 1 : 0;
+  //vat
+  var vatCheckbox = document.getElementById('taxVatToggle');
+  var vat = vatCheckbox.checked ? 1 : 0;
+  var displayTax = document.getElementById('showIncludesTaxVatToggle');
+  var display_tax = displayTax.checked ? 1 : 0;
+
+  //service Charge
+  var serviceCharge = document.getElementById('serviceChargesToggle');
+  var service_charge = serviceCharge.checked ? 1 : 0;
+  var displaySrvCharge = document.getElementById('displayServiceChargeReceipt');
+  var display_service_charge = displaySrvCharge.checked ? 1 : 0;
+
+  //other charges
+  var otherCharges = document.getElementById('otherChargesToggle');
+  var other_charges = otherCharges.checked ? 1 : 0;
+  var displayOtherCharges = document.getElementById('displayReceipt');
+  var display_other_charges = displayOtherCharges.checked ? 1 : 0;
+  
+  //status
+  var stat = document.getElementById('statusValue');
+  var status = stat.checked ? 1 : 0;
+
+  //productImage
+  var file = document.getElementById("fileInputs").files[0]; 
+  var description = document.getElementById('description').value
+
+  var nameLabel = document.querySelector('.nameTd');
+  var barcodeLabel = document.querySelector('.barcodeTd');
+  var costLabel  = document.querySelector('.costTd');
+  var markupLabel = document.querySelector('.markupTd');
+
+  productname ? nameLabel.style.color = '' : nameLabel.style.color = 'red';
+  barcode ? barcodeLabel.style.color = '' : barcodeLabel.style.color = 'red';
+  cost ? costLabel.style.color = '' : costLabel.style.color = 'red';
+  markup ?  markupLabel.style.color = '' : markupLabel.style.color = 'red';
+
+  var formData = new FormData();
+  formData.append("uploadedImage", file); 
+  formData.append("productname", productname); 
+  formData.append("sku", sku); 
+  formData.append("code", code); 
+  formData.append("barcode", barcode); 
+  formData.append("oum_id", oum_id); 
+  formData.append("brand", brand); 
+  formData.append("cost", cost); 
+  formData.append("markup", markup); 
+  formData.append("sellingPrice", sellingPrice);
+  formData.append("discount", discount); 
+  formData.append("vat", vat ); 
+  formData.append("display_tax", display_tax); 
+  formData.append("service_charge", service_charge); 
+  formData.append("display_service_charge", display_service_charge); 
+  formData.append("other_charges", other_charges); 
+  formData.append("display_other_charges", display_other_charges); 
+  formData.append("status", status); 
+  formData.append("description", description); 
+ if(productname && barcode && cost && markup){
+  axios.post('api.php?action=addProduct', formData).then(function(response){
+     refreshProductsTable()
+  }).catch(function(error){
+     console.log(error)
+  })
+ }else{
+  console.log('check fields')
+ }
+  
 }
 
 

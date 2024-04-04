@@ -55,6 +55,25 @@
             $categoryname =  isset($postData['name']) ? $postData['name'] : null;
             $products->updateCategory($categoryname, $categoryid);
             break;
+        case "addVariant":
+            $postData = json_decode(file_get_contents('php://input'), true);//variantName
+            $categoryid = isset($postData['id']) ? $postData['id'] : null;
+            $variantName = isset($postData['variantName']) ? $postData['variantName'] : null;
+            $products->addVariants($categoryid ,$variantName);
+            // echo json_encode(['success' => true, 'variant' =>  $categoryid]);
+            break;
+        case "addProduct":
+             $formData = $_POST;
+             $result = $products->addProduct($formData);
+             echo json_encode( $formData);
+             break; 
+        case "checkSKU":
+            $sku = isset($_GET['sku']) ? $_GET['sku'] : null;
+            $barcode = isset($_GET['barcode']) ? $_GET['barcode'] : null;
+            $code = isset($_GET['code']) ? $_GET['code'] : null;
+            $result = $products->checkSku($sku,$barcode,$code);
+            echo json_encode(['success'=> true,'sku' => $result]);
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
