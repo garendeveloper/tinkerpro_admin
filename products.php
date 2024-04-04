@@ -224,13 +224,14 @@
                           <th class="text-center" style="width: 2%;">No.</th>
                           <th class="text-center" style="width: 17%;">Name</th>
                           <th class="text-center" style="width: 7%;">Barcode</th>
-                          <th class="text-center" style="width: 7%;">Code/SKU</th>
+                          <th class="text-center" style="width: 7%;">SKU</th>
+                          <th class="text-center" style="width: 7%;">Code</th>
                           <th class="text-center" style="width: 7%;">Unit</th>
                           <th class="text-center" style="width: 7%;">Brand</th>
                           <th class="text-center" style="width: 7%;">Price (Php)</th>
                           <th class="text-center" style="width: 7%;">Mark-up (%)</th>
                           <th class="text-center" style="width: 7%;">Cost (Php)</th>
-                          <th class="text-center" style="width: 7%;">Serial No.</th>
+                          <!-- <th class="text-center" style="width: 7%;">Serial No.</th> -->
                           <th class="text-center" style="width: 7%;">Category</th>
                           <th class="text-center" style="width: 7%;">Status</th>
                           <th class="text-center" style="width: 7%;">Action</th>
@@ -263,6 +264,8 @@
   function addproducts(){
     getSku();
      $('#add_products_modal').show()
+     var checkbox = document.getElementById('showIncludesTaxVatToggle');
+     toggleChangeColor(checkbox);
      if( $('#add_products_modal').is(':visible')){
       var toggle = document.getElementById('statusValue');
       var statusLabel = document.getElementById('statusActive');
@@ -286,5 +289,17 @@
         }
     });
 }
-
+function refreshProductsTable() {
+        $.ajax({
+            url: 'fetch-products.php', 
+            type: 'GET',
+            success: function(response) {
+                $('#productTable').html(response); 
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText); 
+            }
+        });
+    }
+    refreshProductsTable()
 </script>

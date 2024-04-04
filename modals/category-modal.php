@@ -40,6 +40,16 @@
     opacity: 1;
   }
 }
+@keyframes slideOutRight {
+  from {
+    margin-right: 0;
+    opacity: 1;
+  }
+  to {
+    margin-right: -100%;
+    opacity: 0;
+  }
+}
 .productsBtn{
     border: none;
     background-color: transparent;
@@ -47,7 +57,7 @@
     color:#fefefe;
     text-decoration: none;
     font-size: small;
-     padding-left: 25px;
+    padding-left: 25px;
 }
 .productsBtn:hover{
     color: #FF6900 !important;
@@ -66,20 +76,20 @@
     font-size: small;
    
 }
-#categories p {
+#categoriesDiv p {
     padding-left: 50px
 }
 .productCategory:hover{
     color: #FF6900 !important;
 }
-#categories p a {
+#categoriesDiv p a {
     margin: 0; 
 }
-#categories {
+#categoriesDiv {
     padding-top: 0; 
 }
 
-#categories p {
+#categoriesDiv p {
     margin: 0;
     padding-top: 0; 
     padding-left: 50px;
@@ -94,9 +104,9 @@
     color: #fefefe;
     text-decoration: none;
     font-size: small;
-    padding-left: 75px;
     transition: background-color 0.3s; 
     box-sizing: border-box; 
+    padding-left: 25px;
 }
 
 .variant.highlighted {
@@ -110,7 +120,7 @@
 
 .highlighted {
     background-color: #fefefe;
-    color: black;
+    color: black !important;
 }
 
 .catBtns{
@@ -131,6 +141,28 @@
     font-size: 12px;
     color:#fefefe
 }
+.variants{
+    padding-left: 100px;
+    display: block;
+}
+.productsP{
+  margin: 0;
+  padding: 0
+}
+.variant-input{
+    margin: 0;
+    padding-left: 75px
+}
+.variant_input{
+    font-family: Century Gothic;
+    font-size: 13px;
+    margin: 0;
+    padding:0
+}
+
+
+
+
 </style>
 
 <div class="modal" id="add_category_modal" tabindex="0">
@@ -143,25 +175,27 @@
         </div>
         <div class="catBtns">
         <button  class="cat_btns">Del</button>
-        <button onclick="addBtnCategory()" class="cat_btns">Add</button>
+        <button onclick="addBtnCategory();addVariants()" class="cat_btns" id="addVariant">Add</button>
         <button onclick="" id="editCat" name="editBtn" class="editCat cat_btns">Edit</button>
         </div>
         <div class="productsHeader">
-    <a href="#" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
-    <div id="categories" style="display: none;">
-        <?php
-        $productFacade = new ProductFacade;
-        $categories = $productFacade->getCategories();
-        while ($row = $categories->fetch(PDO::FETCH_ASSOC)) {
-            echo '<p onclick="highlightRow(this)"><a href="#" onclick="toggleCheckbox(' . htmlspecialchars($row['id']) . ', \'' . htmlspecialchars($row['category_name']). '\');" 
-            class="productCategory" style="text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '"><span id="mainSpanCategory_' . htmlspecialchars($row['id']) . '">+</span>&nbsp' . htmlspecialchars($row['category_name']) . '</a>
-            <input hidden  type="checkbox" class="categoryCheckbox" id="catCheckbox_' . htmlspecialchars($row['id']) . '"/></p>';
-            echo '<div id="variants_' . htmlspecialchars($row['id']) . '"></div>';
-           
-        }
-         echo '<span hidden class="inputCat">+<input  type="text" id="inputCat" name="category_input " placeholder="Enter Category"></span>';
-        ?>
-    </div>
+             <p class="productsP" ><a href="#" onclick="highlight(this)" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
+    <div id="categoriesDiv" style="display: none;">
+    <?php
+    $productFacade = new ProductFacade;
+    $categories = $productFacade->getCategories();
+    while ($row = $categories->fetch(PDO::FETCH_ASSOC)) {
+        $rowId = htmlspecialchars($row['id']); // Get the row ID
+        $categoryName = htmlspecialchars($row['category_name']); // Get the category name
+        echo '<p id="paragraph_' . $rowId . '">';
+        echo '<a href="#" onclick="fetchIdCategories(\'' . $rowId . '\');highlightRow(this, \'' . $rowId . '\', \'' . $categoryName . '\');toggleCheckbox(\'' . $rowId . '\', \'' . $categoryName . '\');getVariants(\'' . $rowId . '\');" class="productCategory" style="text-decoration: none;" data-value="' . $rowId . '">';
+        echo '<span id="mainSpanCategory_' . $rowId . '">+</span>&nbsp;' . $categoryName . '</a>';
+        echo '<input hidden  type="checkbox" name="categoryCheckbox" class="categoryCheckbox" id="catCheckbox_' . $rowId . '"/></p>';
+        echo '<div id="variants_' . $rowId . '"></div>';
+    }
+    echo '<span hidden class="inputCat">+<input type="text" id="inputCat" name="category_input " placeholder="Enter Category"></span>';
+    ?>
+</div>
 </div>
    </div>
         </div>
@@ -172,15 +206,18 @@
 
 
 <script>
+   
+
 
 document.addEventListener("DOMContentLoaded", function() {
     var showCategoriesBtn = document.getElementById('showCategories');
-    var categoriesDiv = document.getElementById('categories');
+    var categoriesDiv = document.getElementById('categoriesDiv');
     var spanIcon = showCategoriesBtn.querySelector('span');
     var addCategoryCheckbox = document.getElementById('addCategoryCheckbox');
     var inputCatSpan = document.querySelector('.inputCat');
+    var singleInputBoxElement = document.querySelector('.variant-input');
+
     showCategoriesBtn.addEventListener('click', function() {
-        // Hide all category variants
         var variantContainers = document.querySelectorAll('[id^="variants_"]');
         variantContainers.forEach(function(container) {
             container.style.display = 'none';
@@ -198,13 +235,16 @@ document.addEventListener("DOMContentLoaded", function() {
             spanIcon.textContent = '-';
             addCategoryCheckbox.checked = true; 
             inputCatSpan.setAttribute('hidden','hidden'); 
+            if(singleInputBoxElement){
+                singleInputBoxElement.setAttribute('hidden','hidden');
+            }
+         
         } else {
             categoriesDiv.style.display = 'none';
             spanIcon.textContent = '+';
             addCategoryCheckbox.checked = false; 
             inputCatSpan.setAttribute('hidden','hidden'); 
             
-            // Uncheck all category checkboxes
             var categoryCheckboxes = document.querySelectorAll('.categoryCheckbox');
             categoryCheckboxes.forEach(function(checkbox) {
                 checkbox.checked = false;
@@ -230,11 +270,7 @@ function toggleSpanVisibility() {
     document.getElementById('inputCat').addEventListener('blur', toggleSpanVisibility);
 
 
-
-
 function toggleCheckbox(id, name) {
-    console.log(name);
-    getVariants(id);
     var checkbox = document.getElementById('catCheckbox_' + id);
     editBtnCategory(id, name, checkbox);
     var previousInput = document.querySelector('.categoryInput');
@@ -252,7 +288,7 @@ function toggleCheckbox(id, name) {
         }
     });
 
-    // Toggle the clicked checkbox
+
     var checkbox = document.getElementById('catCheckbox_' + id);
     if (checkbox) {
         checkbox.checked = !checkbox.checked;
@@ -268,6 +304,7 @@ function toggleCheckbox(id, name) {
 function getVariants(catID) {
     const variantsContainer = document.getElementById(`variants_${catID}`);
     const mainSpanCategory = document.getElementById(`mainSpanCategory_${catID}`);
+    const singleInputBox = `<span hidden id="spanVar" class="variant-input" style="display:flex; color: #fefefe">+&nbsp;<input hidden type="text" class="variant_input" id="cat_${catID}" placeholder="Enter Variant"></span>`;
 
     // Hide all variant containers except the one being clicked
     const allVariantsContainers = document.querySelectorAll('[id^="variants_"]');
@@ -281,89 +318,143 @@ function getVariants(catID) {
             }
         }
     });
-
-    if (variantsContainer.style.display === 'none') {
-        axios.get(`api.php?action=getVariantsData&cat_id=${catID}`)
-            .then(response => {
-                const variants = response.data.variants;
-                const variantsList = variants.map(variant => `<a href="#" style="text-decoration: none;" class="variant" onclick="highlightRow(this)"><span>+</span>&nbsp;${variant.variant_name}</a>`).join('');
-
-                if (variants.length > 0) {
-                    if (variantsContainer) {
-                        variantsContainer.innerHTML = variantsList; 
-                        variantsContainer.style.display = 'block';
-                    }
-                    if (mainSpanCategory) {
-                        mainSpanCategory.textContent = '-';
-                    }
+    axios.get(`api.php?action=getVariantsData&cat_id=${catID}`)
+    .then(response => {
+        const variants = response.data.variants;
+        if (variantsContainer.style.display === 'none') {
+            if (!variants || variants.length === 0) {
+                variantsContainer.innerHTML = singleInputBox;
+                variantsContainer.style.display = 'block'; 
+                if (mainSpanCategory) {
+                    mainSpanCategory.textContent = '-'; 
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching variants:', error);
-            });
-    } else {
-        variantsContainer.style.display = 'none';
-        if (mainSpanCategory) {
-            mainSpanCategory.textContent = '+';
+                
+            } else {
+                const variantsList = variants.map(variant => `<p class="variants variant-container"  style="display: flex">
+                    <a id="variants_${variant.variant_id}" href="#" style="text-decoration: none;" class="variant" onclick="highlightRow(this);handleClick(event, this)">
+                        <span>+</span>&nbsp;${variant.variant_name}
+                    </a>
+                    <input type="checkbox" hidden  id="${variant.variant_id}">
+                </p>`).join('');
+
+                const finalVariantList = variantsList + singleInputBox;
+
+                if (variantsContainer) {
+                    variantsContainer.innerHTML = finalVariantList;
+                    variantsContainer.style.display = 'block';
+                }
+                if (mainSpanCategory) {
+                    mainSpanCategory.textContent = '-';
+                }
+            }
+        } else {
+            variantsContainer.style.display = 'none';
+            if (mainSpanCategory) {
+                mainSpanCategory.textContent = '+';
+            }
         }
-    }
+    })
+    .catch(error => {
+        console.error('Error fetching variants:', error);
+    });
+
 }
+
+
+
+
+function handleClick(event, anchor) {
+    event.preventDefault();
+
+ 
+    const previousCheckedCheckbox = document.querySelector('.variant-checkbox:checked');
+    if (previousCheckedCheckbox) {
+        previousCheckedCheckbox.checked = false;
+    }
+
+   
+    const checkbox = anchor.nextElementSibling;
+    checkbox.checked = !checkbox.checked;
+}
+
+
+
+
 
 
 let previouslyClicked = null;
 
-// function highlightRow(element) {
-//     if (previouslyClicked && previouslyClicked !== element) {
-//         previouslyClicked.classList.remove('highlighted');
-//         const previousSpan = previouslyClicked.querySelector('span');
-//         if (previousSpan) {
-//             previousSpan.textContent = "+";
-//         }
-//         previouslyClicked.style.color = "white";
-//     }
-//     element.classList.toggle('highlighted');
-
-//     const spanElement = element.querySelector('span');
-//     if (spanElement) {
-//         if (element.classList.contains('highlighted')) {
-//             spanElement.textContent = "-";
-//             element.style.color = "black";
-//         } else {
-//             spanElement.textContent = "+";
-//             element.style.color = "white";
-//         }
-//     }
-
-//     previouslyClicked = element;
-// }
-
 function highlightRow(element) {
+    console.log(element)
     if (previouslyClicked && previouslyClicked !== element) {
         previouslyClicked.classList.remove('highlighted');
+        previouslyClicked.parentElement.classList.remove('highlighted');
         const previousSpan = previouslyClicked.querySelector('span');
         if (previousSpan) {
             previousSpan.textContent = "+";
-            previousSpan.style.color = "black"; 
         }
         previouslyClicked.style.color = "white";
     }
+
+    element.parentElement.classList.toggle('highlighted');
+
+    
     element.classList.toggle('highlighted');
 
     const spanElement = element.querySelector('span');
     if (spanElement) {
         if (element.classList.contains('highlighted')) {
             spanElement.textContent = "-";
-            spanElement.style.color = "black";
-            element.style.color = "black"; 
+            element.style.color = "black";
         } else {
             spanElement.textContent = "+";
-            spanElement.style.color = "black";
-            element.style.color = "white"; 
+            element.style.color = "white";
         }
     }
 
     previouslyClicked = element;
 }
+
+function highlight(element) {
+    const categoriesDiv = document.getElementById('categoriesDiv');
+    if (element.id === 'showCategories') {
+        const highlightedElement = document.querySelector('.highlighted');
+        if (highlightedElement) {
+            highlightedElement.classList.remove('highlighted');
+            const spanElement = highlightedElement.querySelector('span');
+            if (spanElement) {
+                spanElement.textContent = "+";
+                highlightedElement.style.color = "white";
+            }
+        }
+        return;
+    }
+    const previouslyClicked = document.querySelector('.highlighted');
+    if (previouslyClicked && previouslyClicked !== element) {
+        previouslyClicked.classList.remove('highlighted');
+        const previousSpan = previouslyClicked.querySelector('span');
+        if (previousSpan) {
+            previousSpan.textContent = "+";
+            previouslyClicked.style.color = "white";
+        }
+    }
+
+  
+    element.parentElement.classList.toggle('highlighted');
+    element.classList.toggle('highlighted');
+
+    const spanElement = element.querySelector('span');
+    if (spanElement) {
+        if (element.classList.contains('highlighted')) {
+            spanElement.textContent = "-";
+            element.style.color = "black";
+        } else {
+            spanElement.textContent = "+";
+            element.style.color = "white";
+        }
+    }
+}
+
 
 
 function addBtnCategory() {
@@ -386,6 +477,102 @@ function addBtnCategory() {
     } else {
         inputCatSpan.setAttribute('hidden', 'hidden'); 
         inputCategory.value = ""; 
+    }
+}
+
+
+function validateCategories() {
+    const checkboxes = document.querySelectorAll('.categoryCheckbox');
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            return true; 
+        }
+    }
+    return false; 
+}
+
+
+let  idCategories;
+function fetchIdCategories(clickedId) {
+        idCategories = clickedId  
+
+}
+
+
+let variantsContainer;
+
+
+function addVariants() {
+    const singleInputBoxElement = document.getElementById('cat_' + idCategories);
+    const singleSpanElement = singleInputBoxElement.parentElement;
+    if (idCategories) {
+            singleInputBoxElement.removeAttribute('hidden');
+            singleSpanElement.removeAttribute('hidden');
+      
+        document.getElementById('cat_' + idCategories).addEventListener('keydown', function(e) {
+        switch(e.which) {
+            case 13:
+                e.preventDefault();
+                var inputedVariant = document.getElementById('cat_' + idCategories).value
+                axios.post('api.php?action=addVariant', {
+                        id:idCategories,
+                        variantName: inputedVariant
+                    }).then(function(response) {
+                        const variantsContainer = document.getElementById(`variants_${idCategories}`);
+    const mainSpanCategory = document.getElementById(`mainSpanCategory_${idCategories}`);
+    const singleInputBox = `<span hidden id="spanVar" class="variant-input" style="display:flex; color: #fefefe">+&nbsp;<input hidden type="text" class="variant_input" id="cat_${idCategories}" placeholder="Enter Variant"></span>`;
+
+    // Hide all variant containers except the one being clicked
+    const allVariantsContainers = document.querySelectorAll('[id^="variants_"]');
+    allVariantsContainers.forEach(container => {
+        if (container.id !== `variants_${idCategories}`) {
+            container.style.display = 'none';
+            const categoryId = container.id.split('_')[1];
+            const mainSpan = document.getElementById(`mainSpanCategory_${categoryId}`);
+            if (mainSpan) {
+                mainSpan.textContent = '+';
+            }
+        }
+    });
+    axios.get(`api.php?action=getVariantsData&cat_id=${idCategories}`)
+    .then(response => {
+        const variants = response.data.variants;
+      
+                const variantsList = variants.map(variant => `<p class="variants variant-container"  style="display: flex">
+                    <a id="variants_${variant.variant_id}" href="#" style="text-decoration: none;" class="variant" onclick="highlightRow(this);handleClick(event, this)">
+                        <span>+</span>&nbsp;${variant.variant_name}
+                    </a>
+                    <input type="checkbox" hidden  id="${variant.variant_id}">
+                </p>`).join('');
+
+                const finalVariantList = variantsList + singleInputBox;
+                if (variantsContainer) {
+                    variantsContainer.innerHTML = finalVariantList;
+                    variantsContainer.style.display = 'block';
+                }
+                if (mainSpanCategory) {
+                    mainSpanCategory.textContent = '-';
+                }
+            
+        
+    })
+    .catch(error => {
+        console.error('Error fetching variants:', error);
+    });
+                    }).catch(function(error) {
+                        console.log(error);
+                    });
+                break;
+            default:
+                return;
+        }
+        e.preventDefault();
+    });
+
+    }else {
+        singleSpanElement.setAttribute('hidden', 'true');
+        singleInputBoxElement.setAttribute('hidden', 'true');
+        singleInputBoxElement.value = "";
     }
 }
 
@@ -413,7 +600,7 @@ function addEventListenerToInput() {
     });
 }
 
-// Call this function whenever new input field is added
+
 addEventListenerToInput();
 
 
@@ -422,24 +609,28 @@ function getCategories() {
         url: 'api.php?action=getDataCategory',
         type: 'GET',
         success: function (response) {
-            $('#categories').empty();
+            $('#categoriesDiv').empty();
             $.each(response.categories, function (index, category) {
                 var categoryId = category.id;
                 var categoryName = category.category_name
-                var categoryHTML = '<p><a href="#" onclick="getVariants(' + categoryId + ')" class="productCategory" style="text-decoration: none;" data-value="' + categoryId + '" data-checkbox-id="catCheckbox_' + categoryId + '" data-category-name="' + categoryName + '">';
-                categoryHTML += '<span id="mainSpanCategory_' + categoryId + '">+</span>&nbsp' + category.category_name + '</a>&nbsp';
-                categoryHTML += '<input hidden type="checkbox" class="categoryCheckbox" id="catCheckbox_' + categoryId + '"></p>';
-                categoryHTML += '<div id="variants_' + categoryId + '"></div>';
-                $('#categories').append(categoryHTML);
-                
+                // var categoryHTML = '<p><a href="#" onclick="getVariants(' + categoryId + ')" class="productCategory" style="text-decoration: none;" data-value="' + categoryId + '" data-checkbox-id="catCheckbox_' + categoryId + '" data-category-name="' + categoryName + '">';
+                // categoryHTML += '<span id="mainSpanCategory_' + categoryId + '">+</span>&nbsp' + category.category_name + '</a>&nbsp';
+                // categoryHTML += '<input  type="checkbox" class="categoryCheckbox" id="catCheckbox_' + categoryId + '"></p>';
+                // categoryHTML += '<div id="variants_' + categoryId + '"></div>';
+                // $('#categoriesDiv').append(categoryHTML);
+                var categoryHTML = '<p><a href="#" onclick="fetchIdCategories(\'' + categoryId + '\'); highlightRow(this, \'' + categoryId + '\', \'' + categoryName + '\'); toggleCheckbox(\'' + categoryId + '\', \'' + categoryName + '\'); getVariants(\'' + categoryId + '\');" class="productCategory" style="text-decoration: none;" data-value="' + categoryId + '" data-checkbox-id="catCheckbox_' + categoryId + '" data-category-name="' + categoryName + '">';
+                    categoryHTML += '<span id="mainSpanCategory_' + categoryId + '">+</span>&nbsp;' + category.category_name + '</a>&nbsp;';
+                    categoryHTML += '<input hidden type="checkbox" class="categoryCheckbox" id="catCheckbox_' + categoryId + '"></p>';
+                    categoryHTML += '<div id="variants_' + categoryId + '"></div>';
+                    $('#categoriesDiv').append(categoryHTML);                  
             });
        
-            $('input[type="checkbox"]').change(function () {
-                if ($(this).is(':checked')) {
-                    $('input[type="checkbox"]').not(this).prop('checked', false);
-                }
-            });
-
+            $('input.categoryCheckbox').change(function () {
+            if ($(this).is(':checked')) {
+                $('input.categoryCheckbox').not(this).prop('checked', false);
+            }
+        });
+         
             $('a.productCategory').click(function (e) {
                 e.preventDefault();
                 var checkboxId = $(this).data('checkbox-id');
@@ -455,10 +646,10 @@ function getCategories() {
             });
     
             var inputHTML = '<span hidden class="inputCat">+<input type="text" id="inputCat" name="category_input" placeholder="Enter Category"></span>';
-            $('#categories').append(inputHTML);
+            $('#categoriesDiv').append(inputHTML);
             var addCategoryCheckbox = document.getElementById('addCategoryCheckbox');
             addBtnCategory.checked = false
-            $('#categories').show();
+            $('#categoriesDiv').show();
             addEventListenerToInput();
         },
         error: function (xhr, status, error) {
@@ -474,6 +665,7 @@ getCategories();
 function editBtnCategory(id, name, checkbox) {
     $(document).off('click', '.editCat').on('click', '.editCat', function() {
         if (id && name && checkbox.checked === true) {
+               $('#paragraph_' + id).removeClass('highlighted');
             var categoryName = $('#mainSpanCategory_' + id).text().trim();
             if (categoryName.startsWith('+')) {
                 categoryName = categoryName.substring(1);
@@ -487,8 +679,7 @@ function editBtnCategory(id, name, checkbox) {
                 value: name,
                 style: 'margin: 0; padding: 0;'
             });
-
-            
+        
             var spanPlus = $('<span>').text('+').css({
                 'color': 'white',
                 'margin-right': '5px'
@@ -544,6 +735,19 @@ function forCategoryUpdate(id, newValue) {
     }).catch(function(error) {
         console.log(error);
     });
+}
+
+function closeModal(){
+  $('#add_category_modal').css('animation', 'slideOutRight 0.5s forwards');
+  $('.categoryAdd').css('animation', 'slideOutRight 0.5s forwards');
+  // $('.highlighted').removeClass('highlighted');
+ 
+  $('#add_category_modal').one('animationend', function() {
+    $(this).hide();
+    $(this).css('animation', '');
+    $('.categoryAdd').css('animation', '');
+   
+  });
 }
 
 
