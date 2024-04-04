@@ -56,6 +56,10 @@
             $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
             echo json_encode($inventory->get_allInventories($currentPage, $perPage));
             break;
+        case 'save_purchaseOrder':
+            $formData = $_POST;
+            echo json_encode($inventory->save_purchaseOrder($formData));
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

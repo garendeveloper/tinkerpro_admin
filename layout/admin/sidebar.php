@@ -1,77 +1,50 @@
-<!-- <style>
+<style>
+    .site-header {
+        color: #fff; 
+        padding: 10px 0; 
+        background-color: #151515; 
+    }
 
+
+    .logo {
+        margin: 0; 
+        display: block;
+    }
+
+    /* Sidebar styles */
     .sidebar {
         height: 100%;
         width: 200px;
-        background-color: #1E1C11;
+        background-color: #151515; ;
         position: fixed;
-        top: 0;
+        top: 30px; 
         left: 0;
         overflow-x: hidden;
-        padding-top: 20px;
+        padding-top: 10px, 0;
     }
 
     .sidebar a {
-        padding: 10px 15px;
+        padding: 5px 15px;
         text-decoration: none;
-        font-size: 16px;
+        font-size: 14px;
         color: #ffff;
         font-family: Century Gothic;
         display: block;
+        margin-top: 10px;
+    }
+    .header-container {
+        max-width: 1200px;
+        margin: 0; 
+        padding: 0 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .sidebar a:hover {
         background-color: #FF6700;
     }
-</style> -->
-<style>
-        /* Header styles */
-        .site-header {
-            color: #fff; 
-            padding: 10px 0; 
-            background-color: #151515; 
-        }
-
-     
-        .logo {
-            margin: 0; 
-            display: block;
-        }
-
-        /* Sidebar styles */
-        .sidebar {
-            height: 100%;
-            width: 200px;
-            background-color: #151515; ;
-            position: fixed;
-            top: 30px; 
-            left: 0;
-            overflow-x: hidden;
-            padding-top: 10px, 0;
-        }
-
-        .sidebar a {
-            padding: 5px 15px;
-            text-decoration: none;
-            font-size: 14px;
-            color: #ffff;
-            font-family: Century Gothic;
-            display: block;
-            margin-top: 10px;
-        }
-        .header-container {
-            max-width: 1200px;
-            margin: 0; 
-            padding: 0 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar a:hover {
-            background-color: #FF6700;
-        }
-    </style>
+</style>
 <header class="site-header">
     <div class="header-container">
         <h6 class="logo">Management Settings</h6>

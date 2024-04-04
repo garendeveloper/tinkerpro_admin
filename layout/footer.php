@@ -22,9 +22,9 @@
   <!-- End custom js for this page-->
 
   <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
-  <script src="assets/js/others/flatpicker.js"></script>
-  <script src="assets/js/others/axios.min.js"></script>
-  <script src="assets/js/sweetalert.js"></script>
+  <script src="assets/js/otherjs/flatpicker.js"></script>
+  <script src="assets/js/otherjs/axios.min.js"></script>
+  <script src="assets/js/otherjs/sweetalert.js"></script>
 
   <script>
     $(document).ready(function(){
@@ -39,11 +39,11 @@
         }
       })
       $('#searchInput').on('keyup', function() {
-            var value = $(this).val().toLowerCase();
-            $('table tbody tr').filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
+          var value = $(this).val().toLowerCase();
+          $('table tbody tr').filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+      });
     })
   </script>
 </body>

@@ -960,25 +960,27 @@ input{
             </div>
             <p></p>
             <div class="fcontainer">
+              <form id = "po_form">
               <div class="fieldContainer">
                 <label>PC#</label>
-                <input type="text" name="id" value="" style="width: 100px; height: 25px"/>
+                <input type="text" name="pcs_no" value="" style="width: 100px; height: 25px"/>
                 <label for="paidSwitch" class="switch-label">Paid</label>
                 <label class="switch">
-                  <input id="paidSwitch" type="checkbox" style="height: 25px">
+                  <input id="paidSwitch" type="checkbox" name="isPaid" style="height: 25px">
                   <span class="slider"></span>
                 </label>
-                <input type="date" name="id" value="" style="width: 140px; height: 25px"/>
+                <input type="date" name="date_purchased" value="" style="width: 140px; height: 25px"/>
               </div>
               <div class="fieldContainer">
                 <label>Supplier</label>
-                <input type="text" name="id" value="" style="width: 315px; height: 25px"/>
+                <input type="text" name="supplier" value="" style="width: 315px; height: 25px"/>
               </div>
               <div class="fieldContainer">
-                <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 40px;"></label>
-                <input type="text" name="id" value="" style="width: 180px; height: 25px;"/>
-                <button style="border-color: #FF6900; font-size: 12px;" id="btn_addProduct">Add Product</button>
+                <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
+                <input type="text" name="product_id" value="" style="width: 200px; height: 25px;"/>
+                <button style="border-color: #FF6900; font-size: 12px;" type = "submit" id = "btn_savePO">Add PO</button>
               </div>
+            </form>
             <div>
             <p></p>
             <style>
@@ -991,22 +993,17 @@ input{
                   padding: 10px
                 }
               </style>
-            <table id="tbl_products" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 12px">
+            <table id="tbl_products" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
               <thead >
                 <tr style = "background-color: #1E1C11; border: 1px solid #FF6900;">
                   <th >ITEM DESCRIPTION</th>
-                  <th >QTY.</th>
-                  <th >PRICE</th>
+                  <th >QTY. PURCHASED</th>
+                  <th >QTY. RECEIVED</th>
                   <th>TOTAL</th>
                 </tr>
               </thead>
               <tbody style = "border-collapse: collapse; border: none">
-                <tr>
-                  <td>SAMPLE</td>
-                  <td>SAMPLE</td>
-                  <td>SAMPLE</td>
-                  <td>SAMPLE</td>
-                </tr>
+     
               </tbody>
             </table>
             </div>
@@ -1017,7 +1014,10 @@ input{
           </div>
         </div>
       </div>
+       <!-- <div class="modal-footer" style="display: flex; justify-content: flex-end; margin-right: 20px; margin-top: -50px;">
+          <button class="grid-item text-color" ><i class = "bi bi-save"></i>&nbsp; Save</button>
+          <button class="grid-item text-color"><i class = "bi bi-exit"></i>&nbsp; Exit</button>
+      </div> -->
     </div>
   </div>
 </div>
-
