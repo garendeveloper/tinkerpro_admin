@@ -15,23 +15,27 @@ $counter = 1;
 ob_start();
 
 while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
-    // var_dump($row)
+  
     ?>
     <tr>
-    <td class='text-center td-h'><?= $counter?><span hidden class="userId"><?= $row['id'] ?></span></td>
-    <td class='text-center td-h'><?= $row['prod_desc']?></td>
-    <td class='text-center td-h'><?= $row['barcode']?></td>
-    <td class='text-center td-h'><?= $row['sku']?></td>
-    <td class='text-center td-h'><?= $row['code']?></td>
-    <td class='text-center td-h'><?= $row['uom_name']?></td>
-    <td class='text-center td-h'><?= $row['brand']?></td>
-    <td class='text-center td-h'><?= $row['prod_price']?></td>
-    <td class='text-center td-h'><?= $row['markup']?></td>
-    <td class='text-center td-h'><?= $row['cost']?></td>
+    <td hidden class='text-center td-h'><span class="description"><?= $row['description'] ?></span><<span class="statusData"><?= $row['status'] ?></span><span class="productImgs"><?= $row['image'] ?></span></td> 
+    <td hidden class='text-center td-h'><span class="other"><?= $row['otherCharges'] ?></span><span class="displayOthers"><?= $row['displayOthers'] ?></span></td> 
+    <td hidden class='text-center td-h'><span class="service"><?= $row['serviceCharge'] ?></span><span class="displayService"><?= $row['displayService'] ?></span></td>
+    <td hidden class='text-center td-h'><span hidden class="isDiscounted"><?= $row['discounted'] ?></span><span hidden class="isTax"><?= $row['isVAT'] ?></span></td>
+    <td class='text-center td-h'><?= $counter?><span hidden class="productsId"><?= $row['id'] ?></span><span hidden class="oumId"><?= $row['uom_id'] ?></span></td>
+    <td class='productsName text-center td-h'><?= $row['prod_desc']?></td>
+    <td class='barcode text-center td-h'><?= $row['barcode']?></td>
+    <td class='sku text-center td-h'><?= $row['sku']?></td>
+    <td class='code text-center td-h'><?= $row['code']?></td>
+    <td class='uom_name text-center td-h'><?= $row['uom_name']?></td>
+    <td class='brand text-center td-h'><?= $row['brand']?></td>
+    <td class='prod_price text-center td-h'><?= $row['prod_price']?></td>
+    <td class='markup text-center td-h'><?= $row['markup']?></td>
+    <td class='cost text-center td-h'><?= $row['cost']?></td>
     <td class='text-center td-h'>walapa</td>
-    <td class='text-center td-h' style='color: <?= ($row['status'] == 1) ? "green" : "red" ?>;'><?= ($row['status'] == 1) ? "Active" : "Inactive" ?></td>
+    <td class='status text-center td-h' style='color: <?= ($row['status'] == 1) ? "green" : "red" ?>;'><?= ($row['status'] == 1) ? "Active" : "Inactive" ?></td>
     <td class='text-center action-td td-h'>
-               <a class='text-success editBtn' style='text-decoration: none;'><svg width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="edit"> <g> <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke=" #FF6900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke=" #FF6900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon> </g> </g> </g> </g></svg></a>
+               <a class='text-success editProductBtn' style='text-decoration: none;'><svg width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="edit"> <g> <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke=" #FF6900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke=" #FF6900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon> </g> </g> </g> </g></svg></a>
             <?php 
             ?>
         </td>

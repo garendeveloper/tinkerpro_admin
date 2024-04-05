@@ -201,7 +201,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>                      
 </div>
 
 
@@ -657,7 +657,7 @@ function getCategories() {
         }
     });
 }
-getCategories();
+
 
 
 
