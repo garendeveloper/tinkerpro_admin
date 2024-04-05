@@ -869,7 +869,7 @@ font-weight: bold;
     <div class="modal-content product-modal">
       <div class="modal-title">
         <div style="margin-top: 10px; margin-left: 20px">
-           <h2 class="text-custom" style="color:#FF6900;">Add New Product</h2>
+           <h2 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">Add New Product</h2>
         </div>
         <div class="warning-container">
           <div class="tableCard">
@@ -931,7 +931,7 @@ font-weight: bold;
                     </tr> -->
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Category</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="categoriesInput" name="categoriesInput" id="categoreisInput" style="width: 242px"/><button onclick="openCategoryModal()" class="addCategory">+Add</button></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="categoriesInput" name="categoriesInput" id="categoriesInput" style="width: 242px"/><button onclick="openCategoryModal()" class="addCategory">+Add</button></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Discount (SR/PWD/UP)</td>
@@ -1073,10 +1073,10 @@ font-weight: bold;
             <button class="btnCustom addImage" id="addImage">+ Add Image</button>
           </div>
           <div style="margin-bottom: 30px">
-            <h4 class="descripTion" style="color:#FF6900;">Description</h4>
+            <h4 class="descripTion"  style="color:#FF6900;">Description</h4>
           </div>
           <div style="margin-left: 20px;width: 100%; margin-right: 20px">
-            <textarea style="width: 92%; height: 120px; background-color: transparent; color:#fefefe" name="description" id="description" class="description"></textarea>
+            <textarea  id="description" style="width: 92%; height: 120px; background-color: transparent; color:#fefefe" name="description"  class="description"></textarea>
           </div>
         
             <div class="button-container" style="display:flex;justify-content: right">
@@ -1520,6 +1520,7 @@ function addProduct(){
  if(productname && barcode && cost && markup){
   axios.post('api.php?action=addProduct', formData).then(function(response){
      refreshProductsTable()
+     closeAddProductsModal()
   }).catch(function(error){
      console.log(error)
   })
@@ -1529,6 +1530,45 @@ function addProduct(){
   
 }
 
+function  toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM,productuomid,productBrand,productCost, productMakup, productPrice,
+ productStatus,isDiscounted,isTax, isTaxIncluded, serviceCharge,displayService,otherCharges,displayOtherCharges,status, image, desc ){
+  $('#add_products_modal').show();
+  productId? document.getElementById('productid').value = productId : null;
+  productName ? document.getElementById("productname").value = productName : null;
+  productName ? (document.getElementById("modalHeaderTxt").value =  productName, $('.modalHeaderTxt').text( productName)) : null;
+  productSKU ? document.getElementById("skunNumber").value = productSKU : null;
+  productCode  ? document.getElementById("code").value = productCode  : null;
+  productBarcode  ? document.getElementById("barcode").value = productBarcode  : null
+  productOUM  ? document.getElementById("uomType").value = productOUM  : null
+  productuomid  ? document.getElementById("uomID").value = productuomid  : null
+  productBrand ? document.getElementById("brand").value = productBrand : null
+  productCost ? document.getElementById("cost").value = productCost : null
+  productMakup ? document.getElementById("markup").value =productMakup : null
+  productPrice ? document.getElementById("selling_price").value =productPrice : null
+  image ? displayImage('./assets/products/' + image) : null;
+  desc ? document.getElementById("description").value = desc : null
+  console.log(desc)
+  //category
+
+  //catagory
+
+ var discountedCheckbox = document.getElementById('discountToggle');
+ discountedCheckbox.checked = (isDiscounted == 1) ? true : false;
+ var taxCheckbox = document.getElementById('taxVatToggle');
+ taxCheckbox.checked = (isTax == 1) ? true: false;
+ var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
+ showTaxCheckbox.checked  = (isTaxIncluded == 1) ? true: false;
+ var service = document.getElementById('serviceChargesToggle');
+ service.checked = (serviceCharge == 1) ? true : false;
+ var displayServices = document.getElementById('displayServiceChargeReceipt');
+ displayServices.checked = (displayService == 1) ? true : false
+ var other =  document.getElementById('otherChargesToggle');
+ other.checked = (otherCharges == 1) ? true: false;
+ var displayOtherCharge = document.getElementById('displayReceipt');
+ displayOtherCharge.checked = (displayOtherCharges == 1) ? true : false;
+ var stat = document.getElementById('statusValue');
+ stat.checked = (status == 1) ? true : false;
+}
 
 </script>
 

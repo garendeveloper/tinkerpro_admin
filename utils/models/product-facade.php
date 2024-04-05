@@ -3,9 +3,12 @@
   class ProductFacade extends DBConnection {
 
     public function fetchProducts() {
-      $sql = $this->connect()->prepare("SELECT products.barcode as barcode, products.prod_desc as prod_desc, products.cost as cost,
-      products.markup as markup, products.prod_price as prod_price, products.isVAT as isVAT, products.Description as Description, products.sku as sku,
-      products.code as code, uom.uom_name as uom_name,products.category_details as category_details, products.status as status, products.brand as brand  FROM products INNER JOIN uom on uom.id = products.uom_id");
+      $sql = $this->connect()->prepare("SELECT products.id as id, products.barcode as barcode, products.prod_desc as prod_desc, products.cost as cost,
+      products.markup as markup, products.prod_price as prod_price, products.isVAT as isVAT, products.Description as description, products.sku as sku,
+      products.code as code, uom.uom_name as uom_name,products.category_details as category_details, products.status as status, products.brand as brand,
+      products.uom_id as uom_id, products.is_discounted as discounted, products.is_taxIncluded as taxIncluded, products.is_serviceCharge as serviceCharge, 
+      products.is_srvcChrgeDisplay as displayService, products.is_otherCharges as otherCharges, products.is_othrChargeDisplay as displayOthers,
+      products.productImage as image FROM products INNER JOIN uom on uom.id = products.uom_id ORDER BY products.prod_desc ASC");
       $sql->execute();
       return $sql;
     }
@@ -13,20 +16,20 @@
     public function addProduct($formData) {
       $productname = $formData['productname'];
       $barcode = $formData['barcode'];
-      $brand = $formData['brand'];
-      $code= $formData['code'];
-      $cost = $formData['cost'];
-      $description = $formData['description'];
+      $brand = $formData['brand'] ?? null;
+      $code= $formData['code'] ?? null;
+      $cost = $formData['cost'] ?? null;
+      $description = $formData['description'] ?? null;
       $discount = $formData['discount'];
       $display_other_charges = $formData['display_other_charges'];
       $display_service_charge = $formData['display_service_charge'];
       $display_tax = $formData['display_tax'];
       $markup = $formData['markup'];
       $other_charges = $formData['other_charges'];
-      $oum_id = $formData['oum_id'];
+      $oum_id = $formData['oum_id'] ?? null;
       $sellingPrice = $formData['sellingPrice'];
       $service_charge = $formData['service_charge'];
-      $sku = $formData['sku'];
+      $sku = $formData['sku'] ?? null;
       $status = $formData['status'];
       $vat = $formData['vat'];
       $uploadedFile = $_FILES['uploadedImage'] ?? null;
@@ -65,22 +68,25 @@
       return $sql;
     }
     public function latestSKU() {
-      $query = "SELECT MAX(sku) AS latest_sku FROM products";
+      $query = "SELECT sku FROM products ORDER BY CAST(sku AS UNSIGNED) ASC"; 
       $statement = $this->connect()->prepare($query);
       $statement->execute();
-      $result = $statement->fetch(PDO::FETCH_ASSOC);
-  
-      $latestSKU = $result['latest_sku'];
-  
-      if ($latestSKU === null) {
-          $nextSKU = 1;
-      } else {
-          $nextSKU = $latestSKU + 1;
-      }
-  
+      $skus = $statement->fetchAll(PDO::FETCH_COLUMN);
+    
      
+      $nextSKU = 1;
+      foreach ($skus as $sku) {
+          if ($sku == $nextSKU) {
+              $nextSKU++; 
+          } else {
+              break; 
+          }
+      }
+    
       return $nextSKU;
   }
+  
+  
   public function getCategories(){
     $query = "SELECT * FROM category ORDER BY CASE 
                WHEN category_name REGEXP '^[0-9]' THEN 1 
@@ -212,7 +218,11 @@ if($code){
 }
 }
 
-
+public function getShopDetails(){
+  $sql = $this->connect()->prepare("SELECT * FROM shop");
+  $sql->execute();
+  return $sql;
+}
 }  
 
 
