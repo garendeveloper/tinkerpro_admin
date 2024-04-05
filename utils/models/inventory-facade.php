@@ -4,7 +4,6 @@
         public function get_allInventories($page, $perPage)
         {
             $offset = ($page - 1) * $perPage;
-
             $sql = $this->connect()->prepare("SELECT * FROM PRODUCTS LIMIT :offset, :perPage");
             $sql->bindParam(':offset', $offset, PDO::PARAM_INT);
             $sql->bindParam(':perPage', $perPage, PDO::PARAM_INT);
@@ -13,23 +12,55 @@
 
             return $data;
         }
+        public function get_allSuppliers()
+        {
+            $sqlStatement = $this->connect()->prepare("SELECT * FROM SUPPLIER");
+            $sqlStatement->execute();
+            return $sqlStatement->fetchAll(PDO::FETCH_ASSOC);
+        }
         public function save_supplier($supplier)
         {
-            $sqlStatement = $this->connect()->prepare("INSERT INTO supplier (supplier) VALUES (?)");
-            $sqlStatement->bindParam(1, $supplier, PDO::PARAM_STR);
-            $sqlStatement->execute();
+            $sql = "SELECT id FROM supplier WHERE supplier = :value";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':value', $supplier);
+            $stmt->execute();
+            
+            if ($stmt->rowCount() > 0) 
+            {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $primary_key_id = $row[$primary_key_column];
+                return $primary_key_id;
+            } 
+            else 
+            {
+                $sqlStatement = $this->connect()->prepare("INSERT INTO supplier (supplier) VALUES (?)");
+                $sqlStatement->bindParam(1, $supplier, PDO::PARAM_STR);
+                $sqlStatement->execute();
 
-            return $this->connect()->lastInsertId();
+                return $this->connect()->lastInsertId();
+            }
         }
         public function validateData($formData)
-        {   
-            return (
-                empty($formData['pcs_no']) ||
-                empty($formData['date_purchased']) ||
-                empty($formData['supplier']) ||
-                empty($formData['isPaid']) ||
-                empty($formData['product_id'])
-            );
+        {  
+            $errors = [];
+
+            $validationRules = [
+                'pcs_no' => 'Pieces number is required',
+                'date_purchased' => 'Date purchased is required',
+                'supplier' => 'Supplier is required',
+                'isPaid' => 'Payment status is required',
+                'product_id' => 'Product ID is required'
+            ];
+
+            foreach ($validationRules as $field => $errorMessage) 
+            {
+                if (empty($formData[$field])) 
+                {
+                    $errors[$field] = $errorMessage;
+                }
+            }
+
+            return empty($errors) ? true : $errors;
         }
         public function save_purchaseOrder($formData)
         {
@@ -54,11 +85,11 @@
                 $sqlStatement->bindParam(14, $formData['type'], PDO::PARAM_STR);
                 $sqlStatement->execute();
                 
-                return "Successfully inserted to db";
+                return ['status'=>true, 'message'=>"Successfully inserted to db"];
             }
             else
             {
-                return 'Please fill up the required fields';
+                return ['status'=>false, 'errors'=>$this->validateData($formData)];
             }
         }
        

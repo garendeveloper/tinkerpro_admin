@@ -60,6 +60,9 @@
             $formData = $_POST;
             echo json_encode($inventory->save_purchaseOrder($formData));
             break;
+        case 'get_allSuppliers':
+            echo json_encode($inventory->get_allSuppliers());
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

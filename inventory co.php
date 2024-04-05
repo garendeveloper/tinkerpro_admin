@@ -48,15 +48,6 @@
           <div style="display: flex; margin-bottom: 20px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 35px; width: 50px;"></label>
             <input  class="text-color" id = "searchInput" style="width: 60%; height: 35px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
-            <select id="paginationDropdown" class = "icon-button" style = "width: 100px; background-color: transparent; color: #ffff">
-              <option value="2" >2</option>
-              <option value="10" >10</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="75">75</option>
-              <option value="100">100</option>
-              <option value="all">Show All</option>
-            </select>
             <button class="icon-button">
               <span class="search-icon"></span>
               Search
@@ -89,7 +80,7 @@
                 border-radius: 10px;
               }
             </style>
-          <div class="tbl_buttonsContainer">
+          <div class="tbl_buttonsContainer" >
               <div class="division">
                   <div class="grid-container">
                       <button id="stocks" class="grid-item text-color button"><i class="bi bi-graph-up"></i>&nbsp; Stocks</button>
@@ -121,6 +112,7 @@
             <div class="card" style = "width: 100%; ">
               <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
                 <thead>
+                 
                   <tr>
                     <th class="text-center" style="width: 2%;">ID</th>
                     <th class="text-center" style="width: 12%;">Name</th>
@@ -138,10 +130,6 @@
                   
                 </tbody>
               </table>
-              <div id="pagination" class="pagination-container">
-                  <button class="paginate grid-item text-color" id="previous"><i class="bi bi-arrow-left"></i>&nbsp; Previous</button> |
-                  <button class="paginate grid-item text-color" id="next">Next <i class="bi bi-arrow-right"></i>&nbsp;</button>
-              </div>
           </div>
         </div>
       </div>
@@ -161,15 +149,10 @@
 <?php include("layout/admin/keyboardfunction.php") ?>
 
 <script>
-  var perPage = 10;
   $(document).ready(function()
   {
-    show_allInventories(1, 10); 
-    $("#paginationDropdown").change(function(){
-      perPage = $(this).val();
-      show_allInventories(1, perPage); 
-    })
-    
+    show_allInventories(); 
+    show_allSuppliers();
     $('#po_form').submit(function(e){
         e.preventDefault(); 
         var formData = $(this).serialize();
@@ -179,28 +162,40 @@
             url: "api.php?action=save_purchaseOrder",
             data: formData,
             success: function(response){
-              $.each(response.errors, function(key, value) {
-                  $('#' + key).addClass('has-error');
-              });
+              if(response.status)
+              {
+                show_allSuppliers();
+                show_allInventories();
+              }
+              else
+              {
+                $.each(response.errors, function(key, value) {
+                    $('#' + key).addClass('has-error');
+                });
+              }
             }
         });
     });
-    $("#pagination").on("click", "#previous", function() {
-      var currentPage = $(this).data("page");
-      if (currentPage > 1) 
-      {
-        show_allInventories(currentPage - 1, perPage);
-      }
-    });
-    $("#pagination").on("click", "#next", function() {
-        var currentPage = $(this).data("page");
-        show_allInventories(currentPage + 1, perPage);
-    });
-    function show_allInventories(currentPage, perPage)
+    function show_allSuppliers()
+    {
+      $.ajax({
+        type: 'GET',
+        url: 'api.php?action=get_allSuppliers',
+        success: function(data){
+          var option = "";
+          for(var i = 0; i<data.length; i++)
+          {
+            option += "<option>"+data[i].supplier+"</option>"
+          }
+          $("#d_suppliers").html(option);
+        }
+      })
+    }
+    function show_allInventories()
     {
         $.ajax({
             type: 'GET',
-            url: 'api.php?action=get_allInventories&currentPage=' + currentPage + '&perPage=' + perPage,
+            url: 'api.php?action=get_allInventories',
             success: function(data)
             {
                 var tbl_data = "";
@@ -220,7 +215,6 @@
                   tbl_data = "<tr><td colspan = '10'>No more available data.</td></tr>";
                 }
                 $("#tbl_products tbody").html(tbl_data);
-                $("#previous, #next").data("page", currentPage);
             }
         });
     }

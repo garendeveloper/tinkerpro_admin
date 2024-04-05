@@ -41,6 +41,10 @@
     border: collapse;
     
 }
+select,option{
+  background-color: transparent;
+  color: black;
+}
 #d_welcome{
     color: #FF6900;
 }
@@ -176,6 +180,9 @@ button:active {
     background-image: url('assets/img/plus-icon.ico'); /* Path to your icon image */
     background-size: cover;
     margin-right: 10px; /* Spacing between icon and text */
+}
+.has-error{
+  border: 1px solid red;
 }
 
 

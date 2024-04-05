@@ -963,21 +963,23 @@ input{
               <form id = "po_form">
               <div class="fieldContainer">
                 <label>PC#</label>
-                <input type="text" name="pcs_no" value="" style="width: 100px; height: 25px"/>
+                <input type="text" name="pcs_no" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px"/>
                 <label for="paidSwitch" class="switch-label">Paid</label>
                 <label class="switch">
-                  <input id="paidSwitch" type="checkbox" name="isPaid" style="height: 25px">
+                  <input id="paidSwitch" type="checkbox" id = "isPaid" name="isPaid" style="height: 25px">
                   <span class="slider"></span>
                 </label>
-                <input type="date" name="date_purchased" value="" style="width: 140px; height: 25px"/>
+                <input type="date" name="date_purchased" oninput="$(this).removeClass('has-error')" id = "date_purchased" value="" style="width: 140px; height: 25px"/>
               </div>
               <div class="fieldContainer">
                 <label>Supplier</label>
-                <input type="text" name="supplier" value="" style="width: 315px; height: 25px"/>
+                <input list = "d_suppliers" autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value="" style="width: 315px; height: 25px"/>
+                <datalist id="d_suppliers">
+                </datalist>
               </div>
               <div class="fieldContainer">
                 <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
-                <input type="text" name="product_id" value="" style="width: 200px; height: 25px;"/>
+                <input type="text" name="product_id" onkeyup="$(this).removeClass('has-error')"  id = "product_id" value="" style="width: 200px; height: 25px;"/>
                 <button style="border-color: #FF6900; font-size: 12px;" type = "submit" id = "btn_savePO">Add PO</button>
               </div>
             </form>
@@ -1014,10 +1016,6 @@ input{
           </div>
         </div>
       </div>
-       <!-- <div class="modal-footer" style="display: flex; justify-content: flex-end; margin-right: 20px; margin-top: -50px;">
-          <button class="grid-item text-color" ><i class = "bi bi-save"></i>&nbsp; Save</button>
-          <button class="grid-item text-color"><i class = "bi bi-exit"></i>&nbsp; Exit</button>
-      </div> -->
     </div>
   </div>
 </div>
