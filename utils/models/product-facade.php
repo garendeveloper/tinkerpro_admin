@@ -5,9 +5,8 @@
     public function fetchProducts() {
       $sql = $this->connect()->prepare("SELECT * FROM products");
       $sql->execute();
-      return $sql;
+      return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
-
     public function addProduct($barcode, $prodDesc, $stocks, $cost, $markup, $prodPrice) {
       $sql = $this->connect()->prepare("INSERT INTO products(barcode, prod_desc, stocks, cost, markup, prod_price) VALUES (?, ?, ?, ?, ?, ?)");
       $sql->execute([$barcode, $prodDesc, $stocks, $cost, $markup, $prodPrice]);

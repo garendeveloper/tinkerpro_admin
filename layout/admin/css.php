@@ -41,9 +41,19 @@
     border: collapse;
     
 }
-select,option{
-  background-color: transparent;
-  color: black;
+#paginationDropdown{
+  background-color: #262626; 
+  font-size: 13px;
+  border-color: #FF6900;
+}
+select option {
+    background-color: #262626; 
+    color: white; 
+}
+
+select option:hover {
+  background-color: #FF6900; 
+  color: white; 
 }
 #d_welcome{
     color: #FF6900;
@@ -134,6 +144,10 @@ button:active {
   background-color: #FF6900; /* Background color when button is clicked */
   color: #ffffff; /* Text color when button is clicked */
 }
+.button-cancel:hover{
+  background-color: red;
+}
+
 .main-panel {
     position: absolute;
     top: 30px;
@@ -143,6 +157,8 @@ button:active {
     overflow-y: auto; 
     background-color: #262626;
     width: calc(100% - 190px); */
+    display: flex;
+    flex-wrap: wrap;
   }
   @media (max-width: 100%) {
       .sidebar {

@@ -112,7 +112,6 @@
             <div class="card" style = "width: 100%; ">
               <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
                 <thead>
-                 
                   <tr>
                     <th class="text-center" style="width: 2%;">ID</th>
                     <th class="text-center" style="width: 12%;">Name</th>

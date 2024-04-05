@@ -56,6 +56,9 @@
             $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
             echo json_encode($inventory->get_allInventories($currentPage, $perPage));
             break;
+        case 'get_allProducts':
+            echo json_encode($products->fetchProducts());
+            break;
         case 'save_purchaseOrder':
             $formData = $_POST;
             echo json_encode($inventory->save_purchaseOrder($formData));

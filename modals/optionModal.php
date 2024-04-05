@@ -16,7 +16,7 @@
 }
 
 .optionmodal-content {
-  background-color: #fefefe;
+  background-color: #151515; ;
   margin: 0 auto; 
   border: none;
   width: 100%;
@@ -24,7 +24,6 @@
   animation: slideInRight 0.5s; 
   border-radius: 0;
   margin-top: -28px;
-  background-color: #1E1C11;  
   border-color:  #1E1C11;
   
 }
@@ -979,8 +978,10 @@ input{
               </div>
               <div class="fieldContainer">
                 <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
-                <input type="text" name="product_id" onkeyup="$(this).removeClass('has-error')"  id = "product_id" value="" style="width: 200px; height: 25px;"/>
-                <button style="border-color: #FF6900; font-size: 12px;" type = "submit" id = "btn_savePO">Add PO</button>
+                <input list = "d_products" type="text" name="product_id" onkeyup="$(this).removeClass('has-error')"  id = "product_id" value="" style="width: 200px; height: 25px;"/>
+                <datalist id="d_products">
+                </datalist>
+                <button style="border-color: #FF6900; font-size: 12px;"  id = "btn_addPO">Add PO</button>
               </div>
             </form>
             <div>
@@ -988,16 +989,17 @@ input{
             <style>
                 tbody td,
                 tbody th {
-                  border: none; 
+                  border: 1px solid #FF6900; 
                 }
                 thead th {
                   border: 1px solid #FF6900; 
                   padding: 10px
                 }
               </style>
-            <table id="tbl_products" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
+            <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
               <thead >
-                <tr style = "background-color: #1E1C11; border: 1px solid #FF6900;">
+                <!-- background-color: #1E1C11; -->
+                <tr style = "background-color: #FF6900; border: 2px solid white;">
                   <th >ITEM DESCRIPTION</th>
                   <th >QTY. PURCHASED</th>
                   <th >QTY. RECEIVED</th>

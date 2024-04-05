@@ -48,19 +48,19 @@
           <div style="display: flex; margin-bottom: 20px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 35px; width: 50px;"></label>
             <input  class="text-color" id = "searchInput" style="width: 60%; height: 35px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
-            <select id="paginationDropdown" class = "icon-button" style = "width: 100px; background-color: transparent; color: #ffff">
-              <option value="2" >2</option>
-              <option value="10" >10</option>
+            
+            <button class="icon-button">
+              <span class="search-icon"></span>
+              Search
+            </button>
+            <select id="paginationDropdown" class = "icon-button" >
+              <option value="">Select<i class = "bi bi-dropdown"></i></option>
               <option value="25">25</option>
               <option value="50">50</option>
               <option value="75">75</option>
               <option value="100">100</option>
               <option value="all">Show All</option>
             </select>
-            <button class="icon-button">
-              <span class="search-icon"></span>
-              Search
-            </button>
             <button class="icon-button" style = "width: 200px;">
               <span class="plus-icon"></span>
               Add Qty
@@ -89,33 +89,33 @@
                 border-radius: 10px;
               }
             </style>
-          <div class="tbl_buttonsContainer">
-              <div class="division">
-                  <div class="grid-container">
-                      <button id="stocks" class="grid-item text-color button"><i class="bi bi-graph-up"></i>&nbsp; Stocks</button>
-                      <button id="purchase-order" class="grid-item text-color button"><i class="bi bi-cart-check"></i>&nbsp; Purchase Order</button>
-                      <button id="inventory-count" class="grid-item text-color button"><i class="bi bi-archive"></i>&nbsp; Inventory Count</button>
-                      <button id="bom" class="grid-item text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button>
-                      <button id="low-stocks" class="grid-item text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
-                      <button id="reorder-point" class="grid-item text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button>
-                  </div>
-              </div>
-              <div class="division">
-                  <div class="grid-container">
-                      <button id="loss-damage1" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button>
-                      <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button>
-                      <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration</button>
-                      <button id="loss-damage2" class="grid-item text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button>
-                      <button id="bom2" class="grid-item text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button>
-                      <button id="print-price-tags" class="grid-item text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button>
-                  </div>
-              </div>
-              <div class="division">
-                  <div class="grid-container">
-                      <button id="recalculate-stocks" class="grid-item text-color button"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button>
-                  </div>
-              </div>
-          </div>
+            <div class="tbl_buttonsContainer">
+                <div class="division">
+                    <div class="grid-container">
+                        <button id="stocks" class="grid-item text-color button"><i class="bi bi-graph-up"></i>&nbsp; Stocks</button>
+                        <button id="purchase-order" class="grid-item text-color button"><i class="bi bi-cart-check"></i>&nbsp; Purchase Order</button>
+                        <button id="inventory-count" class="grid-item text-color button"><i class="bi bi-archive"></i>&nbsp; Inventory Count</button>
+                        <button id="bom" class="grid-item text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button>
+                        <button id="low-stocks" class="grid-item text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
+                        <button id="reorder-point" class="grid-item text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button>
+                    </div>
+                </div>
+                <div class="division">
+                    <div class="grid-container">
+                        <button id="loss-damage1" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button>
+                        <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button>
+                        <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration</button>
+                        <button id="loss-damage2" class="grid-item text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button>
+                        <button id="bom2" class="grid-item text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button>
+                        <button id="print-price-tags" class="grid-item text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button>
+                    </div>
+                </div>
+                <div class="division">
+                    <div class="grid-container">
+                        <button id="recalculate-stocks" class="grid-item text-color button"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button>
+                    </div>
+                </div>
+            </div>
           </div>
           <div class="row">
             <div class="card" style = "width: 100%; ">
@@ -156,15 +156,25 @@
     </div>
     <!-- page-body-wrapper ends -->
   </div>
-
+<?php include("./modals/purchaseQty_modal.php")?>
 <?php include("layout/footer.php") ?>
 <?php include("layout/admin/keyboardfunction.php") ?>
 
 <script>
-  var perPage = 10;
+  var perPage = 25;
   $(document).ready(function()
   {
-    show_allInventories(1, 10); 
+    show_allInventories(1, perPage); 
+    show_allSuppliers();
+    show_allProducts();
+    $("#btn_addPO").click(function(e){
+      e.preventDefault();
+      $("#purchaseQty_modal").show();
+    })
+    $("#btn_pqtyClose, #btn_pqtyCancel").on('click', function(e){
+      e.preventDefault();
+      $("#purchaseQty_modal").hide();
+    })
     $("#paginationDropdown").change(function(){
       perPage = $(this).val();
       show_allInventories(1, perPage); 
@@ -196,6 +206,36 @@
         var currentPage = $(this).data("page");
         show_allInventories(currentPage + 1, perPage);
     });
+    function show_allSuppliers()
+    {
+      $.ajax({
+        type: 'GET',
+        url: 'api.php?action=get_allSuppliers',
+        success: function(data){
+          var option = "";
+          for(var i = 0; i<data.length; i++)
+          {
+            option += "<option>"+data[i].supplier+"</option>"
+          }
+          $("#d_suppliers").html(option);
+        }
+      })
+    }
+    function show_allProducts()
+    {
+      $.ajax({
+        type: 'GET',
+        url: 'api.php?action=get_allProducts',
+        success: function(data){
+          var option = "";
+          for(var i = 0; i<data.length; i++)
+          {
+            option += "<option>"+data[i].prod_desc+"</option>"
+          }
+          $("#d_products").html(option);
+        }
+      })
+    }
     function show_allInventories(currentPage, perPage)
     {
         $.ajax({
@@ -272,7 +312,6 @@
     $("#purchase-order").on('click', function(){
       openOptionModal();
       $(this).addClass('active');
-      $("#btn_createPO").addClass('active');
     })
     function openOptionModal()
     {
@@ -282,6 +321,7 @@
           $("#optionModal").show();
           $(".optionmodal-content").show();
       }, 100); 
+      $("#btn_createPO").addClass('active');
 
     }
 
