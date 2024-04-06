@@ -200,6 +200,21 @@ button:active {
 .has-error{
   border: 1px solid red;
 }
-
+.tbl_buttonsContainer {
+    display: flex; 
+  }
+  .division {
+      flex-grow: 1; 
+      margin: 0 10px;
+  }
+  .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, auto); 
+      gap: 10px; 
+  }
+  .grid-item{
+    height: 35px;
+    border-radius: 10px;
+  }
 
 </style>

@@ -21,11 +21,11 @@
         margin-bottom: 10px;
     }
 
-    #lbl_pqty{
+    .l_input{
         width: 100px; 
     }
 
-    #p_qty {
+    .p_input {
         flex: 1; 
         box-sizing: border-box;
         padding: 5px;
@@ -42,16 +42,30 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-            <label for="p_qty" id = "lbl_pqty">Quantity</label>
-            <input type="text" id="p_qty">
+      <form id = "prod_form">
+        <div class="modal-body">
+          <div class="form-group">
+              <label for="p_qty" id = "lbl_pqty" class = "l_input">Quantity</label>
+              <input type="text p_input" name = "p_qty" id="p_qty">
+          </div>
+          <div class="form-group">
+              <label for="p_qty" id = "lbl_pqty" class = "l_input">Batch No.</label>
+              <input type="text p_input"  name = "batch_no" id="batch_no">
+          </div>
+          <div class="form-group">
+              <label for="p_qty" id = "lbl_pqty" class = "l_input">Serial Number.</label>
+              <input type="text p_input"  name = "serial_number" id="serial_number">
+          </div>
+          <div class="form-group">
+              <label for="p_qty" id = "lbl_pqty" class = "l_input">Price</label>
+              <input type="number p_input"  pattern="\d+(\.\d{1,2})?" name = "price" id="price" >
+          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button  class = "grid-item text-color button">Save changes</button>
-        <button class = "grid-item text-color button-cancel" id = "btn_pqtyCancel" data-dismiss="modal">Cancel</button>
-      </div>
+        <div class="modal-footer">
+          <button  class = "grid-item text-color button" type = "submit"><i class = "bi bi-save"></i>&nbsp; Add Product</button>
+          <button class = "grid-item text-color button-cancel" id = "btn_pqtyCancel" data-dismiss="modal"><i class = "bi bi-x"></i>&nbsp; Cancel</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

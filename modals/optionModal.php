@@ -978,7 +978,7 @@ input{
               </div>
               <div class="fieldContainer">
                 <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
-                <input list = "d_products" type="text" name="product_id" onkeyup="$(this).removeClass('has-error')"  id = "product_id" value="" style="width: 200px; height: 25px;"/>
+                <input list = "d_products" type="text" name="product" onkeyup="$(this).removeClass('has-error')"  id = "product" value="" style="width: 200px; height: 25px;"/>
                 <datalist id="d_products">
                 </datalist>
                 <button style="border-color: #FF6900; font-size: 12px;"  id = "btn_addPO">Add PO</button>
@@ -988,7 +988,7 @@ input{
             <p></p>
             <style>
                 tbody td,
-                tbody th {
+                tbody th, tr {
                   border: 1px solid #FF6900; 
                 }
                 thead th {
@@ -999,10 +999,11 @@ input{
             <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
               <thead >
                 <!-- background-color: #1E1C11; -->
-                <tr style = "background-color: #FF6900; border: 2px solid white;">
-                  <th >ITEM DESCRIPTION</th>
-                  <th >QTY. PURCHASED</th>
-                  <th >QTY. RECEIVED</th>
+                <tr style = "background-color: none; ">
+                  <th>ITEM</th>
+                  <th>BT. NO&SER. NO</th>
+                  <th>QTY</th>
+                  <th>PRICE</th>
                   <th>TOTAL</th>
                 </tr>
               </thead>
