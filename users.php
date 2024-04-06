@@ -345,7 +345,7 @@
   font-style: italic;
 }
 .highlighted {
-    border: 2px solid #00B050; 
+    border: 1px solid #00B050; 
 }
 
 
@@ -477,8 +477,8 @@ var $row = $(this).closest('tr').addClass('highlighted');
     $(document).ready(function() {
       $(".statusDropDown a[data-value='0']").click();
       $('#generatePDFBtn').click(function() {
-    var searchData = $('.searchUsers').val();
-    var statusValue = $("#filterStatus").val(); 
+      var searchData = $('.searchUsers').val();
+      var statusValue = $("#filterStatus").val(); 
 
     $.ajax({
         url: 'generate_pdf.php',

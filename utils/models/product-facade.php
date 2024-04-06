@@ -51,11 +51,67 @@
       return ['success' => true, 'message' => 'Product added successfully'];
   }
   
-    public function updateProduct($barcode, $prodDesc, $stocks, $cost, $markup, $prodPrice) {
-      $sql = $this->connect()->prepare("UPDATE products SET barcode = '$barcode', prod_desc = '$prodDesc', stocks = '$stocks', cost = '$cost', markup = '$markup', prod_price = '$prodPrice'");
-      $sql->execute();
-      return $sql;
+  public function updateProduct($formData) {
+    $productname = $formData['productname'] ?? null;
+    $barcode = $formData['barcode'] ?? null;
+    $brand = $formData['brand'] ?? null;
+    $code = $formData['code'] ?? null;
+    $cost = $formData['cost'] ?? null;
+    $description = $formData['description'] ?? null;
+    $discount = $formData['discount'] ?? null;
+    $display_other_charges = $formData['display_other_charges'] ?? null;
+    $display_service_charge = $formData['display_service_charge'] ?? null;
+    $display_tax = $formData['display_tax'] ?? null;
+    $markup = $formData['markup'] ?? null;
+    $other_charges = $formData['other_charges'] ?? null;
+    $oum_id = $formData['oum_id'] ?? null;
+    $sellingPrice = $formData['sellingPrice'] ?? null;
+    $service_charge = $formData['service_charge'] ?? null;
+    $sku = $formData['sku'] ?? null;
+    $status = $formData['status'] ?? null;
+    $vat = $formData['vat'] ?? null;
+    $uploadedFile = $_FILES['uploadedImage'] ?? null;
+    $id = $formData['product_id'] ?? null;
+
+    if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
+        $tempPath = $uploadedFile['tmp_name'];
+        $fileName = $uploadedFile['name'];
+
+        $destination = './assets/products/' . $fileName;
+        move_uploaded_file($tempPath, $destination);
+    } else {
+        $fileName = null;
     }
+
+    $sql = 'UPDATE products SET 
+            prod_desc = ?,
+            barcode = ?,
+            cost = ?, 
+            markup = ?, 
+            prod_price = ?, 
+            isVAT = ?, 
+            Description = ?, 
+            sku = ?, 
+            code = ?, 
+            uom_id = ?, 
+            is_discounted = ?, 
+            is_taxIncluded = ?,
+            is_serviceCharge = ?,
+            is_otherCharges = ?,
+            is_srvcChrgeDisplay = ?,
+            is_othrChargeDisplay = ?,
+            status = ?,
+            productImage = ?,
+            brand = ?
+            WHERE id = ?';
+
+    $stmt = $this->connect()->prepare($sql);
+    $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
+        $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $id]);
+
+    return $stmt;
+}
+
 
     public function deleteProduct($productId) {
       $sql = $this->connect()->prepare("DELETE FROM products WHERE id = $productId");
@@ -223,6 +279,7 @@ public function getShopDetails(){
   $sql->execute();
   return $sql;
 }
+
 }  
 
 

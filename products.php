@@ -110,6 +110,9 @@
     border-radius: 8px;
     padding: 16px; 
   }
+  .highlighteds{
+     border: 2px solid #00B050; 
+  }
 
 </style>
 
@@ -265,6 +268,8 @@
   function addproducts(){
     getSku();
      $('#add_products_modal').show()
+     var p_id = document.getElementById('productid').value;
+     $('.modalHeaderTxt').text(!p_id ? "Add New Product" : $('.modalHeaderTxt').text());
      var checkbox = document.getElementById('showIncludesTaxVatToggle');
      toggleChangeColor(checkbox);
      if( $('#add_products_modal').is(':visible')){
@@ -419,6 +424,10 @@ $('#printProduct').click(function() {
         var status = $(this).closest('tr').find('.statusData').text();
         var image = $(this).closest('tr').find('.productImgs').text();
         var desc = $(this).closest('tr').find('.description').text();
+        $('.highlighteds').removeClass('highlighteds');
+
+
+       var $row = $(this).closest('tr').addClass('highlighteds');
         
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc)
