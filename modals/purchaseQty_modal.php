@@ -32,12 +32,15 @@
         border: 1px solid #ccc;
         border-radius: 4px;
     }
+    .has-error{
+      border: 1px solid red;
+    }
 </style>
 <div class="modal" id = "purchaseQty_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content" id = "purchaseQty_content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title" id = "pqty_modalTitle"></h5>
         <button type="button" class="close" data-dismiss="modal" id = "btn_pqtyClose" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -46,19 +49,19 @@
         <div class="modal-body">
           <div class="form-group">
               <label for="p_qty" id = "lbl_pqty" class = "l_input">Quantity</label>
-              <input type="text p_input" name = "p_qty" id="p_qty">
+              <input type="text" class = "p_input" name = "p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')">
           </div>
           <div class="form-group">
-              <label for="p_qty" id = "lbl_pqty" class = "l_input">Batch No.</label>
-              <input type="text p_input"  name = "batch_no" id="batch_no">
+              <label for="batch_no" id = "lbl_pqty" class = "l_input">Batch No.</label>
+              <input type="text" class = "p_input" name = "batch_no" id="batch_no" onkeyup="$(this).removeClass('has-error')">
           </div>
           <div class="form-group">
-              <label for="p_qty" id = "lbl_pqty" class = "l_input">Serial Number.</label>
-              <input type="text p_input"  name = "serial_number" id="serial_number">
+              <label for="serial_number" id = "lbl_pqty" class = "l_input">Serial Number.</label>
+              <input type="text" class = "p_input"  name = "serial_number" id="serial_number" onkeyup="$(this).removeClass('has-error')">
           </div>
           <div class="form-group">
-              <label for="p_qty" id = "lbl_pqty" class = "l_input">Price</label>
-              <input type="number p_input"  pattern="\d+(\.\d{1,2})?" name = "price" id="price" >
+              <label for="price" id = "lbl_pqty" class = "l_input">Price</label>
+              <input type="text" class = "p_input"  pattern="\d+(\.\d{1,2})?" name = "price" id="price" oninput="$(this).removeClass('has-error')">
           </div>
         </div>
         <div class="modal-footer">

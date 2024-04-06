@@ -37,7 +37,9 @@
 	}
   include('./modals/optionModal.php');
   include('./layout/admin/table-pagination-css.php');
+
 ?>
+
 <?php include "layout/admin/css.php"?>
 <?php include "layout/admin/table.php"?>
   <div class="container-scroller">
@@ -149,6 +151,7 @@
       }
   });
 </script>
+
 <script>
   var perPage = 25;
   $(document).ready(function()
@@ -156,18 +159,84 @@
     show_allInventories(1, perPage); 
     show_allSuppliers();
     show_allProducts();
+    $("#btn_savePO").click(function(e){
+      e.preventDefault();
+      var dataArray = [];
+      $('#tbl_purchaseOrders tbody tr').each(function() {
+          var rowData = {};
+          $(this).find('td').each(function(index, cell) {
+              rowData['column_' + (index + 1)] = $(cell).text(); // Change 'column_' to match your column names
+          });
+          dataArray.push(rowData);
+      });
+     
+      $.ajax({
+        type: 'POST',
+        url: 'api.php?action=save_purchaseOrder', 
+        data: {
+          data: JSON.stringify(dataArray),
+          pcs_no: $("#pcs_no").val(),
+          isPaid: $('#paidSwitch').prop('checked'),
+          date_purchased: $("#date_purchased").val(),
+          supplier: $("#supplier").val(),
+          product: $("#product").val(),
+        },
+        dataType: 'json',
+        success: function(response) {
+           if(response)
+           {
+            console.log(response);
+            //  alert("Purchase Orders has been submitted successfully!");
+            //  $("#po_form")[0].reset();
+           }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error submitting data:', error);
+        }
+      });
+    })
     $("#btn_addPO").click(function(e){
       e.preventDefault();
-      var product = $("#product").val();
-      if(product !== "")
+      if(validatePOForm())
       {
         $("#purchaseQty_modal").show();
-      }
-      else
-      {
-        $("#product").addClass('has-error');
+        $("#pqty_modalTitle").text("Create a Product for Purchase Order");
       }
     })
+    function validatePOForm() 
+    {
+      var isValid = true;
+      $('#po_form input[type=text], input[type=date]').each(function() {
+          if ($(this).val() === '') 
+          {
+            isValid = false;
+            $(this).addClass('has-error');
+          } 
+          else 
+          {
+            $(this).removeClass('has-error');
+          }
+      });
+
+      return isValid;
+    }
+    function validateProductForm() 
+    {
+      var isValid = true;
+      $('#prod_form input[type=text], input[type=number]').each(function() {
+          if ($(this).val() === '') 
+          {
+            isValid = false;
+            $(this).addClass('has-error');
+          } 
+          else 
+          {
+            $(this).removeClass('has-error');
+          }
+      });
+
+      return isValid;
+    }
     function addCommasToNumber(number) 
     {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -183,17 +252,23 @@
       perPage = $(this).val();
       show_allInventories(1, perPage); 
     })
+    $('#p_qty').on('input', function(e) {
+        var inputValue = $(this).val();
+        inputValue = inputValue.replace(/\D/g, '');
+        $(this).val(inputValue);
+    });
     $("#prod_form").submit(function(e){
       e.preventDefault();
-      var p_qty = $("#p_qty").val();
-      var batch_no = $("#batch_no").val();
-      var serial_number = $("#serial_number").val();
-      var price = $("#price").val();
-      var product = $("#product").val();
 
-      if(p_qty !== '' && batch_no !== '' && serial_number !== '' && price !== '')
+      if(validateProductForm())
       {
+        var p_qty = $("#p_qty").val();
+        var batch_no = $("#batch_no").val();
+        var serial_number = $("#serial_number").val();
+        var price = $("#price").val();
+        var product = $("#product").val();
         var total = (price*p_qty)*1;
+
         $("#tbl_purchaseOrders").append(
           "<tr>"+
             "<td>"+product+"</td>"+
@@ -203,10 +278,8 @@
             "<td style = 'text-align: center'>"+addCommasToNumber(total)+"</td>"+
           "</tr>"
         );
-      }
-      else
-      {
-        alert("Please fill up the required fields.");
+        $("#purchaseQty_modal").hide();
+        $("#prod_form")[0].reset();
       }
     })
     $('#po_form').submit(function(e){
@@ -241,10 +314,10 @@
         type: 'GET',
         url: 'api.php?action=get_allSuppliers',
         success: function(data){
-          var option = "";
+          var option = '';
           for(var i = 0; i<data.length; i++)
           {
-            option += "<option>"+data[i].supplier+"</option>"
+            option += '<div class="search-dropdown-item1" tabindex="0">'+data[i].supplier+'</div>';
           }
           $("#d_suppliers").html(option);
         }
@@ -256,10 +329,10 @@
         type: 'GET',
         url: 'api.php?action=get_allProducts',
         success: function(data){
-          var option = "";
+          var option = '';
           for(var i = 0; i<data.length; i++)
           {
-            option += "<option>"+data[i].prod_desc+"</option>"
+            option += '<div class="search-dropdown-item" tabindex="0">'+data[i].prod_desc+'</div>';
           }
           $("#d_products").html(option);
         }
@@ -267,31 +340,31 @@
     }
     function show_allInventories(currentPage, perPage)
     {
-        $.ajax({
-            type: 'GET',
-            url: 'api.php?action=get_allInventories&currentPage=' + currentPage + '&perPage=' + perPage,
-            success: function(data)
+      $.ajax({
+        type: 'GET',
+        url: 'api.php?action=get_allInventories&currentPage=' + currentPage + '&perPage=' + perPage,
+        success: function(data)
+        {
+          var tbl_data = "";
+          if(data.length > 0)
+          {
+            for(var i = 0; i < data.length; i++)
             {
-                var tbl_data = "";
-                if(data.length > 0)
-                {
-                  for(var i = 0; i < data.length; i++)
-                  {
-                      tbl_data += "<tr>";
-                      tbl_data += "<td>"+data[i].id+"</td>";
-                      tbl_data += "<td>"+data[i].prod_desc+"</td>";
-                      tbl_data += "<td>"+data[i].barcode+"</td>";
-                      tbl_data += "</tr>";
-                  }
-                }
-                else
-                {
-                  tbl_data = "<tr><td colspan = '10'>No more available data.</td></tr>";
-                }
-                $("#tbl_products tbody").html(tbl_data);
-                $("#previous, #next").data("page", currentPage);
+              tbl_data += "<tr>";
+              tbl_data += "<td>"+data[i].id+"</td>";
+              tbl_data += "<td>"+data[i].prod_desc+"</td>";
+              tbl_data += "<td>"+data[i].barcode+"</td>";
+              tbl_data += "</tr>";
             }
-        });
+          }
+          else
+          {
+            tbl_data = "<tr><td colspan = '10'>No more available data.</td></tr>";
+          }
+          $("#tbl_products tbody").html(tbl_data);
+          $("#previous, #next").data("page", currentPage);
+        }
+      });
     }
     $('#searchInput').on('input', function() {
         var barcode = $(this).val().trim().toLowerCase();
@@ -354,4 +427,40 @@
 
     }
 
+</script>
+<script>
+    $(document).on('input', '#product', function() {
+      var searchTerm = $(this).val().trim().toLowerCase();
+      $('.search-dropdown-item').each(function() {
+          var text = $(this).text().trim().toLowerCase();
+          if (text.includes(searchTerm)) {
+              $(this).show();
+          } else {
+              $(this).hide();
+          }
+      });
+      $("#d_products").css('display', searchTerm ? 'block' : 'none');
+    });
+    $(document).on('click', '.search-dropdown-item', function() {
+        var clickedItem = $(this);
+        $("#product").val(clickedItem.text());
+        $("#d_products").css('display', 'none');
+    });
+    $(document).on('input', '#supplier', function() {
+      var searchTerm = $(this).val().trim().toLowerCase();
+      $('.search-dropdown-item1').each(function() {
+          var text = $(this).text().trim().toLowerCase();
+          if (text.includes(searchTerm)) {
+              $(this).show();
+          } else {
+              $(this).hide();
+          }
+      });
+      $("#d_suppliers").css('display', searchTerm ? 'block' : 'none');
+    });
+    $(document).on('click', '.search-dropdown-item1', function() {
+        var clickedItem = $(this);
+        $("#supplier").val(clickedItem.text());
+        $("#d_suppliers").css('display', 'none');
+    });
 </script>

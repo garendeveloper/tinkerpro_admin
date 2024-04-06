@@ -25,12 +25,12 @@
   <script src="assets/js/otherjs/flatpicker.js"></script>
   <script src="assets/js/otherjs/axios.min.js"></script>
   <script src="assets/js/otherjs/sweetalert.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.js"></script>
   <script>
     $(document).ready(function(){
       var url = window.location.href;
       var urlEnding = url.substring(url.lastIndexOf('/') + 1);
       $("#"+urlEnding).css('background-color', '#FF6700');
+      $("#pointer").html(urlEnding);
 
       $("#btn_logout").click(function(){
         if(confirm("Do you wish to proceed to logout?"))

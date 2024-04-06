@@ -16,7 +16,7 @@
 }
 
 .optionmodal-content {
-  background-color: #151515; ;
+  background-color: #151515; 
   margin: 0 auto; 
   border: none;
   width: 100%;
@@ -935,6 +935,56 @@ input{
 
 
 </style>
+<style>
+.search-container {
+    position: relative;
+    display: inline-block;
+}
+.search-input {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: 200px;
+    background-color: #151515; 
+    color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+.search-dropdown1 {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: 280px;
+    background-color: #151515; 
+    color: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.search-dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.search-dropdown-item:hover {
+    background-color:#FF6900;
+}
+</style>
 <?php include "layout/admin/slider.php"?>
 <div class="modal" id="optionModal" tabindex="0">
   <div class="modal-dialog ">
@@ -958,32 +1008,38 @@ input{
               <button class="grid-item" id = "btn_LOT">L.O.T</button>
             </div>
             <p></p>
-            <div class="fcontainer">
+            <div class="fcontainer" style = "height: 600px;">
               <form id = "po_form">
-              <div class="fieldContainer">
-                <label>PC#</label>
-                <input type="text" name="pcs_no" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px"/>
-                <label for="paidSwitch" class="switch-label">Paid</label>
-                <label class="switch">
-                  <input id="paidSwitch" type="checkbox" id = "isPaid" name="isPaid" style="height: 25px">
-                  <span class="slider"></span>
-                </label>
-                <input type="date" name="date_purchased" oninput="$(this).removeClass('has-error')" id = "date_purchased" value="" style="width: 140px; height: 25px"/>
-              </div>
-              <div class="fieldContainer">
-                <label>Supplier</label>
-                <input list = "d_suppliers" autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value="" style="width: 315px; height: 25px"/>
-                <datalist id="d_suppliers">
-                </datalist>
-              </div>
-              <div class="fieldContainer">
-                <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
-                <input list = "d_products" type="text" name="product" onkeyup="$(this).removeClass('has-error')"  id = "product" value="" style="width: 200px; height: 25px;"/>
-                <datalist id="d_products">
-                </datalist>
-                <button style="border-color: #FF6900; font-size: 12px;"  id = "btn_addPO">Add PO</button>
-              </div>
-            </form>
+                <div class="fieldContainer">
+                  <label>PC#</label>
+                  <input type="text" name="pcs_no" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px"/>
+                  <label for="paidSwitch" class="switch-label">Paid</label>
+                  <label class="switch">
+                    <input id="paidSwitch" type="checkbox"  name="isPaid" style="height: 25px">
+                    <span class="slider"></span>
+                  </label>
+                  <input type="date" name="date_purchased" oninput="$(this).removeClass('has-error')" id = "date_purchased" value="" style="width: 140px; height: 25px"/>
+                </div>
+                <div class="fieldContainer">
+                  <label>Supplier</label>
+                  <div class="search-container">
+                      <input type="text" class = "search-input"  autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value="" style="width: 280px; height: 25px">
+                      <div class="search-dropdown1" id = "d_suppliers">
+                        
+                      </div>
+                  </div>
+                </div>
+                <div class="fieldContainer">
+                  <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
+                  <div class="search-container">
+                      <input type="text" style="width: 200px; height: 25px;"  class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product">
+                      <div class="search-dropdown" id = "d_products">
+                        
+                      </div>
+                  </div>
+                  <button style="border-color: #FF6900; font-size: 12px;"  id = "btn_addPO">Add PO</button>
+                </div>
+              </form>
             <div>
             <p></p>
             <style>
@@ -996,7 +1052,7 @@ input{
                   padding: 10px
                 }
               </style>
-            <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
+            <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%;  border: 1px solid #FF6900; color: white; font-size: 10px">
               <thead >
                 <!-- background-color: #1E1C11; -->
                 <tr style = "background-color: none; ">
@@ -1012,13 +1068,15 @@ input{
               </tbody>
             </table>
             </div>
-          </div>
-            <div class="imageCard">
-                          
-            </div>     
+          </div>  
           </div>
         </div>
       </div>
+       <div class="modal-footer">
+            <button class="grid-item button" style = "width: 100px; background-color: red;"><i class = "bi bi-x"></i>&nbsp; Cancel</button>
+            <button class="grid-item button" style = "width: 100px; background-color: blue; "><i class = "bi bi-pencil-fill"></i>&nbsp; Edit</button>
+            <button class="grid-item button " style = "width: 100px; background-color: green;" id = "btn_savePO"><i class = "bi bi-save"></i>&nbsp; Save</button>
+        </div>
     </div>
   </div>
 </div>

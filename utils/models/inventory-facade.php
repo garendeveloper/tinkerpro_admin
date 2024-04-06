@@ -24,27 +24,24 @@
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':product_desc', $product);
             $stmt->execute();
-            $primary_key_id = "";
 
             if ($stmt->rowCount() > 0) 
             {
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                $primary_key_id = $row[$primary_key_column];
+                $result = $stmt->fetchColumn();
+                return $result;
             } 
-            return $primary_key_id;
         }
         public function save_supplier($supplier)
         {
             $sql = "SELECT id FROM supplier WHERE supplier = :value";
-            $stmt = $conn->prepare($sql);
+            $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':value', $supplier);
             $stmt->execute();
-            
+           
             if ($stmt->rowCount() > 0) 
             {
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                $primary_key_id = $row[$primary_key_column];
-                return $primary_key_id;
+                $result = $stmt->fetchColumn();
+                return $result;
             } 
             else 
             {
@@ -52,7 +49,7 @@
                 $sqlStatement->bindParam(1, $supplier, PDO::PARAM_STR);
                 $sqlStatement->execute();
 
-                return $this->connect()->lastInsertId();
+                return $this->connect()->insert_id();
             }
         }
         public function validateData($formData)
@@ -63,8 +60,7 @@
                 'pcs_no' => 'Pieces number is required',
                 'date_purchased' => 'Date purchased is required',
                 'supplier' => 'Supplier is required',
-                'isPaid' => 'Payment status is required',
-                'product_id' => 'Product ID is required'
+                'product' => 'Product ID is required'
             ];
 
             foreach ($validationRules as $field => $errorMessage) 
@@ -79,37 +75,47 @@
         }
         public function save_purchaseOrder($formData)
         {
-            if(!$this->validateData($formData))
+            $tbldata = json_decode($formData['data'], true);
+            $supplier_id = $this->save_supplier($formData['supplier']);
+            $pcs_no = $formData['pcs_no'];
+            $date_purchased = $formData['date_purchased'];
+            $isPaid = $formData['isPaid'] ? 1 : 0;
+            foreach($tbldata as $row)
             {
-                $supplier_id = $this->save_supplier($formData['supplier']);
-                $product_id = $this->get_productInfo($formData['prod_desc']);
-
-                $sqlStatement = $this->connect()->prepare("INSERT INTO inventories (supplier_id, product_id, date_purchased, pcs_no, isPaid, stock, qty_purchased, qty_received, serial_number, amount_beforeTax, amount_afterTax, batch_no, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");    
-                $sqlStatement->bindParam(1, $supplier_id, PDO::PARAM_STR);
-                $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
-                $sqlStatement->bindParam(3, $formData['date_purchased'], PDO::PARAM_STR);
-                $sqlStatement->bindParam(4, $formData['pcs_no'], PDO::PARAM_STR);
-                $sqlStatement->bindParam(5, $formData['isPaid'], PDO::PARAM_STR);
-                $sqlStatement->bindParam(6, 0, PDO::PARAM_STR);
-                $sqlStatement->bindParam(7, $formData['qty_purchased'], PDO::PARAM_STR);
-                $sqlStatement->bindParam(10, $formData['serial_number'], PDO::PARAM_STR);
-                $sqlStatement->bindParam(11, 0.0, PDO::PARAM_STR);
-                $sqlStatement->bindParam(12, 0.0, PDO::PARAM_STR);
-                $sqlStatement->bindParam(13, $formData['batch_no'], PDO::PARAM_STR);
-                $sqlStatement->bindParam(14, 1, PDO::PARAM_STR);
-                $sqlStatement->execute();
-                
-                return [
-                    'status'=>true, 
-                    'message'=>"Successfully inserted to db"
-                ];
-            }
-            else
-            {
-                return [
-                    'status'=>false, 
-                    'errors'=>$this->validateData($formData)
-                ];
+                $products = $row['column_1'];
+                $quantities = $row['column_3'];
+                $b_s = $row['column_2'];
+                for($i = 0; $i<count($products); $i++)
+                {
+                    $string = "your_string:desired_data";
+                    $parts = explode(":", $b_s);
+                    $serial_number="";
+                    $batch_no = $parts[0];
+                    if (count($parts) > 1) 
+                    {
+                        $serial_number = $parts[1];
+                    }
+                    $product_id = $this->get_productInfo($products[$i]);
+                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (supplier_id, product_id, date_purchased, stock, pcs_no, qty_purchased, qty_received, reorder_point, serial_number, amount_beforeTax, amount_afterTax, isPaid, status, batch_no, type) 
+                                                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $sqlStatement->bindParam(1, $supplier_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(4, 0, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(5, $pcs_no, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(6, $quantities[$i], PDO::PARAM_STR);
+                    $sqlStatement->bindParam(7, 0, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(8, 0, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(9, $serial_number, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(10, 0.0, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(11, 0.0, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(12, $isPaid, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(13, 0, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(14, $batch_no, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(15, 1, PDO::PARAM_STR);
+                    $sqlStatement->execute();
+    
+                }
             }
         }
        

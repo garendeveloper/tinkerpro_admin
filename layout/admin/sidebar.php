@@ -47,7 +47,7 @@
 </style>
 <header class="site-header">
     <div class="header-container">
-        <h6 class="logo">Management Settings</h6>
+        <h6 class="logo">Management * <span id = "pointer"></span></h6>
     </div>
 </header>
 <div class="sidebar">
