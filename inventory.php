@@ -107,8 +107,8 @@
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 2%;">ID</th>
-                    <th class="text-center" style="width: 12%;">Name</th>
-                    <th class="text-center" style="width: 6%;">Barcode</th>
+                    <th style="width: 12%;">Supplier</th>
+                    <th style="width: 6%;">Barcode</th>
                     <th class="text-center" style="width: 6%;">Unit</th>
                     <th class="text-center" style="width: 2%;">Qty in Store</th>
                     <th class="text-center" style="width: 2%;">Qty in Warehouse</th>
@@ -161,39 +161,47 @@
     show_allProducts();
     $("#btn_savePO").click(function(e){
       e.preventDefault();
-      var dataArray = [];
-      $('#tbl_purchaseOrders tbody tr').each(function() {
-          var rowData = {};
-          $(this).find('td').each(function(index, cell) {
-              rowData['column_' + (index + 1)] = $(cell).text(); // Change 'column_' to match your column names
-          });
-          dataArray.push(rowData);
-      });
-     
-      $.ajax({
-        type: 'POST',
-        url: 'api.php?action=save_purchaseOrder', 
-        data: {
-          data: JSON.stringify(dataArray),
-          pcs_no: $("#pcs_no").val(),
-          isPaid: $('#paidSwitch').prop('checked'),
-          date_purchased: $("#date_purchased").val(),
-          supplier: $("#supplier").val(),
-          product: $("#product").val(),
-        },
-        dataType: 'json',
-        success: function(response) {
-           if(response)
-           {
-            console.log(response);
-            //  alert("Purchase Orders has been submitted successfully!");
-            //  $("#po_form")[0].reset();
-           }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error submitting data:', error);
-        }
-      });
+      if(validateProductForm())
+      {
+        var dataArray = [];
+        $('#tbl_purchaseOrders tbody tr').each(function() {
+            var rowData = {};
+            $(this).find('td').each(function(index, cell) {
+                rowData['column_' + (index + 1)] = $(cell).text(); 
+            });
+            dataArray.push(rowData);
+        });
+      
+        $.ajax({
+          type: 'POST',
+          url: 'api.php?action=save_purchaseOrder', 
+          data: {
+            data: JSON.stringify(dataArray),
+            pcs_no: $("#pcs_no").val(),
+            isPaid: $('#paidSwitch').prop('checked'),
+            date_purchased: $("#date_purchased").val(),
+            supplier: $("#supplier").val(),
+            product: $("#product").val(),
+          },
+          dataType: 'json',
+          success: function(response) 
+          {
+            if(response.status)
+            {
+              alert(response.message);
+              $("#po_form")[0].reset();
+              $('#tbl_purchaseOrders tbody').empty();
+            }
+            else
+            {
+              alert(response.message);
+            }
+          },
+          error: function(xhr, status, error) {
+            alert("Something went wrong!");
+          }
+        });
+      }
     })
     $("#btn_addPO").click(function(e){
       e.preventDefault();
@@ -352,8 +360,16 @@
             {
               tbl_data += "<tr>";
               tbl_data += "<td>"+data[i].id+"</td>";
-              tbl_data += "<td>"+data[i].prod_desc+"</td>";
+              tbl_data += "<td>"+data[i].supplier+"</td>";
               tbl_data += "<td>"+data[i].barcode+"</td>";
+              tbl_data += "<td></td>";
+              tbl_data += "<td style = 'text-align: center'>"+data[i].qty_purchased+"</td>";
+              tbl_data += "<td style = 'text-align: center'>"+data[i].qty_received+"</td>";
+              tbl_data += "<td>"+data[i].amount_beforeTax+"</td>";
+              tbl_data += "<td>"+data[i].amount_afterTax+"</td>";
+              tbl_data += "<td>"+data[i].isPaid == 1 ? "YES" : "NO" +"</td>";
+              tbl_data += "<td></td>";
+              tbl_data += "<td style = 'text-align: center'><button class = 'grid-item button'><i  class = 'bi bi-pencil-fill'></i></button></td>";
               tbl_data += "</tr>";
             }
           }

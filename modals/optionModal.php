@@ -16,7 +16,7 @@
 }
 
 .optionmodal-content {
-  background-color: #151515; 
+  background-color: #1E1C11;; 
   margin: 0 auto; 
   border: none;
   width: 100%;
@@ -1008,7 +1008,7 @@ input{
               <button class="grid-item" id = "btn_LOT">L.O.T</button>
             </div>
             <p></p>
-            <div class="fcontainer" style = "height: 600px;">
+            <div class="fcontainer" style="min-height: 70vh;">
               <form id = "po_form">
                 <div class="fieldContainer">
                   <label>PC#</label>
@@ -1072,11 +1072,13 @@ input{
           </div>
         </div>
       </div>
-       <div class="modal-footer">
-            <button class="grid-item button" style = "width: 100px; background-color: red;"><i class = "bi bi-x"></i>&nbsp; Cancel</button>
-            <button class="grid-item button" style = "width: 100px; background-color: blue; "><i class = "bi bi-pencil-fill"></i>&nbsp; Edit</button>
-            <button class="grid-item button " style = "width: 100px; background-color: green;" id = "btn_savePO"><i class = "bi bi-save"></i>&nbsp; Save</button>
-        </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between;">
+          <button class="grid-item button button-cancel" style="width: 100px;"><i class="bi bi-x"></i>&nbsp; Cancel</button>
+          <div>
+              <button class="grid-item button" style="width: 100px;"><i class="bi bi-pencil-fill"></i>&nbsp; Edit</button>
+              <button class="grid-item text-color button" style="width: 100px;" id="btn_savePO"><i class="bi bi-save"></i>&nbsp; Save</button>
+          </div>
+      </div>
     </div>
   </div>
 </div>
