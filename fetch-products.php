@@ -17,7 +17,8 @@ ob_start();
 while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
   
     ?>
-    <tr>
+    <tr onclick="highlightBorder(this)">
+    <td hidden class='text-center td-h'><span class="isTaxIncluded"><?= $row['taxIncluded'] ?></td> 
     <td hidden class='text-center td-h'><span class="description"><?= $row['description'] ?></span><<span class="statusData"><?= $row['status'] ?></span><span class="productImgs"><?= $row['image'] ?></span></td> 
     <td hidden class='text-center td-h'><span class="other"><?= $row['otherCharges'] ?></span><span class="displayOthers"><?= $row['displayOthers'] ?></span></td> 
     <td hidden class='text-center td-h'><span class="service"><?= $row['serviceCharge'] ?></span><span class="displayService"><?= $row['displayService'] ?></span></td>
@@ -55,4 +56,20 @@ echo $html;
     padding: 0;
     height: auto; 
 }
+.highlightedss {
+    border: 2px solid #00B050; 
+}
+
 </style>
+<script>
+    function highlightBorder(element) {
+        
+        var allTrs = document.querySelectorAll('tr');
+        allTrs.forEach(function(tr) {
+            tr.classList.remove('highlightedss');
+        });
+
+        
+        element.classList.add('highlightedss');
+    }
+</script>

@@ -74,6 +74,11 @@
             $result = $products->checkSku($sku,$barcode,$code);
             echo json_encode(['success'=> true,'sku' => $result]);
             break;
+        case "updateProduct":
+             $formData = $_POST;
+             $result = $products->updateProduct($formData);
+             echo json_encode( $formData);
+             break; 
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

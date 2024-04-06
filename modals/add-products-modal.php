@@ -975,10 +975,10 @@ font-weight: bold;
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Selling Price (Php)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input readonly class="selling_price" name="selling_price" id="selling_price"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input  class="selling_price" name="selling_price" id="selling_price"/></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Tax (VAT) 12%</td>
+                        <td id="taxtVatLbl" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Tax (VAT) 12%</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px">  <?php
                           $taxVat = "yes"; 
                           $other_Charge = ($taxVat== "yes") ? "no" : "yes";
@@ -999,7 +999,7 @@ font-weight: bold;
                         </td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Service Charge (1%)</td>
+                        <td id="serviceChargeLbl" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Service Charge (1%)</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px">  
                         <?php
                           $serviceCharges = "no"; 
@@ -1081,7 +1081,7 @@ font-weight: bold;
         
             <div class="button-container" style="display:flex;justify-content: right">
                 <button onclick="addProduct()" class="btn-success-custom saveProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
-                <button hidden class="btn-success-custom updateProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
+                <button hidden onclick="updateProducts()" class="btn-success-custom updateProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
                 <button onclick="closeAddProductsModal()" class="cancelAddProducts btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
             </div>
         </div>
@@ -1264,7 +1264,8 @@ function closeAddProductsModal(){
   closeModal()
   $('#add_products_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.product-modal').css('animation', 'slideOutRight 0.5s forwards');
-  // $('.highlighted').removeClass('highlighted');
+  $('.highlighteds').removeClass('highlighteds');
+  $('.highlightedss').removeClass('highlightedss');
  
   $('#add_products_modal').one('animationend', function() {
     $(this).hide();
@@ -1276,43 +1277,8 @@ function closeAddProductsModal(){
   
 }
 
-   
-    const costInput = document.getElementById('cost');
-    const markupInput = document.getElementById('markup');
-    const sellingPriceInput = document.getElementById('selling_price');
-
-   
-    costInput.addEventListener('input', calculateSellingPrice);
-    markupInput.addEventListener('input', calculateSellingPrice);
-    sellingPriceInput.addEventListener('input', calculateCostPrice);
-
-   
-    function calculateSellingPrice() {
-        const cost = parseFloat(costInput.value);
-        const markup = parseFloat(markupInput.value);
-        const selling = parseFloat(sellingPriceInput.value);
-            if (!isNaN(cost) && !isNaN(markup)) {
-                const sellingPrice = cost + (cost * markup / 100);
-                sellingPriceInput.value = sellingPrice.toFixed(2); 
-            } else {
-                sellingPriceInput.value = '';
-            }
-        }
-        
-    
-    function calculateCostPrice() {
-        const sellingPrice = parseFloat(sellingPriceInput.value);
-        const markup = parseFloat(markupInput.value);
-
-        
-        if (!isNaN(sellingPrice) && !isNaN(markup)) {
-            const cost = sellingPrice / (1 + (markup / 100));
-            costInput.value = cost.toFixed(2); 
-        } else {
-            costInput.value = ''; 
-        }
-    }
-    function validateNumber(input) {
+  
+function validateNumber(input) {
    
     input.value = input.value.replace(/[^0-9.]/g, '');
     if (input.value.startsWith('-')) {
@@ -1322,7 +1288,6 @@ function closeAddProductsModal(){
     // Remove any non-alphanumeric characters
     input.value = input.value.replace(/[^a-zA-Z0-9]/g, '');
 }
-
 
 document.addEventListener('DOMContentLoaded', function() {
     var skunNumberInput = document.getElementById('skunNumber');
@@ -1444,6 +1409,11 @@ function clearProductsInputs(){
   document.getElementById('uomType').value = ""
   document.getElementById('categoriesInput').value = "";
   document.getElementById('description').value = "";
+  document.getElementById('productid').value = ""
+  var uptBtn = document.querySelector('.updateProductsBtn');
+    uptBtn.setAttribute('hidden',true);
+    var saveBtn = document.querySelector('.saveProductsBtn');
+    saveBtn.removeAttribute('hidden');
 }
 
 
@@ -1535,7 +1505,13 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
   $('#add_products_modal').show();
   productId? document.getElementById('productid').value = productId : null;
   productName ? document.getElementById("productname").value = productName : null;
-  productName ? (document.getElementById("modalHeaderTxt").value =  productName, $('.modalHeaderTxt').text( productName)) : null;
+
+  var p_id = document.getElementById('productid').value
+  if(p_id){
+    productName ? (document.getElementById("modalHeaderTxt").value =  productName, $('.modalHeaderTxt').text( productName)) : null;
+  }else{
+    $('.modalHeaderTxt').text("Add New Product")
+  }
   productSKU ? document.getElementById("skunNumber").value = productSKU : null;
   productCode  ? document.getElementById("code").value = productCode  : null;
   productBarcode  ? document.getElementById("barcode").value = productBarcode  : null
@@ -1547,7 +1523,7 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
   productPrice ? document.getElementById("selling_price").value =productPrice : null
   image ? displayImage('./assets/products/' + image) : null;
   desc ? document.getElementById("description").value = desc : null
-  console.log(desc)
+ 
   //category
 
   //catagory
@@ -1557,6 +1533,7 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
  var taxCheckbox = document.getElementById('taxVatToggle');
  taxCheckbox.checked = (isTax == 1) ? true: false;
  var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
+ toggleChangeColor(showTaxCheckbox);
  showTaxCheckbox.checked  = (isTaxIncluded == 1) ? true: false;
  var service = document.getElementById('serviceChargesToggle');
  service.checked = (serviceCharge == 1) ? true : false;
@@ -1568,7 +1545,258 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
  displayOtherCharge.checked = (displayOtherCharges == 1) ? true : false;
  var stat = document.getElementById('statusValue');
  stat.checked = (status == 1) ? true : false;
+
+ var uptBtn = document.querySelector('.updateProductsBtn');
+    var saveBtn = document.querySelector('.saveProductsBtn');
+    productId? (uptBtn.removeAttribute('hidden'), saveBtn.setAttribute('hidden', true)) : (uptBtn.setAttribute('hidden', true), saveBtn.removeAttribute('hidden'));
 }
+
+function updateProducts(){
+  var p_id = document.getElementById('productid').value
+  var productname = document.getElementById('productname').value;
+  var sku = document.getElementById('skunNumber').value;
+  var code = document.getElementById('code').value;
+  var barcode = document.getElementById('barcode').value;
+  var oum_id = document.getElementById('uomID').value;
+  var brand = document.getElementById('brand').value;
+  var cost = document.getElementById('cost').value;
+  var markup = document.getElementById('markup').value;
+  var sellingPrice = document.getElementById('selling_price').value
+  //discount
+  var discountCheckbox = document.getElementById('discountToggle');
+  var discount = discountCheckbox.checked ? 1 : 0;
+  //vat
+  var vatCheckbox = document.getElementById('taxVatToggle');
+  var vat = vatCheckbox.checked ? 1 : 0;
+  var displayTax = document.getElementById('showIncludesTaxVatToggle');
+  var display_tax = displayTax.checked ? 1 : 0;
+
+  //service Charge
+  var serviceCharge = document.getElementById('serviceChargesToggle');
+  var service_charge = serviceCharge.checked ? 1 : 0;
+  var displaySrvCharge = document.getElementById('displayServiceChargeReceipt');
+  var display_service_charge = displaySrvCharge.checked ? 1 : 0;
+
+  //other charges
+  var otherCharges = document.getElementById('otherChargesToggle');
+  var other_charges = otherCharges.checked ? 1 : 0;
+  var displayOtherCharges = document.getElementById('displayReceipt');
+  var display_other_charges = displayOtherCharges.checked ? 1 : 0;
+  
+  //status
+  var stat = document.getElementById('statusValue');
+  var status = stat.checked ? 1 : 0;
+
+  //productImage
+  var file = document.getElementById("fileInputs").files[0]; 
+  var description = document.getElementById('description').value
+
+  var nameLabel = document.querySelector('.nameTd');
+  var barcodeLabel = document.querySelector('.barcodeTd');
+  var costLabel  = document.querySelector('.costTd');
+  var markupLabel = document.querySelector('.markupTd');
+
+  productname ? nameLabel.style.color = '' : nameLabel.style.color = 'red';
+  barcode ? barcodeLabel.style.color = '' : barcodeLabel.style.color = 'red';
+  cost ? costLabel.style.color = '' : costLabel.style.color = 'red';
+  markup ?  markupLabel.style.color = '' : markupLabel.style.color = 'red';
+
+  var formData = new FormData();
+  formData.append("uploadedImage", file); 
+  formData.append("productname", productname); 
+  formData.append("sku", sku); 
+  formData.append("code", code); 
+  formData.append("barcode", barcode); 
+  formData.append("oum_id", oum_id); 
+  formData.append("brand", brand); 
+  formData.append("cost", cost); 
+  formData.append("markup", markup); 
+  formData.append("sellingPrice", sellingPrice);
+  formData.append("discount", discount); 
+  formData.append("vat", vat ); 
+  formData.append("display_tax", display_tax); 
+  formData.append("service_charge", service_charge); 
+  formData.append("display_service_charge", display_service_charge); 
+  formData.append("other_charges", other_charges); 
+  formData.append("display_other_charges", display_other_charges); 
+  formData.append("status", status); 
+  formData.append("description", description); 
+  formData.append("product_id",p_id)
+  if(productname && barcode && cost && markup){
+    axios.post('api.php?action=updateProduct', formData).then(function(response){
+      console.log(response)
+      refreshProductsTable()
+      closeAddProductsModal()
+  }).catch(function(error){
+     console.log(error)
+  })
+ }else{
+  console.log('check fields')
+ }
+  
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var isFirstInputZeroIndex = false; 
+  var isFirstInputOneIndex = false;
+  var isFirstInputTwoIndex = false;
+
+  
+  var $inputs = $('#cost, #markup, #selling_price');
+
+  var taxCheckbox = document.getElementById('taxVatToggle');
+  var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
+  var service = document.getElementById('serviceChargesToggle');
+  var otherCharges = document.getElementById('otherChargesToggle');
+  var taxLabel = document.getElementById('taxtVatLbl');
+  var serviceLabel = document.getElementById('serviceChargeLbl');
+
+  $inputs.on('input', function() {
+    handleInputChange();
+    var index = $inputs.index(this);
+    if ($(this).val() === '') {
+      isFirstInputZeroIndex = false;
+      isFirstInputOneIndex = false;
+      isFirstInputTwoIndex = false;
+    $('#selling_price, #markup, #cost').val('');
+    return; 
+  }
+
+    
+    if (!isFirstInputZeroIndex && index === 0) {
+      isFirstInputZeroIndex = true;
+    }
+    if (!isFirstInputOneIndex && index === 1) {
+      isFirstInputOneIndex = true;
+    }
+
+    if (!isFirstInputTwoIndex && index === 2) {
+      isFirstInputTwoIndex = true;
+    }
+   
+    if ((isFirstInputZeroIndex && index === 1) || (isFirstInputOneIndex && index === 0)) {
+      calculateSellingPrice();
+    } else if ((isFirstInputZeroIndex && index === 2) || (isFirstInputTwoIndex && index === 0 )) {
+      calculateMarkup();
+    } 
+    
+    if ((isFirstInputOneIndex && index === 2) ||  (isFirstInputTwoIndex && index === 1 ) ) {
+      calculateCost();
+    }
+
+  });
+  var tax = 0; // Declare tax outside the event listener function
+
+showTaxCheckbox.addEventListener('change', function() {
+    var sellingPrice = parseFloat(document.getElementById('selling_price').value);
+    var vatable = sellingPrice / 1.12;
+    if (!this.checked) {
+        tax = sellingPrice - vatable;
+        var newPrice = sellingPrice + tax;
+        document.getElementById('selling_price').value = newPrice.toFixed(2);
+    } else {
+        var newPrice = sellingPrice - tax;
+        document.getElementById('selling_price').value = newPrice.toFixed(2);
+    }
+});
+var serviceCharge = 0.01; 
+
+service.addEventListener('change', function() {
+    var sellingPrice = parseFloat(document.getElementById('selling_price').value);
+    
+    if (this.checked) {
+        var serviceFee = sellingPrice * serviceCharge;
+        var newPrice = sellingPrice + serviceFee;
+        document.getElementById('selling_price').value = newPrice.toFixed(2);
+        // Disable tax checkboxes
+        taxCheckbox.disabled = true;
+        showTaxCheckbox.disabled = true;
+        taxLabel.style.color = '#FF6900';
+    } else {
+        var originalPrice = sellingPrice / (1 + serviceCharge);
+        document.getElementById('selling_price').value = originalPrice.toFixed(2);
+        // Enable tax checkboxes
+        taxCheckbox.disabled = false;
+        showTaxCheckbox.disabled = false;
+        taxLabel.style.color = '';
+    }
+});
+var otherCharge = 0.02;
+otherCharges.addEventListener('change', function() {
+    var sellingPrice = parseFloat(document.getElementById('selling_price').value);
+    
+    if (this.checked) {
+        var otherChargeFee = sellingPrice * otherCharge
+        var newPrice = sellingPrice + otherChargeFee;
+        document.getElementById('selling_price').value = newPrice.toFixed(2);
+        taxCheckbox.disabled = true;
+        showTaxCheckbox.disabled = true;
+        service.disabled = true
+        taxLabel.style.color = '#FF6900';
+        serviceLabel.style.color = '#FF6900';
+    } else {
+        var originalPrice = sellingPrice / (1 + otherCharge);
+        document.getElementById('selling_price').value = originalPrice.toFixed(2);
+        service.disabled = false
+        serviceLabel.style.color = '';
+        if(!service.checked){
+          taxCheckbox.disabled = false;
+          showTaxCheckbox.disabled = false;
+        }
+        
+        
+       
+    }
+});
+
+
+
+
+  function calculateSellingPrice() {
+    var cost = parseFloat($('#cost').val());
+    var markup = parseFloat($('#markup').val());
+    if (!isNaN(cost) && !isNaN(markup)) {
+      var sellingPrice = (cost + (cost * markup / 100)).toFixed(2);
+      $('#selling_price').val(sellingPrice);
+    } else {
+      $('#selling_price').val('');
+    }
+  }
+
+  function calculateMarkup() {
+    var cost = parseFloat($('#cost').val());
+    var sellingPrice = parseFloat($('#selling_price').val());
+    if (!isNaN(cost) && !isNaN(sellingPrice) && cost !== 0) {
+      var markup = (((sellingPrice - cost) / cost) * 100).toFixed(2);
+      $('#markup').val(markup);
+    }else{
+      $('#markup').val('');
+    }
+  }
+
+  function calculateCost() {
+    var sellingPrice = parseFloat($('#selling_price').val());
+    var markup = parseFloat($('#markup').val());
+    if (!isNaN(sellingPrice) && !isNaN(markup) && markup !== 0) {
+      var cost = (sellingPrice / (1 + (markup / 100))).toFixed(2);
+      $('#cost').val(cost);
+    } else {
+      $('#cost').val('');
+    }
+  }
+  function handleInputChange() {
+    showTaxCheckbox.checked = true; 
+    service.checked = false;
+    otherCharges.checked = false;
+    taxCheckbox.disabled = false;
+    showTaxCheckbox.disabled = false;
+    service.disabled = false
+    taxLabel.style.color = '';
+    serviceLabel.style.color = '';
+  }
+
+});
+
 
 </script>
 
