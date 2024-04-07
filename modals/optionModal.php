@@ -1008,14 +1008,14 @@ input{
               <button class="grid-item" id = "btn_LOT">L.O.T</button>
             </div>
             <p></p>
-            <div class="fcontainer" style="min-height: 70vh;">
+            <div class="fcontainer" style="min-height: 68vh;">
               <form id = "po_form">
                 <div class="fieldContainer">
                   <label>PC#</label>
                   <input type="text" name="pcs_no" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px"/>
-                  <label for="paidSwitch" class="switch-label">Paid</label>
-                  <label class="switch">
-                    <input id="paidSwitch" type="checkbox"  name="isPaid" style="height: 25px">
+                  <label for="paidSwitch" class="switch-label" >Paid</label>
+                  <label class="switch" id = "isPaid">
+                    <input id="paidSwitch" type="checkbox" onchange="$('#isPaid').removeClass('switch-error')" name="isPaid"  style="height: 25px;">
                     <span class="slider"></span>
                   </label>
                   <input type="date" name="date_purchased" oninput="$(this).removeClass('has-error')" id = "date_purchased" value="" style="width: 140px; height: 25px"/>
@@ -1051,10 +1051,12 @@ input{
                   border: 1px solid #FF6900; 
                   padding: 10px
                 }
+                table{
+                  table-layout: fixed;
+                }
               </style>
             <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%;  border: 1px solid #FF6900; color: white; font-size: 10px">
               <thead >
-                <!-- background-color: #1E1C11; -->
                 <tr style = "background-color: none; ">
                   <th>ITEM</th>
                   <th>BT. NO&SER. NO</th>
@@ -1073,7 +1075,7 @@ input{
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between;">
-          <button class="grid-item button button-cancel" style="width: 100px;"><i class="bi bi-x"></i>&nbsp; Cancel</button>
+          <button class="grid-item button button-cancel" id = "btn_omCancel" style="width: 100px;"><i class="bi bi-x"></i>&nbsp; Cancel</button>
           <div>
               <button class="grid-item button" style="width: 100px;"><i class="bi bi-pencil-fill"></i>&nbsp; Edit</button>
               <button class="grid-item text-color button" style="width: 100px;" id="btn_savePO"><i class="bi bi-save"></i>&nbsp; Save</button>

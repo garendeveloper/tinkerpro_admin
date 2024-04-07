@@ -107,15 +107,15 @@
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 2%;">ID</th>
-                    <th style="width: 12%;">Supplier</th>
-                    <th style="width: 6%;">Barcode</th>
-                    <th class="text-center" style="width: 6%;">Unit</th>
+                    <th style="width: 8%;">Supplier</th>
+                    <th style="width: 4%;">Barcode</th>
+                    <th class="text-center" style="width: 2%;">Unit</th>
                     <th class="text-center" style="width: 2%;">Qty in Store</th>
                     <th class="text-center" style="width: 2%;">Qty in Warehouse</th>
                     <th class="text-center" style="width: 3%;">Amount Before Tax </th>
                     <th class="text-center" style="width: 3%;">Amount After Tax</th>
                     <th class="text-center" style="width: 3%;">Markup Profit</th>
-                    <th class="text-center" style="width: 7%;">Action</th>
+                    <th class="text-center" style="width: 2%;">Action</th>
                   </tr>
                 </thead>
                 <tbody >
@@ -150,6 +150,11 @@
           this.value = parts.join('.');
       }
   });
+  $('#pcs_no').on('input', function() {
+      let inputValue = $(this).val();
+      inputValue = inputValue.replace(/[^\d]/g, '');
+      $(this).val(inputValue);
+  });
 </script>
 
 <script>
@@ -159,55 +164,73 @@
     show_allInventories(1, perPage); 
     show_allSuppliers();
     show_allProducts();
+    function resetPurchaseOrderForm()
+    {
+      $("#po_form")[0].reset();
+      $('#tbl_purchaseOrders tbody').empty();
+    }
+    $("#btn_omCancel").click(function(){
+      resetPurchaseOrderForm();
+    })
     $("#btn_savePO").click(function(e){
       e.preventDefault();
-      if(validateProductForm())
-      {
-        var dataArray = [];
-        $('#tbl_purchaseOrders tbody tr').each(function() {
-            var rowData = {};
-            $(this).find('td').each(function(index, cell) {
-                rowData['column_' + (index + 1)] = $(cell).text(); 
-            });
-            dataArray.push(rowData);
-        });
-      
-        $.ajax({
-          type: 'POST',
-          url: 'api.php?action=save_purchaseOrder', 
-          data: {
-            data: JSON.stringify(dataArray),
-            pcs_no: $("#pcs_no").val(),
-            isPaid: $('#paidSwitch').prop('checked'),
-            date_purchased: $("#date_purchased").val(),
-            supplier: $("#supplier").val(),
-            product: $("#product").val(),
-          },
-          dataType: 'json',
-          success: function(response) 
+
+      var dataArray = [];
+      $('#tbl_purchaseOrders tbody tr').each(function() {
+          var rowData = {};
+          $(this).find('td').each(function(index, cell) {
+              rowData['column_' + (index + 1)] = $(cell).text(); 
+          });
+          dataArray.push(rowData);
+      });
+    
+      $.ajax({
+        type: 'POST',
+        url: 'api.php?action=save_purchaseOrder', 
+        data: {
+          data: JSON.stringify(dataArray),
+          pcs_no: $("#pcs_no").val(),
+          isPaid: $('#paidSwitch').prop('checked'),
+          date_purchased: $("#date_purchased").val(),
+          supplier: $("#supplier").val(),
+          product: $("#product").val(),
+        },
+        dataType: 'json',
+        success: function(response) 
+        {
+          if(response.status)
           {
-            if(response.status)
-            {
-              alert(response.message);
-              $("#po_form")[0].reset();
-              $('#tbl_purchaseOrders tbody').empty();
-            }
-            else
-            {
-              alert(response.message);
-            }
-          },
-          error: function(xhr, status, error) {
-            alert("Something went wrong!");
+            alert(response.message);
+            resetPurchaseOrderForm();
           }
-        });
-      }
+          else
+          {
+            $.each(response.errors, function(key, value) {
+              if(key === "isPaid")
+              {
+                $("#"+key).addClass('switch-error');
+              }
+              else
+              {
+                $('#' + key).addClass('has-error');
+              }
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          alert("Something went wrong!");
+        }
+      });
+      
     })
     $("#btn_addPO").click(function(e){
       e.preventDefault();
       if(validatePOForm())
       {
-        $("#purchaseQty_modal").show();
+        $("#purchaseQty_modal").slideDown({
+          backdrop: 'static',
+          keyboard: false,
+        });
         $("#pqty_modalTitle").text("Create a Product for Purchase Order");
       }
     })
@@ -359,20 +382,20 @@
             for(var i = 0; i < data.length; i++)
             {
               tbl_data += "<tr>";
-              tbl_data += "<td>"+data[i].id+"</td>";
+              tbl_data += "<td style = 'text-align: center'>"+data[i].id+"</td>";
               tbl_data += "<td>"+data[i].supplier+"</td>";
               tbl_data += "<td>"+data[i].barcode+"</td>";
               tbl_data += "<td></td>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].qty_purchased+"</td>";
-              tbl_data += "<td style = 'text-align: center'>"+data[i].qty_received+"</td>";
-              tbl_data += "<td>"+data[i].amount_beforeTax+"</td>";
-              tbl_data += "<td>"+data[i].amount_afterTax+"</td>";
+              tbl_data += "<td style = 'text-align: center'>"+ (data[i].qty_received === null ? 0 : "") +"</td>";
+              tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
+              tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_afterTax)+"</td>";
               tbl_data += "<td>"+data[i].isPaid == 1 ? "YES" : "NO" +"</td>";
               tbl_data += "<td></td>";
               tbl_data += "<td style = 'text-align: center'><button class = 'grid-item button'><i  class = 'bi bi-pencil-fill'></i></button></td>";
               tbl_data += "</tr>";
             }
-          }
+          } 
           else
           {
             tbl_data = "<tr><td colspan = '10'>No more available data.</td></tr>";

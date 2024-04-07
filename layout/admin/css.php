@@ -216,5 +216,10 @@ button:active {
     height: 35px;
     border-radius: 10px;
   }
+  .switch-error {
+      border: 2px solid red;
+      border-radius: 10px;
+      padding: 8px; /* Optional padding to make the border more visible */
+  }
 
 </style>

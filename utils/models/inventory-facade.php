@@ -61,6 +61,11 @@
                 'product' => 'Product ID is required'
             ];
 
+            if (!isset($_POST['isPaid']) && $_POST['isPaid'] !== 'on')
+            {
+                $errors['isPaid'] = 'The item should be marked as paid.';
+            }
+            
             foreach ($validationRules as $field => $errorMessage) 
             {
                 if (empty($formData[$field])) 
@@ -73,47 +78,57 @@
         }
         public function save_purchaseOrder($formData)
         {
-            $tbldata = json_decode($formData['data'], true);
-            $supplier_id = $this->save_supplier($formData['supplier']);
-            $pcs_no = $formData['pcs_no'];
-            $date_purchased = $formData['date_purchased'];
-            $isPaid = $formData['isPaid'] ? 1 : 0;
-
-            foreach($tbldata as $row)
+            if($this->validateData($formData))
             {
-                $product = $row['column_1'];
-                $b_s = $row['column_2'];
-                $quantity = $row['column_3'];
-                $price = $row['column_4'];
-                $total = $row['column_5'];
-                $status = 1;
-                $type = 1;
-                $parts = explode(":", $b_s);
-                $serial_number="";
-                $batch_no = $parts[0];
-                if(count($parts) > 1) 
+                $tbldata = json_decode($formData['data'], true);
+                $supplier_id = $this->save_supplier($formData['supplier']);
+                $pcs_no = $formData['pcs_no'];
+                $date_purchased = $formData['date_purchased'];
+                $isPaid = $formData['isPaid'] ? 1 : 0;
+    
+                foreach($tbldata as $row)
                 {
-                    $serial_number = $parts[1];
+                    $product = $row['column_1'];
+                    $b_s = $row['column_2'];
+                    $quantity = $row['column_3'];
+                    $price = $row['column_4'];
+                    $total = $row['column_5'];
+                    $status = 1;
+                    $type = 1;
+                    $parts = explode(":", $b_s);
+                    $serial_number="";
+                    $batch_no = $parts[0];
+                    if(count($parts) > 1) 
+                    {
+                        $serial_number = $parts[1];
+                    }
+                    $product_id = $this->get_productInfo($product);
+    
+                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (supplier_id, product_id, date_purchased,  pcs_no, qty_purchased, serial_number, amount_beforeTax, amount_afterTax, isPaid, status, batch_no, type) 
+                                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $sqlStatement->bindParam(1, $supplier_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(4, $pcs_no, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(5, $quantity, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(6, $serial_number, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(7, $price, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(8, $price, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(9, $isPaid, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(10, $status, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(11, $batch_no, PDO::PARAM_STR);    
+                    $sqlStatement->bindParam(12, $type, PDO::PARAM_STR);
+                    $sqlStatement->execute();
                 }
-                $product_id = $this->get_productInfo($product);
-
-                $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (supplier_id, product_id, date_purchased,  pcs_no, qty_purchased, serial_number, amount_beforeTax, amount_afterTax, isPaid, status, batch_no, type) 
-                                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $sqlStatement->bindParam(1, $supplier_id, PDO::PARAM_STR);
-                $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
-                $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
-                $sqlStatement->bindParam(4, $pcs_no, PDO::PARAM_STR);
-                $sqlStatement->bindParam(5, $quantity, PDO::PARAM_STR);
-                $sqlStatement->bindParam(6, $serial_number, PDO::PARAM_STR);
-                $sqlStatement->bindParam(7, $price, PDO::PARAM_STR);
-                $sqlStatement->bindParam(8, $price, PDO::PARAM_STR);
-                $sqlStatement->bindParam(9, $isPaid, PDO::PARAM_STR);
-                $sqlStatement->bindParam(10, $status, PDO::PARAM_STR);
-                $sqlStatement->bindParam(11, $batch_no, PDO::PARAM_STR);    
-                $sqlStatement->bindParam(12, $type, PDO::PARAM_STR);
-                $sqlStatement->execute();
+                return ['status'=>true, 'message'=>'Purchase Orders has been successfully submitted'];   
             }
-            return ['status'=>true, 'message'=>'Purchase Orders has been successfully submitted'];   
+            else
+            {
+                return [
+                    'status' => false,
+                    'errors' => $this->validateData($formData),
+                ];
+            }
         }
     }
 ?>
