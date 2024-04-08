@@ -150,20 +150,31 @@
           this.value = parts.join('.');
       }
   });
-  $('#pcs_no').on('input', function() {
-      let inputValue = $(this).val();
-      inputValue = inputValue.replace(/[^\d]/g, '');
-      $(this).val(inputValue);
-  });
 </script>
 
 <script>
   var perPage = 25;
   $(document).ready(function()
   {
+    var totalTax = 0;
+    var totalQty = 0;
+    var totalPrice = 0;
+    var overallTotal = 0;
     show_allInventories(1, perPage); 
     show_allSuppliers();
     show_allProducts();
+    get_purchaseOrderNo();
+    function get_purchaseOrderNo()
+    {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_purchaseOrderNo',
+        success: function(data)
+        {
+          $("#pcs_no").val(data);
+        }
+      })
+    }
     function resetPurchaseOrderForm()
     {
       $("#po_form")[0].reset();
@@ -231,7 +242,8 @@
           backdrop: 'static',
           keyboard: false,
         });
-        $("#pqty_modalTitle").text("Create a Product for Purchase Order");
+        $("#product_name").text($("#product").val());
+        $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
       }
     })
     function validatePOForm() 
@@ -254,7 +266,7 @@
     function validateProductForm() 
     {
       var isValid = true;
-      $('#prod_form input[type=text], input[type=number]').each(function() {
+      $('#prod_form input[type=text]').each(function() {
           if ($(this).val() === '') 
           {
             isValid = false;
@@ -288,27 +300,36 @@
         inputValue = inputValue.replace(/\D/g, '');
         $(this).val(inputValue);
     });
+
     $("#prod_form").submit(function(e){
       e.preventDefault();
 
       if(validateProductForm())
       {
-        var p_qty = $("#p_qty").val();
-        var batch_no = $("#batch_no").val();
-        var serial_number = $("#serial_number").val();
-        var price = $("#price").val();
+        var p_qty = parseInt($("#p_qty").val());
+        var price = parseFloat($("#price").val());
         var product = $("#product").val();
-        var total = (price*p_qty)*1;
+        var total = price * p_qty;
 
-        $("#tbl_purchaseOrders").append(
+        var tax = (price/1.12);
+        totalTax += (price-tax);
+        totalQty += p_qty;
+        totalPrice += price;
+        overallTotal += total;
+
+        $("#tbl_purchaseOrders tbody").append(
           "<tr>"+
             "<td>"+product+"</td>"+
-            "<td>"+batch_no+" : "+serial_number+"</td>"+
             "<td style = 'text-align: center'>"+p_qty+"</td>"+
             "<td style = 'text-align: center'>"+addCommasToNumber(price)+"</td>"+
             "<td style = 'text-align: center'>"+addCommasToNumber(total)+"</td>"+
           "</tr>"
         );
+        $("#totalTax").text(totalTax.toFixed(2));
+        $("#totalQty").text(totalQty);
+        $("#totalPrice").text(totalPrice.toFixed(2));
+        $("#overallTotal").text(overallTotal.toFixed(2));
+
         $("#purchaseQty_modal").hide();
         $("#prod_form")[0].reset();
       }
@@ -385,7 +406,7 @@
               tbl_data += "<td style = 'text-align: center'>"+data[i].id+"</td>";
               tbl_data += "<td>"+data[i].supplier+"</td>";
               tbl_data += "<td>"+data[i].barcode+"</td>";
-              tbl_data += "<td></td>";
+              tbl_data += "<td style = 'text-align: center'>"+data[i].uom_name+"</td>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].qty_purchased+"</td>";
               tbl_data += "<td style = 'text-align: center'>"+ (data[i].qty_received === null ? 0 : "") +"</td>";
               tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_beforeTax)+"</td>";

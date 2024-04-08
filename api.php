@@ -66,6 +66,9 @@
         case 'get_allSuppliers':
             echo json_encode($inventory->get_allSuppliers());
             break;
+        case 'get_purchaseOrderNo':
+            echo json_encode($inventory->fetch_latestPONo());
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

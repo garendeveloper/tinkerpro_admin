@@ -16,7 +16,7 @@
 }
 
 .optionmodal-content {
-  background-color: #1E1C11;; 
+  background-color: #1E1C11; 
   margin: 0 auto; 
   border: none;
   width: 100%;
@@ -1008,11 +1008,11 @@ input{
               <button class="grid-item" id = "btn_LOT">L.O.T</button>
             </div>
             <p></p>
-            <div class="fcontainer" style="min-height: 68vh;">
+            <div class="fcontainer" style="min-height: 60vh;">
               <form id = "po_form">
                 <div class="fieldContainer">
-                  <label>PC#</label>
-                  <input type="text" name="pcs_no" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px"/>
+                  <label>PO#</label>
+                  <input type="text" name="pcs_no" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px" readonly/>
                   <label for="paidSwitch" class="switch-label" >Paid</label>
                   <label class="switch" id = "isPaid">
                     <input id="paidSwitch" type="checkbox" onchange="$('#isPaid').removeClass('switch-error')" name="isPaid"  style="height: 25px;">
@@ -1040,41 +1040,52 @@ input{
                   <button style="border-color: #FF6900; font-size: 12px;"  id = "btn_addPO">Add PO</button>
                 </div>
               </form>
-            <div>
-            <p></p>
-            <style>
-                tbody td,
-                tbody th, tr {
-                  border: 1px solid #FF6900; 
-                }
-                thead th {
-                  border: 1px solid #FF6900; 
-                  padding: 10px
-                }
-                table{
-                  table-layout: fixed;
-                }
-              </style>
-            <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%;  border: 1px solid #FF6900; color: white; font-size: 10px">
-              <thead >
-                <tr style = "background-color: none; ">
-                  <th>ITEM</th>
-                  <th>BT. NO&SER. NO</th>
-                  <th>QTY</th>
-                  <th>PRICE</th>
-                  <th>TOTAL</th>
-                </tr>
-              </thead>
-              <tbody style = "border-collapse: collapse; border: none">
-     
-              </tbody>
-            </table>
+              <p></p>
+              <style>
+                  tbody td,
+                  tbody th, tr, tfoot tr {
+                    border: 1px solid #FF6900; 
+                  }
+                  thead th {
+                    border: 1px solid #FF6900; 
+                    padding: 10px;
+                
+                  }
+                  table{
+                    table-layout: fixed;
+                  }
+                </style>
+              <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
+                <thead >
+                  <tr>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; width: 50%">ITEM DESCRIPTION</th>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; ">QTY</th>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; ">PRICE</th>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; ">TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody style = "border-collapse: collapse; border: none">
+      
+                </tbody>
+              </table>
             </div>
-          </div>  
+            <div style = "padding: 10px;">
+              <table class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px;">
+                  <thead >
+                    <tr>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; width: 25%;">Total</th>
+                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align:center" id = "totalTax"></th>
+                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: center" id = "totalQty"></th>
+                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: center" id = "totalPrice"></th>
+                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: center" id = "overallTotal"></th>
+                    </tr>
+                  </thead>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-      <div class="modal-footer" style="display: flex; justify-content: space-between;">
+      <div class="modal-footer" style="display: flex; justify-content: space-between; border: none;">
           <button class="grid-item button button-cancel" id = "btn_omCancel" style="width: 100px;"><i class="bi bi-x"></i>&nbsp; Cancel</button>
           <div>
               <button class="grid-item button" style="width: 100px;"><i class="bi bi-pencil-fill"></i>&nbsp; Edit</button>
