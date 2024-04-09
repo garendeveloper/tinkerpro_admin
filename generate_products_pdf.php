@@ -20,9 +20,11 @@ function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
 $products = new ProductFacade();
 
 $counter = 1;
-// $searchQuery = $_GET['searchQuery'] ?? null;
-// $value = $_GET['selectedValue'] ?? null; 
-$fetchProducts = $products->fetchProducts();
+
+$searchQuery = $_GET['searchQuery'] ?? null;
+
+// Fetch users with pagination
+$fetchProducts = $products->fetchProducts($searchQuery);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 

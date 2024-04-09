@@ -2,17 +2,57 @@
 
   class ProductFacade extends DBConnection {
 
-    public function fetchProducts() {
-      $sql = $this->connect()->prepare("SELECT products.id as id, products.barcode as barcode, products.prod_desc as prod_desc, products.cost as cost,
-      products.markup as markup, products.prod_price as prod_price, products.isVAT as isVAT, products.Description as description, products.sku as sku,
-      products.code as code, uom.uom_name as uom_name,products.category_details as category_details, products.status as status, products.brand as brand,
-      products.uom_id as uom_id, products.is_discounted as discounted, products.is_taxIncluded as taxIncluded, products.is_serviceCharge as serviceCharge, 
-      products.is_srvcChrgeDisplay as displayService, products.is_otherCharges as otherCharges, products.is_othrChargeDisplay as displayOthers,
-      products.productImage as image FROM products INNER JOIN uom on uom.id = products.uom_id ORDER BY products.prod_desc ASC");
+    public function fetchProducts($searchQuery) {
+      $sqlQuery = "SELECT 
+            products.id as id, 
+            products.barcode as barcode, 
+            products.prod_desc as prod_desc, 
+            products.cost as cost,
+            products.markup as markup, 
+            products.prod_price as prod_price, 
+            products.isVAT as isVAT, 
+            products.Description as description, 
+            products.sku as sku,
+            products.code as code, 
+            uom.uom_name as uom_name,
+            products.category_id as category_id, 
+            products.status as status, 
+            products.brand as brand,
+            products.uom_id as uom_id, 
+            products.is_discounted as discounted, 
+            products.is_taxIncluded as taxIncluded, 
+            products.is_serviceCharge as serviceCharge, 
+            products.is_srvcChrgeDisplay as displayService, 
+            products.is_otherCharges as otherCharges, 
+            products.is_othrChargeDisplay as displayOthers,
+            products.productImage as image, 
+            products.category_details as category_details  
+        FROM products 
+        LEFT JOIN uom ON uom.id = products.uom_id";
+  
+      // Check if searchQuery is not empty
+      if (!empty($searchQuery)) {
+          $sqlQuery .= " WHERE 
+            products.prod_desc LIKE :searchQuery OR 
+            products.barcode LIKE :searchQuery OR 
+            products.sku LIKE :searchQuery OR 
+            products.code LIKE :searchQuery OR 
+            products.brand LIKE :searchQuery";
+      }
+  
+      $sql = $this->connect()->prepare($sqlQuery);
+      
+      // Bind search query parameter if not empty
+      if (!empty($searchQuery)) {
+          $searchParam = "%" . $searchQuery . "%";
+          $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+      }
+      
       $sql->execute();
       return $sql;
-    }
-
+  }
+  
+  
     public function addProduct($formData) {
       $productname = $formData['productname'];
       $barcode = $formData['barcode'];
@@ -26,13 +66,16 @@
       $display_tax = $formData['display_tax'];
       $markup = $formData['markup'];
       $other_charges = $formData['other_charges'];
-      $oum_id = $formData['oum_id'] ?? null;
+      $oum_id = ($formData['oum_id'] === 0 || $formData['oum_id'] === '') ? null : $formData['oum_id'];
       $sellingPrice = $formData['sellingPrice'];
       $service_charge = $formData['service_charge'];
       $sku = $formData['sku'] ?? null;
       $status = $formData['status'];
       $vat = $formData['vat'];
       $uploadedFile = $_FILES['uploadedImage'] ?? null;
+      $cat_id = ($formData['catID'] === 0 || $formData['catID'] === '') ? null : $formData['catID'];
+      $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
+      $category_details = $formData['category_details'] ?? null;
   
       if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
           $tempPath = $uploadedFile['tmp_name'];
@@ -44,9 +87,9 @@
           $fileName = null;
       }
   
-      $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+      $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand,category_id, variant_id,	category_details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
       $stmt = $this->connect()->prepare($sql);
-      $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand]);
+      $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details]);
   
       return ['success' => true, 'message' => 'Product added successfully'];
   }
@@ -280,6 +323,26 @@ public function getShopDetails(){
   return $sql;
 }
 
+public function deleteCategories($id) {
+  $sql = "DELETE FROM category WHERE id = :id AND NOT EXISTS (SELECT 1 FROM variants WHERE category_id = :id)";
+  $stmt = $this->connect()->prepare($sql);
+  $stmt->execute([':id' => $id]);
+
+ 
+  $rowCount = $stmt->rowCount();
+
+  return $rowCount > 0; 
+}
+public function deleteVariants($id){
+  $sql = "DELETE FROM variants WHERE id = :id)";
+  $stmt = $this->connect()->prepare($sql);
+  $stmt->execute([':id' => $id]);
+
+ 
+  // $rowCount = $stmt->rowCount();
+
+  return $stmt; 
+}
 }  
 
 

@@ -6,16 +6,16 @@ include(__DIR__ . '/utils/models/user-facade.php');
 $productFacade = new ProductFacade;
 
 
-
+$searchQuery = $_GET['searchQuery'] ?? null;
 
 // Fetch users with pagination
-$fetchProduct = $productFacade->fetchProducts();
+$fetchProduct = $productFacade->fetchProducts($searchQuery);
 $counter = 1;
 
 ob_start();
 
 while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
-  
+//   var_dump( $row['category_details'] ?? null)
     ?>
     <tr onclick="highlightBorder(this)">
     <td hidden class='text-center td-h'><span class="isTaxIncluded"><?= $row['taxIncluded'] ?></td> 
@@ -28,12 +28,24 @@ while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
     <td class='barcode text-center td-h'><?= $row['barcode']?></td>
     <td class='sku text-center td-h'><?= $row['sku']?></td>
     <td class='code text-center td-h'><?= $row['code']?></td>
-    <td class='uom_name text-center td-h'><?= $row['uom_name']?></td>
+    <td class='uom_name text-center td-h'><?= $row['uom_name'] ?? null ?></td>
     <td class='brand text-center td-h'><?= $row['brand']?></td>
     <td class='prod_price text-center td-h'><?= $row['prod_price']?></td>
     <td class='markup text-center td-h'><?= $row['markup']?></td>
     <td class='cost text-center td-h'><?= $row['cost']?></td>
-    <td class='text-center td-h'>walapa</td>
+    <td class='text-center td-h'>
+    <?php
+    if ($row['category_details'] !== null) {
+        $category_details = json_decode($row['category_details'], true);
+        $string_values = array_map(function($item) {
+            return is_array($item) ? implode( $item) : $item;
+        }, $category_details);
+        
+        $concatenated_values = implode( $string_values);
+        echo $concatenated_values;
+    }
+    ?>
+</td>
     <td class='status text-center td-h' style='color: <?= ($row['status'] == 1) ? "green" : "red" ?>;'><?= ($row['status'] == 1) ? "Active" : "Inactive" ?></td>
     <td class='text-center action-td td-h'>
                <a class='text-success editProductBtn' style='text-decoration: none;'><svg width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="edit"> <g> <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke=" #FF6900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke=" #FF6900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon> </g> </g> </g> </g></svg></a>
@@ -69,7 +81,7 @@ echo $html;
             tr.classList.remove('highlightedss');
         });
 
-        
+        $('.highlighteds').removeClass('highlighteds');
         element.classList.add('highlightedss');
     }
 </script>

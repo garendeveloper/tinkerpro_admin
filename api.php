@@ -78,7 +78,25 @@
              $formData = $_POST;
              $result = $products->updateProduct($formData);
              echo json_encode( $formData);
-             break; 
+             break;
+        case "deleteCategory":
+            $id = isset($_GET['id']) ? $_GET['id'] : null;
+            $success = $products->deleteCategories($id);
+            if ($success) {
+                echo json_encode(['success' => true, 'id' => $id]); 
+            } else {
+                echo json_encode(['success' => false]); 
+            }
+            break;
+        case "deleteVariants":
+            $id = isset($_GET['id']) ? $_GET['id'] : null;
+            $success = $products->deleteVariants($id);
+            if ($success) {
+                echo json_encode(['success' => true, 'id' => $id]); 
+            } else {
+                echo json_encode(['success' => false]); 
+            }
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
