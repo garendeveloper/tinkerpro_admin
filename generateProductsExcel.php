@@ -31,8 +31,10 @@ $sheet->getStyle('A1:H1')->applyFromArray($headerStyle);
 
 $products = new ProductFacade();
 
+$searchQuery = $_GET['searchQuery'] ?? null;
 
-$fetchProducts = $products->fetchProducts();
+
+$fetchProducts = $products->fetchProducts($searchQuery);
 $counter = 1; // Start numbering from 1
 
 while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {

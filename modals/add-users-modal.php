@@ -20,7 +20,7 @@
   margin: 0 auto; 
   border: none;
   width: 100%;
-  height: 1000px; 
+  height: 1200px; 
   animation: slideInRight 0.5s; 
   border-radius: 0;
   margin-top: -28px;
@@ -215,8 +215,8 @@
     <div class="modal-content user-modal">
       <div class="modal-title">
         <div class="warning-container">
-            <div style="display: flex">
-                <h2 style="margin-left: 20px" class="text-custom firstName">Unknown<span>&nbsp;</span><h2 class="text-custom lastName">Unknown</h2></h2></h2>
+            <div style="display: flex; margin-top: 30px">
+                <h2 style="margin-left: 20px;" class="text-custom firstName">Unknown<span>&nbsp;</span><h2 class="text-custom lastName">Unknown</h2></h2></h2>
             </div>
             <div class="imageCard">
                  <div  style="width:30%" class="imageDiv" id="imageDiv">

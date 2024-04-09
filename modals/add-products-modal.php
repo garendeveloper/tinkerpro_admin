@@ -21,7 +21,7 @@
   margin: 0 auto; 
   border: none;
   width: 100%;
-  height: 1000px; 
+  height: 1200px; 
   animation: slideInRight 0.5s; 
   border-radius: 0;
   margin-top: -28px;
@@ -151,7 +151,7 @@
 }
 .imageButtonDiv{
   position:absolute;
-  top: 658px;
+  top: 673px;
   left: 20px
 }
 .removeImage{
@@ -861,6 +861,10 @@ font-weight: bold;
 .addCategory:hover{
   background-color: #FF6900;
   color: #fefefe;
+         
+}.button-container {
+  padding-top: 5px;
+  margin: 0;
 }
 </style>
 
@@ -868,7 +872,7 @@ font-weight: bold;
   <div class="modal-dialog ">
     <div class="modal-content product-modal">
       <div class="modal-title">
-        <div style="margin-top: 10px; margin-left: 20px">
+        <div style="margin-top: 30px; margin-left: 20px">
            <h2 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">Add New Product</h2>
         </div>
         <div class="warning-container">
@@ -930,8 +934,8 @@ font-weight: bold;
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="serial" placeholder="For serialized products"/></td>
                     </tr> -->
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Category</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="categoriesInput" name="categoriesInput" id="categoriesInput" style="width: 242px"/><button onclick="openCategoryModal()" class="addCategory">+Add</button></td>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Category<input hidden id="catID"/><input hidden  id="varID"/><input hidden id="productLbl"/><input hidden id="cat_Lbl"/><input hidden id="var_Lbl"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input readonly class="categoriesInput" name="categoriesInput" id="categoriesInput" style="width: 242px"/><button onclick="openCategoryModal()" class="addCategory">+Add</button></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Discount (SR/PWD/UP)</td>
@@ -1078,8 +1082,7 @@ font-weight: bold;
           <div style="margin-left: 20px;width: 100%; margin-right: 20px">
             <textarea  id="description" style="width: 92%; height: 120px; background-color: transparent; color:#fefefe" name="description"  class="description"></textarea>
           </div>
-        
-            <div class="button-container" style="display:flex;justify-content: right">
+            <div class="button-container" style="display:flex;justify-content: right;">
                 <button onclick="addProduct()" class="btn-success-custom saveProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
                 <button hidden onclick="updateProducts()" class="btn-success-custom updateProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
                 <button onclick="closeAddProductsModal()" class="cancelAddProducts btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
@@ -1155,6 +1158,7 @@ font-weight: bold;
     if (checkbox.checked) {
           var taxVat = document.getElementById('showIncludesTaxVatToggle')
            taxVat.disabled=false
+           taxVat.checked= true
             } else {
               var taxVat = document.getElementById('showIncludesTaxVatToggle')
               taxVat.disabled=true
@@ -1266,7 +1270,7 @@ function closeAddProductsModal(){
   $('.product-modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighteds').removeClass('highlighteds');
   $('.highlightedss').removeClass('highlightedss');
- 
+
   $('#add_products_modal').one('animationend', function() {
     $(this).hide();
     $(this).css('animation', '');
@@ -1410,6 +1414,12 @@ function clearProductsInputs(){
   document.getElementById('categoriesInput').value = "";
   document.getElementById('description').value = "";
   document.getElementById('productid').value = ""
+  document.getElementById('catID').value = "";
+  document.getElementById('varID').value = "";
+  document.getElementById('productLbl').value = "";
+  document.getElementById('cat_Lbl').value = "";
+  document.getElementById('var_Lbl').value = "";
+
   var uptBtn = document.querySelector('.updateProductsBtn');
     uptBtn.setAttribute('hidden',true);
     var saveBtn = document.querySelector('.saveProductsBtn');
@@ -1457,6 +1467,19 @@ function addProduct(){
   var file = document.getElementById("fileInputs").files[0]; 
   var description = document.getElementById('description').value
 
+  //category details
+  var catID = document.getElementById('catID').value ?? null;
+  var varID = document.getElementById('varID').value ?? null;
+  var productLbl = document.getElementById('productLbl').value !== null ? document.getElementById('productLbl').value : "Product";
+  var cat_lbl = document.getElementById('cat_Lbl').value ?? null;
+  var var_lbl = document.getElementById('var_Lbl').value ?? null
+  var jsonData = [{
+      "productLbl":  productLbl,
+      "catLbl": cat_lbl,
+      "varLbl":  var_lbl
+  }];
+  var jsonString = JSON.stringify(jsonData);
+
   var nameLabel = document.querySelector('.nameTd');
   var barcodeLabel = document.querySelector('.barcodeTd');
   var costLabel  = document.querySelector('.costTd');
@@ -1487,8 +1510,12 @@ function addProduct(){
   formData.append("display_other_charges", display_other_charges); 
   formData.append("status", status); 
   formData.append("description", description); 
+  formData.append("catID", catID); 
+  formData.append("varID", varID);
+  formData.append("category_details",  jsonString );
  if(productname && barcode && cost && markup){
   axios.post('api.php?action=addProduct', formData).then(function(response){
+      console.log(response)
      refreshProductsTable()
      closeAddProductsModal()
   }).catch(function(error){
@@ -1748,9 +1775,6 @@ otherCharges.addEventListener('change', function() {
        
     }
 });
-
-
-
 
   function calculateSellingPrice() {
     var cost = parseFloat($('#cost').val());

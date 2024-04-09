@@ -188,7 +188,7 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
-           <input  class="text-color searchProducts" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
+           <input  class="text-color searchProducts" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Product,[code, barcode, name, brand]"/>
            <button class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
               viewBox="0 0 491.52 491.52" xml:space="preserve">
             <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
@@ -312,19 +312,18 @@ function refreshProductsTable() {
 
   $(document).ready(function() {
     $('#generateProductPDFBtn').click(function() {
-    // var searchData = $('.searchUsers').val();
+      var searchData = $('.searchProducts').val();
     // var statusValue = $("#filterStatus").val(); 
-
+    console.log(searchData)
     $.ajax({
         url: 'generate_products_pdf.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
         },
-        // data: {
-        //     selectedValue: statusValue,
-        //     searchQuery: searchData
-        // },
+        data: {
+            searchQuery: searchData
+        },
         success: function(response) {
             var blob = new Blob([response], { type: 'application/pdf' });
             var url = window.URL.createObjectURL(blob);
@@ -344,16 +343,18 @@ function refreshProductsTable() {
     });
 });
 $('#printProduct').click(function() {
-    // var searchData = $('.searchUsers').val();
+    var searchData = $('.searchProducts').val();
     // var statusValue = $("#filterStatus").val(); 
-
+    
     $.ajax({
         url: 'generate_products_pdf.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
         },
-      
+        data: {
+            searchQuery: searchData 
+        },
         success: function(response) {
           var blob = new Blob([response], { type: 'application/pdf' });
             var url = window.URL.createObjectURL(blob);
@@ -375,12 +376,16 @@ $('#printProduct').click(function() {
     });
   });
   $('#generateProductsEXCELBtn').click(function() {
-    // var searchData = $('.searchUsers').val();
+    var searchData = $('.searchProducts').val();
+    console.log(searchData)
     $.ajax({
         url: 'generateProductsExcel.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
+        },
+        data: {
+            searchQuery: searchData 
         },
        success: function(response) {
             var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
@@ -395,6 +400,22 @@ $('#printProduct').click(function() {
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
+        }
+    });
+});
+$('.searchProducts').on('input', function(){
+    var searchData = $(this).val();
+    $.ajax({
+        url: 'fetch-products.php', 
+        type: 'GET',
+        data: {
+            searchQuery: searchData 
+        },
+        success: function(response) {
+          $('#productTable').html(response); 
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText); 
         }
     });
 });
@@ -425,7 +446,7 @@ $('#printProduct').click(function() {
         var image = $(this).closest('tr').find('.productImgs').text();
         var desc = $(this).closest('tr').find('.description').text();
         $('.highlighteds').removeClass('highlighteds');
-
+        $('.highlightedss').removeClass('highlightedss')
 
        var $row = $(this).closest('tr').addClass('highlighteds');
         
