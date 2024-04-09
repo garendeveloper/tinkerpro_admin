@@ -59,6 +59,10 @@
         case 'get_allProducts':
             echo json_encode($products->fetchProducts());
             break;
+        case 'get_productInfo':
+            $product = $_GET['data'];
+            echo json_encode($inventory->get_productInfo($product));
+            break;
         case 'save_purchaseOrder':
             $formData = $_POST;
             echo json_encode($inventory->save_purchaseOrder($formData));

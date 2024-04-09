@@ -1032,12 +1032,12 @@ input{
                 <div class="fieldContainer">
                   <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
                   <div class="search-container">
-                      <input type="text" style="width: 200px; height: 25px;"  class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product">
+                      <input type="text" style="width: 175px; height: 25px; font-size: 12px;"  class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product">
                       <div class="search-dropdown" id = "d_products">
                         
                       </div>
                   </div>
-                  <button style="border-color: #FF6900; font-size: 12px;"  id = "btn_addPO">Add PO</button>
+                  <button style="border-color: #FF6900; font-size: 10px; height: 25px; "  id = "btn_addPO"><i class = "bi bi-plus-square"></i> Add Product</button>
                 </div>
               </form>
               <p></p>
@@ -1074,10 +1074,10 @@ input{
                   <thead >
                     <tr>
                     <th style = "background-color: #1E1C11; border: 1px solid #FF6900; width: 25%;">Total</th>
-                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align:center" id = "totalTax"></th>
-                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: center" id = "totalQty"></th>
-                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: center" id = "totalPrice"></th>
-                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: center" id = "overallTotal"></th>
+                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "totalTax">Tax: 0.00</th>
+                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "totalQty">0</th>
+                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "totalPrice">&#x20B1;&nbsp;0.00</th>
+                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "overallTotal">&#x20B1;&nbsp;0.00</th>
                     </tr>
                   </thead>
               </table>
@@ -1086,10 +1086,10 @@ input{
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; border: none;">
-          <button class="grid-item button button-cancel" id = "btn_omCancel" style="width: 100px;"><i class="bi bi-x"></i>&nbsp; Cancel</button>
+          <button class="grid-item button button-cancel" id = "btn_omCancel" style="width: 100px; border-radius: 0"><i class="bi bi-x"></i>&nbsp; Cancel</button>
           <div>
-              <button class="grid-item button" style="width: 100px;"><i class="bi bi-pencil-fill"></i>&nbsp; Edit</button>
-              <button class="grid-item text-color button" style="width: 100px;" id="btn_savePO"><i class="bi bi-save"></i>&nbsp; Save</button>
+              <button class="grid-item button" style="width: 100px; border-radius: 0"><i class="bi bi-pencil-fill"></i>&nbsp; Edit</button>
+              <button class="grid-item text-color button" style="width: 100px; border-radius: 0" id="btn_savePO"><i class="bi bi-save"></i>&nbsp; Save</button>
           </div>
       </div>
     </div>

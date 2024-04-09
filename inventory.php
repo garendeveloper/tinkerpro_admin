@@ -139,16 +139,53 @@
     </div>
   </div>
 <?php include("./modals/purchaseQty_modal.php")?>
+<?php include("./modals/unpaid_purchase-modal.php")?>
 <?php include("layout/footer.php") ?>
 <?php include("layout/admin/keyboardfunction.php") ?>
 <script>
-  document.getElementById('price').addEventListener('input', function(event) {
-      this.value = this.value.replace(/[^0-9.]/g, '');
-      let parts = this.value.split('.');
-      if (parts[1] && parts[1].length > 2) {
-          parts[1] = parts[1].slice(0, 2);
-          this.value = parts.join('.');
+  $(document).ready(function() {
+    $(".tablinks").click(function(e) {
+      e.preventDefault();
+      var tabId = $(this).data("tab");
+      var s_price = $("#s_price").val();
+      var s_due = $("#s_due").val();
+      if(s_price === "" || s_due === "")
+      {
+        $(".tabcontent").hide();
+        $("#tab3").show();
+        $(".tablinks[data-tab='tab3']").addClass("active");
+        $("#s_price").addClass('has-error');
+        $("#s_due").addClass('has-error');
       }
+      else
+      {
+        $("#s_price").removeClass('has-error');
+        $("#s_due").removeClass('has-error');
+        $(".tabcontent").hide();
+        $("#" + tabId).show();
+        $(".tablinks").removeClass("active");
+        $(this).addClass("active");
+      }
+    });
+    $("#tab3").show();
+    $(".tablinks[data-tab='tab3']").addClass("active");
+  });
+</script>
+<script>
+  var price_ids = ['price', 's_price'];
+  price_ids.forEach(function(id) 
+  {
+    document.getElementById(id).addEventListener('input', function(event) {
+        this.value = this.value.replace(/[^0-9.]/g, '');
+        let parts = this.value.split('.');
+        if (parts[1] && parts[1].length > 2) {
+            parts[1] = parts[1].slice(0, 2);
+            this.value = parts.join('.');
+        }
+    });
+});
+  $(document).ready(function() {
+      $('#paidSwitch').prop('checked', true); // Set the 'checked' property to true
   });
 </script>
 
@@ -174,6 +211,17 @@
           $("#pcs_no").val(data);
         }
       })
+    }
+    function hideDropdownItems()
+    {
+      $('#tbl_purchaseOrders tbody tr').each(function() {
+        var tableText = $(this).find('td').text();
+        $('.search-dropdown-item').each(function() { 
+            if ($(this).text() === tableText)  {
+              $(this).hide(); 
+            }
+          });
+      });
     }
     function resetPurchaseOrderForm()
     {
@@ -238,12 +286,26 @@
       e.preventDefault();
       if(validatePOForm())
       {
-        $("#purchaseQty_modal").slideDown({
-          backdrop: 'static',
-          keyboard: false,
-        });
-        $("#product_name").text($("#product").val());
-        $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+   
+        if($("#paidSwitch").prop("checked") === false)
+        {
+         
+          $("#unpaid_purchase_modal").slideDown({
+            backdrop: 'static',
+            keyboard: false,
+          });
+          $("#product_name").text($("#product").val());
+          $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+        }
+        else
+        {
+          $("#purchaseQty_modal").slideDown({
+            backdrop: 'static',
+            keyboard: false,
+          });
+          $("#product_name").text($("#product").val());
+          $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+        }
       }
     })
     function validatePOForm() 
@@ -287,6 +349,7 @@
     $("#btn_pqtyClose, #btn_pqtyCancel").on('click', function(e){
       e.preventDefault();
       $("#purchaseQty_modal").hide();
+      $("#unpaid_purchase_modal").hide();
     })
     $("#btn_pqtyCancel").click(function(){
       $("#prod_form")[0].reset();
@@ -310,28 +373,45 @@
         var price = parseFloat($("#price").val());
         var product = $("#product").val();
         var total = price * p_qty;
-
-        var tax = (price/1.12);
-        totalTax += (price-tax);
-        totalQty += p_qty;
-        totalPrice += price;
-        overallTotal += total;
-
+        hideDropdownItems();
         $("#tbl_purchaseOrders tbody").append(
           "<tr>"+
             "<td>"+product+"</td>"+
             "<td style = 'text-align: center'>"+p_qty+"</td>"+
-            "<td style = 'text-align: center'>"+addCommasToNumber(price)+"</td>"+
-            "<td style = 'text-align: center'>"+addCommasToNumber(total)+"</td>"+
+            "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(price)+"</td>"+
+            "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(total)+"</td>"+
           "</tr>"
         );
-        $("#totalTax").text(totalTax.toFixed(2));
-        $("#totalQty").text(totalQty);
-        $("#totalPrice").text(totalPrice.toFixed(2));
-        $("#overallTotal").text(overallTotal.toFixed(2));
+       
+   
+        totalQty += p_qty;
+        totalPrice += price;
+        overallTotal += total;
+      
+        $.ajax({
+          type: 'get',
+          url: 'api.php?action=get_productInfo',
+          data: {data:product},
+          success: function(data)
+          {
+            var tax = 0;
+            if(data['isVat'] === 1)
+            {
+              tax = (price/1.12);
+              totalTax += (price-tax);
+            }
+            else totalTax += 0;
+            $("#totalTax").html("Tax: "+totalTax.toFixed(2));
+          }
+        })
+   
+        $("#totalQty").html(totalQty);
+        $("#totalPrice").html("&#x20B1;&nbsp;"+totalPrice.toFixed(2));
+        $("#overallTotal").html("&#x20B1;&nbsp;"+overallTotal.toFixed(2));
 
         $("#purchaseQty_modal").hide();
         $("#prod_form")[0].reset();
+        $("#product").val("");
       }
     })
     $('#po_form').submit(function(e){
@@ -384,7 +464,7 @@
           var option = '';
           for(var i = 0; i<data.length; i++)
           {
-            option += '<div class="search-dropdown-item" tabindex="0">'+data[i].prod_desc+'</div>';
+            option += '<div class="search-dropdown-item" tabindex="0">'+data[i].prod_desc+" : "+data[i].barcode+'</div>';
           }
           $("#d_products").html(option);
         }
@@ -430,12 +510,16 @@
         var barcode = $(this).val().trim().toLowerCase();
         filterTable(barcode); 
     });
-    function filterTable(barcode) 
+    $('#product').on('input', function() {
+      var barcode = $(this).val().trim().toLowerCase();
+      filterPO(barcode); 
+    });
+    function filterPO(barcode) 
     {
-      $('#tbl_products tbody tr').each(function() 
+      $('.search-dropdown-item').each(function() 
       { 
         var $row = $(this);
-        var rowBarcode = $row.find('td:eq(2)').text().trim().toLowerCase();
+        var rowBarcode = $row.text().trim().toLowerCase();
         if (rowBarcode.includes(barcode)) 
         {
           $row.show(); 

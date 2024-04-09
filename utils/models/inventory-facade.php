@@ -20,14 +20,19 @@
         }
         public function get_productInfo($product)
         {
-            $sql = "SELECT id, isVat FROM products WHERE prod_desc = :prod_desc";
+            $data = explode(":", $product);
+            $data = array_map('trim', $data);
+            $prod_desc = $data[0];
+            $barcode = $data[1];
+
+            $sql = "SELECT id, isVat FROM products WHERE prod_desc = :prod_desc and barcode = :barcode";
             $stmt = $this->connect()->prepare($sql);
-            $stmt->bindParam(':prod_desc', $product, PDO::PARAM_STR);
+            $stmt->bindParam(':prod_desc', $prod_desc, PDO::PARAM_STR);
+            $stmt->bindParam(':barcode', $barcode, PDO::PARAM_STR);
             $stmt->execute();
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result;
-          
         }
         public function save_supplier($supplier)
         {
@@ -126,12 +131,11 @@
                     $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (supplier_id, product_id, date_purchased, pcs_no, po_number, qty_purchased, amount_beforeTax, amount_afterTax, isPaid, status,type, total) 
                                                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-                    $pcs_no = $this->get_purchaseOrderNo()['pcs_no'];
                     $sqlStatement->bindParam(1, $supplier_id, PDO::PARAM_STR);
                     $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
                     $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(4, $this->generateString($lastId), PDO::PARAM_STR);
-                    $sqlStatement->bindParam(5, $pcs_no, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(4, $lastId, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(5, $this->generateString($lastId), PDO::PARAM_STR);
                     $sqlStatement->bindParam(6, $quantity, PDO::PARAM_STR);
                     $sqlStatement->bindParam(7, $price, PDO::PARAM_STR);
                     $sqlStatement->bindParam(8, $amount_afterTax, PDO::PARAM_STR);
