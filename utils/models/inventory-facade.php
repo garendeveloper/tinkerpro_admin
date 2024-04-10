@@ -4,7 +4,14 @@
         public function get_allInventories($page, $perPage)
         {
             $offset = ($page - 1) * $perPage;
-            $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.* FROM supplier, products, inventory, uom WHERE supplier.ID = inventory.supplier_id AND products.id = inventory.product_id AND uom.id = products.uom_id LIMIT :offset, :perPage");
+            $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*
+                                            FROM inventory
+                                            JOIN products ON products.id = inventory.product_id
+                                            JOIN uom ON uom.id = products.uom_id
+                                            JOIN orders ON orders.id = inventory.order_id
+                                            JOIN supplier ON supplier.id = orders.supplier_id
+                                            ORDER BY inventory.id DESC; LIMIT :offset, :perPage");
+
             $sql->bindParam(':offset', $offset, PDO::PARAM_INT);
             $sql->bindParam(':perPage', $perPage, PDO::PARAM_INT);
             $sql->execute();
@@ -18,6 +25,15 @@
             $sqlStatement->execute();
             return $sqlStatement->fetchAll(PDO::FETCH_ASSOC);
         }
+        public function remove_nonBreakingSpace($string)
+        {
+            return preg_replace('/[^\d.]/', '', $string);
+        }
+        public function clean_number($number)
+        {
+            $number = str_replace(["₱", ",", " ", ], "", $number);
+            return $number;
+        }
         public function get_productInfo($product)
         {
             $data = explode(":", $product);
@@ -29,6 +45,16 @@
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':prod_desc', $prod_desc, PDO::PARAM_STR);
             $stmt->bindParam(':barcode', $barcode, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
+        public function get_supplierInfo($supplier)
+        {
+            $sql = "SELECT * FROM supplier WHERE supplier = :supplier";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(':supplier', $supplier, PDO::PARAM_STR);
             $stmt->execute();
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -81,17 +107,70 @@
 
             return empty($errors) ? true : $errors;
         }
-        public function get_purchaseOrderNo()
+        public function get_lastOrderData()
         {
-            $sql = "SELECT * FROM inventory ORDER BY id DESC LIMIT 1";
+            $sql = "SELECT * FROM orders ORDER BY id DESC LIMIT 1";
             $result = $this->connect()->prepare($sql);
             $result->execute();
             $row = $result->fetch(PDO::FETCH_ASSOC);
             return $row;
         }
+        public function verify_order($po_number)
+        {
+            $sql = "SELECT * FROM orders WHERE po_number = :po_number";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(':po_number', $po_number, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return $stmt->rowCount() > 0 ? true : false;
+        }
+        public function get_purchaseOrderNo()
+        {
+            $sql = "SELECT * FROM orders ORDER BY id DESC LIMIT 1";
+            $result = $this->connect()->prepare($sql);
+            $result->execute();
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            return $row;
+        }
+        public function save_order($formData)
+        {
+            
+            $isPaid = $formData['isPaid'] ? 1 : 0;
+
+            $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
+            $date_purchased = $formData['date_purchased'];
+            $po_number = $formData['po_number'];
+            $total = $this->remove_nonBreakingSpace($this->clean_number($formData['total']));
+            $price = $this->remove_nonBreakingSpace($this->clean_number($formData['total']));
+            $order_type = 1; // Purchase
+
+            $order_id = $this->get_lastOrderData()['id'];
+            if(!$this->verify_order($po_number))
+            {
+                $sqlStatement = $this->connect()->prepare("INSERT INTO orders (isPaid, supplier_id, date_purchased, po_number, price, order_type, total) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+                $sqlStatement->bindParam(1, $isPaid, PDO::PARAM_STR);
+                $sqlStatement->bindParam(2, $supplier_id, PDO::PARAM_STR);
+                $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
+                $sqlStatement->bindParam(4, $po_number, PDO::PARAM_STR);
+                $sqlStatement->bindParam(5, $price, PDO::PARAM_STR);
+                $sqlStatement->bindParam(6, $order_type, PDO::PARAM_STR);
+                $sqlStatement->bindParam(7, $total, PDO::PARAM_STR);
+                $sqlStatement->execute();
+
+                $order_id = $this->get_lastOrderData()['id'];
+
+                if($isPaid === 1)
+                {
+                //Payment transaction here [History ...]
+                }   
+            }
+            return $order_id;
+        }
         public function fetch_latestPONo()
         {
-            return $this->generateString($this->get_purchaseOrderNo()['pcs_no']+1);
+            return $this->generateString($this->get_purchaseOrderNo()['id']+1);
         }
         function generateString($id) 
         {
@@ -104,45 +183,36 @@
             if($this->validateData($formData))
             {
                 $tbldata = json_decode($formData['data'], true);
-                $supplier_id = $this->save_supplier($formData['supplier']);
-                $date_purchased = $formData['date_purchased'];
-                $isPaid = $formData['isPaid'] ? 1 : 0;
-                $lastId = $this->get_purchaseOrderNo()['pcs_no'];
+                $order_id = $this->save_order($formData);
 
                 foreach($tbldata as $row)
                 {
                     $product = $row['column_1'];
                     $quantity = $row['column_2'];
-                    $price = $row['column_3'];
-                    $total = $row['column_4'];
+                    $price = $this->remove_nonBreakingSpace($this->clean_number($row['column_3']));
+                    $total = $this->remove_nonBreakingSpace($this->clean_number($row['column_4']));
                     $status = 1;
-                    $type = 1;
 
                     $product_id = $this->get_productInfo($product)['id'];
                     $isVat = ($this->get_productInfo($product)['isVat'] == 1 ? true : false);
                     
+                    $amount_beforeTax = $total;
                     $amount_afterTax = 0;
                     if($isVat)
                     {
-                        $amount_afterTax = $price/1.12;
-                        $amount_afterTax = $price-$amount_afterTax;
+                        $amount_afterTax = $price / 1.12;
+                        $amount_afterTax = $price - $amount_afterTax;
                     }
                     
-                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (supplier_id, product_id, date_purchased, pcs_no, po_number, qty_purchased, amount_beforeTax, amount_afterTax, isPaid, status,type, total) 
-                                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status) 
+                                                            VALUES (?, ?, ?, ?, ?, ?)");
 
-                    $sqlStatement->bindParam(1, $supplier_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
                     $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(4, $lastId, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(5, $this->generateString($lastId), PDO::PARAM_STR);
-                    $sqlStatement->bindParam(6, $quantity, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(7, $price, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(8, $amount_afterTax, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(9, $isPaid, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(10, $status, PDO::PARAM_STR); 
-                    $sqlStatement->bindParam(11, $type, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(12, $total, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
                     $sqlStatement->execute();
                 }
                 return ['status'=>true, 'message'=>'Purchase Orders has been successfully submitted'];   

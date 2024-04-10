@@ -33,6 +33,17 @@
         border: 1px solid #fff;
         border-radius: 0; 
     }
+    .l_input1{
+        width: 180px; 
+    }
+
+    .p_input1 {
+        flex: 1; 
+        box-sizing: border-box;
+        padding: 5px;
+        border: 1px solid #fff;
+        border-radius: 0; 
+    }
     .has-error{
       border: 1px solid red;
     }
@@ -75,11 +86,12 @@
         </button>
       </div>
       <form id="unpaid_form">
+        <input type="hidden" name = "type" value = "unpaid">
         <div class="modal-body" style="border: none">
           <div class="tab">
             <button class="tablinks" data-tab="tab1">Payment</button>
-            <button class="tablinks" data-tab="tab2">History</button>
             <button class="tablinks" data-tab="tab3">Settings</button>
+            <button class="tablinks" data-tab="tab2">History</button>
           </div>
           <div id="tab1" class="tabcontent">
             <p></p>
@@ -90,11 +102,29 @@
             <div class="fieldContainer" style = "display:flex">
                 <div class="form-group" >
                     <label for="p_qty" id="lbl_pqty" class="l_input" style="color: #FF6900;"><strong>QTY:</strong></label>
-                    <input type="text" class="p_input" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off">
+                    <input type="text" class="p_input" name="u_qty" id="u_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align:right">
                 </div>
                 <div class="form-group" >
-                    <label for="price" id="lbl_price" class="l_input" style="color: #FF6900; "><strong>PAYMENT:</strong></label>
-                    <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="price" id="price" oninput="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
+                    <label for="u_pay" id = "" class="l_input" style="color: #FF6900; "><strong>PAY: </strong></label>
+                    <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="u_pay" id="u_pay" oninput="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
+                </div>
+            </div>
+            <div class="fieldContainer" >
+                <div class="form-group" >
+                    <label for="r_balance" id = "" class="l_input1" style="color: #FF6900; "><strong>REMAINING BALANCE: </strong></label>
+                    <input type="text" class="p_input1" pattern="\d+(\.\d{1,2})?" name="r_balance" id="r_balance" oninput="$(this).removeClass('has-error')" value = "0.00" autocomplete="off" style = "text-align: right" readonly>
+                </div>
+            </div>
+          </div>
+          <div id="tab3" class="tabcontent">
+            <div class="fieldContainer" style = "display:flex" >
+                <div class="form-group" >
+                    <label for="s_price" class="l_input" style="color: #FF6900;"><strong>PRICE</strong></label>
+                    <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="s_price" id="s_price" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
+                </div>
+                <div class="form-group" >
+                    <label for="s_due" class="l_input" style="color: #FF6900; "><strong>DUE</strong></label>
+                    <input type="text" class="p_input"  name="s_due" id="s_due" oninput="$(this).removeClass('has-error')" autocomplete="off">
                 </div>
             </div>
           </div>
@@ -111,18 +141,6 @@
     
               </tbody>
             </table>
-          </div>
-          <div id="tab3" class="tabcontent">
-            <div class="fieldContainer" style = "display:flex">
-                <div class="form-group" >
-                    <label for="s_price" class="l_input" style="color: #FF6900;"><strong>PRICE</strong></label>
-                    <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="s_price" id="s_price" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
-                </div>
-                <div class="form-group" >
-                    <label for="s_due" class="l_input" style="color: #FF6900; "><strong>DUE</strong></label>
-                    <input type="text" class="p_input"  name="s_due" id="s_due" oninput="$(this).removeClass('has-error')" autocomplete="off">
-                </div>
-            </div>
           </div>
         </div>
         <div class="modal-footer" style='display: flex; justify-content: space-between; border: none'>

@@ -106,7 +106,7 @@
               <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
                 <thead>
                   <tr>
-                    <th class="text-center" style="width: 2%;">ID</th>
+                    <th class="text-center" style="width: 4%;">ID</th>
                     <th style="width: 8%;">Supplier</th>
                     <th style="width: 4%;">Barcode</th>
                     <th class="text-center" style="width: 2%;">Unit</th>
@@ -140,6 +140,7 @@
   </div>
 <?php include("./modals/purchaseQty_modal.php")?>
 <?php include("./modals/unpaid_purchase-modal.php")?>
+<?php include("./modals/paid_purchase-modal.php")?>
 <?php include("layout/footer.php") ?>
 <?php include("layout/admin/keyboardfunction.php") ?>
 <script>
@@ -147,32 +148,92 @@
     $(".tablinks").click(function(e) {
       e.preventDefault();
       var tabId = $(this).data("tab");
-      var s_price = $("#s_price").val();
-      var s_due = $("#s_due").val();
-      if(s_price === "" || s_due === "")
+      if(validateUnpaidSettings())
       {
-        $(".tabcontent").hide();
-        $("#tab3").show();
-        $(".tablinks[data-tab='tab3']").addClass("active");
-        $("#s_price").addClass('has-error');
-        $("#s_due").addClass('has-error');
-      }
-      else
-      {
-        $("#s_price").removeClass('has-error');
-        $("#s_due").removeClass('has-error');
         $(".tabcontent").hide();
         $("#" + tabId).show();
         $(".tablinks").removeClass("active");
         $(this).addClass("active");
       }
     });
+    function validateUnpaidSettings() 
+    {
+      var isValid = true;
+      $('#tab3 input[type=text], input[type=date]').each(function() {
+        if($(this).val() === '') 
+        {
+          isValid = false;
+          $(this).addClass('has-error');
+        } 
+        else 
+        {
+          $(this).removeClass('has-error');
+        }
+      });
+      return isValid;
+    }
+    function validateTab1() 
+    {
+      var isValid = true;
+      $('#tab1 input[type=text], input[type=date]').each(function() {
+        if($(this).val() === '') 
+        {
+          isValid = false;
+          $(this).addClass('has-error');
+        } 
+        else 
+        {
+          $(this).removeClass('has-error');
+        }
+      });
+      return isValid;
+    }
     $("#tab3").show();
     $(".tablinks[data-tab='tab3']").addClass("active");
+    $("#unpaid_form").on('submit', function(e){
+      e.preventDefault();
+      if(validateUnpaidSettings())
+      {
+        if(validateTab1())
+        {
+          var tab1FormData = $(this).serialize();
+          $.ajax({
+            type: 'post',
+            url: 'api.php?action=save_order',
+            data: tab1FormData,
+            success: function(response)
+            { 
+              if(response.status === true)
+              {
+                submit_purchaseOrder();
+              }
+            },
+            error: function(error)
+            {
+              alert("Failed on submitting the data!");
+            }
+          })
+        }
+        else
+        {
+          $(".tabcontent").hide();
+          $("#tab1").show();
+          $(".tablinks").removeClass("active");
+          $(".tablinks[data-tab='tab1']").addClass("active");
+        }
+      }
+      else
+      {
+        $(".tabcontent").hide();
+        $("#tab3").show();
+        $(".tablinks").removeClass("active");
+        $(".tablinks[data-tab='tab3']").addClass("active");
+      }
+    })
   });
 </script>
 <script>
-  var price_ids = ['price', 's_price'];
+  var price_ids = ['price', 's_price', 'u_pay'];
   price_ids.forEach(function(id) 
   {
     document.getElementById(id).addEventListener('input', function(event) {
@@ -185,7 +246,7 @@
     });
 });
   $(document).ready(function() {
-      $('#paidSwitch').prop('checked', true); // Set the 'checked' property to true
+      $('#paidSwitch').prop('checked', true); 
   });
 </script>
 
@@ -200,8 +261,8 @@
     show_allInventories(1, perPage); 
     show_allSuppliers();
     show_allProducts();
-    get_purchaseOrderNo();
-    function get_purchaseOrderNo()
+    show_purchaseOrderNo();
+    function show_purchaseOrderNo()
     {
       $.ajax({
         type: 'get',
@@ -231,28 +292,28 @@
     $("#btn_omCancel").click(function(){
       resetPurchaseOrderForm();
     })
-    $("#btn_savePO").click(function(e){
-      e.preventDefault();
-
+    function submit_purchaseOrder()
+    {
       var dataArray = [];
-      $('#tbl_purchaseOrders tbody tr').each(function() {
-          var rowData = {};
-          $(this).find('td').each(function(index, cell) {
-              rowData['column_' + (index + 1)] = $(cell).text(); 
-          });
-          dataArray.push(rowData);
-      });
+        $('#tbl_purchaseOrders tbody tr').each(function() {
+            var rowData = {};
+            $(this).find('td').each(function(index, cell) {
+                rowData['column_' + (index + 1)] = $(cell).text(); 
+            });
+            dataArray.push(rowData);
+        });
     
       $.ajax({
         type: 'POST',
         url: 'api.php?action=save_purchaseOrder', 
         data: {
           data: JSON.stringify(dataArray),
-          pcs_no: $("#pcs_no").val(),
+          po_number: $("#pcs_no").val(),
           isPaid: $('#paidSwitch').prop('checked'),
           date_purchased: $("#date_purchased").val(),
           supplier: $("#supplier").val(),
           product: $("#product").val(),
+          total: overallTotal,
         },
         dataType: 'json',
         success: function(response) 
@@ -261,6 +322,12 @@
           {
             alert(response.message);
             resetPurchaseOrderForm();
+            $("#paid_purchase_modal").hide();
+            $("#totalTax").html("Tax: 0.00");
+            $("#totalQty").html("0");
+            $("#totalPrice").html("&#x20B1;&nbsp;0.00");
+            $("#overallTotal").html("&#x20B1;&nbsp;0.00");
+            show_allInventories(1, perPage); 
           }
           else
           {
@@ -280,32 +347,46 @@
           alert("Something went wrong!");
         }
       });
-      
-    })
-    $("#btn_addPO").click(function(e){
+    }
+    $("#btn_savePO").click(function(e){
       e.preventDefault();
       if(validatePOForm())
       {
-   
         if($("#paidSwitch").prop("checked") === false)
         {
-         
+          
           $("#unpaid_purchase_modal").slideDown({
             backdrop: 'static',
             keyboard: false,
           });
           $("#product_name").text($("#product").val());
+          $("#s_price").val($("#overallTotal").text());
           $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
         }
         else
         {
-          $("#purchaseQty_modal").slideDown({
+          $("#paid_purchase_modal").slideDown({
             backdrop: 'static',
             keyboard: false,
           });
-          $("#product_name").text($("#product").val());
-          $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+          $("#total_paid").html($("#overallTotal").text());
+          $("#paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+          $("#btn_confirmPayment").click(function(){
+            submit_purchaseOrder();
+          })
         }
+      }
+    })
+    $("#btn_addPO").click(function(e){
+      e.preventDefault();
+      if(validatePOForm())
+      {
+        $("#purchaseQty_modal").slideDown({
+          backdrop: 'static',
+          keyboard: false,
+        });
+        $("#product_name").text($("#product").val());
+        $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
       }
     })
     function validatePOForm() 
@@ -351,6 +432,10 @@
       $("#purchaseQty_modal").hide();
       $("#unpaid_purchase_modal").hide();
     })
+    $("#btn_paidClose, #btn_paidCancel").on('click', function(e){
+      e.preventDefault();
+      $("#paid_purchase_modal").hide();
+    })
     $("#btn_pqtyCancel").click(function(){
       $("#prod_form")[0].reset();
     })
@@ -358,12 +443,19 @@
       perPage = $(this).val();
       show_allInventories(1, perPage); 
     })
-    $('#p_qty').on('input', function(e) {
-        var inputValue = $(this).val();
-        inputValue = inputValue.replace(/\D/g, '');
-        $(this).val(inputValue);
-    });
+    var i_quantities = ['#p_qty', '#u_qty']; 
 
+    i_quantities.forEach(function(id) {
+        $(id).on('input', function(e) {
+            var inputValue = $(this).val();
+            inputValue = inputValue.replace(/\D/g, '');
+            $(this).val(inputValue);
+        });
+    });
+    $("#supplier").change(function(e){
+      e.preventDefault()
+      $('#tbl_purchaseOrders tbody').empty();
+    })
     $("#prod_form").submit(function(e){
       e.preventDefault();
 
@@ -406,8 +498,8 @@
         })
    
         $("#totalQty").html(totalQty);
-        $("#totalPrice").html("&#x20B1;&nbsp;"+totalPrice.toFixed(2));
-        $("#overallTotal").html("&#x20B1;&nbsp;"+overallTotal.toFixed(2));
+        $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice.toFixed(2)));
+        $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(overallTotal.toFixed(2)));
 
         $("#purchaseQty_modal").hide();
         $("#prod_form")[0].reset();
@@ -449,7 +541,8 @@
           var option = '';
           for(var i = 0; i<data.length; i++)
           {
-            option += '<div class="search-dropdown-item1" tabindex="0">'+data[i].supplier+'</div>';
+            // option += '<div class="search-dropdown-item1" tabindex="0">'+data[i].supplier+'</div>';
+            option += '<option>'+data[i].supplier+'</option>';
           }
           $("#d_suppliers").html(option);
         }
@@ -483,7 +576,7 @@
             for(var i = 0; i < data.length; i++)
             {
               tbl_data += "<tr>";
-              tbl_data += "<td style = 'text-align: center'>"+data[i].id+"</td>";
+              tbl_data += "<td style = 'text-align: center'>"+data[i].po_number+"</td>";
               tbl_data += "<td>"+data[i].supplier+"</td>";
               tbl_data += "<td>"+data[i].barcode+"</td>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].uom_name+"</td>";
@@ -568,7 +661,6 @@
           $(".optionmodal-content").show();
       }, 100); 
       $("#btn_createPO").addClass('active');
-
     }
 
 </script>
@@ -590,18 +682,21 @@
         $("#product").val(clickedItem.text());
         $("#d_products").css('display', 'none');
     });
-    $(document).on('input', '#supplier', function() {
-      var searchTerm = $(this).val().trim().toLowerCase();
-      $('.search-dropdown-item1').each(function() {
-          var text = $(this).text().trim().toLowerCase();
-          if (text.includes(searchTerm)) {
-              $(this).show();
-          } else {
-              $(this).hide();
-          }
-      });
-      $("#d_suppliers").css('display', searchTerm ? 'block' : 'none');
-    });
+    // $(document).on('input', '#supplier', function() {
+    //   var searchTerm = $(this).val().trim().toLowerCase();
+    //   $('.search-dropdown-item1').each(function() {
+    //       var text = $(this).text().trim().toLowerCase();
+    //       if (text.includes(searchTerm)) {
+    //           $(this).show();
+    //       } else {
+    //           $(this).hide();
+    //       }
+    //   });
+    //   $("#d_suppliers").css('display', searchTerm ? 'block' : 'none');
+    // });
+    $("#supplier").on('change', function(){
+      $("#tbl_purchaseOrders tbody").empty();
+    })
     $(document).on('click', '.search-dropdown-item1', function() {
         var clickedItem = $(this);
         $("#supplier").val(clickedItem.text());

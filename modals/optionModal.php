@@ -5,11 +5,10 @@
   position: fixed; 
   z-index: 9999;
   top: 0;
-  top: 0;
   bottom: 0;
   left: calc(100% - 400px); 
   width: 400px;
-   background-color: transparent;
+  background-color: transparent;
   overflow: hidden;
   height: 100%; 
   animation: slideInRight 0.5s; 
@@ -1012,7 +1011,7 @@ input{
               <form id = "po_form">
                 <div class="fieldContainer">
                   <label>PO#</label>
-                  <input type="text" name="pcs_no" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px" readonly/>
+                  <input type="text" name="po_number" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px" readonly/>
                   <label for="paidSwitch" class="switch-label" >Paid</label>
                   <label class="switch" id = "isPaid">
                     <input id="paidSwitch" type="checkbox" onchange="$('#isPaid').removeClass('switch-error')" name="isPaid"  style="height: 25px;">
@@ -1023,21 +1022,23 @@ input{
                 <div class="fieldContainer">
                   <label>Supplier</label>
                   <div class="search-container">
-                      <input type="text" class = "search-input"  autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value="" style="width: 280px; height: 25px">
-                      <div class="search-dropdown1" id = "d_suppliers">
+                      <input list = "d_suppliers" type="text" class = "search-input"  autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value="" style="width: 280px; height: 25px">
+                      <!-- <div class="search-dropdown1" id = "d_suppliers">
                         
-                      </div>
+                      </div> -->
+                      <datalist id = "d_suppliers">
+                      </datalist>
                   </div>
                 </div>
                 <div class="fieldContainer">
                   <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
                   <div class="search-container">
-                      <input type="text" style="width: 175px; height: 25px; font-size: 12px;"  class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product">
+                      <input type="text" style="width: 210px; height: 25px; font-size: 12px;"  class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product">
                       <div class="search-dropdown" id = "d_products">
                         
                       </div>
                   </div>
-                  <button style="border-color: #FF6900; font-size: 10px; height: 25px; "  id = "btn_addPO"><i class = "bi bi-plus-square"></i> Add Product</button>
+                  <button style="border-color: #FF6900; font-size: 10px; height: 25px; "  id = "btn_addPO"><i class = "bi bi-plus-square"></i>&nbsp; Add</button>
                 </div>
               </form>
               <p></p>
@@ -1070,7 +1071,7 @@ input{
               </table>
             </div>
             <div style = "padding: 10px;">
-              <table class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px;">
+              <table class="text-color table-border" id = "tbl_purchaseOrderFooter" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px;">
                   <thead >
                     <tr>
                     <th style = "background-color: #1E1C11; border: 1px solid #FF6900; width: 25%;">Total</th>

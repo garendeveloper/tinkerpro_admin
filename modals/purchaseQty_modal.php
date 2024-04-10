@@ -57,11 +57,11 @@
             <div class="fieldContainer" style = "display:flex">
                 <div class="form-group" >
                     <label for="p_qty" id="lbl_pqty" class="l_input" style="color: #FF6900;"><strong>QTY:</strong></label>
-                    <input type="text" class="p_input" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off">
+                    <input type="text" class="p_input" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
                 </div>
                 <div class="form-group" >
                     <label for="price" id="lbl_price" class="l_input" style="color: #FF6900; "><strong>RATE:</strong></label>
-                    <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="price" id="price" oninput="$(this).removeClass('has-error')" autocomplete="off">
+                    <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="price" id="price" oninput="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
                 </div>
             </div>
           </div>
