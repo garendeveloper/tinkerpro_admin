@@ -236,8 +236,8 @@
                           <th class="text-center" style="width: 7%;">Mark-up (%)</th>
                           <th class="text-center" style="width: 7%;">Cost (Php)</th>
                           <!-- <th class="text-center" style="width: 7%;">Serial No.</th> -->
-                          <th class="text-center" style="width: 7%;">Category</th>
-                          <th class="text-center" style="width: 7%;">Status</th>
+                          <th class="text-center" style="width: 15%;">Category</th>
+                          <th class="text-center" style="width: 5%;">Status</th>
                           <th class="text-center" style="width: 7%;">Action</th>
                         </tr>
                       </thead>
@@ -271,7 +271,9 @@
      var p_id = document.getElementById('productid').value;
      $('.modalHeaderTxt').text(!p_id ? "Add New Product" : $('.modalHeaderTxt').text());
      var checkbox = document.getElementById('showIncludesTaxVatToggle');
-     toggleChangeColor(checkbox);
+      toggleChangeColor(checkbox);
+      
+  
      if( $('#add_products_modal').is(':visible')){
       var toggle = document.getElementById('statusValue');
       var statusLabel = document.getElementById('statusActive');
@@ -447,11 +449,17 @@ $('.searchProducts').on('input', function(){
         var desc = $(this).closest('tr').find('.description').text();
         $('.highlighteds').removeClass('highlighteds');
         $('.highlightedss').removeClass('highlightedss')
-
-       var $row = $(this).closest('tr').addClass('highlighteds');
-        
+      
+        var $row = $(this).closest('tr').addClass('highlighteds');
+        if(isTax == 0){
+           var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
+           showTaxCheckbox.disabled = true;
+        }
+        var category = $(this).closest('tr').find('.categoryDetails').text();
+        var categoryid = $(this).closest('tr').find('.categoryid').text();
+        var variantid = $(this).closest('tr').find('.variantid').text();
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
-        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc)
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid)
     });
 
 </script>

@@ -1277,6 +1277,7 @@ function closeAddProductsModal(){
     $('.product-modal').css('animation', '');
      clearProductsInputs()
      clearFileInput()
+    
   });
   
 }
@@ -1419,7 +1420,6 @@ function clearProductsInputs(){
   document.getElementById('productLbl').value = "";
   document.getElementById('cat_Lbl').value = "";
   document.getElementById('var_Lbl').value = "";
-
   var uptBtn = document.querySelector('.updateProductsBtn');
     uptBtn.setAttribute('hidden',true);
     var saveBtn = document.querySelector('.saveProductsBtn');
@@ -1515,7 +1515,6 @@ function addProduct(){
   formData.append("category_details",  jsonString );
  if(productname && barcode && cost && markup){
   axios.post('api.php?action=addProduct', formData).then(function(response){
-      console.log(response)
      refreshProductsTable()
      closeAddProductsModal()
   }).catch(function(error){
@@ -1528,7 +1527,7 @@ function addProduct(){
 }
 
 function  toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM,productuomid,productBrand,productCost, productMakup, productPrice,
- productStatus,isDiscounted,isTax, isTaxIncluded, serviceCharge,displayService,otherCharges,displayOtherCharges,status, image, desc ){
+ productStatus,isDiscounted,isTax, isTaxIncluded, serviceCharge,displayService,otherCharges,displayOtherCharges,status, image, desc, category, categoryid, variantid){
   $('#add_products_modal').show();
   productId? document.getElementById('productid').value = productId : null;
   productName ? document.getElementById("productname").value = productName : null;
@@ -1552,8 +1551,22 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
   desc ? document.getElementById("description").value = desc : null
  
   //category
+  if(category){
+  var categoryArray = JSON.parse(category);
+  var concatenatedValue = '';
+  categoryArray.forEach(function(item) {
+    concatenatedValue += item.productLbl + item.catLbl + item.varLbl;
 
-  //catagory
+  });
+  document.getElementById("categoriesInput").value = concatenatedValue
+  document.getElementById('productLbl').value = categoryArray[0].productLbl;
+  document.getElementById('cat_Lbl').value = categoryArray[0].catLbl;
+  document.getElementById('var_Lbl').value = categoryArray[0].varLbl
+ 
+  } 
+  categoryid ? document.getElementById('catID').value = categoryid : null;
+  variantid ? document.getElementById('varID').value = variantid : null;
+ 
 
  var discountedCheckbox = document.getElementById('discountToggle');
  discountedCheckbox.checked = (isDiscounted == 1) ? true : false;
@@ -1628,6 +1641,19 @@ function updateProducts(){
   cost ? costLabel.style.color = '' : costLabel.style.color = 'red';
   markup ?  markupLabel.style.color = '' : markupLabel.style.color = 'red';
 
+   //category details
+  var catID = document.getElementById('catID').value ?? null;
+  var varID = document.getElementById('varID').value ?? null;
+  var productLbl = document.getElementById('productLbl').value !== null ? document.getElementById('productLbl').value : "Product";
+  var cat_lbl = document.getElementById('cat_Lbl').value ?? null;
+  var var_lbl = document.getElementById('var_Lbl').value ?? null
+  var jsonData = [{
+      "productLbl":  productLbl,
+      "catLbl": cat_lbl,
+      "varLbl":  var_lbl
+  }];
+  var jsonString = JSON.stringify(jsonData);
+
   var formData = new FormData();
   formData.append("uploadedImage", file); 
   formData.append("productname", productname); 
@@ -1649,6 +1675,9 @@ function updateProducts(){
   formData.append("status", status); 
   formData.append("description", description); 
   formData.append("product_id",p_id)
+  formData.append("catID", catID); 
+  formData.append("varID", varID);
+  formData.append("category_details",  jsonString );
   if(productname && barcode && cost && markup){
     axios.post('api.php?action=updateProduct', formData).then(function(response){
       console.log(response)
@@ -1677,6 +1706,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var otherCharges = document.getElementById('otherChargesToggle');
   var taxLabel = document.getElementById('taxtVatLbl');
   var serviceLabel = document.getElementById('serviceChargeLbl');
+  var showTaxLbl = document.getElementById('showTaxVatLbl');
 
   $inputs.on('input', function() {
     handleInputChange();
@@ -1685,7 +1715,7 @@ document.addEventListener('DOMContentLoaded', function() {
       isFirstInputZeroIndex = false;
       isFirstInputOneIndex = false;
       isFirstInputTwoIndex = false;
-    $('#selling_price, #markup, #cost').val('');
+      $('#selling_price, #markup, #cost').val('');
     return; 
   }
 
@@ -1723,6 +1753,7 @@ showTaxCheckbox.addEventListener('change', function() {
         document.getElementById('selling_price').value = newPrice.toFixed(2);
     } else {
         var newPrice = sellingPrice - tax;
+        showTaxLbl.style.color = ""
         document.getElementById('selling_price').value = newPrice.toFixed(2);
     }
 });
@@ -1809,14 +1840,17 @@ otherCharges.addEventListener('change', function() {
     }
   }
   function handleInputChange() {
-    showTaxCheckbox.checked = true; 
+    if(taxCheckbox.checked === true){
+      showTaxCheckbox.checked = true; 
+    
+    }
     service.checked = false;
     otherCharges.checked = false;
     taxCheckbox.disabled = false;
     showTaxCheckbox.disabled = false;
     service.disabled = false
-    taxLabel.style.color = '';
     serviceLabel.style.color = '';
+   
   }
 
 });

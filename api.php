@@ -2,9 +2,11 @@
     include( __DIR__ . '/utils/db/connector.php');
     include( __DIR__ . '/utils/models/user-facade.php');
     include( __DIR__ . '/utils/models/product-facade.php');
+    include( __DIR__ . '/utils/models/ingredients-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
+    $ingredients = new IngredientsFacade();
    
 
     header("Content-Type: application/json");
@@ -96,6 +98,22 @@
             } else {
                 echo json_encode(['success' => false]); 
             }
+            break;
+        case "checkBarcode":
+            $barcode = isset($_GET['barcode']) ? $_GET['barcode'] : null;
+            $result = $ingredients->checkBarcode($barcode);
+            echo json_encode(['success' => true, 'barcode' =>  $result]); 
+            break;
+        case "addIngredients":
+            $postData = json_decode(file_get_contents('php://input'), true);
+            $ingredientName = isset($postData['ingredientName']) ? $postData['ingredientName'] : null;
+            $barcode = isset($postData['barcode']) ? $postData['barcode'] : null;
+            $uom_id = isset($postData['uom_id']) ? $postData['uom_id'] : null;
+            $cost = isset($postData['cost']) ? $postData['cost'] : null;
+            $status = isset($postData['status']) ? $postData['status'] : null;
+            $description = isset($postData['description']) ? $postData['description'] : null;
+            $result = $ingredients->addIngredient($ingredientName,$barcode,$uom_id,$cost, $status, $description);
+            echo json_encode(['success' => true, 'name' =>   $ingredientName]);
             break;
         default:
             header("HTTP/1.0 400 Bad Request");
