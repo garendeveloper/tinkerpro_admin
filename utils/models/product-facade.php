@@ -26,7 +26,9 @@
             products.is_otherCharges as otherCharges, 
             products.is_othrChargeDisplay as displayOthers,
             products.productImage as image, 
-            products.category_details as category_details  
+            products.category_details as category_details, 
+            products.category_id as category_id,
+            products.variant_id as variant_id
         FROM products 
         LEFT JOIN uom ON uom.id = products.uom_id";
   
@@ -94,65 +96,137 @@
       return ['success' => true, 'message' => 'Product added successfully'];
   }
   
-  public function updateProduct($formData) {
-    $productname = $formData['productname'] ?? null;
-    $barcode = $formData['barcode'] ?? null;
-    $brand = $formData['brand'] ?? null;
-    $code = $formData['code'] ?? null;
-    $cost = $formData['cost'] ?? null;
-    $description = $formData['description'] ?? null;
-    $discount = $formData['discount'] ?? null;
-    $display_other_charges = $formData['display_other_charges'] ?? null;
-    $display_service_charge = $formData['display_service_charge'] ?? null;
-    $display_tax = $formData['display_tax'] ?? null;
-    $markup = $formData['markup'] ?? null;
-    $other_charges = $formData['other_charges'] ?? null;
-    $oum_id = $formData['oum_id'] ?? null;
-    $sellingPrice = $formData['sellingPrice'] ?? null;
-    $service_charge = $formData['service_charge'] ?? null;
-    $sku = $formData['sku'] ?? null;
-    $status = $formData['status'] ?? null;
-    $vat = $formData['vat'] ?? null;
-    $uploadedFile = $_FILES['uploadedImage'] ?? null;
-    $id = $formData['product_id'] ?? null;
+//   public function updateProduct($formData) {
+//     $productname = $formData['productname'] ?? null;
+//     $barcode = $formData['barcode'] ?? null;
+//     $brand = $formData['brand'] ?? null;
+//     $code = $formData['code'] ?? null;
+//     $cost = $formData['cost'] ?? null;
+//     $description = $formData['description'] ?? null;
+//     $discount = $formData['discount'] ?? null;
+//     $display_other_charges = $formData['display_other_charges'] ?? null;
+//     $display_service_charge = $formData['display_service_charge'] ?? null;
+//     $display_tax = $formData['display_tax'] ?? null;
+//     $markup = $formData['markup'] ?? null;
+//     $other_charges = $formData['other_charges'] ?? null;
+//     $oum_id = ($formData['oum_id'] === 0 || $formData['oum_id'] === '') ? null : $formData['oum_id'];
+//     $sellingPrice = $formData['sellingPrice'] ?? null;
+//     $service_charge = $formData['service_charge'] ?? null;
+//     $sku = $formData['sku'] ?? null;
+//     $status = $formData['status'] ?? null;
+//     $vat = $formData['vat'] ?? null;
+//     $uploadedFile = $_FILES['uploadedImage'] ?? null;
+//     $id = $formData['product_id'] ?? null;
+//     $cat_id = ($formData['catID'] === 0 || $formData['catID'] === '') ? null : $formData['catID'];
+//     $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
+//     $category_details = $formData['category_details'] ?? null;
 
-    if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
-        $tempPath = $uploadedFile['tmp_name'];
-        $fileName = $uploadedFile['name'];
+//     if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
+//         $tempPath = $uploadedFile['tmp_name'];
+//         $fileName = $uploadedFile['name'];
 
-        $destination = './assets/products/' . $fileName;
-        move_uploaded_file($tempPath, $destination);
-    } else {
-        $fileName = null;
-    }
+//         $destination = './assets/products/' . $fileName;
+//         move_uploaded_file($tempPath, $destination);
+//     } else {
+//         $fileName = null;
+//     }
 
-    $sql = 'UPDATE products SET 
-            prod_desc = ?,
-            barcode = ?,
-            cost = ?, 
-            markup = ?, 
-            prod_price = ?, 
-            isVAT = ?, 
-            Description = ?, 
-            sku = ?, 
-            code = ?, 
-            uom_id = ?, 
-            is_discounted = ?, 
-            is_taxIncluded = ?,
-            is_serviceCharge = ?,
-            is_otherCharges = ?,
-            is_srvcChrgeDisplay = ?,
-            is_othrChargeDisplay = ?,
-            status = ?,
-            productImage = ?,
-            brand = ?
-            WHERE id = ?';
+//     $sql = 'UPDATE products SET 
+//             prod_desc = ?,
+//             barcode = ?,
+//             cost = ?, 
+//             markup = ?, 
+//             prod_price = ?, 
+//             isVAT = ?, 
+//             Description = ?, 
+//             sku = ?, 
+//             code = ?, 
+//             uom_id = ?, 
+//             is_discounted = ?, 
+//             is_taxIncluded = ?,
+//             is_serviceCharge = ?,
+//             is_otherCharges = ?,
+//             is_srvcChrgeDisplay = ?,
+//             is_othrChargeDisplay = ?,
+//             status = ?,
+//             productImage = ?,
+//             brand = ?,
+//             category_id = ?,
+//             variant_id = ?,
+//             category_details = ?
+//             WHERE id = ?';
 
-    $stmt = $this->connect()->prepare($sql);
-    $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
-        $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $id]);
+//     $stmt = $this->connect()->prepare($sql);
+//     $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
+//         $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $id, $cat_id,$var_id, $category_details]);
 
-    return $stmt;
+//     return $stmt;
+// }
+public function updateProduct($formData) {
+  $productname = $formData['productname'] ?? null;
+  $barcode = $formData['barcode'] ?? null;
+  $brand = $formData['brand'] ?? null;
+  $code = $formData['code'] ?? null;
+  $cost = $formData['cost'] ?? null;
+  $description = $formData['description'] ?? null;
+  $discount = $formData['discount'] ?? null;
+  $display_other_charges = $formData['display_other_charges'] ?? null;
+  $display_service_charge = $formData['display_service_charge'] ?? null;
+  $display_tax = $formData['display_tax'] ?? null;
+  $markup = $formData['markup'] ?? null;
+  $other_charges = $formData['other_charges'] ?? null;
+  $oum_id = ($formData['oum_id'] === 0 || $formData['oum_id'] === '') ? null : $formData['oum_id'];
+  $sellingPrice = $formData['sellingPrice'] ?? null;
+  $service_charge = $formData['service_charge'] ?? null;
+  $sku = $formData['sku'] ?? null;
+  $status = $formData['status'] ?? null;
+  $vat = $formData['vat'] ?? null;
+  $uploadedFile = $_FILES['uploadedImage'] ?? null;
+  $id = $formData['product_id'] ?? null;
+  $cat_id = ($formData['catID'] === 0 || $formData['catID'] === '') ? null : $formData['catID'];
+  $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
+  $category_details = $formData['category_details'] ?? null;
+
+  if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
+      $tempPath = $uploadedFile['tmp_name'];
+      $fileName = $uploadedFile['name'];
+
+      $destination = './assets/products/' . $fileName;
+      move_uploaded_file($tempPath, $destination);
+  } else {
+      $fileName = null;
+  }
+
+  $sql = 'UPDATE products SET 
+          prod_desc = ?,
+          barcode = ?,
+          cost = ?, 
+          markup = ?, 
+          prod_price = ?, 
+          isVAT = ?, 
+          Description = ?, 
+          sku = ?, 
+          code = ?, 
+          uom_id = ?, 
+          is_discounted = ?, 
+          is_taxIncluded = ?,
+          is_serviceCharge = ?,
+          is_otherCharges = ?,
+          is_srvcChrgeDisplay = ?,
+          is_othrChargeDisplay = ?,
+          status = ?,
+          productImage = ?,
+          brand = ?,
+          category_id = ?,
+          variant_id = ?,
+          category_details = ?
+          WHERE id = ?';
+
+  $stmt = $this->connect()->prepare($sql);
+  $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
+      $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $id]);
+
+  return $stmt;
 }
 
 

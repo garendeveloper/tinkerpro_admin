@@ -527,9 +527,6 @@ function handleClick(event, anchor,id) {
 
 
 
-
-
-
 function highlight(element) {
     const categoriesDiv = document.getElementById('categoriesDiv');
     if (element.id === 'showCategories') {
