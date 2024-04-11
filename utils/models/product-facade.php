@@ -28,7 +28,8 @@
             products.productImage as image, 
             products.category_details as category_details, 
             products.category_id as category_id,
-            products.variant_id as variant_id
+            products.variant_id as variant_id,
+            products.is_BOM as is_BOM
         FROM products 
         LEFT JOIN uom ON uom.id = products.uom_id";
   
@@ -55,46 +56,86 @@
   }
   
   
-    public function addProduct($formData) {
-      $productname = $formData['productname'];
-      $barcode = $formData['barcode'];
-      $brand = $formData['brand'] ?? null;
-      $code= $formData['code'] ?? null;
-      $cost = $formData['cost'] ?? null;
-      $description = $formData['description'] ?? null;
-      $discount = $formData['discount'];
-      $display_other_charges = $formData['display_other_charges'];
-      $display_service_charge = $formData['display_service_charge'];
-      $display_tax = $formData['display_tax'];
-      $markup = $formData['markup'];
-      $other_charges = $formData['other_charges'];
-      $oum_id = ($formData['oum_id'] === 0 || $formData['oum_id'] === '') ? null : $formData['oum_id'];
-      $sellingPrice = $formData['sellingPrice'];
-      $service_charge = $formData['service_charge'];
-      $sku = $formData['sku'] ?? null;
-      $status = $formData['status'];
-      $vat = $formData['vat'];
-      $uploadedFile = $_FILES['uploadedImage'] ?? null;
-      $cat_id = ($formData['catID'] === 0 || $formData['catID'] === '') ? null : $formData['catID'];
-      $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
-      $category_details = $formData['category_details'] ?? null;
+ 
+  public function addProduct($formData) {
+    $productname = $formData['productname'];
+    $barcode = $formData['barcode'];
+    $brand = $formData['brand'] ?? null;
+    $code = $formData['code'] ?? null;
+    $cost = $formData['cost'] ?? null;
+    $description = $formData['description'] ?? null;
+    $discount = $formData['discount'];
+    $display_other_charges = $formData['display_other_charges'];
+    $display_service_charge = $formData['display_service_charge'];
+    $display_tax = $formData['display_tax'];
+    $markup = $formData['markup'];
+    $other_charges = $formData['other_charges'];
+    $oum_id = ($formData['oum_id'] === 0 || $formData['oum_id'] === '') ? null : $formData['oum_id'];
+    $sellingPrice = $formData['sellingPrice'];
+    $service_charge = $formData['service_charge'];
+    $sku = $formData['sku'] ?? null;
+    $status = $formData['status'];
+    $vat = $formData['vat'];
+    $uploadedFile = $_FILES['uploadedImage'] ?? null;
+    $cat_id = ($formData['catID'] === 0 || $formData['catID'] === '') ? null : $formData['catID'];
+    $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
+    $category_details = $formData['category_details'] ?? null;
+    $bomStat = $formData['bomStat'] ?? null;
+
+    // Handle file upload
+    $fileName = null;
+    if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
+        $tempPath = $uploadedFile['tmp_name'];
+        $fileName = $uploadedFile['name'];
+
+        $destination = './assets/products/' . $fileName;
+        move_uploaded_file($tempPath, $destination);
+    }
+
+    // Insert product information into the database
+    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    $stmt = $this->connect()->prepare($sql);
+    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat]);
+
+    $maxIdQuery = $this->connect()->query('SELECT MAX(id) AS max_id FROM products');
+    $maxIdResult = $maxIdQuery->fetch(PDO::FETCH_ASSOC);
+    $maxId = $maxIdResult['max_id'];
+
   
-      if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
-          $tempPath = $uploadedFile['tmp_name'];
-          $fileName = $uploadedFile['name'];
-  
-          $destination = './assets/products/' . $fileName;
-          move_uploaded_file($tempPath, $destination);
-      } else {
-          $fileName = null;
-      }
-  
-      $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand,category_id, variant_id,	category_details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-      $stmt = $this->connect()->prepare($sql);
-      $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details]);
-  
-      return ['success' => true, 'message' => 'Product added successfully'];
-  }
+    if ($bomStat == 1) {
+        $bomData = $formData['productBOM'] ?? [];
+        $placeholders = rtrim(str_repeat('(?, ?, ?, ?, ?),', count($bomData)), ',');
+        $values = [];
+        foreach ($bomData as $entry) {
+            $bomEntry = json_decode($entry, true);
+            $ingredients_id = $bomEntry['ingredientId'];
+            $qty = $bomEntry['ingredientsQty'];
+            $uom_id = $bomEntry['uom_id'];
+
+            $values[] =   $maxId;
+            $values[] = $ingredients_id;
+            $values[] = $qty;
+            $values[] = $uom_id;
+            $values[] = 1; 
+        }
+
+        // Insert BOM entries
+        $sql = 'INSERT INTO bill_of_materials(prod_id, ingredients_id, qty, uom_id, is_save) VALUES ' . $placeholders;
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute($values);
+
+        // Check for successful insertion
+        $numInsertedRows = $stmt->rowCount();
+        if ($numInsertedRows == count($bomData)) {
+            echo "All BOM entries inserted successfully.<br>";
+        } else {
+            echo "Failed to insert all BOM entries.<br>";
+        }
+    }
+
+    return ['success' => true, 'products' =>   $stmt];
+}
+
   
 //   public function updateProduct($formData) {
 //     $productname = $formData['productname'] ?? null;

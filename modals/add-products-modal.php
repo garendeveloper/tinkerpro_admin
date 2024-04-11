@@ -866,6 +866,150 @@ font-weight: bold;
   padding-top: 5px;
   margin: 0;
 }
+.bomHeader{
+color: #ffff;
+font-family: Century Gothic;
+padding-top: 7px;
+margin-left: 10px;
+font-size: 13px;
+}
+
+/* new */
+
+.bomLbl {
+  position: relative;
+  display: inline-block;
+  width: 40px; 
+  height: 20px; 
+  outline: none; 
+}
+
+.bomLbl input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sliderbom {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #BFBFBF;
+  -webkit-transition: .4s;
+  transition: .4s;
+  outline: none;
+  border-radius: 10px; 
+}
+
+.sliderbom:before {
+  position: absolute;
+  content: "";
+  height: 16px; 
+  width: 16px;
+  left: 2px; 
+  bottom: 2px;
+  background-color: #888888;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%; 
+}
+
+input:checked + .sliderbom {
+  background-color: #00CC00;
+}
+
+input:focus + .sliderbom {
+  box-shadow: 0 0 1px #BFBFBF;
+}
+
+input:checked + .sliderbom:before {
+  -webkit-transform: translateX(20px); 
+  -ms-transform: translateX(20px);
+  transform: translateX(20px); 
+}
+
+.sliderbom.round {
+  border-radius: 10px; 
+}
+
+.sliderbom.round:before {
+  border-radius: 50%; 
+}
+
+.sliderbom.active {
+  background-color: #00CC00;
+}
+.enablingTxt{
+  color: #ffff;
+  font-family: Century Gothic;
+  font-size: 13px;
+  text-align: center;
+  font-style: italic;
+}
+.btns-bom{
+  font-size: 12px;
+  font-family: Century Gothic;
+  border-radius: 5px;
+  outline: 0;
+  background-color: #404040;
+  border-color: #595959;
+}
+.btns-bom:hover{
+  background-color: #FF6900;
+  outline: 0;
+}
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top:10px;
+}
+
+#myTable td {
+  border: none;
+  font-family: Century Gothic;
+  font-size: 11px;
+}
+
+#myTable td {
+  padding: 0; 
+  padding-left: 10px
+}
+
+#myTable tr {
+  margin: 0;
+}
+.table-container {
+  max-height: 80px; 
+  overflow-y: scroll;
+  background-color: transparent;
+  top: 85px;
+  max-width: 500px;
+  padding-right: 20px;
+  margin-top: 13px;
+  margin-bottom: 5px;
+}
+
+
+.table-container::-webkit-scrollbar {
+  width: 6px;
+ 
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #262626;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 </style>
 
 <div class="modal" id="add_products_modal" tabindex="0">
@@ -1064,10 +1208,39 @@ font-weight: bold;
           </div>
           <div class="imageCard">
                  <div  style="width:32%" class="imageProduct" id="imageProduct">
-                   
                    </div> 
                     <div  class="bomCard">
-                    
+                      <div style="width: 100%; display: flex;">
+                         <h6 class="bomHeader" style="margin-left: 20px"><span class="disAbled">Disabled</span>&nbsp;<span id="bomText">Bill-0f-Material (BOM)</span></h6>
+                         <div>
+                         <?php
+                            $otherChanges = "no"; 
+                            $other_changes = ($otherChanges == "no") ? "yes" : "no";
+                            ?>
+                            <label class="bomLbl" style="margin-left: 15px; margin-top: 5px">
+                                <input type="checkbox" id="bomToggle"<?php if($otherChanges == "no")  ?> >
+                                <span class="sliderbom round"></span>
+                            </label>  
+                         </div>
+                      </div>
+                      <h6 class="enablingTxt">By enabling BOM, you are <br>activating the ingredients module.</h6>
+                      <div  style="width: 100%; display: flex; align-items: right; justify-content: right">
+                          <button class="btns-bom" id="addIngredients" style="margin-right: 5px; width: 70px">+ Add</button>
+                          <button class="btns-bom" id="delIngredients" style="margin-right: 20px; width: 70px">- Del</button>
+                      </div>
+                      <div class="table-container">
+                  <table id="myTable" class="text-color">
+                    <tbody>
+                      <tr>
+                          <td class="counter-cell" style="width:5%" ></td>
+                          <td id="ingredientCell" style="width:30%"></td>
+                          <td id="qtyCell"style="width:5%"></td>
+                          <td id="uomCell" style="width:30%"></td>
+                          <td hidden class="action-cell"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                    </div>        
                </div>     
           </div>
@@ -1093,6 +1266,60 @@ font-weight: bold;
   </div>
 </div>
 <script>
+ document.addEventListener('DOMContentLoaded', function() {
+
+    
+    var checkbox = document.getElementById('bomToggle');
+    var bomText = document.getElementById('bomText');
+    var disAbled = document.querySelector('.disAbled');
+    var addButtons = document.getElementById('addIngredients');
+    var delButtons = document.getElementById('delIngredients');
+    if (checkbox.checked) {
+            bomText.style.color = '#00CC00';
+            disAbled.textContent = 'Enabled';
+            disAbled.style.color = '#00CC00';
+            addButtons.disabled = false;
+            delButtons.disabled = false;
+    }else{
+         addButtons.disabled = true;
+         delButtons.disabled = true;
+    }
+
+    addButtons.addEventListener('click', function(){
+       $('#add_bom_modal').show()
+    })
+   
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var checkbox = document.getElementById('bomToggle');
+    checkbox.addEventListener('change', updateTextColor);
+});
+  
+
+function updateTextColor() {
+    var checkbox = document.getElementById('bomToggle');
+    var bomText = document.getElementById('bomText');
+    var disAbled = document.querySelector('.disAbled');
+    var addButtons = document.getElementById('addIngredients');
+    var delButtons = document.getElementById('delIngredients');
+
+    if (checkbox.checked) {
+        bomText.style.color = '#00CC00';
+        disAbled.textContent = 'Enabled';
+        disAbled.style.color = '#00CC00';
+         addButtons.disabled = false;
+         delButtons.disabled = false;
+    } else {
+        bomText.style.color = '';
+        disAbled.textContent = 'Disabled';
+        disAbled.style.color = '';
+        addButtons.disabled = true;
+         delButtons.disabled = true;
+    }
+}
+
+
     function toggleStatus(checkbox) {
             var slider = checkbox.parentNode.querySelector('.slider'); 
             var statusLabel = document.getElementById('statusActive');
@@ -1264,8 +1491,19 @@ function openCategoryModal(){
    $('#add_category_modal').show()
 }
 
+function clearStorage() {
+  var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
+  
+  if (existingData.length > 0) {
+    localStorage.removeItem('bomData');
+    var tableBody = document.getElementById('myTable').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = '';
+  }
+}
+
 function closeAddProductsModal(){
   closeModal()
+  clearStorage()
   $('#add_products_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.product-modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighteds').removeClass('highlighteds');
@@ -1490,6 +1728,10 @@ function addProduct(){
   cost ? costLabel.style.color = '' : costLabel.style.color = 'red';
   markup ?  markupLabel.style.color = '' : markupLabel.style.color = 'red';
 
+  var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
+  var checkbox = document.getElementById('bomToggle');
+ 
+
   var formData = new FormData();
   formData.append("uploadedImage", file); 
   formData.append("productname", productname); 
@@ -1513,8 +1755,26 @@ function addProduct(){
   formData.append("catID", catID); 
   formData.append("varID", varID);
   formData.append("category_details",  jsonString );
+
+  if(checkbox.checked){
+    var bomValue = 1;
+  formData.append('bomStat', bomValue);
+    existingData.forEach(function(entry, index) {
+  var jsonData = {
+    ingredientsQty: entry.ingredientsQty,
+    uom_id: entry.uom_id,
+    ingredientId: entry.ingredientId
+  };
+
+  formData.append('productBOM[' + index + ']', JSON.stringify(jsonData));
+});
+ 
+  }
+  
+
  if(productname && barcode && cost && markup){
   axios.post('api.php?action=addProduct', formData).then(function(response){
+    console.log(response)
      refreshProductsTable()
      closeAddProductsModal()
   }).catch(function(error){
@@ -1527,7 +1787,7 @@ function addProduct(){
 }
 
 function  toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM,productuomid,productBrand,productCost, productMakup, productPrice,
- productStatus,isDiscounted,isTax, isTaxIncluded, serviceCharge,displayService,otherCharges,displayOtherCharges,status, image, desc, category, categoryid, variantid){
+ productStatus,isDiscounted,isTax, isTaxIncluded, serviceCharge,displayService,otherCharges,displayOtherCharges,status, image, desc, category, categoryid, variantid, isBOM){
   $('#add_products_modal').show();
   productId? document.getElementById('productid').value = productId : null;
   productName ? document.getElementById("productname").value = productName : null;
@@ -1549,6 +1809,25 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
   productPrice ? document.getElementById("selling_price").value =productPrice : null
   image ? displayImage('./assets/products/' + image) : null;
   desc ? document.getElementById("description").value = desc : null
+  var checkbox = document.getElementById('bomToggle');
+  checkbox.checked = isBOM == 1; 
+  var bomText = document.getElementById('bomText');
+  var disAbled = document.querySelector('.disAbled');
+  var addButtons = document.getElementById('addIngredients');
+  var delButtons = document.getElementById('delIngredients');
+    if(checkbox.checked) {
+            bomText.style.color = '#00CC00';
+            disAbled.textContent = 'Enabled';
+            disAbled.style.color = '#00CC00';
+            addButtons.disabled = false;
+            delButtons.disabled = false;
+    }else{
+         addButtons.disabled = true;
+         delButtons.disabled = true;
+         bomText.style.color = ""
+         disAbled.style.color = ""
+    }
+
  
   //category
   if(category){
@@ -1587,8 +1866,23 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
  stat.checked = (status == 1) ? true : false;
 
  var uptBtn = document.querySelector('.updateProductsBtn');
-    var saveBtn = document.querySelector('.saveProductsBtn');
-    productId? (uptBtn.removeAttribute('hidden'), saveBtn.setAttribute('hidden', true)) : (uptBtn.setAttribute('hidden', true), saveBtn.removeAttribute('hidden'));
+ var saveBtn = document.querySelector('.saveProductsBtn');
+ productId? (uptBtn.removeAttribute('hidden'), saveBtn.setAttribute('hidden', true)) : (uptBtn.setAttribute('hidden', true), saveBtn.removeAttribute('hidden'));
+
+ var product_id = document.getElementById("productid").value
+ if(product_id){
+  axios.get(`api.php?action=getBOMData&product_id=${product_id}`).then(function(response){
+    console.log(response)
+   var data = response.data.bom;
+   var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
+    existingData.push(...data); 
+    localStorage.setItem('bomData', JSON.stringify(existingData));
+    updateTable(existingData);
+  }).catch(function(error){
+    console.log(error)
+  })
+ }
+
 }
 
 function updateProducts(){
@@ -1654,6 +1948,8 @@ function updateProducts(){
   }];
   var jsonString = JSON.stringify(jsonData);
 
+  var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
+  // console.log(existingData,'checking');
   var formData = new FormData();
   formData.append("uploadedImage", file); 
   formData.append("productname", productname); 
@@ -1678,9 +1974,32 @@ function updateProducts(){
   formData.append("catID", catID); 
   formData.append("varID", varID);
   formData.append("category_details",  jsonString );
+
+  var checkbox = document.getElementById('bomToggle');
+  if(checkbox.checked){
+    var bomValue = 1;
+  formData.append('bomStat', bomValue);
+    existingData.forEach(function(entry, index) {
+  var jsonData = {
+    id: entry.id, 
+    prod_id: entry.prod_id,
+    ingredientsQty: entry.ingredientsQty,
+    uom_id: entry.uom_id,
+    ingredientId: entry.ingredientId
+  };
+
+  formData.append('productBOM[' + index + ']', JSON.stringify(jsonData));
+ });
+ 
+  }
+  
+ 
+ 
+
+
   if(productname && barcode && cost && markup){
     axios.post('api.php?action=updateProduct', formData).then(function(response){
-      console.log(response)
+      // console.log(response,'kuan')
       refreshProductsTable()
       closeAddProductsModal()
   }).catch(function(error){

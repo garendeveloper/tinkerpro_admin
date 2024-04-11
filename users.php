@@ -101,6 +101,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="ingredients">
+              <i class="mdi mdi-view-headline menu-icon"></i>
+              <span class="menu-title">Ingredients</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="logout.php">
               <i class="mdi mdi-logout text-primary menu-icon"></i>
               <span class="menu-title">Logout</span>
