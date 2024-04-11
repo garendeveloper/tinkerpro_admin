@@ -134,7 +134,6 @@
         }
         public function save_order($formData)
         {
-            
             $isPaid = $formData['isPaid'] ? 1 : 0;
 
             $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
@@ -178,6 +177,16 @@
             $result = "10-" . $paddedId;
             return $result;
         }
+        public function updateProduct($product_id)
+        {
+            $isSelected = 1;
+            $sql = "UPDATE products SET isSelected = ? WHERE id = ?";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(1, $isSelected, PDO::PARAM_INT); 
+            $stmt->bindParam(2, $product_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount() > 0 ? true : false;
+        }
         public function save_purchaseOrder($formData)
         {
             if($this->validateData($formData))
@@ -214,8 +223,10 @@
                     $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
                     $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
                     $sqlStatement->execute();
+
+                    $this->updateProduct($product_id);
                 }
-                return ['status'=>true, 'message'=>'Purchase Orders has been successfully submitted'];   
+                return ['status'=>true, 'message'=>'Purchase Orders has been successfully submitted!'];   
             }
             else
             {

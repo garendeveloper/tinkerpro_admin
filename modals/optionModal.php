@@ -157,7 +157,7 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px; 
+  width: 80px; 
   height: 20px; 
   outline: none;
 }
@@ -1065,7 +1065,7 @@ input{
                     <th style = "background-color: #1E1C11; border: 1px solid #FF6900; ">TOTAL</th>
                   </tr>
                 </thead>
-                <tbody style = "border-collapse: collapse; border: none">
+                <tbody id = "po_body" style = "border-collapse: collapse; border: none">
       
                 </tbody>
               </table>

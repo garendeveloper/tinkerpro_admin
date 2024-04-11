@@ -3,11 +3,12 @@
     include( __DIR__ . '/utils/models/user-facade.php');
     include( __DIR__ . '/utils/models/product-facade.php');
     include( __DIR__ . '/utils/models/inventory-facade.php');
+    include( __DIR__ . '/utils/models/order-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
     $inventory = new InventoryFacade();
-   
+    $order = new OrderFacade();
 
     header("Content-Type: application/json");
     $json = file_get_contents('php://input');
@@ -72,6 +73,15 @@
             break;
         case 'get_purchaseOrderNo':
             echo json_encode($inventory->fetch_latestPONo());
+            break;
+        case 'get_allOrders':
+            $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
+            $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
+            echo json_encode($order->get_allOrders($currentPage, $perPage));
+            break;
+        case 'get_orderData':
+            $order_id = $_GET['order_id'];
+            echo json_encode($order->get_orderData($order_id));
             break;
         default:
             header("HTTP/1.0 400 Bad Request");

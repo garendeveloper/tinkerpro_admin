@@ -44,10 +44,17 @@
     .sidebar a:hover {
         background-color: #FF6700;
     }
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .logo i {
+      margin-right: 4px; 
+    }
 </style>
 <header class="site-header">
     <div class="header-container">
-        <h6 class="logo">Management * <span id = "pointer"></span></h6>
+        <h6 class="logo">Management&nbsp; <i class = "bi bi-globe" style = "font-size: 0.5rem;"></i> <span id = "pointer"></span></h6>
     </div>
 </header>
 <div class="sidebar">
