@@ -3,7 +3,7 @@
   include( __DIR__ . '/layout/header.php');
   include( __DIR__ . '/utils/db/connector.php');
   include( __DIR__ . '/utils/models/product-facade.php');
-
+  include( __DIR__ . '/utils/models/ingredients-facade.php');
   $productFacade = new ProductFacade;
 
   $userId = 0;
@@ -38,6 +38,7 @@
 
   include('./modals/add-products-modal.php');
   include('./modals/category-modal.php');
+  include('./modals/add-bom.php');
 ?>
 <style>
   #topBar{
@@ -174,6 +175,12 @@
             <a class="nav-link" href="products">
               <i class="mdi mdi-view-headline menu-icon"></i>
               <span class="menu-title">Products</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="ingredients">
+              <i class="mdi mdi-view-headline menu-icon"></i>
+              <span class="menu-title">Ingredients</span>
             </a>
           </li>
           <li class="nav-item">
@@ -447,6 +454,8 @@ $('.searchProducts').on('input', function(){
         var status = $(this).closest('tr').find('.statusData').text();
         var image = $(this).closest('tr').find('.productImgs').text();
         var desc = $(this).closest('tr').find('.description').text();
+        var isBOM = $(this).closest('tr').find('.isBOM').text();
+       
         $('.highlighteds').removeClass('highlighteds');
         $('.highlightedss').removeClass('highlightedss')
       
@@ -458,8 +467,9 @@ $('.searchProducts').on('input', function(){
         var category = $(this).closest('tr').find('.categoryDetails').text();
         var categoryid = $(this).closest('tr').find('.categoryid').text();
         var variantid = $(this).closest('tr').find('.variantid').text();
+
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
-        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid)
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM)
     });
 
 </script>

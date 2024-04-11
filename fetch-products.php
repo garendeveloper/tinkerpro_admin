@@ -18,6 +18,7 @@ while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
 //   var_dump( $row['category_details'] ?? null)
     ?>
     <tr onclick="highlightBorder(this)">
+    <td hidden class='text-center td-h'><span class="isBOM"><?= $row['is_BOM'] ?></td>
     <td hidden class='text-center td-h'><span class="categoryDetails"><?= $row['category_details'] ?? null ?></span><span class="categoryid"><?= $row['category_id'] ?? null ?></span></span><span class="variantid"><?= $row['variant_id'] ?? null ?></span></td> 
     <td hidden class='text-center td-h'><span class="isTaxIncluded"><?= $row['taxIncluded'] ?></td> 
     <td hidden class='text-center td-h'><span class="description"><?= $row['description'] ?></span><<span class="statusData"><?= $row['status'] ?></span><span class="productImgs"><?= $row['image'] ?></span></td> 

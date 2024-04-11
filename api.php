@@ -67,7 +67,7 @@
         case "addProduct":
              $formData = $_POST;
              $result = $products->addProduct($formData);
-             echo json_encode( $formData);
+             echo json_encode([ 'success' => true, 'result' => $result]);
              break; 
         case "checkSKU":
             $sku = isset($_GET['sku']) ? $_GET['sku'] : null;
@@ -78,7 +78,7 @@
             break;
         case "updateProduct":
              $formData = $_POST;
-             $result = $products->updateProduct($formData);
+            //  $result = $products->updateProduct($formData);
              echo json_encode( $formData);
              break;
         case "deleteCategory":
@@ -114,6 +114,11 @@
             $description = isset($postData['description']) ? $postData['description'] : null;
             $result = $ingredients->addIngredient($ingredientName,$barcode,$uom_id,$cost, $status, $description);
             echo json_encode(['success' => true, 'name' =>   $ingredientName]);
+            break;
+        case "getBOMData":
+            $productid = isset($_GET['product_id']) ? $_GET['product_id'] : null;
+            $result = $ingredients->getBom($productid);
+            echo json_encode(['success' => true, 'bom' =>   $result]); 
             break;
         default:
             header("HTTP/1.0 400 Bad Request");
