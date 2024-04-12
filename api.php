@@ -78,8 +78,8 @@
             break;
         case "updateProduct":
              $formData = $_POST;
-            //  $result = $products->updateProduct($formData);
-             echo json_encode( $formData);
+             $result = $products->updateProduct($formData);
+             echo json_encode( $result);
              break;
         case "deleteCategory":
             $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -119,6 +119,23 @@
             $productid = isset($_GET['product_id']) ? $_GET['product_id'] : null;
             $result = $ingredients->getBom($productid);
             echo json_encode(['success' => true, 'bom' =>   $result]); 
+            break;
+        case "deleteBOM":
+            $id = isset($_GET['id']) ? $_GET['id'] : null;
+            $result = $ingredients->deleteBOM($id);
+            echo json_encode(['success' => true, 'result' =>  $result ]); 
+            break;
+        case "updateIngredients":
+            $postData = json_decode(file_get_contents('php://input'), true);
+            $ingredientName = isset($postData['ingredientName']) ? $postData['ingredientName'] : null;
+            $barcode = isset($postData['barcode']) ? $postData['barcode'] : null;
+            $uom_id = isset($postData['uom_id']) ? $postData['uom_id'] : null;
+            $cost = isset($postData['cost']) ? $postData['cost'] : null;
+            $status = isset($postData['status']) ? $postData['status'] : null;
+            $description = isset($postData['description']) ? $postData['description'] : null;
+            $id = isset($postData['ing_id']) ? $postData['ing_id'] : null;
+            $result = $ingredients->updateIngrednts($ingredientName, $barcode,$uom_id,$cost,$status,$description,$id);
+            echo json_encode(['success' => true, 'result' => $result ]); 
             break;
         default:
             header("HTTP/1.0 400 Bad Request");

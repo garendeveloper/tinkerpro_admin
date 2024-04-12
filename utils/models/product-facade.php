@@ -33,7 +33,7 @@
         FROM products 
         LEFT JOIN uom ON uom.id = products.uom_id";
   
-      // Check if searchQuery is not empty
+      
       if (!empty($searchQuery)) {
           $sqlQuery .= " WHERE 
             products.prod_desc LIKE :searchQuery OR 
@@ -44,8 +44,7 @@
       }
   
       $sql = $this->connect()->prepare($sqlQuery);
-      
-      // Bind search query parameter if not empty
+
       if (!empty($searchQuery)) {
           $searchParam = "%" . $searchQuery . "%";
           $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
@@ -136,73 +135,7 @@
     return ['success' => true, 'products' =>   $stmt];
 }
 
-  
-//   public function updateProduct($formData) {
-//     $productname = $formData['productname'] ?? null;
-//     $barcode = $formData['barcode'] ?? null;
-//     $brand = $formData['brand'] ?? null;
-//     $code = $formData['code'] ?? null;
-//     $cost = $formData['cost'] ?? null;
-//     $description = $formData['description'] ?? null;
-//     $discount = $formData['discount'] ?? null;
-//     $display_other_charges = $formData['display_other_charges'] ?? null;
-//     $display_service_charge = $formData['display_service_charge'] ?? null;
-//     $display_tax = $formData['display_tax'] ?? null;
-//     $markup = $formData['markup'] ?? null;
-//     $other_charges = $formData['other_charges'] ?? null;
-//     $oum_id = ($formData['oum_id'] === 0 || $formData['oum_id'] === '') ? null : $formData['oum_id'];
-//     $sellingPrice = $formData['sellingPrice'] ?? null;
-//     $service_charge = $formData['service_charge'] ?? null;
-//     $sku = $formData['sku'] ?? null;
-//     $status = $formData['status'] ?? null;
-//     $vat = $formData['vat'] ?? null;
-//     $uploadedFile = $_FILES['uploadedImage'] ?? null;
-//     $id = $formData['product_id'] ?? null;
-//     $cat_id = ($formData['catID'] === 0 || $formData['catID'] === '') ? null : $formData['catID'];
-//     $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
-//     $category_details = $formData['category_details'] ?? null;
 
-//     if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
-//         $tempPath = $uploadedFile['tmp_name'];
-//         $fileName = $uploadedFile['name'];
-
-//         $destination = './assets/products/' . $fileName;
-//         move_uploaded_file($tempPath, $destination);
-//     } else {
-//         $fileName = null;
-//     }
-
-//     $sql = 'UPDATE products SET 
-//             prod_desc = ?,
-//             barcode = ?,
-//             cost = ?, 
-//             markup = ?, 
-//             prod_price = ?, 
-//             isVAT = ?, 
-//             Description = ?, 
-//             sku = ?, 
-//             code = ?, 
-//             uom_id = ?, 
-//             is_discounted = ?, 
-//             is_taxIncluded = ?,
-//             is_serviceCharge = ?,
-//             is_otherCharges = ?,
-//             is_srvcChrgeDisplay = ?,
-//             is_othrChargeDisplay = ?,
-//             status = ?,
-//             productImage = ?,
-//             brand = ?,
-//             category_id = ?,
-//             variant_id = ?,
-//             category_details = ?
-//             WHERE id = ?';
-
-//     $stmt = $this->connect()->prepare($sql);
-//     $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
-//         $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $id, $cat_id,$var_id, $category_details]);
-
-//     return $stmt;
-// }
 public function updateProduct($formData) {
   $productname = $formData['productname'] ?? null;
   $barcode = $formData['barcode'] ?? null;
@@ -227,6 +160,7 @@ public function updateProduct($formData) {
   $cat_id = ($formData['catID'] === 0 || $formData['catID'] === '') ? null : $formData['catID'];
   $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
   $category_details = $formData['category_details'] ?? null;
+  $bomStat = $formData['bomStat'] ?? null;
 
   if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
       $tempPath = $uploadedFile['tmp_name'];
@@ -235,7 +169,16 @@ public function updateProduct($formData) {
       $destination = './assets/products/' . $fileName;
       move_uploaded_file($tempPath, $destination);
   } else {
-      $fileName = null;
+    $query = "SELECT productImage FROM products WHERE id = ?";
+    $statement = $this->connect()->prepare($query);
+    $statement->execute([$id]);
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    if ($result) {
+        $fileName = $result['productImage'];
+    } else {
+        $fileName = null;
+    }
+    
   }
 
   $sql = 'UPDATE products SET 
@@ -260,14 +203,58 @@ public function updateProduct($formData) {
           brand = ?,
           category_id = ?,
           variant_id = ?,
-          category_details = ?
+          category_details = ?,
+          is_BOM = ?
           WHERE id = ?';
 
   $stmt = $this->connect()->prepare($sql);
   $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
-      $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $id]);
+  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $id]);
+  
+  $bomData = $formData['productBOM'] ?? [];
+  $updateData = [];
+  $insertData = [];
+  
+  // Separate data based on whether it requires update or insert
+  foreach ($bomData as $bomItem) {
+      $bomItem = json_decode($bomItem, true);
+      if (isset($bomItem['id'])) {
+          $updateData[] = $bomItem;
+      } else {
+          $insertData[] = $bomItem;
+      }
+  }
+  
 
-  return $stmt;
+  foreach ($updateData as $bomItem) {
+      $sql = 'UPDATE bill_of_materials 
+              SET prod_id = ?, qty = ?, uom_id = ?, is_save = ?
+              WHERE id = ?';
+      $stmt = $this->connect()->prepare($sql);
+      $stmt->execute([$bomItem['prod_id'],$bomItem['ingredientsQty'], $bomItem['uom_id'],1, $bomItem['id']]);
+      if ($stmt->rowCount() === 1) {
+          echo "BOM Update  successful";
+      } else {
+          echo "Nothing to Update";
+      }
+  }
+  
+  
+  foreach ($insertData as $bomItem) {
+      $sql = 'INSERT INTO bill_of_materials(prod_id, ingredients_id, qty, uom_id, is_save)
+              VALUES (?, ?, ?, ?, ?)';
+      $stmt = $this->connect()->prepare($sql);
+      $stmt->execute([ $id , $bomItem['ingredientId'], $bomItem['ingredientsQty'], $bomItem['uom_id'], 1]);
+      if ($stmt->rowCount() === 1) {
+          echo "Insertion successful for new BOM record.<br>";
+      } else {
+          echo "Insertion failed for new BOM record.<br>";
+      }
+  }
+  
+  return ['success' => true, 'Message' => "Products Successfull updated" ];
+  
+  
 }
 
 

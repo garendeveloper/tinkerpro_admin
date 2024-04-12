@@ -46,6 +46,51 @@
 
   return $result;
 }
+public function deleteBOM($id){
+  $sql = "DELETE FROM bill_of_materials WHERE id = :id ";
+  $stmt = $this->connect()->prepare($sql);
+  $stmt->execute([':id' => $id]);
+  $rowCount = $stmt->rowCount();
+  return $rowCount > 0; 
+}
+public function getAllIngredients($searchQuery) {
+  $sqlQuery = "SELECT i.id as id, i.name as name, i.barcode as barcode, i.cost as cost, i.status as status, i.description as description, i.uom_id as uom_id, uom.uom_name as uom_name FROM ingredients AS i INNER JOIN uom ON uom.id = i.uom_id ";
+
+  if (!empty($searchQuery)) {
+      $sqlQuery .= " WHERE 
+          i.name LIKE :searchQuery OR 
+          i.barcode LIKE :searchQuery OR 
+          i.status LIKE :searchQuery";
+  }
+
+  $sql = $this->connect()->prepare($sqlQuery);
+
+  if (!empty($searchQuery)) {
+      $searchParam = "%" . $searchQuery . "%";
+      $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+  }
+
+  $sql->execute();
+  return $sql;
+}
+
+public function updateIngrednts($ingredientName, $barcode,$uom_id,$cost,$status,$description,$id){
+  $uom_id = ($uom_id == 0) ? null : $uom_id;
+
+  $sql = 'UPDATE ingredients SET 
+  name = ?,
+  uom_id = ?,
+  barcode = ?,
+  cost = ?,
+  status = ?,
+  description = ?
+  WHERE id = ?';
+  $stmt = $this->connect()->prepare($sql);
+  $stmt->execute([$ingredientName, $uom_id, $barcode,  $cost, $status, $description, $id]);
+
+  return ['success' => true, 'id' => $status];
+
+}
 
 
   }
