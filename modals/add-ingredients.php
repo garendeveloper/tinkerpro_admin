@@ -398,7 +398,8 @@ input:checked + .sliderStatus:before {
       <div class="modal-title">
         <div class="warning-container">
         <div style="display: flex; margin-top: 30px">
-                <h2 style="margin-left: 20px;" class="text-custom">Add Ingredients</h2>
+                <h2 style="margin-left: 20px;" class="text-custom modalIngredientsTxt">Add Ingredients</h2>
+                 <input hidden readonly id="ingredientsID"/>
             </div>
             <div hidden>
                 <h5 class="tips-header pl "><span class="text-custom">Tips:</span>&nbsp;<span class="text-white">Managing Inventory With Ingredients</span></h5>
@@ -430,7 +431,7 @@ input:checked + .sliderStatus:before {
                     $other_changes = ($otherChanges == "no") ? "yes" : "no";
                     ?>
                     <label class="ifActivate" style="margin-left: 5px; margin-top: -2px">
-                        <input type="checkbox" id="activateStatusToggle"<?php if($otherChanges == "no") ?> >
+                        <input type="checkbox" id="activateIngredientsToggle"<?php if($otherChanges == "no") ?> >
                         <span class="sliderIfActivate round"></span>
                     </label>    
                 </div>
@@ -440,7 +441,7 @@ input:checked + .sliderStatus:before {
                     <table id="addIngredients" class="text-color table-borders"> 
                    <tbody>
                     <tr>
-                        <td class="td-height  td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<supp>*</supp></td>
+                        <td class="nameLbl td-height  td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<supp>*</supp></td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="ingredientsName" name="ingredientsName" id="ingredientsName"/></td>
                     </tr>
                     <tr>
@@ -448,7 +449,7 @@ input:checked + .sliderStatus:before {
                         <td  class="td-height text-custom" style="font-size: 12px; height: 10px"><input  oninput="validateNumber(this)" class="barcode" id="barcode" name="barcode" style="width: 225px"/><button class="generate" id="generate">Generate</button></td>
                     </tr>
                     <tr>
-                        <td  class="td-height  td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Unit of Measure</td>
+                        <td  class="unitM td-height  td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Unit of Measure</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input">
                             <input class="custom-input" readonly hidden name="uomID" id="uomID" style="width: 265px"/>
                             <input class="custom-input" readonly name="uomType" id="uomType" style="width: 265px"/>
@@ -474,7 +475,7 @@ input:checked + .sliderStatus:before {
                         </div></td>
                     </tr>
                     <tr>
-                        <td  class="td-height  td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Cost Price (Php)/Unit</td>
+                        <td  class="costLbl td-height  td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Cost Price (Php)/Unit</td>
                         <td  class="td-height text-custom" style="font-size: 12px; height: 10px"><input oninput="validateNumber(this)" class="cost" name="cost" id="cost"/></td>
                     </tr>
                     <tr>
@@ -502,7 +503,7 @@ input:checked + .sliderStatus:before {
             </div>
             <div class="button-container" style="display:flex;justify-content: right;">
                 <button onclick=" addIngrediets()" class="btn-success-custom saveIngredientsBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
-                <button hidden  class="btn-success-custom updateIngredientsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
+                <button hidden onclick="updateIng()" class="btn-success-custom updateIngredientsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
                 <button onclick="closeAddIngredientsModal()" class="cancelAddIngredients btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
             </div>
             </div>
@@ -521,10 +522,20 @@ function addIngrediets(){
  var cost = document.getElementById('cost').value 
  var description = document.getElementById('descArea').value
  var checkbox = document.getElementById('activateIfToggle');
- var status = checkbox.checked ? 1 : 0;
+ var status = checkbox.checked ? 'Active' : 'Inactive'; 
 
+ var nameLabel = document.querySelector('.nameLbl');
+ var barcodeLabel = document.querySelector('.barcodeTd');
+ var unitLabel = document.querySelector('.unitM'); 
+ var costLabel = document.querySelector('.costLbl'); 
 
- axios.post('api.php?action=addIngredients',{
+ ingredientName ? nameLabel.style.color = '' : nameLabel.style.color = 'red';
+ barcode ? barcodeLabel.style.color = '' : barcodeLabel.style.color = 'red';
+ uom_id ? unitLabel.style.color = '' : unitLabel.style.color = 'red';
+ cost ? costLabel.style.color = '' : costLabel.style.color = 'red';
+
+if(ingredientName && barcode && uom_id && cost){
+    axios.post('api.php?action=addIngredients',{
     ingredientName: ingredientName,
     barcode: barcode,
     uom_id:  uom_id,
@@ -532,11 +543,13 @@ function addIngrediets(){
     status: status,
     description : description 
  }).then(function(response){
-    console.log(response)
     closeAddIngredientsModal()
+    refreshIngredientsTable()
  }).catch(function(error){
     console.log(error)
  })
+}
+
 }
 
 function closeAddIngredientsModal(){
@@ -561,6 +574,12 @@ function clearIngredientsInputs(){
   document.getElementById('uomID').value = "";
   document.getElementById('cost').value = "";
   document.getElementById('uomType').value = ""
+  document.getElementById('descArea').value = ""
+  document.getElementById('ingredientsID').value="";
+
+  var checkbox = document.getElementById('activateIfToggle');
+  checkbox.checked = true;
+  updateTextColor() 
 
   var uptBtn = document.querySelector('.updateIngredientsBtn');
     uptBtn.setAttribute('hidden',true);
@@ -578,6 +597,8 @@ document.getElementById("generate").addEventListener("click", function() {
     const minDigits = 9;
     const randomNumber = generateRandomNumber(minDigits);
     document.getElementById('barcode').value = randomNumber
+    var barcodeLabel = document.querySelector('.barcodeTd');
+    barcodeLabel.style.color = '';
     
 })
 function generateRandomNumber(minDigits) {
@@ -615,6 +636,10 @@ document.querySelectorAll("#uomDropDown a").forEach(item => {
     var value = this.getAttribute("data-value");
     var roleName = this.textContent;
     document.getElementById("uomID").value = value;
+    if(value){
+      var unitLabel = document.querySelector('.unitM'); 
+      unitLabel.style.color = '';
+    }
     document.getElementById("uomType").value = roleName;
     document.getElementById("uomDropDown").style.display = "none";
   });
@@ -646,5 +671,92 @@ document.addEventListener('DOMContentLoaded', function() {
             barcodeLabel.style.color = '';
         }
     });
+
+
+ var nameLabel = document.querySelector('.nameLbl');
+ var barcodeLabel = document.querySelector('.barcodeTd');
+ var costLabel = document.querySelector('.costLbl'); 
+
+document.getElementById('ingredientsName').addEventListener('input', function(){
+  nameLabel.style.color = "";
+})
+document.getElementById('barcode').addEventListener('input', function(){
+  barcodeLabel.style.color = "";
+})
+document.getElementById('cost').addEventListener('input', function(){
+  costLabel .style.color = "";
+})
+ 
+
 });
+
+function  toupdateIngredients(ingredientsId,uom_id,uom_name,name,barcode,cost,status,desc){
+  $('#add_ingredients_modal').show()
+  var activatedToggle = document.getElementById('activateIngredientsToggle')
+  var statusToggle =  document.getElementById('activateIfToggle')
+  activatedToggle.disabled = true
+  activatedToggle.checked = true
+  if(ingredientsId && activatedToggle.checked){
+    ingredientsId ? document.getElementById('ingredientsID').value = ingredientsId : null; 
+    name ? document.getElementById('ingredientsName').value = name : null; 
+    barcode ?  document.getElementById('barcode').value = barcode : null;
+    cost ?  document.getElementById('cost').value = cost : null;
+    uom_name ?  document.getElementById('uomType').value = uom_name : null;
+    uom_id ? document.getElementById('uomID').value = uom_id : null;
+    desc ?  document.getElementById('descArea').value = desc : null;
+    statusToggle.checked = status == 'Active' ? true : false;
+    updateTextColor() 
+    var uptBtn = document.querySelector('.updateIngredientsBtn');
+    var saveBtn = document.querySelector('.saveIngredientsBtn');
+    ingredientsId? (uptBtn.removeAttribute('hidden'), saveBtn.setAttribute('hidden', true)) : (uptBtn.setAttribute('hidden', true), saveBtn.removeAttribute('hidden'));
+    var i_id = document.getElementById('ingredientsID').value;
+    if(i_id){
+    name ? (document.getElementById("ingredientsName").value =  name, $('.modalIngredientsTxt').text(name)) : null;
+  }else{
+    $('.modalIngredientsTxt').text("Add Ingredients")
+  }
+  }
+}
+
+function updateIng(){
+ var ing_id = document.getElementById('ingredientsID').value;
+ var ingredientName = document.getElementById('ingredientsName').value 
+ var barcode =   document.getElementById('barcode').value 
+ var uom_id = document.getElementById('uomID').value 
+ var cost = document.getElementById('cost').value 
+ var description = document.getElementById('descArea').value
+ var checkbox = document.getElementById('activateIfToggle');
+ var status = checkbox.checked ? 'Active' : 'Inactive';
+
+
+ var nameLabel = document.querySelector('.nameLbl');
+ var barcodeLabel = document.querySelector('.barcodeTd');
+ var unitLabel = document.querySelector('.unitM'); 
+ var costLabel = document.querySelector('.costLbl'); 
+
+ ingredientName ? nameLabel.style.color = '' : nameLabel.style.color = 'red';
+ barcode ? barcodeLabel.style.color = '' : barcodeLabel.style.color = 'red';
+ uom_id ? unitLabel.style.color = '' : unitLabel.style.color = 'red';
+ cost ? costLabel.style.color = '' : costLabel.style.color = 'red';
+
+ if(ingredientName && barcode && uom_id && cost){
+      axios.post('api.php?action=updateIngredients',{
+          ingredientName: ingredientName,
+          barcode: barcode,
+          uom_id:  uom_id,
+          cost: cost,
+          status: status,
+          description : description,
+          ing_id: ing_id
+      }).then(function(response){
+          closeAddIngredientsModal()
+          refreshIngredientsTable()
+      }).catch(function(error){
+          console.log(error)
+      })
+ }
+}
+
+
+
 </script>

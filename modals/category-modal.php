@@ -805,18 +805,7 @@ function uncheckCategoryCheckbox(id) {
 }
 
 
-function closeModal(){
-  $('#add_category_modal').css('animation', 'slideOutRight 0.5s forwards');
-  $('.categoryAdd').css('animation', 'slideOutRight 0.5s forwards');
-  $('.highlighted').removeClass('highlighted');
- 
-  $('#add_category_modal').one('animationend', function() {
-    $(this).hide();
-    $(this).css('animation', '');
-    $('.categoryAdd').css('animation', '');
-   
-  });
-}
+
 
 function changeValueInput(element) {
     var categoriesInput = document.getElementById('categoriesInput');
@@ -844,7 +833,17 @@ function changeValueInput(element) {
     }
 }
 
-
+function closeModal(){
+  $('#add_category_modal').css('animation', 'slideOutRight 0.5s forwards');
+  $('.categoryAdd').css('animation', 'slideOutRight 0.5s forwards');
+  $('.highlighted').removeClass('highlighted');
+ 
+  $('#add_category_modal').one('animationend', function() {
+    $(this).hide();
+    $(this).css('animation', '');
+    $('.categoryAdd').css('animation', '');
+  });
+}
 
 
 </script>

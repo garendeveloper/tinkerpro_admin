@@ -204,9 +204,9 @@ font-family: Century Gothic;
               <h3 class="text-custom" style="color:#FF6900;">Add BOM</h3>
             </div>
             <div style="margin-left: 10px; margin-top: 40px; width: 100%">
-              <label class="text-header"style="margin-top: 15px">Ingredient<supp>*</supp>:</label>
+              <label for="qtyIngredients" class="text-header"style="margin-top: 15px">Ingredient<supp>*</supp>:</label>
               <div class="dropdowns custom-input">
-                            <input class="custom-input" readonly hidden name="ingredientsId" id="ingredientsId" style="width: 200px"/>
+                            <input class="custom-input" readonly hidden name="qtyIngredients" id="ingredientsId" style="width: 200px"/>
                             <input class="custom-input" readonly name="ingredientsName" id="ingredientsName" style="width: 200px" placeholder="Select Ingredients"/>
                             <button name="ingBtns" id="ingBtns" class="custom-btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
@@ -228,7 +228,7 @@ font-family: Century Gothic;
                                 ?>
                             </div>
                         </div>
-              <label class="text-header"style="margin-top: 15px">Unit of Measure<supp>*</supp>:</label>
+              <label for="uomIDs" class="text-header"style="margin-top: 15px">Unit of Measure<supp>*</supp>:</label>
               <div class="dropdowns custom-input">
                             <input class="custom-input" readonly hidden name="uomIDs" id="uomIDs" style="width: 200px"/>
                             <input class="custom-input" readonly name="uomTypes" id="uomTypes" style="width: 200px" placeholder="Select UOM"/>
@@ -252,8 +252,8 @@ font-family: Century Gothic;
                                 ?>
                             </div>
                         </div>
-                        <label class="text-header" style="margin-top: 15px">Quantity<supp>*</supp>:</label>
-                <input class="qtyIngredients" id="qtyIngredients" oninput=" validateNumber(this)" placeholder="Quantity"/>
+                        <label for="ingredientsId" class="text-header" style="margin-top: 15px">Quantity<supp>*</supp>:</label>
+                <input name="ingredientsId" class="qtyIngredients" id="qtyIngredients" oninput=" validateNumber(this)" placeholder="Quantity"/>
             </div>
             <div class="button-container bomActionBtns" style="display:flex;justify-content: right;">
                 <button  class="btn-success-custom saveBom" id="saveBom" style=" width: 100px; height: 40px">Done</button>
@@ -314,6 +314,10 @@ document.querySelectorAll("#ingredientDropDowns a").forEach(item => {
     var value = this.getAttribute("data-value");
     var roleName = this.textContent;
     document.getElementById("ingredientsId").value = value;
+    if(value){
+      var ingredientLabel = document.querySelector('label[for="qtyIngredients"]');
+      ingredientLabel.style.color = '';
+    }
      document.getElementById("ingredientsName").value = roleName;
     document.getElementById("ingredientDropDowns").style.display = "none";
   });
@@ -346,34 +350,59 @@ document.querySelectorAll("#uomDropDowns a").forEach(item => {
     var value = this.getAttribute("data-value");
     var roleName = this.textContent;
     document.getElementById("uomIDs").value = value;
+    if(value){
+      var uomLabel = document.querySelector('label[for="uomIDs"]');
+      uomLabel.style.color = "";
+    }
     document.getElementById("uomTypes").value = roleName;
     document.getElementById("uomDropDowns").style.display = "none";
   });
 });
 
-
+ document.getElementById('qtyIngredients').addEventListener('input',function(){
+  var qtyLabel = document.querySelector('label[for="ingredientsId"');
+  qtyLabel.style.color = '';
+ });
+   
 
 document.getElementById('saveBom').addEventListener('click', function() {
-  var ingredientsQty = document.getElementById('qtyIngredients').value;
-  var uom_id = document.getElementById('uomIDs').value;
-  var ingredientId = document.getElementById('ingredientsId').value;
-  var oumTypes = document.getElementById('uomTypes').value
-  var ingredientsname = document.getElementById('ingredientsName').value
-  
- 
-  var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
-  
+    var ingredientsQty = document.getElementById('qtyIngredients').value;
+    var uom_id = document.getElementById('uomIDs').value;
+    var ingredientId = document.getElementById('ingredientsId').value;
+    var oumTypes = document.getElementById('uomTypes').value;
+    var ingredientsname = document.getElementById('ingredientsName').value;
 
-  existingData.push({
-    ingredientsQty: ingredientsQty,
-    uom_id: uom_id,
-    ingredientId: ingredientId,
-    oumTypes: oumTypes,
-    ingredientsname:ingredientsname
-  });
+    var qtyLabel = document.querySelector('label[for="qtyIngredients"]');
+    var uomLabel = document.querySelector('label[for="uomIDs"]');
+    var ingredientLabel = document.querySelector('label[for="ingredientsId"]');
+
   
-  localStorage.setItem('bomData', JSON.stringify(existingData));
-  updateTable(existingData);
+    var isEmpty = !ingredientsQty || !uom_id || !ingredientId;
+
+    
+    qtyLabel.style.color = !ingredientsQty ? 'red' : '';
+    uomLabel.style.color = !uom_id ? 'red' : '';
+    ingredientLabel.style.color = !ingredientId ? 'red' : '';
+
+   
+    if (isEmpty) return;
+
+   
+    qtyLabel.style.color = '';
+    uomLabel.style.color = '';
+    ingredientLabel.style.color = '';
+
+    var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
+    existingData.push({
+        ingredientsQty: ingredientsQty,
+        uom_id: uom_id,
+        ingredientId: ingredientId,
+        oumTypes: oumTypes,
+        ingredientsname: ingredientsname
+    });
+
+    localStorage.setItem('bomData', JSON.stringify(existingData));
+     updateTable(existingData);
 });
 
 
@@ -381,18 +410,16 @@ document.getElementById('saveBom').addEventListener('click', function() {
 
 
 
-// Retrieve and update table with existing data on page load
 var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
 updateTable(existingData);
 
 
  });
  function updateTable(data) {
-    console.log(data,'21212')
   var tableBody = document.getElementById('myTable').getElementsByTagName('tbody')[0];
   tableBody.innerHTML = '';
   
-  // Add new rows for each data entry
+ 
   data.forEach(function(entry, index) {
     var row = document.createElement('tr');
     
@@ -424,7 +451,50 @@ updateTable(existingData);
 
     closeModalBom()
   });
+
+  var previouslyClickedRow = null; 
+var rows = tableBody.querySelectorAll('tr');
+rows.forEach(function(row, index) {
+    row.addEventListener('click', function() {
+        var rowData = data[index]; 
+        forDeletion(rowData,index);
+        if (previouslyClickedRow !== null) {
+            previouslyClickedRow.querySelectorAll('td').forEach(function(td) {
+                td.style.color = '';
+            });
+        }
+        row.querySelectorAll('td').forEach(function(td) {
+            td.style.color = 'green';
+        });
+        previouslyClickedRow = row;
+    });
+});
+
 }
+
+function forDeletion(rowData,index){
+    $('#delIngredients').off('click').on('click',function(){
+        if(rowData.id){
+          var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
+          existingData.splice(index, 1);
+          localStorage.setItem('bomData', JSON.stringify(existingData));
+            axios.delete(`api.php?action=deleteBOM&id=${rowData.id}`).then(function(response){
+                var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
+                localStorage.setItem('bomData', JSON.stringify(existingData));
+                updateTable(existingData);
+            }).catch(function(error){
+              console.log(error)
+            })
+
+        }else{
+          var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
+          existingData.splice(index, 1);
+          localStorage.setItem('bomData', JSON.stringify(existingData));
+          updateTable(existingData);
+        }
+    });
+}
+
 </script>
 
 

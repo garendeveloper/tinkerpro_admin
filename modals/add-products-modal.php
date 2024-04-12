@@ -1225,7 +1225,7 @@ input:checked + .sliderbom:before {
                       </div>
                       <h6 class="enablingTxt">By enabling BOM, you are <br>activating the ingredients module.</h6>
                       <div  style="width: 100%; display: flex; align-items: right; justify-content: right">
-                          <button class="btns-bom" id="addIngredients" style="margin-right: 5px; width: 70px">+ Add</button>
+                          <button class="btns-bom" id="addIngredients" onclick="openBomModal()" style="margin-right: 5px; width: 70px">+ Add</button>
                           <button class="btns-bom" id="delIngredients" style="margin-right: 20px; width: 70px">- Del</button>
                       </div>
                       <div class="table-container">
@@ -1266,9 +1266,13 @@ input:checked + .sliderbom:before {
   </div>
 </div>
 <script>
- document.addEventListener('DOMContentLoaded', function() {
 
-    
+window.addEventListener('beforeunload', function() {
+    localStorage.removeItem('bomData');
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
     var checkbox = document.getElementById('bomToggle');
     var bomText = document.getElementById('bomText');
     var disAbled = document.querySelector('.disAbled');
@@ -1285,15 +1289,20 @@ input:checked + .sliderbom:before {
          delButtons.disabled = true;
     }
 
-    addButtons.addEventListener('click', function(){
-       $('#add_bom_modal').show()
-    })
+ 
    
 });
+function openBomModal(){
+  if($('#add_products_modal').is(':visible')){
+        $('#add_bom_modal').show()
+          closeModal() 
+      }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     var checkbox = document.getElementById('bomToggle');
     checkbox.addEventListener('change', updateTextColor);
+  
 });
   
 
@@ -1489,6 +1498,7 @@ function clearImageProduct() {
 
 function openCategoryModal(){
    $('#add_category_modal').show()
+      closeModalBom() 
 }
 
 function clearStorage() {
@@ -1504,6 +1514,7 @@ function clearStorage() {
 function closeAddProductsModal(){
   closeModal()
   clearStorage()
+  closeModalBom()
   $('#add_products_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.product-modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighteds').removeClass('highlighteds');
@@ -1770,8 +1781,6 @@ function addProduct(){
 });
  
   }
-  
-
  if(productname && barcode && cost && markup){
   axios.post('api.php?action=addProduct', formData).then(function(response){
     console.log(response)
@@ -1872,7 +1881,7 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
  var product_id = document.getElementById("productid").value
  if(product_id){
   axios.get(`api.php?action=getBOMData&product_id=${product_id}`).then(function(response){
-    console.log(response)
+    // console.log(response)
    var data = response.data.bom;
    var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
     existingData.push(...data); 
@@ -1993,13 +2002,9 @@ function updateProducts(){
  
   }
   
- 
- 
-
 
   if(productname && barcode && cost && markup){
     axios.post('api.php?action=updateProduct', formData).then(function(response){
-      // console.log(response,'kuan')
       refreshProductsTable()
       closeAddProductsModal()
   }).catch(function(error){
