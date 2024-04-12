@@ -160,11 +160,7 @@
 <?php include("./modals/response-modal.php")?>
 <?php include("layout/footer.php") ?>
 <?php include("layout/admin/keyboardfunction.php") ?>
-<script>
-  var currentDate = new Date();
-  var formattedDate = currentDate.toISOString().split('T')[0];
-  document.getElementById("date_purchased").setAttribute("max", formattedDate);
-</script>
+
 <script>
   $(document).ready(function() {
     $(".tablinks").click(function(e) {
@@ -177,6 +173,42 @@
         $(".tablinks").removeClass("active");
         $(this).addClass("active");
       }
+    });
+    $('#paidSwitch').change(function() {
+        if ($(this).is(':checked')) 
+        {
+          $('.toggle-switch-container').css('color', '#28a745');
+          $('#paidSwitch').css('background-color', '#28a745');
+        } 
+        else 
+        {
+          $('.toggle-switch-container').css('color', '');
+          $('#paidSwitch').css('background-color', ''); 
+        }
+    });
+    $('#date_purchased').datepicker({
+      dateFormat: 'M dd y', 
+      altFormat: 'M dd y', 
+      altField: '#date_purchased',
+      maxDate: 0,
+      onSelect: function(dateText, inst)
+      {}
+    });
+ 
+    $('#s_due').datepicker({
+      dateFormat: 'M dd y', 
+      altFormat: 'M dd y', 
+      altField: '#s_due',
+      minDate: 0,
+      onSelect: function(dateText, inst)
+      {}
+    });
+ 
+    $('#calendar-btn').click(function() {
+        $('#date_purchased').datepicker('show');
+    });
+    $('#calendar-btn1').click(function() {
+        $('#s_due').datepicker('show');
     });
     function validateUnpaidSettings() 
     {
@@ -286,6 +318,7 @@
     show_allSuppliers();
     show_allProducts();
     show_purchaseOrderNo();
+    display_datePurchased();
 
     $("#purchase-order").on('click', function(){
       $("button").removeClass('active');
@@ -308,7 +341,22 @@
         $("#inventory-count").removeClass('active');
       }, 10000);
     })
-
+    function display_datePurchased()
+    {
+      var currentDate = new Date();
+      var formattedDate = formatDate(currentDate);
+      $('#date_purchased').val(formattedDate);
+      $('#s_due').val(formattedDate);
+    }
+    function formatDate(date) 
+    {
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear().toString().substr(-2);
+        return monthNames[monthIndex] + ' ' + (day < 10 ? '0' : '') + day + ' ' + year;
+    }
     function show_purchaseOrderNo()
     {
       $.ajax({
@@ -363,6 +411,7 @@
           supplier: $("#supplier").val(),
           product: $("#product").val(),
           total: overallTotal,
+          totalTax: totalTax,
         },
         dataType: 'json',
         success: function(response) 
@@ -371,7 +420,7 @@
           {
             resetPurchaseOrderForm();
             $("#paid_purchase_modal").hide();
-            $("#totalTax").html("Tax: 0.00");
+            $("#totalTax").html("0.00");
             $("#totalQty").html("0");
             $("#totalPrice").html("&#x20B1;&nbsp;0.00");
             $("#overallTotal").html("&#x20B1;&nbsp;0.00");
@@ -380,6 +429,7 @@
             show_purchaseOrderNo();
             show_allProducts();
             show_allSuppliers();
+            display_datePurchased();
             selected_products = [];
           }
           else
@@ -454,14 +504,19 @@
       e.preventDefault();
       if(validatePOForm())
       {
+        var product = $("#product").val();
         $("#purchaseQty_modal").slideDown({
           backdrop: 'static',
           keyboard: false,
         });
-        $("#product_name").text($("#product").val());
+        $("#product_name").text(product);
         $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
       }
     })
+    function roundToTwoDecimalPlaces(number) 
+    {
+      return parseFloat(number).toFixed(2);
+    }
     function validatePOForm() 
     {
       var isValid = true;
@@ -515,7 +570,10 @@
     }
     function addCommasToNumber(number) 
     {
-      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      var roundedNumber = Number(number).toFixed(2);
+      var parts = roundedNumber.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
     }
     $("#btn_pqtyClose, #btn_pqtyCancel").on('click', function(e){
       e.preventDefault();
@@ -554,21 +612,8 @@
         var p_qty = parseInt($("#p_qty").val());
         var price = parseFloat($("#price").val());
         var product = $("#product").val();
-        var total = price * p_qty;
-     
-        $("#tbl_purchaseOrders tbody").append(
-          "<tr>"+
-            "<td>"+product+"</td>"+
-            "<td style = 'text-align: center'>"+p_qty+"</td>"+
-            "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(price)+"</td>"+
-            "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(total)+"</td>"+
-          "</tr>"
-        );
-       
-        totalQty += p_qty;
-        totalPrice += price;
-        overallTotal += total;
-      
+        var total = parseFloat(price * p_qty);  
+
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_productInfo',
@@ -582,25 +627,36 @@
               totalTax += (price-tax);
             }
             else totalTax += 0;
-            $("#totalTax").html("Tax: "+totalTax.toFixed(2));
+
+            totalQty += p_qty;
+            totalPrice += price;
+            overallTotal += total;
+            $("#totalTax").html(totalTax.toFixed(2));
+            $("#tbl_purchaseOrders tbody").append(
+              "<tr>"+
+                "<td>"+product+"</td>"+
+                "<td style = 'text-align: center'>"+p_qty+"</td>"+
+                "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(price)+"</td>"+
+                "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(total)+"</td>"+
+              "</tr>"
+            );
+            
+            $("#d_products").find(".search-dropdown-item").filter(function() {
+                if($(this).text() === product)
+                {
+                  selected_products.push($(this).text());
+                }
+            });
+            show_allProducts();
+            $("#totalQty").html(totalQty);
+            $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice.toFixed(2)));
+            $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(overallTotal.toFixed(2)));
+
+            $("#purchaseQty_modal").hide();
+            $("#prod_form")[0].reset();
+            $("#product").val("");
           }
         })
-
-        $("#d_products").find(".search-dropdown-item").filter(function() {
-            if($(this).text() === product)
-            {
-              selected_products.push($(this).text());
-            }
-        });
-        show_allProducts();
-        $("#totalQty").html(totalQty);
-        $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice.toFixed(2)));
-        $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(overallTotal.toFixed(2)));
-
-        $("#purchaseQty_modal").hide();
-        $("#prod_form")[0].reset();
-        $("#product").val("");
-      
       }
     })
     $('#po_form').submit(function(e){
@@ -700,6 +756,12 @@
         }
       });
     }
+    function date_format(date)
+    {
+      var date = new Date(date);
+      var formattedDate = $.datepicker.formatDate("M dd yy", date);
+      return formattedDate;
+    }
     function show_allOrders(currentPage, perPage)
     {
       $("#tbl_orders").show();
@@ -718,8 +780,11 @@
                 tbl_data += "<tr>";
                 tbl_data += "<td style = 'text-align: center'>"+data[i].po_number+"</td>";
                 tbl_data += "<td>"+data[i].supplier+"</td>";
-                tbl_data += "<td class = 'text-center'>"+data[i].date_purchased+"</td>";
-                tbl_data += "<td class = 'text-center'>"+data[i].due_date+"</td>";
+                tbl_data += "<td class = 'text-center'>"+date_format(data[i].date_purchased)+"</td>";
+                if(data[i].due_date === null)
+                  tbl_data += "<td class = 'text-center'> Not Available </td>";
+                else 
+                  tbl_data += "<td class = 'text-center'>"+date_format(data[i].due_date)+"</td>";
                 tbl_data += "<td style = 'text-align: right'>"+data[i].price+"</td>";
                 if(data[i].isPaid === 1)
                   tbl_data += "<td class = 'text-center'>Paid</td>";
@@ -762,17 +827,17 @@
             table +=  "<tr>";
             table += "<td>"+data[i].prod_desc+"</td>";
             table += "<td style = 'text-align: center'>"+data[i].qty_purchased+"</td>";
-            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+data[i].amount_beforeTax+"</td>";
-            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+data[i].amount_beforeTax*data[i].qty_purchased+"</td>";
+            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
+            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax*data[i].qty_purchased)+"</td>";
             table += "</tr>";
             qt += parseInt(data[i].qty_purchased);
-            pt += data[i].amount_beforeTax;
-            tt += parseFloat(qt*pt);
+            pt += data[i].total;
           }
           $("#tbl_purchaseOrders tbody").html(table);
+          $("#totalTax").html("Tax: "+roundToTwoDecimalPlaces(data[0].totalTax));
           $("#totalQty").html(qt);
-          $("#totalPrice").html("&#x20B1;&nbsp;"+pt);
-          $("#overallTotal").html("&#x20B1;&nbsp;"+tt);
+          $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(pt)));
+          $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(data[0].price));
         }
       })
     })

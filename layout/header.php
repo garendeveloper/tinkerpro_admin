@@ -23,5 +23,6 @@
   <link rel="stylesheet" href="assets/css/others/flatpicker.min.css">
   <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 </head>
 <body>

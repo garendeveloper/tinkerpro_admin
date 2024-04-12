@@ -54,7 +54,7 @@
               <h5>Enter <b style = 'color: #FF6900'>QUANTITY</b> and supplier <b style = 'color: #FF6900'>RATE</b></h5>
               <h5 id = "product_name"></h5>
             </div>
-            <div class="fieldContainer" style = "display:flex">
+            <div class="fieldContainer" style = "display:flex; margin-bottom: 2px;">
                 <div class="form-group" >
                     <label for="p_qty" id="lbl_pqty" class="l_input" style="color: #FF6900;"><strong>QTY:</strong></label>
                     <input type="text" class="p_input" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">

@@ -134,19 +134,19 @@
         }
         public function save_order($formData)
         {
-            $isPaid = $formData['isPaid'] ? 1 : 0;
+            $isPaid = isset($formData['isPaid']) ? 1 : 0;
 
             $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
-            $date_purchased = $formData['date_purchased'];
+            $date_purchased = date('Y-m-d', strtotime($formData['date_purchased']));
             $po_number = $formData['po_number'];
-            $total = $this->remove_nonBreakingSpace($this->clean_number($formData['total']));
             $price = $this->remove_nonBreakingSpace($this->clean_number($formData['total']));
-            $order_type = 1; // Purchase
+            $totalTax = $this->remove_nonBreakingSpace($this->clean_number($formData['totalTax']));
+            $order_type = 1;
 
             $order_id = $this->get_lastOrderData()['id'];
             if(!$this->verify_order($po_number))
             {
-                $sqlStatement = $this->connect()->prepare("INSERT INTO orders (isPaid, supplier_id, date_purchased, po_number, price, order_type, total) 
+                $sqlStatement = $this->connect()->prepare("INSERT INTO orders (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)");
 
                 $sqlStatement->bindParam(1, $isPaid, PDO::PARAM_STR);
@@ -155,14 +155,14 @@
                 $sqlStatement->bindParam(4, $po_number, PDO::PARAM_STR);
                 $sqlStatement->bindParam(5, $price, PDO::PARAM_STR);
                 $sqlStatement->bindParam(6, $order_type, PDO::PARAM_STR);
-                $sqlStatement->bindParam(7, $total, PDO::PARAM_STR);
+                $sqlStatement->bindParam(7, $totalTax, PDO::PARAM_STR);
                 $sqlStatement->execute();
 
                 $order_id = $this->get_lastOrderData()['id'];
 
                 if($isPaid === 1)
                 {
-                //Payment transaction here [History ...]
+                    //Payment transaction here [History ...]
                 }   
             }
             return $order_id;
@@ -176,16 +176,6 @@
             $paddedId = str_pad($id, 9, '0', STR_PAD_LEFT);
             $result = "10-" . $paddedId;
             return $result;
-        }
-        public function updateProduct($product_id)
-        {
-            $isSelected = 1;
-            $sql = "UPDATE products SET isSelected = ? WHERE id = ?";
-            $stmt = $this->connect()->prepare($sql);
-            $stmt->bindParam(1, $isSelected, PDO::PARAM_INT); 
-            $stmt->bindParam(2, $product_id, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->rowCount() > 0 ? true : false;
         }
         public function save_purchaseOrder($formData)
         {
@@ -201,20 +191,22 @@
                     $price = $this->remove_nonBreakingSpace($this->clean_number($row['column_3']));
                     $total = $this->remove_nonBreakingSpace($this->clean_number($row['column_4']));
                     $status = 1;
+                    $isSelected = 1;
 
                     $product_id = $this->get_productInfo($product)['id'];
-                    $isVat = ($this->get_productInfo($product)['isVat'] == 1 ? true : false);
+                    $isVat = $this->get_productInfo($product)['isVat'] == 1 ? true : false;
                     
-                    $amount_beforeTax = $total;
+                    $amount_beforeTax = $price;
                     $amount_afterTax = 0;
+                    $tax = 0;
                     if($isVat)
                     {
-                        $amount_afterTax = $price / 1.12;
-                        $amount_afterTax = $price - $amount_afterTax;
+                        $tax = $price / 1.12;
+                        $amount_afterTax = $price - $tax;
                     }
                     
-                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status) 
-                                                            VALUES (?, ?, ?, ?, ?, ?)");
+                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
+                                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
                     $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
                     $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
@@ -222,11 +214,15 @@
                     $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
                     $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
                     $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
                     $sqlStatement->execute();
-
-                    $this->updateProduct($product_id);
                 }
-                return ['status'=>true, 'message'=>'Purchase Orders has been successfully submitted!'];   
+                return [
+                    'status'=>true, 
+                    'message'=>'Purchase Orders has been successfully saved!'
+                ];   
             }
             else
             {

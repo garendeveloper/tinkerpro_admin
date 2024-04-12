@@ -29,7 +29,6 @@ class UserFacade extends DBConnection {
     
         return $stmt;
     }
-    
 
     public function verifyUsernameAndPassword( $password ) {
         $sql = $this->connect()->prepare( 'SELECT  password FROM users WHERE password = ?' );

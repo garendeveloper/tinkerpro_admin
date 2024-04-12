@@ -154,47 +154,8 @@
   top: 710px
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 80px; 
-  height: 20px; 
-  outline: none;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #262626;
-  -webkit-transition: .4s;
-  transition: .4s;
-  outline: none;
-  border-radius: 10px; 
-}
 
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px; 
-  width: 16px;
-  left: 2px; 
-  bottom: 2px;
-  background-color: #888888;
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 50%; 
-}
 
 input:checked + .slider {
   background-color: #00CC00;
@@ -852,15 +813,17 @@ font-weight: bold;
   margin-top: -10px;
   margin-left: 10px;
   margin-right: 10px;
+  margin-bottom: 10px;
   display: grid;
   grid-template-columns: repeat(3, 1fr); 
   grid-gap: 7px; /* Adjust the gap between grid items as needed */
 }
 
 .grid-item {
-  padding: 6px 10px; 
+  padding: 6px 10px;
+  margin-bottom: -3px; 
   border: 1px solid #4B413E;
-  border-radius: 20px; 
+  border-radius: 10px; 
   color: #fff; 
   font-size: 12px;
   cursor: pointer;
@@ -984,6 +947,34 @@ input{
     background-color:#FF6900;
 }
 </style>
+<style>
+  .date-input-container {
+      display: flex;
+      align-items: center;
+  }
+
+  #date_purchased {
+      width: 100px;
+      height: 25px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-right: 5px;
+  }
+
+  #calendar-btn {
+      border-radius: 3px;
+      padding: 5px;
+      cursor: pointer;
+      border-color: #FF6900; font-size: 10px; height: 25px; 
+  }
+  .toggle-switch-container {
+      display: flex;
+      align-items: center;
+  }
+  .form-switch{
+    height: 25px;
+  }
+  </style>
 <?php include "layout/admin/slider.php"?>
 <div class="modal" id="optionModal" tabindex="0">
   <div class="modal-dialog ">
@@ -1012,12 +1003,18 @@ input{
                 <div class="fieldContainer">
                   <label>PO#</label>
                   <input type="text" name="po_number" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px" readonly/>
-                  <label for="paidSwitch" class="switch-label" >Paid</label>
-                  <label class="switch" id = "isPaid">
-                    <input id="paidSwitch" type="checkbox" onchange="$('#isPaid').removeClass('switch-error')" name="isPaid"  style="height: 25px;">
-                    <span class="slider"></span>
-                  </label>
-                  <input type="date" name="date_purchased" oninput="$(this).removeClass('has-error')" id = "date_purchased" value="" style="width: 140px; height: 25px"/>
+                  <div class="toggle-switch-container">
+                    <label for="paidSwitch" class="switch-label" style = "color: #28a745; ">Paid</label>
+                    <div class="form-check form-switch" style = "margin-left: 30px;">
+                        <input class="form-check-input" type="checkbox" id="paidSwitch" name = "isPaid" style = "background-color: #28a745; ">
+                    </div>
+                  </div>
+                  <div class="date-input-container">
+                    <input type="text" name="date_purchased" id="date_purchased" value="" placeholder="Select date" readonly>
+                    <button id="calendar-btn" class="button">
+                        <i class="bi bi-calendar" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
                 <div class="fieldContainer">
                   <label>Supplier</label>

@@ -117,18 +117,33 @@
             </div>
           </div>
           <div id="tab3" class="tabcontent">
+            <p></p>
+            <div style = "text-align:center">
+              <h5>Enter <b style = 'color: #FF6900'>PRICE</b> and the <b style = 'color: #FF6900'>DUE DATE</b></h5>
+              <h5 id = "product_name"></h5>
+            </div>
             <div class="fieldContainer" style = "display:flex" >
                 <div class="form-group" >
                     <label for="s_price" class="l_input" style="color: #FF6900;"><strong>PRICE</strong></label>
-                    <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="s_price" id="s_price" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
+                    <input type="text" class="p_input"  name="s_price" id="s_price" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
                 </div>
                 <div class="form-group" >
-                    <label for="s_due" class="l_input" style="color: #FF6900; "><strong>DUE</strong></label>
-                    <input type="text" class="p_input"  name="s_due" id="s_due" oninput="$(this).removeClass('has-error')" autocomplete="off">
+                   <label for="s_due" class="l_input" style="color: #FF6900; "><strong>DUE</strong></label>
+                    <div class="date-input-container">
+                    <input type="text" name="s_due" id="s_due"  placeholder="Select date" readonly style = "text-align: center">
+                    <button id="calendar-btn1" class="button">
+                        <i class="bi bi-calendar" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
             </div>
           </div>
           <div id="tab2" class="tabcontent">
+            <p></p>
+            <div style = "text-align:center">
+              <h5>Payment <b style = 'color: #FF6900'>HISTORY</b> for <b style = 'color: #FF6900'>SUPPLIER</b></h5>
+              <h5 id = "product_name"></h5>
+            </div>
             <table id="tbl_paymentHistory" class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
               <thead >
                 <tr>
