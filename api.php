@@ -12,8 +12,8 @@
 
     include( __DIR__ . '/utils/models/ingredients-facade.php');
    
-    $userFacade = new UserFacade();
-    $products = new ProductFacade();
+    // $userFacade = new UserFacade();
+    // $products = new ProductFacade();
     $ingredients = new IngredientsFacade();
 
     header("Content-Type: application/json");
@@ -88,6 +88,7 @@
         case 'get_orderData':
             $order_id = $_GET['order_id'];
             echo json_encode($order->get_orderData($order_id));
+            break;
         case 'updateDataCategory':// updateCategory($categoryname, $categoryid)
             $postData = json_decode(file_get_contents('php://input'), true);
             $categoryid = isset($postData['id']) ? $postData['id'] : null;

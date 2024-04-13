@@ -12,22 +12,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Transak POS | Admin</title>
-  <!-- plugins:css -->
+  <link rel="icon" href="assets/img/tinkerpro-logo-dark.png" type="image/png">
   <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="assets/vendors/base/vendor.bundle.base.css">
-  <!-- endinject -->
-  <!-- plugin css for this page -->
   <link rel="stylesheet" href="assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
   <link rel="stylesheet" href="assets/css/style.css">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="assets/images/favicon.png" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
- 
+  <link rel="stylesheet" href="assets/css/others/flatpicker.min.css">
+  <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <script src="assets/vendors/base/vendor.bundle.base.js"></script>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/vendors/chart.js/Chart.min.js"></script>
+  <script src="assets/vendors/datatables.net/jquery.dataTables.js"></script>
+  <script src="assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+  <script src="assets/vendors/letteravatar/letteravatar.js"></script>
+  <script src="assets/js/off-canvas.js"></script>
+  <script src="assets/js/hoverable-collapse.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/data-table.js"></script>
+  <script src="assets/js/jquery.dataTables.js"></script>
+  <script src="assets/js/dataTables.bootstrap4.js"></script>
+  <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
+  <script src="assets/js/otherjs/flatpicker.js"></script>
+  <script src="assets/js/otherjs/axios.min.js"></script>
+  <script src="assets/js/otherjs/sweetalert.js"></script>
+  <script src="assets/js/jquery-ui.min.js"></script>
 </head>
 <body>

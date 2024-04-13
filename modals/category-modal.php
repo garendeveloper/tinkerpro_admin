@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <style>
+<style>
 
 #add_category_modal {
   display: none;
@@ -29,8 +29,7 @@
 
 
 @keyframes slideInRight {
-  from {
-    margin-right: -100%;
+  from {margin-right: -100%;
     opacity: 0;
   }
   to {
@@ -834,6 +833,9 @@ function changeValueInput(element) {
 }
 
 function closeModal(){
+    if($('#add_bom_modal').is(':visible')){
+           closeModalBom()
+       } 
   $('#add_category_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.categoryAdd').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighted').removeClass('highlighted');
