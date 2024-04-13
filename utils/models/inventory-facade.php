@@ -191,41 +191,89 @@
             {
                 $tbldata = json_decode($formData['data'], true);
                 $order_id = $this->save_order($formData);
-
-                foreach($tbldata as $row)
+                if($formData['order_id'] > 0)
                 {
-                    $product = $row['column_1'];
-                    $quantity = $row['column_2'];
-                    $price = $this->remove_nonBreakingSpace($this->clean_number($row['column_3']));
-                    $total = $this->remove_nonBreakingSpace($this->clean_number($row['column_4']));
-                    $status = 1;
-                    $isSelected = 1;
-
-                    $product_id = $this->get_productInfo($product)['id'];
-                    $isVat = $this->get_productInfo($product)['isVat'] == 1 ? true : false;
-                    
-                    $amount_beforeTax = $price;
-                    $amount_afterTax = 0;
-                    $tax = 0;
-                    if($isVat)
+                    foreach($tbldata as $row)
                     {
-                        $tax = $price / 1.12;
-                        $amount_afterTax = $price - $tax;
-                    }
-                    
-                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
-                                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        $product = $row['column_1'];
+                        $quantity = $row['column_2'];
+                        $price = $this->remove_nonBreakingSpace($this->clean_number($row['column_3']));
+                        $total = $this->remove_nonBreakingSpace($this->clean_number($row['column_4']));
+                        $status = 1;
+                        $isSelected = 1;
+    
+                        $product_id = $this->get_productInfo($product)['id'];
+                        $isVat = $this->get_productInfo($product)['isVat'] == 1 ? true : false;
+                        
+                        $amount_beforeTax = $price;
+                        $amount_afterTax = 0;
+                        $tax = 0;
+                        if($isVat)
+                        {
+                            $tax = $price / 1.12;
+                            $amount_afterTax = $price - $tax;
+                        }
+                        
+                        $sqlStatement = $this->connect()->prepare("UPDATE inventory 
+                                                                    SET qty_purchased = ?, 
+                                                                        amount_beforeTax = ?, 
+                                                                        amount_afterTax = ?, 
+                                                                        status = ?, 
+                                                                        isSelected = ?, 
+                                                                        total = ?, 
+                                                                        tax = ? 
+                                                                    WHERE order_id = ? AND product_id = ? AND id = ?");
 
-                    $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
-                    $sqlStatement->execute();
+                        $sqlStatement->bindParam(1, $quantity, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(2, $amount_beforeTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(3, $amount_afterTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(4, $status, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(5, $isSelected, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(6, $total, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(7, $tax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(8, $order_id, PDO::PARAM_INT);
+                        $sqlStatement->bindParam(9, $product_id, PDO::PARAM_INT);
+                        $sqlStatement->bindParam(10, $formData['inventory_id'], PDO::PARAM_INT);
+                        $sqlStatement->execute();
+                    }
+                }
+                else
+                {
+                    foreach($tbldata as $row)
+                    {
+                        $product = $row['column_1'];
+                        $quantity = $row['column_2'];
+                        $price = $this->remove_nonBreakingSpace($this->clean_number($row['column_3']));
+                        $total = $this->remove_nonBreakingSpace($this->clean_number($row['column_4']));
+                        $status = 1;
+                        $isSelected = 1;
+
+                        $product_id = $this->get_productInfo($product)['id'];
+                        $isVat = $this->get_productInfo($product)['isVat'] == 1 ? true : false;
+                        
+                        $amount_beforeTax = $price;
+                        $amount_afterTax = 0;
+                        $tax = 0;
+                        if($isVat)
+                        {
+                            $tax = $price / 1.12;
+                            $amount_afterTax = $price - $tax;
+                        }
+                        
+                        $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
+                                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+                        $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
+                        $sqlStatement->execute();
+                    }
                 }
                 return [
                     'status'=>true, 

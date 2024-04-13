@@ -19,7 +19,7 @@
         }
         public function get_orderData($order_id)
         {
-            $sql = "SELECT orders.*, products.*, supplier.*, inventory.* 
+            $sql = "SELECT orders.*, products.*, supplier.*, inventory.*, inventory.id as inventory_id
                     FROM orders
                     INNER JOIN inventory ON orders.id = inventory.order_id 
                     INNER JOIN supplier ON supplier.id = orders.supplier_id

@@ -1016,14 +1016,9 @@ input:checked + .sliderbom:before {
   <div class="modal-dialog ">
     <div class="modal-content product-modal">
       <div class="modal-title">
-<<<<<<< HEAD
         <div style="margin-top: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: space-between;">
             <h2 class="text-custom" style="color:#FF6900; margin-right: 10px;">Add New Product</h2>
             <button style="margin-right: 20px;" id = "btn_minimizeProduct" type="button"> <i class="mdi mdi-arrow-right"></i>&nbsp;</button>
-=======
-        <div style="margin-top: 30px; margin-left: 20px">
-           <h2 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">Add New Product</h2>
->>>>>>> 5ca2a7ac5b5aa6f3c91742b6418a1a239af430ca
         </div>
         <div class="warning-container">
           <div class="tableCard">

@@ -50,7 +50,6 @@
           <div style="display: flex; margin-bottom: 20px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 35px; width: 50px;"></label>
             <input  class="text-color" id = "searchInput" style="width: 60%; height: 35px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
-            
             <button class="icon-button">
               <span class="search-icon"></span>
               Search
@@ -63,10 +62,6 @@
               <option value="100">100</option>
               <option value="all">Show All</option>
             </select>
-            <button class="icon-button" style = "width: 200px;">
-              <span class="plus-icon"></span>
-              Add Qty
-            </button>
             <button class="icon-button" id = "btn_openOption">
               <span class="plus-icon"></span>
                Option
@@ -383,6 +378,8 @@
     function resetPurchaseOrderForm()
     {
       $("#supplier").val("");
+      $("#_order_id").val("0");
+      $("#_inventory_id").val("0");
       $("#date_purchased").val("");
       $("#product").val("");
       $('#tbl_purchaseOrders tbody').empty();
@@ -392,65 +389,70 @@
     })
     function submit_purchaseOrder()
     {
-      var dataArray = [];
-        $('#tbl_purchaseOrders tbody tr').each(function() {
-            var rowData = {};
-            $(this).find('td').each(function(index, cell) {
-                rowData['column_' + (index + 1)] = $(cell).text(); 
-            });
-            dataArray.push(rowData);
+      if(confirm("Are you sure you want to update your orders?"))
+      {
+        var dataArray = [];
+          $('#tbl_purchaseOrders tbody tr').each(function() {
+              var rowData = {};
+              $(this).find('td').each(function(index, cell) {
+                  rowData['column_' + (index + 1)] = $(cell).text(); 
+              });
+              dataArray.push(rowData);
+          });
+      
+        $.ajax({
+          type: 'POST',
+          url: 'api.php?action=save_purchaseOrder', 
+          data: {
+            data: JSON.stringify(dataArray),
+            po_number: $("#pcs_no").val(),
+            isPaid: $('#paidSwitch').prop('checked'),
+            date_purchased: $("#date_purchased").val(),
+            supplier: $("#supplier").val(),
+            product: $("#product").val(),
+            total: overallTotal,
+            totalTax: totalTax,
+            order_id: $("#_order_id").val(),
+            inventory_id: $("#_inventory_id").val(),
+          },
+          dataType: 'json',
+          success: function(response) 
+          {
+            if(response.status)
+            {
+              resetPurchaseOrderForm();
+              $("#paid_purchase_modal").hide();
+              $("#totalTax").html("0.00");
+              $("#totalQty").html("0");
+              $("#totalPrice").html("&#x20B1;&nbsp;0.00");
+              $("#overallTotal").html("&#x20B1;&nbsp;0.00");
+              show_allInventories(1, perPage); 
+              show_response(response.message);
+              show_purchaseOrderNo();
+              show_allProducts();
+              show_allSuppliers();
+              display_datePurchased();
+              selected_products = [];
+            }
+            else
+            {
+              $.each(response.errors, function(key, value) {
+                if(key === "isPaid")
+                {
+                  $("#"+key).addClass('switch-error');
+                }
+                else
+                {
+                  $('#' + key).addClass('has-error');
+                }
+              });
+            }
+          },
+          error: function(xhr, status, error) {
+            alert("Something went wrong!");
+          }
         });
-    
-      $.ajax({
-        type: 'POST',
-        url: 'api.php?action=save_purchaseOrder', 
-        data: {
-          data: JSON.stringify(dataArray),
-          po_number: $("#pcs_no").val(),
-          isPaid: $('#paidSwitch').prop('checked'),
-          date_purchased: $("#date_purchased").val(),
-          supplier: $("#supplier").val(),
-          product: $("#product").val(),
-          total: overallTotal,
-          totalTax: totalTax,
-        },
-        dataType: 'json',
-        success: function(response) 
-        {
-          if(response.status)
-          {
-            resetPurchaseOrderForm();
-            $("#paid_purchase_modal").hide();
-            $("#totalTax").html("0.00");
-            $("#totalQty").html("0");
-            $("#totalPrice").html("&#x20B1;&nbsp;0.00");
-            $("#overallTotal").html("&#x20B1;&nbsp;0.00");
-            show_allInventories(1, perPage); 
-            show_response(response.message);
-            show_purchaseOrderNo();
-            show_allProducts();
-            show_allSuppliers();
-            display_datePurchased();
-            selected_products = [];
-          }
-          else
-          {
-            $.each(response.errors, function(key, value) {
-              if(key === "isPaid")
-              {
-                $("#"+key).addClass('switch-error');
-              }
-              else
-              {
-                $('#' + key).addClass('has-error');
-              }
-            });
-          }
-        },
-        error: function(xhr, status, error) {
-          alert("Something went wrong!");
-        }
-      });
+      }
     }
     function show_response(message)
     {
@@ -815,11 +817,12 @@
         dataType: 'json',
         success: function(data)
         {
-          console.log(data)
           var table = "";
+          $("#pcs_no").val(data[0].po_number);
           $("#supplier").val(data[0].supplier);
           $("#date_purchased").val(data[0].date_purchased);
-
+          $("#_order_id").val(data[0].order_id);
+          $("#_inventory_id").val(data[0].inventory_id);
           var at = 0;
           var qt = 0;
           var pt = 0;
@@ -827,9 +830,9 @@
           for(var i = 0; i<data.length; i++)
           {
             table +=  "<tr>";
-            table += "<td>"+data[i].prod_desc+"</td>";
-            table += "<td style = 'text-align: center'>"+data[i].qty_purchased+"</td>";
-            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
+            table += "<td data-id = "+data[i].inventory_id+">"+data[i].prod_desc+" : "+data[i].barcode+"</td>";
+            table += "<td style = 'text-align: center' class ='editable'>"+data[i].qty_purchased+"</td>";
+            table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
             table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax*data[i].qty_purchased)+"</td>";
             table += "</tr>";
             qt += parseInt(data[i].qty_purchased);

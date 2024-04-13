@@ -1000,6 +1000,8 @@ input{
             <p></p>
             <div class="fcontainer" style="min-height: 60vh;">
               <form id = "po_form">
+                <input type="hidden" name="order_id" id = "_order_id" value = "0">
+                <input type="hidden" name="inventory_id" id = "_inventory_id" value = "0">
                 <div class="fieldContainer">
                   <label>PO#</label>
                   <input type="text" name="po_number" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px" readonly/>
@@ -1052,6 +1054,13 @@ input{
                   table{
                     table-layout: fixed;
                   }
+                  tr:hover {
+                      background-color: #FF6900;
+                      cursor: pointer;
+                  }
+                  .editable{
+                    cursor: pointer;
+                  }
                 </style>
               <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
                 <thead >
@@ -1093,3 +1102,121 @@ input{
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $('#tbl_purchaseOrders tbody').on('click', '.editable', function() {
+        $(this).attr('contenteditable', true);
+    });
+    function roundToTwoDecimalPlaces(number) 
+    {
+      return parseFloat(number).toFixed(2);
+    }
+    function addCommasToNumber(number) 
+    {
+      var roundedNumber = Number(number).toFixed(2);
+      var parts = roundedNumber.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
+    }
+    function updateTotal() 
+    {
+      var totalQty = 0;
+      var totalPrice = 0;
+      var total = 0;
+      var totalTax = 0;
+      $('#tbl_purchaseOrders tbody tr').each(function() {
+        var quantity = parseInt($(this).find('td:nth-child(2)').text().trim(), 10);
+        var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
+        var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
+        var tax = (price/1.12);
+        totalTax += (price-tax);
+        totalQty += quantity;
+        totalPrice += price;
+        total += subtotal;
+      });
+      $("#totalTax").html(addCommasToNumber(totalTax));
+      $("#totalQty").html(totalQty);
+      $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice));
+      $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(total));
+    }
+    function add_decimal(number)
+    {
+      number = number.replace(/[^0-9.]/g, '');
+      var parts = number.split('.');
+      if (parts[1] && parts[1].length > 2) 
+      {
+        parts[1] = parts[1].slice(0, 2);
+      }
+      var newValue = parts.join('.');
+      return newValue;
+    }
+    $('#tbl_purchaseOrders tbody').on('input', 'td:nth-child(3)', function() {
+        var $cell = $(this);
+        var newPrice = $cell.text().trim();
+        var cursorPosition = getCursorPosition($cell[0]);
+        newPrice = add_decimal(newPrice);
+        $cell.text(newPrice);
+        cursorPosition = Math.min(cursorPosition, newPrice.length);
+        setCursorPosition($cell[0], cursorPosition);
+        newPrice = clean_number(newPrice);
+        var newQty = $cell.closest('tr').find('td:nth-child(2)').text().trim();
+        var newTotal = addCommasToNumber(roundToTwoDecimalPlaces(newPrice*newQty));
+        $cell.closest('tr').find('td:nth-child(4)').html("&#x20B1;&nbsp;"+newTotal);
+        updateTotal();
+    });
+    $('#tbl_purchaseOrders tbody').on('input', 'td:nth-child(2)', function() {
+        var $cell = $(this);
+        var newQty = $cell.text().trim();
+        var cursorPosition = getCursorPosition($cell[0]);
+        newQty = newQty.replace(/\D/g, '');
+        $cell.text(newQty);
+        cursorPosition = Math.min(cursorPosition, newQty.length);
+        setCursorPosition($cell[0], cursorPosition);
+
+        var newPrice = clean_number($cell.closest('tr').find('td:nth-child(3)').text().trim());
+        var newTotal = addCommasToNumber(roundToTwoDecimalPlaces(newPrice*newQty));
+        $cell.closest('tr').find('td:nth-child(4)').html("&#x20B1;&nbsp;"+newTotal);
+        updateTotal();
+    });
+    function clean_number(number)
+    {
+      return number.replace(/[₱\s]/g, '');
+    }
+    function getCursorPosition(element) 
+    {
+      var selection = window.getSelection();
+      var range = selection.getRangeAt(0);
+      range.setStart(element, 0);
+      return range.toString().length;
+    }
+    function setCursorPosition(element, position) 
+    {
+      var range = document.createRange();
+      var sel = window.getSelection();
+      var childNode = element.childNodes[0];
+
+      if (childNode && childNode.nodeType === Node.TEXT_NODE && childNode.length > 0) 
+      {
+        position = Math.min(position, childNode.length);
+        range.setStart(childNode, position);
+      } 
+      else 
+      {
+        range.setStart(element, 0);
+      }
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+
+    $(document).click(function(event) {
+      if (!$(event.target).closest('td').hasClass('editable')) {
+        $('#tbl_purchaseOrders tbody td.editable').each(function() {
+            $(this).removeAttr('contenteditable');
+            updateTotal();
+        });
+      }
+    });
+  })
+</script>
