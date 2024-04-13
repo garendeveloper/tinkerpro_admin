@@ -968,7 +968,7 @@ input:checked + .sliderbom:before {
 }
 
 #myTable td {
-  border: none;
+  border: none !important;
   font-family: Century Gothic;
   font-size: 11px;
 }
