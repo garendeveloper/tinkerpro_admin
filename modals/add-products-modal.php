@@ -968,7 +968,7 @@ input:checked + .sliderbom:before {
 }
 
 #myTable td {
-  border: none;
+  border: none !important;
   font-family: Century Gothic;
   font-size: 11px;
 }
@@ -1016,27 +1016,29 @@ input:checked + .sliderbom:before {
   <div class="modal-dialog ">
     <div class="modal-content product-modal">
       <div class="modal-title">
-        <div style="margin-top: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: space-between;">
-            <h2 class="text-custom" style="color:#FF6900; margin-right: 10px;">Add New Product</h2>
-            <button style="margin-right: 20px;" id = "btn_minimizeProduct" type="button"> <i class="mdi mdi-arrow-right"></i>&nbsp;</button>
+        <div style="margin-top: 30px; margin-left: 20px">
+           <h2 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">Add New Product</h2>
         </div>
         <div class="warning-container">
           <div class="tableCard">
           <div style="margin-left: 20px;margin-right: 20px">
-            <form id = "product-form">
             <table id="addProducts" class="text-color table-border"> 
                 <tbody>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<sup>*</sup></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input name = "name"/></td>
+                        <td class="nameTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<sup>*</sup></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="productname" id="productname" name="productname"/></td>
                     </tr>
                     <tr>
-                        <td  class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Code / SKU<sup>*</sup></td>
-                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input readonly class="skunNumber" name = "skunNumber" /></td>
+                        <td  class="skuTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">SKU</td>
+                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input oninput="validateInputs(this)"  class="skunNumber" id="skunNumber" name="skunNumber" /></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="barcode" name = "barcode" id="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
+                        <td class="codeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Code</td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input oninput="validateInputs(this)"  class="code" id="code" name="code"/></td>
+                    </tr>
+                    <tr>
+                        <td class="barcodeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode<sup>*</sup></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input  oninput="validateNumber(this)" class="barcode" id="barcode" name="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Unit of measure</td>
@@ -1264,18 +1266,92 @@ input:checked + .sliderbom:before {
   </div>
 </div>
 <script>
-    function toggleStatus(checkbox) 
-    {
-      var slider = checkbox.parentNode.querySelector('.slider'); 
-      var statusLabel = document.getElementById('statusActive');
-      if (checkbox.checked) {
-          slider.style.backgroundColor = '#00CC00'; 
-          statusLabel.style.color = '#00CC00'; 
-      } else {
-          slider.style.backgroundColor = '#262626'; 
-          statusLabel.style.color = '#fefefe'; 
-      }
+
+window.addEventListener('beforeunload', function() {
+    localStorage.removeItem('bomData');
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var checkbox = document.getElementById('bomToggle');
+    var bomText = document.getElementById('bomText');
+    var disAbled = document.querySelector('.disAbled');
+    var addButtons = document.getElementById('addIngredients');
+    var delButtons = document.getElementById('delIngredients');
+    if (checkbox.checked) {
+            bomText.style.color = '#00CC00';
+            disAbled.textContent = 'Enabled';
+            disAbled.style.color = '#00CC00';
+            addButtons.disabled = false;
+            delButtons.disabled = false;
+    }else{
+         addButtons.disabled = true;
+         delButtons.disabled = true;
+        
     }
+
+ 
+   
+});
+function openBomModal(){
+  if( $('#add_category_modal').is(":visible")){
+    closeModal()
+  }
+  var checkbox = document.getElementById('bomToggle');
+  if (checkbox.checked) {
+    $('#add_bom_modal').css('display', 'block');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var checkbox = document.getElementById('bomToggle');
+    checkbox.addEventListener('change', updateTextColor);
+    checkbox.addEventListener('change', function(){
+      if(!checkbox.checked){
+      if($('#add_bom_modal').is(':visible')){
+           closeModalBom()
+       }
+    }
+    });
+   
+  
+});
+  
+
+function updateTextColor() {
+    var checkbox = document.getElementById('bomToggle');
+    var bomText = document.getElementById('bomText');
+    var disAbled = document.querySelector('.disAbled');
+    var addButtons = document.getElementById('addIngredients');
+    var delButtons = document.getElementById('delIngredients');
+
+    if (checkbox.checked) {
+        bomText.style.color = '#00CC00';
+        disAbled.textContent = 'Enabled';
+        disAbled.style.color = '#00CC00';
+         addButtons.disabled = false;
+         delButtons.disabled = false;
+    } else {
+        bomText.style.color = '';
+        disAbled.textContent = 'Disabled';
+        disAbled.style.color = '';
+        addButtons.disabled = true;
+         delButtons.disabled = true;
+    }
+}
+
+
+    function toggleStatus(checkbox) {
+            var slider = checkbox.parentNode.querySelector('.slider'); 
+            var statusLabel = document.getElementById('statusActive');
+            if (checkbox.checked) {
+                slider.style.backgroundColor = '#00CC00'; 
+                statusLabel.style.color = '#00CC00'; 
+            } else {
+                slider.style.backgroundColor = '#262626'; 
+                statusLabel.style.color = '#fefefe'; 
+            }
+        }
     function toggleDisplayOnReceipt(checkbox){
       var otherChargesDisplayOnReceipt = document.getElementById('otherChargesDisplayOnReceipt')
       var spanDisplayReceipt = checkbox.parentNode.querySelector('.spanDisplayReceipt'); 
@@ -1432,14 +1508,12 @@ function clearImageProduct() {
     }
 }
 
-function openCategoryModal()
-{
-  $("#add_category_modal").addClass('slideInRight');
-  $(".categoryAdd").addClass('slideInRight');
-  setTimeout(function() {
-      $("#add_category_modal").show();
-      $(".categoryAdd").show();
-  }, 100); 
+function openCategoryModal(){
+   $('#add_category_modal').show()
+   if($('#add_bom_modal').is(':visible')){
+      closeModalBom()
+    }
+    
 }
 
 function clearStorage() {
@@ -1453,9 +1527,12 @@ function clearStorage() {
 }
 
 function closeAddProductsModal(){
-  closeModal()
-  clearStorage()
-  closeModalBom()
+     closeModal()
+     clearStorage()
+    if($('#add_bom_modal').is(':visible')){
+      closeModalBom()
+    }
+    
   $('#add_products_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.product-modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighteds').removeClass('highlighteds');
@@ -1466,8 +1543,7 @@ function closeAddProductsModal(){
     $(this).css('animation', '');
     $('.product-modal').css('animation', '');
      clearProductsInputs()
-     clearFileInput()
-    
+     clearFileInput() 
   });
   
 }
@@ -1799,21 +1875,61 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
 
  var discountedCheckbox = document.getElementById('discountToggle');
  discountedCheckbox.checked = (isDiscounted == 1) ? true : false;
+
+ 
  var taxCheckbox = document.getElementById('taxVatToggle');
- taxCheckbox.checked = (isTax == 1) ? true: false;
- var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
- toggleChangeColor(showTaxCheckbox);
- showTaxCheckbox.checked  = (isTaxIncluded == 1) ? true: false;
+ taxCheckbox.checked  = (isTax == 1) ? true: false;
+
+  var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
+  showTaxCheckbox.checked  = (isTaxIncluded == 1) ? true: false;
+
+ if(showTaxCheckbox.checked){
+  toggleChangeColor(showTaxCheckbox);
+ }else{
+  toggleChangeColor(showTaxCheckbox);
+ }
  var service = document.getElementById('serviceChargesToggle');
+ var taxLabel = document.getElementById('taxtVatLbl');
  service.checked = (serviceCharge == 1) ? true : false;
+ if(service.checked){
+  taxLabel.style.color = '#FF6900';
+ }else{
+  taxLabel.style.color = '';
+ }
  var displayServices = document.getElementById('displayServiceChargeReceipt');
  displayServices.checked = (displayService == 1) ? true : false
+ 
+ if(displayServices.checked){
+  toggleDisplayServiceCharge(displayServices)
+ }else{
+  toggleDisplayServiceCharge(displayServices)
+ }
  var other =  document.getElementById('otherChargesToggle');
  other.checked = (otherCharges == 1) ? true: false;
+ var serviceLabel = document.getElementById('serviceChargeLbl');
+ if(other.checked){
+  serviceLabel.style.color = '#FF6900';
+ }else{
+  serviceLabel.style.color = ''
+ }
  var displayOtherCharge = document.getElementById('displayReceipt');
  displayOtherCharge.checked = (displayOtherCharges == 1) ? true : false;
+if( displayOtherCharge.checked){
+  toggleOtherCharges(displayOtherCharge)
+}else{
+  toggleOtherCharges(displayOtherCharge)
+}
+
  var stat = document.getElementById('statusValue');
+ var statusLabel = document.getElementById('statusActive');
  stat.checked = (status == 1) ? true : false;
+ if(stat.checked){
+  toggleStatus(stat)
+  statusLabel.style.color = '#00CC00'; 
+ }else{
+  toggleStatus(stat)
+  statusLabel.style.color = ''; 
+ }
 
  var uptBtn = document.querySelector('.updateProductsBtn');
  var saveBtn = document.querySelector('.saveProductsBtn');

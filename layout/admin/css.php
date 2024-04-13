@@ -63,7 +63,7 @@ select option:hover {
     width: 100%;
     border: 1px solid white;
 }
-td, tr, th {
+td, th {
     border: 1px solid white;
     padding: 8px; 
 }
@@ -156,7 +156,7 @@ button:active {
     bottom: 0;
     overflow-y: auto; 
     background-color: #262626;
-    width: calc(100% - 190px); */
+    width: calc(100% - 190px); 
     display: flex;
     flex-wrap: wrap;
   }

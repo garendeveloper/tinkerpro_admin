@@ -63,7 +63,7 @@
     <a href="products" id = "products"><i class = "bi bi-bag-check"></i>&nbsp; Products</a>
     <a href="ingredients" id = "ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a>
     <a href="reporting" id = "reporting"><i class = "bi bi-bar-chart"></i>&nbsp; Reporting</a>
-    <a href="reporting" id = "users"><i class = "bi bi-person"></i>&nbsp; Users</a>
+    <a href="users" id = "users"><i class = "bi bi-person"></i>&nbsp; Users</a>
     <a href="company" id = "company"><i class = "bi bi-building"></i>&nbsp; Company</a>
     <a href="machine-details" id = "machine-details"><i class = "bi bi-tools"></i>&nbsp; Machine Details</a>
     <a href="backup-restore" id = "backup-restore"><i class = "bi bi-cloud-arrow-up-fill"></i>&nbsp; Backup & Restore</a>
