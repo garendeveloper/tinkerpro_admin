@@ -19,6 +19,14 @@
 
             return $data;
         }
+        public function get_allProducts()
+        {
+            $sql = $this->connect()->prepare("SELECT * FROM products");
+            $sql->execute();
+            $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            return $data;
+        }
         public function get_allSuppliers()
         {
             $sqlStatement = $this->connect()->prepare("SELECT * FROM supplier");

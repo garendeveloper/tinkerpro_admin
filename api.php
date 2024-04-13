@@ -64,7 +64,7 @@
             echo json_encode($inventory->get_allInventories($currentPage, $perPage));
             break;
         case 'get_allProducts':
-            echo json_encode($products->fetchProducts());
+            echo json_encode($inventory->get_allProducts());
             break;
         case 'get_productInfo':
             $product = $_GET['data'];

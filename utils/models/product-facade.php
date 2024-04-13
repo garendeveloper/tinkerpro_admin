@@ -348,27 +348,27 @@ public function addCategory($category){
 
 public function updateCategory($categoryname, $categoryid) {
   
-  $category_formatted = ucwords(strtolower($categoryname));
+  // $category_formatted = ucwords(strtolower($categoryname));
 
 
-  $sql_check = $this->connect()->prepare("SELECT category_name FROM category WHERE category_name LIKE :categoryname");
-  $sql_check->bindParam(':categoryname', $category_formatted);
-  $sql_check->execute();
-  $existing_categories = $sql_check->fetchAll(PDO::FETCH_COLUMN);
+  // $sql_check = $this->connect()->prepare("SELECT category_name FROM category WHERE category_name LIKE :categoryname");
+  // $sql_check->bindParam(':categoryname', $category_formatted);
+  // $sql_check->execute();
+  // $existing_categories = $sql_check->fetchAll(PDO::FETCH_COLUMN);
 
   
-  $original_category = $category_formatted;
-  $count = 0;
-  while (in_array($category_formatted, $existing_categories)) {
-      $category_formatted = $original_category . ++$count;
-  }
+  // $original_category = $category_formatted;
+  // $count = 0;
+  // while (in_array($category_formatted, $existing_categories)) {
+  //     $category_formatted = $original_category . ++$count;
+  // }
 
  
-  $sql_update = $this->connect()->prepare("UPDATE category SET category_name = :categoryname WHERE id = :categoryid");
-  $sql_update->bindParam(':categoryname', $category_formatted);
-  $sql_update->bindParam(':categoryid', $categoryid);
-  $sql_update->execute();
-  return $sql_update;
+  // $sql_update = $this->connect()->prepare("UPDATE category SET category_name = :categoryname WHERE id = :categoryid");
+  // $sql_update->bindParam(':categoryname', $category_formatted);
+  // $sql_update->bindParam(':categoryid', $categoryid);
+  // $sql_update->execute();
+  // return $sql_update;
 }
 
 public function addVariants($categoryid, $variantName) {

@@ -359,6 +359,7 @@
     }
     function show_purchaseOrderNo()
     {
+      $("#pcs_no").val("10-000000001");
       $.ajax({
         type: 'get',
         url: 'api.php?action=get_purchaseOrderNo',
@@ -810,10 +811,11 @@
       openOptionModal(); 
       $.ajax({
         type: 'GET',
-        url: 'api.php?action=get_orderData',
-        data: {order_id: order_id},
+        url: 'api.php?action=get_orderData&order_id='+order_id,
+        dataType: 'json',
         success: function(data)
         {
+          console.log(data)
           var table = "";
           $("#supplier").val(data[0].supplier);
           $("#date_purchased").val(data[0].date_purchased);
@@ -838,6 +840,9 @@
           $("#totalQty").html(qt);
           $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(pt)));
           $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(data[0].price));
+        },
+        error: function(data){
+          alert("No response")
         }
       })
     })

@@ -132,11 +132,11 @@
           <div>
           <div class="row">
             <div>
-              <div class="card" style="height:700px">
+              <div class="card" style="height:700px; width: 100%">
                 <div class="card-body">
                   <?php include('errors.php'); ?>
-                  <div class="productTable">
-                    <table id="recentingredients" class="text-color table-border">
+                  <div class="productTable" >
+                    <table id="recentingredients" class="text-color table-border" style = "width: 100%">
                       <thead>
                         <tr>
                           <th class="text-center" style="width: 2%;">No.</th>
