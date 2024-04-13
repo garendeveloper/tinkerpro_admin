@@ -733,7 +733,7 @@
             for(var i = 0; i < data.length; i++)
             {
               tbl_data += "<tr>";
-              tbl_data += "<td style = 'text-align: center'>"+data[i].po_number+"</td>";
+              tbl_data += "<td style = 'text-align: center'>"+data[i].inventory_id+"</td>";
               tbl_data += "<td>"+data[i].supplier+"</td>";
               tbl_data += "<td>"+data[i].barcode+"</td>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].uom_name+"</td>";

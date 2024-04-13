@@ -1032,7 +1032,6 @@ input:checked + .sliderbom:before {
             <table id="addProducts" class="text-color table-border"> 
                 <tbody>
                     <tr>
-<<<<<<< HEAD
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<sup>*</sup></td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input name = "name"/></td>
                     </tr>
@@ -1043,22 +1042,6 @@ input:checked + .sliderbom:before {
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="barcode" name = "barcode" id="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
-=======
-                        <td class="nameTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name<sup>*</sup></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="productname" id="productname" name="productname"/></td>
-                    </tr>
-                    <tr>
-                        <td  class="skuTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">SKU</td>
-                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input oninput="validateInputs(this)"  class="skunNumber" id="skunNumber" name="skunNumber" /></td>
-                    </tr>
-                    <tr>
-                        <td class="codeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Code</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input oninput="validateInputs(this)"  class="code" id="code" name="code"/></td>
-                    </tr>
-                    <tr>
-                        <td class="barcodeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode<sup>*</sup></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input  oninput="validateNumber(this)" class="barcode" id="barcode" name="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
->>>>>>> 5ca2a7ac5b5aa6f3c91742b6418a1a239af430ca
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Unit of measure</td>
@@ -1286,7 +1269,6 @@ input:checked + .sliderbom:before {
   </div>
 </div>
 <script>
-<<<<<<< HEAD
     function toggleStatus(checkbox) 
     {
       var slider = checkbox.parentNode.querySelector('.slider'); 
@@ -1299,82 +1281,6 @@ input:checked + .sliderbom:before {
           statusLabel.style.color = '#fefefe'; 
       }
     }
-=======
-
-window.addEventListener('beforeunload', function() {
-    localStorage.removeItem('bomData');
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    var checkbox = document.getElementById('bomToggle');
-    var bomText = document.getElementById('bomText');
-    var disAbled = document.querySelector('.disAbled');
-    var addButtons = document.getElementById('addIngredients');
-    var delButtons = document.getElementById('delIngredients');
-    if (checkbox.checked) {
-            bomText.style.color = '#00CC00';
-            disAbled.textContent = 'Enabled';
-            disAbled.style.color = '#00CC00';
-            addButtons.disabled = false;
-            delButtons.disabled = false;
-    }else{
-         addButtons.disabled = true;
-         delButtons.disabled = true;
-    }
-
- 
-   
-});
-function openBomModal(){
-  if($('#add_products_modal').is(':visible')){
-        $('#add_bom_modal').show()
-          closeModal() 
-      }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    var checkbox = document.getElementById('bomToggle');
-    checkbox.addEventListener('change', updateTextColor);
-  
-});
-  
-
-function updateTextColor() {
-    var checkbox = document.getElementById('bomToggle');
-    var bomText = document.getElementById('bomText');
-    var disAbled = document.querySelector('.disAbled');
-    var addButtons = document.getElementById('addIngredients');
-    var delButtons = document.getElementById('delIngredients');
-
-    if (checkbox.checked) {
-        bomText.style.color = '#00CC00';
-        disAbled.textContent = 'Enabled';
-        disAbled.style.color = '#00CC00';
-         addButtons.disabled = false;
-         delButtons.disabled = false;
-    } else {
-        bomText.style.color = '';
-        disAbled.textContent = 'Disabled';
-        disAbled.style.color = '';
-        addButtons.disabled = true;
-         delButtons.disabled = true;
-    }
-}
-
-
-    function toggleStatus(checkbox) {
-            var slider = checkbox.parentNode.querySelector('.slider'); 
-            var statusLabel = document.getElementById('statusActive');
-            if (checkbox.checked) {
-                slider.style.backgroundColor = '#00CC00'; 
-                statusLabel.style.color = '#00CC00'; 
-            } else {
-                slider.style.backgroundColor = '#262626'; 
-                statusLabel.style.color = '#fefefe'; 
-            }
-        }
->>>>>>> 5ca2a7ac5b5aa6f3c91742b6418a1a239af430ca
     function toggleDisplayOnReceipt(checkbox){
       var otherChargesDisplayOnReceipt = document.getElementById('otherChargesDisplayOnReceipt')
       var spanDisplayReceipt = checkbox.parentNode.querySelector('.spanDisplayReceipt'); 
@@ -1531,7 +1437,6 @@ function clearImageProduct() {
     }
 }
 
-<<<<<<< HEAD
 function openCategoryModal()
 {
   $("#add_category_modal").addClass('slideInRight');
@@ -1540,11 +1445,6 @@ function openCategoryModal()
       $("#add_category_modal").show();
       $(".categoryAdd").show();
   }, 100); 
-=======
-function openCategoryModal(){
-   $('#add_category_modal').show()
-      closeModalBom() 
->>>>>>> 5ca2a7ac5b5aa6f3c91742b6418a1a239af430ca
 }
 
 function clearStorage() {

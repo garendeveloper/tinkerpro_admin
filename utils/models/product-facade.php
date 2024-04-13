@@ -51,19 +51,17 @@
       }
       
       $sql->execute();
-<<<<<<< HEAD
+
       return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function addProduct($barcode, $prodDesc, $stocks, $cost, $markup, $prodPrice) {
-      $sql = $this->connect()->prepare("INSERT INTO products(barcode, prod_desc, stocks, cost, markup, prod_price) VALUES (?, ?, ?, ?, ?, ?)");
-      $sql->execute([$barcode, $prodDesc, $stocks, $cost, $markup, $prodPrice]);
-      return $sql;
-=======
-      return $sql;
-  }
+  //   public function addProduct($barcode, $prodDesc, $stocks, $cost, $markup, $prodPrice) {
+  //     $sql = $this->connect()->prepare("INSERT INTO products(barcode, prod_desc, stocks, cost, markup, prod_price) VALUES (?, ?, ?, ?, ?, ?)");
+  //     $sql->execute([$barcode, $prodDesc, $stocks, $cost, $markup, $prodPrice]);
+  //     return $sql;
+  //     return $sql;
+  // }
   
   
- 
   public function addProduct($formData) {
     $productname = $formData['productname'];
     $barcode = $formData['barcode'];
@@ -138,7 +136,6 @@
         } else {
             echo "Failed to insert all BOM entries.<br>";
         }
->>>>>>> 5ca2a7ac5b5aa6f3c91742b6418a1a239af430ca
     }
 
     return ['success' => true, 'products' =>   $stmt];
@@ -316,16 +313,13 @@ public function updateProduct($formData) {
 
       return $variants->fetchAll(PDO::FETCH_ASSOC);
   }
-
-<<<<<<< HEAD
-    public function addCategory($category)
-    {
-      $sql = $this->connect()->prepare("INSERT INTO category(category_name) VALUES (?)");
-      $sql->execute([$category]);
-      return $sql;
-    } 
-  }  
-=======
+  //   public function addCategory($category)
+  //   {
+  //     $sql = $this->connect()->prepare("INSERT INTO category(category_name) VALUES (?)");
+  //     $sql->execute([$category]);
+  //     return $sql;
+  //   } 
+  // }  
 //  public function addCategory($category){
 //   $sql = $this->connect()->prepare("INSERT INTO category(category_name) VALUES (?)");
 //   $sql->execute([$category]);
@@ -464,7 +458,7 @@ public function deleteVariants($id){
   return $stmt; 
 }
 }  
->>>>>>> 5ca2a7ac5b5aa6f3c91742b6418a1a239af430ca
+
 
 
 ?>

@@ -4,7 +4,7 @@
         public function get_allInventories($page, $perPage)
         {
             $offset = ($page - 1) * $perPage;
-            $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*
+            $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
                                             FROM inventory
                                             JOIN products ON products.id = inventory.product_id
                                             JOIN uom ON uom.id = products.uom_id

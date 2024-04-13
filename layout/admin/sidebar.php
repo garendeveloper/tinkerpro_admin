@@ -61,7 +61,7 @@
     <a href="index" id = "index"><i class = "bi bi-house-door"></i>&nbsp; Dashboard</a>
     <a href="inventory" id = "inventory"><i class = "bi bi-box-seam"></i>&nbsp; Inventory</a>
     <a href="products" id = "products"><i class = "bi bi-bag-check"></i>&nbsp; Products</a>
-    <a href="expiry" id = "expiry"><i class = "bi bi-calendar-x"></i>&nbsp; Expiry</a>
+    <a href="ingredients" id = "ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a>
     <a href="reporting" id = "reporting"><i class = "bi bi-bar-chart"></i>&nbsp; Reporting</a>
     <a href="reporting" id = "users"><i class = "bi bi-person"></i>&nbsp; Users</a>
     <a href="company" id = "company"><i class = "bi bi-building"></i>&nbsp; Company</a>
