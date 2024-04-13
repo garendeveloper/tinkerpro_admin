@@ -2,12 +2,19 @@
     include( __DIR__ . '/utils/db/connector.php');
     include( __DIR__ . '/utils/models/user-facade.php');
     include( __DIR__ . '/utils/models/product-facade.php');
+    include( __DIR__ . '/utils/models/inventory-facade.php');
+    include( __DIR__ . '/utils/models/order-facade.php');
+   
+    $userFacade = new UserFacade();
+    $products = new ProductFacade();
+    $inventory = new InventoryFacade();
+    $order = new OrderFacade();
+
     include( __DIR__ . '/utils/models/ingredients-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
     $ingredients = new IngredientsFacade();
-   
 
     header("Content-Type: application/json");
     $json = file_get_contents('php://input');
@@ -51,6 +58,36 @@
             $result = $categories->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'categories' => $result]);
             break;
+        case 'get_allInventories':
+            $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
+            $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
+            echo json_encode($inventory->get_allInventories($currentPage, $perPage));
+            break;
+        case 'get_allProducts':
+            echo json_encode($inventory->get_allProducts());
+            break;
+        case 'get_productInfo':
+            $product = $_GET['data'];
+            echo json_encode($inventory->get_productInfo($product));
+            break;
+        case 'save_purchaseOrder':
+            $formData = $_POST;
+            echo json_encode($inventory->save_purchaseOrder($formData));
+            break;
+        case 'get_allSuppliers':
+            echo json_encode($inventory->get_allSuppliers());
+            break;
+        case 'get_purchaseOrderNo':
+            echo json_encode($inventory->fetch_latestPONo());
+            break;
+        case 'get_allOrders':
+            $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
+            $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
+            echo json_encode($order->get_allOrders($currentPage, $perPage));
+            break;
+        case 'get_orderData':
+            $order_id = $_GET['order_id'];
+            echo json_encode($order->get_orderData($order_id));
         case 'updateDataCategory':// updateCategory($categoryname, $categoryid)
             $postData = json_decode(file_get_contents('php://input'), true);
             $categoryid = isset($postData['id']) ? $postData['id'] : null;

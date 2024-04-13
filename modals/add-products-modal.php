@@ -1287,21 +1287,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }else{
          addButtons.disabled = true;
          delButtons.disabled = true;
+        
     }
 
  
    
 });
 function openBomModal(){
-  if($('#add_products_modal').is(':visible')){
-        $('#add_bom_modal').show()
-          closeModal() 
-      }
+  if( $('#add_category_modal').is(":visible")){
+    closeModal()
+  }
+  var checkbox = document.getElementById('bomToggle');
+  if (checkbox.checked) {
+    $('#add_bom_modal').css('display', 'block');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     var checkbox = document.getElementById('bomToggle');
     checkbox.addEventListener('change', updateTextColor);
+    checkbox.addEventListener('change', function(){
+      if(!checkbox.checked){
+      if($('#add_bom_modal').is(':visible')){
+           closeModalBom()
+       }
+    }
+    });
+   
   
 });
   
@@ -1498,7 +1510,10 @@ function clearImageProduct() {
 
 function openCategoryModal(){
    $('#add_category_modal').show()
-      closeModalBom() 
+   if($('#add_bom_modal').is(':visible')){
+      closeModalBom()
+    }
+    
 }
 
 function clearStorage() {
@@ -1512,9 +1527,12 @@ function clearStorage() {
 }
 
 function closeAddProductsModal(){
-  closeModal()
-  clearStorage()
-  closeModalBom()
+     closeModal()
+     clearStorage()
+    if($('#add_bom_modal').is(':visible')){
+      closeModalBom()
+    }
+    
   $('#add_products_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.product-modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighteds').removeClass('highlighteds');
@@ -1525,8 +1543,7 @@ function closeAddProductsModal(){
     $(this).css('animation', '');
     $('.product-modal').css('animation', '');
      clearProductsInputs()
-     clearFileInput()
-    
+     clearFileInput() 
   });
   
 }
@@ -1858,21 +1875,61 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
 
  var discountedCheckbox = document.getElementById('discountToggle');
  discountedCheckbox.checked = (isDiscounted == 1) ? true : false;
+
+ 
  var taxCheckbox = document.getElementById('taxVatToggle');
- taxCheckbox.checked = (isTax == 1) ? true: false;
- var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
- toggleChangeColor(showTaxCheckbox);
- showTaxCheckbox.checked  = (isTaxIncluded == 1) ? true: false;
+ taxCheckbox.checked  = (isTax == 1) ? true: false;
+
+  var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
+  showTaxCheckbox.checked  = (isTaxIncluded == 1) ? true: false;
+
+ if(showTaxCheckbox.checked){
+  toggleChangeColor(showTaxCheckbox);
+ }else{
+  toggleChangeColor(showTaxCheckbox);
+ }
  var service = document.getElementById('serviceChargesToggle');
+ var taxLabel = document.getElementById('taxtVatLbl');
  service.checked = (serviceCharge == 1) ? true : false;
+ if(service.checked){
+  taxLabel.style.color = '#FF6900';
+ }else{
+  taxLabel.style.color = '';
+ }
  var displayServices = document.getElementById('displayServiceChargeReceipt');
  displayServices.checked = (displayService == 1) ? true : false
+ 
+ if(displayServices.checked){
+  toggleDisplayServiceCharge(displayServices)
+ }else{
+  toggleDisplayServiceCharge(displayServices)
+ }
  var other =  document.getElementById('otherChargesToggle');
  other.checked = (otherCharges == 1) ? true: false;
+ var serviceLabel = document.getElementById('serviceChargeLbl');
+ if(other.checked){
+  serviceLabel.style.color = '#FF6900';
+ }else{
+  serviceLabel.style.color = ''
+ }
  var displayOtherCharge = document.getElementById('displayReceipt');
  displayOtherCharge.checked = (displayOtherCharges == 1) ? true : false;
+if( displayOtherCharge.checked){
+  toggleOtherCharges(displayOtherCharge)
+}else{
+  toggleOtherCharges(displayOtherCharge)
+}
+
  var stat = document.getElementById('statusValue');
+ var statusLabel = document.getElementById('statusActive');
  stat.checked = (status == 1) ? true : false;
+ if(stat.checked){
+  toggleStatus(stat)
+  statusLabel.style.color = '#00CC00'; 
+ }else{
+  toggleStatus(stat)
+  statusLabel.style.color = ''; 
+ }
 
  var uptBtn = document.querySelector('.updateProductsBtn');
  var saveBtn = document.querySelector('.saveProductsBtn');

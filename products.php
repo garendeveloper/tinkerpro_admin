@@ -219,7 +219,7 @@
                 fill-rule: evenodd;
               }
             </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp;Add Product</button>
-            <button class="btn-control clearBtn" style="width:120px;order: 1" ><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
+            <button class="btn-control clearproductsBtn" style="width:120px;order: 1" ><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
             <input class="custom-input" readonly hidden name="productid" id="productid" style="width: 180px"/>
           </div>
           <div>
@@ -278,17 +278,65 @@
      var p_id = document.getElementById('productid').value;
      $('.modalHeaderTxt').text(!p_id ? "Add New Product" : $('.modalHeaderTxt').text());
      var checkbox = document.getElementById('showIncludesTaxVatToggle');
-      toggleChangeColor(checkbox);
-      
-  
+     var taxCheckbox = document.getElementById('taxVatToggle');
+      checkbox.checked = true
+      taxCheckbox.checked = true
+      if(checkbox.checked){
+        toggleChangeColor(checkbox);
+      }else{
+        toggleChangeColor(checkbox);
+      }
+
+      var service = document.getElementById('serviceChargesToggle');
+      service.checked = false
+      var taxLabel = document.getElementById('taxtVatLbl');
+      if(!service.checked){
+        taxLabel.style.color = ''
+      }else{
+        taxLabel.style.color = '#FF6900'
+      }
+      var other =  document.getElementById('otherChargesToggle');
+      other.checked =false
+      var serviceLabel = document.getElementById('serviceChargeLbl');
+      if(!other.checked){
+        serviceLabel.style.color = ''
+      }else{
+        serviceLabel.style.color = '#FF6900'
+      }
+      var displayServices = document.getElementById('displayServiceChargeReceipt');
+      var serviceLabel = document.getElementById('serviceChargeLbl');
+        displayServices.checked = false;
+      if(!displayServices.checked){
+        toggleDisplayServiceCharge(displayServices)
+      }
+
+      var displayOtherCharge = document.getElementById('displayReceipt');
+      displayOtherCharge.checked =false
+      if(!displayOtherCharge.checked){
+        toggleOtherCharges(displayOtherCharge)
+      }
+
+      var bom = document.getElementById('bomToggle');
+      bom.checked = false
+      if(!bom.checked){
+        updateTextColor()
+      }else{
+        updateTextColor()
+      }
+      var discountedCheckbox = document.getElementById('discountToggle');
+      discountedCheckbox.checked = false;
      if( $('#add_products_modal').is(':visible')){
       var toggle = document.getElementById('statusValue');
+      toggle.checked = true;
       var statusLabel = document.getElementById('statusActive');
-      var defaultStatus = toggle.checked ? 'Active' : 'Inactive';
-          if(defaultStatus == 'Active'){
+          if(toggle.checked){
+            toggleStatus(toggle)
             statusLabel.style.color = '#00CC00'; 
+          }else{
+            toggleStatus(toggle)
+            statusLabel.style.color = ''; 
           }
-            return defaultStatus;
+           
      }
   }
   function getSku() {
@@ -428,7 +476,10 @@ $('.searchProducts').on('input', function(){
         }
     });
 });
- 
+ $('.clearproductsBtn').on('click', function(){
+  $('.searchProducts').val("")
+  refreshProductsTable()
+ })
   });
 
   $(document.body).on('click', '.editProductBtn', function() {
@@ -471,5 +522,7 @@ $('.searchProducts').on('input', function(){
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM)
     });
+
+    
 
 </script>
