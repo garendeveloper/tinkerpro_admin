@@ -974,6 +974,7 @@ input{
   .form-switch{
     height: 25px;
   }
+
   </style>
 <?php include "layout/admin/slider.php"?>
 <div class="modal" id="optionModal" tabindex="0">
@@ -1140,22 +1141,26 @@ input{
       $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice));
       $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(total));
     }
-    function add_decimal(number)
+    function acceptsOnlyTwoDecimal(value) 
     {
-      number = number.replace(/[^0-9.]/g, '');
-      var parts = number.split('.');
-      if (parts[1] && parts[1].length > 2) 
+      value = value.replace(/[^0-9.]/g, '');
+      let parts = value.split('.');
+      if(parts[1] && parts[1].length > 2) 
       {
-        parts[1] = parts[1].slice(0, 2);
+        parts[1] = parts[1].slice(0, 2); 
+        value = parts.join('.'); 
       }
-      var newValue = parts.join('.');
-      return newValue;
+      if(parts.length > 2) 
+      {
+        value = parts[0] + '.' + parts.slice(1).join('');
+      }
+      return value; 
     }
     $('#tbl_purchaseOrders tbody').on('input', 'td:nth-child(3)', function() {
         var $cell = $(this);
         var newPrice = $cell.text().trim();
         var cursorPosition = getCursorPosition($cell[0]);
-        newPrice = add_decimal(newPrice);
+        newPrice = acceptsOnlyTwoDecimal(newPrice);
         $cell.text(newPrice);
         cursorPosition = Math.min(cursorPosition, newPrice.length);
         setCursorPosition($cell[0], cursorPosition);

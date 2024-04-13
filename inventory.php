@@ -392,14 +392,17 @@
       if(confirm("Are you sure you want to update your orders?"))
       {
         var dataArray = [];
-          $('#tbl_purchaseOrders tbody tr').each(function() {
-              var rowData = {};
-              $(this).find('td').each(function(index, cell) {
-                  rowData['column_' + (index + 1)] = $(cell).text(); 
-              });
-              dataArray.push(rowData);
-          });
-      
+        $('#tbl_purchaseOrders tbody tr').each(function() {
+            var rowData = {};
+            $(this).find('td').each(function(index, cell) {
+              if (index === 0) 
+              {
+                rowData['inventory_id'] = $(cell).data('id'); 
+              }
+                rowData['column_' + (index + 1)] = $(cell).text(); 
+            });
+            dataArray.push(rowData);
+        });
         $.ajax({
           type: 'POST',
           url: 'api.php?action=save_purchaseOrder', 

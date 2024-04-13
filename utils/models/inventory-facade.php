@@ -173,6 +173,10 @@
                     //Payment transaction here [History ...]
                 }   
             }
+            else
+            {
+
+            }
             return $order_id;
         }
         public function fetch_latestPONo()
@@ -190,11 +194,11 @@
             if($this->validateData($formData))
             {
                 $tbldata = json_decode($formData['data'], true);
-                $order_id = $this->save_order($formData);
                 if($formData['order_id'] > 0)
                 {
                     foreach($tbldata as $row)
                     {
+                        $inventory_id = $row['inventory_id'];
                         $product = $row['column_1'];
                         $quantity = $row['column_2'];
                         $price = $this->remove_nonBreakingSpace($this->clean_number($row['column_3']));
@@ -213,32 +217,24 @@
                             $tax = $price / 1.12;
                             $amount_afterTax = $price - $tax;
                         }
-                        
-                        $sqlStatement = $this->connect()->prepare("UPDATE inventory 
-                                                                    SET qty_purchased = ?, 
-                                                                        amount_beforeTax = ?, 
-                                                                        amount_afterTax = ?, 
-                                                                        status = ?, 
-                                                                        isSelected = ?, 
-                                                                        total = ?, 
-                                                                        tax = ? 
-                                                                    WHERE order_id = ? AND product_id = ? AND id = ?");
+                        $sql = "UPDATE inventory SET qty_purchased = :v1, amount_beforeTax = :v2, amount_afterTax = :v3, status = :v4, total = :v5, tax = :v6, order_id = :v7, product_id = :v8 WHERE id = :id";
+                        $sqlStatement = $this->connect()->prepare($sql);
 
-                        $sqlStatement->bindParam(1, $quantity, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(2, $amount_beforeTax, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(3, $amount_afterTax, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(4, $status, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(5, $isSelected, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(6, $total, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(7, $tax, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(8, $order_id, PDO::PARAM_INT);
-                        $sqlStatement->bindParam(9, $product_id, PDO::PARAM_INT);
-                        $sqlStatement->bindParam(10, $formData['inventory_id'], PDO::PARAM_INT);
+                        $sqlStatement->bindParam(':v1', $quantity);
+                        $sqlStatement->bindParam(':v2', $amount_beforeTax);
+                        $sqlStatement->bindParam(':v3', $amount_afterTax);
+                        $sqlStatement->bindParam(':v4', $status);
+                        $sqlStatement->bindParam(':v5', $total);
+                        $sqlStatement->bindParam(':v6', $tax);
+                        $sqlStatement->bindParam(':v7', $formData['order_id']);
+                        $sqlStatement->bindParam(':v8', $product_id);
+                        $sqlStatement->bindParam(':id', $inventory_id);
                         $sqlStatement->execute();
                     }
                 }
                 else
                 {
+                    $order_id = $this->save_order($formData);
                     foreach($tbldata as $row)
                     {
                         $product = $row['column_1'];
