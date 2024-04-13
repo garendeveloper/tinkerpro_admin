@@ -103,6 +103,10 @@
     left: 60px; 
     right: 2px;
 }
+.ingredients{
+    position: relative; 
+    display: inline-block;
+}
 
  
   .dropdown-contents a {
@@ -154,7 +158,7 @@ font-family: Century Gothic;
 }
 
  
-  .dropdown-contents a {
+#ingredientDropDowns a {
     display: block;
     width: 168px;
     padding: 10px;
@@ -169,8 +173,7 @@ font-family: Century Gothic;
     
   }
   
-
-  .dropdown-contents a:hover {
+#ingredientDropDowns a:hover {
     background-color: #ddd;
   }
   .closeBom{
@@ -205,7 +208,7 @@ font-family: Century Gothic;
             </div>
             <div style="margin-left: 10px; margin-top: 40px; width: 100%">
               <label for="qtyIngredients" class="text-header"style="margin-top: 15px">Ingredient<supp>*</supp>:</label>
-              <div class="dropdowns custom-input">
+              <div class="ingredients custom-input">
                             <input class="custom-input" readonly hidden name="qtyIngredients" id="ingredientsId" style="width: 200px"/>
                             <input class="custom-input" readonly name="ingredientsName" id="ingredientsName" style="width: 200px" placeholder="Select Ingredients"/>
                             <button name="ingBtns" id="ingBtns" class="custom-btn">
@@ -218,7 +221,7 @@ font-family: Century Gothic;
                                 </g>
                             </svg>
                             </button>
-                            <div class="dropdown-contents" id="ingredientDropDowns">
+                            <div class="ingredients-contents" id="ingredientDropDowns">
                             <?php
                                  $ingredientFacade = new IngredientsFacade;
                                  $ing =   $ingredientFacade->ingredients();
@@ -268,7 +271,7 @@ font-family: Century Gothic;
 <script>
 
 function closeModalBom(){
-    clearBomInputs()
+   
  $('#add_bom_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.bomAdd').css('animation', 'slideOutRight 0.5s forwards');
 //   $('.highlighted').removeClass('highlighted');
@@ -277,6 +280,7 @@ function closeModalBom(){
     $(this).hide();
     $(this).css('animation', '');
     $('.bomAdd').css('animation', '');
+    clearBomInputs()
    
   });
 }
@@ -403,6 +407,7 @@ document.getElementById('saveBom').addEventListener('click', function() {
 
     localStorage.setItem('bomData', JSON.stringify(existingData));
      updateTable(existingData);
+    closeModalBom()
 });
 
 
@@ -449,7 +454,7 @@ updateTable(existingData);
     // row.appendChild(actionCell);
     tableBody.appendChild(row);
 
-    closeModalBom()
+   
   });
 
   var previouslyClickedRow = null; 

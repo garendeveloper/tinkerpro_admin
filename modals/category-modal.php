@@ -1,4 +1,4 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <style>
+<style>
 
 #add_category_modal {
   display: none;
@@ -29,8 +29,7 @@
 
 
 @keyframes slideInRight {
-  from {
-    margin-right: -100%;
+  from {margin-right: -100%;
     opacity: 0;
   }
   to {
@@ -180,12 +179,22 @@
     <div class="modal-content categoryAdd">
       <div class="modal-title">
         <div class="warning-container">
-        <!-- <div style="margin-top: 40px; margin-left: 10px">
-           <h6 class="text-custom" style="color:#FF6900;">Category</h6>
-        </div> -->
-        <div style="margin-top: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: space-between;">
-            <h6 class="text-custom" style="color:#FF6900; margin-right: 10px;">Category</h6>
-            <button style="margin-right: 20px;" id = "btn_minimizeCategory" class="cat_btns" style ="height: 20px"> <i class="mdi mdi-arrow-right"></i>&nbsp; </button>
+            <div id="categoryData"  style="margin-top: 60px; margin-left: 10px">
+              <h6 class="text-custom" style="color:#FF6900;">Category</h6>
+            </div>
+            <div class="catBtns">
+              <button  class="cat_btns deLbTN">Del</button>
+              <button onclick="addBtnCategory();addVariants()" class="cat_btns" id="addVariant">Add</button>
+               <button  id="editCat" name="editBtn" class="editCat cat_btns">Edit</button>
+            </div>
+            <div class="productsHeader ">
+               <p class="productsP" ><a href="#" onclick="changeValueInput(this)" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
+               <div id="categoriesDiv" class="scrollable-content" style="display: none;">
+    
+              </div>
+           </div>
+         </div>
+         
         </div>
         <div class="done-div">
         <button   class="btn-success-custom doneBtn"  style="margin-right: 10px; width: 100px; height: 40px">Done</button>
@@ -824,6 +833,9 @@ function changeValueInput(element) {
 }
 
 function closeModal(){
+    if($('#add_bom_modal').is(':visible')){
+           closeModalBom()
+       } 
   $('#add_category_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.categoryAdd').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighted').removeClass('highlighted');
