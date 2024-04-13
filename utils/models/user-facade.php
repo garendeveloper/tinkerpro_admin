@@ -240,10 +240,17 @@ public function updateDataUsers($formData) {
     $id = $formData['id'];
 
     if ($uploadedFile === null || $uploadedFile['error'] !== UPLOAD_ERR_OK) {
-        // If uploaded image is null or upload failed
-        $fileName = null; // Set fileName to null if image upload is null or failed
+        $query = "SELECT profileImage FROM users WHERE id = ?";
+        $statement = $this->connect()->prepare($query);
+        $statement->execute([$id]);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            $fileName = $result['profileImage'];
+        } else {
+            $fileName = null;
+        }
+        
     } else {
-        // If uploaded image is not null and upload succeeded
         $tempPath = $uploadedFile['tmp_name'];
         $fileName = $uploadedFile['name'];
 

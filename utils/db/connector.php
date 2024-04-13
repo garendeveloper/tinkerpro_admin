@@ -1,14 +1,15 @@
 <?php
 
   class DBConnection {
-    // private $host = "sql6.freemysqlhosting.net";
-    // private $user = "sql6697496";
-    // private $pass = "Du8K1w7WEX";
-    // private $db = "sql6697496";
-    private $host = "localhost";
-    private $user = "root";
-    private $pass = "";
-    private $db = "tinkerpro_db";
+
+    private $host = "sql6.freemysqlhosting.net";
+    private $user = "sql6697496";
+    private $pass = "Du8K1w7WEX";
+    private $db = "sql6697496";
+    // private $host = "localhost";
+    // private $user = "root";
+    // private $pass = "";
+    // private $db = "tinkerpro_db";
 
     protected function connect() {
       try {
