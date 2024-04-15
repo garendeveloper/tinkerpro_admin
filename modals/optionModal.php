@@ -975,6 +975,45 @@ input{
     height: 25px;
   }
 
+  .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #1E1C11; ; 
+    border: 1px solid #fff;
+    border-bottom: 1px solid #d4d4d4; 
+  }
+  .autocomplete-items div:hover {
+    background-color: #FF6900; 
+  }
+  .autocomplete-active {
+    background-color: #FF6900 !important; 
+    color: #ffffff; 
+  }
+  #tbl_purchaseOrders tbody tr td:first-child:hover::before {
+    content: attr(title);
+    position: absolute;
+    background: none;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 1000;
+    left: -150px; 
+    top: 0; 
+}
+
   </style>
 <?php include "layout/admin/slider.php"?>
 <div class="modal" id="optionModal" tabindex="0">
@@ -1013,7 +1052,7 @@ input{
                     </div>
                   </div>
                   <div class="date-input-container">
-                    <input type="text" name="date_purchased" id="date_purchased" value="" placeholder="Select date" readonly>
+                    <input type="text" name="date_purchased" id="date_purchased"  placeholder="Select date" readonly>
                     <button id="calendar-btn" class="button">
                         <i class="bi bi-calendar" aria-hidden="true"></i>
                     </button>
@@ -1022,21 +1061,13 @@ input{
                 <div class="fieldContainer">
                   <label>Supplier</label>
                   <div class="search-container">
-                      <input list = "d_suppliers" type="text" class = "search-input"  autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value="" style="width: 280px; height: 25px">
-                      <!-- <div class="search-dropdown1" id = "d_suppliers">
-                        
-                      </div> -->
-                      <datalist id = "d_suppliers">
-                      </datalist>
+                      <input  type="text" class = "search-input"  autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value="" style="width: 280px; height: 25px" autocomplete = "off">
                   </div>
                 </div>
                 <div class="fieldContainer">
                   <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
                   <div class="search-container">
-                      <input type="text" style="width: 210px; height: 25px; font-size: 12px;"  class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product">
-                      <div class="search-dropdown" id = "d_products">
-                        
-                      </div>
+                      <input type="text" style="width: 210px; height: 25px; font-size: 12px;"  class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product" autocomplete = "off">
                   </div>
                   <button style="border-color: #FF6900; font-size: 10px; height: 25px; "  id = "btn_addPO"><i class = "bi bi-plus-square"></i>&nbsp; Add</button>
                 </div>
@@ -1094,18 +1125,22 @@ input{
         </div>
       </div>
       <div class="modal-footer" style="display: flex; justify-content: space-between; border: none;">
-          <button class="grid-item button button-cancel" id = "btn_omCancel" style="width: 100px; border-radius: 0"><i class="bi bi-x"></i>&nbsp; Cancel</button>
           <div>
-              <button class="grid-item button" style="width: 100px; border-radius: 0"><i class="bi bi-pencil-fill"></i>&nbsp; Edit</button>
-              <button class="grid-item text-color button" style="width: 100px; border-radius: 0" id="btn_savePO"><i class="bi bi-save"></i>&nbsp; Save</button>
+            <button class="grid-item button button-cancel" id = "btn_omCancel" style="width: 90px; border-radius: 0"><i class="bi bi-x"></i>&nbsp; Cancel</button>
+            <button class="grid-item button " id = "open_po_report" style="width: 80px; border-radius: 0"><i class="bi bi-printer"></i>&nbsp; Print</button>
+          </div>
+          <div>
+              <button class="grid-item button" style="width:80px; border-radius: 0"><i class="bi bi-pencil-fill"></i>&nbsp; Edit</button>
+              <button class="grid-item text-color button" style="width:80px; border-radius: 0" id="btn_savePO"><i class="bi bi-save"></i>&nbsp; Save</button>
           </div>
       </div>
     </div>
   </div>
 </div>
-
+<?php include("./modals/print_orders-modal.php")?>
 <script>
   $(document).ready(function(){
+  
     $('#tbl_purchaseOrders tbody').on('click', '.editable', function() {
         $(this).attr('contenteditable', true);
     });
@@ -1136,7 +1171,7 @@ input{
         totalPrice += price;
         total += subtotal;
       });
-      $("#totalTax").html(addCommasToNumber(totalTax));
+      $("#totalTax").html("Tax: "+addCommasToNumber(totalTax));
       $("#totalQty").html(totalQty);
       $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice));
       $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(total));
@@ -1186,7 +1221,7 @@ input{
     });
     function clean_number(number)
     {
-      return number.replace(/[₱\s]/g, '');
+      return number.replace(/[^\d.]+/g, '');
     }
     function getCursorPosition(element) 
     {
@@ -1223,5 +1258,55 @@ input{
         });
       }
     });
+    $('#tbl_purchaseOrders tbody').on({
+        mouseenter: function() {
+            $(this).attr('title', 'Click me to remove this row');
+        },
+        mouseleave: function() {
+            $(this).removeAttr('title');
+        }
+    }, 'tr td:first-child');
+
+    $('#tbl_purchaseOrders tbody').on({
+        mouseenter: function() {
+            $(this).find('td:nth-child(2)').attr('title', 'Click me to edit');
+        },
+        mouseleave: function() {
+            $(this).find('td:nth-child(2)').removeAttr('title');
+        }
+    }, 'tr');
+    $('#tbl_purchaseOrders tbody').on({
+        mouseenter: function() {
+            $(this).find('td:nth-child(3)').attr('title', 'Click me to edit');
+        },
+        mouseleave: function() {
+            $(this).find('td:nth-child(3)').removeAttr('title');
+        }
+    }, 'tr');
+
+    $('#tbl_purchaseOrders tbody').on({
+        mouseenter: function() {
+            $(this).find('td:nth-child(4)').attr('title', 'Click me to remove this row');
+        },
+        mouseleave: function() {
+            $(this).find('td:nth-child(4)').removeAttr('title');
+        }
+    }, 'tr');
+    $("#open_po_report").click(function(){
+      $("#print_orders_modal").slideDown({
+        backdrop: 'static',
+        keyboard: false,
+      });
+    })
+    $("#print_po").click(function(){
+      var printContents = document.getElementById("report_toPrint").innerHTML;
+      var originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+    })
+    $("#close_po").click(function(){
+      $("#print_orders_modal").hide();
+    })
   })
 </script>

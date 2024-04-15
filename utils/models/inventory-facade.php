@@ -152,11 +152,18 @@
             $order_type = 1;
 
             $order_id = $this->get_lastOrderData()['id'];
-            if(!$this->verify_order($po_number))
+            if($formData['order_id'] > 0)
             {
-                $sqlStatement = $this->connect()->prepare("INSERT INTO orders (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)");
-
+                $sqlStatement = $this->connect()->prepare("UPDATE orders 
+                                                            SET isPaid = ?, 
+                                                                supplier_id = ?, 
+                                                                date_purchased = ?, 
+                                                                po_number = ?, 
+                                                                price = ?, 
+                                                                order_type = ?, 
+                                                                totalTax = ?
+                                                            WHERE id = ?");
+                
                 $sqlStatement->bindParam(1, $isPaid, PDO::PARAM_STR);
                 $sqlStatement->bindParam(2, $supplier_id, PDO::PARAM_STR);
                 $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
@@ -164,9 +171,10 @@
                 $sqlStatement->bindParam(5, $price, PDO::PARAM_STR);
                 $sqlStatement->bindParam(6, $order_type, PDO::PARAM_STR);
                 $sqlStatement->bindParam(7, $totalTax, PDO::PARAM_STR);
+                $sqlStatement->bindParam(8, $id, PDO::PARAM_INT); 
                 $sqlStatement->execute();
 
-                $order_id = $this->get_lastOrderData()['id'];
+                $order_id = $formData['order_id'];
 
                 if($isPaid === 1)
                 {
@@ -175,8 +183,29 @@
             }
             else
             {
-
+                if(!$this->verify_order($po_number))
+                {
+                    $sqlStatement = $this->connect()->prepare("INSERT INTO orders (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+    
+                    $sqlStatement->bindParam(1, $isPaid, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(2, $supplier_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(4, $po_number, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(5, $price, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(6, $order_type, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(7, $totalTax, PDO::PARAM_STR);
+                    $sqlStatement->execute();
+    
+                    $order_id = $this->get_lastOrderData()['id'];
+    
+                    if($isPaid === 1)
+                    {
+                        //Payment transaction here [History ...]
+                    }   
+                }
             }
+           
             return $order_id;
         }
         public function fetch_latestPONo()
@@ -189,13 +218,28 @@
             $result = "10-" . $paddedId;
             return $result;
         }
+        public function remove_inventories($inventories)
+        {
+            foreach($inventories as $inventory_id)
+            {
+                $sql = "DELETE FROM inventory WHERE id = :id";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->bindValue(":id", $inventory_id);
+                $stmt->execute();
+            }
+        }
         public function save_purchaseOrder($formData)
         {
             if($this->validateData($formData))
             {
                 $tbldata = json_decode($formData['data'], true);
+                $order_id = $this->save_order($formData);
                 if($formData['order_id'] > 0)
-                {
+                {   
+                    if(isset($formData['remove_inventories'])) 
+                    {
+                        $this->remove_inventories($formData['remove_inventories']);
+                    }
                     foreach($tbldata as $row)
                     {
                         $inventory_id = $row['inventory_id'];
@@ -217,19 +261,40 @@
                             $tax = $price / 1.12;
                             $amount_afterTax = $price - $tax;
                         }
-                        $sql = "UPDATE inventory SET qty_purchased = :v1, amount_beforeTax = :v2, amount_afterTax = :v3, status = :v4, total = :v5, tax = :v6, order_id = :v7, product_id = :v8 WHERE id = :id";
-                        $sqlStatement = $this->connect()->prepare($sql);
+                        if($inventory_id === 0)
+                        {
+                            
+                            $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
+                                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-                        $sqlStatement->bindParam(':v1', $quantity);
-                        $sqlStatement->bindParam(':v2', $amount_beforeTax);
-                        $sqlStatement->bindParam(':v3', $amount_afterTax);
-                        $sqlStatement->bindParam(':v4', $status);
-                        $sqlStatement->bindParam(':v5', $total);
-                        $sqlStatement->bindParam(':v6', $tax);
-                        $sqlStatement->bindParam(':v7', $formData['order_id']);
-                        $sqlStatement->bindParam(':v8', $product_id);
-                        $sqlStatement->bindParam(':id', $inventory_id);
-                        $sqlStatement->execute();
+                            $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
+                            $sqlStatement->execute();
+                        }
+                        else
+                        {
+                            $sql = "UPDATE inventory SET qty_purchased = :v1, amount_beforeTax = :v2, amount_afterTax = :v3, status = :v4, total = :v5, tax = :v6, order_id = :v7, product_id = :v8 WHERE id = :id";
+                            $sqlStatement = $this->connect()->prepare($sql);
+    
+                            $sqlStatement->bindParam(':v1', $quantity);
+                            $sqlStatement->bindParam(':v2', $amount_beforeTax);
+                            $sqlStatement->bindParam(':v3', $amount_afterTax);
+                            $sqlStatement->bindParam(':v4', $status);
+                            $sqlStatement->bindParam(':v5', $total);
+                            $sqlStatement->bindParam(':v6', $tax);
+                            $sqlStatement->bindParam(':v7', $formData['order_id']);
+                            $sqlStatement->bindParam(':v8', $product_id);
+                            $sqlStatement->bindParam(':id', $inventory_id);
+                            $sqlStatement->execute();
+                        }
+                       
                     }
                 }
                 else
