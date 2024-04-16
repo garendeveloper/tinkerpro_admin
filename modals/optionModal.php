@@ -1127,10 +1127,9 @@ input{
       <div class="modal-footer" style="display: flex; justify-content: space-between; border: none;">
           <div>
             <button class="grid-item button button-cancel" id = "btn_omCancel" style="width: 90px; border-radius: 0"><i class="bi bi-x"></i>&nbsp; Cancel</button>
-            <button class="grid-item button " id = "open_po_report" style="width: 80px; border-radius: 0"><i class="bi bi-printer"></i>&nbsp; Print</button>
           </div>
           <div>
-              <button class="grid-item button" style="width:80px; border-radius: 0"><i class="bi bi-pencil-fill"></i>&nbsp; Edit</button>
+              <button class="grid-item button " id = "open_po_report" style="width: 80px; border-radius: 0"><i class="bi bi-printer"></i>&nbsp; Print</button>
               <button class="grid-item text-color button" style="width:80px; border-radius: 0" id="btn_savePO"><i class="bi bi-save"></i>&nbsp; Save</button>
           </div>
       </div>

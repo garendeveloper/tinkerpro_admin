@@ -34,7 +34,7 @@
         border-radius: 0; 
     }
     .l_input1{
-        width: 180px; 
+        width: 30px; 
     }
 
     .p_input1 {
@@ -74,6 +74,20 @@
       border: 1px solid #ccc;
       border-top: none;
     }
+    .fieldContainer {
+      display: flex; /* Use flexbox layout */
+      align-items: center; /* Align items vertically */
+    }
+
+    .fieldContainer label {
+      margin-right: 10px; /* Add spacing between label and input elements */
+    }
+
+    .fieldContainer input[type="text"],
+    .fieldContainer input[type="date"],
+    .fieldContainer {
+      margin-right: 7px; /* Add spacing between input elements */
+    }
 
 </style>
 <div class="modal" id = "unpaid_purchase_modal" tabindex="-1" role="dialog" style = "display:none">
@@ -90,8 +104,8 @@
         <div class="modal-body" style="border: none">
           <div class="tab">
             <button class="tablinks" data-tab="tab1">Payment</button>
-            <button class="tablinks" data-tab="tab3">Settings</button>
             <button class="tablinks" data-tab="tab2">History</button>
+            <button class="tablinks" data-tab="tab3">Settings</button>
           </div>
           <div id="tab1" class="tabcontent">
             <p></p>
@@ -99,42 +113,14 @@
               <h5>Enter <b style = 'color: #FF6900'>QUANTITY</b> and your <b style = 'color: #FF6900'>PAYMENT</b></h5>
               <h5 id = "product_name"></h5>
             </div>
-            <div class="fieldContainer" style = "display:flex">
-                <div class="form-group" >
-                    <label for="p_qty" id="lbl_pqty" class="l_input" style="color: #FF6900;"><strong>QTY:</strong></label>
-                    <input type="text" class="p_input" name="u_qty" id="u_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align:right">
-                </div>
+            <div class="fieldContainer">
                 <div class="form-group" >
                     <label for="u_pay" id = "" class="l_input" style="color: #FF6900; "><strong>PAY: </strong></label>
                     <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="u_pay" id="u_pay" oninput="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
                 </div>
-            </div>
-            <div class="fieldContainer" >
                 <div class="form-group" >
-                    <label for="r_balance" id = "" class="l_input1" style="color: #FF6900; "><strong>REMAINING BALANCE: </strong></label>
-                    <input type="text" class="p_input1" pattern="\d+(\.\d{1,2})?" name="r_balance" id="r_balance" oninput="$(this).removeClass('has-error')" value = "0.00" autocomplete="off" style = "text-align: right" readonly>
-                </div>
-            </div>
-          </div>
-          <div id="tab3" class="tabcontent">
-            <p></p>
-            <div style = "text-align:center">
-              <h5>Enter <b style = 'color: #FF6900'>PRICE</b> and the <b style = 'color: #FF6900'>DUE DATE</b></h5>
-              <h5 id = "product_name"></h5>
-            </div>
-            <div class="fieldContainer" style = "display:flex" >
-                <div class="form-group" >
-                    <label for="s_price" class="l_input" style="color: #FF6900;"><strong>PRICE</strong></label>
-                    <input type="text" class="p_input"  name="s_price" id="s_price" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
-                </div>
-                <div class="form-group" >
-                   <label for="s_due" class="l_input" style="color: #FF6900; "><strong>DUE</strong></label>
-                    <div class="date-input-container">
-                    <input type="text" name="s_due" id="s_due"  placeholder="Select date" readonly style = "text-align: center">
-                    <button id="calendar-btn1" class="button">
-                        <i class="bi bi-calendar" aria-hidden="true"></i>
-                    </button>
-                  </div>
+                    <label for="r_balance" id = "" class="l_input" style="color: #FF6900; "><strong>BAL: </strong></label>
+                    <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="r_balance" id="r_balance" oninput="$(this).removeClass('has-error')" value = "0.00" autocomplete="off" style = "text-align: right" readonly>
                 </div>
             </div>
           </div>
@@ -156,6 +142,27 @@
     
               </tbody>
             </table>
+          </div>
+          <div id="tab3" class="tabcontent">
+            <div style = "text-align:center">
+              <h5>Enter <b style = 'color: #FF6900'>PRICE</b> and the <b style = 'color: #FF6900'>DUE DATE</b></h5>
+              <h5 id = "product_name"></h5>
+            </div>
+            <div class="fieldContainer"  >
+              <div class="form-group" >
+                  <label for="s_price" class="l_input" style="color: #FF6900;"><strong>PRICE</strong></label>
+                  <input type="text" class="p_input"  name="s_price" id="s_price" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right"  readonly>
+              </div>
+              <div class="form-group" >
+                  <label for="s_due" class="l_input" style="color: #FF6900; "><strong>DUE</strong></label>
+                  <div class="date-input-container">
+                    <input type="text" name="s_due" id="s_due"  placeholder="Select date" readonly style = "text-align: center">
+                    <button id="calendar-btn1" class="button">
+                        <i class="bi bi-calendar" aria-hidden="true"></i>
+                    </button>
+                  </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer" style='display: flex; justify-content: space-between; border: none'>

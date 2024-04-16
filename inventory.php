@@ -110,7 +110,6 @@
                     <th class="text-center" style="width: 3%;">Amount Before Tax </th>
                     <th class="text-center" style="width: 3%;">Amount After Tax</th>
                     <th class="text-center" style="width: 3%;">Markup Profit</th>
-                    <th class="text-center" style="width: 2%;">Action</th>
                   </tr>
                 </thead>
                 <tbody >
@@ -169,6 +168,8 @@
         $(this).addClass("active");
       }
     });
+    $("#tab1").show();
+    $(".tablinks[data-tab='tab1']").addClass("active");
     $('#paidSwitch').change(function() {
         if ($(this).is(':checked')) 
         {
@@ -237,8 +238,7 @@
       });
       return isValid;
     }
-    $("#tab3").show();
-    $(".tablinks[data-tab='tab3']").addClass("active");
+
     $("#unpaid_form").on('submit', function(e){
       e.preventDefault();
       if(validateUnpaidSettings())
@@ -377,13 +377,14 @@
     }
     function resetPurchaseOrderForm()
     {
-      $("#pcs_no").val("0");
+      show_purchaseOrderNo();
+      display_datePurchased();
       $("#supplier").val("");
       $("#_order_id").val("0");
       $("#_inventory_id").val("0");
-      $("#date_purchased").val("");
       $("#product").val("");
       $('#tbl_purchaseOrders tbody').empty();
+      $("#po_form input[type=text], input[type=date]").removeClass('has-error');
     }
     $("#btn_omCancel").click(function(){
       resetPurchaseOrderForm();
@@ -444,8 +445,10 @@
               date_purchased: $("#date_purchased").val(),
               supplier: $("#supplier").val(),
               product: $("#product").val(),
-              total: overallTotal,
-              totalTax: totalTax,
+              total: $("#overallTotal").text(),
+              totalPrice: $("#totalPrice").text(),
+              totalTax: $("#totalTax").text(),
+              totalQty: $("#totalQty").text(),
               order_id: $("#_order_id").val(),
               inventory_id: $("#_inventory_id").val(),
               remove_inventories: remove_inventories,
@@ -464,7 +467,7 @@
                 show_allInventories(1, perPage); 
                 show_response(response.message);
                 show_purchaseOrderNo();
-                show_allProducts();
+                show_allProducts(1, perPage);
                 show_allSuppliers();
                 display_datePurchased();
                 selected_products = [];
@@ -494,6 +497,13 @@
         alert("The table should not be empty.");
       }
     }
+    function check_supplierProduct()
+    {
+      var supplier = $("#supplier").val();
+      var product = $("#product").val();
+
+      
+    }
     function show_response(message)
     {
       var modal = $("#response_modal");
@@ -519,6 +529,7 @@
           });
           $("#product_name").text($("#product").val());
           $("#s_price").val($("#overallTotal").text());
+          $("#r_balance").val($("#overallTotal").text());
           $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
         }
         else
@@ -881,7 +892,7 @@
               tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_afterTax)+"</td>";
               tbl_data += "<td>"+data[i].isPaid == 1 ? "YES" : "NO" +"</td>";
               tbl_data += "<td></td>";
-              tbl_data += "<td style = 'text-align: center'><button class = 'grid-item button'><i  class = 'bi bi-pencil-fill'></i></button></td>";
+              // tbl_data += "<td style = 'text-align: center'><button class = 'grid-item button'><i  class = 'bi bi-pencil-fill'></i></button></td>";
               tbl_data += "</tr>";
             }
           } 
@@ -923,7 +934,7 @@
                   tbl_data += "<td class = 'text-center'> Not Available </td>";
                 else 
                   tbl_data += "<td class = 'text-center'>"+date_format(data[i].due_date)+"</td>";
-                tbl_data += "<td style = 'text-align: right'>"+data[i].price+"</td>";
+                tbl_data += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].price)+"</td>";
                 if(data[i].isPaid === 1)
                   tbl_data += "<td class = 'text-center'>Paid</td>";
                 else 
@@ -946,6 +957,7 @@
       e.preventDefault();
       var order_id = $(this).data('id');
       openOptionModal(); 
+      $("#open_po_report").show();
       $.ajax({
         type: 'GET',
         url: 'api.php?action=get_orderData&order_id='+order_id,
@@ -954,37 +966,36 @@
         {
           var table = "";
           var tbl_report = "";
-          $("#pcs_no").val(data[0].po_number);
+         
           $("#supplier").val(data[0].supplier);
-          $("#date_purchased").val(data[0].date_purchased);
+          $("#date_purchased").val(date_format(data[0].date_purchased));
           $("#_order_id").val(data[0].order_id);
           $("#_inventory_id").val(data[0].inventory_id);
+          $("#pcs_no").val(data[0].po_number);
 
           $("#rep_po").html(data[0].po_number);
           $("#rep_supplier").html(data[0].supplier);
-          $("#rep_datePurchased").html(data[0].date_purchased);
+          $("#rep_datePurchased").html(date_format(data[0].date_purchased));
           var isPaid = data[0].isPaid === 1 ? "Yes" : "No";
           $("#rep_isPaid").html(isPaid);
 
-          var at = 0;
-          var qt = 0;
-          var pt = 0;
-          var tt = 0;
+          if(isPaid === "Yes")
+          {
+            $('#paidSwitch').prop('checked', true); 
+          }
+          else
+          {
+            $('#paidSwitch').prop('checked', false); 
+          }
           for(var i = 0; i<data.length; i++)
           {
             table +=  "<tr>";
             table += "<td data-id = "+data[i].inventory_id+">"+data[i].prod_desc+" : "+data[i].barcode+"</td>";
             table += "<td style = 'text-align: center' class ='editable'>"+data[i].qty_purchased+"</td>";
             table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
-            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax*data[i].qty_purchased)+"</td>";
+            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].total)+"</td>";
             table += "</tr>";
-            qt += parseInt(data[i].qty_purchased);
-            pt += data[i].total;
           }
-          var _totalQty = 0;
-          var _totalPrice = 0;
-          var _totalTax = 0;
-          var _total = 0;
           var counter = 1;
           for(var i = 0; i<data.length; i++)
           {
@@ -997,28 +1008,24 @@
             tbl_report += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+data[i].total+"</td>";
             tbl_report += "</tr>";
             counter++;
-
-            _totalQty += data[i].qty_purchased;
-            _totalPrice += parseFloat(data[i].amount_beforeTax);
-            _totalTax += parseFloat(data[i].tax);
-            _total += parseFloat(data[i].total);
           }
           $("#tbl_purchaseOrders tbody").html(table);
           $("#tbl_purchaseOrdersReport tbody").html(tbl_report);
-          $("#rep_qty").html(_totalQty);
-          $("#rep_price").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(_totalPrice)));
-          $("#rep_tax").html("Tax: "+roundToTwoDecimalPlaces(_totalTax));
-          $("#rep_total").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(_total)));
+          $("#rep_qty").html(data[0].totalQty);
+          $("#rep_price").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(data[0].totalPrice)));
+          $("#rep_tax").html("Tax: "+roundToTwoDecimalPlaces(data[0].totalTax));
+          $("#rep_total").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(data[0].price)));
 
           $("#totalTax").html("Tax: "+roundToTwoDecimalPlaces(data[0].totalTax));
-          $("#totalQty").html(qt);
-          $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(pt)));
+          $("#totalQty").html(data[0].totalQty);
+          $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(data[0].totalPrice)));
           $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(data[0].price));
         },
         error: function(data){
           alert("No response")
         }
       })
+   
     })
     function clean_number(number)
     {
@@ -1072,6 +1079,7 @@
     $("#btn_openOption").click(function(e){
       e.preventDefault();
       openOptionModal();
+      $("#open_po_report").hide();
     })
     function openOptionModal()
     {
@@ -1082,9 +1090,8 @@
           $("#optionModal").show();
           $(".optionmodal-content").show();
       }, 100); 
-      show_purchaseOrderNo();
-      display_datePurchased();
       $("#btn_createPO").addClass('active');
+      
     }
   })
 </script>
