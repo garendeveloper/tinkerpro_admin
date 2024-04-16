@@ -14,7 +14,7 @@ while ($row = $categories->fetch(PDO::FETCH_ASSOC)) {
     $rowId = htmlspecialchars($row['id']); 
     $categoryName = htmlspecialchars($row['category_name']); 
     echo '<p id="paragraph_' . $rowId . '" class="categoriesParagraph">';
-    echo '<a id="anchor_' . $rowId . '" href="#" class="customAnchor" data-index="' . $index . '" data-category-id="' . $rowId . '">';
+    echo '<a id="anchor_' . $rowId . '" href="#" class="customAnchor" data-category-name="' .  $categoryName . '" data-index="' . $index . '" data-category-id="' . $rowId . '">';
     echo '<span id="mainSpanCategory_' . $rowId . '">+</span>&nbsp;' . $categoryName . '</a>';
     echo '<div id="variants_' . $rowId . '"></div>';
     echo '</p>';
