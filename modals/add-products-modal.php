@@ -1544,6 +1544,7 @@ function closeAddProductsModal(){
     $('.product-modal').css('animation', '');
      clearProductsInputs()
      clearFileInput() 
+   
   });
   
 }
@@ -1668,6 +1669,7 @@ function clearFileInput() {
 }
 
 function clearProductsInputs(){
+
   document.getElementById('productname').value = "";
   document.getElementById('skunNumber').value = "";
   document.getElementById('code').value = "";
@@ -1686,6 +1688,24 @@ function clearProductsInputs(){
   document.getElementById('productLbl').value = "";
   document.getElementById('cat_Lbl').value = "";
   document.getElementById('var_Lbl').value = "";
+
+  var categoriesVisible = false;
+    $('#categoriesDiv').hide();
+    $('#showCategories').text('+ Products').removeClass('highlighted');
+    $('#showCategories').off('click').click(function() {
+        $('#categoriesDiv').toggle();
+        categoriesVisible = !categoriesVisible; 
+        $('.productsP').toggleClass('highlighted', categoriesVisible);
+        $('.productsBtn').toggleClass('black-text', categoriesVisible).toggleClass('white-text', !categoriesVisible);
+
+        if (categoriesVisible) {
+            getCategories();
+            $(this).text('- Products');
+        } else {
+            $(this).text('+ Products'); 
+            $('.productsP').removeClass('highlighted');
+        }
+    });
   var uptBtn = document.querySelector('.updateProductsBtn');
     uptBtn.setAttribute('hidden',true);
     var saveBtn = document.querySelector('.saveProductsBtn');

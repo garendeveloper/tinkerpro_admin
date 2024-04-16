@@ -436,15 +436,27 @@ public function deleteCategories($id) {
   return $rowCount > 0; 
 }
 public function deleteVariants($id){
-  $sql = "DELETE FROM variants WHERE id = :id)";
+  $sql = "DELETE FROM variants WHERE id = :id";
   $stmt = $this->connect()->prepare($sql);
   $stmt->execute([':id' => $id]);
 
- 
-  // $rowCount = $stmt->rowCount();
+  $rowCount = $stmt->rowCount();
 
-  return $stmt; 
+  return $rowCount > 0; 
 }
+
+public function editVariantData($id, $variantName,$category_id){
+  $sql = 'UPDATE variants SET 
+  category_id = ?,
+  variant_name = ?
+  WHERE id = ?';
+
+$stmt = $this->connect()->prepare($sql);
+$stmt->execute([$category_id, $variantName, $id]);
+
+return $stmt;
+}
+
 }  
 
 

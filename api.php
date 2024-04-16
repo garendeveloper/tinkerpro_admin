@@ -175,6 +175,14 @@
             $result = $ingredients->updateIngrednts($ingredientName, $barcode,$uom_id,$cost,$status,$description,$id);
             echo json_encode(['success' => true, 'result' => $result ]); 
             break;
+        case "updateVariants":
+            $postData = json_decode(file_get_contents('php://input'), true);
+            $id = isset($postData['id']) ? $postData['id'] : null;
+            $variantName = isset($postData['variantName']) ? $postData['variantName'] : null;
+            $category_id = isset($postData['category_id']) ? $postData['category_id'] : null;
+            $result = $products->editVariantData($id, $variantName,$category_id);
+            echo json_encode(['success' => true, 'result' =>$result]); 
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

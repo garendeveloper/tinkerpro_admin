@@ -23,11 +23,16 @@
   <link rel="stylesheet" href="assets/css/others/flatpicker.min.css">
   <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.css">
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
   <link rel="stylesheet" href="assets/css/jquery-ui.css">
   <link rel="stylesheet" href="assets/js/daterangepicker/daterangepicker.css">
   
   
-   
+
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/vendors/chart.js/Chart.min.js"></script>
@@ -45,7 +50,11 @@
   <script src="assets/js/otherjs/axios.min.js"></script>
   <script src="assets/js/otherjs/sweetalert.js"></script>
   <script src="assets/js/jquery-ui.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
   <script src="assets/js/daterangepicker/moment.min.js"></script>
   <script src="assets/js/daterangepicker/daterangepicker.min.js"></script>
+
 </head>
 <body>

@@ -158,8 +158,24 @@
 }
 
 .scrollable-content {
-    max-height: 800px; 
+    max-height: 650px; 
     overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+      width: 6px; 
+    }
+
+::-webkit-scrollbar-track {
+    background: #262626; 
+}
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 3px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
 .done-div{
     position: absolute;
@@ -196,7 +212,7 @@
                <button  id="editCat" name="editBtn" class="editCat cat_btns">Edit</button>
             </div>
             <div class="productsHeader ">
-               <p class="productsP" ><a href="#" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
+               <p class="productsP" ><a href="#" onclick="changeValueInput(this)" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
                <div id="categoriesDiv" class="scrollable-content" style="display: none;">
     
               </div>
@@ -228,6 +244,8 @@ function getCategories() {
         });
   }
 
+var previousSpan = null;
+
 $(document).ready(function() {
     var categoriesVisible = false; 
     $('#categoriesDiv').hide();
@@ -246,9 +264,9 @@ $(document).ready(function() {
         }
     });
 
-var previousSpan = null;
+
 $(document).on("click", ".customAnchor", function() {
-  
+   
     $('.customAnchor').removeClass('highlighted black-text');
     $('.categoriesParagraph').removeClass('highlighted');
     $('.productsP').removeClass('highlighted');
@@ -256,56 +274,100 @@ $(document).on("click", ".customAnchor", function() {
     if (previousSpan !== null) {
         previousSpan.text('+');
     }
-
     $(this).addClass('highlighted black-text');
     var index = $(this).index('.customAnchor');
     var categoryId = $(this).data('category-id');
+    var name = $(this).data('category-name');
+
+    var catValue = document.getElementById('cat_Lbl');
+    var categoriesInput = document.getElementById('categoriesInput');
+    var id_cat = document.getElementById('catID');
+    var idVar = document.getElementById('varID');
 
  
     if (categoryId !== undefined && index !== undefined) {
         getVariants(categoryId);
+        catValue.value =  "/" + name ;
+            var newValue = document.getElementById('cat_Lbl').value;
+            var p_value =  document.getElementById('productLbl').value
+            var catValue =  p_value + newValue
+            $('.doneBtn').on('click', function(){
+                categoriesInput.value = catValue 
+                id_cat.value = categoryId 
+                closeModal()
+                $('.categoriesParagraph').eq(index).addClass('highlighted');
+            })
+    }else{
+        catValue.value = "";
+        categoriesInput.value =  document.getElementById('productLbl').value;
+        id_cat.value=""
+        dVar.value = ""
     }
  
     $('.categoriesParagraph').eq(index).addClass('highlighted');
     var currentSpan = $(this).find('span');
     if ($(this).hasClass('highlighted')) {
         currentSpan.text('-');
+       
     } else {
         currentSpan.text('+');
+       
     }
     previousSpan = currentSpan;
 });
 
 
-    $('.addCategory').off('click').on('click',function() {
+
+$('.addCategory').off('click').on('click', function() {
+    var index = $('.customAnchor.highlighted').index();
+    var categoryId = $('.customAnchor.highlighted').data('category-id');
+    
     if ($('.productsP').hasClass('highlighted')) {
-        $('.inputCat').removeAttr('hidden')
-        $('#inputCat').focus(); 
+        $('.inputCat').removeAttr('hidden');
+        $('#inputCat').focus();
+    } else if ($('.categoriesParagraph').hasClass('highlighted') && $('#mainSpanCategory_' + categoryId).text() === '-') {
+       
+            $('#spanVar').removeAttr('hidden');
+            $('#cat_' + categoryId).removeAttr('hidden');
+            addVariant(categoryId)
+        
+    } else {
+        $('#spanVar').attr('hidden', 'hidden');
+        $('.variant_input').attr('hidden', 'hidden');
     }
 });
 
-$('.editCat').off('click').on("click",function(){
-    var indexCat = $('.customAnchor.highlighted').data('index');
-    var categoryId = $('.customAnchor.highlighted').data('category-id');
-    
-    if(indexCat !== undefined && indexCat !== null && categoryId !== undefined && categoryId !== null){
-       editCategory(indexCat, categoryId)
-    }
-})
+
+
+
+// $(document).off('click','.editCat').on("click",'.editCat',function(e){
+//                     e.preventDefault()
+//     var indexCat = $('.customAnchor.highlighted').data('index');
+//     var categoryId = $('.customAnchor.highlighted').data('category-id');
+//     console.log(categoryId)
+//     if(indexCat !== undefined && indexCat !== null && categoryId !== undefined && categoryId !== null ){
+//        editCategory(indexCat, categoryId)
+//     }
+//                 })
 $('.deLbTN').off('click').on("click",function(){
     var indexCat = $('.customAnchor.highlighted').data('index');
     var categoryId = $('.customAnchor.highlighted').data('category-id');
+  
     
     if(indexCat !== undefined && indexCat !== null && categoryId !== undefined && categoryId !== null){
        deleteCategory(categoryId)
     
     }
 })
-
-
-
-
+$(document.body).on('click', function(event) {
+        if (!$(event.target).closest('.inputCat').length && !$(event.target).closest('.addCategory').length &&
+            !$(event.target).closest('#spanVar').length && !$(event.target).closest('.customAnchor').length) {
+            $('.inputCat').hide(); 
+            $('#spanVar').hide(); 
+        }
+    });
 });
+
 function getVariants(catID) {
     const variantsContainer = document.getElementById(`variants_${catID}`);
     const mainSpanCategory = document.getElementById(`mainSpanCategory_${catID}`);
@@ -335,12 +397,18 @@ function getVariants(catID) {
                 }
                 
             } else {
-                const variantsList = variants.map(variant => `<p class="variants variant-container" style="display: flex">
-                    <a href="#" style="text-decoration: none;" class="variant" onclick="handleClick()">
-                        <span>+</span>&nbsp;${variant.variant_name}
-                    </a>
-                </p>`).join('');
-
+                const variantsList = variants.map((variant, index) => `
+                    <p id="variant_${variant.id}" class="variants variant-container" style="display: flex ">
+                        <a href="#" style="text-decoration: none;" class="variant" 
+                        onclick="handleClick(this, event);" 
+                        data-index="${index}" 
+                        data-id="${variant.id}" 
+                        data-variant-name="${variant.variant_name}"
+                        data-category-id="${catID}">
+                            <span class="spanVariant">+</span>&nbsp;${variant.variant_name}
+                        </a>
+                    </p>`
+                ).join('');
                 singleInputBox = `<span hidden id="spanVar" class="variant-input" style="display:flex; color: #fefefe">+&nbsp;<input hidden type="text" class="variant_input" id="cat_${catID}" placeholder="Enter Variant"></span>`;
                 const finalVariantList = variantsList + singleInputBox;
 
@@ -359,16 +427,213 @@ function getVariants(catID) {
             }
         }
     })
-    .catch(error => {
+    .catch(error => { 
         console.error('Error fetching variants:', error);
     });
 
 }
 
-function handleClick(){
-    
+function addVariant(categoryId){
+    document.getElementById('cat_' + categoryId).addEventListener('keydown', function(e) {
+        switch(e.which) {
+            case 13: 
+                e.preventDefault();
+                var inputedVariant = document.getElementById('cat_' + categoryId).value
+                axios.post('api.php?action=addVariant', {
+                    id:categoryId,
+                    variantName: inputedVariant
+                }).then(function(response) {
+                     getVariants(categoryId)
+                }).catch(function(error){
+
+                })
+            break;
+        } 
+    })
+}
+let previousParagraph = null;
+
+
+let data;
+let hghLighted;
+function handleClick(link, event) {
+    event.preventDefault();
+    data = link;
+    var id = link.dataset.id;
+    var index = link.dataset.index;
+    var variantName = link.dataset.variantName;
+    var category_id = link.dataset.categoryId;
+
+    var varLbl = document.getElementById('var_Lbl');
+    var categoriesInput = document.getElementById('categoriesInput');
+    var productInputLbl = document.getElementById('productLbl');
+    var newValue = document.getElementById('cat_Lbl').value;
+    var idVar = document.getElementById('varID');
+
+    $('.categoriesParagraph').removeClass('highlighted');
+    $('.customAnchor').removeClass('highlighted black-text');
+    const paragraph = link.closest('p.variants');
+
+    if (paragraph.classList.contains('highlighted')) {
+        paragraph.classList.remove('highlighted');
+        const linkText = link.querySelector('span');
+        linkText.innerText = '+';
+        link.style.color = '';
+        hghLighted = false
+    } else {
+        if (previousParagraph) {
+            previousParagraph.classList.remove('highlighted');
+            const previousLink = previousParagraph.querySelector('.variant');
+            previousLink.querySelector('span').innerText = '+';
+            previousLink.style.color = '';
+        }
+        hghLighted = true
+        paragraph.classList.add('highlighted');
+        const linkText = link.querySelector('span');
+        linkText.innerText = '-';
+        link.style.color = 'black';
+        previousParagraph = paragraph;
+        if (id && index) {
+        
+            $('.deLbTN').off('click').on("click", function () {
+                deleteVariants(id, category_id);
+            });
+            varLbl.value = "/" + variantName;
+            var c_value = productInputLbl.value + newValue + varLbl.value;
+            $('.doneBtn').on('click', function () {
+                categoriesInput.value = c_value;
+                idVar.value = id;
+                closeModal();
+                $('.variants').removeClass('highlighted');
+                $('.variants').eq(index).addClass('highlighted');
+            });
+        } else {
+            varLbl.value = "";
+            idVar.value = "";
+        }
+    }
 }
 
+
+$(document).off('click', '.editCat').on("click", '.editCat', function (e) {
+    e.preventDefault();
+
+    var indexCat = $('.customAnchor.highlighted').data('index');
+    var categoryId = $('.customAnchor.highlighted').data('category-id');
+
+ if (indexCat !== undefined && indexCat !== null && categoryId !== undefined && categoryId !== null) {
+        handleClickCategory(indexCat, categoryId);
+    }else{
+        var id = data.dataset.id;
+    var category_id = data.dataset.categoryId;
+    var index = data.dataset.index;
+        editVariants(id, category_id, index);
+    }
+});
+
+
+function handleClickCategory(indexCat, categoryId) {
+    hghLighted == false
+    editCategory(indexCat, categoryId);
+}
+
+
+
+
+function editVariants(id, category_id, index) {
+    $('#variant_' + id).removeClass('highlighted');
+    var $anchorElement = $('#variant_' + id);
+    var $spanElement = $anchorElement.find('span');
+    $anchorElement.hide();
+    $spanElement.hide();
+    var $inputElement = $('<input>').attr({
+        type: 'text',
+        value: "",
+        style: 'margin: 0; padding: 0;  width: 150px;'
+        
+    });
+
+    var $spanPlus = $('<span>').text('+').css({
+        'color': 'white',
+        'margin-right': '5px',
+        'padding-left': '75px'
+    });
+
+    
+    $anchorElement.after($inputElement).after($spanPlus);
+    $inputElement.focus();
+
+    $inputElement.on('blur', function(event) {
+        var newValue = $inputElement.val().trim();
+        if (newValue !== '') {
+            $spanElement.text(newValue);
+        }
+
+        $inputElement.remove();
+        $spanPlus.remove();
+        $anchorElement.show();
+        $spanElement.show();
+        
+       
+        $anchorElement.removeClass('highlighted');
+        
+     
+        var index = $anchorElement.index('.variant');
+        $('.variants').eq(index).addClass('highlighted');
+    });
+
+   
+    $inputElement.on('keydown', function(e) {
+        if (e.which === 13) { 
+            e.preventDefault();
+            var newValue = $inputElement.val().trim();
+            if (newValue !== '') {
+                $spanElement.text(newValue);
+                // Call function to update variant in the database
+                updateVariant(id, newValue,category_id);
+            }
+
+            $inputElement.remove();
+            $spanPlus.remove();
+            $anchorElement.show();
+            $spanElement.show();
+            
+          
+            $anchorElement.removeClass('highlighted');
+            var index = $anchorElement.index('.variant');
+            $('.variants').eq(index).addClass('highlighted');
+        }
+    });
+}
+
+function  updateVariant(id, newValue,category_id){
+    axios.post('api.php?action=updateVariants',{
+        id:id,
+        variantName:newValue,
+        category_id:category_id
+    }).then(function(response){
+        getCategories();
+        getVariants(category_id)
+        
+    }).catch(function(error){
+        console.log(error)
+    })
+}
+
+
+function deleteVariants(id,category_id){
+        axios.delete(`api.php?action=deleteVariants&id=${id}`)
+        .then(function(response){
+               getCategories();
+               getVariants(category_id)
+            console.log(response)
+            
+        })
+        .catch(function(error){
+            console.log(error)
+        });
+    
+}
 
 
 function  deleteCategory(id){
@@ -494,6 +759,34 @@ function forCategoryUpdate(id, newValue) {
     });
 }
 
+function changeValueInput(element) {
+    var categoriesInput = document.getElementById('categoriesInput');
+    var productInputLbl = document.getElementById('productLbl');
+    var newValue = document.getElementById('cat_Lbl');
+    var varLbl = document.getElementById('var_Lbl');
+    var id_cat = document.getElementById('catID');
+    var idVar = document.getElementById('varID');
+
+   
+    productInputLbl.value = "";
+    categoriesInput.value = "";
+    newValue.value = "";
+    varLbl.value = "";
+    id_cat.value = "";
+    idVar.value = "";
+
+    
+    if ( categoriesInput.value == "" ||  categoriesInput.value == null ) {
+        productInputLbl.value = "Product"; 
+        var prd_value = document.getElementById('productLbl').value;
+        $('.doneBtn').off('click').on('click', function(){
+            categoriesInput.value = prd_value;
+            closeModal();
+            $('.productsP').addClass('highlighted');
+        });
+    }
+}
+
 
 
 function closeModal(){
@@ -508,6 +801,7 @@ function closeModal(){
     $(this).hide();
     $(this).css('animation', '');
     $('.categoryAdd').css('animation', '');
+     getCategories()  
   });
 }
 

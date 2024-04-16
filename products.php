@@ -409,6 +409,7 @@ $('.searchProducts').on('input', function(){
  $('.clearproductsBtn').on('click', function(){
   $('.searchProducts').val("")
   refreshProductsTable()
+  $('#categoriesDiv').hide();
  })
   });
 
