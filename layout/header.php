@@ -14,7 +14,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Transak POS | Admin</title>
+  <title>POS Management | Admin</title>
   <link rel="icon" href="assets/img/tinkerpro-logo-dark.png" type="image/png">
   <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="assets/vendors/base/vendor.bundle.base.css">
@@ -23,8 +23,15 @@
   <link rel="stylesheet" href="assets/css/others/flatpicker.min.css">
   <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.css">
+
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+  <link rel="stylesheet" href="assets/css/jquery-ui.css">
+  <link rel="stylesheet" href="assets/js/daterangepicker/daterangepicker.css">
+  
+  
 
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>
   <script src="assets/js/jquery.min.js"></script>
@@ -38,11 +45,16 @@
   <script src="assets/js/data-table.js"></script>
   <script src="assets/js/jquery.dataTables.js"></script>
   <script src="assets/js/dataTables.bootstrap4.js"></script>
-  <script src="assets/js/jquery.cookie.js" type="text/javascript"></script>
+  <script src="assets/js/jquery.cookie.js"></script>
   <script src="assets/js/otherjs/flatpicker.js"></script>
   <script src="assets/js/otherjs/axios.min.js"></script>
   <script src="assets/js/otherjs/sweetalert.js"></script>
   <script src="assets/js/jquery-ui.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <script src="assets/js/daterangepicker/moment.min.js"></script>
+  <script src="assets/js/daterangepicker/daterangepicker.min.js"></script>
+
 </head>
 <body>

@@ -110,7 +110,6 @@
                     <th class="text-center" style="width: 3%;">Amount Before Tax </th>
                     <th class="text-center" style="width: 3%;">Amount After Tax</th>
                     <th class="text-center" style="width: 3%;">Markup Profit</th>
-                    <th class="text-center" style="width: 2%;">Action</th>
                   </tr>
                 </thead>
                 <tbody >
@@ -169,6 +168,8 @@
         $(this).addClass("active");
       }
     });
+    $("#tab1").show();
+    $(".tablinks[data-tab='tab1']").addClass("active");
     $('#paidSwitch').change(function() {
         if ($(this).is(':checked')) 
         {
@@ -237,8 +238,7 @@
       });
       return isValid;
     }
-    $("#tab3").show();
-    $(".tablinks[data-tab='tab3']").addClass("active");
+
     $("#unpaid_form").on('submit', function(e){
       e.preventDefault();
       if(validateUnpaidSettings())
@@ -377,85 +377,132 @@
     }
     function resetPurchaseOrderForm()
     {
+      show_purchaseOrderNo();
+      display_datePurchased();
       $("#supplier").val("");
       $("#_order_id").val("0");
       $("#_inventory_id").val("0");
-      $("#date_purchased").val("");
       $("#product").val("");
       $('#tbl_purchaseOrders tbody').empty();
+      $("#po_form input[type=text], input[type=date]").removeClass('has-error');
     }
     $("#btn_omCancel").click(function(){
       resetPurchaseOrderForm();
     })
+    var remove_inventories = [];
+    $('#tbl_purchaseOrders tbody').on('click', 'tr td:first-child', function() {
+      updateTotal();
+      remove_inventories.push($(this).data('id'));
+      $(this).closest('tr').remove();
+    });
+    function updateTotal() 
+    {
+      var totalQty = 0;
+      var totalPrice = 0;
+      var total = 0;
+      var totalTax = 0;
+      $('#tbl_purchaseOrders tbody tr').each(function() {
+        var quantity = parseInt($(this).find('td:nth-child(2)').text().trim(), 10);
+        var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
+        var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
+        var tax = (price/1.12);
+        totalTax += (price-tax);
+        totalQty += quantity;
+        totalPrice += price;
+        total += subtotal;
+      });
+      $("#totalTax").html("Tax: "+addCommasToNumber(totalTax));
+      $("#totalQty").html(totalQty);
+      $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice));
+      $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(total));
+    }
     function submit_purchaseOrder()
     {
-      if(confirm("Are you sure you want to update your orders?"))
+      var tbl_length = $("#tbl_purchaseOrders tbody tr").length;
+      if(tbl_length > 0)
       {
-        var dataArray = [];
-        $('#tbl_purchaseOrders tbody tr').each(function() {
-            var rowData = {};
-            $(this).find('td').each(function(index, cell) {
-              if (index === 0) 
-              {
-                rowData['inventory_id'] = $(cell).data('id'); 
-              }
-                rowData['column_' + (index + 1)] = $(cell).text(); 
-            });
-            dataArray.push(rowData);
-        });
-        $.ajax({
-          type: 'POST',
-          url: 'api.php?action=save_purchaseOrder', 
-          data: {
-            data: JSON.stringify(dataArray),
-            po_number: $("#pcs_no").val(),
-            isPaid: $('#paidSwitch').prop('checked'),
-            date_purchased: $("#date_purchased").val(),
-            supplier: $("#supplier").val(),
-            product: $("#product").val(),
-            total: overallTotal,
-            totalTax: totalTax,
-            order_id: $("#_order_id").val(),
-            inventory_id: $("#_inventory_id").val(),
-          },
-          dataType: 'json',
-          success: function(response) 
-          {
-            if(response.status)
-            {
-              resetPurchaseOrderForm();
-              $("#paid_purchase_modal").hide();
-              $("#totalTax").html("0.00");
-              $("#totalQty").html("0");
-              $("#totalPrice").html("&#x20B1;&nbsp;0.00");
-              $("#overallTotal").html("&#x20B1;&nbsp;0.00");
-              show_allInventories(1, perPage); 
-              show_response(response.message);
-              show_purchaseOrderNo();
-              show_allProducts();
-              show_allSuppliers();
-              display_datePurchased();
-              selected_products = [];
-            }
-            else
-            {
-              $.each(response.errors, function(key, value) {
-                if(key === "isPaid")
+        if(confirm("Are you sure you want to update your orders?"))
+        {
+          var dataArray = [];
+          $('#tbl_purchaseOrders tbody tr').each(function() {
+              var rowData = {};
+              $(this).find('td').each(function(index, cell) {
+                if (index === 0) 
                 {
-                  $("#"+key).addClass('switch-error');
+                  rowData['inventory_id'] = $(cell).data('id'); 
                 }
-                else
-                {
-                  $('#' + key).addClass('has-error');
-                }
+                  rowData['column_' + (index + 1)] = $(cell).text(); 
               });
+              dataArray.push(rowData);
+          });
+          $.ajax({
+            type: 'POST',
+            url: 'api.php?action=save_purchaseOrder', 
+            data: {
+              data: JSON.stringify(dataArray),
+              po_number: $("#pcs_no").val(),
+              isPaid: $('#paidSwitch').prop('checked'),
+              date_purchased: $("#date_purchased").val(),
+              supplier: $("#supplier").val(),
+              product: $("#product").val(),
+              total: $("#overallTotal").text(),
+              totalPrice: $("#totalPrice").text(),
+              totalTax: $("#totalTax").text(),
+              totalQty: $("#totalQty").text(),
+              order_id: $("#_order_id").val(),
+              inventory_id: $("#_inventory_id").val(),
+              remove_inventories: remove_inventories,
+            },
+            dataType: 'json',
+            success: function(response) 
+            {
+              if(response.status)
+              {
+                resetPurchaseOrderForm();
+                $("#paid_purchase_modal").hide();
+                $("#totalTax").html("0.00");
+                $("#totalQty").html("0");
+                $("#totalPrice").html("&#x20B1;&nbsp;0.00");
+                $("#overallTotal").html("&#x20B1;&nbsp;0.00");
+                show_allInventories(1, perPage); 
+                show_response(response.message);
+                show_purchaseOrderNo();
+                show_allProducts(1, perPage);
+                show_allSuppliers();
+                display_datePurchased();
+                selected_products = [];
+              }
+              else
+              {
+                $.each(response.errors, function(key, value) {
+                  if(key === "isPaid")
+                  {
+                    $("#"+key).addClass('switch-error');
+                  }
+                  else
+                  {
+                    $('#' + key).addClass('has-error');
+                  }
+                });
+              }
+            },
+            error: function(xhr, status, error) {
+              alert("Something went wrong!");
             }
-          },
-          error: function(xhr, status, error) {
-            alert("Something went wrong!");
-          }
-        });
+          });
+        }
       }
+      else
+      {
+        alert("The table should not be empty.");
+      }
+    }
+    function check_supplierProduct()
+    {
+      var supplier = $("#supplier").val();
+      var product = $("#product").val();
+
+      
     }
     function show_response(message)
     {
@@ -482,6 +529,7 @@
           });
           $("#product_name").text($("#product").val());
           $("#s_price").val($("#overallTotal").text());
+          $("#r_balance").val($("#overallTotal").text());
           $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
         }
         else
@@ -506,17 +554,39 @@
         validatePOForm();
       }
     })
+    function isDataExistInTable(data) 
+    {
+      var isExist = false;
+      $('#tbl_purchaseOrders tbody').each(function() {
+          var rowData = $(this).find('td:first').text(); 
+          if (rowData === data) 
+          {
+            isExist = true;
+            return false; 
+          }
+      });
+      return isExist;
+  }
     $("#btn_addPO").click(function(e){
       e.preventDefault();
-      if(validatePOForm())
+      var product = $("#product").val();
+      if(!isDataExistInTable(product))
       {
-        var product = $("#product").val();
-        $("#purchaseQty_modal").slideDown({
-          backdrop: 'static',
-          keyboard: false,
-        });
-        $("#product_name").text(product);
-        $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+        if(validatePOForm())
+        {
+          
+          $("#purchaseQty_modal").slideDown({
+            backdrop: 'static',
+            keyboard: false,
+          });
+          $("#product_name").text(product);
+          $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+        }
+      }
+      else
+      {
+        alert("Data is already in the table");
+        $("#product").val("");
       }
     })
     function roundToTwoDecimalPlaces(number) 
@@ -618,7 +688,7 @@
         var p_qty = parseInt($("#p_qty").val());
         var price = parseFloat($("#price").val());
         var product = $("#product").val();
-        var total = parseFloat(price * p_qty);  
+        var total = (price * p_qty);  
 
         $.ajax({
           type: 'get',
@@ -640,19 +710,12 @@
             $("#totalTax").html(totalTax.toFixed(2));
             $("#tbl_purchaseOrders tbody").append(
               "<tr>"+
-                "<td>"+product+"</td>"+
-                "<td style = 'text-align: center'>"+p_qty+"</td>"+
-                "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(price)+"</td>"+
+                "<td data-id = '0'>"+product+"</td>"+
+                "<td style = 'text-align: center' class ='editable'>"+p_qty+"</td>"+
+                "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;"+addCommasToNumber(price)+"</td>"+
                 "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(total)+"</td>"+
               "</tr>"
             );
-            
-            $("#d_products").find(".search-dropdown-item").filter(function() {
-                if($(this).text() === product)
-                {
-                  selected_products.push($(this).text());
-                }
-            });
             show_allProducts();
             $("#totalQty").html(totalQty);
             $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice.toFixed(2)));
@@ -697,15 +760,95 @@
         type: 'GET',
         url: 'api.php?action=get_allSuppliers',
         success: function(data){
-          var option = '';
+          var suppliers = [];
           for(var i = 0; i<data.length; i++)
           {
-            // option += '<div class="search-dropdown-item1" tabindex="0">'+data[i].supplier+'</div>';
-            option += '<option>'+data[i].supplier+'</option>';
+            suppliers.push(data[i].supplier)
           }
-          $("#d_suppliers").html(option);
+          autocomplete(document.getElementById("supplier"), suppliers);
         }
       })
+    }
+    function autocomplete(inp, arr) 
+    {
+      var currentFocus;
+      inp.addEventListener("input", function(e) 
+      {
+          var a, b, i, val = this.value;
+          closeAllLists();
+          if (!val) { return false;}
+          currentFocus = -1;
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          this.parentNode.appendChild(a);
+          for (i = 0; i < arr.length; i++) 
+          {
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) 
+            {
+              b = document.createElement("DIV");
+              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(val.length);
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              b.addEventListener("click", function(e) {
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  closeAllLists();
+              });
+              a.appendChild(b);
+            }
+          }
+      });
+      inp.addEventListener("keydown", function(e) 
+      {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) 
+        {
+          currentFocus++;
+          addActive(x);
+        } 
+        else if (e.keyCode == 38) 
+        { 
+          currentFocus--;
+          addActive(x);
+        } 
+        else if (e.keyCode == 13) 
+        {
+          e.preventDefault();
+          if (currentFocus > -1) 
+          {
+            if (x) x[currentFocus].click();
+          }
+        }
+      });
+      function addActive(x) 
+      {
+        if (!x) return false;
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+      function removeActive(x) 
+      {
+        for (var i = 0; i < x.length; i++) 
+        {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+      function closeAllLists(elmnt) 
+      {
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+          }
+        }
+      }
+      document.addEventListener("click", function (e) 
+      {
+        closeAllLists(e.target);
+      });
     }
     function show_allProducts()
     {
@@ -713,16 +856,16 @@
         type: 'GET',
         url: 'api.php?action=get_allProducts',
         success: function(data){
-          var option = '';
+          var products = [];
           for(var i = 0; i<data.length; i++)
           {
             var isSelected = selected_products.includes(data[i].prod_desc+" : "+data[i].barcode);
             if(!isSelected)
             {
-              option += '<div class="search-dropdown-item" tabindex="0">'+data[i].prod_desc+" : "+data[i].barcode+'</div>';
+              products.push(data[i].prod_desc+" : "+data[i].barcode);
             }
           }
-          $("#d_products").html(option);
+          autocomplete(document.getElementById("product"), products);
         }
       })
     }
@@ -749,7 +892,7 @@
               tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_afterTax)+"</td>";
               tbl_data += "<td>"+data[i].isPaid == 1 ? "YES" : "NO" +"</td>";
               tbl_data += "<td></td>";
-              tbl_data += "<td style = 'text-align: center'><button class = 'grid-item button'><i  class = 'bi bi-pencil-fill'></i></button></td>";
+              // tbl_data += "<td style = 'text-align: center'><button class = 'grid-item button'><i  class = 'bi bi-pencil-fill'></i></button></td>";
               tbl_data += "</tr>";
             }
           } 
@@ -791,7 +934,7 @@
                   tbl_data += "<td class = 'text-center'> Not Available </td>";
                 else 
                   tbl_data += "<td class = 'text-center'>"+date_format(data[i].due_date)+"</td>";
-                tbl_data += "<td style = 'text-align: right'>"+data[i].price+"</td>";
+                tbl_data += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].price)+"</td>";
                 if(data[i].isPaid === 1)
                   tbl_data += "<td class = 'text-center'>Paid</td>";
                 else 
@@ -814,6 +957,7 @@
       e.preventDefault();
       var order_id = $(this).data('id');
       openOptionModal(); 
+      $("#open_po_report").show();
       $.ajax({
         type: 'GET',
         url: 'api.php?action=get_orderData&order_id='+order_id,
@@ -821,37 +965,72 @@
         success: function(data)
         {
           var table = "";
-          $("#pcs_no").val(data[0].po_number);
+          var tbl_report = "";
+         
           $("#supplier").val(data[0].supplier);
-          $("#date_purchased").val(data[0].date_purchased);
+          $("#date_purchased").val(date_format(data[0].date_purchased));
           $("#_order_id").val(data[0].order_id);
           $("#_inventory_id").val(data[0].inventory_id);
-          var at = 0;
-          var qt = 0;
-          var pt = 0;
-          var tt = 0;
+          $("#pcs_no").val(data[0].po_number);
+
+          $("#rep_po").html(data[0].po_number);
+          $("#rep_supplier").html(data[0].supplier);
+          $("#rep_datePurchased").html(date_format(data[0].date_purchased));
+          var isPaid = data[0].isPaid === 1 ? "Yes" : "No";
+          $("#rep_isPaid").html(isPaid);
+
+          if(isPaid === "Yes")
+          {
+            $('#paidSwitch').prop('checked', true); 
+          }
+          else
+          {
+            $('#paidSwitch').prop('checked', false); 
+          }
           for(var i = 0; i<data.length; i++)
           {
             table +=  "<tr>";
             table += "<td data-id = "+data[i].inventory_id+">"+data[i].prod_desc+" : "+data[i].barcode+"</td>";
             table += "<td style = 'text-align: center' class ='editable'>"+data[i].qty_purchased+"</td>";
             table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
-            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax*data[i].qty_purchased)+"</td>";
+            table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].total)+"</td>";
             table += "</tr>";
-            qt += parseInt(data[i].qty_purchased);
-            pt += data[i].total;
+          }
+          var counter = 1;
+          for(var i = 0; i<data.length; i++)
+          {
+            tbl_report +=  "<tr>";
+            tbl_report += "<td >"+counter+"</td>";
+            tbl_report += "<td >"+data[i].prod_desc+"</td>";
+            tbl_report += "<td style = 'text-align: center' class ='editable'>"+data[i].qty_purchased+"</td>";
+            tbl_report += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
+            tbl_report += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+data[i].tax+"</td>";
+            tbl_report += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+data[i].total+"</td>";
+            tbl_report += "</tr>";
+            counter++;
           }
           $("#tbl_purchaseOrders tbody").html(table);
+          $("#tbl_purchaseOrdersReport tbody").html(tbl_report);
+          $("#rep_qty").html(data[0].totalQty);
+          $("#rep_price").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(data[0].totalPrice)));
+          $("#rep_tax").html("Tax: "+roundToTwoDecimalPlaces(data[0].totalTax));
+          $("#rep_total").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(data[0].price)));
+
           $("#totalTax").html("Tax: "+roundToTwoDecimalPlaces(data[0].totalTax));
-          $("#totalQty").html(qt);
-          $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(pt)));
+          $("#totalQty").html(data[0].totalQty);
+          $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(roundToTwoDecimalPlaces(data[0].totalPrice)));
           $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(data[0].price));
         },
         error: function(data){
           alert("No response")
         }
       })
+   
     })
+    function clean_number(number)
+    {
+      return number.replace(/[₱\s]/g, '');
+    }
     $('#searchInput').on('input', function() {
         var barcode = $(this).val().trim().toLowerCase();
         filterTable(barcode); 
@@ -900,9 +1079,11 @@
     $("#btn_openOption").click(function(e){
       e.preventDefault();
       openOptionModal();
+      $("#open_po_report").hide();
     })
     function openOptionModal()
     {
+      resetPurchaseOrderForm();
       $("#optionModal").addClass('slideInRight');
       $(".optionmodal-content").addClass('slideInRight');
       setTimeout(function() {
@@ -910,6 +1091,7 @@
           $(".optionmodal-content").show();
       }, 100); 
       $("#btn_createPO").addClass('active');
+      
     }
   })
 </script>

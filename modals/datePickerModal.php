@@ -227,7 +227,7 @@ flatpickr("#datepickerDiv", {
         const datepickerDiv2 = document.getElementById("datepickerDiv2");
         const instance2 = datepickerDiv2._flatpickr;
 
-        
+        // Remove the minDate restriction on #datepickerDiv2
         instance2.set("minDate", null);
     }
 });

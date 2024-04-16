@@ -93,8 +93,32 @@
   .button-container {
     display: flex;
   }
+  .datepicker {
+  max-width: 400px;
+  margin: 50px auto;
+}
+
+.datepicker-input {
+  width: 100px;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.predefined-periods {
+  margin-top: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+h3{
+  color: #ffff;
+}
 </style>
 <?php include "layout/admin/css.php"?>
+
   <div class="container-scroller">
     <div class="">
       <?php include "layout/admin/sidebar.php"?>
@@ -122,38 +146,56 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-12">
+                  <h3>Periodic Reports <span id="period_date"></span>
+                    <button id="btn_period" class="button">
+                        <i class="bi bi-calendar" aria-hidden="true"></i>
+                    </button>
+                  </h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 ">
+                <div class="border p-3 col">
+                    <h5>Total Products</h5>
+                  </div>
+                </div>
+              <div class="col-md-4">
+                <div class="border p-3 col">
+                  <h5>Hourly Sales</h5>
+                </div>
+              </div>
+              <div class="col-md-4 ">
+                <div class="border p-3 col">
+                    <h5>Total Sales (Amount)</h5>
+                  </div>
+                </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+<?php include "modals/period-reports-modal.php"?>
 <?php include("layout/footer.php") ?>
 <script>
   $(document).ready(function() {
     let year = new Date().getFullYear();
     $("#d_year").html(year);
     updateChart(year);
-
-    // Function to update chart data for the next year
     $('#nextYear').click(function() {
       year++;
       updateChart(year);
     });
-
-    // Function to update chart data for the previous year
     $('#prevYear').click(function() {
       year--;
       updateChart(year);
     });
-
-    // Function to update chart data based on the selected year
-    function updateChart(year) {
-      // Here you should fetch the sales data for the selected year from your server
-      // Replace the salesData array with the fetched data
+    function updateChart(year) 
+    {
       $("#d_year").html(year);
-      // chart.data.datasets[0].data = updatedSalesData;
-      // chart.update();
       const salesData = [100, 200, 150, 300, 250, 400, 350, 500, 450, 600, 550, 700];
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       const ctx = document.getElementById('salesChart').getContext('2d');
@@ -185,5 +227,12 @@
         }
       });
     }
+    $("#btn_period").click(function(e){
+      e.preventDefault();
+      $("#period_reports").slideDown({
+        backdrop: 'static',
+        keyboard: false,
+      });
+    })
   });
 </script>
