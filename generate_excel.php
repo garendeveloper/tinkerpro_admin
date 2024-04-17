@@ -36,7 +36,11 @@ $sheet->getStyle('G5')->applyFromArray($textStyle);
 $userFacade = new UserFacade();
 $value = $_GET['selectedValue'] ?? null; 
 $searchQuery = $_GET['searchQuery'] ?? null;
-$fetchUser = $userFacade->fetchUsers($value,$searchQuery);
+$selectedUser = $_GET['selectedUser'] ?? null;
+$singleDateData = $_GET['singleDateData'] ?? null;
+$startDate = $_GET['startDate'] ?? null;
+$endDate = $_GET['endDate'] ?? null;
+$fetchUser = $userFacade->fetchUsers($value,$searchQuery,$selectedUser,$singleDateData,$startDate,$endDate);
 $counter = 8; 
 
 

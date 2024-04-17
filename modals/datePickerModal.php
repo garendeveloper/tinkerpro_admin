@@ -127,6 +127,14 @@
 .flatpickr-prev-decade svg, .flatpickr-next-decade svg {
     fill: white !important;
 }
+
+.flatpickr-day.selected:hover {
+    background-color: #FF6900 !important;
+}
+.flatpickr-day.selected {
+    background-color: #FF6900 !important;
+    border-color:#FF6900 !important;
+}
 @media (max-width: 600px) {
   .flatpickr-calendar {
     font-size: 12px; 
@@ -173,9 +181,11 @@
             </g>
           </svg>
           <p class="warning-title"><b>SELECT DATES</b></p>&nbsp;
+          <p hidden class="warning-title selectedDates" style="color:#FF6900"><b>[<span id="dateFrom"></span>-<span id="dateTo"></span></span>]</b></p>
+          <p hidden class="warning-title selectedsDates" style="color:#FF6900"><b>[<span id="dateSlcted"></span>]</b></p>
         </div>
       </div>
-      <div class="warningCard" style="dsiplay: flex;">
+      <div class="warningCard" style="display: flex;">
         <div class="oneCard" style="width: 33%">
         <div style="text-align: center;margin-bottom: 10px">Start</div>
          <input type="text" hidden id="datepickerDiv" style="text-align: center;">
@@ -185,75 +195,480 @@
         <input type="text" hidden id="datepickerDiv2" style="text-align: center;">
        </div>
         <div class="thirdCard" style="width: 33%">
+            <input hidden class="predefinedDates" id="predefinedDates"/>
+            <input hidden class="predefinedDouble" id="predefinedDouble"/>
             <div style="text-align: center;margin-bottom: 30px">Predefined Period</div>
-            <div style="display: flex; align-text: center; justify-content: center; margin-bottom: 20px ">
-                <button class="custom_btns" style="margin-right: 10px">Today</button>
-                <button class="custom_btns">Yesterday</button>
+            <div style="display: flex; text-align: center; justify-content: center; margin-bottom: 20px ">
+                <button class="custom_btns dateToday" style="margin-right: 10px">Today</button>
+                <button class="custom_btns dateYesterday">Yesterday</button>
             </div>
-            <div style="display: flex; align-text: center; justify-content: center;margin-bottom: 20px ">
-                <button class="custom_btns" style="margin-right: 10px">This week</button>
-                <button class="custom_btns">Last week</button>
+            <div style="display: flex; text-align: center; justify-content: center;margin-bottom: 20px ">
+                <button class="custom_btns dateThisWeek" style="margin-right: 10px">This week</button>
+                <button class="custom_btns lastWeek">Last week</button>
             </div>
-            <div style="display: flex; align-text: center; justify-content: center;margin-bottom: 20px ">
-                <button class="custom_btns" style="margin-right: 10px">This month</button>
-                <button class="custom_btns">Last Month</button>
+            <div style="display: flex; text-align: center; justify-content: center;margin-bottom: 20px ">
+                <button class="custom_btns thisMonth" style="margin-right: 10px">This month</button>
+                <button class="custom_btns lastMonth">Last Month</button>
             </div>
-            <div style="display: flex; align-text: center; justify-content: center; ">
-                <button class="custom_btns" style="margin-right: 10px">This year</button>
-                <button class="custom_btns">Last Year</button>
+            <div style="display: flex; text-align: center; justify-content: center; ">
+                <button class="custom_btns thisYear" style="margin-right: 10px">This year</button>
+                <button class="custom_btns lastYear">Last Year</button>
             </div>
        </div>
     </div>
     <div class="btnsContainer">
      <button id="cancelDateTime" class="custom_btns" style="margin-right:10px">Cancel</button>
-     <button class="custom_btns">Ok</button>
+     <button class="custom_btns okBtnDates">Ok</button>
     </div>
     </div>
   </div>
 </div>
 <script>
+$('.lastYear').on('click', function() {
+  document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+ document.querySelector('.selectedsDates').setAttribute('hidden',true);
+    var currentDate = new Date();
+    var startOfYear = new Date(currentDate.getFullYear() - 1, 0, 1); 
+    var endOfYear = new Date(currentDate.getFullYear(), 0, 0); 
+
+    var startYear = startOfYear.getFullYear();
+    var startMonth = String(startOfYear.getMonth() + 1).padStart(2, '0');
+    var startDay = String(startOfYear.getDate()).padStart(2, '0');
+    var endYear = endOfYear.getFullYear();
+    var endMonth = String(endOfYear.getMonth() + 1).padStart(2, '0');
+    var endDay = String(endOfYear.getDate()).padStart(2, '0');
+
+    var dateRange = startYear + '-' + startMonth + '-' + startDay + ' - ' + endYear + '-' + endMonth + '-' + endDay;
+    $('.predefinedDouble').val(dateRange);
+
+    const selectedDate = new Date(startYear + '-' + startMonth + '-' + startDay); 
+    const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateFrom').text(formattedDate);
+const selectedDate1 = new Date(endYear + '-' + endMonth + '-' + endDay); 
+const formattedDate1 = selectedDate1.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateTo').text(formattedDate1);
+
+    document.querySelector('.selectedDates').removeAttribute('hidden')
+});
+
+$('.thisYear').on('click', function() {
+  document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+ document.querySelector('.selectedsDates').setAttribute('hidden',true);
+    var currentDate = new Date();
+    var startOfYear = new Date(currentDate.getFullYear(), 0, 1); 
+    var endOfYear = new Date(currentDate.getFullYear() + 1, 0, 0); 
+
+    var startYear = startOfYear.getFullYear();
+    var startMonth = String(startOfYear.getMonth() + 1).padStart(2, '0');
+    var startDay = String(startOfYear.getDate()).padStart(2, '0');
+    var endYear = endOfYear.getFullYear();
+    var endMonth = String(endOfYear.getMonth() + 1).padStart(2, '0');
+    var endDay = String(endOfYear.getDate()).padStart(2, '0');
+
+    var dateRange = startYear + '-' + startMonth + '-' + startDay + ' - ' + endYear + '-' + endMonth + '-' + endDay;
+    $('.predefinedDouble').val(dateRange);
+
+    const selectedDate = new Date(startYear + '-' + startMonth + '-' + startDay); 
+    const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateFrom').text(formattedDate);
+const selectedDate1 = new Date(endYear + '-' + endMonth + '-' + endDay); 
+const formattedDate1 = selectedDate1.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateTo').text(formattedDate1);
+
+    document.querySelector('.selectedDates').removeAttribute('hidden')
+});
+
+$('.lastMonth').on('click', function() {
+  document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+document.querySelector('.selectedsDates').setAttribute('hidden',true);
+    var currentDate = new Date();
+    var firstDayOfCurrentMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    var firstDayOfLastMonth = new Date(firstDayOfCurrentMonth);
+    firstDayOfLastMonth.setMonth(firstDayOfLastMonth.getMonth() - 1);
+
+    var lastDayOfLastMonth = new Date(firstDayOfCurrentMonth);
+    lastDayOfLastMonth.setDate(0); 
+
+    var startYear = firstDayOfLastMonth.getFullYear();
+    var startMonth = String(firstDayOfLastMonth.getMonth() + 1).padStart(2, '0');
+    var startDay = String(firstDayOfLastMonth.getDate()).padStart(2, '0');
+    var endYear = lastDayOfLastMonth.getFullYear();
+    var endMonth = String(lastDayOfLastMonth.getMonth() + 1).padStart(2, '0');
+    var endDay = String(lastDayOfLastMonth.getDate()).padStart(2, '0');
+
+    var dateRange = startYear + '-' + startMonth + '-' + startDay + ' - ' + endYear + '-' + endMonth + '-' + endDay;
+    $('.predefinedDouble').val(dateRange);
+
+    const selectedDate = new Date(startYear + '-' + startMonth + '-' + startDay); 
+    const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateFrom').text(formattedDate);
+const selectedDate1 = new Date(endYear + '-' + endMonth + '-' + endDay); 
+const formattedDate1 = selectedDate1.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateTo').text(formattedDate1);
+
+    document.querySelector('.selectedDates').removeAttribute('hidden')
+
+    
+});
+
+$('.thisMonth').on('click', function() {
+  document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+document.querySelector('.selectedsDates').setAttribute('hidden',true);
+    var currentDate = new Date(); 
+    var startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    var endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+    var startYear = startOfMonth.getFullYear();
+    var startMonth = String(startOfMonth.getMonth() + 1).padStart(2, '0');
+    var startDay = String(startOfMonth.getDate()).padStart(2, '0');
+    var endYear = endOfMonth.getFullYear();
+    var endMonth = String(endOfMonth.getMonth() + 1).padStart(2, '0');
+    var endDay = String(endOfMonth.getDate()).padStart(2, '0');
+
+    var dateRange = startYear + '-' + startMonth + '-' + startDay + ' - ' + endYear + '-' + endMonth + '-' + endDay;
+    $('.predefinedDouble').val(dateRange);
+
+    
+const selectedDate = new Date(startYear + '-' + startMonth + '-' + startDay); 
+    const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateFrom').text(formattedDate);
+const selectedDate1 = new Date(endYear + '-' + endMonth + '-' + endDay); 
+const formattedDate1 = selectedDate1.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateTo').text(formattedDate1);
+
+    document.querySelector('.selectedDates').removeAttribute('hidden')
+});
+
+$('.lastWeek').on('click', function(){
+  document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+ document.querySelector('.selectedsDates').setAttribute('hidden',true);
+    var currentDate = new Date(); 
+    var currentDay = currentDate.getDay(); 
+    var diff = currentDay - 1; 
+
+    currentDate.setDate(currentDate.getDate() - diff);
+    currentDate.setDate(currentDate.getDate() - 7); 
+
+    var startDate = new Date(currentDate);
+    var endDate = new Date(currentDate);
+    endDate.setDate(endDate.getDate() + 6);
+
+    var startYear = startDate.getFullYear();
+    var startMonth = String(startDate.getMonth() + 1).padStart(2, '0');
+    var startDay = String(startDate.getDate()).padStart(2, '0');
+    var endYear = endDate.getFullYear();
+    var endMonth = String(endDate.getMonth() + 1).padStart(2, '0');
+    var endDay = String(endDate.getDate()).padStart(2, '0');
+
+    var dateRange = startYear + '-' + startMonth + '-' + startDay + ' - ' + endYear + '-' + endMonth + '-' + endDay;
+    $('.predefinedDouble').val(dateRange);
+
+    document.querySelector('.selectedDates').removeAttribute('hidden')
+
+const selectedDate = new Date(startYear + '-' + startMonth + '-' + startDay); 
+    const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateFrom').text(formattedDate);
+const selectedDate1 = new Date(endYear + '-' + endMonth + '-' + endDay); 
+const formattedDate1 = selectedDate1.toLocaleDateString("en-PH", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit"
+    });
+    $('#dateTo').text(formattedDate1);
+})
+$('.dateThisWeek').on('click', function() {
+  document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+  document.querySelector('.selectedsDates').setAttribute('hidden',true);
+
+    var currentDate = new Date(); 
+    var currentDay = currentDate.getDay(); 
+    var diff = currentDay - 1; 
+
+  
+    currentDate.setDate(currentDate.getDate() - diff);
+    var startDate = new Date(currentDate);
+    var endDate = new Date(currentDate);
+    endDate.setDate(endDate.getDate() + 6); 
+
+  
+    var startYear = startDate.getFullYear();
+    var startMonth = String(startDate.getMonth() + 1).padStart(2, '0');
+    var startDay = String(startDate.getDate()).padStart(2, '0');
+    var endYear = endDate.getFullYear();
+    var endMonth = String(endDate.getMonth() + 1).padStart(2, '0');
+    var endDay = String(endDate.getDate()).padStart(2, '0');
+
+ 
+    var dateRange = startYear + '-' + startMonth + '-' + startDay + ' - ' + endYear + '-' + endMonth + '-' + endDay;
+    $('.predefinedDouble').val(dateRange);
+
+    document.querySelector('.selectedDates').removeAttribute('hidden')
+
+    const selectedDate = new Date(startYear + '-' + startMonth + '-' + startDay); 
+        const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit"
+        });
+        $('#dateFrom').text(formattedDate);
+   const selectedDate1 = new Date(endYear + '-' + endMonth + '-' + endDay); 
+    const formattedDate1 = selectedDate1.toLocaleDateString("en-PH", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit"
+        });
+        $('#dateTo').text(formattedDate1);
+    
+});
+
+$('.dateYesterday').on('click', function(){
+  document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+  document.querySelector('.selectedDates').setAttribute('hidden', true)
+  var yesterday = new Date(); 
+   yesterday.setDate(yesterday.getDate() - 1); 
+   var dd = String(yesterday.getDate()).padStart(2, '0'); 
+   var mm = String(yesterday.getMonth() + 1).padStart(2, '0'); 
+   var yyyy = yesterday.getFullYear(); 
+
+   var yesterdayString = yyyy + '-' + mm + '-' + dd;
+   $('.predefinedDates').val(yesterdayString);
+
+   
+   const selectedDate = new Date(yesterdayString); 
+        const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit"
+        });
+        $('#dateSlcted').text(formattedDate);
+        document.querySelector('.selectedsDates').removeAttribute('hidden');
+})
+
+$('.dateToday').on('click', function(){
+  document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+  document.querySelector('.selectedDates').setAttribute('hidden', true)
+   var today = new Date(); 
+   var dd = String(today.getDate()).padStart(2, '0'); 
+   var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+   var yyyy = today.getFullYear();
+   var dateString = yyyy + '-' + mm + '-' + dd;
+   $('.predefinedDates').val(dateString);
+
+   const selectedDate = new Date(dateString); 
+        const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit"
+        });
+        $('#dateSlcted').text(formattedDate);
+        document.querySelector('.selectedsDates').removeAttribute('hidden');
+
+});
+
  $('#datePickerClose').on('click', function(){
     $('#dateTimeModal').hide()
+    clearFields()
  })
  $('#cancelDateTime').on('click', function(){
-    $('#dateTimeModal').hide()
+    // $('#dateTimeModal').hide()
+    clearFields()
  })
 
-flatpickr("#datepickerDiv", {
+ $('.okBtnDates').off('click').on('click', function() {
+    var selectedDatePre = document.getElementById("predefinedDates").value;
+    var predefinedDouble = document.getElementById("predefinedDouble").value;
+
+    var dateFrom = document.getElementById("datepickerDiv").value;
+    var dateTo = document.getElementById("datepickerDiv2").value;
+
+    if (selectedDatePre !== "" || predefinedDouble !== "" || dateFrom !== "" || dateTo !== "") {
+        if (selectedDatePre !== "" && predefinedDouble === "") {
+            var date = new Date(selectedDatePre);
+            const formattedDateSelected = date.toLocaleDateString("en-PH", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit"
+            });
+            document.getElementById('datepicker').value = formattedDateSelected;
+        } else if (selectedDatePre === "" && predefinedDouble !== "") {
+            var dates = predefinedDouble.split(" - ");
+            var startDateString = dates[0];
+            var endDateString = dates[1];
+
+            var startDate = new Date(startDateString);
+            var formattedStartDate = startDate.toLocaleDateString("en-PH", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit"
+            });
+
+            var endDate = new Date(endDateString);
+            var formattedEndDate = endDate.toLocaleDateString("en-PH", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit"
+            });
+
+            var formattedDates = formattedStartDate + " - " + formattedEndDate;
+            document.getElementById('datepicker').value = formattedDates;
+        } else {
+          var dateFrom = new Date(document.getElementById("datepickerDiv").value);
+          var dateTo = new Date(document.getElementById("datepickerDiv2").value);
+            const formattedDateFrom = dateFrom.toLocaleDateString("en-PH", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit"
+            });
+            const formattedDateTo = dateTo.toLocaleDateString("en-PH", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit"
+            });
+
+            var selectedDates = formattedDateFrom + " - " + formattedDateTo;
+            document.getElementById('datepicker').value = selectedDates;
+        }
+    } else {
+        document.getElementById('datepicker').value = "";
+    }
+
+    $('#dateTimeModal').hide();
+    $('.predefinedDates').val("");
+    $('.predefinedDouble').val("");
+    clearFields();
+});
+
+
+
+ function clearFields(){
+   document.querySelector('.selectedDates').setAttribute('hidden', true)
+   document.querySelector('.selectedsDates').setAttribute('hidden',true);
+   document.getElementById("datepickerDiv").value = "";
+   document.getElementById("datepickerDiv2").value = "";
+   document.querySelectorAll('.flatpickr-day.selected').forEach(day => {
+    day.classList.remove('selected');
+   
+});
+$('.predefinedDates').val("")
+    $('.predefinedDouble').val("");
+ }
+ flatpickr("#datepickerDiv", {
     inline: true,
     static: true,
     position: 'top',
     onChange: function(selectedDates, dateStr, instance) {
+         const selectedDate = new Date(dateStr); 
+        const formattedDate = selectedDate.toLocaleDateString("en-PH", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit"
+        });
+        $('#dateFrom').text(formattedDate);
+        document.querySelector('.selectedDates').removeAttribute('hidden');
+        
         const datepickerDiv2 = document.getElementById("datepickerDiv2");
         const instance2 = datepickerDiv2._flatpickr;
-
-        // Remove the minDate restriction on #datepickerDiv2
-        instance2.set("minDate", null);
+        
+        instance2.clear();
+        
+        const nextDay = new Date(selectedDate);
+        nextDay.setDate(selectedDate.getDate() + 1);
+        instance2.set("minDate", nextDay);
     }
 });
+
 flatpickr("#datepickerDiv2", {
     inline: true,
     static: true,
     position: 'top',
     onChange: function(selectedDates, dateStr, instance) {
+        document.querySelector('.selectedsDates').setAttribute('hidden',true);
         const datepickerDiv = document.getElementById("datepickerDiv");
         const datepickerDiv2 = document.getElementById("datepickerDiv2");
+        const selectedDate1 = new Date(dateStr);
 
-    
         if (datepickerDiv.value) {
+        const formattedDate = selectedDate1.toLocaleDateString("en-PH", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit"
+        });
+        $('#dateTo').text(formattedDate);
             const selectedDateDiv = new Date(datepickerDiv.value);
             const selectedDateDiv2 = datepickerDiv2.value ? new Date(datepickerDiv2.value) : null;
 
-        
             if (selectedDateDiv && selectedDateDiv2) {
                 if (selectedDateDiv.getTime() <= selectedDateDiv2.getTime()) {
-                    instance.set("minDate", selectedDateDiv);
+                    const nextDay = new Date(selectedDateDiv);
+                    nextDay.setDate(selectedDateDiv.getDate() + 1);
+                    instance.set("minDate", nextDay);
                 } else {
                     instance.set("minDate", null);
                 }
             }
         } else {
-            instance.set("minDate", new Date('9999-12-31'));
+            instance.set("minDate", new Date(9999, 11, 21)); 
+            datepickerDiv2.removeAttribute("disabled");
         }
     }
 });
