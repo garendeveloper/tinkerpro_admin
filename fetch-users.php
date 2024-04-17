@@ -5,14 +5,21 @@ include(__DIR__ . '/utils/models/user-facade.php');
 // Retrieve parameters from GET request
 $value = $_GET['selectedValue'] ?? null; 
 $searchQuery = $_GET['searchQuery'] ?? null;
-
+$selectedUser = $_GET['selectedUser'] ?? null;
+$singleDateData = $_GET['singleDateData'] ?? null;
+$startDate = $_GET['startDate'] ?? null;
+$endDate = $_GET['endDate'] ?? null;
 $userFacade = new UserFacade();
-
+$selectedUser = $_GET['selectedUser'] ?? null;
+$singleDateData = $_GET['singleDateData'] ?? null;
+$startDate = $_GET['startDate'] ?? null;
+$endDate = $_GET['endDate'] ?? null;
+$fetchUser = $userFacade->fetchUsers($value,$searchQuery,$selectedUser,$singleDateData,$startDate,$endDate);
 
 
 
 // Fetch users with pagination
-$fetchUser = $userFacade->fetchUsers($value, $searchQuery);
+
 $counter = 1;
 
 ob_start();

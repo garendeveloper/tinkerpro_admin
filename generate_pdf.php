@@ -2,6 +2,7 @@
 require_once('./vendor/autoload.php');
 include(__DIR__ . '/utils/db/connector.php');
 include(__DIR__ . '/utils/models/user-facade.php');
+include( __DIR__ . '/utils/models/product-facade.php');
 
 use TCPDF;
 
@@ -15,11 +16,19 @@ function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
 }
 
 $userFacade = new UserFacade();
+$products = new ProductFacade();
 
 $counter = 1;
 $searchQuery = $_GET['searchQuery'] ?? null;
 $value = $_GET['selectedValue'] ?? null; 
-$fetchUser = $userFacade->fetchUsers($value,$searchQuery);
+$selectedUser = $_GET['selectedUser'] ?? null;
+$singleDateData = $_GET['singleDateData'] ?? null;
+$startDate = $_GET['startDate'] ?? null;
+$endDate = $_GET['endDate'] ?? null;
+
+$fetchUser = $userFacade->fetchUsers($value,$searchQuery,$selectedUser,$singleDateData,$startDate,$endDate);
+$fetchShop = $products->getShopDetails();
+$shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
 
 $pdf = new TCPDF();
@@ -31,22 +40,33 @@ $pdf->SetKeywords('TCPDF, PDF, employee, table');
 
 $pdf->AddPage();
 
-// Adjust cell height ratio
-$pdf->SetCellHeightRatio(1.5); // Adjust the value as per your requirement
 
-$imageFile = './assets/img/tinkerPro.png'; 
-$imageWidth = 20; 
-$imageHeight = 0; 
-$imageX = ($pdf->GetPageWidth() - $imageWidth) / 2; 
+$pdf->SetCellHeightRatio(1.5);
+$imageFile = './assets/img/tinkerpro-logo-dark.png'; 
+$imageWidth = 45; 
+$imageHeight = 15; 
+$imageX = 10; 
 $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
-$pdf->Ln(20);
+$pdf->SetFont('', 'I', 8);
 
-$pdf->SetFont('', 'B', 25);
-$pdf->Cell(0, 10, 'TinkerPro Inc.', 0, 1, 'C', 0); 
-$pdf->Ln(-4);
-$pdf->SetFont('', 'B', 16);
-$pdf->Cell(0, 10, 'User List Report', 0, 1, 'C', 0); 
-$pdf->Ln(5);
+
+$pdf->SetFont('', 'B', 10);
+$pdf->Cell(0, 10, 'USERS', 0, 1, 'R', 0); 
+$pdf->Ln(-5);
+$pdf->SetFont('',  10);
+$pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
+
+$pdf->Ln(-3);
+$pdf->SetFont('', 'I', 10); 
+$pdf->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'R');
+$pdf->Ln(-9);
+$pdf->SetFont('', 'I', 8); 
+$pdf->MultiCell(0, 10, "Contact: {$shop['contact_number']}", 0, 'L');
+$pdf->SetFont('' , 8); 
+$pdf->Ln(-9);
+$current_date = date('F j, Y');
+$pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
+$pdf->Ln(-2);
 
 
 $header = array('No.', 'Name', 'Role', 'Identification', 'Employee Number', 'Date Hired', 'Status');
@@ -57,6 +77,7 @@ $hexColor = '#FF6900';
 list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
 $pdf->SetFillColor($r, $g, $b);
+
 
 $pdf->SetFont('', 'B', 10);
 for ($i = 0; $i < count($header); $i++) {
