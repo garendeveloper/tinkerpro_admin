@@ -282,7 +282,7 @@
   });
 </script>
 <script>
-  var price_ids = ['price', 's_price', 'u_pay'];
+  var price_ids = ['price', 's_price', 'u_pay', 'loan_amount', 'interest_rate', 'loan_term'];
   price_ids.forEach(function(id) 
   {
     document.getElementById(id).addEventListener('input', function(event) {
@@ -497,13 +497,6 @@
         alert("The table should not be empty.");
       }
     }
-    function check_supplierProduct()
-    {
-      var supplier = $("#supplier").val();
-      var product = $("#product").val();
-
-      
-    }
     function show_response(message)
     {
       var modal = $("#response_modal");
@@ -530,7 +523,8 @@
           $("#product_name").text($("#product").val());
           $("#s_price").val($("#overallTotal").text());
           $("#r_balance").val($("#overallTotal").text());
-          $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+          $("#loan_amount").val($("#overallTotal").text());
+          $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle' style = 'color: red;'></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
         }
         else
         {

@@ -1,19 +1,16 @@
 <?php
 
-  class DBConnection {
-
-    // private $host = "tinkerpropos";
-    // private $user = "tinkerpro";
-    // private $pass = "Tinkerpro@123!";
-    // private $db = "tinkerpro";
-
+  class DBConnection 
+  {
     private $host = "localhost";
     private $user = "root";
     private $pass = "";
-    private $db = "tinkerpro";
+    private $db = "tinkerpro_db";
 
-    protected function connect() {
-      try {
+    protected function connect() 
+    {
+      try 
+      {
         $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db;
         $pdo = new PDO($dsn, $this->user, $this->pass);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
