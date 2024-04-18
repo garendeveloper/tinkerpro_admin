@@ -105,4 +105,11 @@ while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
 }
 
 $pdf->Output('usersList.pdf', 'I');
+$pdfPath = __DIR__ . '/assets/pdf/users/usersList.pdf';
+
+if (file_exists($pdfPath)) {
+ 
+    unlink($pdfPath);
+}
+$pdf->Output($pdfPath, 'F');
 ?>

@@ -457,6 +457,12 @@ $stmt->execute([$category_id, $variantName, $id]);
 return $stmt;
 }
 
+public function getProductsData() {
+  $sql = 'SELECT * FROM products';
+  $stmt = $this->connect()->query($sql);
+  return $stmt;
+}
+
 }  
 
 
