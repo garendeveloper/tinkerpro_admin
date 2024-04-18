@@ -123,6 +123,14 @@
             $row = $result->fetch(PDO::FETCH_ASSOC);
             return $row;
         }
+        public function get_lastSettingData()
+        {
+            $sql = "SELECT * FROM order_payment_settings ORDER BY id DESC LIMIT 1";
+            $result = $this->connect()->prepare($sql);
+            $result->execute();
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            return $row;
+        }
         public function verify_order($po_number)
         {
             $sql = "SELECT * FROM orders WHERE po_number = :po_number";
@@ -140,10 +148,27 @@
             $row = $result->fetch(PDO::FETCH_ASSOC);
             return $row;
         }
+        public function save_orderPayments()
+        {
+            
+        }
+        public function get_orderPaymentHistory($order_id)
+        {
+            $sql = "SELECT orders.*, order_payment_settings.*, order_payments.*, order_payment_settings.balance as ordersetting_balance, order_payments.balance as order_balance
+                    FROM orders
+                    JOIN order_payment_settings ON orders.id = order_payment_settings.order_id
+                    JOIN order_payments ON order_payment_settings.id = order_payments.order_setting_id
+                    WHERE orders.id = :order_id";
+
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindValue(":order_id", $order_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $rows;
+        }
         public function save_order($formData)
         {
-            $isPaid = isset($formData['isPaid']) ? 1 : 0;
-
+            $isPaid = filter_var($formData['isPaid'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
             $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
             $date_purchased = date('Y-m-d', strtotime($formData['date_purchased']));
             $po_number = $formData['po_number'];
@@ -170,18 +195,13 @@
                 $sqlStatement->execute();
 
                 $order_id = $formData['order_id'];
-
-                if($isPaid === 1)
-                {
-                    //Payment transaction here [History ...]
-                }   
             }
             else
             {
                 if(!$this->verify_order($po_number))
                 {
                     $sqlStatement = $this->connect()->prepare("INSERT INTO orders (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
                     $sqlStatement->bindParam(1, $isPaid, PDO::PARAM_STR);
                     $sqlStatement->bindParam(2, $supplier_id, PDO::PARAM_STR);
@@ -196,13 +216,57 @@
     
                     $order_id = $this->get_lastOrderData()['id'];
     
-                    if($isPaid === 1)
+                    if($isPaid === 0)
                     {
-                        //Payment transaction here [History ...]
+                        $serializedFormData = $formData['payment_settings'];
+                        $payment_settings = [];
+                        parse_str($serializedFormData, $payment_settings);
+                        
+                        $due_date = date('Y-m-d', strtotime($payment_settings['s_due']));
+                        $loanAmount = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_amount']));
+                        $interestRate = $payment_settings['interest_rate'];
+                        $withInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['withInterest']));
+                        $totalWithInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['total_withInterest']));
+                        $loanTerm = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_term']));
+                        $amortizationFrequency = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['amortization_frequency']));
+                        $amortizationFrequencyText = $formData['amortization_frequency_text'];
+                        $installment = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['installment']));
+                        $rBalance = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['r_balance']));
+                        $orderId = $order_id;
+
+                        $sql = "INSERT INTO order_payment_settings (loan, loan_percentage, interest, with_interest, due_date, term, amortization_value, amortization_text, installment, balance, order_id)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        $stmt = $this->connect()->prepare($sql);
+                        $stmt->bindParam(1, $loanAmount, PDO::PARAM_STR);
+                        $stmt->bindParam(2, $interestRate, PDO::PARAM_STR);
+                        $stmt->bindParam(3, $withInterest, PDO::PARAM_STR);
+                        $stmt->bindParam(4, $totalWithInterest, PDO::PARAM_STR);
+                        $stmt->bindParam(5, $due_date, PDO::PARAM_STR);
+                        $stmt->bindParam(6, $loanTerm, PDO::PARAM_STR);
+                        $stmt->bindParam(7, $amortizationFrequency, PDO::PARAM_STR);
+                        $stmt->bindParam(8, $amortizationFrequencyText, PDO::PARAM_STR);
+                        $stmt->bindParam(9, $installment, PDO::PARAM_STR);
+                        $stmt->bindParam(10, $rBalance, PDO::PARAM_STR);
+                        $stmt->bindParam(11, $orderId, PDO::PARAM_STR);
+                        $stmt->execute();
+                        
+                        $last_setting_id = $this->get_lastSettingData()['id'];
+    
+                        $sql_payment = "INSERT INTO order_payments (order_setting_id, payment, balance, date_paid)
+                                        VALUES (?, ?, ?, ?)";
+                     
+                        $orderSettingId = $last_setting_id;
+
+                        $date_paid = date("Y-m-d");
+                        $stmt_payment = $this->connect()->prepare($sql_payment);
+                        $stmt_payment->bindParam(1, $orderSettingId, PDO::PARAM_INT);
+                        $stmt_payment->bindParam(2, $installment, PDO::PARAM_STR);
+                        $stmt_payment->bindParam(3, $rBalance, PDO::PARAM_STR);
+                        $stmt_payment->bindParam(4, $date_paid, PDO::PARAM_STR);
+                        $stmt_payment->execute();
                     }   
                 }
             }
-           
             return $order_id;
         }
         public function fetch_latestPONo()
@@ -227,6 +291,7 @@
         }
         public function save_purchaseOrder($formData)
         {
+            // return $this->save_order($formData);
             if($this->validateData($formData))
             {
                 $tbldata = json_decode($formData['data'], true);

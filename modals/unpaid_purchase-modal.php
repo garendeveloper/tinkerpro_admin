@@ -103,49 +103,46 @@
         </button>
       </div>
       <form id="unpaid_form">
-        <input type="hidden" name = "type" value = "unpaid">
         <div class="modal-body" style="border: none">
           <div class="tab">
-            <button class="tablinks" data-tab="tab1">Payment</button>
-            <button class="tablinks" data-tab="tab2">History</button>
-            <button class="tablinks" data-tab="tab3">Settings</button>
+            <button class="tablinks" data-tab="tab1">Payment Settings</button>
           </div>
           <div id="tab1" class="tabcontent">
             <p></p>
             <div style = "text-align:center">
-              <h5>Enter <b style = 'color: #FF6900'>QUANTITY</b> and your <b style = 'color: #FF6900'>PAYMENT</b></h5>
+              <h5>Enter <b style = 'color: #FF6900'>PAYMENT</b> and <b style = 'color: #FF6900'>SETTINGS</b></h5>
               <h5 id = "product_name"></h5>
             </div>
             <div class="fieldContainer">
                 <div class="form-group" style = " margin-right: -2px;" >
                   <label for="loan_amount" class="l_input"><strong>Loan</strong></label>
-                  <input type="text" class="p_input" id="loan_amount" name="loan_amount" required style = "width: 120px;">
+                  <input type="text" class="p_input" id="loan_amount" name="loan_amount" required style = "width: 120px; background-color: gray"  oninput="$(this).removeClass('has-error')" readonly>
                 </div>
                 <div class="form-group" style = " margin-right: -2px;">
-                  <label for="interest_rate" class="l_input"><strong>(%):</strong></label>
-                  <input type="text" class="p_input" id="interest_rate" name="interest_rate" required style = "width: 60px;">
+                  <label for="interest_rate" class="l_input" style = "margin-right: -3px;"><strong>(%):</strong></label>
+                  <input type="number" class="p_input" id="interest_rate"  name="interest_rate"  style = "width: 60px;" oninput="$(this).removeClass('has-error')" autocomplete="off">
                 </div>
-                <div class="form-group" style = " margin-right: -2px;">
-                  <label for="withInterest" class="l_input"><strong>Int:</strong></label>
-                  <input type="text" class="p_input" id="withInterest" name="withInterest" required style = "width: 90px;" readonly>
+                <div class="form-group" >
+                  <label for="withInterest" class="l_input" style = "margin-right: -5px;"><strong>Int:</strong></label>
+                  <input type="text" class="p_input" id="withInterest" name="withInterest" required style = "width: 100px; background-color: gray"  readonly>
                 </div>
             </div>
-            <div class="fieldContainer">
+            <div class="fieldContainer" style = "margin-top: -15px;">
               <div class="form-group"  style ="justify-content-align: center;">
                   <label for="total_withInterest"  class="l_input" style="color: #FF6900;"><strong>W/Int: </strong></label>
-                  <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="total_withInterest" id="total_withInterest" oninput="$(this).removeClass('has-error')" value = "0.00" autocomplete="off" style = "text-align: right" readonly>
+                  <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="total_withInterest" id="total_withInterest" oninput="$(this).removeClass('has-error')" value = "0.00" autocomplete="off" style = "text-align: right; background-color: gray" readonly>
               </div>
               <div class="form-group" >
                   <label for="s_due" class="l_input" style="color: #FF6900; "><strong>DUE</strong></label>
                   <div class="date-input-container">
-                    <input type="text" name="s_due" id="s_due"  placeholder="Select date" readonly style = "text-align: center; width: 120px" >
+                    <input type="text" name="s_due" id="s_due"  placeholder="Select date" readonly style = "text-align: center; width: 120px;" onchange="$(this).removeClass('has-error')" required>
                     <button id="calendar-btn1" class="button" type = "button">
                         <i class="bi bi-calendar" aria-hidden="true"></i>
                     </button>
                   </div>
               </div>
             </div>
-            <div class="fieldContainer">
+            <div class="fieldContainer" style = "margin-top: -15px;">
               <div class="form-group">
                 <label for="loan_term" class="l_input"><strong>Term</strong></label>
                 <input type="text" class="p_input" id="loan_term" name="loan_term" value = "1" required >
@@ -160,44 +157,14 @@
                 </select>
               </div>
             </div>
-            <div class="fieldContainer" >
+            <div class="fieldContainer" style = "margin-top: -15px;" >
               <div class="form-group" >
                   <label for="u_pay" id = "" class="l_input" style="color: #FF6900; "><strong>Inst: </strong></label>
-                  <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="u_pay" id="u_pay" oninput="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
+                  <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="installment" id="u_pay" oninput="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right; background-color: gray" readonly>
               </div>
               <div class="form-group" >
                   <label for="r_balance" id = "" class="l_input" style="color: #FF6900; "><strong>BAL: </strong></label>
-                  <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="r_balance" id="r_balance" oninput="$(this).removeClass('has-error')" value = "0.00" autocomplete="off" style = "text-align: right" readonly>
-              </div>
-            </div>
-          </div>
-          <div id="tab2" class="tabcontent">
-            <p></p>
-            <div style = "text-align:center">
-              <h5>Payment <b style = 'color: #FF6900'>HISTORY</b> for <b style = 'color: #FF6900'>SUPPLIER</b></h5>
-              <h5 id = "product_name"></h5>
-            </div>
-            <table id="tbl_paymentHistory" class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
-              <thead >
-                <tr>
-                  <th style = "background-color: #1E1C11; border: 1px solid #FF6900; width: 50%">PAYMENT</th>
-                  <th style = "background-color: #1E1C11; border: 1px solid #FF6900; ">DATE</th>
-                  <th style = "background-color: #1E1C11; border: 1px solid #FF6900; ">BALANCE</th>
-                </tr>
-              </thead>
-              <tbody style = "border-collapse: collapse; border: none">
-    
-              </tbody>
-            </table>
-          </div>
-          <div id="tab3" class="tabcontent">
-            <div style = "text-align:center">
-              <h5>Enter <b style = 'color: #FF6900'>PRICE</b> and the <b style = 'color: #FF6900'>DUE DATE</b></h5>
-            </div>
-            <div class="fieldContainer"  >
-              <div class="form-group" >
-                  <label for="s_price" class="l_input" style="color: #FF6900;"><strong>PRICE</strong></label>
-                  <input type="text" class="p_input"  name="s_price" id="s_price" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right"  readonly>
+                  <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="r_balance" id="r_balance" oninput="$(this).removeClass('has-error')" value = "0.00" autocomplete="off" style = "text-align: right; background-color: gray" readonly>
               </div>
             </div>
           </div>
@@ -210,8 +177,41 @@
     </div>
   </div>
 </div>
-
 <script>
+  function checkInputValue() {
+    var inputValue = $('#withInterest').val().trim();
+    if (inputValue !== '') 
+    {
+      $('#withInterest').removeClass('has-error');
+    }
+    var installment = $('#s_due').val().trim();
+    if (installment !== '') 
+    {
+      $('#s_due').removeClass('has-error');
+    }
+    var u_pay = $('#u_pay').val().trim();
+    if (u_pay !== '') 
+    {
+      $('#u_pay').removeClass('has-error');
+    }
+    var loan_term = $("#loan_term").val().trim();
+    var loan_freq = $("#amortization_frequency").val().trim();
+
+    if(loan_term !== '' && loan_freq !== '')
+    {
+      loan_term = parseFloat($("#loan_term").val());
+      loan_freq = parseFloat($("#amortization_frequency").val());
+      var total_withInterest = parseFloat(clean_number($("#total_withInterest").val()));
+
+      var total_payments = loan_term * loan_freq;
+      var installment_amount = total_withInterest / total_payments; 
+      var balance = total_withInterest - installment_amount;
+      $("#u_pay").val("₱ "+addCommasToNumber(installment_amount.toFixed(2)));
+      $("#r_balance").val("₱ "+addCommasToNumber(balance.toFixed(2)));
+    }
+  }
+  checkInputValue();
+  setInterval(checkInputValue, 100);
   function clean_number(number)
   {
     return number.replace(/[^\d.]+/g, '');
@@ -224,6 +224,7 @@
     var total_withInterest = loan_amount+withInterest;
     $("#withInterest").val("₱ "+addCommasToNumber(+withInterest.toFixed(2)));
     $("#total_withInterest").val("₱ "+addCommasToNumber(total_withInterest.toFixed(2)));
+   
   });
   $("#loan_term").on('input', function(e){
     e.preventDefault();

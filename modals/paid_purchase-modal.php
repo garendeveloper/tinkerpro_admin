@@ -51,7 +51,7 @@
           <div style = "border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,1); margin: 0 8px; ">
               <p></p>
             <div style = "text-align:center">
-              <h5>Please <b style = 'color: #FF6900'>CONFIRM</b> your <b style = 'color: #FF6900'>PAYMENT: </b></h5>
+              <h5 id = "paid_title">Please <b style = 'color: #FF6900'>CONFIRM</b> your <b style = 'color: #FF6900'>PAYMENT: </b></h5>
               <h5 id = "total_paid"></h5>
             </div>
           </div>

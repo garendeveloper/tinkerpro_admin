@@ -141,25 +141,34 @@ button:active {
   color: #ffffff; /* Text color when button is clicked */
 }
 .active {
-  background-color: #FF6900; /* Background color when button is clicked */
-  color: #ffffff; /* Text color when button is clicked */
+  background-color: #FF6900; 
+  color: #ffffff;
 }
 .button-cancel:hover{
   background-color: red;
 }
 
 .main-panel {
-    position: absolute;
-    top: 30px;
+    position: relative;
+    top: 0px;
     left: 190px; 
     right: 0;
     bottom: 0;
-    overflow-y: auto; 
+    overflow: auto;
+    height: 60vh;
     background-color: #262626;
     width: calc(100% - 190px); 
     display: flex;
     flex-wrap: wrap;
   }
+
+
+/* .fContainer_bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin-right: 10px;
+} */
   @media (max-width: 100%) {
       .sidebar {
           width: 100px;
@@ -215,11 +224,38 @@ button:active {
   .grid-item{
     height: 35px;
     border-radius: 10px;
+    border: 1px solid #595959;
   }
   .switch-error {
       border: 2px solid red;
       border-radius: 10px;
-      padding: 8px; /* Optional padding to make the border more visible */
+      padding: 8px;
   }
-
+  .badge-success{
+    color: #90EE90;
+  }
+  .badge-danger{
+    color: #FFB6C1;
+  }
+  .ui-datepicker-prev, .ui-datepicker-next {
+    position: absolute;
+    top: 2px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    border: none;
+    border-radius: 3px;
+  }
+  .ui-datepicker-prev::before, .ui-datepicker-next::before {
+      font-family: "Bootstrap Icons";
+      font-size: 1.2rem;
+      color: black;
+    }
+  .ui-datepicker-prev {
+    left: 2px;
+  }
+  .ui-datepicker-next {
+    right: 2px;
+  }
 </style>

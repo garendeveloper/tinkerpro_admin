@@ -43,8 +43,6 @@
    font-weight: bold;
 }
 .tableCard{
-    /* border: 2px solid #4B413E; 
-    box-sizing: border-box;  */
     border-radius: 0;
     width: 100%;
     max-width: 500px;  
@@ -874,12 +872,21 @@ input{
   background-color: #404040;
 }
 .fcontainer {
-  border: 1px solid #ccc; /* Add border around the container */
-  padding: 10px; /* Add padding inside the container */
+  border: 1px solid #ccc; 
+  padding: 10px; 
   margin-left: 10px;
   margin-right: 10px;
+  height: 70vh;
+  overflow: auto;
+  position: relative; 
 }
 
+.fContainer_bottom {
+  overflow: auto;
+  position: absolute; 
+  margin-right: 10px;
+  bottom: 0;
+}
 .fieldContainer {
   display: flex; /* Use flexbox layout */
   align-items: center; /* Align items vertically */
@@ -1014,6 +1021,27 @@ input{
     top: 0; 
 }
 
+#tbl_purchaseOrders{
+  width: 100%;
+  table-layout: auto; /* Auto adjust column width based on content */
+}
+#tbl_purchaseOrderFooter tbody tr td:first-child:hover::before {
+    position: absolute;
+    background: none;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 1000;
+    left: -150px; 
+    top: 0; 
+}
+#tbl_purchaseOrderFooter{
+  width: 100%;
+  table-layout: auto; 
+}
+
   </style>
 <?php include "layout/admin/slider.php"?>
 <div class="modal" id="optionModal" tabindex="0">
@@ -1038,17 +1066,54 @@ input{
               <button class="grid-item" id = "btn_LOT">L.O.T</button>
             </div>
             <p></p>
-            <div class="fcontainer" style="min-height: 60vh;">
+            <style>
+              #po_form {
+                max-width: 100%; 
+              }
+
+              table {
+                width: calc(100% - 20px); 
+                table-layout: auto;
+                border: 1px solid #FF6900;
+                color: white;
+                font-size: 10px;
+                margin-top: 10px; 
+              }
+
+              table th {
+                background-color: #1E1C11;
+                border: 1px solid #FF6900;
+              }
+
+              table:nth-child(2) tfoot th {
+                background-color: #1E1C11;
+                border: 1px solid #FF6900;
+                text-align: right;
+              }
+
+              #tbl_purchaseOrders tbody {
+                border-collapse: collapse;
+                border: none;
+              }
+
+              input[type="text"] {
+                width: 100%;
+                box-sizing: border-box; 
+                height: 25px;
+              }
+
+            </style>
+            <div class="fcontainer">
               <form id = "po_form">
                 <input type="hidden" name="order_id" id = "_order_id" value = "0">
                 <input type="hidden" name="inventory_id" id = "_inventory_id" value = "0">
                 <div class="fieldContainer">
                   <label>PO#</label>
-                  <input type="text" name="po_number" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value="" style="width: 100px; height: 25px" readonly/>
+                  <input type="text" name="po_number" id = "pcs_no" onkeyup="$(this).removeClass('has-error')" value=""  readonly/>
                   <div class="toggle-switch-container">
                     <label for="paidSwitch" class="switch-label" style = "color: #28a745; ">Paid</label>
-                    <div class="form-check form-switch" style = "margin-left: 30px;">
-                        <input class="form-check-input" type="checkbox" id="paidSwitch" name = "isPaid" style = "background-color: #28a745; ">
+                    <div class="form-check form-switch" style = "margin-left: 30px; ">
+                        <input class="form-check-input" type="checkbox" id="paidSwitch" name = "isPaid" style = "height: 15px;" >
                     </div>
                   </div>
                   <div class="date-input-container">
@@ -1061,40 +1126,24 @@ input{
                 <div class="fieldContainer">
                   <label>Supplier</label>
                   <div class="search-container">
-                      <input  type="text" class = "search-input"  autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value="" style="width: 280px; height: 25px" autocomplete = "off">
+                      <input  type="text" class = "search-input"  autocomplete="off" type="text" onkeyup="$(this).removeClass('has-error')" name="supplier" id = "supplier" value=""  style="width: 280px; height: 25px" autocomplete = "off">
                   </div>
                 </div>
                 <div class="fieldContainer">
                   <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
                   <div class="search-container">
-                      <input type="text" style="width: 210px; height: 25px; font-size: 12px;"  class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product" autocomplete = "off">
+                      <input type="text" style="width: 210px; height: 25px; font-size: 12px;"   class="search-input" placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')"  id = "product" autocomplete = "off">
                   </div>
-                  <button style="border-color: #FF6900; font-size: 10px; height: 25px; "  id = "btn_addPO"><i class = "bi bi-plus-square"></i>&nbsp; Add</button>
+                  <button  style="font-size: 10px; height: 25px; width: 90px;" id = "btn_addPO"><i class = "bi bi-plus-square bi-md"></i>&nbsp; Add</button>
                 </div>
               </form>
-              <p></p>
               <style>
-                  tbody td,
-                  tbody th, tr, tfoot tr {
-                    border: 1px solid #FF6900; 
-                  }
-                  thead th {
-                    border: 1px solid #FF6900; 
-                    padding: 10px;
-                
-                  }
-                  table{
-                    table-layout: fixed;
-                  }
                   tr:hover {
-                      background-color: #FF6900;
+                      background-color: #151515;
                       cursor: pointer;
                   }
-                  .editable{
-                    cursor: pointer;
-                  }
                 </style>
-              <table id="tbl_purchaseOrders" class="text-color table-border" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px">
+              <table id="tbl_purchaseOrders" class="text-color table-border" >
                 <thead >
                   <tr>
                     <th style = "background-color: #1E1C11; border: 1px solid #FF6900; width: 50%">ITEM DESCRIPTION</th>
@@ -1107,18 +1156,15 @@ input{
       
                 </tbody>
               </table>
-            </div>
-            <div style = "padding: 10px;">
-              <table class="text-color table-border" id = "tbl_purchaseOrderFooter" style=" width: 100%; border: 1px solid #FF6900; color: white; font-size: 10px;">
-                  <thead >
-                    <tr>
-                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; width: 25%;">Total</th>
-                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "totalTax">Tax: 0.00</th>
-                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "totalQty">0</th>
-                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "totalPrice">&#x20B1;&nbsp;0.00</th>
-                      <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "overallTotal">&#x20B1;&nbsp;0.00</th>
-                    </tr>
-                  </thead>
+              <table  class="text-color table-border" style="position: absolute; bottom: 5px; padding: 10px;">
+                <thead >
+                  <tr>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: left; width: 50%" id = "totalTax">Tax: 0.00</th>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "totalQty">0</th>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "totalPrice">&#x20B1;&nbsp;0.00</th>
+                    <th style = "background-color: #1E1C11; border: 1px solid #FF6900; text-align: right" id = "overallTotal">&#x20B1;&nbsp;0.00</th>
+                  </tr>
+                </thead>
               </table>
             </div>
           </div>
