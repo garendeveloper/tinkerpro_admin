@@ -37,7 +37,7 @@
     array_push($info, $error);
 	}
     include('./modals/datePickerModal.php');
-    
+    include('./modals/showReportsModal.php');
 ?>
 <style>
 .headerReport{
@@ -169,6 +169,8 @@
     margin-bottom: 10px;
    
 }
+
+ 
 </style>
 
 
@@ -193,8 +195,8 @@
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Users</span></a></div>
                   <div id="highlightDiv3" style="width: 100%"><a href="#" onclick=" highlightDiv(3)" class="text-color productssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Products</span></a></div>
-                  <div id="highlightDiv4" style="width: 100%"><a href="#" onclick=" highlightDiv(4)" class="text-color pGrpAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Products Group</span></a></div>
+                  <div id="highlightDiv4" style="width: 100%"><a href="#" onclick=" highlightDiv(4)" class="text-color ingredientsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Ingredients</span></a></div>
                   <div id="highlightDiv5" style="width: 100%"><a href="#" onclick=" highlightDiv(5)" class="text-color refundAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Refund</span></a></div>
                   <div id="highlightDiv6" style="width: 100%"><a href="#" onclick=" highlightDiv(6)" class="text-color taxRatesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
@@ -258,10 +260,10 @@
             <div class="card-body">
             <h5 class="headerReport text-color">Filter</h5>
             <div class="custom-select">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Customers</label>
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Customers</label>
                 <div class="select-container">
                     <select id="customersSelect">
-                    <option value="" selected disabled>Select Customers</option>
+                    <option value="" selected disabled>All Customers</option>
                     <option value="1">Option 1</option>
                     <option value="2">Option 2</option>
                     <option value="3">Option 3</option>
@@ -270,10 +272,10 @@
                 </div>
             </div>
             <div class="custom-select">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Suppliers</label>
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Suppliers</label>
                 <div class="select-container">
                     <select id="suppliersSelect">
-                    <option value="" selected disabled>Select Suppliers</option>
+                    <option value="" selected disabled>All Suppliers</option>
                     <option value="1">Option 1</option>
                     <option value="2">Option 2</option>
                     <option value="3">Option 3</option>
@@ -282,10 +284,10 @@
                 </div>
             </div>
             <div class="custom-select">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Users</label>
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Users</label>
                 <div class="select-container">
                     <select id="usersSelect">
-                        <option value="" selected >Select Users</option>
+                        <option value="" selected >All Users</option>
                         <?php
                         $userFacade = new UserFacade;
                         $users = $userFacade->getUsersData();
@@ -298,10 +300,10 @@
                 </div>
             </div>
             <div class="custom-select">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Cash Register</label>
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Cash Register</label>
                 <div class="select-container">
                     <select id="cashRegisterSelect">
-                    <option value="" selected disabled>Select Cash Register</option>
+                    <option value="" selected disabled>All Cash Register</option>
                     <option value="1">Option 1</option>
                     <option value="2">Option 2</option>
                     <option value="3">Option 3</option>
@@ -310,22 +312,26 @@
                 </div>
             </div>
             <div class="custom-select">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Products</label>
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Products</label>
                 <div class="select-container">
-                    <select id="selectProducts">
-                    <option value="" selected disabled>Select Products</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
+                    <select id="selectProducts" >
+                    <option value="" selected >All Products</option>
+                    <?php
+                        $productFacade = new ProductFacade;
+                        $products =  $productFacade->getProductsData();
+                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['prod_desc'] .' </option>';
+                        }
+                        ?>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
             </div>
             <div class="custom-select">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Product Categories</label>
-                <div class="select-container">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Product Categories</label>
+                <div class="select-container" >
                     <select id="categoreisSelect">
-                    <option value="" selected disabled>Select Product Categories</option>
+                    <option value="" selected disabled>ALL Product Categories</option>
                     <option value="1">Option 1</option>
                     <option value="2">Option 2</option>
                     <option value="3">Option 3</option>
@@ -334,10 +340,10 @@
                 </div>
             </div>
             <div class="custom-select">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Product Sub-categories</label>
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Product Sub-categories</label>
                 <div class="select-container">
                     <select id="subCategoreisSelect">
-                    <option value="" selected disabled>Select Product Sub-categories</option>
+                    <option value="" selected disabled>All Product Sub-categories</option>
                     <option value="1">Option 1</option>
                     <option value="2">Option 2</option>
                     <option value="3">Option 3</option>
@@ -358,8 +364,8 @@
              </a>
                 <div class="divider"></div>
                 <div style="display:flex;" class="topDiv">
-                 <button class="custom_btn" style="margin-right: 5px"><svg height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#fefefe" d="M20.921,31.898c2.758,0,5.367-0.956,7.458-2.704l1.077,1.077l-0.358,0.358 c-0.188,0.188-0.293,0.442-0.293,0.707s0.105,0.52,0.293,0.707l8.257,8.256c0.195,0.195,0.451,0.293,0.707,0.293 s0.512-0.098,0.707-0.293l2.208-2.208c0.188-0.188,0.293-0.442,0.293-0.707s-0.105-0.52-0.293-0.707l-8.257-8.256 c-0.391-0.391-1.023-0.391-1.414,0l-0.436,0.436l-1.073-1.073c1.793-2.104,2.777-4.743,2.777-7.537c0-3.112-1.212-6.038-3.413-8.239 s-5.127-3.413-8.239-3.413s-6.038,1.212-8.238,3.413c-2.201,2.201-3.413,5.126-3.413,8.239c0,3.112,1.212,6.038,3.413,8.238 C14.883,30.687,17.809,31.898,20.921,31.898z M38.855,37.385l-0.794,0.793l-6.843-6.842l0.794-0.793L38.855,37.385z M14.097,13.423 c1.823-1.823,4.246-2.827,6.824-2.827s5.002,1.004,6.825,2.827c1.823,1.823,2.827,4.247,2.827,6.825 c0,2.578-1.004,5.001-2.827,6.824c-1.823,1.823-4.247,2.827-6.825,2.827s-5.001-1.004-6.824-2.827 c-1.823-1.823-2.827-4.247-2.827-6.824C11.27,17.669,12.273,15.246,14.097,13.423z"></path> </g></svg>&nbsp;Show Report</button>
-                 <button  class="custom_btn"><svg version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke=""><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffff;} </style> <g> <path class="st0" d="M488.626,164.239c-7.794-7.813-18.666-12.684-30.578-12.676H409.01V77.861L331.145,0h-4.225H102.99v151.564 H53.955c-11.923-0.008-22.802,4.862-30.597,12.676c-7.806,7.798-12.665,18.671-12.657,30.574v170.937 c-0.008,11.919,4.847,22.806,12.661,30.589c7.794,7.813,18.678,12.669,30.593,12.661h49.034V512h306.02V409.001h49.037 c11.901,0.008,22.78-4.848,30.574-12.661c7.818-7.784,12.684-18.67,12.677-30.589V194.814 C501.306,182.91,496.436,172.038,488.626,164.239z M323.519,21.224l62.326,62.326h-62.326V21.224z M123.392,20.398l179.725,0.015 v83.542h85.491v47.609H123.392V20.398z M388.608,491.602H123.392v-92.801h-0.016v-96.638h265.217v106.838h0.015V491.602z M480.896,365.751c-0.004,6.353-2.546,11.996-6.694,16.17c-4.166,4.136-9.813,6.667-16.155,6.682h-49.049V281.75H102.974v106.853 H53.955c-6.365-0.015-12.007-2.546-16.166-6.682c-4.144-4.174-6.682-9.817-6.686-16.17V194.814 c0.004-6.338,2.538-11.988,6.686-16.155c4.167-4.144,9.809-6.682,16.166-6.698h49.034h306.02h49.037 c6.331,0.016,11.985,2.546,16.151,6.698c4.156,4.174,6.694,9.817,6.698,16.155V365.751z"></path> <rect x="167.59" y="336.155" class="st0" width="176.82" height="20.405"></rect> <rect x="167.59" y="388.618" class="st0" width="176.82" height="20.398"></rect> <rect x="167.59" y="435.255" class="st0" width="83.556" height="20.398"></rect> <path class="st0" d="M353.041,213.369c-9.263,0-16.767,7.508-16.767,16.774c0,9.251,7.504,16.759,16.767,16.759 c9.263,0,16.77-7.508,16.77-16.759C369.811,220.877,362.305,213.369,353.041,213.369z"></path> <path class="st0" d="M424.427,213.369c-9.262,0-16.77,7.508-16.77,16.774c0,9.251,7.508,16.759,16.77,16.759 c9.258,0,16.766-7.508,16.766-16.759C441.193,220.877,433.685,213.369,424.427,213.369z"></path> </g> </g></svg>&nbsp;Print</button>
+                 <button id="showReport" class="custom_btn" style="margin-right: 5px"><svg height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#fefefe" d="M20.921,31.898c2.758,0,5.367-0.956,7.458-2.704l1.077,1.077l-0.358,0.358 c-0.188,0.188-0.293,0.442-0.293,0.707s0.105,0.52,0.293,0.707l8.257,8.256c0.195,0.195,0.451,0.293,0.707,0.293 s0.512-0.098,0.707-0.293l2.208-2.208c0.188-0.188,0.293-0.442,0.293-0.707s-0.105-0.52-0.293-0.707l-8.257-8.256 c-0.391-0.391-1.023-0.391-1.414,0l-0.436,0.436l-1.073-1.073c1.793-2.104,2.777-4.743,2.777-7.537c0-3.112-1.212-6.038-3.413-8.239 s-5.127-3.413-8.239-3.413s-6.038,1.212-8.238,3.413c-2.201,2.201-3.413,5.126-3.413,8.239c0,3.112,1.212,6.038,3.413,8.238 C14.883,30.687,17.809,31.898,20.921,31.898z M38.855,37.385l-0.794,0.793l-6.843-6.842l0.794-0.793L38.855,37.385z M14.097,13.423 c1.823-1.823,4.246-2.827,6.824-2.827s5.002,1.004,6.825,2.827c1.823,1.823,2.827,4.247,2.827,6.825 c0,2.578-1.004,5.001-2.827,6.824c-1.823,1.823-4.247,2.827-6.825,2.827s-5.001-1.004-6.824-2.827 c-1.823-1.823-2.827-4.247-2.827-6.824C11.27,17.669,12.273,15.246,14.097,13.423z"></path> </g></svg>&nbsp;Show Report</button>
+                 <button id="printDocu" class="custom_btn"><svg version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke=""><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffff;} </style> <g> <path class="st0" d="M488.626,164.239c-7.794-7.813-18.666-12.684-30.578-12.676H409.01V77.861L331.145,0h-4.225H102.99v151.564 H53.955c-11.923-0.008-22.802,4.862-30.597,12.676c-7.806,7.798-12.665,18.671-12.657,30.574v170.937 c-0.008,11.919,4.847,22.806,12.661,30.589c7.794,7.813,18.678,12.669,30.593,12.661h49.034V512h306.02V409.001h49.037 c11.901,0.008,22.78-4.848,30.574-12.661c7.818-7.784,12.684-18.67,12.677-30.589V194.814 C501.306,182.91,496.436,172.038,488.626,164.239z M323.519,21.224l62.326,62.326h-62.326V21.224z M123.392,20.398l179.725,0.015 v83.542h85.491v47.609H123.392V20.398z M388.608,491.602H123.392v-92.801h-0.016v-96.638h265.217v106.838h0.015V491.602z M480.896,365.751c-0.004,6.353-2.546,11.996-6.694,16.17c-4.166,4.136-9.813,6.667-16.155,6.682h-49.049V281.75H102.974v106.853 H53.955c-6.365-0.015-12.007-2.546-16.166-6.682c-4.144-4.174-6.682-9.817-6.686-16.17V194.814 c0.004-6.338,2.538-11.988,6.686-16.155c4.167-4.144,9.809-6.682,16.166-6.698h49.034h306.02h49.037 c6.331,0.016,11.985,2.546,16.151,6.698c4.156,4.174,6.694,9.817,6.698,16.155V365.751z"></path> <rect x="167.59" y="336.155" class="st0" width="176.82" height="20.405"></rect> <rect x="167.59" y="388.618" class="st0" width="176.82" height="20.398"></rect> <rect x="167.59" y="435.255" class="st0" width="83.556" height="20.398"></rect> <path class="st0" d="M353.041,213.369c-9.263,0-16.767,7.508-16.767,16.774c0,9.251,7.504,16.759,16.767,16.759 c9.263,0,16.77-7.508,16.77-16.759C369.811,220.877,362.305,213.369,353.041,213.369z"></path> <path class="st0" d="M424.427,213.369c-9.262,0-16.77,7.508-16.77,16.774c0,9.251,7.508,16.759,16.77,16.759 c9.258,0,16.766-7.508,16.766-16.759C441.193,220.877,433.685,213.369,424.427,213.369z"></path> </g> </g></svg>&nbsp;Print</button>
                 </div>
                 <div style="display:flex;">
                   <button id="EXCELBtn" class="custom_btn" style="margin-right: 5px"><svg height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 26" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffff;" d="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162 C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8 h-4V6h4V8z"></path> <path style="fill:#ffff;" d="M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678 H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037 c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 L9.488,18.08L9.488,18.08z"></path> </g> </g></svg>&nbsp;Excel</button>
@@ -377,14 +383,22 @@
 
 <?php include("layout/footer.php") ?>
 <script>
+  
 function highlightDiv(id) {
-
   document.querySelectorAll('.anchor-container div').forEach(div => {
     div.classList.remove('highlight');
   });
-        if(id == 2){
+  $('#PDFBtn').off('click');
+     if (id == 2) {
           generatePdf(id)
           generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var usersSelect = document.getElementById('usersSelect');
+          usersSelect.disabled = false;
+          usersSelect.style.borderColor = "";
+
           var customerSelect = document.getElementById('customersSelect')
           customersSelect.disabled = true;
           customersSelect.style.borderColor = "transparent"
@@ -408,8 +422,45 @@ function highlightDiv(id) {
           var subCategoreisSelect = document.getElementById('subCategoreisSelect')
           subCategoreisSelect.disabled = true;
           subCategoreisSelect.style.borderColor = "transparent";
+          
+        }else if(id==3){
+          generatePdf(id)
+          // generateExcel(id)
+          // printDocuments(id)
+          // showReports(id)
 
+          var usersSelect = document.getElementById('usersSelect');
+          usersSelect.disabled = true;
+          usersSelect.style.borderColor = "transparent"
+
+          var customerSelect = document.getElementById('customersSelect')
+          customersSelect.disabled = true;
+          customersSelect.style.borderColor = "transparent"
+
+          var suppliersSelect = document.getElementById('suppliersSelect')
+          suppliersSelect.disabled = true;
+          suppliersSelect.style.borderColor = "transparent"
+
+          var cashRegister = document.getElementById('cashRegisterSelect')
+          cashRegister.disabled = true;
+          cashRegister.style.borderColor = "transparent";
+
+          var selectProducts = document.getElementById('selectProducts')
+          selectProducts.disabled = false;
+          selectProducts.style.borderColor = "";
+
+          var categoreisSelect = document.getElementById('categoreisSelect')
+          categoreisSelect.disabled = false;
+          categoreisSelect.style.borderColor = "";
+
+          var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+          subCategoreisSelect.disabled = false;
+          subCategoreisSelect.style.borderColor = "";
+          
         }else{
+          var usersSelect = document.getElementById('usersSelect');
+          usersSelect.disabled = false;
+          usersSelect.style.borderColor = ""
           var customerSelect = document.getElementById('customersSelect')
           customersSelect.disabled = false;
           customersSelect.style.borderColor = ""
@@ -429,6 +480,7 @@ function highlightDiv(id) {
           subCategoreisSelect.disabled = false;
           subCategoreisSelect.style.borderColor = "";
         }
+   
   document.getElementById('highlightDiv' + id).classList.add('highlight');
 }
 
@@ -447,25 +499,24 @@ function openModalDatePicker(){
     $('.predefinedDates').val("")
 }
 
+// USERS
 function generatePdf(id){
-  if(id == 2){
-    $('#PDFBtn').on('click',function() {
-      var usersSelect = document.getElementById("usersSelect");
+  var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
-      var singleDateData;
+      var singleDateData = null;
       var startDate;
       var endDate;
       if (datepicker.includes('-')) {
 
         var dateRange = datepicker.split(' - ');
-        var startDate = new Date(dateRange[0].trim());
+        var startDates = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
 
-        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        singleDate = formattedStartDate;
+        startDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -475,6 +526,17 @@ function generatePdf(id){
         singleDateData =  formattedDate
        
       }
+     if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+      singleDateData = ""
+     }
+     if(startDate == "" || startDate == null){
+      startDate = ""
+     }
+      if(endDate == "" || endDate == null){
+      endDate = ""
+     }
+  if(id == 2){
+    $('#PDFBtn').off('click').on('click',function() {
         $.ajax({
             url: 'generate_pdf.php',
             type: 'GET',
@@ -498,6 +560,38 @@ function generatePdf(id){
 
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+        });
+    });
+  }else if(id == 3){
+    $('#PDFBtn').off('click').on('click',function() {
+        $.ajax({
+            url: 'generate_products_pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            // data: {
+            //     selectedUser: selectedUser,
+            //     singleDateData: singleDateData,
+            //     startDate: startDate,
+            //     endDate: endDate
+            // },
+            success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'product_list.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -536,6 +630,17 @@ function generateExcel(id){
         singleDateData =  formattedDate
        
       }
+
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+      singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+ 
       $.ajax({
             url: 'generate_excel.php',
             type: 'GET',
@@ -568,10 +673,156 @@ function generateExcel(id){
         });
     });
   }
+
 }
 
+function printDocuments(id){
+    if(id==2){
+      $('#printDocu').on('click',function() {
+      var usersSelect = document.getElementById("usersSelect");
+      var selectedUser = usersSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
 
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
 
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+      singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+  
+        $.ajax({
+            url: 'generate_pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+                selectedUser: selectedUser,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+            success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var win = window.open(url);
+              win.onload = function() {
+                  win.print();
+                  win.onafterprint = function() {
+                      window.focus(); 
+                      win.close();
+                  }
+              }
+
+              window.URL.revokeObjectURL(url);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+        });
+    });
+    }
+  }
+
+function showReports(id){
+  if(id == 2){
+    $('#showReport').on('click', function(){
+       $('#showReportsModal').show()
+   if($('#showReportsModal').is(":visible")){
+    var loadingImage = document.getElementById("loadingImage");
+    loadingImage.removeAttribute("hidden");
+    var pdfFile= document.getElementById("pdfFile");
+    pdfFile.setAttribute('hidden',true)
+    var usersSelect = document.getElementById("usersSelect");
+      var selectedUser = usersSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+        $.ajax({
+            url: 'generate_pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+                selectedUser: selectedUser,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+            success: function(response) {
+              loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/users/usersList.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+        });
+     }
+    })
+  }
+}
 
 
 

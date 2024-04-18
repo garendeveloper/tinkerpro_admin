@@ -3,59 +3,124 @@
 class UserFacade extends DBConnection {
 
     public function fetchUsers($value, $searchQuery, $selectedUser, $singleDateData, $startDate, $endDate) {
-        $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
-                users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
-                user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
-                FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
-                WHERE role_id != 4 AND role_id != 1 AND username != "admin"';
     
         if ($value > 0) {
-            $sql .= ' AND users.status_id = :status_id';
-        }
-        if ($searchQuery !== null && $searchQuery !== '') {
-            $searchParam = "%$searchQuery%";
-            $sql .= ' AND (users.first_name LIKE :searchQuery OR users.last_name LIKE :searchQuery OR users.employee_number LIKE :searchQuery OR role.role_name LIKE :searchQuery)';
-        }
-        if ($selectedUser !== null && $selectedUser !== "" ) {
-            $sql .= ' AND users.id = :selectedUser';
-        }
-        if ($singleDateData !== null  && $singleDateData !== "" ) {
-            $sql .= ' AND users.date_hired = :singleDateData';
-        }
-        if($startDate !== null && $startDate !== "" && $endDate !== null && $endDate !== "" ) {
-            $sql .= ' AND (users.date_hired BETWEEN :startDate AND :endDate)';
-        }
-        // else{
-        //     if ((($singleDateData !== null && $singleDateData !== "")) || ($startDate !== null && $startDate !== "" && $endDate !== null && $endDate !== "")) {
-        //         $sql .= ' AND (users.id = :selectedUser AND (users.date_hired = :singleDateData OR (users.date_hired BETWEEN :startDate AND :endDate)))';
-        //     }
-        // }
+            $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
+            users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
+            user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
+            FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.status_id = :status_id ORDER BY id DESC';
 
-       
-        $sql .= ' ORDER BY id DESC';
-        $stmt = $this->connect()->prepare($sql);
-        if ($value > 0) {
+            $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':status_id', $value);
+            $stmt->execute();
+            return $stmt;
         }
-        if ($searchQuery !== null && $searchQuery !== '') {
-            $stmt->bindParam(':searchQuery', $searchParam);
+        else if ($searchQuery !== null && $searchQuery !== '') {
+            $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
+            users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
+            user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
+            FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin"';
+
+            if (!empty($searchQuery)) {
+                $sql .= ' AND (users.first_name LIKE :searchQuery OR users.last_name LIKE :searchQuery OR users.employee_number LIKE :searchQuery OR role.role_name LIKE :searchQuery)';
+            }
+
+            $sql .= ' ORDER BY users.id DESC';
+
+            $stmt = $this->connect()->prepare($sql);
+
+            if (!empty($searchQuery)) {
+                $searchParam = "%$searchQuery%";
+                $stmt->bindParam(':searchQuery', $searchParam);
+            }
+
+            $stmt->execute();
+            return $stmt;
+
         }
-        if ($selectedUser !== null && $selectedUser !== "") {
+        else if ($selectedUser &&  !$singleDateData && !$startDate  && !$endDate) {
+            $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
+            users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
+            user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
+            FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.id = :selectedUser ORDER BY id DESC';
+
+            $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':selectedUser', $selectedUser);
+            $stmt->execute();
+            return $stmt;
         }
-        if ($singleDateData !== null && $singleDateData !== "") {
+        if (!$selectedUser &&  $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
+            users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
+            user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
+            FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.date_hired = :singleDateData ORDER BY id DESC';
+
+            $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':singleDateData', $singleDateData);
+            $stmt->execute();
+            return $stmt;
+            
         }
-        if ($startDate !== null && $startDate !== "" && $endDate !== null && $endDate !== "") {
+       else if(!$selectedUser &&  !$singleDateData && $startDate && $endDate) {
+           $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
+            users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
+            user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
+            FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND (users.date_hired BETWEEN :startDate AND :endDate) ORDER BY id DESC';
+
+            $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':startDate', $startDate);
             $stmt->bindParam(':endDate', $endDate);
+            $stmt->execute();
+            return $stmt;
+                        
         }
-    
-        $stmt->execute();
-        return $stmt;
+        else if($selectedUser &&  $singleDateData && !$startDate && !$endDate){
+            $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
+            users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
+            user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
+            FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin"  AND (users.id = :selectedUser AND users.date_hired = :singleDateData) ORDER BY id DESC';
+               
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(':singleDateData', $singleDateData);
+            $stmt->bindParam(':selectedUser', $selectedUser);
+            $stmt->execute();
+            return $stmt;
+            
+        }
+        else if($selectedUser &&  !$singleDateData && $startDate  && $endDate){
+            $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
+            users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
+            user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
+            FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin"  AND (users.id = :selectedUser AND users.date_hired BETWEEN :startDate AND :endDate)';
+
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(':selectedUser', $selectedUser);
+            $stmt->bindParam(':startDate', $startDate);
+            $stmt->bindParam(':endDate', $endDate);
+            $stmt->execute();
+            return $stmt;
+        }
+        else{
+            $sql = 'SELECT users.id as id, users.last_name as last_name, users.first_name as first_name, role.role_name as role_name,
+            users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
+            user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
+            FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" ORDER BY id DESC';
+
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+            return $stmt;
+           }
+       
+     
     }
-
-
     public function verifyUsernameAndPassword( $password ) {
         $sql = $this->connect()->prepare( 'SELECT  password FROM users WHERE password = ?' );
         $sql->execute( [ $password ] );
