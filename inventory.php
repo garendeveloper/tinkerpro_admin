@@ -1114,6 +1114,27 @@
     })
     $("#btn_openOption").click(function(e){
       e.preventDefault();
+      $("button").removeClass('active');
+      $("#btn_createPO").addClass('active');
+      $("#purchaseItems_div").show()
+      openOptionModal();
+      $("#open_po_report").hide();
+    })
+    $("#btn_createPO").click(function(e){
+      e.preventDefault();
+      $("button").removeClass('active');
+      $(this).addClass('active');
+      $("#received_div").hide()
+      $("#purchaseItems_div").show();
+      openOptionModal();
+      $("#open_po_report").hide();
+    })
+    $("#btn_receiveItems").click(function(e){
+      e.preventDefault();
+      $("button").removeClass('active');
+      $(this).addClass('active');
+      $("#purchaseItems_div").hide();
+      $("#received_div").show();
       openOptionModal();
       $("#open_po_report").hide();
     })
@@ -1127,9 +1148,7 @@
       setTimeout(function() {
           $("#optionModal").show();
           $(".optionmodal-content").show();
-      }, 100); 
-      $("#btn_createPO").addClass('active');
-      
+      }, 100);  
     }
   })
 </script>

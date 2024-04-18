@@ -5,7 +5,7 @@
     private $host = "localhost";
     private $user = "root";
     private $pass = "";
-    private $db = "tinkerpro";
+    private $db = "tinkerpro_db";
 
     protected function connect() 
     {
