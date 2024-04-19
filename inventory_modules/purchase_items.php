@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="fieldContainer">
-            <label><img src="assets/img/barcode.png" style="color: white; height: 30px; width: 50px;"></label>
+            <label><img src="assets/img/barcode.png" style="color: white; height: 40px; width: 40px;"></label>
             <div class="search-container">
                 <input type="text" style="width: 210px; height: 25px; font-size: 12px;" class="search-input"
                     placeholder="Search Prod..." name="product" onkeyup="$(this).removeClass('has-error')" id="product"

@@ -908,8 +908,8 @@ input {
 .fcontainer {
     border: 1px solid #ccc;
     padding: 3px;
-    margin-left: 2px;
-    margin-right: 2px;
+    margin-left: 10px;
+    margin-right: 10px;
     height: 70vh;
     overflow: auto;
     position: relative;
@@ -1040,13 +1040,13 @@ input {
     padding: 10px;
     cursor: pointer;
     background-color: #1E1C11;
-    ;
     border: 1px solid #fff;
     border-bottom: 1px solid #d4d4d4;
 }
 
 .autocomplete-items div:hover {
     background-color: #FF6900;
+    color: #ffff;
 }
 
 .autocomplete-active {

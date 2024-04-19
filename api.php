@@ -78,11 +78,18 @@
             $formData = $_POST;
             echo json_encode($inventory->save_purchaseOrder($formData));
             break;
+        case 'save_receivedItems':
+            $formData = $_POST;
+            echo json_encode($inventory->save_receivedItems($formData));
+            break;
         case 'get_allSuppliers':
             echo json_encode($inventory->get_allSuppliers());
             break;
         case 'get_purchaseOrderNo':
             echo json_encode($inventory->fetch_latestPONo());
+            break;
+        case 'get_allPurchaseOrders':
+            echo json_encode($order->get_allPurchaseOrders());
             break;
         case 'get_allOrders':
             $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
@@ -92,6 +99,10 @@
         case 'get_orderData':
             $order_id = $_GET['order_id'];
             echo json_encode($order->get_orderData($order_id));
+            break;
+        case 'get_orderDataByPurchaseNumber':
+            $po_number = $_GET['po_number'];
+            echo json_encode($order->get_orderDataByPurchaseNumber($po_number));
             break;
         case 'updateDataCategory':// updateCategory($categoryname, $categoryid)
             $postData = json_decode(file_get_contents('php://input'), true);

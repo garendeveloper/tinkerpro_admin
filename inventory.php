@@ -36,6 +36,18 @@
   include('./layout/admin/table-pagination-css.php');
 
 ?>
+<style>
+  .horizontal-container {
+    display: flex;
+    align-items: center;
+    margin-right: 10px; /* Adjust margin as needed */
+    width: 100%;
+  }
+  .italic-placeholder::placeholder {
+    font-style: italic;
+    font-weight: bold;
+}
+</style>
 
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -43,25 +55,29 @@
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
         <div class="content-wrapper" >
-          <div style="display: flex; margin-bottom: 20px;">
-            <label><img src="assets/img/barcode.png" style="color: white; height: 35px; width: 50px;"></label>
-            <input  class="text-color" id = "searchInput" style="width: 60%; height: 35px; margin-right: 10px" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
-            <button class="icon-button">
-              <span class="search-icon"></span>
-              Search
-            </button>
-            <select id="paginationDropdown" class = "icon-button" >
-              <option value="">Select<i class = "bi bi-dropdown"></i></option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="75">75</option>
-              <option value="100">100</option>
-              <option value="all">Show All</option>
-            </select>
-            <button class="icon-button" id = "btn_openOption">
-              <span class="plus-icon"></span>
-               Option
-            </button>
+          <div style="display: flex; margin-bottom: 20px; width: 100%; margin-left: 15px;">
+            <div class="horizontal-container">
+              <img src="assets/img/barcode.png" style="color: white; height: 60px; width: 50px; margin-right:5px;">
+              <input class="text-color italic-placeholder" id="searchInput" style="width: 100%; height: 35px;" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
+            </div>
+            <div class="horizontal-container">
+              <button class="icon-button">
+                <span class="search-icon"></span>
+                Search
+              </button>
+              <select id="paginationDropdown" class = "icon-button" >
+                <option value="">Select<i class = "bi bi-dropdown"></i></option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="75">75</option>
+                <option value="100">100</option>
+                <option value="all">Show All</option>
+              </select>
+              <button class="icon-button" id = "btn_openOption">
+                <span class="plus-icon"></span>
+                Option
+              </button>
+            </div>
           </div>
           <div>
             <div class="tbl_buttonsContainer">
@@ -93,7 +109,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="card" style = "width: 100%; ">
+            <div class="card" style = "width: 100%;">
               <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
                 <thead>
                   <tr>
@@ -241,15 +257,19 @@
   });
 </script>
 <script>
-  var price_ids = ['price', 's_price', 'u_pay', 'loan_amount', 'interest_rate', 'loan_term'];
-  price_ids.forEach(function(id) 
-  {
-    document.getElementById(id).addEventListener('input', function(event) {
-        this.value = this.value.replace(/[^0-9.]/g, '');
-        let parts = this.value.split('.');
-        if (parts[1] && parts[1].length > 2) {
-            parts[1] = parts[1].slice(0, 2);
-            this.value = parts.join('.');
+  document.addEventListener('DOMContentLoaded', function() {
+    var price_ids = ['price', 's_price', 'u_pay', 'loan_amount', 'interest_rate', 'loan_term'];
+    price_ids.forEach(function(id) {
+        var element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('input', function(event) {
+                this.value = this.value.replace(/[^0-9.]/g, '');
+                let parts = this.value.split('.');
+                if (parts[1] && parts[1].length > 2) {
+                    parts[1] = parts[1].slice(0, 2);
+                    this.value = parts.join('.');
+                }
+            });
         }
     });
 });
@@ -516,59 +536,102 @@
     }
     $("#btn_savePO").click(function(e){
       e.preventDefault();
-      var tbl_poL = $("#po_body tr").length;
-      if(tbl_poL > 0)
+      var activeModuleId = $("button.active").attr('id');
+      if(activeModuleId === "btn_receiveItems")
       {
-        var order_id = $("_order_id").val();
-        if(order_id !== 0)
+        var received_items_length = $("#tbl_receivedItems tbody tr").length;
+        if(received_items_length > 0)
         {
-          $("#paid_purchase_modal").slideDown({
-            backdrop: 'static',
-            keyboard: false,
-          });
-          $("#paid_title").html("Would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>Please <b style = 'color: #FF6900'>CONFIRM</b> your <b style = 'color: #FF6900'>PAYMENT: </b>");
-          $("#total_paid").html($("#overallTotal").text());
-          $("#paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
-          $("#btn_confirmPayment").click(function(){
-            submit_purchaseOrder();
+          var tbl_data = [];
+          $("#tbl_receivedItems tbody tr").each(function(){
+            var rowData = {};
+            $(this).find('td').each(function(index, cell){
+              if(index === 0)
+              {
+                rowData['inventory_id'] = $(cell).data('id');
+              }
+              rowData['col_'+(index + 1)] = $(cell).text();
+            })
+            tbl_data.push(rowData);
+          })
+          var receive_form = $("#receive_all").serialize();
+          $.ajax({
+            type: 'POST',
+            url: 'api.php?action=save_receivedItems',
+            data: {
+              tbl_data: JSON.stringify(tbl_data),
+              receive_form: receive_form,
+              po_number: $("#r_po_number").text(),
+            },
+            success: function(response){
+              if(response.status)
+              {
+                alert(response.msg);
+              }
+            } 
           })
         }
         else
         {
-          if($("#paidSwitch").prop("checked") === false)
-          {
-            $("#unpaid_purchase_modal").slideDown({
-              backdrop: 'static',
-              keyboard: false,
-            });
-            $("#unpaid_form")[0].reset();
-            $("#product_name").text($("#product").val());
-            $("#s_price").val($("#overallTotal").text());
-            $("#r_balance").val($("#overallTotal").text());
-            $("#loan_amount").val($("#overallTotal").text());
-            $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle' style = 'color: red;'></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
-          }
-          else
+          alert("Please find a purchase number first!");
+        }
+      }
+      else
+      {
+        var tbl_poL = $("#po_body tr").length;
+        if(tbl_poL > 0)
+        {
+          var order_id = $("_order_id").val();
+          if(order_id !== "0")
           {
             $("#paid_purchase_modal").slideDown({
               backdrop: 'static',
               keyboard: false,
             });
+            $("#paid_title").html("Would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>Please <b style = 'color: #FF6900'>CONFIRM</b> your <b style = 'color: #FF6900'>PAYMENT: </b>");
             $("#total_paid").html($("#overallTotal").text());
             $("#paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
             $("#btn_confirmPayment").click(function(){
               submit_purchaseOrder();
             })
           }
+          else
+          {
+            if($("#paidSwitch").prop("checked") === false)
+            {
+              $("#unpaid_purchase_modal").slideDown({
+                backdrop: 'static',
+                keyboard: false,
+              });
+              $("#unpaid_form")[0].reset();
+              $("#product_name").text($("#product").val());
+              $("#s_price").val($("#overallTotal").text());
+              $("#r_balance").val($("#overallTotal").text());
+              $("#loan_amount").val($("#overallTotal").text());
+              $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle' style = 'color: red;'></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+            }
+            else
+            {
+              $("#paid_purchase_modal").slideDown({
+                backdrop: 'static',
+                keyboard: false,
+              });
+              $("#total_paid").html($("#overallTotal").text());
+              $("#paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+              $("#btn_confirmPayment").click(function(){
+                submit_purchaseOrder();
+              })
+            }
+          }
         }
-      }
-      else if(tbl_poL === 0 && validatePOForm())
-      {
-        alert("Please choose a product to purchase");
-      }
-      else
-      {
-        validatePOForm();
+        else if(tbl_poL === 0 && validatePOForm())
+        {
+          alert("Please choose a product to purchase");
+        }
+        else
+        {
+          validatePOForm();
+        }
       }
     })
     function isDataExistInTable(data) 
@@ -1173,19 +1236,6 @@
         $("#product").val(clickedItem.text());
         $("#d_products").css('display', 'none');
     });
-    // $(document).on('input', '#supplier', function() {
-    //   var searchTerm = $(this).val().trim().toLowerCase();
-    //   $('.search-dropdown-item1').each(function() {
-    //       var text = $(this).text().trim().toLowerCase();
-    //       if (text.includes(searchTerm)) {
-    //           $(this).show();
-    //       } else {
-    //           $(this).hide();
-    //       }
-    //   });
-    //   $("#d_suppliers").css('display', searchTerm ? 'block' : 'none');
-    // });
-  
     $("#supplier").on('change', function(){
       $("#tbl_purchaseOrders tbody").empty();
     })

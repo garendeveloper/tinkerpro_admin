@@ -269,6 +269,31 @@
             }
             return $order_id;
         }
+        public function save_receivedItems($formData)
+        {
+            $tbl_data = json_decode($formData['tbl_data'], true);
+            $serializedFormData = $formData['receive_form'];
+            $formData = [];
+            parse_str($serializedFormData, $formData);
+            $receive_all = isset($formData["receive_all"]);
+            if($receive_all)
+            {
+                foreach($tbl_data as $row)
+                {
+                    $inventory_id = $row["inventory_id"];
+                    $qty_received = $row["col_3"];
+                    $expired_date = $row["col_4"];
+                    $serialized = $row["col_5"];
+
+                    $sql = "UPDATE inventory SET qty_received = :v1 WHERE id = :id";
+                    $sqlStatement = $this->connect()->prepare($sql);
+                    $sqlStatement->bindParam(':v1', $qty_received);
+                    $sqlStatement->bindParam(':id', $inventory_id);
+                    $sqlStatement->execute();
+                }
+            }
+            return ['status'=>true,'msg'=> 'Items has been successfully saved'];
+        }
         public function fetch_latestPONo()
         {
             return $this->generateString($this->get_purchaseOrderNo()['id']+1);
