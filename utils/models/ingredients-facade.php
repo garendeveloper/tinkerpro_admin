@@ -53,25 +53,40 @@ public function deleteBOM($id){
   $rowCount = $stmt->rowCount();
   return $rowCount > 0; 
 }
-public function getAllIngredients($searchQuery) {
-  $sqlQuery = "SELECT i.id as id, i.name as name, i.barcode as barcode, i.cost as cost, i.status as status, i.description as description, i.uom_id as uom_id, uom.uom_name as uom_name FROM ingredients AS i INNER JOIN uom ON uom.id = i.uom_id ";
-
+public function getAllIngredients($searchQuery,$selectedIngredients) {
+ 
   if (!empty($searchQuery)) {
-      $sqlQuery .= " WHERE 
-          i.name LIKE :searchQuery OR 
-          i.barcode LIKE :searchQuery OR 
-          i.status LIKE :searchQuery";
+    $sqlQuery = "SELECT i.id as id, i.name as name, i.barcode as barcode, i.cost as cost, i.status as status, i.description as description, i.uom_id as uom_id, uom.uom_name as uom_name FROM ingredients AS i INNER JOIN uom ON uom.id = i.uom_id WHERE 
+    i.name LIKE :searchQuery OR 
+    i.barcode LIKE :searchQuery OR 
+    i.status LIKE :searchQuery";
+
+    $sql = $this->connect()->prepare($sqlQuery);
+
+      if (!empty($searchQuery)) {
+          $searchParam = "%" . $searchQuery . "%";
+          $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+      }
+
+      $sql->execute();
+      return $sql;
+      
+  }else if($selectedIngredients){
+    $sqlQuery = "SELECT i.id as id, i.name as name, i.barcode as barcode, i.cost as cost, i.status as status, i.description as description, i.uom_id as uom_id, uom.uom_name as uom_name FROM ingredients AS i INNER JOIN uom ON uom.id = i.uom_id
+    WHERE i.id = :id";
+
+    $sql = $this->connect()->prepare($sqlQuery);
+    $sql->bindParam(':id', $selectedIngredients);
+    $sql->execute();
+    return $sql;
+
+  }else{
+    $sqlQuery = "SELECT i.id as id, i.name as name, i.barcode as barcode, i.cost as cost, i.status as status, i.description as description, i.uom_id as uom_id, uom.uom_name as uom_name FROM ingredients AS i INNER JOIN uom ON uom.id = i.uom_id";
+    $sql = $this->connect()->prepare($sqlQuery);
+    $sql->execute();
+    return $sql;
   }
-
-  $sql = $this->connect()->prepare($sqlQuery);
-
-  if (!empty($searchQuery)) {
-      $searchParam = "%" . $searchQuery . "%";
-      $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
-  }
-
-  $sql->execute();
-  return $sql;
+  
 }
 
 public function updateIngrednts($ingredientName, $barcode,$uom_id,$cost,$status,$description,$id){
@@ -91,6 +106,11 @@ public function updateIngrednts($ingredientName, $barcode,$uom_id,$cost,$status,
   return ['success' => true, 'id' => $status];
 
 }
-
+public function getIngredientsData()
+{
+  $sql = 'SELECT * FROM ingredients';
+  $stmt = $this->connect()->query($sql);
+  return $stmt;
+}
 
   }

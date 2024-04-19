@@ -32,9 +32,15 @@ $sheet->getStyle('A1:H1')->applyFromArray($headerStyle);
 $products = new ProductFacade();
 
 $searchQuery = $_GET['searchQuery'] ?? null;
+$selectedProduct = $_GET['selectedProduct'] ?? null;
+$selectedCategories = $_GET['selectedCategories'] ?? null;
+$selectedSubCategories = $_GET['selectedSubCategories'] ?? null;
+$singleDateData = $_GET['singleDateData'] ?? null;
+$startDate = $_GET['startDate'] ?? null;
+$endDate = $_GET['endDate'] ?? null;
 
-
-$fetchProducts = $products->fetchProducts($searchQuery);
+// Fetch users with pagination
+$fetchProducts = $products->fetchProducts($searchQuery,$selectedProduct,$singleDateData,$startDate,$endDate,$selectedCategories,$selectedSubCategories);
 $counter = 1; // Start numbering from 1
 
 while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {

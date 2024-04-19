@@ -22,9 +22,15 @@ $products = new ProductFacade();
 $counter = 1;
 
 $searchQuery = $_GET['searchQuery'] ?? null;
+$selectedProduct = $_GET['selectedProduct'] ?? null;
+$selectedCategories = $_GET['selectedCategories'] ?? null;
+$selectedSubCategories = $_GET['selectedSubCategories'] ?? null;
+$singleDateData = $_GET['singleDateData'] ?? null;
+$startDate = $_GET['startDate'] ?? null;
+$endDate = $_GET['endDate'] ?? null;
 
 // Fetch users with pagination
-$fetchProducts = $products->fetchProducts($searchQuery);
+$fetchProducts = $products->fetchProducts($searchQuery,$selectedProduct,$singleDateData,$startDate,$endDate,$selectedCategories,$selectedSubCategories);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -83,19 +89,28 @@ for ($i = 0; $i < count($header); $i++) {
 $pdf->Ln(); 
 
 $pdf->SetFont('', '', 10); 
+$totalCost = 0;
+$totalSellingPrice = 0;
+$totalTax = 0;
+$formatted_tax = 0;
 while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {
-    if($row['prod_price']){
+    if ($row['prod_price'] && $row['isVAT'] == 1) {
         $product_price = $row['prod_price'];
         $vatable = round($product_price / 1.12, 2);
         $tax = $product_price - $vatable;
-        $formatted_tax = number_format($tax,2);
+        $totalTax += $tax; 
+        $formatted_tax = number_format($tax, 2);
     }
+    
     if($row['prod_price']){
         $formatted_price = number_format($row['prod_price'],2);
+        $totalSellingPrice += $row['prod_price'];
     }
     if($row['cost']){
         $formatted_cost = number_format($row['cost'],2);
+        $totalCost += $row['cost'];
     }
+  
     
     $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sku'] , $headerWidths[1]));
@@ -116,5 +131,42 @@ while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {
     $counter++;
 }
 
+$pdf->SetFont('', 'B', 10);
+$totalCostFormatted = number_format($totalCost, 2); 
+$totalSellingFormatted =  number_format($totalSellingPrice, 2); 
+$totalTaxFormatted =  number_format($totalTax, 2); 
+
+
+$totalSellingWidth = $pdf->GetStringWidth("Total Selling Price: Php $totalSellingFormatted");
+$totalCostWidth = $pdf->GetStringWidth("Total Cost: Php $totalCostFormatted");
+$totalTaxWidth = $pdf->GetStringWidth("Total Tax: Php $totalTaxFormatted");
+
+
+$maxTotalWidth = max($totalSellingWidth, $totalCostWidth, $totalTaxWidth);
+
+
+$sellingPosition = 210 - $maxTotalWidth; 
+$costPosition = 210 - $maxTotalWidth;
+$taxPosition = 210 - $maxTotalWidth; 
+
+
+$pdf->Cell($sellingPosition);
+$pdf->Cell(0, 10, "Total Selling Price: Php $totalSellingFormatted", 0, 1, 'R', 0);
+$pdf->Ln(-5);
+$pdf->Cell($costPosition);
+$pdf->Cell(0, 10, "Total Cost: Php $totalCostFormatted", 0, 1, 'R', 0);
+$pdf->Ln(-5);
+$pdf->Cell($taxPosition);
+$pdf->Cell(0, 10, "Total Tax: Php $totalTaxFormatted", 0, 1, 'R', 0);
+$pdf->Ln();
+
+
 $pdf->Output('product_list.pdf', 'I');
+$pdfPath = __DIR__ . '/assets/pdf/product/product_list.pdf';
+
+if (file_exists($pdfPath)) {
+ 
+    unlink($pdfPath);
+}
+$pdf->Output($pdfPath, 'F');
 ?>
