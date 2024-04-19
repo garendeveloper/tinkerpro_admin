@@ -2,56 +2,310 @@
 
   class ProductFacade extends DBConnection {
 
-    public function fetchProducts($searchQuery) {
-      $sqlQuery = "SELECT 
-            products.id as id, 
-            products.barcode as barcode, 
-            products.prod_desc as prod_desc, 
-            products.cost as cost,
-            products.markup as markup, 
-            products.prod_price as prod_price, 
-            products.isVAT as isVAT, 
-            products.Description as description, 
-            products.sku as sku,
-            products.code as code, 
-            uom.uom_name as uom_name,
-            products.category_id as category_id, 
-            products.status as status, 
-            products.brand as brand,
-            products.uom_id as uom_id, 
-            products.is_discounted as discounted, 
-            products.is_taxIncluded as taxIncluded, 
-            products.is_serviceCharge as serviceCharge, 
-            products.is_srvcChrgeDisplay as displayService, 
-            products.is_otherCharges as otherCharges, 
-            products.is_othrChargeDisplay as displayOthers,
-            products.productImage as image, 
-            products.category_details as category_details, 
-            products.category_id as category_id,
-            products.variant_id as variant_id,
-            products.is_BOM as is_BOM
-        FROM products 
-        LEFT JOIN uom ON uom.id = products.uom_id";
-  
-      
+    public function fetchProducts($searchQuery,$selectedProduct,$singleDateData,$startDate,$endDate,$selectedCategories,$selectedSubCategories) {
+    
       if (!empty($searchQuery)) {
-          $sqlQuery .= " WHERE 
-            products.prod_desc LIKE :searchQuery OR 
-            products.barcode LIKE :searchQuery OR 
-            products.sku LIKE :searchQuery OR 
-            products.code LIKE :searchQuery OR 
-            products.brand LIKE :searchQuery";
-      }
-  
-      $sql = $this->connect()->prepare($sqlQuery);
+        $sqlQuery = "SELECT 
+        products.id as id, 
+        products.barcode as barcode, 
+        products.prod_desc as prod_desc, 
+        products.cost as cost,
+        products.markup as markup, 
+        products.prod_price as prod_price, 
+        products.isVAT as isVAT, 
+        products.Description as description, 
+        products.sku as sku,
+        products.code as code, 
+        uom.uom_name as uom_name,
+        products.category_id as category_id, 
+        products.status as status, 
+        products.brand as brand,
+        products.uom_id as uom_id, 
+        products.is_discounted as discounted, 
+        products.is_taxIncluded as taxIncluded, 
+        products.is_serviceCharge as serviceCharge, 
+        products.is_srvcChrgeDisplay as displayService, 
+        products.is_otherCharges as otherCharges, 
+        products.is_othrChargeDisplay as displayOthers,
+        products.productImage as image, 
+        products.category_details as category_details, 
+        products.category_id as category_id,
+        products.variant_id as variant_id,
+        products.is_BOM as is_BOM
+    FROM products 
+    LEFT JOIN uom ON uom.id = products.uom_id WHERE 
+        products.prod_desc LIKE :searchQuery OR 
+        products.barcode LIKE :searchQuery OR 
+        products.sku LIKE :searchQuery OR 
+        products.code LIKE :searchQuery OR 
+        products.brand LIKE :searchQuery";
 
-      if (!empty($searchQuery)) {
+        $sql = $this->connect()->prepare($sqlQuery);
+
+        if (!empty($searchQuery)) {
           $searchParam = "%" . $searchQuery . "%";
           $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+          $sql->execute();
+          return $sql;
       }
       
-      $sql->execute();
-      return $sql;
+      }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && !$selectedSubCategories){
+        $sqlQuery = "SELECT 
+        products.id as id, 
+        products.barcode as barcode, 
+        products.prod_desc as prod_desc, 
+        products.cost as cost,
+        products.markup as markup, 
+        products.prod_price as prod_price, 
+        products.isVAT as isVAT, 
+        products.Description as description, 
+        products.sku as sku,
+        products.code as code, 
+        uom.uom_name as uom_name,
+        products.category_id as category_id, 
+        products.status as status, 
+        products.brand as brand,
+        products.uom_id as uom_id, 
+        products.is_discounted as discounted, 
+        products.is_taxIncluded as taxIncluded, 
+        products.is_serviceCharge as serviceCharge, 
+        products.is_srvcChrgeDisplay as displayService, 
+        products.is_otherCharges as otherCharges, 
+        products.is_othrChargeDisplay as displayOthers,
+        products.productImage as image, 
+        products.category_details as category_details, 
+        products.category_id as category_id,
+        products.variant_id as variant_id,
+        products.is_BOM as is_BOM
+    FROM products 
+    LEFT JOIN uom ON uom.id = products.uom_id WHERE 
+        products.id = :selectedProduct";
+
+        $sql = $this->connect()->prepare($sqlQuery);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->execute();
+        return $sql;
+
+      }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
+        $sqlQuery = "SELECT 
+        products.id as id, 
+        products.barcode as barcode, 
+        products.prod_desc as prod_desc, 
+        products.cost as cost,
+        products.markup as markup, 
+        products.prod_price as prod_price, 
+        products.isVAT as isVAT, 
+        products.Description as description, 
+        products.sku as sku,
+        products.code as code, 
+        uom.uom_name as uom_name,
+        products.category_id as category_id, 
+        products.status as status, 
+        products.brand as brand,
+        products.uom_id as uom_id, 
+        products.is_discounted as discounted, 
+        products.is_taxIncluded as taxIncluded, 
+        products.is_serviceCharge as serviceCharge, 
+        products.is_srvcChrgeDisplay as displayService, 
+        products.is_otherCharges as otherCharges, 
+        products.is_othrChargeDisplay as displayOthers,
+        products.productImage as image, 
+        products.category_details as category_details, 
+        products.category_id as category_id,
+        products.variant_id as variant_id,
+        products.is_BOM as is_BOM
+    FROM products 
+    LEFT JOIN uom ON uom.id = products.uom_id WHERE 
+        products.category_id= :selectedCategoryProduct";
+
+        $sql = $this->connect()->prepare($sqlQuery);
+        $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+        $sql->execute();
+        return $sql;
+      }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
+        $sqlQuery = "SELECT 
+        products.id as id, 
+        products.barcode as barcode, 
+        products.prod_desc as prod_desc, 
+        products.cost as cost,
+        products.markup as markup, 
+        products.prod_price as prod_price, 
+        products.isVAT as isVAT, 
+        products.Description as description, 
+        products.sku as sku,
+        products.code as code, 
+        uom.uom_name as uom_name,
+        products.category_id as category_id, 
+        products.status as status, 
+        products.brand as brand,
+        products.uom_id as uom_id, 
+        products.is_discounted as discounted, 
+        products.is_taxIncluded as taxIncluded, 
+        products.is_serviceCharge as serviceCharge, 
+        products.is_srvcChrgeDisplay as displayService, 
+        products.is_otherCharges as otherCharges, 
+        products.is_othrChargeDisplay as displayOthers,
+        products.productImage as image, 
+        products.category_details as category_details, 
+        products.category_id as category_id,
+        products.variant_id as variant_id,
+        products.is_BOM as is_BOM
+    FROM products 
+    LEFT JOIN uom ON uom.id = products.uom_id WHERE 
+        products.variant_id= :selectedVariantroduct";
+
+        $sql = $this->connect()->prepare($sqlQuery);
+        $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
+        $sql->execute();
+        return $sql;
+      }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
+        $sqlQuery = "SELECT 
+        products.id as id, 
+        products.barcode as barcode, 
+        products.prod_desc as prod_desc, 
+        products.cost as cost,
+        products.markup as markup, 
+        products.prod_price as prod_price, 
+        products.isVAT as isVAT, 
+        products.Description as description, 
+        products.sku as sku,
+        products.code as code, 
+        uom.uom_name as uom_name,
+        products.category_id as category_id, 
+        products.status as status, 
+        products.brand as brand,
+        products.uom_id as uom_id, 
+        products.is_discounted as discounted, 
+        products.is_taxIncluded as taxIncluded, 
+        products.is_serviceCharge as serviceCharge, 
+        products.is_srvcChrgeDisplay as displayService, 
+        products.is_otherCharges as otherCharges, 
+        products.is_othrChargeDisplay as displayOthers,
+        products.productImage as image, 
+        products.category_details as category_details, 
+        products.category_id as category_id,
+        products.variant_id as variant_id,
+        products.is_BOM as is_BOM
+    FROM products 
+    LEFT JOIN uom ON uom.id = products.uom_id WHERE 
+        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct";
+
+        $sql = $this->connect()->prepare($sqlQuery);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+        $sql->execute();
+        return $sql;
+      }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
+        $sqlQuery = "SELECT 
+        products.id as id, 
+        products.barcode as barcode, 
+        products.prod_desc as prod_desc, 
+        products.cost as cost,
+        products.markup as markup, 
+        products.prod_price as prod_price, 
+        products.isVAT as isVAT, 
+        products.Description as description, 
+        products.sku as sku,
+        products.code as code, 
+        uom.uom_name as uom_name,
+        products.category_id as category_id, 
+        products.status as status, 
+        products.brand as brand,
+        products.uom_id as uom_id, 
+        products.is_discounted as discounted, 
+        products.is_taxIncluded as taxIncluded, 
+        products.is_serviceCharge as serviceCharge, 
+        products.is_srvcChrgeDisplay as displayService, 
+        products.is_otherCharges as otherCharges, 
+        products.is_othrChargeDisplay as displayOthers,
+        products.productImage as image, 
+        products.category_details as category_details, 
+        products.category_id as category_id,
+        products.variant_id as variant_id,
+        products.is_BOM as is_BOM
+    FROM products 
+    LEFT JOIN uom ON uom.id = products.uom_id WHERE 
+        products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct";
+
+        $sql = $this->connect()->prepare($sqlQuery);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':selectedVariantProduct', $selectedSubCategories);
+        $sql->execute();
+        return $sql;
+      }else if ($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && $selectedSubCategories){
+        $sqlQuery = "SELECT 
+        products.id as id, 
+        products.barcode as barcode, 
+        products.prod_desc as prod_desc, 
+        products.cost as cost,
+        products.markup as markup, 
+        products.prod_price as prod_price, 
+        products.isVAT as isVAT, 
+        products.Description as description, 
+        products.sku as sku,
+        products.code as code, 
+        uom.uom_name as uom_name,
+        products.category_id as category_id, 
+        products.status as status, 
+        products.brand as brand,
+        products.uom_id as uom_id, 
+        products.is_discounted as discounted, 
+        products.is_taxIncluded as taxIncluded, 
+        products.is_serviceCharge as serviceCharge, 
+        products.is_srvcChrgeDisplay as displayService, 
+        products.is_otherCharges as otherCharges, 
+        products.is_othrChargeDisplay as displayOthers,
+        products.productImage as image, 
+        products.category_details as category_details, 
+        products.category_id as category_id,
+        products.variant_id as variant_id,
+        products.is_BOM as is_BOM
+    FROM products 
+    LEFT JOIN uom ON uom.id = products.uom_id WHERE 
+        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct";
+
+        $sql = $this->connect()->prepare($sqlQuery);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+        $sql->bindParam(':selectedVariantProduct', $selectedSubCategories);
+        $sql->execute();
+        return $sql;
+      }
+      else{
+        $sqlQuery = "SELECT 
+        products.id as id, 
+        products.barcode as barcode, 
+        products.prod_desc as prod_desc, 
+        products.cost as cost,
+        products.markup as markup, 
+        products.prod_price as prod_price, 
+        products.isVAT as isVAT, 
+        products.Description as description, 
+        products.sku as sku,
+        products.code as code, 
+        uom.uom_name as uom_name,
+        products.category_id as category_id, 
+        products.status as status, 
+        products.brand as brand,
+        products.uom_id as uom_id, 
+        products.is_discounted as discounted, 
+        products.is_taxIncluded as taxIncluded, 
+        products.is_serviceCharge as serviceCharge, 
+        products.is_srvcChrgeDisplay as displayService, 
+        products.is_otherCharges as otherCharges, 
+        products.is_othrChargeDisplay as displayOthers,
+        products.productImage as image, 
+        products.category_details as category_details, 
+        products.variant_id as variant_id,
+        products.is_BOM as is_BOM
+    FROM products 
+    LEFT JOIN uom ON uom.id = products.uom_id";
+
+    $sql = $this->connect()->prepare($sqlQuery);
+    $sql->execute();
+    return $sql;
+
+      }
   }
   
   
@@ -462,7 +716,21 @@ public function getProductsData() {
   $stmt = $this->connect()->query($sql);
   return $stmt;
 }
-
+public function getCategoriesData(){
+  $sql = 'SELECT * FROM category';
+  $stmt = $this->connect()->query($sql);
+  return $stmt;
+}
+public function getVariantsData(){
+  $sql = 'SELECT * FROM variants';
+  $stmt = $this->connect()->query($sql);
+  return $stmt;
+}
+public function getSuppliersData(){
+  $sql = 'SELECT * FROM supplier';
+  $stmt = $this->connect()->query($sql);
+  return $stmt;
+}
 }  
 
 

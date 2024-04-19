@@ -263,10 +263,14 @@
                 <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Customers</label>
                 <div class="select-container">
                     <select id="customersSelect">
-                    <option value="" selected disabled>All Customers</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
+                    <option value="" selected>All Customers</option>
+                    <?php
+                        $userFacade = new UserFacade;
+                        $users = $userFacade->getCustomersData();
+                        while ($row = $users->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['first_name'] .' ' . $row['last_name'] . '</option>';
+                        }
+                        ?>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -276,9 +280,13 @@
                 <div class="select-container">
                     <select id="suppliersSelect">
                     <option value="" selected disabled>All Suppliers</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
+                    <?php
+                        $productFacade = new ProductFacade;
+                        $products =  $productFacade->getSuppliersData();
+                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['supplier'] .' </option>';
+                        }
+                        ?>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -331,10 +339,15 @@
                 <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Product Categories</label>
                 <div class="select-container" >
                     <select id="categoreisSelect">
-                    <option value="" selected disabled>ALL Product Categories</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
+                    <option value="" selected>ALL Product Categories</option>
+                    <?php
+                        $productFacade = new ProductFacade;
+                        $products =  $productFacade->getCategoriesData();
+                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['category_name'] .' </option>';
+                        }
+                        ?>
+                    </select>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -343,10 +356,30 @@
                 <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Product Sub-categories</label>
                 <div class="select-container">
                     <select id="subCategoreisSelect">
-                    <option value="" selected disabled>All Product Sub-categories</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
+                    <option value="" selected >All Product Sub-categories</option>
+                    <?php
+                        $productFacade = new ProductFacade;
+                        $products =  $productFacade->getVariantsData();
+                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['variant_name'] .' </option>';
+                        }
+                        ?>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+            </div>
+            <div class="custom-select">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Ingredients</label>
+                <div class="select-container">
+                    <select id="ingredientsSelect">
+                    <option value="" selected >All Ingredients</option>
+                    <?php
+                        $ingredientFacade = new IngredientsFacade;
+                        $ingredients =  $ingredientFacade->getIngredientsData();
+                        while ($row = $ingredients->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['name'] .' </option>';
+                        }
+                        ?>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -389,6 +422,11 @@ function highlightDiv(id) {
     div.classList.remove('highlight');
   });
   $('#PDFBtn').off('click');
+  $('#EXCELBtn').off('click')
+  $('#showReport').off('click')
+  $('#printDocu').off('click')
+
+  // console.log(id)
      if (id == 2) {
           generatePdf(id)
           generateExcel(id)
@@ -419,15 +457,19 @@ function highlightDiv(id) {
           categoreisSelect.disabled = true;
           categoreisSelect.style.borderColor = "transparent";
 
-          var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+          var subCategoreisSelect = document.getElementById('subCategoreisSelect') 
           subCategoreisSelect.disabled = true;
           subCategoreisSelect.style.borderColor = "transparent";
+
+          var ingredientsSelect = document.getElementById('ingredientsSelect') 
+          ingredientsSelect.disabled = true;
+          ingredientsSelect.style.borderColor = "transparent";
           
         }else if(id==3){
           generatePdf(id)
-          // generateExcel(id)
-          // printDocuments(id)
-          // showReports(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
 
           var usersSelect = document.getElementById('usersSelect');
           usersSelect.disabled = true;
@@ -456,8 +498,88 @@ function highlightDiv(id) {
           var subCategoreisSelect = document.getElementById('subCategoreisSelect')
           subCategoreisSelect.disabled = false;
           subCategoreisSelect.style.borderColor = "";
+
+          var ingredientsSelect = document.getElementById('ingredientsSelect') 
+          ingredientsSelect.disabled = true;
+          ingredientsSelect.style.borderColor = "transparent";
           
-        }else{
+        }else if(id == 4){
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var ingredientsSelect = document.getElementById('ingredientsSelect') 
+          ingredientsSelect.disabled = false;
+          ingredientsSelect.style.borderColor = "";
+
+          var usersSelect = document.getElementById('usersSelect');
+          usersSelect.disabled = true;
+          usersSelect.style.borderColor = "transparent"
+
+          var customerSelect = document.getElementById('customersSelect')
+          customersSelect.disabled = true;
+          customersSelect.style.borderColor = "transparent"
+
+          var suppliersSelect = document.getElementById('suppliersSelect')
+          suppliersSelect.disabled = true;
+          suppliersSelect.style.borderColor = "transparent"
+
+          var cashRegister = document.getElementById('cashRegisterSelect')
+          cashRegister.disabled = true;
+          cashRegister.style.borderColor = "transparent";
+
+          var selectProducts = document.getElementById('selectProducts')
+          selectProducts.disabled = true;
+          selectProducts.style.borderColor = "transparent";
+
+          var categoreisSelect = document.getElementById('categoreisSelect')
+          categoreisSelect.disabled = true;
+          categoreisSelect.style.borderColor = "transparent";
+
+          var subCategoreisSelect = document.getElementById('subCategoreisSelect') 
+          subCategoreisSelect.disabled = true;
+          subCategoreisSelect.style.borderColor = "transparent";
+         
+        }else if(id == 5){
+          generatePdf(id)
+          // generateExcel(id)
+          // printDocuments(id)
+          // showReports(id)
+
+          var ingredientsSelect = document.getElementById('ingredientsSelect') 
+          ingredientsSelect.disabled = true;
+          ingredientsSelect.style.borderColor = "";
+
+          var usersSelect = document.getElementById('usersSelect');
+          usersSelect.disabled = true;
+          usersSelect.style.borderColor = "transparent"
+
+          var customerSelect = document.getElementById('customersSelect')
+          customersSelect.disabled = true;
+          customersSelect.style.borderColor = "transparent"
+
+          var suppliersSelect = document.getElementById('suppliersSelect')
+          suppliersSelect.disabled = true;
+          suppliersSelect.style.borderColor = "transparent"
+
+          var cashRegister = document.getElementById('cashRegisterSelect')
+          cashRegister.disabled = true;
+          cashRegister.style.borderColor = "transparent";
+
+          var selectProducts = document.getElementById('selectProducts')
+          selectProducts.disabled = false;
+          selectProducts.style.borderColor = "";
+
+          var categoreisSelect = document.getElementById('categoreisSelect')
+          categoreisSelect.disabled = true;
+          categoreisSelect.style.borderColor = "transparent";
+
+          var subCategoreisSelect = document.getElementById('subCategoreisSelect') 
+          subCategoreisSelect.disabled = true;
+          subCategoreisSelect.style.borderColor = "transparent";
+        }
+        else{
           var usersSelect = document.getElementById('usersSelect');
           usersSelect.disabled = false;
           usersSelect.style.borderColor = ""
@@ -479,6 +601,9 @@ function highlightDiv(id) {
           var subCategoreisSelect = document.getElementById('subCategoreisSelect')
           subCategoreisSelect.disabled = false;
           subCategoreisSelect.style.borderColor = "";
+          var ingredientsSelect = document.getElementById('ingredientsSelect') 
+          ingredientsSelect.disabled = false;
+          ingredientsSelect.style.borderColor = "";
         }
    
   document.getElementById('highlightDiv' + id).classList.add('highlight');
@@ -501,14 +626,15 @@ function openModalDatePicker(){
 
 // USERS
 function generatePdf(id){
-  var usersSelect = document.getElementById("usersSelect");
+  if(id == 2){
+    $('#PDFBtn').off('click').on('click',function() {
+      var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
       var endDate;
       if (datepicker.includes('-')) {
-
         var dateRange = datepicker.split(' - ');
         var startDates = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
@@ -526,17 +652,16 @@ function generatePdf(id){
         singleDateData =  formattedDate
        
       }
-     if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-      singleDateData = ""
-     }
-     if(startDate == "" || startDate == null){
-      startDate = ""
-     }
-      if(endDate == "" || endDate == null){
-      endDate = ""
-     }
-  if(id == 2){
-    $('#PDFBtn').off('click').on('click',function() {
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      console.log(singleDateData)
         $.ajax({
             url: 'generate_pdf.php',
             type: 'GET',
@@ -569,18 +694,57 @@ function generatePdf(id){
     });
   }else if(id == 3){
     $('#PDFBtn').off('click').on('click',function() {
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
         $.ajax({
             url: 'generate_products_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
             },
-            // data: {
-            //     selectedUser: selectedUser,
-            //     singleDateData: singleDateData,
-            //     startDate: startDate,
-            //     endDate: endDate
-            // },
+            data: {
+                selectedProduct: selectedProduct,
+                selectedCategories: selectedCategories,
+                selectedSubCategories:  selectedSubCategories,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
             success: function(response) {
               var blob = new Blob([response], { type: 'application/pdf' });
               var url = window.URL.createObjectURL(blob);
@@ -599,12 +763,110 @@ function generatePdf(id){
             }
         });
     });
+  }else if(id == 4){
+    $('#PDFBtn').off('click').on('click',function() {
+      var ingredientsSelect = document.getElementById('ingredientsSelect')
+      var selectedIngredients = ingredientsSelect.value;
+      
+      $.ajax({
+          url: 'generate_ingredients_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+            selectedIngredients: selectedIngredients 
+          },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'ingredients_list.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+    });
+  }else if(id == 5){
+    $('#PDFBtn').off('click').on('click',function() {
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      console.log( singleDateData)
+      $.ajax({
+          url: './reports/generate_refund_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                selectedProduct: selectedProduct,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'refundList.pdf.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+    });
   }
 }
 
 function generateExcel(id){
   if(id == 2){
-    $('#EXCELBtn').on('click',function() {
+    $('#EXCELBtn').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -612,7 +874,6 @@ function generateExcel(id){
       var startDate;
       var endDate;
       if (datepicker.includes('-')) {
-
         var dateRange = datepicker.split(' - ');
         var startDate = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
@@ -640,7 +901,6 @@ function generateExcel(id){
         if(endDate == "" || endDate == null){
         endDate = ""
       }
- 
       $.ajax({
             url: 'generate_excel.php',
             type: 'GET',
@@ -672,29 +932,27 @@ function generateExcel(id){
             }
         });
     });
-  }
-
-}
-
-function printDocuments(id){
-    if(id==2){
-      $('#printDocu').on('click',function() {
-      var usersSelect = document.getElementById("usersSelect");
-      var selectedUser = usersSelect.value;
+  }else if(id==3){
+    $('#EXCELBtn').click(function() {
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value
       var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
+      var singleDateData;
       var startDate;
       var endDate;
       if (datepicker.includes('-')) {
-
         var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
+        var startDate = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
 
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDate = formattedStartDate;
+        singleDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -714,7 +972,107 @@ function printDocuments(id){
         if(endDate == "" || endDate == null){
         endDate = ""
       }
-  
+    $.ajax({
+        url: 'generateProductsExcel.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        data: {
+            selectedProduct: selectedProduct,
+            selectedCategories: selectedCategories,
+            selectedSubCategories:  selectedSubCategories,
+            singleDateData: singleDateData,
+            startDate: startDate,
+            endDate: endDate
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'productList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}else if(id == 4){
+  $('#EXCELBtn').click(function() {
+      var ingredientsSelect = document.getElementById('ingredientsSelect')
+      var selectedIngredients = ingredientsSelect.value;
+      $.ajax({
+        url: 'generate_ingredients_excel.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        data: {
+          selectedIngredients: selectedIngredients 
+        },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'ingredientsList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}
+
+}
+
+function printDocuments(id){
+    if(id==2){
+      $('#printDocu').off('click').on('click',function() {
+      var usersSelect = document.getElementById("usersSelect");
+      var selectedUser = usersSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDate = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        singleDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+      singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+
         $.ajax({
             url: 'generate_pdf.php',
             type: 'GET',
@@ -747,34 +1105,27 @@ function printDocuments(id){
             }
         });
     });
-    }
-  }
-
-function showReports(id){
-  if(id == 2){
-    $('#showReport').on('click', function(){
-       $('#showReportsModal').show()
-   if($('#showReportsModal').is(":visible")){
-    var loadingImage = document.getElementById("loadingImage");
-    loadingImage.removeAttribute("hidden");
-    var pdfFile= document.getElementById("pdfFile");
-    pdfFile.setAttribute('hidden',true)
-    var usersSelect = document.getElementById("usersSelect");
-      var selectedUser = usersSelect.value;
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
+    }else if(id==3){
+      $('#printDocu').off('click').on('click',function() {
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
+        var categoriesSelect = document.getElementById('categoreisSelect')
+        var selectedCategories = categoriesSelect.value
+        var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+        var selectedSubCategories = subCategoreisSelect.value 
+        var datepicker = document.getElementById('datepicker').value
+      var singleDateData;
       var startDate;
       var endDate;
       if (datepicker.includes('-')) {
-
         var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
+        var startDate = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
 
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDate = formattedStartDate;
+        singleDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -784,15 +1135,131 @@ function showReports(id){
         singleDateData =  formattedDate
        
       }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
+
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+      singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+    $.ajax({
+        url: 'generate_products_pdf.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        data: {
+            selectedProduct: selectedProduct,
+            selectedCategories: selectedCategories,
+            selectedSubCategories:  selectedSubCategories,
+            singleDateData: singleDateData,
+            startDate: startDate,
+            endDate: endDate
+            },
+       
+        success: function(response) {
+          var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            console.log(searchData)
         }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
+    });
+  });
+    }else if(id == 4){
+      $('#printDocu').off('click').on('click',function() {
+      var ingredientsSelect = document.getElementById('ingredientsSelect')
+      var selectedIngredients = ingredientsSelect.value;
+      $.ajax({
+          url: 'generate_ingredients_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+            selectedIngredients: selectedIngredients 
+          },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+    });
+  });
+   }
+  }
+
+function showReports(id){
+  if(id == 2){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+   if($('#showReportsModal').is(":visible")){
+    var loadingImage = document.getElementById("loadingImage");
+    loadingImage.removeAttribute("hidden");
+    var pdfFile= document.getElementById("pdfFile");
+    pdfFile.setAttribute('hidden',true)
+     var usersSelect = document.getElementById("usersSelect");
+      var selectedUser = usersSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDate = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        singleDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+      singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+
         $.ajax({
             url: 'generate_pdf.php',
             type: 'GET',
@@ -821,9 +1288,119 @@ function showReports(id){
         });
      }
     })
+  }else if(id == 3){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
+        var categoriesSelect = document.getElementById('categoreisSelect')
+        var selectedCategories = categoriesSelect.value
+        var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+        var selectedSubCategories = subCategoreisSelect.value 
+        var datepicker = document.getElementById('datepicker').value
+      var singleDateData;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDate = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        singleDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+      singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+        $.ajax({
+            url: 'generate_products_pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+              selectedProduct: selectedProduct,
+              selectedCategories: selectedCategories,
+              selectedSubCategories:  selectedSubCategories,
+              singleDateData: singleDateData,
+              startDate: startDate,
+              endDate: endDate
+            },
+            success: function(response) {
+              loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/product/product_list.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+        });
+     }
+    })
+  }else if(id == 4){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var ingredientsSelect = document.getElementById('ingredientsSelect')
+        var selectedIngredients = ingredientsSelect.value;
+   
+        $.ajax({
+            url: 'generate_ingredients_pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+              selectedIngredients: selectedIngredients 
+            },
+            success: function(response) {
+              loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/ingredients/ingredients_list.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+        });
+     }
+    })
   }
 }
-
-
 
 </script>

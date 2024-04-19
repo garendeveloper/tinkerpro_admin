@@ -31,9 +31,9 @@ $sheet->getStyle('A1:F1')->applyFromArray($headerStyle);
 $ingredients = new IngredientsFacade();
 
 $searchQuery = $_GET['searchQuery'] ?? null;
-
-
-$fetchIngredients = $ingredients->getAllIngredients($searchQuery);
+$selectedIngredients = $_GET['selectedIngredients'] ?? null;
+// Fetch users with pagination
+$fetchIngredients = $ingredients->getAllIngredients($searchQuery,$selectedIngredients);
 $counter = 1; // Start numbering from 1
 
 while ($row = $fetchIngredients->fetch(PDO::FETCH_ASSOC)) {

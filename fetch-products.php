@@ -7,9 +7,15 @@ $productFacade = new ProductFacade;
 
 
 $searchQuery = $_GET['searchQuery'] ?? null;
+$selectedProduct = $_GET['selectedProduct'] ?? null;
+$selectedCategories = $_GET['selectedCategories'] ?? null;
+$selectedSubCategories = $_GET['selectedSubCategories'] ?? null;
+$singleDateData = $_GET['singleDateData'] ?? null;
+$startDate = $_GET['startDate'] ?? null;
+$endDate = $_GET['endDate'] ?? null;
 
 // Fetch users with pagination
-$fetchProduct = $productFacade->fetchProducts($searchQuery);
+$fetchProduct = $productFacade->fetchProducts($searchQuery,$selectedProduct,$singleDateData,$startDate,$endDate,$selectedCategories,$selectedSubCategories);
 $counter = 1;
 
 ob_start();
