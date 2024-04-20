@@ -8,7 +8,7 @@
     <form id="po_form">
         <input type="hidden" name="order_id" id="_order_id" value="0">
         <input type="hidden" name="inventory_id" id="_inventory_id" value="0">
-        <div class="fieldContainer">
+        <div class="fieldContainer" style = "margin-top: -5px;">
             <label>PO#</label>
             <input type="text" name="po_number" id="pcs_no" onkeyup="$(this).removeClass('has-error')" value=""
                 readonly />
@@ -25,7 +25,7 @@
                 </button>
             </div>
         </div>
-        <div class="fieldContainer">
+        <div class="fieldContainer" style = "margin-top: -3px;">
             <label>Supplier</label>
             <div class="search-container">
                 <input type="text" class="search-input" autocomplete="off" type="text"
@@ -33,7 +33,7 @@
                     style="width: 280px; height: 25px" autocomplete="off">
             </div>
         </div>
-        <div class="fieldContainer">
+        <div class="fieldContainer" style = "margin-top: -3px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 40px; width: 40px;"></label>
             <div class="search-container">
                 <input type="text" style="width: 210px; height: 25px; font-size: 12px;" class="search-input"
@@ -44,7 +44,7 @@
                     class="bi bi-plus-square bi-md"></i>&nbsp; Add</button>
         </div>
     </form>
-    <table id="tbl_purchaseOrders" class="text-color table-border">
+    <table id="tbl_purchaseOrders" class="text-color table-border" style = "margin-top: -3px;">
         <thead>
             <tr>
                 <th style="background-color: #1E1C11; border: 1px solid #FF6900; width: 50%">ITEM DESCRIPTION</th>

@@ -42,6 +42,7 @@
     align-items: center;
     margin-right: 10px; /* Adjust margin as needed */
     width: 100%;
+    max-width: 100%;
   }
   .italic-placeholder::placeholder {
     font-style: italic;
@@ -55,17 +56,16 @@
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
         <div class="content-wrapper" >
-          <div style="display: flex; margin-bottom: 20px; width: 100%; margin-left: 15px;">
-            <div class="horizontal-container">
+          <div style="display: flex; margin-bottom: 20px; width: 100%; margin-left: 15px; align-items: center;">
+            <div class="horizontal-container" style="display: flex; align-items: center;">
               <img src="assets/img/barcode.png" style="color: white; height: 60px; width: 50px; margin-right:5px;">
               <input class="text-color italic-placeholder" id="searchInput" style="width: 100%; height: 35px;" placeholder="Search Product,[code,serial no., barcode, name, brand]"/>
             </div>
-            <div class="horizontal-container">
-              <button class="icon-button">
+              <button class="icon-button" style="margin-left: auto;">
                 <span class="search-icon"></span>
                 Search
               </button>
-              <select id="paginationDropdown" class = "icon-button" >
+              <select id="paginationDropdown" class = "icon-button" style="margin-left: 10px;">
                 <option value="">Select<i class = "bi bi-dropdown"></i></option>
                 <option value="25">25</option>
                 <option value="50">50</option>
@@ -73,11 +73,10 @@
                 <option value="100">100</option>
                 <option value="all">Show All</option>
               </select>
-              <button class="icon-button" id = "btn_openOption">
+              <button class="icon-button" id = "btn_openOption" style="margin-left: 10px;">
                 <span class="plus-icon"></span>
                 Option
               </button>
-            </div>
           </div>
           <div>
             <div class="tbl_buttonsContainer">
@@ -165,6 +164,7 @@
 <?php include("./modals/paid_purchase-modal.php")?>
 <?php include("./modals/response-modal.php")?>
 <?php include("./modals/purchase_modal_payment.php")?>
+<?php include("./modals/received_payment_confirmation.php")?>
 <?php include("layout/footer.php") ?>
 <?php include("layout/admin/keyboardfunction.php") ?>
 
@@ -196,6 +196,8 @@
         }
     });
     $('#date_purchased').datepicker({
+      changeMonth: true,
+      changeYear: true,
       dateFormat: 'M dd y', 
       altFormat: 'M dd y', 
       altField: '#date_purchased',
@@ -522,6 +524,9 @@
         alert("The table should not be empty.");
       }
     }
+    $("#received_payment_confirmation #btn_paidClose, #btn_paidCancel").click(function(){
+      $("#received_payment_confirmation").hide();
+    })
     function show_response(message)
     {
       var modal = $("#response_modal");
@@ -542,34 +547,60 @@
         var received_items_length = $("#tbl_receivedItems tbody tr").length;
         if(received_items_length > 0)
         {
-          var tbl_data = [];
-          $("#tbl_receivedItems tbody tr").each(function(){
-            var rowData = {};
-            $(this).find('td').each(function(index, cell){
-              if(index === 0)
-              {
-                rowData['inventory_id'] = $(cell).data('id');
-              }
-              rowData['col_'+(index + 1)] = $(cell).text();
+            $("#received_payment_confirmation").slideDown({
+              backdrop: 'static',
+              keyboard: false,
+            });
+            $("#received_payment_confirmation #paid_title").html("Would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>");
+            $("#received_payment_confirmation #total_paid").html($("#overallTotal").text());
+            $("#received_payment_confirmation #paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color: #ffff;'>ATTENTION REQUIRED!</strong> ");
+            $("#received_payment_confirmation #btn_confirmPayment").click(function(){
+              var tbl_data = [];
+              var subRowData = [];
+              $("#tbl_receivedItems tbody tr:not(.sub-row)").each(function(){
+                var rowData = {};
+                $(this).find('td').each(function(index, cell){
+                  if(index === 0)
+                  {
+                    rowData['isSelected'] = $(cell).find("#receive_item").prop("checked");
+                  }
+                  if(index === 1)
+                  {
+                    rowData['inventory_id'] = $(cell).data('id');
+                  }
+                  if(index === 5)
+                  {
+                    rowData['isSerialized'] = $(cell).find("#check_isSerialized").hasClass('checked');
+                  }
+                  rowData['col_'+(index+1)] = $(cell).text();                 
+                })
+                tbl_data.push(rowData);
+              })
+              $('#tbl_receivedItems tbody .sub-row').each(function() {
+                  var rowData = {};
+                  rowData.inventory_id = $(this).data('id');
+                  rowData.serial_number = $(this).find('input').val();
+                  subRowData.push(rowData);
+              });
+              var receive_form = $("#receive_all").serialize();
+              $.ajax({
+                type: 'POST',
+                url: 'api.php?action=save_receivedItems',
+                data: {
+                  tbl_data: JSON.stringify(tbl_data),
+                  receive_form: receive_form,
+                  subRowData: JSON.stringify(subRowData),
+                  po_number: $("#r_po_number").text(),
+                },
+                success: function(response){
+                  if(response.status)
+                  {
+                    alert(response.msg);
+                    $("#received_payment_confirmation").hide();
+                  }
+                } 
+              })
             })
-            tbl_data.push(rowData);
-          })
-          var receive_form = $("#receive_all").serialize();
-          $.ajax({
-            type: 'POST',
-            url: 'api.php?action=save_receivedItems',
-            data: {
-              tbl_data: JSON.stringify(tbl_data),
-              receive_form: receive_form,
-              po_number: $("#r_po_number").text(),
-            },
-            success: function(response){
-              if(response.status)
-              {
-                alert(response.msg);
-              }
-            } 
-          })
         }
         else
         {
@@ -984,12 +1015,11 @@
               tbl_data += "<td>"+data[i].barcode+"</td>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].uom_name+"</td>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].qty_purchased+"</td>";
-              tbl_data += "<td style = 'text-align: center'>"+ (data[i].qty_received === null ? 0 : "") +"</td>";
+              tbl_data += "<td style = 'text-align: center'>"+ (data[i].qty_received === null ? 0 : data[i].qty_received) +"</td>";
               tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
               tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_afterTax)+"</td>";
               tbl_data += "<td>"+data[i].isPaid == 1 ? "YES" : "NO" +"</td>";
               tbl_data += "<td></td>";
-              // tbl_data += "<td style = 'text-align: center'><button class = 'grid-item button'><i  class = 'bi bi-pencil-fill'></i></button></td>";
               tbl_data += "</tr>";
             }
           } 

@@ -1152,7 +1152,6 @@ input[type="text"] {
                             <button class="grid-item" id="btn_lossDamage">Loss & Damage</button>
                             <button class="grid-item" id="btn_LOT">L.O.T</button>
                         </div>
-                        <p></p>
                         <?php include("./inventory_modules/purchase_items.php")?>
                         <?php include("./inventory_modules/received_items.php")?>
                     </div>
