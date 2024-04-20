@@ -23,9 +23,9 @@ $products = new ProductFacade();
 $counter = 1;
 
 $searchQuery = $_GET['searchQuery'] ?? null;
-
+$selectedIngredients = $_GET['selectedIngredients'] ?? null;
 // Fetch users with pagination
-$fetchIngrdients = $ingredients->getAllIngredients($searchQuery);
+$fetchIngrdients = $ingredients->getAllIngredients($searchQuery,$selectedIngredients);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -84,11 +84,19 @@ for ($i = 0; $i < count($header); $i++) {
 $pdf->Ln(); 
 
 $pdf->SetFont('', '', 10); 
+$totalCost = 0;
+$totalInactiveCost = 0;
+$totalGrand = 0;
 while ($row = $fetchIngrdients->fetch(PDO::FETCH_ASSOC)) {
-    if($row['cost']){
-        $formatted_cost = number_format($row['cost'],2);
+    if ($row['cost'] && $row['status'] == 'Active') {
+        $formatted_cost = number_format($row['cost'], 2);
+        $totalCost += $row['cost'];
+    } elseif ($row['cost'] && $row['status'] == "Inactive") {
+        $formatted_cost = number_format($row['cost'], 2);
+        $totalInactiveCost += $row['cost'];
     }
-    
+    $totalGrand = $totalCost + $totalInactiveCost;
+
     $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['name'] , $headerWidths[1]));
     $pdf->Cell($headerWidths[1], $maxCellHeight, $row['name'], 1, 0, 'L');
@@ -105,5 +113,41 @@ while ($row = $fetchIngrdients->fetch(PDO::FETCH_ASSOC)) {
     $counter++;
 }
 
+$pdf->SetFont('', 'B', 10);
+$activeFormatted= number_format($totalCost, 2); 
+$inactiveFormatted =  number_format($totalInactiveCost, 2); 
+$totalGrandFormatted =  number_format($totalGrand, 2); 
+
+
+$totalSellingWidth = $pdf->GetStringWidth("Total Cost(Inactive): Php $inactiveFormatted");
+$totalCostWidth = $pdf->GetStringWidth("Total Cost(Active): Php $activeFormatted");
+$totalTaxWidth = $pdf->GetStringWidth("Grand Total Cost: Php $totalGrandFormatted");
+
+
+$maxTotalWidth = max($totalSellingWidth, $totalCostWidth, $totalTaxWidth);
+
+
+$sellingPosition = 210 - $maxTotalWidth; 
+$costPosition = 210 - $maxTotalWidth;
+$taxPosition = 210 - $maxTotalWidth; 
+
+
+$pdf->Cell($sellingPosition);
+$pdf->Cell(0, 10, "Total Cost(Inactive): Php $inactiveFormatted", 0, 1, 'R', 0);
+$pdf->Ln(-5);
+$pdf->Cell($costPosition);
+$pdf->Cell(0, 10, "Total Cost(Active): Php $activeFormatted", 0, 1, 'R', 0);
+$pdf->Ln(-5);
+$pdf->Cell($taxPosition);
+$pdf->Cell(0, 10, "Grand Total Cost: Php $totalGrandFormatted", 0, 1, 'R', 0);
+$pdf->Ln();
+
 $pdf->Output('ingredient_list.pdf', 'I');
+$pdfPath = __DIR__ . '/assets/pdf/ingredients/ingredients_list.pdf';
+
+if (file_exists($pdfPath)) {
+ 
+    unlink($pdfPath);
+}
+$pdf->Output($pdfPath, 'F');
 ?>

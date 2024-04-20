@@ -8,13 +8,14 @@ $ingredientFacade = new IngredientsFacade;
 
 $searchQuery = $_GET['searchQuery'] ?? null;
 
+$selectedIngredients = $_GET['selectedIngredients'] ?? null;
 // Fetch users with pagination
-$fetchIngredient = $ingredientFacade->getAllIngredients($searchQuery);
+$fetchIngredient = $ingredientFacade->getAllIngredients($searchQuery,$selectedIngredients);
 $counter = 1;
 
 ob_start();
 
-while ($row = $fetchIngredient ->fetch(PDO::FETCH_ASSOC)) {
+while ($row = $fetchIngredient->fetch(PDO::FETCH_ASSOC)) {
 //   var_dump( $row)
     ?>
     <tr>
