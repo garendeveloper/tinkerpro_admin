@@ -255,6 +255,13 @@
       }
       var discountedCheckbox = document.getElementById('discountToggle');
       discountedCheckbox.checked = false;
+      var warrantyToggle = document.getElementById('warrantyToggle');
+      warrantyToggle.checked = false;
+      if(warrantyToggle.checked){
+        toggleShowText(warrantyToggle)
+      }else{
+        toggleShowText(warrantyToggle)
+      }
      if( $('#add_products_modal').is(':visible')){
       var toggle = document.getElementById('statusValue');
       toggle.checked = true;
@@ -437,6 +444,8 @@ $('.searchProducts').on('input', function(){
         var image = $(this).closest('tr').find('.productImgs').text();
         var desc = $(this).closest('tr').find('.description').text();
         var isBOM = $(this).closest('tr').find('.isBOM').text();
+        var isWarranty = $(this).closest('tr').find('.isWarranty').text();
+
        
         $('.highlighteds').removeClass('highlighteds');
         $('.highlightedss').removeClass('highlightedss')
@@ -451,7 +460,7 @@ $('.searchProducts').on('input', function(){
         var variantid = $(this).closest('tr').find('.variantid').text();
 
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
-        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM)
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty)
     });
 
     

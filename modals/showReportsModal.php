@@ -105,7 +105,7 @@
           <p class="warning-title"><b>SHOW REPORTS</b></p>&nbsp;
         </div>
       </div>
-      <div hidden id="loadingImage" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 85vh; position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.8); z-index: 9999;">
+      <div hidden id="loadingImage" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 800px; position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.8); z-index: 9999;">
             <h3 style="color: #FF6900"><b></b>LOADING PLEASE WAIT</b></h3><br>
             <img src="assets/img/globe.png" alt="Globe Image" style="width:75px; height: 75px; animation: rotate 2s linear infinite;" />
         </div>
