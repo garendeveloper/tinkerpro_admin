@@ -151,7 +151,7 @@
 }
 .imageButtonDiv{
   position:absolute;
-  top: 673px;
+  top: 700px;
   left: 20px
 }
 .removeImage{
@@ -165,7 +165,7 @@
   font-family: Century Gothic;
   font-weight: bold;
   position: absolute;
-  top: 710px
+  top: 750px
 }
 
 .switch {
@@ -1010,6 +1010,75 @@ input:checked + .sliderbom:before {
 .table-container::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* new */
+
+.warrantLbl {
+  position: relative;
+  display: inline-block;
+  width: 40px; 
+  height: 20px; 
+  outline: none; 
+}
+
+.warrantLbl input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.warrantySpan {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #262626;
+  -webkit-transition: .4s;
+  transition: .4s;
+  outline: none;
+  border-radius: 10px; 
+}
+
+.warrantySpan:before {
+  position: absolute;
+  content: "";
+  height: 16px; 
+  width: 16px;
+  left: 2px; 
+  bottom: 2px;
+  background-color: #888888;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%; 
+}
+
+input:checked + .warrantySpan {
+  background-color: #FF6900;
+}
+
+input:focus + .warrantySpan {
+  box-shadow: 0 0 1px #262626;
+}
+
+input:checked + .warrantySpan:before {
+  -webkit-transform: translateX(20px); 
+  -ms-transform: translateX(20px);
+  transform: translateX(20px); 
+}
+
+.warrantySpan.round {
+  border-radius: 10px; 
+}
+
+.warrantySpan.round:before {
+  border-radius: 50%; 
+}
+
+.warrantySpan.active {
+  background-color: #FF6900;
+}
 </style>
 
 <div class="modal" id="add_products_modal" tabindex="0">
@@ -1073,10 +1142,20 @@ input:checked + .sliderbom:before {
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Brand</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="brand" id="brand"/></td>
                     </tr>
-                    <!-- <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Serial No.</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="serial" placeholder="For serialized products"/></td>
-                    </tr> -->
+                    <tr>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Warranty &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        
+                        <?php
+                          $taxVat = "yes"; 
+                          $other_Charge = ($taxVat== "yes") ? "no" : "yes";
+                          ?>
+                          <label class="warrantLbl" style="margin-left: 5px">
+                              <input type="checkbox" id="warrantyToggle"<?php if($taxVat == "yes") ?> onclick="toggleShowText(this)">
+                              <span class="warrantySpan round"></span>
+                          </label>
+                      </td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px; font-style:italic; color: #B2B2B2"><span hidden id="triggers"> &nbsp;Triggers only when the product is sold</span></td>
+                    </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Category<input hidden id="catID"/><input hidden  id="varID"/><input hidden id="productLbl"/><input hidden id="cat_Lbl"/><input hidden id="var_Lbl"/></td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input readonly class="categoriesInput" name="categoriesInput" id="categoriesInput" style="width: 242px"/><button onclick="openCategoryModal()" class="addCategory">+Add</button></td>
@@ -1089,7 +1168,7 @@ input:checked + .sliderbom:before {
                           $other_Charge = ($discount== "no") ? "yes" : "no";
                           ?>
                           <label class="discount" style="margin-left: 5px">
-                              <input type="checkbox" id="discountToggle"<?php if($discount == "no") ?> >
+                              <input type="checkbox" id="discountToggle"<?php if($discount == "no") ?>  >
                               <span class="discountSpan round"></span>
                           </label>
 
@@ -1339,7 +1418,14 @@ function updateTextColor() {
          delButtons.disabled = true;
     }
 }
-
+function toggleShowText(checkbox) {
+    var triggers = document.getElementById('triggers');
+    if (checkbox.checked) {
+      triggers.removeAttribute('hidden');
+    } else {
+      triggers.setAttribute('hidden', 'hidden');
+    }
+  }
 
     function toggleStatus(checkbox) {
             var slider = checkbox.parentNode.querySelector('.slider'); 
@@ -1753,6 +1839,9 @@ function addProduct(){
   var file = document.getElementById("fileInputs").files[0]; 
   var description = document.getElementById('description').value
 
+  var warranty = document.getElementById('warrantyToggle');
+  var warrant = warranty.checked ? 1 : 0;
+
   //category details
   var catID = document.getElementById('catID').value ?? null;
   var varID = document.getElementById('varID').value ?? null;
@@ -1803,7 +1892,7 @@ function addProduct(){
   formData.append("catID", catID); 
   formData.append("varID", varID);
   formData.append("category_details",  jsonString );
-
+  formData.append("warranty",  warrant);
   if(checkbox.checked){
     var bomValue = 1;
   formData.append('bomStat', bomValue);
@@ -1812,11 +1901,13 @@ function addProduct(){
     ingredientsQty: entry.ingredientsQty,
     uom_id: entry.uom_id,
     ingredientId: entry.ingredientId
-  };
+  }
 
   formData.append('productBOM[' + index + ']', JSON.stringify(jsonData));
 });
- 
+  }else{
+    var bomValue = 0;
+    formData.append('bomStat', bomValue);
   }
  if(productname && barcode && cost && markup){
   axios.post('api.php?action=addProduct', formData).then(function(response){
@@ -1833,7 +1924,7 @@ function addProduct(){
 }
 
 function  toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM,productuomid,productBrand,productCost, productMakup, productPrice,
- productStatus,isDiscounted,isTax, isTaxIncluded, serviceCharge,displayService,otherCharges,displayOtherCharges,status, image, desc, category, categoryid, variantid, isBOM){
+ productStatus,isDiscounted,isTax, isTaxIncluded, serviceCharge,displayService,otherCharges,displayOtherCharges,status, image, desc, category, categoryid, variantid, isBOM,isWarranty){
   $('#add_products_modal').show();
   productId? document.getElementById('productid').value = productId : null;
   productName ? document.getElementById("productname").value = productName : null;
@@ -1902,6 +1993,9 @@ function  toUpdateProducts(productId,productName,productSKU,productCode,productB
 
   var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
   showTaxCheckbox.checked  = (isTaxIncluded == 1) ? true: false;
+
+  var warranty = document.getElementById('warrantyToggle');
+     warranty.checked = (isWarranty == 1) ? true : false
 
  if(showTaxCheckbox.checked){
   toggleChangeColor(showTaxCheckbox);
@@ -2007,6 +2101,10 @@ function updateProducts(){
   var stat = document.getElementById('statusValue');
   var status = stat.checked ? 1 : 0;
 
+  // warranty
+  var warranty = document.getElementById('warrantyToggle');
+  var warrant = warranty.checked ? 1 : 0;
+
   //productImage
   var file = document.getElementById("fileInputs").files[0]; 
   var description = document.getElementById('description').value
@@ -2033,7 +2131,6 @@ function updateProducts(){
       "varLbl":  var_lbl
   }];
   var jsonString = JSON.stringify(jsonData);
-
   var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
   // console.log(existingData,'checking');
   var formData = new FormData();
@@ -2060,6 +2157,7 @@ function updateProducts(){
   formData.append("catID", catID); 
   formData.append("varID", varID);
   formData.append("category_details",  jsonString );
+  formData.append("warranty",  warrant);
 
   var checkbox = document.getElementById('bomToggle');
   if(checkbox.checked){
@@ -2077,6 +2175,9 @@ function updateProducts(){
   formData.append('productBOM[' + index + ']', JSON.stringify(jsonData));
  });
  
+  }else{
+    var bomValue = 0;
+    formData.append('bomStat', bomValue);
   }
   
 

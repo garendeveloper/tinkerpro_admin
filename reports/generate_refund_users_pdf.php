@@ -19,12 +19,13 @@ $refundFacade = new OtherReportsFacade();
 $products = new ProductFacade();
 
 $counter = 1;
-$selectedProduct = $_GET['selectedProduct'] ?? null;
+$selectedCustomers = $_GET['selectedCustomers'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
+$selectedRefundTypes = $_GET['selectedRefundTypes'] ?? null;
 
-$fetchRefund= $refundFacade->getRefundData($selectedProduct,$singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade->getRefundByCustomers($selectedCustomers,$singleDateData,$startDate,$endDate,$selectedRefundTypes);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -67,7 +68,7 @@ $pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
 $pdf->Ln(-2);
 
 
-$header = array('No.', 'Product Name', 'Reference No.', 'Quantity', 'Refund. No.', 'Amount', 'Date');
+$header = array('No.', 'Customer Name', 'Reference No.', 'Quantity', 'Refund. No.', 'Amount', 'Date');
 $headerWidths = array(10, 50, 25, 18, 25, 25, 35);
 $maxCellHeight = 5; 
 
@@ -85,18 +86,54 @@ $pdf->Ln();
 
 $totalAmount = 0; 
 $pdf->SetFont('', '', 10); 
+
+
+function getRefundType($method) {
+    switch ($method) {
+        case 1:
+            return 'Cash';
+        case 7:
+            return 'Voucher';
+        case 2:
+            return 'GCash';
+        case 3:
+            return 'Pay Maya';
+        case 4:
+            return 'Grab Pay';
+        case 8:
+            return 'Ali Pay';
+        case 9:
+            return 'Shopee Pay';
+        case 5:
+            return 'Visa';
+        case 6:
+            return 'Master Card';
+        case 10:
+            return 'Discover';
+        case 11:
+            return 'American Express';
+        case 12:
+            return 'JCB';
+        default:
+            return ''; 
+    }
+}
+
+// Example usage:
+
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
+    $methodType = getRefundType($row['refundType']);
     $totalAmount += $row['amount'];
     $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[1]));
-    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['user_last_name'] . ' ' . $row['user_first_name'] , $headerWidths[1]));
+    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['user_last_name'] . ' ' . $row['user_first_name'] , 1, 0, 'L');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['receipt_id'], $headerWidths[2]));
     $formatted_receipt_id = str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT);
     $pdf->Cell($headerWidths[2], $maxCellHeight, $formatted_receipt_id, 1, 0, 'L');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['qty'], $headerWidths[3]));
     $pdf->Cell($headerWidths[3], $maxCellHeight, $row['qty'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['reference_num'], $headerWidths[4]));
-    $pdf->Cell($headerWidths[4], $maxCellHeight, $row['reference_num'], 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, getRefundType($row['refundType']), $headerWidths[4]));
+    $pdf->Cell($headerWidths[4], $maxCellHeight, getRefundType($row['refundType']), 1, 0, 'L');    
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['amount'], $headerWidths[5]));
     $pdf->Cell($headerWidths[5], $maxCellHeight, $row['amount'], 1, 0, 'L');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['date'] !== null ? date('M j, Y', strtotime($row['date'])) : '', $headerWidths[6]));
