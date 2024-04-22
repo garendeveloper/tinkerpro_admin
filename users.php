@@ -194,8 +194,8 @@
   
   }
   .btn-control:hover {
-    border-color: #FF6900; 
-    color: #FF6900; 
+    border-color: #FF6900 !important; 
+    color: #ffff !important; 
 }
   .text-color{
     color: #ffff;

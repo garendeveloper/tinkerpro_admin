@@ -91,10 +91,10 @@ td, th {
     width: 100%;
     border-collapse: collapse;
 }
-.card
+.inventoryCard
 {
-    width: 550px; /* Set the fixed width of the card */
-    max-width: 100%; /* Ensure the card can't exceed the width of its container */
+    width: 550px;
+    max-width: 100%; 
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 20px;
@@ -103,7 +103,7 @@ td, th {
     color: #fff;
     border-color: #242424;
   }
-  @keyframes slideOutRight {
+  @keyframes slideOutRightss {
     from {
       transform: translateX(0);
     }
@@ -112,7 +112,7 @@ td, th {
     }
   }
   .slideOutRight {
-    animation: slideOutRight 0.5s forwards;
+    animation: slideOutRightss 0.5s forwards;
   }
   footer {
     background-color: #151515; /* Change the background color as needed */
@@ -129,16 +129,25 @@ td, th {
     height: 45px; /* Adjust the button height as needed */
     margin-right: 10px; /* Adjust the margin between buttons as needed */
   }
-  .btn-control:hover, button:hover {
+  .btn-control:hover{
+    border-color: #FF6700; 
+    color: #FF6700; 
+  }
+  /* .btn-control:hover, button:hover {
     background-color: #FF6700; 
     color: #ffff; 
-  }
-  button{
+  } */
+  /*
+  /* button{
     border-color:  #FF6900;
-  }
+  } */
 button:active {
-  background-color: #FF6900; /* Background color when button is clicked */
-  color: #ffffff; /* Text color when button is clicked */
+  background-color: #FF6900; 
+  color: #ffffff;
+}
+button:hover {
+    background-color: #FF6700; 
+    color: #ffff; 
 }
 .active {
   background-color: #FF6900; 
