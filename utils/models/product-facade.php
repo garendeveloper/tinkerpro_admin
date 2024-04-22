@@ -31,14 +31,15 @@
         products.category_details as category_details, 
         products.category_id as category_id,
         products.variant_id as variant_id,
-        products.is_BOM as is_BOM
+        products.is_BOM as is_BOM,
+        products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.prod_desc LIKE :searchQuery OR 
         products.barcode LIKE :searchQuery OR 
         products.sku LIKE :searchQuery OR 
         products.code LIKE :searchQuery OR 
-        products.brand LIKE :searchQuery";
+        products.brand LIKE :searchQuery ORDER BY prod_desc ASC";
 
         $sql = $this->connect()->prepare($sqlQuery);
 
@@ -76,10 +77,11 @@
         products.category_details as category_details, 
         products.category_id as category_id,
         products.variant_id as variant_id,
-        products.is_BOM as is_BOM
+        products.is_BOM as is_BOM,
+        products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.id = :selectedProduct";
+        products.id = :selectedProduct ORDER BY prod_desc ASC";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -113,10 +115,11 @@
         products.category_details as category_details, 
         products.category_id as category_id,
         products.variant_id as variant_id,
-        products.is_BOM as is_BOM
+        products.is_BOM as is_BOM,
+        products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.category_id= :selectedCategoryProduct";
+        products.category_id= :selectedCategoryProduct ORDER BY prod_desc ASC";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
@@ -149,10 +152,11 @@
         products.category_details as category_details, 
         products.category_id as category_id,
         products.variant_id as variant_id,
-        products.is_BOM as is_BOM
+        products.is_BOM as is_BOM,
+        products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.variant_id= :selectedVariantroduct";
+        products.variant_id= :selectedVariantroduct ORDER BY prod_desc ASC";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
@@ -185,10 +189,11 @@
         products.category_details as category_details, 
         products.category_id as category_id,
         products.variant_id as variant_id,
-        products.is_BOM as is_BOM
+        products.is_BOM as is_BOM,
+        products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct";
+        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct ORDER BY prod_desc ASC";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -222,10 +227,11 @@
         products.category_details as category_details, 
         products.category_id as category_id,
         products.variant_id as variant_id,
-        products.is_BOM as is_BOM
+        products.is_BOM as is_BOM,
+        products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct";
+        products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -259,10 +265,11 @@
         products.category_details as category_details, 
         products.category_id as category_id,
         products.variant_id as variant_id,
-        products.is_BOM as is_BOM
+        products.is_BOM as is_BOM,
+        products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct";
+        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -297,9 +304,10 @@
         products.productImage as image, 
         products.category_details as category_details, 
         products.variant_id as variant_id,
-        products.is_BOM as is_BOM
+        products.is_BOM as is_BOM,
+        products.is_warranty as is_warranty
     FROM products 
-    LEFT JOIN uom ON uom.id = products.uom_id";
+    LEFT JOIN uom ON uom.id = products.uom_id ORDER BY prod_desc ASC";
 
     $sql = $this->connect()->prepare($sqlQuery);
     $sql->execute();
@@ -334,7 +342,8 @@
     $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
     $category_details = $formData['category_details'] ?? null;
     $bomStat = $formData['bomStat'] ?? null;
-
+    $warranty = $formData['warranty'] ?? null;
+    
     // Handle file upload
     $fileName = null;
     if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
@@ -346,16 +355,18 @@
     }
 
     // Insert product information into the database
-    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)';
     $stmt = $this->connect()->prepare($sql);
-    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat]);
+    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty]);
 
-    $maxIdQuery = $this->connect()->query('SELECT MAX(id) AS max_id FROM products');
-    $maxIdResult = $maxIdQuery->fetch(PDO::FETCH_ASSOC);
-    $maxId = $maxIdResult['max_id'];
+ 
 
   
     if ($bomStat == 1) {
+        $maxIdQuery = $this->connect()->query('SELECT MAX(id) AS max_id FROM products');
+        $maxIdResult = $maxIdQuery->fetch(PDO::FETCH_ASSOC);
+        $maxId = $maxIdResult['max_id'];
+
         $bomData = $formData['productBOM'] ?? [];
         $placeholders = rtrim(str_repeat('(?, ?, ?, ?, ?),', count($bomData)), ',');
         $values = [];
@@ -415,6 +426,7 @@ public function updateProduct($formData) {
   $var_id = ($formData['varID'] === 0 || $formData['varID'] === '') ? null : $formData['varID'];      
   $category_details = $formData['category_details'] ?? null;
   $bomStat = $formData['bomStat'] ?? null;
+  $warranty = $formData['warranty'] ?? null;
 
   if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
       $tempPath = $uploadedFile['tmp_name'];
@@ -458,12 +470,13 @@ public function updateProduct($formData) {
           category_id = ?,
           variant_id = ?,
           category_details = ?,
-          is_BOM = ?
+          is_BOM = ?,
+          is_warranty = ?
           WHERE id = ?';
 
   $stmt = $this->connect()->prepare($sql);
   $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
-  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $id]);
+  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty, $id]);
   
   $bomData = $formData['productBOM'] ?? [];
   $updateData = [];
