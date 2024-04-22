@@ -136,7 +136,7 @@
                   <label for="s_due" class="l_input" style="color: #FF6900; "><strong>DUE</strong></label>
                   <div class="date-input-container">
                     <input type="text" name="s_due" id="s_due"  placeholder="Select date" readonly style = "text-align: center; width: 120px;" onchange="$(this).removeClass('has-error')" required>
-                    <button id="calendar-btn1" class="button" type = "button">
+                    <button id="calendar-btn2" class="button" type = "button">
                         <i class="bi bi-calendar" aria-hidden="true"></i>
                     </button>
                   </div>

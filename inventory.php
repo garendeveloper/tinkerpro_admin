@@ -54,8 +54,8 @@
   <div class="container-scroller">
     <div class="" >
       <?php include 'layout/admin/sidebar.php' ?>
-      <div class="main-panel">
-        <div class="content-wrapper" >
+      <div class="main-panel" style = "display: grid; gird-template-columns: 4.5rem auto auto; align-items: center">
+        <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px; width: 100%; margin-left: 15px; align-items: center;">
             <div class="horizontal-container" style="display: flex; align-items: center;">
               <img src="assets/img/barcode.png" style="color: white; height: 60px; width: 50px; margin-right:5px;">
@@ -206,24 +206,43 @@
       {}
     });
  
-    $('#s_due').datepicker({
-      showButtonPanel: true,
-      changeMonth: true,
-      changeYear: true,
-      prevText: '<span class="bi bi-caret-left"></span>',
-      nextText: '<span class="bi bi-caret-right"></span>',
-      dateFormat: 'M dd y', 
-      altFormat: 'M dd y', 
-      altField: '#s_due',
-      minDate: 0,
-    });
  
     $('#calendar-btn').click(function() {
         $('#date_purchased').datepicker('show');
     });
-    $('#calendar-btn1').click(function() {
+ 
+    $('#s_due').datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'M dd y', 
+      altFormat: 'M dd y', 
+      altField: '#s_due',
+      minDate: 0,
+      onSelect: function(dateText, inst)
+      {}
+    });
+ 
+ 
+    $('#calendar-btn2').click(function() {
         $('#s_due').datepicker('show');
     });
+
+    $('#date_paid').datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'M dd y', 
+      altFormat: 'M dd y', 
+      altField: '#date_paid',
+      minDate: 0,
+      onSelect: function(dateText, inst)
+      {}
+    });
+ 
+ 
+    $('#calendar-btn3').click(function() {
+        $('#date_paid').datepicker('show');
+    });
+ 
     function validateUnpaidSettings() 
     {
       var isValid = true;
@@ -300,13 +319,28 @@
       $("#tbl_products").hide();
     })
     $("#tbl_orders tbody").on('click', '#btn_openPayment', function(){
-      $("#purchase_modal_payment #modalTitle").html("<i class = 'bi bi-exclamation-triangle bi-lg' style = 'color: red;'></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+      $("#purchase_modal_payment #modalTitle").html("<i class = 'bi bi-exclamation-triangle bi-lg exclamation-icon'></i>&nbsp; <strong style = 'color: #ffff'>ATTENTION REQUIRED!</strong> ");
       $("#purchase_modal_payment").slideDown({
         backdrop: 'static',
         keyboard: false,
       });
-      $("#payment_order_id").val($(this).data('id'));
+      $("#payment_order_id").val($(this).data('id'))
       show_allPaymentHistory();
+    })
+    $("#purchase_modal_payment_form").on("submit", function(e){
+      e.preventDefault();
+      var formData = $(this).serialize();
+      $.ajax({
+        type: 'post',
+        url: 'api.php?action=save_orderPayments',
+        data: formData,
+        success: function(response){
+          if(response.status){
+            alert(response.msg);
+            show_allPaymentHistory();
+          }
+        }
+      })
     })
     function show_allPaymentHistory()
     {
@@ -317,24 +351,42 @@
         data: {
           order_id: order_id,
         },
-        success: function(data){
-          $("#purchase_modal_payment #loan_amount").val("₱ "+addCommasToNumber(data[0].loan));
-          $("#purchase_modal_payment #interest_rate").val(data[0].loan_percentage);
-          $("#purchase_modal_payment #withInterest").val("₱ "+addCommasToNumber(data[0].interest));
-          $("#purchase_modal_payment #total_withInterest").val("₱ "+addCommasToNumber(data[0].with_interest));
-          $("#purchase_modal_payment #s_due").val(data[0].due_date);
-          $("#purchase_modal_payment #loan_term").val(data[0].term);
-          $("#purchase_modal_payment #amortization_frequency").val(data[0].amortization_value);
-          // $("#_to_pay").val("₱ "+addCommasToNumber(data[0].installment));
-          $("#purchase_modal_payment #rem_balance").val("₱ "+addCommasToNumber(data[0].order_balance));
-          $("#purchase_modal_payment #u_pay").val(s_installment);
-          $("#purchase_modal_payment #r_balance").val("₱ "+addCommasToNumber(data[0].ordersetting_balance));
-         
-        //  if(data[0].order_balance === "0.0")
-        //  {
-        //   $("#purchase_modal_payment #to_pay").val("₱ 0.00");
-        //   $("#purchase_modal_payment #rem_balance").val("₱ 0.00");
-        //  }
+        success: function(data)
+        {
+          $("#next_payment").val("");
+          $("#rem_balance").val("");
+          $("#payment_totalPaid").html("");
+          $("#payment_balance").html("");
+          $("#tbl_paymentHistory tbody").html("");
+          var tbl_history = "";
+          var total_paid = 0;
+          var total_balance = 0;
+          if(data.length > 0)
+          {
+            if($("#purchase_modal_payment").is(":visible"))
+            { 
+              $("#order_payment_setting_id").val(data[0].order_payment_setting_id);
+              var installment = data[data.length-1].order_balance !== "0.00" ? data[0].installment : 0 ;
+              var balance = data[data.length-1].order_balance !== "0.00" ? data[0].order_balance : 0 ;
+              $("#next_payment").val("₱ "+addCommasToNumber(installment))
+              $("#rem_balance").val("₱ "+addCommasToNumber(balance));
+              $("#total_toPay").html("("+"₱ "+addCommasToNumber(data[0].with_interest)+")");
+              for(var i = 0; i<data.length; i++)
+              {
+                  tbl_history += "<tr>";
+                  tbl_history += "<td style = 'text-align: center'>"+date_format(data[i].date_paid)+"</td>";
+                  tbl_history += "<td style = 'text-align: right'>₱ "+addCommasToNumber(data[i].payment)+"</td>";
+                  tbl_history += "<td style = 'text-align: right'>₱ "+addCommasToNumber(data[i].order_balance)+"</td>";
+                  tbl_history += "</tr>";
+                  total_paid += parseFloat(data[i].payment);
+                  total_balance += parseFloat(data[i].order_balance);
+              }
+              total_balance = balance === 0 ? "0.00" : total_balance;  
+              $("#payment_totalPaid").html("₱ "+addCommasToNumber(total_paid));
+              $("#payment_balance").html("₱ "+addCommasToNumber(total_balance))
+              $("#tbl_paymentHistory tbody").html(tbl_history);
+            }
+          }
         }
       });
     }
@@ -357,7 +409,6 @@
       var currentDate = new Date();
       var formattedDate = formatDate(currentDate);
       $('#date_purchased').val(formattedDate);
-      $('#s_due').val(formattedDate);
     }
     function formatDate(date) 
     {
@@ -612,8 +663,8 @@
         var tbl_poL = $("#po_body tr").length;
         if(tbl_poL > 0)
         {
-          var order_id = $("_order_id").val();
-          if(order_id !== "0")
+          var order_id = $("#_order_id").val();
+          if(order_id > 0)
           {
             $("#paid_purchase_modal").slideDown({
               backdrop: 'static',
@@ -1063,10 +1114,18 @@
                   tbl_data += "<td class = 'text-center'>"+date_format(data[i].due_date)+"</td>";
                 tbl_data += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].price)+"</td>";
                 if(data[i].isPaid === 1)
+                {
                   tbl_data += "<td class = 'text-center badge-success'>Paid</td>";
+                  tbl_data += "<td style = 'text-align: center'><button data-id = "+data[i].order_id+" class = 'grid-item button ' id = 'btn_openPayment' disabled><i  class = 'bi bi-cash bi-md'></i></button><button data-id = "+data[i].order_id+" class = 'grid-item button' id = 'btn_editOrder' ><i  class = 'bi bi-pencil-fill bi-md'></i></button></td>";
+                }
+        
                 else 
+                {
                   tbl_data += "<td class = 'text-center badge-danger'>Unpaid</td>";
-                tbl_data += "<td style = 'text-align: center'><button data-id = "+data[i].order_id+" class = 'grid-item button' id = 'btn_openPayment' ><i  class = 'bi bi-cash bi-md'></i></button><button data-id = "+data[i].order_id+" class = 'grid-item button' id = 'btn_editOrder' ><i  class = 'bi bi-pencil-fill bi-md'></i></button></td>";
+                  tbl_data += "<td style = 'text-align: center'><button data-id = "+data[i].order_id+" class = 'grid-item button' id = 'btn_openPayment' ><i  class = 'bi bi-cash bi-md'></i></button><button data-id = "+data[i].order_id+" class = 'grid-item button' id = 'btn_editOrder' ><i  class = 'bi bi-pencil-fill bi-md'></i></button></td>";
+                }
+                 
+         
                 tbl_data += "</tr>";
               }
             }
@@ -1083,6 +1142,10 @@
     $("#tbl_orders tbody").on('click', '#btn_editOrder', function(e){
       e.preventDefault();
       var order_id = $(this).data('id');
+      $("#received_div").hide()
+      $("button").removeClass('active');
+      $("#btn_createPO").addClass('active');
+      $("#purchaseItems_div").show()
       openOptionModal(); 
       $("#open_po_report").show();
       $.ajax({

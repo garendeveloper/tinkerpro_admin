@@ -140,13 +140,39 @@ class InventoryFacade extends DBConnection
         $row = $result->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
-    public function save_orderPayments()
+    public function save_orderPayments($formData)
     {
-
+        if(isset($formData["next_payment"]) || isset( $formData["rem_balance"]))
+        {
+            $balance = $this->remove_nonBreakingSpace($this->clean_number(($formData['rem_balance'])));
+            $next_payment = $this->remove_nonBreakingSpace($this->clean_number((($formData['next_payment']))));
+            $new_balance = $balance - $next_payment;
+            $date = date('Y-m-d', strtotime($formData['date_paid']));
+            $order_setting_id = $formData['order_setting_id'];
+            $sql = "INSERT INTO order_payments (order_setting_id, payment, balance, date_paid)
+                    VALUES (?, ?, ?, ?)";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(1, $order_setting_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $next_payment, PDO::PARAM_STR);
+            $stmt->bindParam(3, $new_balance, PDO::PARAM_STR);
+            $stmt->bindParam(4, $date, PDO::PARAM_STR);
+            $stmt->execute();
+            return [
+                'status'=>true,
+                'msg'=>"Payment has been successfully saved!",
+            ];
+        }
+        else
+        {
+            return [
+                'status'=>false,
+                'msg'=> 'Invalid field input!'
+            ];
+        }
     }
     public function get_orderPaymentHistory($order_id)
     {
-        $sql = "SELECT orders.*, order_payment_settings.*, order_payments.*, order_payment_settings.balance as ordersetting_balance, order_payments.balance as order_balance
+        $sql = "SELECT orders.*, order_payment_settings.*, order_payments.*, order_payment_settings.balance as ordersetting_balance, order_payments.balance as order_balance, order_payment_settings.id as order_payment_setting_id
                     FROM orders
                     JOIN order_payment_settings ON orders.id = order_payment_settings.order_id
                     JOIN order_payments ON order_payment_settings.id = order_payments.order_setting_id
@@ -169,9 +195,9 @@ class InventoryFacade extends DBConnection
         $totalQty = $formData['totalQty'];
         $totalPrice = $this->remove_nonBreakingSpace($this->clean_number($formData['totalPrice']));
         $order_type = 1;
-
+      
         $order_id = $this->get_lastOrderData()['id'];
-        if ($formData['order_id'] > 0) {
+        if ($formData['order_id'] !== "0") {
             $sql = "UPDATE orders SET isPaid = :v1, supplier_id = :v2, date_purchased = :v3, price = :v4, totalTax = :v5, totalQty = :v6, totalPrice = :v7 WHERE id = :id";
             $sqlStatement = $this->connect()->prepare($sql);
 
@@ -203,55 +229,64 @@ class InventoryFacade extends DBConnection
                 $sqlStatement->execute();
 
                 $order_id = $this->get_lastOrderData()['id'];
+            }
+            if ($isPaid === 0) {
+                $serializedFormData = $formData['payment_settings'];
+               
+                $payment_settings = [];
+                parse_str($serializedFormData, $payment_settings);
 
-                if ($isPaid === 0) {
-                    $serializedFormData = $formData['payment_settings'];
-                    $payment_settings = [];
-                    parse_str($serializedFormData, $payment_settings);
-
-                    $due_date = date('Y-m-d', strtotime($payment_settings['s_due']));
-                    $loanAmount = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_amount']));
-                    $interestRate = $payment_settings['interest_rate'];
-                    $withInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['withInterest']));
-                    $totalWithInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['total_withInterest']));
-                    $loanTerm = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_term']));
-                    $amortizationFrequency = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['amortization_frequency']));
-                    $amortizationFrequencyText = $formData['amortization_frequency_text'];
-                    $installment = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['installment']));
-                    $rBalance = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['r_balance']));
-                    $orderId = $order_id;
-
-                    $sql = "INSERT INTO order_payment_settings (loan, loan_percentage, interest, with_interest, due_date, term, amortization_value, amortization_text, installment, balance, order_id)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    $stmt = $this->connect()->prepare($sql);
-                    $stmt->bindParam(1, $loanAmount, PDO::PARAM_STR);
-                    $stmt->bindParam(2, $interestRate, PDO::PARAM_STR);
-                    $stmt->bindParam(3, $withInterest, PDO::PARAM_STR);
-                    $stmt->bindParam(4, $totalWithInterest, PDO::PARAM_STR);
-                    $stmt->bindParam(5, $due_date, PDO::PARAM_STR);
-                    $stmt->bindParam(6, $loanTerm, PDO::PARAM_STR);
-                    $stmt->bindParam(7, $amortizationFrequency, PDO::PARAM_STR);
-                    $stmt->bindParam(8, $amortizationFrequencyText, PDO::PARAM_STR);
-                    $stmt->bindParam(9, $installment, PDO::PARAM_STR);
-                    $stmt->bindParam(10, $rBalance, PDO::PARAM_STR);
-                    $stmt->bindParam(11, $orderId, PDO::PARAM_STR);
-                    $stmt->execute();
-
-                    $last_setting_id = $this->get_lastSettingData()['id'];
-
-                    $sql_payment = "INSERT INTO order_payments (order_setting_id, payment, balance, date_paid)
-                                        VALUES (?, ?, ?, ?)";
-
-                    $orderSettingId = $last_setting_id;
-
-                    $date_paid = date("Y-m-d");
-                    $stmt_payment = $this->connect()->prepare($sql_payment);
-                    $stmt_payment->bindParam(1, $orderSettingId, PDO::PARAM_INT);
-                    $stmt_payment->bindParam(2, $installment, PDO::PARAM_STR);
-                    $stmt_payment->bindParam(3, $rBalance, PDO::PARAM_STR);
-                    $stmt_payment->bindParam(4, $date_paid, PDO::PARAM_STR);
-                    $stmt_payment->execute();
+                $due_date = date('Y-m-d', strtotime($payment_settings['s_due']));
+                $loanAmount = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_amount']));
+                $interestRate = $payment_settings['interest_rate'];
+                $withInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['withInterest']));
+                $totalWithInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['total_withInterest']));
+                $loanTerm = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_term']));
+                $amortizationFrequency = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['amortization_frequency']));
+                $amortizationFrequencyText = $formData['amortization_frequency_text'];
+                $installment = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['installment']));
+                $rBalance = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['r_balance']));
+                $orderId = $order_id;
+                $payment = $installment;
+                if($rBalance === "0.00")
+                {
+                    $changePaid = 1;
+                    $sql = "UPDATE orders SET isPaid = :v1 WHERE id = :id";
+                    $sqlStatement = $this->connect()->prepare($sql);
+                    $sqlStatement->bindParam(':v1', $changePaid);
+                    $sqlStatement->bindParam(':id', $orderId);
+                    $sqlStatement->execute();
                 }
+                $sql = "INSERT INTO order_payment_settings (loan, loan_percentage, interest, with_interest, due_date, term, amortization_value, amortization_text, installment, balance, order_id)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->bindParam(1, $loanAmount, PDO::PARAM_STR);
+                $stmt->bindParam(2, $interestRate, PDO::PARAM_STR);
+                $stmt->bindParam(3, $withInterest, PDO::PARAM_STR);
+                $stmt->bindParam(4, $totalWithInterest, PDO::PARAM_STR);
+                $stmt->bindParam(5, $due_date, PDO::PARAM_STR);
+                $stmt->bindParam(6, $loanTerm, PDO::PARAM_STR);
+                $stmt->bindParam(7, $amortizationFrequency, PDO::PARAM_STR);
+                $stmt->bindParam(8, $amortizationFrequencyText, PDO::PARAM_STR);
+                $stmt->bindParam(9, $installment, PDO::PARAM_STR);
+                $stmt->bindParam(10, $rBalance, PDO::PARAM_STR);
+                $stmt->bindParam(11, $orderId, PDO::PARAM_STR);
+                $stmt->execute();
+
+                $last_setting_id = $this->get_lastSettingData()['id'];
+
+                $sql_payment = "INSERT INTO order_payments (order_setting_id, payment, balance, date_paid)
+                                    VALUES (?, ?, ?, ?)";
+
+                $orderSettingId = $last_setting_id;
+
+                $date_paid = date("Y-m-d");
+                $stmt_payment = $this->connect()->prepare($sql_payment);
+                $stmt_payment->bindParam(1, $orderSettingId, PDO::PARAM_INT);
+                $stmt_payment->bindParam(2, $payment, PDO::PARAM_STR);
+                $stmt_payment->bindParam(3, $rBalance, PDO::PARAM_STR);
+                $stmt_payment->bindParam(4, $date_paid, PDO::PARAM_STR);
+                $stmt_payment->execute();
             }
         }
         return $order_id;
