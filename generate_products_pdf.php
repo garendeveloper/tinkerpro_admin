@@ -73,8 +73,8 @@ $pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
 $pdf->Ln(-2);
 
 
-$header = array('No.','SKU','Product Name', 'UOM', 'Cost(Php)', 'Unit Price(Php)', 'Markup(%)','Tax(Php)');
-$headerWidths = array(10, 15, 50, 25, 22, 27, 20, 20);
+$header = array('No.','SKU','Product Name', 'UOM', 'Markup(%)', 'Cost(Php)', 'Unit Price(Php)','Tax(Php)');
+$headerWidths = array(10, 15, 50, 25, 22, 22, 27, 20);
 $maxCellHeight = 5; 
 
 $hexColor = '#FF6900';
@@ -119,46 +119,26 @@ while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {
     $pdf->Cell($headerWidths[2], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['uom_name'], $headerWidths[3]));
     $pdf->Cell($headerWidths[3], $maxCellHeight, $row['uom_name'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $formatted_cost, $headerWidths[4]));
-    $pdf->Cell($headerWidths[4], $maxCellHeight,  $formatted_cost, 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $formatted_price , $headerWidths[5]));
-    $pdf->Cell($headerWidths[5], $maxCellHeight, $formatted_price , 1, 0, 'L');    
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['markup'], $headerWidths[6]));
-    $pdf->Cell($headerWidths[6], $maxCellHeight, $row['markup'], 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['markup'], $headerWidths[4]));
+    $pdf->Cell($headerWidths[4], $maxCellHeight, $row['markup'], 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $formatted_cost, $headerWidths[5]));
+    $pdf->Cell($headerWidths[5], $maxCellHeight,  $formatted_cost, 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $formatted_price , $headerWidths[6]));
+    $pdf->Cell($headerWidths[6], $maxCellHeight, $formatted_price , 1, 0, 'L');    
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $formatted_tax, $headerWidths[7]));
     $pdf->Cell($headerWidths[7], $maxCellHeight, $row['isVAT'] == 1 ? $formatted_tax : "", 1, 0, 'L');
     $pdf->Ln(); // Move to next line
     $counter++;
 }
 
-$pdf->SetFont('', 'B', 10);
-$totalCostFormatted = number_format($totalCost, 2); 
-$totalSellingFormatted =  number_format($totalSellingPrice, 2); 
-$totalTaxFormatted =  number_format($totalTax, 2); 
 
 
-$totalSellingWidth = $pdf->GetStringWidth("Total Selling Price: Php $totalSellingFormatted");
-$totalCostWidth = $pdf->GetStringWidth("Total Cost: Php $totalCostFormatted");
-$totalTaxWidth = $pdf->GetStringWidth("Total Tax: Php $totalTaxFormatted");
-
-
-$maxTotalWidth = max($totalSellingWidth, $totalCostWidth, $totalTaxWidth);
-
-
-$sellingPosition = 210 - $maxTotalWidth; 
-$costPosition = 210 - $maxTotalWidth;
-$taxPosition = 210 - $maxTotalWidth; 
-
-
-$pdf->Cell($sellingPosition);
-$pdf->Cell(0, 10, "Total Selling Price: Php $totalSellingFormatted", 0, 1, 'R', 0);
-$pdf->Ln(-5);
-$pdf->Cell($costPosition);
-$pdf->Cell(0, 10, "Total Cost: Php $totalCostFormatted", 0, 1, 'R', 0);
-$pdf->Ln(-5);
-$pdf->Cell($taxPosition);
-$pdf->Cell(0, 10, "Total Tax: Php $totalTaxFormatted", 0, 1, 'R', 0);
-$pdf->Ln();
+$pdf->SetFont('', 'B', 10); 
+$pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total', 1, 0, 'C'); 
+$pdf->Cell($headerWidths[5], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'L'); 
+$pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalSellingPrice, 2), 1, 0, 'L'); 
+$pdf->Cell($headerWidths[7], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'L'); 
+$pdf->Ln(); 
 
 
 $pdf->Output('product_list.pdf', 'I');
