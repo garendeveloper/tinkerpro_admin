@@ -65,14 +65,14 @@
                 <span class="search-icon"></span>
                 Search
               </button>
-              <select id="paginationDropdown" class = "icon-button" style="margin-left: 10px;">
+              <!-- <select id="paginationDropdown" class = "icon-button" style="margin-left: 10px;">
                 <option value="">Select<i class = "bi bi-dropdown"></i></option>
                 <option value="25">25</option>
                 <option value="50">50</option>
                 <option value="75">75</option>
                 <option value="100">100</option>
                 <option value="all">Show All</option>
-              </select>
+              </select> -->
               <button class="icon-button" id = "btn_openOption" style="margin-left: 10px;">
                 <span class="plus-icon"></span>
                 Option
@@ -108,7 +108,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="card" style = "width: 100%;">
+            <div class="card" style = "width: 100%; height: 10%;">
               <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
                 <thead>
                   <tr>
@@ -143,10 +143,10 @@
                   
                 </tbody>
               </table>
-              <div id="pagination" class="pagination-container">
+              <!-- <div id="pagination" class="pagination-container">
                   <button class="paginate grid-item text-color" id="previous"><i class="bi bi-arrow-left"></i>&nbsp; Previous</button> |
                   <button class="paginate grid-item text-color" id="next">Next <i class="bi bi-arrow-right"></i>&nbsp;</button>
-              </div>
+              </div> -->
           </div>
         </div>
       </div>
@@ -209,6 +209,22 @@
  
     $('#calendar-btn').click(function() {
         $('#date_purchased').datepicker('show');
+    });
+    $('#date_transfer').datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'M dd y', 
+      altFormat: 'M dd y', 
+      altField: '#date_transfer',
+      maxDate: 0,
+      onSelect: function(dateText, inst)
+      {}
+    });
+ 
+ 
+    $('#btn_datetransfer').click(function(e) {
+      e.preventDefault();
+        $('#date_transfer').datepicker('show');
     });
  
     $('#s_due').datepicker({
@@ -306,7 +322,7 @@
     var overallTotal = 0;
     var selected_products = [];
     $("#tbl_orders").hide();
-    show_allInventories(1, perPage); 
+    show_allInventories(); 
     show_allSuppliers();
     show_allProducts();
     show_purchaseOrderNo();
@@ -329,18 +345,26 @@
     })
     $("#purchase_modal_payment_form").on("submit", function(e){
       e.preventDefault();
-      var formData = $(this).serialize();
-      $.ajax({
-        type: 'post',
-        url: 'api.php?action=save_orderPayments',
-        data: formData,
-        success: function(response){
-          if(response.status){
-            alert(response.msg);
-            show_allPaymentHistory();
+      var rem_balance = $("#rem_balance").val();
+      if(rem_balance !== "₱ 0.00")
+      {
+        var formData = $(this).serialize();
+        $.ajax({
+          type: 'post',
+          url: 'api.php?action=save_orderPayments',
+          data: formData,
+          success: function(response){
+            if(response.status){
+              alert(response.msg);
+              show_allPaymentHistory();
+            }
           }
-        }
-      })
+        })
+      }
+      else
+      {
+        alert("This payment already been paid");
+      }
     })
     function show_allPaymentHistory()
     {
@@ -358,6 +382,7 @@
           $("#payment_totalPaid").html("");
           $("#payment_balance").html("");
           $("#tbl_paymentHistory tbody").html("");
+          $("#total_toPay").html("");
           var tbl_history = "";
           var total_paid = 0;
           var total_balance = 0;
@@ -542,7 +567,7 @@
                 $("#totalQty").html("0");
                 $("#totalPrice").html("&#x20B1;&nbsp;0.00");
                 $("#overallTotal").html("&#x20B1;&nbsp;0.00");
-                show_allInventories(1, perPage); 
+                show_allInventories(); 
                 show_allOrders(1, perPage); 
                 show_response(response.message);
                 show_purchaseOrderNo();
@@ -590,9 +615,92 @@
         $("#response_modal").slideUp();
       }, 3000);
     }
+    function show_ordersForQuickInventory(po_number) {
+        var negative_inventory = $("#negative_inventory").prop("checked");
+        $.ajax({
+            type: 'GET',
+            url: 'api.php?action=get_orderDataByPurchaseNumber&po_number=' + po_number,
+            dataType: 'json',
+            success: function (data) {
+                var table = "";
+                for (var i = 0; i < data.length; i++) {
+                    if(negative_inventory)
+                    {
+                        if(data[i].qty_received <= data[i].qty_purchased)
+                        {
+                            table += "<tr data-id = " + data[i].inventory_id + ">";
+                            table += "<td>"+data[i].prod_desc+"</td>";
+                            table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
+                            table += "<td class = 'text-center'><input placeholder='QTY' id='qty' title='Please enter only digits' class = 'italic-placeholder' style = 'width: 60px'></input></td>";
+                            table += "</tr>";
+                        }
+                    }
+                    else
+                    {
+                        if(data[i].qty_received >= data[i].qty_purchased)
+                        {
+                            table += "<tr data-id = " + data[i].inventory_id + ">";
+                            table += "<td>"+data[i].prod_desc+"</td>";
+                            table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
+                            table += "<td class = 'text-center'><input placeholder='QTY' id='qty'  title='Please enter only digits' class = 'italic-placeholder' style = 'width: 60px'></input></td>";
+                            table += "</tr>";
+                        }
+                    }
+                }
+                $("#tbl_quickInventories tbody").html(table);
+            },
+            error: function (data) {
+                alert("No response")
+            }
+        })
+    }
+    function validateTableInputs() {
+      var isValid = true;
+      $('#tbl_quickInventories tbody tr input.required').each(function() {
+        if (!$(this).val().trim()) {
+          isValid = false;
+          $(this).addClass('has-error');
+        } else {
+          $(this).removeClass('has-error');
+        }
+      });
+      return isValid;
+    }
+
+
     $("#btn_savePO").click(function(e){
       e.preventDefault();
       var activeModuleId = $("button.active").attr('id');
+      if(activeModuleId === "btn_quickInventory")
+      {
+        var formData = $("#quickinventory_form").serialize();
+        var tbl_data = [];
+        $("#tbl_quickInventories tbody tr").each(function(){
+          var rowData = {};
+          rowData['inventory_id'] = $(this).data('id');
+          $(this).find("td").each(function(index,cell){
+            if(index === 2)
+              rowData['newqty'] = $(cell).find("#qty").val();
+            rowData['col_'+(index+1)] = $(cell).text();
+          })
+          tbl_data.push(rowData);
+        })
+        $.ajax({
+          type: 'POST',
+          url: 'api.php?action=save_quickInventory',
+          data: {
+            tbl_data: JSON.stringify(tbl_data),
+          },
+          success: function(response){
+            if(response.status)
+            {
+              alert(response.msg);
+              var po_number = $("#q_product").val();
+              show_ordersForQuickInventory(po_number)
+            }
+          }
+        })
+      }
       if(activeModuleId === "btn_receiveItems")
       {
         var received_items_length = $("#tbl_receivedItems tbody tr").length;
@@ -844,7 +952,7 @@
     })
     $("#paginationDropdown").change(function(){
       perPage = $(this).val();
-      show_allInventories(1, perPage); 
+      show_allInventories(); 
     })
     var i_quantities = ['#p_qty', '#u_qty']; 
 
@@ -1048,11 +1156,11 @@
         }
       })
     }
-    function show_allInventories(currentPage, perPage)
+    function show_allInventories()
     {
       $.ajax({
         type: 'GET',
-        url: 'api.php?action=get_allInventories&currentPage=' + currentPage + '&perPage=' + perPage,
+        url: 'api.php?action=get_allInventories',
         success: function(data)
         {
           var tbl_data = "";
@@ -1142,7 +1250,11 @@
     $("#tbl_orders tbody").on('click', '#btn_editOrder', function(e){
       e.preventDefault();
       var order_id = $(this).data('id');
+      $("#stocktransfer_div").hide();
       $("#received_div").hide()
+      $("#quickinventory_div").hide()
+      $("#expiration_div").hide()
+      $("#lossanddamage_div").hide()
       $("button").removeClass('active');
       $("#btn_createPO").addClass('active');
       $("#purchaseItems_div").show()
@@ -1272,7 +1384,12 @@
       e.preventDefault();
       $("button").removeClass('active');
       $("#btn_createPO").addClass('active');
-      $("#purchaseItems_div").show()
+      $("#expiration_div").hide();
+      $("#received_div").hide()
+      $("#quickinventory_div").hide();
+      $("#stocktransfer_div").hide();
+      $("#lossanddamage_div").hide();
+      $("#purchaseItems_div").show();
       openOptionModal();
       $("#open_po_report").hide();
     })
@@ -1280,7 +1397,11 @@
       e.preventDefault();
       $("button").removeClass('active');
       $(this).addClass('active');
+      $("#expiration_div").hide();
       $("#received_div").hide()
+      $("#quickinventory_div").hide();
+      $("#stocktransfer_div").hide();
+      $("#lossanddamage_div").hide()
       $("#purchaseItems_div").show();
       openOptionModal();
       $("#open_po_report").hide();
@@ -1289,10 +1410,57 @@
       e.preventDefault();
       $("button").removeClass('active');
       $(this).addClass('active');
+      $("#expiration_div").hide();
       $("#purchaseItems_div").hide();
       $("#received_div").show();
-      openOptionModal();
+      $("#quickinventory_div").hide();
+      $("#stocktransfer_div").hide();
+      $("#lossanddamage_div").hide()
       $("#open_po_report").hide();
+    })
+    $("#btn_stockTransfer").click(function(e){
+      e.preventDefault();
+      $("button").removeClass('active');
+      $(this).addClass('active');
+      $("#purchaseItems_div").hide();
+      $("#received_div").hide();
+      $("#quickinventory_div").hide();
+      $("#expiration_div").hide();
+      $("#lossanddamage_div").hide()
+      $("#stocktransfer_div").show();
+    })
+    $("#btn_expiration").click(function(e){
+      e.preventDefault();
+      $("button").removeClass('active');
+      $(this).addClass('active');
+      $("#purchaseItems_div").hide();
+      $("#received_div").hide();
+      $("#quickinventory_div").hide();
+      $("#stocktransfer_div").hide();
+      $("#lossanddamage_div").hide()
+      $("#expiration_div").show();
+    })
+    $("#btn_quickInventory").click(function(e){
+      e.preventDefault();
+      $("button").removeClass('active');
+      $(this).addClass("active");
+      $("#purchaseItems_div").hide();
+      $("#received_div").hide();
+      $("#expiration_div").hide();
+      $("#stocktransfer_div").hide();
+      $("#lossanddamage_div").hide()
+      $("#quickinventory_div").show();
+    })
+    $("#btn_lossDamage").click(function(e){
+      e.preventDefault();
+      $("button").removeClass('active');
+      $(this).addClass("active");
+      $("#purchaseItems_div").hide();
+      $("#received_div").hide();
+      $("#expiration_div").hide();
+      $("#stocktransfer_div").hide();
+      $("#quickinventory_div").hide();
+      $("#lossanddamage_div").show();
     })
     function openOptionModal()
     {

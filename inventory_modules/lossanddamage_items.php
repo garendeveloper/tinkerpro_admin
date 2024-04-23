@@ -1,0 +1,294 @@
+<style>
+    tr:hover {
+        background-color: #151515;
+        cursor: pointer;
+    }
+
+    .group {
+        display: inline-block;
+        margin-right: 3px;
+    }
+
+    .custom-select {
+        position: relative;
+        display: inline-block;
+
+    }
+
+    .custom-select select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 25px;
+        text-indent: 0.5em;
+    }
+
+    .custom-select i {
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+    }
+    #tbl_lossand_damages tbody{
+        font-size: 12px;
+    }
+    textarea {
+        resize: none; /* Prevent resizing of textarea */
+        width: 300px;
+        height: 100px;
+        overflow: auto; /* Enable scrolling if content exceeds textarea size */
+    }
+    textarea::placeholder {
+        color: #ffff; /* Placeholder text color */
+        font-style: italic; /* Placeholder font style */
+    }
+    #tbl_lossand_damages tbody{
+        font-size: 12px;
+    }
+    #tbl_lossand_damages thead th{
+       border: none;
+       color: #FF6900;
+    }
+    #tbl_lossand_damages thead{
+       border: 1px solid #FF6900;
+    }
+    #tbl_lossand_damages tbody td{
+        border: none;
+    }
+    #footer_lossand_damages thead th{
+       border: none;
+       color: #FF6900;
+    }
+    #footer_lossand_damages thead{
+       border: none;
+    }
+    #footer_lossand_damages tbody td{
+        border: none;
+    }
+    #footer_lossand_damages{
+        border: none;
+    }
+</style>
+<div class="fcontainer" id="lossanddamage_div" style="display: none">
+    <form id="lossanddamage_form">
+        <div class="fieldContainer">
+            <label>REF# </label>
+            <input type="text" name = "ref" id = "ld_reference"  name = "ld_reference" style= "width: 150px;">
+            <div class="date-input-container">
+                <input type="text" name="date_transfer" id="date_transfer" placeholder="Select date" readonly>
+                <button id="btn_datetransfer" class="button">
+                    <i class="bi bi-calendar" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+        <div class="fieldContainer">
+           <label for="" style="width:350px; font-size: 10px; font-style: italic">Choose a reason of loss &damage</label>
+            <div class="custom-select" style="margin-right: 0px; ">
+                <select name="ld_reason"
+                    style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
+                    <option>Disposal</option>
+                    <option>Return to Supplier</option>
+                    <option>Insect/Animal Infestation</option>
+                    <option>Expired Products</option>
+                    <option>Expiring Soon</option>
+                    <option>Pin Holes</option>
+                    <option>Material Deformity</option>
+                    <option>Faded Color</option>
+                    <option>Damage due to calamity</option>
+                    <option>Liquid Damage</option>
+                    <option>Impact Damage</option>
+                    <option>Manufacturing Defects</option>
+                    <option>Design Defects</option>
+                    <option>Misuse or Negligence</option>
+                    <option>Theft or Vandalism</option>
+                    <option>Third-Party Damage</option>
+                    <option>Recall Damage</option>
+                </select>
+                <i class="bi bi-chevron-double-down"></i>
+            </div>
+        </div>
+        <div class="fieldContainer" style="margin-top: -3px;">
+            <label><img src="assets/img/barcode.png" style="color: white; height: 40px; width: 40px;"></label>
+            <div class="search-container">
+                <input type="text" style="width: 210px; height: 25px; font-size: 12px;"
+                    class="search-input italic-placeholder" placeholder="Search Prod..." name="q_product"
+                    onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
+            </div>
+            <button style="font-size: 10px; height: 25px; width: 90px; border-radius: 4px;" id="btn_searchQProduct"> Add Product</button>
+        </div>
+    </form>
+    <table id="tbl_lossand_damages" class="text-color table-border" style="margin-top: -3px;">
+        <thead>
+            <tr>
+                <th style="background-color: #1E1C11; ">ITEM DESCRIPTION</th>
+                <th style="background-color: #1E1C11; ">QTY</th>
+                <th style="background-color: #1E1C11; ">COST</th>
+            </tr>
+        </thead>
+        <tbody style="border-collapse: collapse; border: none">
+
+        </tbody>
+        
+    </table>
+    <table id="footer_lossand_damages" class="" style = "position: absolute; bottom: 120px; width: 100%;">
+        <thead style="border: none;">
+            <tr>
+                <th style="background-color: #1E1C11">TOTAL</th>
+                <th style="background-color: #1E1C11" id = "total_qty"></th>
+                <th style="background-color: #1E1C11" id ="total_cost"></th>
+            </tr>
+        <thead>
+    </table>
+    <div style="position: absolute; bottom: 5px; padding: 10px;">
+        <textarea name="stock_note" id="stock_note" cols="60" rows="5" placeholder="Note" style = "background-color: #1E1C11; color: #ffff; width: 100%;">
+
+        </textarea>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("select[name='inventory_type']").on("change", function (e) {
+            e.preventDefault();
+            var value = $(this).val();
+            show_allProductsByInventoryType(value);
+        })
+        $("#btn_searchQProduct").on("click", function (e) {
+            e.preventDefault();
+            var po_number = $("#q_product").val();
+            show_orders(po_number);
+        })
+        function show_orders(po_number) {
+            var negative_inventory = $("#negative_inventory").prop("checked");
+            $.ajax({
+                type: 'GET',
+                url: 'api.php?action=get_orderDataByPurchaseNumber&po_number=' + po_number,
+                dataType: 'json',
+                success: function (data) {
+                    var table = "";
+                    for (var i = 0; i < data.length; i++) {
+                        if(negative_inventory)
+                        {
+                            if(data[i].qty_received <= data[i].qty_purchased)
+                            {
+                                table += "<tr data-id = " + data[i].inventory_id + ">";
+                                table += "<td>"+data[i].prod_desc+"</td>";
+                                table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
+                                table += "<td class = 'text-center'><input placeholder='QTY' id='qty' title='Please enter only digits' class = 'italic-placeholder' style = 'width: 60px'></input></td>";
+                                table += "</tr>";
+                            }
+                        }
+                        else
+                        {
+                            if(data[i].qty_received >= data[i].qty_purchased)
+                            {
+                                table += "<tr data-id = " + data[i].inventory_id + ">";
+                                table += "<td>"+data[i].prod_desc+"</td>";
+                                table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
+                                table += "<td class = 'text-center'><input placeholder='QTY' id='qty'  title='Please enter only digits' class = 'italic-placeholder' style = 'width: 60px'></input></td>";
+                                table += "</tr>";
+                            }
+                        }
+                    }
+                    $("#tbl_lossand_damages tbody").html(table);
+                },
+                error: function (data) {
+                    alert("No response")
+                }
+            })
+        }
+        $("#tbl_lossand_damages tbody").on("input", '#qty', function(e){
+            e.preventDefault();
+            $(this).val($(this).val().replace(/\D/g, ''));
+        })
+        function show_allProductsByInventoryType(inventory_type) {
+            $.ajax({
+                type: 'GET',
+                url: 'api.php?action=get_allProductByInventoryType',
+                data: { type: inventory_type },
+                success: function (data) {
+                    var tbody = "";
+                    var products = [];
+
+                    if (inventory_type === "2") {
+                        for (var i = 0; i < data.length; i++) {
+                            products.push(data[i].po_number);
+                        }
+                    }
+                    else {
+
+                    }
+                    autocomplete(document.getElementById("q_product"), products);
+                }
+            })
+        }
+        function autocomplete(inp, arr) {
+            var currentFocus;
+            inp.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(a);
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        b = document.createElement("DIV");
+                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(val.length);
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        b.addEventListener("click", function (e) {
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            inp.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    currentFocus++;
+                    addActive(x);
+                }
+                else if (e.keyCode == 38) {
+                    currentFocus--;
+                    addActive(x);
+                }
+                else if (e.keyCode == 13) {
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+            function addActive(x) {
+                if (!x) return false;
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+    })
+</script>

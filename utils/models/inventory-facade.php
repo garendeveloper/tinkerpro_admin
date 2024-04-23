@@ -1,23 +1,79 @@
 <?php
 class InventoryFacade extends DBConnection
 {
-    public function get_allInventories($page, $perPage)
+    public function get_allInventories()
     {
-        $offset = ($page - 1) * $perPage;
+        // $offset = ($page - 1) * $perPage;
         $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
                                             FROM inventory
                                             JOIN products ON products.id = inventory.product_id
                                             JOIN uom ON uom.id = products.uom_id
                                             JOIN orders ON orders.id = inventory.order_id
                                             JOIN supplier ON supplier.id = orders.supplier_id
-                                            ORDER BY inventory.id DESC; LIMIT :offset, :perPage");
-
-        $sql->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $sql->bindParam(':perPage', $perPage, PDO::PARAM_INT);
+                                            ORDER BY inventory.id DESC;");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
+    }
+    public function get_allProductByInventoryType($type)
+    {
+        $data = "";
+        if($type === 1)
+        {
+            // $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
+            //                                 FROM inventory
+            //                                 JOIN products ON products.id = inventory.product_id
+            //                                 JOIN uom ON uom.id = products.uom_id
+            //                                 JOIN orders ON orders.id = inventory.order_id
+            //                                 JOIN supplier ON supplier.id = orders.supplier_id
+            //                                 ORDER BY inventory.id DESC; LIMIT :offset, :perPage");
+
+            // $sql->bindParam(':offset', $offset, PDO::PARAM_INT);
+            // $sql->bindParam(':perPage', $perPage, PDO::PARAM_INT);
+            // $sql->execute();
+            // $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            $sql = "SELECT DISTINCT orders.*, supplier.*
+                    FROM orders
+                    INNER JOIN supplier ON supplier.id = orders.supplier_id";
+
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+            $data =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $data;
+    }
+    public function get_inventory($inventory_id)
+    {
+        $sql = "SELECT * FROM inventory WHERE id=:id";
+        $stmt = $this->connect()->prepare($sql);  
+        $stmt->bindParam(":id", $inventory_id);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
+    public function save_quickInventory($formData)
+    {
+        $tbl_data = json_decode($formData['tbl_data'], true);
+        foreach($tbl_data as $row)
+        {
+            $inventory_id = $row['inventory_id'];
+            $qty_onhand = (int)$row['col_2'];
+            $newqty = (int)$row['newqty'];
+            $newqty = $newqty + $qty_onhand;
+            $sql = $this->connect()->prepare('UPDATE inventory SET qty_received = :qty_received WHERE id=:id');
+            $sql->bindParam(':qty_received', $newqty);
+            $sql->bindParam(':id', $inventory_id);
+            $sql->execute();
+        }
+        return [
+            'status'=>true,
+            'msg'=>'Quick inventory has been successfully saved!',	
+        ];
     }
     public function get_allProducts()
     {

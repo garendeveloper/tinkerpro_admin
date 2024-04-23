@@ -59,9 +59,13 @@
             echo json_encode(['success' => true, 'categories' => $result]);
             break;
         case 'get_allInventories':
-            $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
-            $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
-            echo json_encode($inventory->get_allInventories($currentPage, $perPage));
+            // $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
+            // $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
+            echo json_encode($inventory->get_allInventories());
+            break;
+        case 'get_allProductByInventoryType':
+            $inventory_type = $_GET['type'];
+            echo json_encode($inventory->get_allProductByInventoryType($inventory_type));
             break;
         case 'get_orderPaymentHistory':
             $order_id = $_GET['order_id'];
@@ -85,6 +89,10 @@
         case 'save_receivedItems':
             $formData = $_POST;
             echo json_encode($inventory->save_receivedItems($formData));
+            break;
+        case 'save_quickInventory':
+            $formData = $_POST;
+            echo json_encode($inventory->save_quickInventory($formData));
             break;
         case 'get_allSuppliers':
             echo json_encode($inventory->get_allSuppliers());
