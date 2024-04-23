@@ -470,8 +470,551 @@
   // }
 
   public function cashInAmountsData($userId,$singleDateData ,$startDate,$endDate){
-    $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 0';
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
+    if($userId && !$singleDateData && !$startDate && !$endDate){
+      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 0 AND u.id = :userId';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':userId', $userId);
+      $sql->execute();
+      return $sql; 
+    }
+    else if(!$userId && $singleDateData && !$startDate && !$endDate){
+      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 0  AND DATE(c.date) = :singleDateData';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':singleDateData', $singleDateData);
+      $sql->execute();
+      return $sql; 
+    }else if(!$userId && !$singleDateData && $startDate && $endDate){
+      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 0  AND DATE(c.date) BETWEEN :startDate AND :endDate';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':startDate', $startDate);
+      $sql->bindParam(':endDate', $endDate);
+      $sql->execute();
+      return $sql; 
+
+    }else if($userId && $singleDateData && !$startDate && !$endDate){
+      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 0 AND u.id = :userId AND DATE(c.date) = :singleDateData';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':userId', $userId);
+      $sql->bindParam(':singleDateData', $singleDateData);
+      $sql->execute();
+      return $sql; 
+    }else if($userId && !$singleDateData && $startDate && $endDate){
+      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 0 AND u.id = :userId AND DATE(c.date) BETWEEN :startDate AND :endDate';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':userId', $userId);     
+      $sql->bindParam(':startDate', $startDate);
+      $sql->bindParam(':endDate', $endDate);
+      $sql->execute();
+      return $sql; 
+    }else{
+      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 0';
+      $stmt = $this->connect()->query($sql);
+      return $stmt;
+    }
+  }
+
+  public function getUnpaidSales($selectedCustomers,$userId,$singleDateData,$startDate,$endDate){
+    if($selectedCustomers && !$userId && !$singleDateData && !$startDate && !$endDate){
+      $sql = 'WITH TotalPaid AS (
+        SELECT 
+            receipt_id,
+            COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+        FROM 
+            paid_credits 
+        GROUP BY 
+            receipt_id
+    )
+    
+    SELECT 
+        u.first_name AS first_name,
+        u.last_name AS last_name,
+        c.first_name AS c_firstname,
+        c.last_name AS c_lastname,
+        r.id AS receipt_id,
+        p.date_time_of_payment as date,
+        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+        COALESCE(p.creditTotal, 0) AS credit_amount,
+        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+    FROM 
+        payments AS p 
+    RIGHT JOIN 
+        (
+            SELECT 
+                payment_id, 
+                user_id, 
+                cashier_id,
+                MAX(receipt_id) AS receipt_id
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS t ON p.id = t.payment_id 
+    LEFT JOIN 
+        receipt AS r ON r.id = t.receipt_id 
+    INNER JOIN 
+        users AS u ON u.id = t.user_id 
+    INNER JOIN 
+    users as c ON c.id = t.cashier_id
+    LEFT JOIN 
+        TotalPaid AS tp ON tp.receipt_id = r.id
+    WHERE 
+        COALESCE(p.creditTotal, 0) != 0
+        AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId
+    GROUP BY
+        u.first_name, u.last_name, p.creditTotal, r.id';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':customerId', $selectedCustomers);
+      $sql->execute();
+      return $sql; 
+    }else if(!$selectedCustomers && !$userId && $singleDateData && !$startDate && !$endDate){
+      $sql = 'WITH TotalPaid AS (
+        SELECT 
+            receipt_id,
+            COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+        FROM 
+            paid_credits 
+        GROUP BY 
+            receipt_id
+    )
+    
+    SELECT 
+        u.first_name AS first_name,
+        u.last_name AS last_name,
+        c.first_name AS c_firstname,
+        c.last_name AS c_lastname,
+        r.id AS receipt_id,
+        p.date_time_of_payment as date,
+        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+        COALESCE(p.creditTotal, 0) AS credit_amount,
+        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+    FROM 
+        payments AS p 
+    RIGHT JOIN 
+        (
+            SELECT 
+                payment_id, 
+                user_id, 
+                cashier_id,
+                MAX(receipt_id) AS receipt_id
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS t ON p.id = t.payment_id 
+    LEFT JOIN 
+        receipt AS r ON r.id = t.receipt_id 
+    INNER JOIN 
+        users AS u ON u.id = t.user_id 
+    INNER JOIN 
+    users as c ON c.id = t.cashier_id
+    LEFT JOIN 
+        TotalPaid AS tp ON tp.receipt_id = r.id
+    WHERE 
+        COALESCE(p.creditTotal, 0) != 0
+        AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND DATE(p.date_time_of_payment) = :singleDateData
+    GROUP BY
+        u.first_name, u.last_name, p.creditTotal, r.id';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':singleDateData', $singleDateData);
+      $sql->execute();
+      return $sql;
+    }else if(!$selectedCustomers && !$userId && !$singleDateData && $startDate && $endDate){
+      $sql = 'WITH TotalPaid AS (
+        SELECT 
+            receipt_id,
+            COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+        FROM 
+            paid_credits 
+        GROUP BY 
+            receipt_id
+    )
+    
+    SELECT 
+        u.first_name AS first_name,
+        u.last_name AS last_name,
+        c.first_name AS c_firstname,
+        c.last_name AS c_lastname,
+        r.id AS receipt_id,
+        p.date_time_of_payment as date,
+        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+        COALESCE(p.creditTotal, 0) AS credit_amount,
+        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+    FROM 
+        payments AS p 
+    RIGHT JOIN 
+        (
+            SELECT 
+                payment_id, 
+                user_id, 
+                cashier_id,
+                MAX(receipt_id) AS receipt_id
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS t ON p.id = t.payment_id 
+    LEFT JOIN 
+        receipt AS r ON r.id = t.receipt_id 
+    INNER JOIN 
+        users AS u ON u.id = t.user_id 
+    INNER JOIN 
+    users as c ON c.id = t.cashier_id
+    LEFT JOIN 
+        TotalPaid AS tp ON tp.receipt_id = r.id
+    WHERE 
+        COALESCE(p.creditTotal, 0) != 0
+        AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+    GROUP BY
+        u.first_name, u.last_name, p.creditTotal, r.id';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':startDate', $startDate);
+      $sql->bindParam(':endDate', $endDate);
+      $sql->execute();
+      return $sql;
+    }else if($selectedCustomers && !$userId && $singleDateData && !$startDate && !$endDate){
+      $sql = 'WITH TotalPaid AS (
+        SELECT 
+            receipt_id,
+            COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+        FROM 
+            paid_credits 
+        GROUP BY 
+            receipt_id
+    )
+    
+    SELECT 
+        u.first_name AS first_name,
+        u.last_name AS last_name,
+        c.first_name AS c_firstname,
+        c.last_name AS c_lastname,
+        r.id AS receipt_id,
+        p.date_time_of_payment as date,
+        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+        COALESCE(p.creditTotal, 0) AS credit_amount,
+        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+    FROM 
+        payments AS p 
+    RIGHT JOIN 
+        (
+            SELECT 
+                payment_id, 
+                user_id, 
+                cashier_id,
+                MAX(receipt_id) AS receipt_id
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS t ON p.id = t.payment_id 
+    LEFT JOIN 
+        receipt AS r ON r.id = t.receipt_id 
+    INNER JOIN 
+        users AS u ON u.id = t.user_id 
+    INNER JOIN 
+    users as c ON c.id = t.cashier_id
+    LEFT JOIN 
+        TotalPaid AS tp ON tp.receipt_id = r.id
+    WHERE 
+        COALESCE(p.creditTotal, 0) != 0
+        AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId AND DATE(p.date_time_of_payment) = :singleDateData
+    GROUP BY
+        u.first_name, u.last_name, p.creditTotal, r.id';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':customerId', $selectedCustomers);
+      $sql->bindParam(':singleDateData', $singleDateData);
+      $sql->execute();
+      return $sql; 
+    }else if($selectedCustomers && !$userId && !$singleDateData && $startDate && $endDate){
+      $sql = 'WITH TotalPaid AS (
+        SELECT 
+            receipt_id,
+            COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+        FROM 
+            paid_credits 
+        GROUP BY 
+            receipt_id
+    )
+    
+    SELECT 
+        u.first_name AS first_name,
+        u.last_name AS last_name,
+        c.first_name AS c_firstname,
+        c.last_name AS c_lastname,
+        r.id AS receipt_id,
+        p.date_time_of_payment as date,
+        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+        COALESCE(p.creditTotal, 0) AS credit_amount,
+        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+    FROM 
+        payments AS p 
+    RIGHT JOIN 
+        (
+            SELECT 
+                payment_id, 
+                user_id, 
+                cashier_id,
+                MAX(receipt_id) AS receipt_id
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS t ON p.id = t.payment_id 
+    LEFT JOIN 
+        receipt AS r ON r.id = t.receipt_id 
+    INNER JOIN 
+        users AS u ON u.id = t.user_id 
+    INNER JOIN 
+    users as c ON c.id = t.cashier_id
+    LEFT JOIN 
+        TotalPaid AS tp ON tp.receipt_id = r.id
+    WHERE 
+        COALESCE(p.creditTotal, 0) != 0
+        AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId  AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+    GROUP BY
+        u.first_name, u.last_name, p.creditTotal, r.id';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':startDate', $startDate);
+      $sql->bindParam(':endDate', $endDate);
+      $sql->bindParam(':customerId', $selectedCustomers);
+      $sql->execute();
+      return $sql;
+    }else if(!$selectedCustomers && $userId && !$singleDateData && !$startDate && !$endDate){
+      $sql = 'WITH TotalPaid AS (
+        SELECT 
+            receipt_id,
+            COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+        FROM 
+            paid_credits 
+        GROUP BY 
+            receipt_id
+    )
+    
+    SELECT 
+        u.first_name AS first_name,
+        u.last_name AS last_name,
+        c.first_name AS c_firstname,
+        c.last_name AS c_lastname,
+        r.id AS receipt_id,
+        p.date_time_of_payment as date,
+        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+        COALESCE(p.creditTotal, 0) AS credit_amount,
+        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+    FROM 
+        payments AS p 
+    RIGHT JOIN 
+        (
+            SELECT 
+                payment_id, 
+                user_id, 
+                cashier_id,
+                MAX(receipt_id) AS receipt_id
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS t ON p.id = t.payment_id 
+    LEFT JOIN 
+        receipt AS r ON r.id = t.receipt_id 
+    INNER JOIN 
+        users AS u ON u.id = t.user_id 
+    INNER JOIN 
+    users as c ON c.id = t.cashier_id
+    LEFT JOIN 
+        TotalPaid AS tp ON tp.receipt_id = r.id
+    WHERE 
+        COALESCE(p.creditTotal, 0) != 0
+        AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId
+    GROUP BY
+        u.first_name, u.last_name, p.creditTotal, r.id';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':userId',  $userId);
+      $sql->execute();
+      return $sql; 
+    }else if(!$selectedCustomers && $userId && $singleDateData && !$startDate && !$endDate){
+      $sql = 'WITH TotalPaid AS (
+        SELECT 
+            receipt_id,
+            COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+        FROM 
+            paid_credits 
+        GROUP BY 
+            receipt_id
+    )
+    
+    SELECT 
+        u.first_name AS first_name,
+        u.last_name AS last_name,
+        c.first_name AS c_firstname,
+        c.last_name AS c_lastname,
+        r.id AS receipt_id,
+        p.date_time_of_payment as date,
+        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+        COALESCE(p.creditTotal, 0) AS credit_amount,
+        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+    FROM 
+        payments AS p 
+    RIGHT JOIN 
+        (
+            SELECT 
+                payment_id, 
+                user_id, 
+                cashier_id,
+                MAX(receipt_id) AS receipt_id
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS t ON p.id = t.payment_id 
+    LEFT JOIN 
+        receipt AS r ON r.id = t.receipt_id 
+    INNER JOIN 
+        users AS u ON u.id = t.user_id 
+    INNER JOIN 
+    users as c ON c.id = t.cashier_id
+    LEFT JOIN 
+        TotalPaid AS tp ON tp.receipt_id = r.id
+    WHERE 
+        COALESCE(p.creditTotal, 0) != 0
+        AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId AND DATE(p.date_time_of_payment) = :singleDateData
+    GROUP BY
+        u.first_name, u.last_name, p.creditTotal, r.id';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':userId',  $userId);
+      $sql->bindParam(':singleDateData', $singleDateData);
+      $sql->execute();
+      return $sql; 
+    }else if(!$selectedCustomers && $userId && !$singleDateData && $startDate && $endDate){
+      $sql = 'WITH TotalPaid AS (
+        SELECT 
+            receipt_id,
+            COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+        FROM 
+            paid_credits 
+        GROUP BY 
+            receipt_id
+    )
+    
+    SELECT 
+        u.first_name AS first_name,
+        u.last_name AS last_name,
+        c.first_name AS c_firstname,
+        c.last_name AS c_lastname,
+        r.id AS receipt_id,
+        p.date_time_of_payment as date,
+        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+        COALESCE(p.creditTotal, 0) AS credit_amount,
+        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+    FROM 
+        payments AS p 
+    RIGHT JOIN 
+        (
+            SELECT 
+                payment_id, 
+                user_id, 
+                cashier_id,
+                MAX(receipt_id) AS receipt_id
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS t ON p.id = t.payment_id 
+    LEFT JOIN 
+        receipt AS r ON r.id = t.receipt_id 
+    INNER JOIN 
+        users AS u ON u.id = t.user_id 
+    INNER JOIN 
+    users as c ON c.id = t.cashier_id
+    LEFT JOIN 
+        TotalPaid AS tp ON tp.receipt_id = r.id
+    WHERE 
+        COALESCE(p.creditTotal, 0) != 0
+        AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+    GROUP BY
+        u.first_name, u.last_name, p.creditTotal, r.id';
+
+      $sql = $this->connect()->prepare($sql);
+      $sql->bindParam(':startDate', $startDate);
+      $sql->bindParam(':endDate', $endDate);
+      $sql->bindParam(':userId',  $userId);
+      $sql->execute();
+      return $sql;
+    }
+    else{
+        $sql = 'WITH TotalPaid AS (
+          SELECT 
+              receipt_id,
+              COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+          FROM 
+              paid_credits 
+          GROUP BY 
+              receipt_id
+      )
+      
+      SELECT 
+          u.first_name AS first_name,
+          u.last_name AS last_name,
+          c.first_name AS c_firstname,
+          c.last_name AS c_lastname,
+          r.id AS receipt_id,
+          p.date_time_of_payment as date,
+          IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
+          COALESCE(p.creditTotal, 0) AS credit_amount,
+          COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+      FROM 
+          payments AS p 
+      RIGHT JOIN 
+          (
+              SELECT 
+                  payment_id, 
+                  user_id, 
+                  cashier_id,
+                  MAX(receipt_id) AS receipt_id
+              FROM 
+                  transactions 
+              GROUP BY 
+                  payment_id
+          ) AS t ON p.id = t.payment_id 
+      LEFT JOIN 
+          receipt AS r ON r.id = t.receipt_id 
+      INNER JOIN 
+          users AS u ON u.id = t.user_id 
+      INNER JOIN users as c ON c.id = t.cashier_id
+      LEFT JOIN 
+          TotalPaid AS tp ON tp.receipt_id = r.id
+      WHERE 
+          COALESCE(p.creditTotal, 0) != 0
+          AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0
+      GROUP BY
+          u.first_name, u.last_name, p.creditTotal, r.id;';
+        $stmt = $this->connect()->query($sql);
+        return $stmt;
+      }
   }
   }
