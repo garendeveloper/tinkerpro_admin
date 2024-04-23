@@ -189,27 +189,33 @@
               <h5 class="headerReport text-color">Select report to view or print</h5>
               <h5 class="headerReport text-color" style="margin-top: 5px; display: flex;align-items: center;">Sales<span  class="line"></span></h5>
                <div class="anchor-container">
-                  <div id="highlightDiv1" style="width: 100%"><a href="#" onclick=" highlightDiv(1)" class="text-color customerAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv1" style="width: 100%"><a href="#" onclick="highlightDiv(1)" class="text-color customerAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Customers</span></a></div>
-                  <div id="highlightDiv2" style="width: 100%"><a href="#" onclick=" highlightDiv(2)" class="text-color usersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv2" style="width: 100%"><a href="#" onclick="highlightDiv(2)" class="text-color usersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Users</span></a></div>
-                  <div id="highlightDiv3" style="width: 100%"><a href="#" onclick=" highlightDiv(3)" class="text-color productssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv3" style="width: 100%"><a href="#" onclick="highlightDiv(3)" class="text-color productssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Products</span></a></div>
-                  <div id="highlightDiv4" style="width: 100%"><a href="#" onclick=" highlightDiv(4)" class="text-color ingredientsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv4" style="width: 100%"><a href="#" onclick="highlightDiv(4)" class="text-color ingredientsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Ingredients</span></a></div>
-                  <div id="highlightDiv5" style="width: 100%"><a href="#" onclick=" highlightDiv(5)" class="text-color refundAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Refund</span></a></div>
-                  <div id="highlightDiv28" style="width: 100%"><a href="#" onclick=" highlightDiv(28)" class="text-color refundCustomersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv31" style="width: 100%"><a href="#" onclick="highlightDiv(31)" class="text-color bomAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Bill of Materials (B.O.M)</span></a></div>
+                  <div id="highlightDiv5" style="width: 100%"><a href="#" onclick="highlightDiv(5)" class="text-color refundAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Refund by Products</span></a></div>
+                  <div id="highlightDiv28" style="width: 100%"><a href="#" onclick="highlightDiv(28)" class="text-color refundCustomersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Refund by Types & Customers</span></a></div>
-                  <div id="highlightDiv6" style="width: 100%"><a href="#" onclick=" highlightDiv(6)" class="text-color taxRatesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv29" style="width: 100%"><a href="#" onclick="highlightDiv(29)" class="text-color retAndExAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Return and Exchange by Products</span></a></div>
+                  <div id="highlightDiv30" style="width: 100%"><a href="#" onclick="highlightDiv(30)" class="text-color retAndExByCustomerAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Return and Exchange by Customers</span></a></div>
+                  <div id="highlightDiv6" style="width: 100%"><a href="#" onclick="highlightDiv(6)" class="text-color taxRatesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Tax Rates</span></a></div>
-                  <div id="highlightDiv7" style="width: 100%"><a href="#" onclick=" highlightDiv(7)" class="text-color paymentTypesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv7" style="width: 100%"><a href="#" onclick="highlightDiv(7)" class="text-color paymentTypesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Payment Types</span></a></div>
-                  <div id="highlightDiv8" style="width: 100%"><a href="#" onclick=" highlightDiv(8)" class="text-color paymentTypesUsersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv8" style="width: 100%"><a href="#" onclick="highlightDiv(8)" class="text-color paymentTypesUsersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Payment Types by users</span></a></div>
-                  <div id="highlightDiv9" style="width: 100%"><a href="#" onclick=" highlightDiv(9)" class="text-color paymentTypesCustomersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv9" style="width: 100%"><a href="#" onclick="highlightDiv(9)" class="text-color paymentTypesCustomersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Payment Types by customers</span></a></div>
-                  <div id="highlightDiv10" style="width: 100%"><a href="#" onclick=" highlightDiv(10)" class="text-color profitAndMarginAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div id="highlightDiv10" style="width: 100%"><a href="#" onclick="highlightDiv(10)" class="text-color profitAndMarginAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Profit & margin</span></a></div>
                   <div id="highlightDiv11" style="width: 100%"><a href="#" onclick=" highlightDiv(11)" class="text-color profitAndLossAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Profit & loss</span></a></div>
@@ -437,10 +443,11 @@
 <!-- container-scroller -->
 
 
-<?php include("layout/footer.php") ?>
 <script>
-  
+
+
 function highlightDiv(id) {
+  console.log(id)
   document.querySelectorAll('.anchor-container div').forEach(div => {
     div.classList.remove('highlight');
   });
@@ -449,7 +456,7 @@ function highlightDiv(id) {
   $('#showReport').off('click')
   $('#printDocu').off('click')
 
-  console.log(id)
+ 
      if (id == 2) {
           generatePdf(id)
           generateExcel(id)
@@ -631,6 +638,146 @@ function highlightDiv(id) {
 
           var methodDIV = document.getElementById('methodDIV');
           methodDIV.removeAttribute('hidden');
+        }else if(id == 29){
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden',true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.removeAttribute('hidden');
+
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.setAttribute('hidden',true);
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.removeAttribute('hidden');
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+        }else if(id == 30){
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden',true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.removeAttribute('hidden');
+
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.removeAttribute('hidden');
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.setAttribute('hidden',true);
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+        }else if(id == 31){
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.removeAttribute('hidden');
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden',true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.setAttribute('hidden', true);
+
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.setAttribute('hidden',true);
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.removeAttribute('hidden');
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+        }else if(id == 1){
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden',true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.setAttribute('hidden', true);
+
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.removeAttribute('hidden');
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.setAttribute('hidden',true);
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
         }
         else{
           var usersSelect = document.getElementById('usersDIV');
@@ -986,6 +1133,201 @@ function generatePdf(id){
           }
           });
     });
+  }else if(id == 29){
+    $('#PDFBtn').off('click').on('click',function() {
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/generate_return_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                selectedProduct: selectedProduct,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'returnAndExchangeList.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+
+          }
+          });
+    });
+  }else if(id == 30){
+    $('#PDFBtn').off('click').on('click',function() {
+      var customerSelect = document.getElementById('customersSelect')
+      var selectedCustomers = customerSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/generate_return_customers.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                selectedCustomers: selectedCustomers,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'returnAndExchangeList.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+
+          }
+          });
+    });
+  }else if(id == 31){
+    $('#PDFBtn').off('click').on('click',function() {
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var ingredientsSelect = document.getElementById('ingredientsSelect')
+      var selectedIngredients = ingredientsSelect.value;
+      $.ajax({
+          url: './reports/generate_bom_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+            selectedProduct: selectedProduct,
+            selectedIngredients: selectedIngredients 
+            },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'bomList.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+
+          }
+          });
+    });
+  }else if(id == 1){
+    $('#PDFBtn').off('click').on('click',function() {
+      var customerSelect = document.getElementById('customersSelect')
+      var selectedCustomers = customerSelect.value;
+      $.ajax({
+          url: './reports/generate_customers_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+            customerId: selectedCustomers
+            },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'customerList.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+
+          }
+          });
+    });
   }
 }
 
@@ -1285,8 +1627,194 @@ function generateExcel(id){
         }
     });
 });
-}
+}else if(id == 29){
+  $('#EXCELBtn').click(function() {
+    var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
 
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+        url: './reports/generate_return_excel.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+           data: {
+                selectedProduct: selectedProduct,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'returnAndExchangeList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}else if(id == 30){
+  $('#EXCELBtn').click(function() {
+      var customerSelect = document.getElementById('customersSelect')
+      var selectedCustomers = customerSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+        url: './reports/generate_excel_return_customers.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+           data: {
+                selectedCustomers: selectedCustomers,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'returnAndExchangeList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}else if(id==31){
+  $('#EXCELBtn').click(function() {
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var ingredientsSelect = document.getElementById('ingredientsSelect')
+      var selectedIngredients = ingredientsSelect.value;
+      $.ajax({
+        url: './reports/generate_excel_bom.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+           data: {
+              selectedProduct: selectedProduct,
+              selectedIngredients: selectedIngredients 
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'bomList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}else if(id == 1){
+  $('#EXCELBtn').click(function() {
+        var customerSelect = document.getElementById('customersSelect')
+        var selectedCustomers = customerSelect.value;
+      $.ajax({
+        url: './reports/generate_excel_customers.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+           data: {
+             customerId: selectedCustomers
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'customerList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}
 }
 
 function printDocuments(id){
@@ -1583,6 +2111,209 @@ function printDocuments(id){
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+  });
+  }else if(id == 29){
+    $('#printDocu').off('click').on('click',function() {
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/generate_return_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                selectedProduct: selectedProduct,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+  });
+  }else if(id == 30){
+    $('#printDocu').off('click').on('click',function() {
+      var customerSelect = document.getElementById('customersSelect')
+      var selectedCustomers = customerSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/generate_return_customers.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                selectedCustomers: selectedCustomers,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+  });
+  }else if(id==31){
+    $('#printDocu').off('click').on('click',function() {
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var ingredientsSelect = document.getElementById('ingredientsSelect')
+      var selectedIngredients = ingredientsSelect.value;
+      $.ajax({
+          url: './reports/generate_bom_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+              selectedProduct: selectedProduct,
+              selectedIngredients: selectedIngredients 
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+  });
+  }else if(id == 1){
+    $('#printDocu').off('click').on('click',function() {
+      var customerSelect = document.getElementById('customersSelect')
+      var selectedCustomers = customerSelect.value;
+      $.ajax({
+          url: './reports/generate_customers_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+             customerId: selectedCustomers
             },
           success: function(response) {
             var blob = new Blob([response], { type: 'application/pdf' });
@@ -1922,6 +2653,217 @@ function showReports(id){
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
                   var pdfUrl = './assets/pdf/refund/refundList.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+     }
+    })
+  }else if (id == 29){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } else {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+          url: './reports/generate_return_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+                selectedProduct: selectedProduct,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/return/returnAndExchangeList.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+     }
+    })
+  }else if(id == 30){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var customerSelect = document.getElementById('customersSelect')
+        var selectedCustomers = customerSelect.value;
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } else {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+          url: './reports/generate_return_customers.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+                selectedCustomers: selectedCustomers,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/return/returnAndExchangeList.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+     }
+    })
+  }else if(id == 31){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
+        var ingredientsSelect = document.getElementById('ingredientsSelect')
+        var selectedIngredients = ingredientsSelect.value;
+      $.ajax({
+          url: './reports/generate_bom_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+            selectedProduct: selectedProduct,
+            selectedIngredients: selectedIngredients 
+            },
+          success: function(response) {
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/bom/bomList.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+     }
+    })
+  }else if(id == 1){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var customerSelect = document.getElementById('customersSelect')
+        var selectedCustomers = customerSelect.value;
+      $.ajax({
+          url: './reports/generate_customers_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+            customerId: selectedCustomers
+            },
+          success: function(response) {
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/customer/customerList.pdf';
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },

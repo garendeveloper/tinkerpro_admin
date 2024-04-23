@@ -108,7 +108,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="card" style = "width: 100%; height: 10%;">
+            <div class="card inventoryCard" style = "width: 100%; height: 10%;">
               <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
                 <thead>
                   <tr>
