@@ -393,7 +393,7 @@ public function updateDataUsers($formData) {
 }
 
 public function getUsersData() {
-    $sql = 'SELECT * FROM users WHERE id NOT IN (1, 2) AND role_id NOT IN (4)';
+    $sql = 'SELECT * FROM users WHERE id NOT IN (2) AND role_id NOT IN (4)';
     $stmt = $this->connect()->query($sql);
     return $stmt;
 }

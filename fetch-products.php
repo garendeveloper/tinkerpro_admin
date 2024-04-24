@@ -77,13 +77,11 @@ echo $html;
     height: auto; 
 }
 .highlightedss {
-    border: 2px solid #00B050; 
+    border: 2px solid #00B050 !important; 
 }
-
 </style>
 <script>
     function highlightBorder(element) {
-        
         var allTrs = document.querySelectorAll('tr');
         allTrs.forEach(function(tr) {
             tr.classList.remove('highlightedss');

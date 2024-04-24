@@ -102,12 +102,12 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
 }
 
 
-$pdf->Output('cashInList.pdf', 'I');
-// $pdfPath = __DIR__ . '/../assets/pdf/bom/bomList.pdf';
+$pdf->Output('cashEntriesList.pdf', 'I');
+$pdfPath = __DIR__ . '/../assets/pdf/entries/cashEntriesList.pdf';
 
-// if (file_exists($pdfPath)) {
+if (file_exists($pdfPath)) {
  
-//     unlink($pdfPath);
-// }
-// $pdf->Output($pdfPath, 'F');
+    unlink($pdfPath);
+}
+$pdf->Output($pdfPath, 'F');
 ?>

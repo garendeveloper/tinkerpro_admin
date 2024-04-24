@@ -67,7 +67,7 @@
 }
 .btn-control:hover {
     border-color: #FF6900; 
-    color: #FF6900; 
+    color: #fefefe !important; 
 }
 .productTable{
     position: absolute; 
