@@ -4,11 +4,13 @@
     include( __DIR__ . '/utils/models/product-facade.php');
     include( __DIR__ . '/utils/models/inventory-facade.php');
     include( __DIR__ . '/utils/models/order-facade.php');
+    include( __DIR__ . '/utils/models/loss_and_damage-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
     $inventory = new InventoryFacade();
     $order = new OrderFacade();
+    $loss_and_damage = new Loss_and_damage_facade();
 
     include( __DIR__ . '/utils/models/ingredients-facade.php');
    
@@ -67,6 +69,10 @@
             $inventory_type = $_GET['type'];
             echo json_encode($inventory->get_allProductByInventoryType($inventory_type));
             break;
+        case 'get_inventoryDataById':
+            $inventory_id = $_GET['inventory_id'];
+            echo json_encode($inventory->get_inventoryDataById($inventory_id));
+            break;
         case 'get_orderPaymentHistory':
             $order_id = $_GET['order_id'];
             echo json_encode($inventory->get_orderPaymentHistory($order_id));
@@ -115,6 +121,9 @@
         case 'get_orderDataByPurchaseNumber':
             $po_number = $_GET['po_number'];
             echo json_encode($order->get_orderDataByPurchaseNumber($po_number));
+            break;
+        case 'get_loss_and_damage_latest_reference_no':
+            echo json_encode($loss_and_damage->get_latest_reference_no());
             break;
         case 'updateDataCategory':// updateCategory($categoryname, $categoryid)
             $postData = json_decode(file_get_contents('php://input'), true);

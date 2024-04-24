@@ -73,11 +73,11 @@
     <form id="lossanddamage_form">
         <div class="fieldContainer">
             <label>REF# </label>
-            <input type="text" name = "ref" id = "ld_reference"  name = "ld_reference" style= "width: 250px; height: 30px">
+            <input type="text" name = "ref" id = "ld_reference"  name = "ld_reference" style= "width: 250px; height: 30px; font-size: 14px;" readonly>
             <div class="date-input-container">
-                <input type="text" name="date_transfer" id="date_transfer" style="height: 30px" placeholder="Select date" readonly>
-                <button id="btn_datetransfer" class="button" style="height: 30px;">
-                    <i class="bi bi-calendar" aria-hidden="true"></i>
+                <input type="text" name="date_damage" id="date_damage" style="height: 30px;  text-align: center" placeholder="Select date" readonly>
+                <button id="btn_dateDamage" class="button" type = "button" style="height: 30px;">
+                    <i class="bi bi-calendar2" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
@@ -110,11 +110,12 @@
         <div class="fieldContainer" style="margin-top: -3px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
             <div class="search-container">
+                <input type="hidden" id = "loss_and_damage_input_inventory_id" value = "0">
                 <input type="text" style="width: 280px; height: 30px; font-size: 12px;"
-                    class="search-input italic-placeholder" placeholder="Search Prod..." name="q_product"
-                    onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
+                    class="search-input italic-placeholder" placeholder="Search Prod..." name="loss_and_damage_input"
+                    onkeyup="$(this).removeClass('has-error')" id="loss_and_damage_input" autocomplete="off">
             </div>
-            <button style="font-size: 12px; height: 30px; width: 120px; border-radius: 4px;" id="btn_searchQProduct"> Add Product</button>
+            <button style="font-size: 12px; height: 30px; width: 120px; border-radius: 4px;" id="btn_searchLDProduct"> Add Product</button>
         </div>
     </form>
     <table id="tbl_lossand_damages" class="text-color table-border" style="margin-top: -3px;">
@@ -148,82 +149,75 @@
 
 
 <script>
-    $(document).ready(function () {
-        $("select[name='inventory_type']").on("change", function (e) {
+    $(document).ready(function(){
+        show_reference_no();
+        get_allProductInventory();
+
+        $('#date_damage').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'M dd y', 
+            altFormat: 'M dd y', 
+            altField: '#date_damage',
+            onSelect: function(dateText, inst)
+            {}
+        });
+    
+    
+        $('#btn_dateDamage').on('click', function(e) {
             e.preventDefault();
-            var value = $(this).val();
-            show_allProductsByInventoryType(value);
-        })
-        $("#btn_searchQProduct").on("click", function (e) {
+            $('#date_damage').datepicker('show');
+        });
+
+        $("#btn_searchLDProduct").on("click", function(e){
             e.preventDefault();
-            var po_number = $("#q_product").val();
-            show_orders(po_number);
-        })
-        function show_orders(po_number) {
-            var negative_inventory = $("#negative_inventory").prop("checked");
+            var inventory_id = $("#loss_and_damage_input").data('id');
             $.ajax({
-                type: 'GET',
-                url: 'api.php?action=get_orderDataByPurchaseNumber&po_number=' + po_number,
-                dataType: 'json',
-                success: function (data) {
-                    var table = "";
-                    for (var i = 0; i < data.length; i++) {
-                        if(negative_inventory)
-                        {
-                            if(data[i].qty_received <= data[i].qty_purchased)
-                            {
-                                table += "<tr data-id = " + data[i].inventory_id + ">";
-                                table += "<td>"+data[i].prod_desc+"</td>";
-                                table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
-                                table += "<td class = 'text-center'><input placeholder='QTY' id='qty' title='Please enter only digits' class = 'italic-placeholder' style = 'width: 60px'></input></td>";
-                                table += "</tr>";
-                            }
-                        }
-                        else
-                        {
-                            if(data[i].qty_received >= data[i].qty_purchased)
-                            {
-                                table += "<tr data-id = " + data[i].inventory_id + ">";
-                                table += "<td>"+data[i].prod_desc+"</td>";
-                                table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
-                                table += "<td class = 'text-center'><input placeholder='QTY' id='qty'  title='Please enter only digits' class = 'italic-placeholder' style = 'width: 60px'></input></td>";
-                                table += "</tr>";
-                            }
-                        }
-                    }
-                    $("#tbl_lossand_damages tbody").html(table);
-                },
-                error: function (data) {
-                    alert("No response")
+                type:'get',
+                url: 'api.php?action=get_inventoryDataById',
+                data: {inventory_id: inventory_id},
+                success: function(data){
+                    var row = "";
+                    row += "<tr>";
+                    row += "<td>"+data['prod_desc']+"</td>";
+                    row += "<td style = 'text-align:center'>"+data['qty_received']+"</td>";
+                    row += "<td style = 'text-align:right'>"+data['total']+"</td>";
+                    row += "</tr>";
+                    $("#tbl_lossand_damages").append(row);
                 }
             })
-        }
-        $("#tbl_lossand_damages tbody").on("input", '#qty', function(e){
-            e.preventDefault();
-            $(this).val($(this).val().replace(/\D/g, ''));
         })
-        function show_allProductsByInventoryType(inventory_type) {
+
+        function get_allProductInventory()
+        {
             $.ajax({
                 type: 'GET',
-                url: 'api.php?action=get_allProductByInventoryType',
-                data: { type: inventory_type },
-                success: function (data) {
-                    var tbody = "";
+                url: 'api.php?action=get_allInventories',
+                success: function(data){
                     var products = [];
-
-                    if (inventory_type === "2") {
-                        for (var i = 0; i < data.length; i++) {
-                            products.push(data[i].po_number);
-                        }
+                    for(var i = 0; i<data.length; i++)
+                    {
+                        var row = {
+                            inventory_id:data[i].inventory_id,
+                           product:data[i].prod_desc,
+                        };
+                        products.push(row);
                     }
-                    else {
-
-                    }
-                    autocomplete(document.getElementById("q_product"), products);
+                    autocomplete_product(document.getElementById('loss_and_damage_input'), products);
                 }
             })
         }
-        function autocomplete(inp, arr) {
+        function show_reference_no()
+        {
+            $.ajax({
+                type: 'get',
+                url: 'api.php?action=get_loss_and_damage_latest_reference_no',
+                success: function(data){
+                    $("#ld_reference").val(data);
+                }
+            })
+        }
+        function autocomplete_product(inp, arr) {
             var currentFocus;
             inp.addEventListener("input", function (e) {
                 var a, b, i, val = this.value;
@@ -235,13 +229,16 @@
                 a.setAttribute("class", "autocomplete-items");
                 this.parentNode.appendChild(a);
                 for (i = 0; i < arr.length; i++) {
-                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                  
+                    if (arr[i].product.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        var inventory_id = arr[i].inventory_id;
                         b = document.createElement("DIV");
-                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                        b.innerHTML += arr[i].substr(val.length);
-                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        b.innerHTML = "<strong style = 'color: #ffff'>" + arr[i].product.substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].product.substr(val.length);
+                        b.innerHTML += "<input type='hidden'  value='" + arr[i].product + "'>";
                         b.addEventListener("click", function (e) {
                             inp.value = this.getElementsByTagName("input")[0].value;
+                            inp.setAttribute("data-id", inventory_id);
                             closeAllLists();
                         });
                         a.appendChild(b);

@@ -46,6 +46,7 @@
         border: 2px solid #ffff;
         cursor: pointer;
         text-align: center;
+        background-color: #ffff;
         display: inline-block;
     }
 
@@ -156,7 +157,12 @@
     }
     #tbl_receivedItems tbody td{
         border: none;
+        
     }
+    .custom-checkbox.disabled {
+    opacity: 0.5; 
+    pointer-events: none; 
+}
 </style>
 <div class="fcontainer" id="received_div" style="display: none;">
     <form id="receive_form">
@@ -291,12 +297,12 @@
                         }
                         else {
                             table +=
-                                "<td style = 'text-align: center; background-color: #262626; '>" + data[i].date_expired + "</td>";
+                                "<td style = 'text-align: center; background-color: #262626; '>" + date_format(data[i].date_expired) + "</td>";
                         }
                         if(data[i].isSerialized === 1)
                         {
                           table +=
-                            "<td style = 'text-align: center'><div class='custom-checkbox checked' id='check_isSerialized'></div></td>";
+                            "<td style = 'text-align: center'><div class='custom-checkbox checked disabled' id='check_isSerialized'></div></td>";
                         }
                         if(data[i].isSerialized === 0)
                         {
@@ -313,7 +319,7 @@
                             {
                                 html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
                                 html_sub_row += "<td>"+counter+"</td>";
-                                html_sub_row += "<td><input  style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
+                                html_sub_row += "<td ><input  style = 'width: 130px' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
                                 html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
                                 html_sub_row += "</tr>";
                                 counter++;

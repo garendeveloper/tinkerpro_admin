@@ -1142,7 +1142,7 @@ input[type="text"] {
                 <div class="warning-container">
                     <div class="tableCard">
                         <div class="grid-container">
-                            <button class="grid-item" id="btn_createPO">Create PO</button>
+                            <button class="grid-item" id="btn_createPO">Purchase Order</button>
                             <button class="grid-item" id="btn_inventoryCount">Inventory Count</button>
                             <button class="grid-item" id="btn_expiration">Expiration</button>
                             <button class="grid-item" id="btn_receiveItems">Receive Items</button>

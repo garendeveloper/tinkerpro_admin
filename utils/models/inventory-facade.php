@@ -36,14 +36,32 @@ class InventoryFacade extends DBConnection
         }
         else
         {
-            $sql = "SELECT DISTINCT orders.*, supplier.*
-                    FROM orders
-                    INNER JOIN supplier ON supplier.id = orders.supplier_id";
+            $sql = "SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
+            FROM inventory
+            JOIN products ON products.id = inventory.product_id
+            JOIN uom ON uom.id = products.uom_id
+            JOIN orders ON orders.id = inventory.order_id
+            JOIN supplier ON supplier.id = orders.supplier_id
+            ORDER BY inventory.id DESC;";
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->execute();
             $data =  $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+        return $data;
+    }
+    public function get_inventoryDataById($inventory_id)
+    {
+        $sql = "SELECT products.*, inventory.*, uom.*, inventory.id as inventory_id
+                FROM inventory
+                JOIN products ON products.id = inventory.product_id
+                JOIN uom ON uom.id = products.uom_id
+                WHERE inventory.id = :inventory_id";
+
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":inventory_id", $inventory_id);
+        $stmt->execute();
+        $data =  $stmt->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
     public function get_inventory($inventory_id)
@@ -380,11 +398,11 @@ class InventoryFacade extends DBConnection
                 $sqlStatement->execute();
 
                 $sqlStatement = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock) 
-                VALUES (?, ?)");
+                                                            VALUES (?, ?)");
 
-                $sqlStatement->bindParam(1, $inventory_id, PDO::PARAM_STR);
-                $sqlStatement->bindParam(2, $qty_received, PDO::PARAM_STR);
-                $sqlStatement->execute();
+                                                            $sqlStatement->bindParam(1, $inventory_id, PDO::PARAM_STR);
+                                                            $sqlStatement->bindParam(2, $qty_received, PDO::PARAM_STR);
+                                                            $sqlStatement->execute();
 
                 if ($isSerialized) 
                 {

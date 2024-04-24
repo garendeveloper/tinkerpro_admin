@@ -67,12 +67,12 @@
         <div class="fieldContainer" style="margin-top: -3px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
             <div class="search-container">
-                <input type="text" style="width: 280px; height: 30px; font-size: 12px;"
-                    class="search-input italic-placeholder" placeholder="Search Prod..." name="q_product"
+                <input type="text" style="width: 280px; height: 30px; font-size: 14px;"
+                    class="search-input italic-placeholder" placeholder="Search Product/Barcode/Code/SN" name="q_product"
                     onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
             </div>
-            <button style="font-size: 12px; height: 30px; width: 120px;" id="btn_searchQProduct"><i
-                    class="bi bi-search"></i>&nbsp; Search</button>
+            <button style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;" id="btn_searchQProduct">
+                    Search</button>
         </div>
     </form>
     <table id="tbl_quickInventories" class="text-color table-border" style="margin-top: -3px;">
@@ -92,6 +92,7 @@
 
 <script>
     $(document).ready(function () {
+        var products_forquickInventory = [];
         $("select[name='inventory_type']").on("change", function (e) {
             e.preventDefault();
             var value = $(this).val();
@@ -100,9 +101,9 @@
         $("#btn_searchQProduct").on("click", function (e) {
             e.preventDefault();
             var po_number = $("#q_product").val();
-            show_orders(po_number);
+            show_inventory(po_number);
         })
-        function show_orders(po_number) {
+        function show_inventory(po_number) {
             var negative_inventory = $("#negative_inventory").prop("checked");
             $.ajax({
                 type: 'GET',
@@ -114,30 +115,8 @@
                         table += "<tr data-id = " + data[i].inventory_id + ">";
                         table += "<td>"+data[i].prod_desc+"</td>";
                         table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
-                        table += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: right; height:15px;'></input></td>";
+                        table += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
                         table += "</tr>";
-                        // if(negative_inventory)
-                        // {
-                        //     if(data[i].qty_received <= data[i].qty_purchased)
-                        //     {
-                        //         table += "<tr data-id = " + data[i].inventory_id + ">";
-                        //         table += "<td>"+data[i].prod_desc+"</td>";
-                        //         table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
-                        //         table += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder' style = 'width: 60px; text-align: right'></input></td>";
-                        //         table += "</tr>";
-                        //     }
-                        // }
-                        // else
-                        // {
-                        //     if(data[i].qty_received >= data[i].qty_purchased)
-                        //     {
-                        //         table += "<tr data-id = " + data[i].inventory_id + ">";
-                        //         table += "<td>"+data[i].prod_desc+"</td>";
-                        //         table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
-                        //         table += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder' style = 'width: 60px; text-align: right'></input></td>";
-                        //         table += "</tr>";
-                        //     }
-                        // }
                     }
                     $("#tbl_quickInventories tbody").html(table);
                 },
@@ -147,27 +126,21 @@
             })
         }
         function show_allProductsByInventoryType(inventory_type) {
+            
             $.ajax({
                 type: 'GET',
                 url: 'api.php?action=get_allProductByInventoryType',
                 data: { type: inventory_type },
                 success: function (data) {
                     var tbody = "";
-                    var products = [];
-
-                    if (inventory_type === "2") {
-                        for (var i = 0; i < data.length; i++) {
-                            products.push(data[i].po_number);
-                        }
+                    for (var i = 0; i < data.length; i++) {
+                        products_forquickInventory.push(data[i].po_number);
                     }
-                    else {
-
-                    }
-                    autocomplete(document.getElementById("q_product"), products);
+                    autocomplete_product(document.getElementById("q_product"), products_forquickInventory);
                 }
             })
         }
-        function autocomplete(inp, arr) {
+        function autocomplete_product(inp, arr) {
             var currentFocus;
             inp.addEventListener("input", function (e) {
                 var a, b, i, val = this.value;
@@ -181,7 +154,7 @@
                 for (i = 0; i < arr.length; i++) {
                     if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
                         b = document.createElement("DIV");
-                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML = "<strong style = 'color: #ffff'>" + arr[i].substr(0, val.length) + "</strong>";
                         b.innerHTML += arr[i].substr(val.length);
                         b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
                         b.addEventListener("click", function (e) {

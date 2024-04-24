@@ -210,23 +210,7 @@
     $('#calendar-btn').click(function() {
         $('#date_purchased').datepicker('show');
     });
-    $('#date_transfer').datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'M dd y', 
-      altFormat: 'M dd y', 
-      altField: '#date_transfer',
-      maxDate: 0,
-      onSelect: function(dateText, inst)
-      {}
-    });
- 
- 
-    $('#btn_datetransfer').click(function(e) {
-      e.preventDefault();
-        $('#date_transfer').datepicker('show');
-    });
- 
+   
     $('#s_due').datepicker({
       changeMonth: true,
       changeYear: true,
@@ -727,6 +711,23 @@
                         }
                      
                         table += "</tr>";
+                        if(data[i].isSerialized === 1)
+                        {
+                            var sub_row = data[i].sub_row;
+                            var html_sub_row = "";
+                            var counter = 1;
+                            for(var j = 0; j<sub_row.length; j++)
+                            {
+                                html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
+                                html_sub_row += "<td>"+counter+"</td>";
+                                html_sub_row += "<td ><input  style = 'width: 130px' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
+                                html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
+                                html_sub_row += "</tr>";
+                                counter++;
+                            }
+                          
+                            table +=html_sub_row;
+                        }
                     }
                     $("#tbl_receivedItems tbody").html(table);
                 },
@@ -1259,7 +1260,7 @@
             tbl_data = "<tr><td colspan = '10'>No more available data.</td></tr>";
           }
           $("#tbl_products tbody").html(tbl_data);
-          $("#previous, #next").data("page", currentPage);
+          // $("#previous, #next").data("page", currentPage);
         }
       });
     }
@@ -1482,6 +1483,7 @@
       e.preventDefault();
       $("button").removeClass('active');
       $(this).addClass('active');
+      $("#po_data_div").hide();
       $("#expiration_div").hide();
       $("#purchaseItems_div").hide();
       $("#received_div").show();
