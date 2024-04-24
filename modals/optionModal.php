@@ -2,11 +2,11 @@
 #optionModal {
     display: none;
     position: fixed;
-    z-index: 9999;
+    z-index: 99;
     top: 0;
     bottom: 0;
-    left: calc(100% - 400px);
-    width: 400px;
+    left: calc(100% - 550px);
+    width: 600px;
     background-color: transparent;
     overflow: hidden;
     height: 100%;

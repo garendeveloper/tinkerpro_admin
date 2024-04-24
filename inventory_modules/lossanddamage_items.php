@@ -73,16 +73,16 @@
     <form id="lossanddamage_form">
         <div class="fieldContainer">
             <label>REF# </label>
-            <input type="text" name = "ref" id = "ld_reference"  name = "ld_reference" style= "width: 150px;">
+            <input type="text" name = "ref" id = "ld_reference"  name = "ld_reference" style= "width: 250px; height: 30px">
             <div class="date-input-container">
-                <input type="text" name="date_transfer" id="date_transfer" placeholder="Select date" readonly>
-                <button id="btn_datetransfer" class="button">
+                <input type="text" name="date_transfer" id="date_transfer" style="height: 30px" placeholder="Select date" readonly>
+                <button id="btn_datetransfer" class="button" style="height: 30px;">
                     <i class="bi bi-calendar" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
         <div class="fieldContainer">
-           <label for="" style="width:350px; font-size: 10px; font-style: italic">Choose a reason of loss &damage</label>
+           <label for="" style="width:350px; font-size: 12px; font-style: italic">Choose a reason of loss &damage</label>
             <div class="custom-select" style="margin-right: 0px; ">
                 <select name="ld_reason"
                     style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
@@ -108,13 +108,13 @@
             </div>
         </div>
         <div class="fieldContainer" style="margin-top: -3px;">
-            <label><img src="assets/img/barcode.png" style="color: white; height: 40px; width: 40px;"></label>
+            <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
             <div class="search-container">
-                <input type="text" style="width: 210px; height: 25px; font-size: 12px;"
+                <input type="text" style="width: 280px; height: 30px; font-size: 12px;"
                     class="search-input italic-placeholder" placeholder="Search Prod..." name="q_product"
                     onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
             </div>
-            <button style="font-size: 10px; height: 25px; width: 90px; border-radius: 4px;" id="btn_searchQProduct"> Add Product</button>
+            <button style="font-size: 12px; height: 30px; width: 120px; border-radius: 4px;" id="btn_searchQProduct"> Add Product</button>
         </div>
     </form>
     <table id="tbl_lossand_damages" class="text-color table-border" style="margin-top: -3px;">
@@ -140,7 +140,7 @@
         <thead>
     </table>
     <div style="position: absolute; bottom: 5px; padding: 10px;">
-        <textarea name="stock_note" id="stock_note" cols="60" rows="5" placeholder="Note" style = "background-color: #1E1C11; color: #ffff; width: 100%;">
+        <textarea name="stock_note" id="stock_note" cols="80" rows="5" placeholder="Note" style = "background-color: #1E1C11; color: #ffff; width: 100%;">
 
         </textarea>
     </div>

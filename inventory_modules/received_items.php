@@ -134,7 +134,7 @@
     }
 
     #tbl_receivedItems td:nth-child(5) {
-        width: 40px;
+        width: 80px;
         height: 8px;
     }
 
@@ -142,23 +142,38 @@
         width: 3px;
         height: 8px;
     }
+
+    #tbl_receivedItems tbody{
+        font-size: 12px;
+        border: none;
+    }
+    #tbl_receivedItems thead th{
+       border: none;
+       color: #FF6900;
+    }
+    #tbl_receivedItems thead{
+       border: 1px solid #FF6900;
+    }
+    #tbl_receivedItems tbody td{
+        border: none;
+    }
 </style>
 <div class="fcontainer" id="received_div" style="display: none;">
     <form id="receive_form">
         <div class="fieldContainer" style="margin-top: -5px;">
             <img src="assets/img/barcode.png"
-                style="height: 60px; width: 50px; border-radius: 0;  margin-right: 2px; margin-left: 0px;">
+                style="height: 50px; width: 50px; border-radius: 0;  margin-right: 2px; margin-left: 0px;">
             <div class="search-container">
-                <input type="text" style="width: 210px; height: 35px; font-size: 16px;"
+                <input type="text" style="width: 280px; height: 30px; font-size: 16px;"
                     class="search-input italic-placeholder" placeholder="Search Purchase Order No." name="r_PONumbers"
                     id="r_PONumbers" onkeyup="$(this).removeClass('has-error')" autocomplete="off">
             </div>
-            <button type="button" style="font-size: 12px; height: 35px; width: 90px;" id="btn_searchPO"><i
+            <button type="button" style="font-size: 14px; height: 30px; width: 120px;" id="btn_searchPO"><i
                     class="bi bi-search bi-md"></i>&nbsp; Search</button>
         </div>
         <div id="po_data_div" style="display: none">
             <div class="fieldContainer">
-                <div class="group">
+                <div class="group" style="margin-right: 140px;">
                     <label>PO#: <strong id="r_po_number"></strong></label>
                     <label>SUPPLIER: <strong id="r_supplier"></strong></label>
                 </div>
@@ -177,13 +192,13 @@
                     </label>
                 </div>
             </div>
-            <table id="tbl_receivedItems" class="text-color">
+            <table id="tbl_receivedItems" class="text-color" style="">
                 <thead>
                     <tr>
                         <th style="background-color: #1E1C11; width: 40%" colspan="2">ITEM DESCRIPTION</th>
                         <th style="background-color: #1E1C11;">QTY</th>
-                        <th style="background-color: #1E1C11;">REC</th>
-                        <th style="background-color: #1E1C11;">EXP</th>
+                        <th style="background-color: #1E1C11;">RECEIVED</th>
+                        <th style="background-color: #1E1C11;">EXP. DATE</th>
                         <th style="background-color: #1E1C11;">SER.</th>
                     </tr>
                 </thead>
@@ -211,6 +226,9 @@
                 }
             });
         }
+        $("#tbl_receivedItems tbody").on("input", 'tr.sub-row input', function(){
+            $(this).removeClass("has-error");
+        })
         $("#receive_all").change(function () {
             var isChecked = $(this).prop("checked");
             if (isChecked) {
@@ -265,7 +283,7 @@
                         }
                         else {
                             table +=
-                                "<td style = 'text-align: center; background-color: #262626; '  id='qty_received'>" + data[i].qty_received + "</td>";
+                                "<td style = 'text-align: center; background-color: #262626; ' class ='editable' id='qty_received'>" + data[i].qty_received + "</td>";
                         }
                         if (data[i].date_expired === null) {
                             table +=
@@ -275,9 +293,35 @@
                             table +=
                                 "<td style = 'text-align: center; background-color: #262626; '>" + data[i].date_expired + "</td>";
                         }
-                        table +=
+                        if(data[i].isSerialized === 1)
+                        {
+                          table +=
+                            "<td style = 'text-align: center'><div class='custom-checkbox checked' id='check_isSerialized'></div></td>";
+                        }
+                        if(data[i].isSerialized === 0)
+                        {
+                          table +=
                             "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
+                        }
                         table += "</tr>";
+                        if(data[i].isSerialized === 1)
+                        {
+                            var sub_row = data[i].sub_row;
+                            var html_sub_row = "";
+                            var counter = 1;
+                            for(var j = 0; j<sub_row.length; j++)
+                            {
+                                html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
+                                html_sub_row += "<td>"+counter+"</td>";
+                                html_sub_row += "<td><input  style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
+                                html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
+                                html_sub_row += "</tr>";
+                                counter++;
+                            }
+                          
+                            table +=html_sub_row;
+                           
+                        }
                     }
                     $("#tbl_receivedItems tbody").html(table);
                 },
@@ -298,6 +342,7 @@
             var currentValue = parseInt($(this).text().trim(), 10);
             if (!isNaN(currentValue) && currentValue > qty_purchased) {
                 $(this).text(qty_purchased);
+                $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
             }
         });
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(5)', function () {
@@ -322,34 +367,25 @@
         var subRowCount = 0;
         $('#tbl_receivedItems tbody').on('click', '#check_isSerialized', function () {
             var parentRow = $(this).closest("tr");
+            var qty_received = parentRow.find("#qty_received").text();
             var inventory_id = parentRow.data('id');
             if ($(this).hasClass('checked')) {
                 $(this).removeClass('checked');
-                parentRow.nextUntil(":not(.sub-row)").remove();
+                $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
             } else {
                 $(this).addClass('checked');
-                subRowCount = 1;
-                var subRow = $("<tr class ='sub-row' data-id = " + inventory_id + "><td>" + subRowCount + "</td><td><input  style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder'></input></td><td colspan='2'><button type = 'button' class = 'btn_addSerial'><i class = 'bi bi-plus'></i></button><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td></tr>");
+                $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
+                for(var i = qty_received; i>=1; i--)
+            {   
+                var subRow = $("<tr class ='sub-row' data-id = " + inventory_id + "><td>"+i+"</td><td><input  style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder'></input></td><td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td></tr>");
                 parentRow.after(subRow);
-                subRowCount++;
+            }
             }
         });
-        $('#tbl_receivedItems tbody').on('click', '.btn_addSerial', function (e) {
+        $('#tbl_receivedItems tbody').on('click', '.btn_removeSerial', function (e) {
             e.preventDefault();
-            var parentRow = $(this).closest("tr");
-            var headRow = parentRow.prev("tr");
-            var inventory_id = headRow.data('id');
-            parentRow.find('.btn_addSerial, .btn_removeSerial').remove();
-            var subRow = $("<tr class = 'sub-row' data-id = " + inventory_id + "><td>" + subRowCount + "</td><td><input style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder'></td><td colspan = '2'><button class='btn_addSerial'><i class='bi bi-plus'></i></button><button type = 'button' class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></td></button></tr>");
-            parentRow.after(subRow);
-            subRowCount += 1;
-        });
-        $('#tbl_receivedItems tbody').on('click', '.btn_removeSerial', function () {
-            var subRow = $(this).closest("tr");
-            subRow.remove();
-            subRowCount--;
-            var newLastRow = $("#tbl_receivedItems tbody tr.sub-row:last");
-            newLastRow.find('td:last').html("<button type='button' class='btn_addSerial'><i class='bi bi-plus'></i></button><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button>");
+            var subrow = $(this).closest("tr");
+            subrow.find("td input").val("");
         });
         $('#tbl_receivedItems tbody').on('click', '.editable', function () {
             $(this).attr('contenteditable', true);

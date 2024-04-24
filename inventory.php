@@ -108,7 +108,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="card inventoryCard" style = "width: 100%; height: 10%;">
+            <div class="card inventoryCard" style = "width: 100%; ">
               <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
                 <thead>
                   <tr>
@@ -127,7 +127,7 @@
                   
                 </tbody>
               </table>
-              <table id="tbl_orders" class="text-color table-border" style ="font-size: 12px;">
+              <table id="tbl_orders" class="text-color table-border" style ="font-size: 12px; ">
                 <thead>
                   <tr>
                     <th style="width: 2%;">PO#</th>
@@ -568,7 +568,6 @@
                 $("#totalPrice").html("&#x20B1;&nbsp;0.00");
                 $("#overallTotal").html("&#x20B1;&nbsp;0.00");
                 show_allInventories(); 
-                show_allOrders(1, perPage); 
                 show_response(response.message);
                 show_purchaseOrderNo();
                 show_allProducts(1, perPage);
@@ -654,9 +653,21 @@
             }
         })
     }
-    function validateTableInputs() {
+    function validateTableSubRowInputs(table_id) {
       var isValid = true;
-      $('#tbl_quickInventories tbody tr input.required').each(function() {
+      $('#'+table_id+' tbody tr.sub-row input').each(function() {
+        if (!$(this).val().trim()) {
+          isValid = false;
+          $(this).addClass('has-error');
+        } else {
+          $(this).removeClass('has-error');
+        }
+      });
+      return isValid;
+    }
+    function validateTableInputs(table_id) {
+      var isValid = true;
+      $('#'+table_id+' tbody input').each(function() {
         if (!$(this).val().trim()) {
           isValid = false;
           $(this).addClass('has-error');
@@ -667,7 +678,63 @@
       return isValid;
     }
 
+    function show_ordersForReceivedItems(po_number) {
+            $.ajax({
+                type: 'GET',
+                url: 'api.php?action=get_orderDataByPurchaseNumber&po_number=' + po_number,
+                dataType: 'json',
+                success: function (data) {
+                    var table = "";
+                    $("#r_supplier").html(data[0].supplier);
+                    $("#r_datePurchased").html(date_format(data[0].date_purchased));
+                    $("#r_po_number").html(data[0].po_number);
+                    var isPaid = data[0].isPaid === 1 ?
+                        "<span style = 'color: lightgreen'>PAID</span>" :
+                        "<span style = 'color: red'>UNPAID</span>"
+                    $("#r_isPaid").html(isPaid);
 
+                    for (var i = 0; i < data.length; i++) {
+                        table += "<tr data-id = " + data[i].inventory_id + ">";
+                        table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
+                        table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
+                        table += "<td style = 'text-align: center; '>" + data[i]
+                            .qty_purchased + "</td>";
+                        if (data[i].qty_received === null) {
+                            table +=
+                                "<td style = 'text-align: center; background-color: #262626; ' class ='editable' id='qty_received' ></td>";
+                        }
+                        else {
+                            table +=
+                                "<td style = 'text-align: center; background-color: #262626; ' class ='editable' id='qty_received'>" + data[i].qty_received + "</td>";
+                        }
+                        if (data[i].date_expired === null) {
+                            table +=
+                                "<td style = 'text-align: center; background-color: #262626; '></td>";
+                        }
+                        else {
+                            table +=
+                                "<td style = 'text-align: center; background-color: #262626; '>" + data[i].date_expired + "</td>";
+                        }
+                        if(data[i].isSerialized === 1)
+                        {
+                          table +=
+                            "<td style = 'text-align: center'><div class='custom-checkbox checked' id='check_isSerialized'></div></td>";
+                        }
+                        if(data[i].isSerialized === 0)
+                        {
+                          table +=
+                            "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
+                        }
+                     
+                        table += "</tr>";
+                    }
+                    $("#tbl_receivedItems tbody").html(table);
+                },
+                error: function (data) {
+                    alert("No response")
+                }
+            })
+        }
     $("#btn_savePO").click(function(e){
       e.preventDefault();
       var activeModuleId = $("button.active").attr('id');
@@ -703,9 +770,12 @@
       }
       if(activeModuleId === "btn_receiveItems")
       {
+        var table_id = "tbl_receivedItems";
         var received_items_length = $("#tbl_receivedItems tbody tr").length;
         if(received_items_length > 0)
         {
+          if(validateTableInputs(table_id))
+          {
             $("#received_payment_confirmation").slideDown({
               backdrop: 'static',
               keyboard: false,
@@ -755,11 +825,13 @@
                   if(response.status)
                   {
                     alert(response.msg);
+                    show_ordersForReceivedItems($("#r_po_number").text());
                     $("#received_payment_confirmation").hide();
                   }
                 } 
               })
             })
+          }
         }
         else
         {

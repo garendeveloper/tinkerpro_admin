@@ -48,7 +48,7 @@
         <div class="fieldContainer">
             <div class="custom-select" style="margin-right: 30px; ">
                 <select name="inventory_type"
-                    style=" background: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
+                    style=" background: #1E1C11; color: #ffff; width: 250px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
                     <option value="">Select Inventory</option>
                     <option value="1">B.O.M Inventory</option>
                     <option value="2">Product Inventory</option>
@@ -65,13 +65,13 @@
             </div>
         </div>
         <div class="fieldContainer" style="margin-top: -3px;">
-            <label><img src="assets/img/barcode.png" style="color: white; height: 40px; width: 40px;"></label>
+            <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
             <div class="search-container">
-                <input type="text" style="width: 210px; height: 25px; font-size: 12px;"
+                <input type="text" style="width: 280px; height: 30px; font-size: 12px;"
                     class="search-input italic-placeholder" placeholder="Search Prod..." name="q_product"
                     onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
             </div>
-            <button style="font-size: 10px; height: 25px; width: 90px;" id="btn_searchQProduct"><i
+            <button style="font-size: 12px; height: 30px; width: 120px;" id="btn_searchQProduct"><i
                     class="bi bi-search"></i>&nbsp; Search</button>
         </div>
     </form>

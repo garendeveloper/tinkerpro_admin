@@ -27,6 +27,19 @@ class OrderFacade extends DBConnection
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function get_allTheSerialized($inventory_id)
+    {
+        $sql = "SELECT serialized_product.*, inventory.*, serialized_product.serial_number
+                FROM serialized_product
+                INNER JOIN inventory ON inventory.id = serialized_product.inventory_id 
+                WHERE inventory.id = :inventory_id";
+
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(':inventory_id', $inventory_id, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
     public function get_orderDataByPurchaseNumber($po_number)
     {
         $sql = "SELECT orders.*, products.*, supplier.*, inventory.*, inventory.id as inventory_id
@@ -39,7 +52,24 @@ class OrderFacade extends DBConnection
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(':po_number', $po_number, PDO::PARAM_STR);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $tbl_data = [];
+        foreach ($data as $row) {
+            $tbl_data[] = [
+                'inventory_id' => $row['inventory_id'],
+                'po_number' => $row['po_number'],
+                'date_purchased' => $row['date_purchased'],
+                'supplier' => $row['supplier'],
+                'isSelected' => $row['isSelected'],
+                'isSerialized' => $row['isSerialized'],
+                'qty_received' => $row['qty_received'],
+                'qty_purchased' => $row['qty_purchased'],
+                'prod_desc' => $row['prod_desc'],
+                'date_expired' => $row['date_expired'],
+                'sub_row'=>$this->get_allTheSerialized($row['inventory_id']),
+            ];
+        }
+        return $tbl_data;
     }
     public function get_orderData($order_id)
     {

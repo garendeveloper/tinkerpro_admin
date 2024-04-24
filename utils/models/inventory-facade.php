@@ -360,16 +360,22 @@ class InventoryFacade extends DBConnection
         {
             $inventory_id = $row["inventory_id"];
             $qty_received = $row["col_4"];
-            $expired_date = date('Y-m-d', strtotime($row["col_5"]));
+            $expired_date = "";
+            if($row["col_5"] !== "")
+            {
+                $expired_date = date('Y-m-d', strtotime($row["col_5"]));
+            }
             $isSerialized = $row["isSerialized"];
             $isSelected = $row["isSelected"];
 
             if ($isSelected) 
             {
-                $sql = "UPDATE inventory SET qty_received = :v1, date_expired = :v2 WHERE id = :id";
+                $is_serialized = $isSerialized ? 1 : 0;
+                $sql = "UPDATE inventory SET qty_received = :v1, date_expired = :v2, isSerialized = :v3 WHERE id = :id";
                 $sqlStatement = $this->connect()->prepare($sql);
                 $sqlStatement->bindParam(':v1', $qty_received);
                 $sqlStatement->bindParam(':v2', $expired_date, PDO::PARAM_STR);
+                $sqlStatement->bindParam(':v3', $is_serialized, PDO::PARAM_INT);
                 $sqlStatement->bindParam(':id', $inventory_id);
                 $sqlStatement->execute();
 
