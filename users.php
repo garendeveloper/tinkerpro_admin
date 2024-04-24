@@ -281,7 +281,7 @@
   font-style: italic;
 }
 .highlighted {
-    border: 1px solid #00B050; 
+    border: 1px solid #00B050 !important; 
 }
 
 
@@ -405,7 +405,7 @@ function selectDataDisplay() {
         $('.highlighted').removeClass('highlighted');
 
 
-var $row = $(this).closest('tr').addClass('highlighted');
+      var $row = $(this).closest('tr').addClass('highlighted');
         updateUserForm(userId,dataFirstName,dataLastName,employeeNum,pw,imageName,datastats,datastatsID,roleN,roleID,identification,datehired,perm)
     });
 
