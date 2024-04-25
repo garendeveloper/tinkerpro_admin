@@ -152,7 +152,8 @@
 
     </table>
     
-    <table id="footer_lossand_damages" class="" style="position: absolute; padding: 10px; width: 100%;">
+    <div style="position: absolute;padding: 10px; width: 100%;">
+    <table id="footer_lossand_damages" class="" >
         <thead style="border: none;">
             <tr>
                 <th style="background-color: #1E1C11; width: 50%;" >TOTAL</th>
@@ -162,12 +163,14 @@
             </tr>
             <thead>
     </table>
-    <div style="position: absolute;  padding: 10px; ">
+    <div >
         <textarea name="loss_and_damage_note" id="loss_and_damage_note" cols="80" rows="5" placeholder="Note"
             style="background-color: #1E1C11; color: #ffff; width: 100%;">
 
         </textarea>
     </div>
+    </div>
+    
 </div>
 
 

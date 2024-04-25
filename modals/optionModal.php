@@ -1150,7 +1150,7 @@ input[type="text"] {
                             <button class="grid-item" id="btn_batchNumber">Batch Number</button>
                             <button class="grid-item" id="btn_stockTransfer">Stocks Transfer</button>
                             <button class="grid-item" id="btn_lossDamage">Loss & Damage</button>
-                            <button class="grid-item" id="btn_LOT">L.O.T</button>
+                            <button class="grid-item" id="btn_LOT">Lot Number</button>
                         </div>
                         <?php include("./inventory_modules/purchase_items.php")?>
                         <?php include("./inventory_modules/received_items.php")?>
