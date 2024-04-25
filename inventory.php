@@ -651,7 +651,7 @@
     }
     function validateTableInputs(table_id) {
       var isValid = true;
-      $('#'+table_id+' tbody input').each(function() {
+      $('#'+table_id+' tbody tr:not(.sub-row) input').each(function() {
         if (!$(this).val().trim()) {
           isValid = false;
           $(this).addClass('has-error');
@@ -736,6 +736,32 @@
                 }
             })
         }
+        function validate_loss_and_damage_form() 
+    {
+      var isValid = true;
+      $('#lossanddamage_form input[type=text], input[type=date]').each(function() {
+        if ($(this).val() === '') 
+        {
+          isValid = false;
+          $(this).addClass('has-error');
+        } 
+        else 
+        {
+          $(this).removeClass('has-error');
+        }
+      });
+
+      return isValid;
+    }
+    function show_reference_no() {
+        $.ajax({
+            type: 'get',
+            url: 'api.php?action=get_loss_and_damage_latest_reference_no',
+            success: function (data) {
+                $("#ld_reference").val(data);
+            }
+        })
+    }
     $("#btn_savePO").click(function(e){
       e.preventDefault();
       var activeModuleId = $("button.active").attr('id');
@@ -768,6 +794,81 @@
             }
           }
         })
+      }
+      if(activeModuleId === "btn_lossDamage")
+      {
+        var loss_and_damage_length = $("#tbl_lossand_damages tbody tr:not(.sub-row)").length;
+        if(validate_loss_and_damage_form())
+        {
+          if(loss_and_damage_length > 0)
+          {
+            var table_id = "tbl_lossand_damages";
+            var loss_and_damage_form = $("#lossanddamage_form").serialize();
+            if(validateTableInputs(table_id))
+            {
+              var tbl_data = [];
+              var subRowData = [];
+              $("#tbl_lossand_damages tbody tr:not(.sub-row)").each(function(){
+                var row_data = {};
+                row_data['inventory_id'] = $(this).data('id');
+                $(this).find("td").each(function(index, cell){
+                  if(index === 1)
+                    {
+                      row_data['qty_damage'] = $(cell).find("#qty_damage").val();
+                    }
+                    row_data['col_'+(index+1)] = $(cell).text();
+                })
+                tbl_data.push(row_data);
+              })
+              $("#tbl_lossand_damages tbody .sub-row").each(function(){
+                var row_data = {};
+                row_data['inventory_id'] = $(this).data('id');
+                $(this).find("td").each(function(index, cell){
+                  row_data['is_serialCheck'] = $(cell).find("#serial_ischeck").prop('checked');
+                  row_data['serial_number'] = $(cell).find("#serial_number").val();
+                })
+                subRowData.push(row_data);
+              })
+              var total_qty = $("#footer_lossand_damages thead").find("#total_qty").text();
+              var total_cost = $("#footer_lossand_damages thead").find("#total_cost").text();
+              var overall_total_cost = $("#footer_lossand_damages thead").find("#overall_total_cost").text();
+              $.ajax({
+                type: 'post',
+                url: 'api.php?action=save_loss_and_damage',
+                data: {
+                  tbl_data: JSON.stringify(tbl_data),
+                  sub_row_data:JSON.stringify(subRowData),
+                  note: $("#loss_and_damage_note").val(),
+                  total_qty: total_qty,
+                  total_cost: total_cost,
+                  over_all_total_cost: overall_total_cost,  
+                  loss_and_damage_form: loss_and_damage_form,
+                },
+                success: function(response)
+                {
+                  if(response.status)
+                  {
+                    $("#response_modal").slideDown({
+                      backdrop: 'static',
+                      keyboard: false,
+                    });
+                    $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
+                    setTimeout(function() {
+                      $("#response_modal").slideUp();
+                    }, 10000);
+                    $("#lossanddamage_form")[0].reset();
+                    $("#tbl_lossand_damages tbody").empty();
+                    show_reference_no();
+                  }
+                }
+              })
+            }
+          }
+          else
+          {
+            alert("Please add a product");
+          }
+        }
       }
       if(activeModuleId === "btn_receiveItems")
       {

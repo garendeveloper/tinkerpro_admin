@@ -92,6 +92,10 @@
             $formData = $_POST;
             echo json_encode($inventory->save_orderPayments($formData));
             break;
+        case 'save_loss_and_damage':
+            $formData = $_POST;
+            echo json_encode($loss_and_damage->save_loss_and_damage($formData));
+            break;
         case 'save_receivedItems':
             $formData = $_POST;
             echo json_encode($inventory->save_receivedItems($formData));

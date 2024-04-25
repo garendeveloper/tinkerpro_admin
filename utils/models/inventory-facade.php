@@ -62,6 +62,27 @@ class InventoryFacade extends DBConnection
         $stmt->bindParam(":inventory_id", $inventory_id);
         $stmt->execute();
         $data =  $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $array = [
+            "inventory_id" => $data["inventory_id"],
+            "prod_desc"=> $data["prod_desc"],
+            "cost"=> $data["cost"],            
+            "sub_row"=> $this->get_allTheSerialized($inventory_id),
+            "isSerialized"=> $data["isSerialized"],
+        ];
+        return $array;
+    }
+    public function get_allTheSerialized($inventory_id)
+    {
+        $sql = "SELECT serialized_product.*, inventory.*, serialized_product.serial_number
+                FROM serialized_product
+                INNER JOIN inventory ON inventory.id = serialized_product.inventory_id 
+                WHERE inventory.id = :inventory_id";
+
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(':inventory_id', $inventory_id, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
     public function get_inventory($inventory_id)
