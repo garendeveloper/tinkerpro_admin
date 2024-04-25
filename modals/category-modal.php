@@ -233,7 +233,7 @@
 <script>
 function getCategories() {
     $.ajax({
-            url: 'fetch-categories.php', 
+            url: './fetch-data/fetch-categories.php', 
             type: 'GET',
             success: function(response) {
                 $('#categoriesDiv').html(response);

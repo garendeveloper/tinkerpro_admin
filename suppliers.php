@@ -3,7 +3,7 @@
   include( __DIR__ . '/layout/header.php');
   include( __DIR__ . '/utils/db/connector.php');
   include( __DIR__ . '/utils/models/product-facade.php');
-
+  include( __DIR__ . '/utils/models/ingredients-facade.php');
   $productFacade = new ProductFacade;
 
   $userId = 0;
@@ -36,7 +36,9 @@
     array_push($info, $error);
 	}
 
-  include('./modals/add-ingredients.php');
+  include('./modals/add-suppliers-modal.php');
+  include('./modals/supplied-products.php');
+  include('./modals/supplied-ingredients.php');
  
 ?>
 <style>
@@ -118,13 +120,13 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
-           <input  class="text-color searchIngredients" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Ingredients"/>
-           <button onclick="addIngredients()" class="btn-control addProducts" style="margin-left: 15px;margin-right:15px;width:180px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
+           <input  class="text-color searchIngredients" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Suppliers"/>
+           <button onclick="addSuppliers()" class="btn-control addProducts" style="margin-left: 15px;margin-right:15px;width:180px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
               .cls-1 {
                 fill: #699f4c;
                 fill-rule: evenodd;
               }
-            </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp;Add Ingredients</button>
+            </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp;Add Suppliers</button>
             <button class="btn-control clearIngBtn" style="width:180px;order: 1" ><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
             <input class="custom-input" readonly hidden name="productid" id="productid" style="width: 180px"/>
           </div>
@@ -135,19 +137,19 @@
                 <div class="card-body">
                   <?php include('errors.php'); ?>
                   <div class="productTable" >
-                    <table id="recentingredients" class="text-color table-border" style = "width: 100%">
+                    <table id="recentsuppliers" class="text-color table-border" style = "width: 100%">
                       <thead>
                         <tr>
                           <th class="text-center" style="width: 2%;">No.</th>
-                          <th class="text-center" style="width: 17%;">Ingredients</th>
-                          <th class="text-center" style="width: 7%;">Barcode</th>
-                          <th class="text-center" style="width: 7%;">Unit Of Measure</th>
-                          <th class="text-center" style="width: 7%;">Cost Price</th>
-                          <th class="text-center" style="width: 5%;">Status</th>
+                          <th class="text-center" style="width: 15%;">Supplier</th>
+                          <th class="text-center" style="width: 15%;">Contact</th>
+                          <th class="text-center" style="width: 15%;">Email</th>
+                          <th class="text-center" style="width: 15%;">Company</th>
+                          <th class="text-center" style="width: 10%;">Status</th>
                           <th class="text-center" style="width: 7%;">Action</th>
                         </tr>
                       </thead>
-                      <tbody id="fetchingredients">
+                      <tbody id="fetchsuppliers">
                         
                       </tbody>
                     </table>
@@ -171,188 +173,32 @@
 
 <?php include("layout/footer.php") ?>
 <script>
-function refreshIngredientsTable() {
+function addSuppliers(){
+    $('#add_supplier_modal').show()
+    if($('#add_supplier_modal').is(":visible")){
+        var slider = document.getElementById('statusValueSupplier'); 
+        var statusLabel = document.getElementById('statusSupplier');
+        slider.checked = true;
+        if(slider.checked){
+            toggleStatusSupplier(slider)
+        }else{
+            toggleStatusSupplier(slider)
+        }
+    }
+}
+
+function refreshSupplierTable() {
         $.ajax({
-            url: './fetch-data/fetch-ingredients.php', 
+            url: './fetch-data/fetch-supplier.php', 
             type: 'GET',
             success: function(response) {
-                $('#fetchingredients').html(response); 
+                $('#fetchsuppliers').html(response); 
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText); 
             }
         });
     }
-    refreshIngredientsTable()
-
-
-
- function addIngredients(){
-   $('#add_ingredients_modal').show()
-   var i_id = document.getElementById('ingredientsID').value;
-     $('.modalIngredientsTxt').text(!i_id ? "Add Ingredients" : $('.modalIngredientsTxt').text());
- }
- document.addEventListener('DOMContentLoaded', function() {
-    
-    var checkbox = document.getElementById('activateIfToggle');
-    var spanStatus = document.getElementById('spanStatus');
-    var statusData = document.querySelector('.statusData');
-    if (checkbox.checked) {
-            spanStatus.style.color = '#00CC00';
-            statusData.textContent = 'Active';
-            statusData.style.color = '#00CC00';
-        } 
-   
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-
-   $('.clearIngBtn').on('click',function(){
-    $('.searchIngredients').val('');
-    refreshIngredientsTable()
-   })
-    var checkbox = document.getElementById('activateIfToggle');
-    checkbox.addEventListener('change', updateTextColor);
-
-    $('.searchIngredients').on('input', function(){
-    var searchData = $(this).val();
-    $.ajax({
-        url: './fetch-data/fetch-ingredients.php', 
-        type: 'GET',
-        data: {
-            searchQuery: searchData 
-        },
-        success: function(response) {
-          $('#fetchingredients').html(response); 
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText); 
-        }
-    });
-});
-
-$('#generateIngredientsPDFBtn').click(function() {
-      var searchData = $('.searchIngredients').val();
-    // var statusValue = $("#filterStatus").val(); 
-    console.log(searchData)
-    $.ajax({
-        url: './reports/generate_ingredients_pdf.php',
-        type: 'GET',
-        xhrFields: {
-            responseType: 'blob'
-        },
-        data: {
-            searchQuery: searchData
-        },
-        success: function(response) {
-            var blob = new Blob([response], { type: 'application/pdf' });
-            var url = window.URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = 'ingredients_list.pdf';
-            document.body.appendChild(a);
-            a.click();
-
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            console.log(searchData)
-        }
-    });
-});
-$('#printIngredients').click(function() {
-    var searchData = $('.searchIngredients').val();
-    // var statusValue = $("#filterStatus").val(); 
-    
-    $.ajax({
-        url: './reports/generate_ingredients_pdf.php',
-        type: 'GET',
-        xhrFields: {
-            responseType: 'blob'
-        },
-        data: {
-            searchQuery: searchData 
-        },
-        success: function(response) {
-          var blob = new Blob([response], { type: 'application/pdf' });
-            var url = window.URL.createObjectURL(blob);
-            var win = window.open(url);
-            win.onload = function() {
-                win.print();
-                win.onafterprint = function() {
-                    window.focus(); 
-                    win.close();
-                }
-            }
-
-            window.URL.revokeObjectURL(url);
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            console.log(searchData)
-        }
-    });
-  });
-  $('#generateIngredientsEXCELBtn').click(function() {
-    var searchData = $('.searchIngredients').val();
-    console.log(searchData)
-    $.ajax({
-        url: './reports/generate_ingredients_excel.php',
-        type: 'GET',
-        xhrFields: {
-            responseType: 'blob'
-        },
-        data: {
-            searchQuery: searchData 
-        },
-       success: function(response) {
-            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'ingredientsList.xlsx'; 
-            document.body.appendChild(link);
-            link.click();
-
-            // Clean up
-            document.body.removeChild(link);
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-});
-});
-
-$(document.body).on('click', '.editIngredients', function() {
-  var ingredientsId = $(this).closest('tr').find('.ingredientsId').text();  
-  var uom_id =  $(this).closest('tr').find('.uomId').text();
-  var uom_name = $(this).closest('tr').find('.uomName').text();
-  var name = $(this).closest('tr').find('.name').text();
-  var barcode = $(this).closest('tr').find('.barcode').text();
-  var cost = $(this).closest('tr').find('.cost').text();
-  var status = $(this).closest('tr').find('.status').text();
-  var desc = $(this).closest('tr').find('.description').text();
-  
-  toupdateIngredients(ingredientsId,uom_id,uom_name,name,barcode,cost,status,desc)
-});
-
-function updateTextColor() {
-    var checkbox = document.getElementById('activateIfToggle');
-    var spanStatus = document.getElementById('spanStatus');
-    var statusData = document.querySelector('.statusData');
-
-    if (checkbox.checked) {
-        spanStatus.style.color = '#00CC00';
-        statusData.textContent = 'Active';
-        statusData.style.color = '#00CC00';
-    } else {
-
-        spanStatus.style.color = 'red';
-        statusData.textContent = 'Inactive';
-        statusData.style.color = 'red';
-    }
-}
+    refreshSupplierTable()
 
 </script>

@@ -1228,7 +1228,7 @@ function generatePdf(id){
         endDate = ""
       }
         $.ajax({
-            url: 'generate_pdf.php',
+            url: './reports/generate_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -1297,7 +1297,7 @@ function generatePdf(id){
         endDate = ""
       }
         $.ajax({
-            url: 'generate_products_pdf.php',
+            url: './reports/generate_products_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -1334,7 +1334,7 @@ function generatePdf(id){
       var selectedIngredients = ingredientsSelect.value;
       
       $.ajax({
-          url: 'generate_ingredients_pdf.php',
+          url: './reports/generate_ingredients_pdf.php',
           type: 'GET',
           xhrFields: {
               responseType: 'blob'
@@ -2128,7 +2128,7 @@ function generateExcel(id){
         endDate = ""
       }
       $.ajax({
-            url: 'generate_excel.php',
+            url: './reports/generate_excel.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -2199,7 +2199,7 @@ function generateExcel(id){
         endDate = ""
       }
     $.ajax({
-        url: 'generateProductsExcel.php',
+        url: './reports/generateProductsExcel.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -2233,7 +2233,7 @@ function generateExcel(id){
       var ingredientsSelect = document.getElementById('ingredientsSelect')
       var selectedIngredients = ingredientsSelect.value;
       $.ajax({
-        url: 'generate_ingredients_excel.php',
+        url: './reports/generate_ingredients_excel.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -2939,7 +2939,7 @@ function printDocuments(id){
       }
 
         $.ajax({
-            url: 'generate_pdf.php',
+            url: './reports/generate_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -3011,7 +3011,7 @@ function printDocuments(id){
         endDate = ""
       }
     $.ajax({
-        url: 'generate_products_pdf.php',
+        url: './reports/generate_products_pdf.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -3050,7 +3050,7 @@ function printDocuments(id){
       var ingredientsSelect = document.getElementById('ingredientsSelect')
       var selectedIngredients = ingredientsSelect.value;
       $.ajax({
-          url: 'generate_ingredients_pdf.php',
+          url: './reports/generate_ingredients_pdf.php',
           type: 'GET',
           xhrFields: {
               responseType: 'blob'
@@ -3877,7 +3877,7 @@ function showReports(id){
       }
 
         $.ajax({
-            url: 'generate_pdf.php',
+            url: './reports/generate_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -3951,7 +3951,7 @@ function showReports(id){
         endDate = ""
       }
         $.ajax({
-            url: 'generate_products_pdf.php',
+            url: './reports/generate_products_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -3992,7 +3992,7 @@ function showReports(id){
         var selectedIngredients = ingredientsSelect.value;
    
         $.ajax({
-            url: 'generate_ingredients_pdf.php',
+            url: './reports/generate_ingredients_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'

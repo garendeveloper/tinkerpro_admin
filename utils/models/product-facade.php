@@ -725,7 +725,7 @@ return $stmt;
 }
 
 public function getProductsData() {
-  $sql = 'SELECT * FROM products';
+  $sql = 'SELECT * FROM products ORDER BY prod_desc ASC';
   $stmt = $this->connect()->query($sql);
   return $stmt;
 }

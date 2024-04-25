@@ -1,7 +1,7 @@
 <?php
-include(__DIR__ . '/utils/db/connector.php');
-include(__DIR__ . '/utils/models/ingredients-facade.php');
-include(__DIR__ . '/utils/models/user-facade.php');
+include(__DIR__ . '/../utils/db/connector.php');
+include(__DIR__ . '/../utils/models/ingredients-facade.php');
+include(__DIR__ . '/../utils/models/user-facade.php');
 
 $ingredientFacade = new IngredientsFacade;
 

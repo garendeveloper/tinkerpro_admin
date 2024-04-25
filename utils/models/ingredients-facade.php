@@ -108,7 +108,7 @@ public function updateIngrednts($ingredientName, $barcode,$uom_id,$cost,$status,
 }
 public function getIngredientsData()
 {
-  $sql = 'SELECT * FROM ingredients';
+  $sql = 'SELECT * FROM ingredients ORDER BY name ASC';
   $stmt = $this->connect()->query($sql);
   return $stmt;
 }
