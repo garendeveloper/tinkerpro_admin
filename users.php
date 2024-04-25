@@ -350,7 +350,7 @@ function addUser() {
 
 function refreshTable() {
         $.ajax({
-            url: 'fetch-users.php', 
+            url: './fetch-data/fetch-users.php', 
             type: 'GET',
             success: function(response) {
                 $('#userTable').html(response); 
@@ -372,7 +372,7 @@ function selectDataDisplay() {
         $("#filterStatusName").val(statusName);
         $("#statusDropDown").hide();
         $.ajax({
-            url: 'fetch-users.php', 
+            url: './fetch-data/fetch-users.php', 
             type: 'GET',
             data:{selectedValue:value},
             success: function(response) {
@@ -417,7 +417,7 @@ function selectDataDisplay() {
       var statusValue = $("#filterStatus").val(); 
 
     $.ajax({
-        url: 'generate_pdf.php',
+        url: './reports/generate_pdf.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -449,7 +449,7 @@ function selectDataDisplay() {
   $('#generateEXCELBtn').click(function() {
     var searchData = $('.searchUsers').val();
     $.ajax({
-        url: 'generate_excel.php',
+        url: './reports/generate_excel.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -482,7 +482,7 @@ $('#printThis').click(function() {
     var statusValue = $("#filterStatus").val(); 
 
     $.ajax({
-        url: 'generate_pdf.php',
+        url: './reports/generate_pdf.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -516,7 +516,7 @@ $('.searchUsers').on('input', function(){
     var statusValue = $("#filterStatus").val(); 
     
     $.ajax({
-        url: 'fetch-users.php', 
+        url: './fetch-data/fetch-users.php', 
         type: 'GET',
         data: {
             selectedValue: statusValue,

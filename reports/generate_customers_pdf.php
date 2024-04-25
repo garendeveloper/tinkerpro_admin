@@ -63,7 +63,7 @@ $current_date = date('F j, Y');
 $pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
 $pdf->Ln(-2);
 
-if($customerId){
+// if($customerId){
     $header = array('No.', 'Name', 'Contact', 'Email', 'Discount Type', 'Rate(%)');
     $headerWidths = array(10, 50, 40, 25, 40, 25);
     $maxCellHeight = 5; 
@@ -99,36 +99,37 @@ if($customerId){
         $counter++;
     }
     
-}else{
-    $totalAmount = 0;
-    $pdf->SetFont('', '', 10);
-    while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-        $pdf->SetFont('', 'B', 10);
-        $pdf->Cell(0, 10, "Customer Name: " . $row['last_name'] . ' ' . $row['first_name'], 0, 1, 'L');
-        $pdf->Ln(-2) ;
-        $header = array('No.', 'Contact', 'Email', 'Discount Type', 'Rate(%)');
-        $headerWidths = array(10, 50, 50, 40, 40);
-        $maxCellHeight = 5;
+//}
+// else{
+//     $totalAmount = 0;
+//     $pdf->SetFont('', '', 10);
+//     while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
+//         $pdf->SetFont('', 'B', 10);
+//         $pdf->Cell(0, 10, "Customer Name: " . $row['last_name'] . ' ' . $row['first_name'], 0, 1, 'L');
+//         $pdf->Ln(-2) ;
+//         $header = array('No.', 'Contact', 'Email', 'Discount Type', 'Rate(%)');
+//         $headerWidths = array(10, 50, 50, 40, 40);
+//         $maxCellHeight = 5;
     
-        $hexColor = '#FF6900';
-        list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+//         $hexColor = '#FF6900';
+//         list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
     
-        $pdf->SetFillColor($r, $g, $b);
+//         $pdf->SetFillColor($r, $g, $b);
     
-        $pdf->SetFont('', 'B', 10);
-        for ($i = 0; $i < count($header); $i++) {
-            $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
-        }
-        $pdf->Ln() ;
-        $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-        $pdf->Cell($headerWidths[1], $maxCellHeight, $row['contact'], 1, 0, 'L');
-        $pdf->Cell($headerWidths[2], $maxCellHeight, $row['email'], 1, 0, 'L');
-        $pdf->Cell($headerWidths[3], $maxCellHeight, $row['name'], 1, 0, 'L');
-        $pdf->Cell($headerWidths[4], $maxCellHeight, $row['rate'], 1, 0, 'L');
-        $pdf->Ln(); 
-        $counter++;
-    }
-}
+//         $pdf->SetFont('', 'B', 10);
+//         for ($i = 0; $i < count($header); $i++) {
+//             $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
+//         }
+//         $pdf->Ln() ;
+//         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
+//         $pdf->Cell($headerWidths[1], $maxCellHeight, $row['contact'], 1, 0, 'L');
+//         $pdf->Cell($headerWidths[2], $maxCellHeight, $row['email'], 1, 0, 'L');
+//         $pdf->Cell($headerWidths[3], $maxCellHeight, $row['name'], 1, 0, 'L');
+//         $pdf->Cell($headerWidths[4], $maxCellHeight, $row['rate'], 1, 0, 'L');
+//         $pdf->Ln(); 
+//         $counter++;
+//     }
+//}
 
 
 

@@ -1,6 +1,6 @@
 <?php
-include(__DIR__ . '/utils/db/connector.php');
-include(__DIR__ . '/utils/models/user-facade.php');
+include(__DIR__ . '/..//utils/db/connector.php');
+include(__DIR__ . '/..//utils/models/user-facade.php');
 
 // Retrieve parameters from GET request
 $value = $_GET['selectedValue'] ?? null; 
