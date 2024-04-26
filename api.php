@@ -5,6 +5,7 @@
     include( __DIR__ . '/utils/models/inventory-facade.php');
     include( __DIR__ . '/utils/models/order-facade.php');
     include( __DIR__ . '/utils/models/loss_and_damage-facade.php');
+    include( __DIR__ . '/utils/models/supplier-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
@@ -17,6 +18,7 @@
     // $userFacade = new UserFacade();
     // $products = new ProductFacade();
     $ingredients = new IngredientsFacade();
+    $supplier = new SupplierFacade();
 
     header("Content-Type: application/json");
     $json = file_get_contents('php://input');
@@ -223,6 +225,12 @@
             $result = $products->editVariantData($id, $variantName,$category_id);
             echo json_encode(['success' => true, 'result' =>$result]); 
             break;
+        case "addSupplier":
+            $formData = $_POST;
+            $result =  $supplier->addSupplier($formData);
+            echo json_encode([ 'success' => true, 'result' => $formData]);
+            break; 
+           
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

@@ -293,7 +293,7 @@
 }
 function refreshProductsTable() {
         $.ajax({
-            url: 'fetch-products.php', 
+            url: './fetch-data/fetch-products.php', 
             type: 'GET',
             success: function(response) {
                 $('#productTable').html(response); 
@@ -312,7 +312,7 @@ function refreshProductsTable() {
     // var statusValue = $("#filterStatus").val(); 
     console.log(searchData)
     $.ajax({
-        url: 'generate_products_pdf.php',
+        url: './reports/generate_products_pdf.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -343,7 +343,7 @@ $('#printProduct').click(function() {
     // var statusValue = $("#filterStatus").val(); 
     
     $.ajax({
-        url: 'generate_products_pdf.php',
+        url: './reports/generate_products_pdf.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -375,7 +375,7 @@ $('#printProduct').click(function() {
     var searchData = $('.searchProducts').val();
     console.log(searchData)
     $.ajax({
-        url: 'generateProductsExcel.php',
+        url: './reports/generateProductsExcel.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -402,7 +402,7 @@ $('#printProduct').click(function() {
 $('.searchProducts').on('input', function(){
     var searchData = $(this).val();
     $.ajax({
-        url: 'fetch-products.php', 
+        url: './fetch-data/fetch-products.php', 
         type: 'GET',
         data: {
             searchQuery: searchData 

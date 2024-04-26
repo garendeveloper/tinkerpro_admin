@@ -1,7 +1,7 @@
 <?php
 require_once('./vendor/autoload.php');
-include(__DIR__ . '/utils/db/connector.php');
-include( __DIR__ . '/utils/models/ingredients-facade.php');
+include(__DIR__ . '/../utils/db/connector.php');
+include( __DIR__ . '/../utils/models/ingredients-facade.php');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;

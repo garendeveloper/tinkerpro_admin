@@ -1,6 +1,6 @@
 <?php
-include(__DIR__ . '/utils/db/connector.php');
-include(__DIR__ . '/utils/models/product-facade.php');
+include(__DIR__ . '/../utils/db/connector.php');
+include(__DIR__ . '/../utils/models/product-facade.php');
 
 $productFacade = new ProductFacade;
 
