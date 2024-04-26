@@ -74,7 +74,7 @@ class InventoryFacade extends DBConnection
     }
     public function get_allTheSerialized($inventory_id)
     {
-        $sql = "SELECT serialized_product.*, inventory.*, serialized_product.serial_number
+        $sql = "SELECT serialized_product.*, inventory.*, serialized_product.serial_number, serialized_product.id as serial_id
                 FROM serialized_product
                 INNER JOIN inventory ON inventory.id = serialized_product.inventory_id 
                 WHERE inventory.id = :inventory_id";
@@ -390,11 +390,12 @@ class InventoryFacade extends DBConnection
     {
         $tbl_data = json_decode($formData['tbl_data'], true);
         $subRowData = json_decode($formData['subRowData'], true);
-
+        $is_received = $formData['is_received'] !== 0 ? true : false;
         $serializedFormData = $formData['receive_form'];
+        $po_number = $formData["po_number"];
         $formData = [];
         parse_str($serializedFormData, $formData);
-
+      
         foreach ($tbl_data as $row) 
         {
             $inventory_id = $row["inventory_id"];
@@ -410,6 +411,14 @@ class InventoryFacade extends DBConnection
             if ($isSelected) 
             {
                 $is_serialized = $isSerialized ? 1 : 0;
+                $is_received_val = 1;
+
+                $sql = $this->connect()->prepare("UPDATE orders SET is_received = :is_received
+                    WHERE po_number = :po_number");
+                $sql->bindParam(":is_received", $is_received_val, PDO::PARAM_INT);
+                $sql->bindParam(":po_number", $po_number, PDO::PARAM_STR);
+                $sql->execute();
+
                 $sql = "UPDATE inventory SET qty_received = :v1, date_expired = :v2, isSerialized = :v3 WHERE id = :id";
                 $sqlStatement = $this->connect()->prepare($sql);
                 $sqlStatement->bindParam(':v1', $qty_received);
@@ -418,25 +427,48 @@ class InventoryFacade extends DBConnection
                 $sqlStatement->bindParam(':id', $inventory_id);
                 $sqlStatement->execute();
 
-                $sqlStatement = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock) 
-                                                            VALUES (?, ?)");
-
-                                                            $sqlStatement->bindParam(1, $inventory_id, PDO::PARAM_STR);
-                                                            $sqlStatement->bindParam(2, $qty_received, PDO::PARAM_STR);
-                                                            $sqlStatement->execute();
-
-                if ($isSerialized) 
+                if($is_received)
                 {
-                   foreach($subRowData as $sub_row)
-                   {
-                        if($this->check_serialNumber($sub_row['inventory_id'], $sub_row['serial_number']) === false) 
-                        {
-                            $sqlStatement = $this->connect()->prepare("INSERT INTO serialized_product (inventory_id, serial_number) 
-                            VALUES (?, ?)");
+                    $sqlStatement = $this->connect()->prepare("UPDATE stocks SET stock = :stock  WHERE inventory_id = :inventory_id");
+    
+                    $sqlStatement->bindParam(":stock", $qty_received);
+                    $sqlStatement->bindParam(":inventory_id", $inventory_id);
+                    $sqlStatement->execute();
 
-                            $sqlStatement->bindParam(1, $sub_row['inventory_id'], PDO::PARAM_STR);
-                            $sqlStatement->bindParam(2, $sub_row['serial_number'], PDO::PARAM_STR);
+                    if ($isSerialized) 
+                    {
+                       foreach($subRowData as $sub_row)
+                       {
+                            $sqlStatement = $this->connect()->prepare("UPDATE serialized_product SET serial_number = :serial_number WHERE id = :serial_id");
+
+                            $sqlStatement->bindParam(":serial_number", $sub_row['serial_number'], PDO::PARAM_STR);
+                            $sqlStatement->bindParam(":serial_id", $sub_row['serial_id'], PDO::PARAM_STR);
                             $sqlStatement->execute();
+                        }
+                    }
+                }
+                else
+                {
+                    $sqlStatement = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock) 
+                                                                VALUES (?, ?)");
+    
+                    $sqlStatement->bindParam(1, $inventory_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(2, $qty_received, PDO::PARAM_STR);
+                    $sqlStatement->execute();
+    
+                    if ($isSerialized) 
+                    {
+                       foreach($subRowData as $sub_row)
+                       {
+                            if($this->check_serialNumber($sub_row['inventory_id'], $sub_row['serial_number']) === false) 
+                            {
+                                $sqlStatement = $this->connect()->prepare("INSERT INTO serialized_product (inventory_id, serial_number) 
+                                VALUES (?, ?)");
+    
+                                $sqlStatement->bindParam(1, $sub_row['inventory_id'], PDO::PARAM_STR);
+                                $sqlStatement->bindParam(2, $sub_row['serial_number'], PDO::PARAM_STR);
+                                $sqlStatement->execute();
+                            }
                         }
                     }
                 }

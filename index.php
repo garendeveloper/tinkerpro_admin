@@ -182,6 +182,8 @@ h3{
 <?php include("layout/footer.php") ?>
 <script>
   $(document).ready(function() {
+    $("#index").addClass('active');
+    $("#pointer").html("Dashboard");
     let year = new Date().getFullYear();
     $("#d_year").html(year);
     updateChart(year);

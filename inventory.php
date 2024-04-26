@@ -170,6 +170,9 @@
 
 <script>
   $(document).ready(function() {
+    $("#inventory").addClass('active');
+    $("#pointer").html("Inventory");
+
     $(".tablinks").click(function(e) {
       e.preventDefault();
       var tabId = $(this).data("tab");
@@ -662,80 +665,6 @@
       return isValid;
     }
 
-    function show_ordersForReceivedItems(po_number) {
-            $.ajax({
-                type: 'GET',
-                url: 'api.php?action=get_orderDataByPurchaseNumber&po_number=' + po_number,
-                dataType: 'json',
-                success: function (data) {
-                    var table = "";
-                    $("#r_supplier").html(data[0].supplier);
-                    $("#r_datePurchased").html(date_format(data[0].date_purchased));
-                    $("#r_po_number").html(data[0].po_number);
-                    var isPaid = data[0].isPaid === 1 ?
-                        "<span style = 'color: lightgreen'>PAID</span>" :
-                        "<span style = 'color: red'>UNPAID</span>"
-                    $("#r_isPaid").html(isPaid);
-
-                    for (var i = 0; i < data.length; i++) {
-                        table += "<tr data-id = " + data[i].inventory_id + ">";
-                        table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
-                        table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
-                        table += "<td style = 'text-align: center; '>" + data[i]
-                            .qty_purchased + "</td>";
-                        if (data[i].qty_received === null) {
-                            table +=
-                                "<td style = 'text-align: center; background-color: #262626; ' class ='editable' id='qty_received' ></td>";
-                        }
-                        else {
-                            table +=
-                                "<td style = 'text-align: center; background-color: #262626; ' class ='editable' id='qty_received'>" + data[i].qty_received + "</td>";
-                        }
-                        if (data[i].date_expired === null) {
-                            table +=
-                                "<td style = 'text-align: center; background-color: #262626; '></td>";
-                        }
-                        else {
-                            table +=
-                                "<td style = 'text-align: center; background-color: #262626; '>" + data[i].date_expired + "</td>";
-                        }
-                        if(data[i].isSerialized === 1)
-                        {
-                          table +=
-                            "<td style = 'text-align: center'><div class='custom-checkbox checked' id='check_isSerialized'></div></td>";
-                        }
-                        if(data[i].isSerialized === 0)
-                        {
-                          table +=
-                            "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
-                        }
-                     
-                        table += "</tr>";
-                        if(data[i].isSerialized === 1)
-                        {
-                            var sub_row = data[i].sub_row;
-                            var html_sub_row = "";
-                            var counter = 1;
-                            for(var j = 0; j<sub_row.length; j++)
-                            {
-                                html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
-                                html_sub_row += "<td>"+counter+"</td>";
-                                html_sub_row += "<td ><input  style = 'width: 130px' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
-                                html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
-                                html_sub_row += "</tr>";
-                                counter++;
-                            }
-                          
-                            table +=html_sub_row;
-                        }
-                    }
-                    $("#tbl_receivedItems tbody").html(table);
-                },
-                error: function (data) {
-                    alert("No response")
-                }
-            })
-        }
         function validate_loss_and_damage_form() 
     {
       var isValid = true;
@@ -826,9 +755,11 @@
                 $(this).find("td").each(function(index, cell){
                   row_data['is_serialCheck'] = $(cell).find("#serial_ischeck").prop('checked');
                   row_data['serial_number'] = $(cell).find("#serial_number").val();
+                  row_data['serial_id'] = $(cell).data('id');
                 })
                 subRowData.push(row_data);
               })
+   
               var total_qty = $("#footer_lossand_damages thead").find("#total_qty").text();
               var total_cost = $("#footer_lossand_damages thead").find("#total_cost").text();
               var overall_total_cost = $("#footer_lossand_damages thead").find("#overall_total_cost").text();
@@ -858,6 +789,10 @@
                     }, 10000);
                     $("#lossanddamage_form")[0].reset();
                     $("#tbl_lossand_damages tbody").empty();
+                    $("#footer_lossand_damages thead").find("#total_qty").html("0");
+                    $("#footer_lossand_damages thead").find("#total_cost").html("₱ 0.00");
+                    $("#footer_lossand_damages thead").find("#overall_total_cost").html("₱ 0.00");
+                    $("#loss_and_damage_note").val("");
                     show_reference_no();
                   }
                 }
@@ -901,6 +836,7 @@
                   }
                   if(index === 5)
                   {
+              
                     rowData['isSerialized'] = $(cell).find("#check_isSerialized").hasClass('checked');
                   }
                   rowData['col_'+(index+1)] = $(cell).text();                 
@@ -911,6 +847,7 @@
                   var rowData = {};
                   rowData.inventory_id = $(this).data('id');
                   rowData.serial_number = $(this).find('input').val();
+                  rowData.serial_id = $(this).find("#serial_id").data('id');
                   subRowData.push(rowData);
               });
               var receive_form = $("#receive_all").serialize();
@@ -922,12 +859,23 @@
                   receive_form: receive_form,
                   subRowData: JSON.stringify(subRowData),
                   po_number: $("#r_po_number").text(),
+                  is_received: $("#is_received").val(),
                 },
                 success: function(response){
                   if(response.status)
                   {
-                    alert(response.msg);
-                    show_ordersForReceivedItems($("#r_po_number").text());
+                    $("#response_modal").slideDown({
+                      backdrop: 'static',
+                      keyboard: false,
+                    });
+                    $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
+                    setTimeout(function() {
+                      $("#response_modal").slideUp();
+                    }, 10000);
+                    $("#r_PONumbers").val("");
+                    $("#is_received").val("");
+                    $("#tbL_receivedItems tbody").empty();
+                    $("#po_data_div").hide();
                     $("#received_payment_confirmation").hide();
                   }
                 } 

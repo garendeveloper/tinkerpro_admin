@@ -172,6 +172,8 @@
 
 <?php include("layout/footer.php") ?>
 <script>
+    $("#ingredients").addClass('active');
+    $("#pointer").html("Ingredients");
 function refreshIngredientsTable() {
         $.ajax({
             url: 'fetch-ingredients.php', 

@@ -170,6 +170,7 @@
             <img src="assets/img/barcode.png"
                 style="height: 50px; width: 50px; border-radius: 0;  margin-right: 2px; margin-left: 0px;">
             <div class="search-container">
+                <input type="hidden" id = "is_received" name = "is_received" value = "0"> 
                 <input type="text" style="width: 280px; height: 30px; font-size: 16px;"
                     class="search-input italic-placeholder" placeholder="Search Purchase Order No." name="r_PONumbers"
                     id="r_PONumbers" onkeyup="$(this).removeClass('has-error')" autocomplete="off">
@@ -270,6 +271,7 @@
                 success: function (data) {
                     var table = "";
                     $("#r_supplier").html(data[0].supplier);
+                    $("#is_received").html(data[0].is_received);
                     $("#r_datePurchased").html(date_format(data[0].date_purchased));
                     $("#r_po_number").html(data[0].po_number);
                     var isPaid = data[0].isPaid === 1 ?
@@ -319,13 +321,13 @@
                             {
                                 html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
                                 html_sub_row += "<td>"+counter+"</td>";
-                                html_sub_row += "<td ><input  style = 'width: 130px' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
+                                html_sub_row += "<td data-id = "+sub_row[j].serial_id+" id = 'serial_id'><input  style = 'width: 130px' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
                                 html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
                                 html_sub_row += "</tr>";
                                 counter++;
                             }
                           
-                            table +=html_sub_row;
+                            table += html_sub_row;
                            
                         }
                     }

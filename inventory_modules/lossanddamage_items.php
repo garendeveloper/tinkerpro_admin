@@ -157,9 +157,9 @@
         <thead style="border: none;">
             <tr>
                 <th style="background-color: #1E1C11; width: 50%;" >TOTAL</th>
-                <th style="background-color: #1E1C11; width: 50px; text-align:center;" id="total_qty" ></th>
-                <th style="background-color: #1E1C11; text-align: right;" id="total_cost"></th>
-                <th style="background-color: #1E1C11; text-align: right;" id="overall_total_cost"></th>
+                <th style="background-color: #1E1C11; width: 50px; text-align:center;" id="total_qty" >0</th>
+                <th style="background-color: #1E1C11; text-align: right;" id="total_cost">₱ 0.00</th>
+                <th style="background-color: #1E1C11; text-align: right;" id="overall_total_cost">₱ 0.00</th>
             </tr>
             <thead>
     </table>
@@ -234,7 +234,7 @@
                             for(var j = 0; j<sub_row.length; j++)
                             {
                                 html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
-                                html_sub_row += "<td ><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+" readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
+                                html_sub_row += "<td data-id="+sub_row[j].serial_id+"><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+" readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
                                 html_sub_row += "</tr>";
                             }
                             row +=html_sub_row;

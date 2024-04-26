@@ -29,7 +29,7 @@ class OrderFacade extends DBConnection
     }
     public function get_allTheSerialized($inventory_id)
     {
-        $sql = "SELECT serialized_product.*, inventory.*, serialized_product.serial_number
+        $sql = "SELECT serialized_product.*, inventory.*, serialized_product.serial_number,serialized_product.id as serial_id
                 FROM serialized_product
                 INNER JOIN inventory ON inventory.id = serialized_product.inventory_id 
                 WHERE inventory.id = :inventory_id";

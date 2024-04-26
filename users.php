@@ -290,6 +290,9 @@
 
 
 $(document).ready(function() {
+  $("#users").addClass('active');
+  $("#pointer").html("Users");
+
     $('#dropdownContent a').click(function() {
         var roleId = $(this).data('value');
         selectedRole(roleId)

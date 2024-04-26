@@ -51,6 +51,9 @@
     .logo i {
       margin-right: 4px; 
     }
+    .sidebar a.active{
+        background-color: '#FF6700',
+    }
 </style>
 <header class="site-header">
     <div class="header-container">
@@ -58,7 +61,7 @@
     </div>
 </header>
 <div class="sidebar">
-    <a href="index" id = "index"><i class = "bi bi-house-door"></i>&nbsp; Dashboard</a>
+    <a href="index" id = "index" ><i class = "bi bi-house-door"></i>&nbsp; Dashboard</a>
     <a href="inventory" id = "inventory"><i class = "bi bi-box-seam"></i>&nbsp; Inventory</a>
     <a href="products" id = "products"><i class = "bi bi-bag-check"></i>&nbsp; Products</a>
     <a href="ingredients" id = "ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a>

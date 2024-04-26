@@ -202,6 +202,8 @@
 
 <?php include("layout/footer.php") ?>
 <script>
+   $("#products").addClass('active');
+    $("#pointer").html("Products");
   function addproducts(){
     getSku();
      $('#add_products_modal').show()
