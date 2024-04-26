@@ -6,11 +6,13 @@
     include( __DIR__ . '/utils/models/order-facade.php');
     include( __DIR__ . '/utils/models/loss_and_damage-facade.php');
     include( __DIR__ . '/utils/models/supplier-facade.php');
+    include( __DIR__ . '/utils/models/inventorycount-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
     $inventory = new InventoryFacade();
     $order = new OrderFacade();
+    $inventory_count = new InventoryCountFacade();
     $loss_and_damage = new Loss_and_damage_facade();
 
     include( __DIR__ . '/utils/models/ingredients-facade.php');
@@ -71,6 +73,9 @@
             $inventory_type = $_GET['type'];
             echo json_encode($inventory->get_allProductByInventoryType($inventory_type));
             break;
+        case 'get_inventorycount_latest_reference_no':
+            echo json_encode($inventory_count->get_latest_reference_no());
+            break;
         case 'get_inventoryDataById':
             $inventory_id = $_GET['inventory_id'];
             echo json_encode($inventory->get_inventoryDataById($inventory_id));
@@ -93,6 +98,10 @@
         case 'save_orderPayments':
             $formData = $_POST;
             echo json_encode($inventory->save_orderPayments($formData));
+            break;
+        case 'save_inventory_count':
+            $formData = $_POST;
+            echo json_encode($inventory_count->save_inventory_count($formData));
             break;
         case 'save_loss_and_damage':
             $formData = $_POST;

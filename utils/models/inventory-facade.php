@@ -4,12 +4,13 @@ class InventoryFacade extends DBConnection
     public function get_allInventories()
     {
         // $offset = ($page - 1) * $perPage;
-        $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
+        $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id, stocks.*
                                             FROM inventory
                                             JOIN products ON products.id = inventory.product_id
                                             JOIN uom ON uom.id = products.uom_id
                                             JOIN orders ON orders.id = inventory.order_id
                                             JOIN supplier ON supplier.id = orders.supplier_id
+                                            JOIN stocks ON stocks.inventory_id = inventory.id
                                             ORDER BY inventory.id DESC;");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -19,7 +20,7 @@ class InventoryFacade extends DBConnection
     public function get_allProductByInventoryType($type)
     {
         $data = "";
-        if($type === 1)
+        if($type === "1")
         {
             // $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
             //                                 FROM inventory
@@ -34,15 +35,16 @@ class InventoryFacade extends DBConnection
             // $sql->execute();
             // $data = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
-        else
+        if($type === "2")
         {
-            $sql = "SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
-            FROM inventory
-            JOIN products ON products.id = inventory.product_id
-            JOIN uom ON uom.id = products.uom_id
-            JOIN orders ON orders.id = inventory.order_id
-            JOIN supplier ON supplier.id = orders.supplier_id
-            ORDER BY inventory.id DESC;";
+            $sql = "SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id, stocks.*
+                    FROM inventory
+                    JOIN products ON products.id = inventory.product_id
+                    JOIN uom ON uom.id = products.uom_id
+                    JOIN orders ON orders.id = inventory.order_id
+                    JOIN supplier ON supplier.id = orders.supplier_id
+                    JOIN stocks ON stocks.inventory_id = inventory.id
+                    ORDER BY inventory.id DESC;";
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->execute();
@@ -104,10 +106,11 @@ class InventoryFacade extends DBConnection
             $qty_onhand = (int)$row['col_2'];
             $newqty = (int)$row['newqty'];
             $newqty = $newqty + $qty_onhand;
-            $sql = $this->connect()->prepare('UPDATE inventory SET qty_received = :qty_received WHERE id=:id');
-            $sql->bindParam(':qty_received', $newqty);
-            $sql->bindParam(':id', $inventory_id);
-            $sql->execute();
+
+            $stmt = $this->connect()->prepare("UPDATE stocks SET stock = :new_stock WHERE inventory_id = :id");
+            $stmt->bindParam(":new_stock", $newqty); 
+            $stmt->bindParam(":id", $inventory_id); 
+            $stmt->execute();
         }
         return [
             'status'=>true,

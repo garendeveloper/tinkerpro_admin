@@ -67,8 +67,9 @@
         <div class="fieldContainer" style="margin-top: -3px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
             <div class="search-container">
+            <!-- Search Product/Barcode/Code/SN -->
                 <input type="text" style="width: 280px; height: 30px; font-size: 14px;"
-                    class="search-input italic-placeholder" placeholder="Search Product/Barcode/Code/SN" name="q_product"
+                    class="search-input italic-placeholder" placeholder="Search Purchase Number" name="q_product"
                     onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
             </div>
             <button style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;" id="btn_searchQProduct">
@@ -134,6 +135,7 @@
                 success: function (data) {
                     var tbody = "";
                     for (var i = 0; i < data.length; i++) {
+                        var array = [data[i].po_number];
                         products_forquickInventory.push(data[i].po_number);
                     }
                     autocomplete_product(document.getElementById("q_product"), products_forquickInventory);
@@ -151,9 +153,10 @@
                 a.setAttribute("id", this.id + "autocomplete-list");
                 a.setAttribute("class", "autocomplete-items");
                 this.parentNode.appendChild(a);
-                for (i = 0; i < arr.length; i++) {
+                for(i = 0; i<arr.length; i++)
+                {
                     if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                        b = document.createElement("DIV");
+                    b = document.createElement("DIV");
                         b.innerHTML = "<strong style = 'color: #ffff'>" + arr[i].substr(0, val.length) + "</strong>";
                         b.innerHTML += arr[i].substr(val.length);
                         b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
@@ -164,6 +167,7 @@
                         a.appendChild(b);
                     }
                 }
+                
             });
             inp.addEventListener("keydown", function (e) {
                 var x = document.getElementById(this.id + "autocomplete-list");

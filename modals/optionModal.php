@@ -1158,6 +1158,7 @@ input[type="text"] {
                         <?php include("./inventory_modules/quickinventory_items.php")?>
                         <?php include("./inventory_modules/stocks_transfer_items.php")?>
                         <?php include("./inventory_modules/lossanddamage_items.php")?>
+                        <?php include("./inventory_modules/inventorycount_items.php")?>
                     </div>
                 </div>
             </div>

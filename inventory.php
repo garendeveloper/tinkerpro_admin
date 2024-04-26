@@ -113,7 +113,7 @@
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 4%;">ID</th>
-                    <th style="width: 8%;">Supplier</th>
+                    <th style="width: 8%;">Product</th>
                     <th style="width: 4%;">Barcode</th>
                     <th class="text-center" style="width: 2%;">Unit</th>
                     <th class="text-center" style="width: 2%;">Qty in Store</th>
@@ -554,7 +554,6 @@
                 $("#totalQty").html("0");
                 $("#totalPrice").html("&#x20B1;&nbsp;0.00");
                 $("#overallTotal").html("&#x20B1;&nbsp;0.00");
-                show_allInventories(); 
                 show_response(response.message);
                 show_purchaseOrderNo();
                 show_allProducts(1, perPage);
@@ -601,45 +600,6 @@
         $("#response_modal").slideUp();
       }, 3000);
     }
-    function show_ordersForQuickInventory(po_number) {
-        var negative_inventory = $("#negative_inventory").prop("checked");
-        $.ajax({
-            type: 'GET',
-            url: 'api.php?action=get_orderDataByPurchaseNumber&po_number=' + po_number,
-            dataType: 'json',
-            success: function (data) {
-                var table = "";
-                for (var i = 0; i < data.length; i++) {
-                    if(negative_inventory)
-                    {
-                        if(data[i].qty_received <= data[i].qty_purchased)
-                        {
-                            table += "<tr data-id = " + data[i].inventory_id + ">";
-                            table += "<td>"+data[i].prod_desc+"</td>";
-                            table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
-                            table += "<td class = 'text-center'><input placeholder='QTY' id='qty' title='Please enter only digits' class = 'italic-placeholder' style = 'width: 60px'></input></td>";
-                            table += "</tr>";
-                        }
-                    }
-                    else
-                    {
-                        if(data[i].qty_received >= data[i].qty_purchased)
-                        {
-                            table += "<tr data-id = " + data[i].inventory_id + ">";
-                            table += "<td>"+data[i].prod_desc+"</td>";
-                            table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
-                            table += "<td class = 'text-center'><input placeholder='QTY' id='qty'  title='Please enter only digits' class = 'italic-placeholder' style = 'width: 60px'></input></td>";
-                            table += "</tr>";
-                        }
-                    }
-                }
-                $("#tbl_quickInventories tbody").html(table);
-            },
-            error: function (data) {
-                alert("No response")
-            }
-        })
-    }
     function validateTableSubRowInputs(table_id) {
       var isValid = true;
       $('#'+table_id+' tbody tr.sub-row input').each(function() {
@@ -682,6 +642,24 @@
 
       return isValid;
     }
+
+    function validate_inventorycount_form() 
+    {
+      var isValid = true;
+      $('#inventorycount_form input[type=text], input[type=date]').each(function() {
+        if ($(this).val() === '' || $(this).val().trim() === '') 
+        {
+          isValid = false;
+          $(this).addClass('has-error');
+        } 
+        else 
+        {
+          $(this).removeClass('has-error');
+        }
+      });
+
+      return isValid;
+    }
     function show_reference_no() {
         $.ajax({
             type: 'get',
@@ -691,6 +669,15 @@
             }
         })
     }
+    function show_inventory_count_reference_no() {
+          $.ajax({
+              type: 'get',
+              url: 'api.php?action=get_inventorycount_latest_reference_no',
+              success: function (data) {
+                  $("#ic_reference").val(data);
+              }
+          })
+      }
     $("#btn_savePO").click(function(e){
       e.preventDefault();
       var activeModuleId = $("button.active").attr('id');
@@ -717,12 +704,71 @@
           success: function(response){
             if(response.status)
             {
-              alert(response.msg);
+              $("#response_modal").slideDown({
+                backdrop: 'static',
+                keyboard: false,
+              });
+              $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
+              setTimeout(function() {
+                $("#response_modal").slideUp();
+              }, 10000);
               var po_number = $("#q_product").val();
-              show_ordersForQuickInventory(po_number)
+              $("#tbl_quickInventories tbody").empty();
             }
           }
         })
+      }
+      if(activeModuleId === "btn_inventoryCount")
+      {
+        if(validate_inventorycount_form())
+        {
+          var inventory_type = $("#qi_inventory_type").val();
+          if(inventory_type !== "")
+          {
+            if(validateTableInputs("tbl_inventory_count"))
+            {
+              var tbl_data = [];
+              $("#tbl_inventory_count tbody tr").each(function(){
+                var rowData = {};
+                rowData['inventory_id'] = $(this).data('id');
+                rowData['qty'] = $(this).find("td:nth-child(2)").text();
+                rowData['counted'] = $(this).find("#counted").val();
+                rowData['difference'] = $(this).find("td:nth-child(4)").text();
+
+                tbl_data.push(rowData);
+              });
+              $.ajax({
+                type: 'post',
+                url: 'api.php?action=save_inventory_count',
+                data: {
+                    tbl_data:JSON.stringify(tbl_data),
+                    reference_no: $("#ic_reference").val(),
+                    date_counted: $("#date_counted").val(),
+                },
+                success: function(response){
+                  if(response.status)
+                  {
+                    $("#response_modal").slideDown({
+                      backdrop: 'static',
+                      keyboard: false,
+                    });
+                    $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
+                    setTimeout(function() {
+                      $("#response_modal").slideUp();
+                    }, 10000);
+                    $("#tbl_inventory_count tbody").empty();
+                    $("#inventorycount_form")[0].reset();
+                    show_inventory_count_reference_no();
+                  }
+                }
+              })
+            }
+          }
+         else
+         {
+          $("#qi_inventory_type").css('border', '1px solid red');
+         }
+        }
       }
       if(activeModuleId === "btn_lossDamage")
       {
@@ -1292,11 +1338,11 @@
             {
               tbl_data += "<tr>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].inventory_id+"</td>";
-              tbl_data += "<td>"+data[i].supplier+"</td>";
+              tbl_data += "<td>"+data[i].prod_desc+"</td>";
               tbl_data += "<td>"+data[i].barcode+"</td>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].uom_name+"</td>";
               tbl_data += "<td style = 'text-align: center'>"+data[i].qty_purchased+"</td>";
-              tbl_data += "<td style = 'text-align: center'>"+ (data[i].qty_received === null ? 0 : data[i].qty_received) +"</td>";
+              tbl_data += "<td style = 'text-align: center'>"+ data[i].stock +"</td>";
               tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
               tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_afterTax)+"</td>";
               tbl_data += "<td>"+data[i].isPaid == 1 ? "YES" : "NO" +"</td>";
@@ -1377,6 +1423,7 @@
       $("#quickinventory_div").hide()
       $("#expiration_div").hide()
       $("#lossanddamage_div").hide()
+      $("#inventorycount_div").hide();
       $("button").removeClass('active');
       $("#btn_createPO").addClass('active');
       $("#purchaseItems_div").show()
@@ -1511,6 +1558,7 @@
       $("#quickinventory_div").hide();
       $("#stocktransfer_div").hide();
       $("#lossanddamage_div").hide();
+      $("#inventorycount_div").hide();
       $("#purchaseItems_div").show();
       openOptionModal();
       $("#open_po_report").hide();
@@ -1524,6 +1572,7 @@
       $("#quickinventory_div").hide();
       $("#stocktransfer_div").hide();
       $("#lossanddamage_div").hide()
+      $("#inventorycount_div").hide();
       $("#purchaseItems_div").show();
       openOptionModal();
       $("#open_po_report").hide();
@@ -1539,6 +1588,7 @@
       $("#quickinventory_div").hide();
       $("#stocktransfer_div").hide();
       $("#lossanddamage_div").hide()
+      $("#inventorycount_div").hide();
       $("#open_po_report").hide();
     })
     $("#btn_stockTransfer").click(function(e){
@@ -1550,6 +1600,7 @@
       $("#quickinventory_div").hide();
       $("#expiration_div").hide();
       $("#lossanddamage_div").hide()
+      $("#inventorycount_div").hide();
       $("#stocktransfer_div").show();
     })
     $("#btn_expiration").click(function(e){
@@ -1561,6 +1612,7 @@
       $("#quickinventory_div").hide();
       $("#stocktransfer_div").hide();
       $("#lossanddamage_div").hide()
+      $("#inventorycount_div").hide();
       $("#expiration_div").show();
     })
     $("#btn_quickInventory").click(function(e){
@@ -1572,6 +1624,7 @@
       $("#expiration_div").hide();
       $("#stocktransfer_div").hide();
       $("#lossanddamage_div").hide()
+      $("#inventorycount_div").hide();
       $("#quickinventory_div").show();
     })
     $("#btn_lossDamage").click(function(e){
@@ -1583,7 +1636,20 @@
       $("#expiration_div").hide();
       $("#stocktransfer_div").hide();
       $("#quickinventory_div").hide();
+      $("#inventorycount_div").hide();
       $("#lossanddamage_div").show();
+    })
+    $("#btn_inventoryCount").click(function(e){
+      e.preventDefault();
+      $("button").removeClass('active');
+      $(this).addClass("active");
+      $("#purchaseItems_div").hide();
+      $("#received_div").hide();
+      $("#expiration_div").hide();
+      $("#stocktransfer_div").hide();
+      $("#quickinventory_div").hide();
+      $("#lossanddamage_div").hide();
+      $("#inventorycount_div").show();
     })
     function openOptionModal()
     {
