@@ -555,8 +555,7 @@ if(ingredientName && barcode && uom_id && cost){
 function closeAddIngredientsModal(){
   $('#add_ingredients_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.ingredients-modal').css('animation', 'slideOutRight 0.5s forwards');
-//   $('.highlighteds').removeClass('highlighteds');
-//   $('.highlightedss').removeClass('highlightedss');
+  $('.highlightedIng').removeClass('highlightedIng');
 
   $('#add_ingredients_modal').one('animationend', function() {
     $(this).hide();

@@ -53,12 +53,51 @@
         }
         
 
-
     }
     public function getSupplierAndSuppliedData(){
-        $sql = "SELECT s.supplier as name,s.contact as contact, s.email as email, s.company as company, s.is_active as status FROM `supplier` as s";
+        $sql = "SELECT s.id as id, s.supplier as name,s.contact as contact, s.email as email, s.company as company, s.is_active as status FROM `supplier` as s";
         $stmt = $this->connect()->query($sql);
         return $stmt;
     }
+    public function getSuppliedProducts($supplier_id){
+
+        $sql = "SELECT sd.id as id, sd.prod_id as productId, p.prod_desc as name FROM supplied as sd 
+        INNER JOIN products as p ON p.id = sd.prod_id WHERE  prod_id IS NOT NULL AND sd.supplier_id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$supplier_id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function getSuppliedIng($supplier_id){
+        $sql = "SELECT sd.id as id, sd.ingredients_id as ingredientsId, i.name as name FROM supplied as sd 
+        INNER JOIN ingredients as i ON i.id = sd.ingredients_id WHERE ingredients_id IS NOT NULL AND sd.supplier_id = ?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$supplier_id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function updateSupplier($formData){
+        $s_name = $formData['supplierName'] ?? null;
+        $s_contact =  $formData['supplierContact'] ?? null;
+        $s_email =  $formData['supplierEmail'] ?? null;
+        $s_company =  $formData['supplierCompany'] ?? null;
+        $s_status =  $formData['supplierStatus'] ?? null;
+        $p_supplied = $formData['suppliedProductData'] ?? null;
+        $i_supplied = $formData['suppliedIngredientsData'] ?? null;
+        $id =  $formData['id'] ?? null;
+        $r_products = $formData['removedItemsIngStorage'] ?? null;
+        $r_ing = $formData['removedItemsProductsStorage'] ?? null;
+
+        $sql = 'UPDATE supplier SET 
+    
+        WHERE id = ?';
+
+$stmt = $this->connect()->prepare($sql);
+$stmt->execute([ $id]);
+}
      
 }

@@ -291,6 +291,7 @@ input:checked + .sliderStatus:before {
         </div>
         <div class="warning-container">
         <div style="margin-left: 20px;margin-right: 20px;margin-top: 20px">
+        <input class="custom-input" readonly hidden name="supplierid" id="supplierid" style="width: 180px"/>
             <table id="addSuppliers" class="text-color table-border"> 
                 <tbody>
                     <tr>
@@ -324,7 +325,7 @@ input:checked + .sliderStatus:before {
               </tbody>
             </table>
           </div>
-          <div  class="suppliedProductsCard">
+          <div hidden  class="suppliedProductsCard">
                       <p class="text-custom" style="margin-left: 20px">Products</p>
                       <div class="btnDiv" style="width: 100%; display: flex; align-items: right; justify-content: right;">
                           <button class="btns-bom" id="addSuppliedProducts" onclick="openProductModal()" style="margin-right: 5px; width: 70px">+ Add</button>
@@ -341,7 +342,7 @@ input:checked + .sliderStatus:before {
                         </table>
                 </div>
                    </div>   
-                   <div  class="suppliedIngredientsCard">
+                   <div hidden  class="suppliedIngredientsCard">
                       <p class="text-custom" style="margin-left: 20px">Ingredients</p>
                       <div class="btnDiv" style="width: 100%; display: flex; align-items: right; justify-content: right;">
                           <button class="btns-bom" id="addSuppliedIngredients" onclick="openIngredientsModal()" style="margin-right: 5px; width: 70px">+ Add</button>
@@ -359,8 +360,8 @@ input:checked + .sliderStatus:before {
                 </div>
                    </div>   
            <div class="button-container" style="display:flex;justify-content: right;">
-                <button onclick="addSupplier()" class="btn-success-custom saveProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
-                <button hidden onclick="updateProducts()" class="btn-success-custom updateProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
+                <button onclick="addSupplier()" class="btn-success-custom saveSuppliedBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
+                <button hidden onclick=" updateSupplied()" class="btn-success-custom updateSuppliedBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
                 <button onclick="closeAddSupplierModal()" class="cancelAddSupplier btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
             </div>
         </div>
@@ -370,9 +371,24 @@ input:checked + .sliderStatus:before {
 </div>
 
 <script>
-function openIngredientsModal(){
-  console.log("hello")
-  $('#suppliedIngredientModal').show()
+
+window.addEventListener('beforeunload', function() {
+  localStorage.removeItem('suppliedProductData');
+  localStorage.removeItem('suppliedIngredientsData');
+  localStorage.removeItem('removedItemsProductsStorage');
+  localStorage.removeItem('removedItemsIngStorage');
+});
+function openIngredientsModal() {
+    const suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
+    suppliedIngredientsData.forEach((ingredientsId) => {
+        const checkbox = document.getElementById(ingredientsId.ingredientsId);
+        if (checkbox) {
+            checkbox.checked = true;
+            checkbox.classList.add('checked');
+        }
+    });
+
+    $('#suppliedIngredientModal').show();
 }
 function toggleStatusSupplier(checkbox) {
     var slider = checkbox.parentNode.querySelector('.sliderStatus'); 
@@ -390,6 +406,8 @@ function closeAddSupplierModal(){
   $('.form-check-input:checked').prop('checked', false);
   localStorage.removeItem('suppliedProductData');
   localStorage.removeItem('suppliedIngredientsData');
+  localStorage.removeItem('removedItemsProductsStorage');
+  localStorage.removeItem('removedItemsIngStorage');
   $('.form-check-input').removeClass('checked');
   $('#suppliedTable tbody').empty();
   $('#suppliedTableIng tbody').empty();
@@ -410,6 +428,12 @@ function clearInputs(){
   document.getElementById('supplierContact').value = "";
   document.getElementById('supplierEmail').value = "";
   document.getElementById('supplierCompany').value = "";
+  document.getElementById('supplierid').value = "";
+
+  var uptBtn = document.querySelector('.updateSuppliedBtn');
+    uptBtn.setAttribute('hidden',true);
+    var saveBtn = document.querySelector('.saveSuppliedBtn');
+    saveBtn.removeAttribute('hidden');
 }
 
 function addSupplier(){
@@ -422,7 +446,7 @@ function addSupplier(){
   var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
 
   if (!s_name) {
-        $('.supplierLbl').css('color', 'red');
+      $('.supplierLbl').css('color', 'red');
         return; 
   }else{
       $('.supplierLbl').css('color', '');
@@ -439,14 +463,22 @@ function addSupplier(){
     formData.append("suppliedIngredientsData", JSON.stringify(suppliedIngredientsData));
 
     axios.post('api.php?action=addSupplier', formData).then(function(response){
-      console.log(response)
       closeAddSupplierModal()
+      refreshSupplierTable()
     }).catch(function(error){
       console.log("error")
     })
   }
 }
 function openProductModal(){
+  const suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData')) || [];
+    suppliedProductData.forEach((productId) => {
+        const checkbox = document.getElementById(productId.productId);
+        if (checkbox) {
+            checkbox.checked = true;
+            checkbox.classList.add('checked');
+        }
+    });
  $('#suppliedModal').show()
 }
 
@@ -459,6 +491,91 @@ $(document).ready(function() {
     });
 });
 
+function toUpdateSupplier(supplierId,supplierName,supplierContact,supplierEmail,supplierCompany,supplierStatus){
+  $('#add_supplier_modal').show()
+     if($('#add_supplier_modal').is(":visible")){
+          supplierId ? document.getElementById('supplierid').value = supplierId : null;
+          supplierName ? document.getElementById("supplierName").value = supplierName : null;
+          supplierContact ? document.getElementById("supplierContact").value = supplierContact : null;
+          supplierEmail ? document.getElementById("supplierEmail").value =  supplierEmail : null;
+          supplierCompany ? document.getElementById("supplierCompany").value =   supplierCompany : null;
+       
 
+          var statusCheckbox = document.getElementById('statusValueSupplier');
+          statusCheckbox.checked  = (supplierStatus == 1) ? true: false;
+          toggleStatusSupplier(statusCheckbox)
+
+              var s_id = document.getElementById('supplierid').value
+              if(s_id){
+                supplierName  ? (document.getElementById("modalHeaderTxt").value =   supplierName , $('.modalHeaderTxt').text(supplierName)) : null;
+                    axios.get(`api.php?action=getSuppliedProductsData&supplier_id=${s_id}`).then(function(response){
+                    var data = response.data.result;
+                    var suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData')) || [];
+                      suppliedProductData.push(...data); 
+                      localStorage.setItem('suppliedProductData', JSON.stringify(suppliedProductData));
+                      updateProductSupply(suppliedProductData)
+                    }).catch(function(error){
+                      console.log(error)
+                    })
+
+                    axios.get(`api.php?action=getSuppliedIngData&supplier_id=${s_id}`).then(function(response){
+                    var data = response.data.result;
+                     var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
+                      suppliedIngredientsData.push(...data); 
+                      localStorage.setItem('suppliedIngredientsData', JSON.stringify(suppliedIngredientsData));
+                      updateIngtSupply(suppliedIngredientsData)
+                    }).catch(function(error){
+                      console.log(error)
+                    })
+              }else{
+                $('.modalHeaderTxt').text("Add New Supplier")
+              }
+
+              var uptBtn = document.querySelector('.updateSuppliedBtn');
+              var saveBtn = document.querySelector('.saveSuppliedBtn');
+              s_id ? (uptBtn.removeAttribute('hidden'), saveBtn.setAttribute('hidden', true)) : (uptBtn.setAttribute('hidden', true), saveBtn.removeAttribute('hidden'));
+  }
+}
+
+function updateSupplied(){
+  var s_id = document.getElementById('supplierid').value 
+  var s_name = document.getElementById('supplierName').value;
+  var s_contact =  document.getElementById('supplierContact').value;
+  var s_email =  document.getElementById('supplierEmail').value;
+  var s_company = document.getElementById('supplierCompany').value;
+  var status = document.getElementById('statusValueSupplier').checked ? 1 : 0;
+  // var removedItemsProductsStorage = JSON.parse(localStorage.getItem('removedItemsProductsStorage')) || [];
+  // var removedItemsIngStorage = JSON.parse(localStorage.getItem('removedItemsIngStorage')) || [];
+  // var suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData')) || [];
+  // var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
+
+  if (!s_name) {
+      $('.supplierLbl').css('color', 'red');
+        return; 
+  }else{
+      $('.supplierLbl').css('color', '');
+  }
+   
+  if(s_name){
+    var formData = new FormData();
+    formData.append("supplierName", s_name); 
+    formData.append("supplierContact", s_contact); 
+    formData.append("supplierEmail", s_email); 
+    formData.append("supplierCompany", s_company); 
+    formData.append("supplierStatus", status); 
+    formData.append("id", s_id); 
+    // formData.append("removedItemsProductsStorage", JSON.stringify(removedItemsProductsStorage));
+    // formData.append("removedItemsIngStorage", JSON.stringify(removedItemsIngStorage));
+    // formData.append("suppliedProductData", JSON.stringify(suppliedProductData));
+    // formData.append("suppliedIngredientsData", JSON.stringify(suppliedIngredientsData));
+    axios.post('api.php?action=updateSupplier', formData).then(function(response){
+      console.log(response)
+      // closeAddSupplierModal()
+    }).catch(function(error){
+      console.log("error")
+    })
+  }
+
+}
 </script>
 

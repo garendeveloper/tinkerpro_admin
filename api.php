@@ -239,11 +239,23 @@
             $result =  $supplier->addSupplier($formData);
             echo json_encode([ 'success' => true, 'result' => $formData]);
             break; 
-           
+        case "getSuppliedProductsData";//supplier_id
+            $supplier_id = isset($_GET['supplier_id']) ? $_GET['supplier_id'] : null;
+            $result =  $supplier->getSuppliedProducts($supplier_id);
+            echo json_encode(['success' => true, 'result' =>  $result]); 
+            break;
+        case "getSuppliedIngData":
+            $supplier_id = isset($_GET['supplier_id']) ? $_GET['supplier_id'] : null;
+            $result =  $supplier->getSuppliedIng($supplier_id);
+            echo json_encode(['success' => true, 'result' =>  $result]); 
+            break;
+        case "updateSupplier";
+            $formData = $_POST;
+            $result =  $supplier->updateSupplier($formData);
+            echo json_encode([ 'success' => true, 'result' => $formData]);
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
-       
-
     }
 

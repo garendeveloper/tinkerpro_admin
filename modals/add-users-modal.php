@@ -807,7 +807,7 @@ function clearFileInput() {
 function closeAddUserModal() {
   $('#add_users_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.user-modal').css('animation', 'slideOutRight 0.5s forwards');
-  $('.highlighted').removeClass('highlighted');
+  $('.highlightedUser').removeClass('highlightedUser');
  
   $('#add_users_modal').one('animationend', function() {
     $(this).hide();

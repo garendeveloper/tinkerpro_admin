@@ -435,6 +435,7 @@
                 <div class="select-container">
                     <select id="paymentTypesSelect">
                     <option value="" selected >All Payment Method</option>
+                    <option value="receipt">By Receipt</option>
                     <option value="cash">Cash</option>
                     <option value="coupon">Voucher/Coupon</option>
                     <option value="gcash">GCash</option>

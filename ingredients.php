@@ -106,8 +106,8 @@
     border-radius: 8px;
     padding: 16px; 
   }
-  .highlighteds{
-     border: 2px solid #00B050; 
+  .highlightedIng{
+     border: 2px solid #00B050 !important; 
   }
 
 </style>
@@ -336,6 +336,10 @@ $(document.body).on('click', '.editIngredients', function() {
   var cost = $(this).closest('tr').find('.cost').text();
   var status = $(this).closest('tr').find('.status').text();
   var desc = $(this).closest('tr').find('.description').text();
+  $('.highlightedIng').removeClass('highlightedIng');
+
+
+var $row = $(this).closest('tr').addClass('highlightedIng');
   
   toupdateIngredients(ingredientsId,uom_id,uom_name,name,barcode,cost,status,desc)
 });
