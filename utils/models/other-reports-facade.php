@@ -1527,42 +1527,44 @@ public function getPaymentMethod($selectedMethod,$singleDateData,$startDate,$end
         $sql->execute();
         return $sql;
     }else{
-    $sql = "SELECT 
-    jt.paymentType AS paymentType,
-    jt.amount AS amount,
-    t.receipt_id AS receipt_id,
-    payments.date_time_of_payment AS date,
-    CASE
-        WHEN jt.paymentType = 'credit' THEN 
-            CASE
-                WHEN jt.amount - COALESCE(pc.total_paid_amount, 0) != 0 THEN jt.amount - COALESCE(pc.total_paid_amount, 0)
-                ELSE NULL
-            END
-        ELSE jt.amount
-    END AS adjusted_amount
-FROM 
-    payments
-CROSS JOIN JSON_TABLE(
-    payments.payment_details,
-    '$[*]'
-    COLUMNS (
-        paymentType VARCHAR(255) PATH '$.paymentType',
-        amount DECIMAL(10, 2) PATH '$.amount'
-    )
-) AS jt
-INNER JOIN (
-    SELECT DISTINCT payment_id, receipt_id
-    FROM transactions
-) AS t ON payments.id = t.payment_id
-LEFT JOIN (
-    SELECT receipt_id, SUM(paid_amount) AS total_paid_amount
-    FROM paid_credits
-    GROUP BY receipt_id
-) AS pc ON t.receipt_id = pc.receipt_id
-WHERE 
-    JSON_VALID(payments.payment_details)
-    AND jt.amount != 0.00
-    AND (jt.paymentType != 'credit' OR (jt.paymentType = 'credit' AND jt.amount - COALESCE(pc.total_paid_amount, 0) != 0))";
+//     $sql = "SELECT 
+//     jt.paymentType AS paymentType,
+//     jt.amount AS amount,
+//     t.receipt_id AS receipt_id,
+//     payments.date_time_of_payment AS date,
+//     CASE
+//         WHEN jt.paymentType = 'credit' THEN 
+//             CASE
+//                 WHEN jt.amount - COALESCE(pc.total_paid_amount, 0) != 0 THEN jt.amount - COALESCE(pc.total_paid_amount, 0)
+//                 ELSE NULL
+//             END
+//         ELSE jt.amount
+//     END AS adjusted_amount
+// FROM 
+//     payments
+// CROSS JOIN JSON_TABLE(
+//     payments.payment_details,
+//     '$[*]'
+//     COLUMNS (
+//         paymentType VARCHAR(255) PATH '$.paymentType',
+//         amount DECIMAL(10, 2) PATH '$.amount'
+//     )
+// ) AS jt
+// INNER JOIN (
+//     SELECT DISTINCT payment_id, receipt_id
+//     FROM transactions
+// ) AS t ON payments.id = t.payment_id
+// LEFT JOIN (
+//     SELECT receipt_id, SUM(paid_amount) AS total_paid_amount
+//     FROM paid_credits
+//     GROUP BY receipt_id
+// ) AS pc ON t.receipt_id = pc.receipt_id
+// WHERE 
+//     JSON_VALID(payments.payment_details)
+//     AND jt.amount != 0.00
+//     AND (jt.paymentType != 'credit' OR (jt.paymentType = 'credit' AND jt.amount - COALESCE(pc.total_paid_amount, 0) != 0))";
+
+ $sql="SELECT jt.paymentType AS paymentType, jt.amount AS amount, t.receipt_id AS receipt_id, DATE(payments.date_time_of_payment) AS date FROM payments CROSS JOIN JSON_TABLE( payments.payment_details, '$[*]' COLUMNS ( paymentType VARCHAR(255) PATH '$.paymentType', amount DECIMAL(10, 2) PATH '$.amount' ) ) AS jt INNER JOIN ( SELECT DISTINCT payment_id, receipt_id FROM transactions ) AS t ON payments.id = t.payment_id WHERE JSON_VALID(payments.payment_details) AND jt.amount != 0.00"; 
 
     $stmt = $this->connect()->query($sql);
     return $stmt;

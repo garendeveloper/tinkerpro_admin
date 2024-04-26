@@ -280,8 +280,8 @@
 .action-td{
   font-style: italic;
 }
-.highlighted {
-    border: 1px solid #00B050 !important; 
+.highlightedUser {
+    border: 2px solid #00B050 !important; 
 }
 
 
@@ -402,10 +402,10 @@ function selectDataDisplay() {
         var identification =  $(this).closest('tr').find('.identification').text();
         var datehired =  $(this).closest('tr').find('.datehired').text();
         var perm =  $(this).closest('tr').find('.permission').text();
-        $('.highlighted').removeClass('highlighted');
+        $('.highlightedUser').removeClass('highlightedUser');
 
 
-      var $row = $(this).closest('tr').addClass('highlighted');
+      var $row = $(this).closest('tr').addClass('highlightedUser');
         updateUserForm(userId,dataFirstName,dataLastName,employeeNum,pw,imageName,datastats,datastatsID,roleN,roleID,identification,datehired,perm)
     });
 

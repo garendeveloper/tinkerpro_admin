@@ -190,7 +190,6 @@
     }
     ?>
 </div>
-
     </div>
     <div class="btnsContainer">
      <button id="cancelDateTime" class="custom_btns" style="margin-right:10px">Cancel</button>
@@ -204,44 +203,55 @@
         $('#suppliedIngredientsClose').on('click', function(){
             $('#suppliedIngredientModal').hide();
             $('.form-check-input:checked').prop('checked', false);
-            
-            localStorage.removeItem('suppliedIngredientsData');
             $('.form-check-input').removeClass('checked');
-            // $('#suppliedTable tbody').empty();
+            localStorage.removeItem('removedItemsIngStorage');
+            const suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
+            const filteredData = suppliedIngredientsData.filter(item => item.id !== undefined);
+            localStorage.setItem('suppliedIngredientsData', JSON.stringify(filteredData));
+            updateIngtSupply(filteredData);
+
         });
    
+      
+function toggleCheckboxIngrdientsColor(checkbox) {
+    checkbox.classList.toggle('checked');
+    var ingredientsId = checkbox.value;
+    var productName = checkbox.nextElementSibling.textContent;
+    var isChecked = checkbox.checked;
 
-       
-    function toggleCheckboxIngrdientsColor(checkbox) {
-        checkbox.classList.toggle('checked');
-        var ingredientsId = checkbox.value;
-        var productName = checkbox.nextElementSibling.textContent;
-        var isChecked = checkbox.checked;
-        var id = null;
-        
-        if (isChecked) {
-            var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
-            suppliedIngredientsData.push({id:id, ingredientsId: ingredientsId, name: productName });
+    if (isChecked) {
+        var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
+        suppliedIngredientsData.push({ ingredientsId: ingredientsId, name: productName });
+        localStorage.setItem('suppliedIngredientsData', JSON.stringify(suppliedIngredientsData));
+    } else {
+        var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
+        var indexToRemove = suppliedIngredientsData.findIndex(function(item) {
+            return parseInt(item.ingredientsId) === parseInt(ingredientsId);
+        });
+        if (indexToRemove !== -1) {
+            var removedItem = suppliedIngredientsData[indexToRemove];
+            suppliedIngredientsData.splice(indexToRemove, 1);
             localStorage.setItem('suppliedIngredientsData', JSON.stringify(suppliedIngredientsData));
-        }else {
-            var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
-            var indexToRemove = suppliedIngredientsData.findIndex(function(item) {
-                return item.ingredientsId === ingredientsId;
-            });
-            if (indexToRemove !== -1) {
-                suppliedIngredientsData.splice(indexToRemove, 1);
-                localStorage.setItem('suppliedIngredientsData', JSON.stringify(suppliedIngredientsData));
+
+            // Check if the removed item has an 'id' property before storing it
+            if (removedItem.hasOwnProperty('id')) {
+                var removedItemsIngStorage = JSON.parse(localStorage.getItem('removedItemsIngStorage')) || [];
+                removedItemsIngStorage.push(removedItem);
+                localStorage.setItem('removedItemsIngStorage', JSON.stringify(removedItemsIngStorage));
             }
-            
         }
     }
+}
 
-  
     $('.okSuppliedIngredients').on('click', function(){
     var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData'));
     console.log("Supplied Ingredients Data:", suppliedIngredientsData); 
-    
-    var tableBody = $('#suppliedTableIng tbody');
+    updateIngtSupply(suppliedIngredientsData )
+    closeSuppliedIngredients();
+});
+
+function updateIngtSupply(suppliedIngredientsData){
+   var tableBody = $('#suppliedTableIng tbody');
     tableBody.empty(); 
     
     suppliedIngredientsData.forEach(function(ingredient, index) {
@@ -254,9 +264,7 @@
         
         tableBody.append(row);
     });
-    
-    closeSuppliedIngredients();
-});
+    }
 
 
 
