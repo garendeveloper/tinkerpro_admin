@@ -1132,7 +1132,98 @@ function highlightDiv(id) {
           discountDIV.setAttribute('hidden',true);
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
-          paymentMethodDIV.removeAttribute('hidden');
+          paymentMethodDIV.setAttribute('hidden', true);
+
+        }else if(id == 8){
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.removeAttribute('hidden');
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.removeAttribute('hidden');
+
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.setAttribute('hidden',true);
+
+          document.getElementById("customersSelect").value = "";
+          document.getElementById('datepicker').value =""
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.setAttribute('hidden', true);
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+
+          var discountDIV = document.getElementById('discountDIV');
+          discountDIV.setAttribute('hidden',true);
+
+          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
+          paymentMethodDIV.setAttribute('hidden', true);
+
+        }else if(id == 9){
+  generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden', true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.removeAttribute('hidden');
+
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.removeAttribute('hidden');
+
+          document.getElementById("customersSelect").value = "";
+          document.getElementById('datepicker').value =""
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.setAttribute('hidden', true);
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+
+          var discountDIV = document.getElementById('discountDIV');
+          discountDIV.setAttribute('hidden',true);
+
+          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
+          paymentMethodDIV.setAttribute('hidden', true);
+          
         }
         else{
           var usersSelect = document.getElementById('usersDIV');
@@ -2023,7 +2114,7 @@ function generatePdf(id){
           }
           });
     });
-  }else if( id == 7){//maoni
+  }else if( id == 7){
     $('#PDFBtn').off('click').on('click',function() {
       var paymentM = document.getElementById('paymentTypesSelect')
       var paymentMethod =  paymentM.value;
@@ -2085,6 +2176,134 @@ function generatePdf(id){
           error: function(xhr, status, error) {
               console.error(xhr.responseText);
 
+          }
+          });
+    });
+  }else if(id == 8){
+    $('#PDFBtn').off('click').on('click',function() {
+      var usersSelect = document.getElementById("usersSelect");
+      var selectedUser = usersSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+           url: './reports/generate_payment_method_users.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+               userId: selectedUser,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'paymentMethodList.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+          }
+          });
+    });
+  }else if(id == 9){//pdfme
+    $('#PDFBtn').off('click').on('click',function() {
+      var customerSelect = document.getElementById('customersSelect')
+      var selectedCustomers = customerSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+           url: './reports/generate_payment_method_customer.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                customerId:selectedCustomers,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'paymentMethodList.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
           }
           });
     });
@@ -2887,6 +3106,192 @@ function generateExcel(id){
             var link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
             link.download = 'itemsDiscountsList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}else if(id == 7){//excelPayment
+  $('#EXCELBtn').click(function() {
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } else {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+        url: './reports/generate_excel_payment_methods.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+           data: {
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'paymentMethodList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}else if(id == 8){
+  $('#EXCELBtn').click(function() {
+        var usersSelect = document.getElementById("usersSelect");
+        var selectedUser = usersSelect.value;
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } else {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+        url: './reports/generate_payment_method_users_excel.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+           data: { 
+                userId: selectedUser,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'paymentMethodList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}else if(id == 9){
+  $('#EXCELBtn').click(function() {
+        var customerSelect = document.getElementById('customersSelect')
+        var selectedCustomers = customerSelect.value;
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } else {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+        url: './reports/generate_payment_method_customers_excel.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+           data: { 
+                customerId:selectedCustomers,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'paymentMethodList.xlsx'; 
             document.body.appendChild(link);
             link.click();
 
@@ -3806,6 +4211,140 @@ function printDocuments(id){
           },
            data: {
                 selectedMethod: paymentMethod,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              
+          }
+          });
+  });
+  }else if(id === 8){
+    $('#printDocu').off('click').on('click',function() {
+      var usersSelect = document.getElementById("usersSelect");
+      var selectedUser = usersSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/generate_payment_method_users.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                userId: selectedUser,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              
+          }
+          });
+  });
+  }else if(id == 9){
+    $('#printDocu').off('click').on('click',function() {
+      var customerSelect = document.getElementById('customersSelect')
+      var selectedCustomers = customerSelect.value;
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/generate_payment_method_customer.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                customerId:selectedCustomers,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -4782,6 +5321,144 @@ function showReports(id){
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
                   var pdfUrl = './assets/pdf/payment_method/paymentMethodList.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+     }
+    })
+  }else if(id == 8){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var usersSelect = document.getElementById("usersSelect");
+        var selectedUser = usersSelect.value;
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } else {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+          url: './reports/generate_payment_method_users.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+                userId: selectedUser,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/payment_method_users/paymentMethodList.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+     }
+    })
+  }else if(id == 9){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var customerSelect = document.getElementById('customersSelect')
+        var selectedCustomers = customerSelect.value;
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } else {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+          url: './reports/generate_payment_method_customer.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+                customerId:selectedCustomers,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/payment_method_customer/paymentMethodList.pdf';
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },

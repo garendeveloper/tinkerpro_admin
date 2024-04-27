@@ -19,21 +19,22 @@ $refundFacade = new OtherReportsFacade();
 $products = new ProductFacade();
 
 $counter = 1;
+$userId = $_GET['userId'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade->getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
 
-$pdf = new TCPDF();
+$pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->SetCreator('TinkerPro Inc.');
 $pdf->SetAuthor('TinkerPro Inc.');
-$pdf->SetTitle('SALES BY PAYMENT TYPES Table PDF');
-$pdf->SetSubject('SALES BY PAYMENT TYPES Table PDF Document');
-$pdf->SetKeywords('TCPDF, PDF, SALES BY PAYMENT TYPES, table');
+$pdf->SetTitle('PAYMENT TYPE BY USERS Table PDF');
+$pdf->SetSubject('PAYMENT TYPE BY USERS Table PDF Document');
+$pdf->SetKeywords('TCPDF, PDF, PAYMENT TYPE BY USERS, table');
 $pdf->SetDrawColor(255, 199, 60); 
 $pdf->Rect(0, 0, $pdf->getPageWidth(), $pdf->getPageHeight(), 'D');
 $pdf->AddPage();
@@ -49,7 +50,7 @@ $pdf->SetFont('', 'I', 8);
 
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell(0, 10, 'SALES BY PAYMENT TYPES', 0, 1, 'R', 0); 
+$pdf->Cell(0, 10, 'PAYMENT TYPE BY USERS', 0, 1, 'R', 0); 
 $pdf->Ln(-5);
 $pdf->SetFont('',  10);
 $pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
@@ -66,7 +67,7 @@ $pdf->MultiCell(0, 10, "Contact: {$shop['contact_number']}", 0, 'L');
 
 $pdf->Ln(-6);
 $pdf->SetFont('' , 8); 
-$pdf->MultiCell(0, 10, "VAR REG TIN: {$shop['tin']}", 0, 'L');
+$pdf->MultiCell(0, 10, "VAT REG TIN: {$shop['tin']}", 0, 'L');
 $pdf->Ln(-6);
 $pdf->SetFont('' , 8); 
 $pdf->MultiCell(0, 10, "MIN: {$shop['min']}", 0, 'L');
@@ -110,8 +111,18 @@ if ($singleDateData && !$startDate && !$endDate) {
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
 
-$header = array( 'Date', 'Cash', 'E-Wallet', 'Credit/Debit Cards', 'Credit','Coupons', 'Total(Php)');
-$headerWidths = array( 25, 25, 25, 35, 25, 25, 30);
+$header = array( 'Cashier/User', 'Cash', 'E-Wallet', 'Credit/Debit Cards', 'Credit','Coupons', 'Total(Php)');
+$headerWidths = array(25, 25, 25, 35, 25, 25, 30);
+$pageWidth = $pdf->getPageWidth();
+$pageHeight = $pdf->getPageHeight();
+
+if ($pageWidth > $pageHeight) {
+    // Landscape orientation
+    $headerWidths = array(50, 35, 35, 45, 35, 35, 40);
+} else {
+    // Portrait orientation
+    $headerWidths = array(25, 25, 25, 35, 25, 25, 30);
+}
 $maxCellHeight = 5; 
 
 $hexColor = '#F5F5F5';
@@ -120,7 +131,7 @@ list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 $pdf->SetFillColor($r, $g, $b);
 $pdf->SetFont('', 'B', 10);
 for ($i = 0; $i < count($header); $i++) {
-    if ($header[$i] === 'Date') {
+    if ($header[$i] === 'Cashier/User') {
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
     } else {
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
@@ -142,8 +153,9 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $totalCC += $row['cdcards_total'];
     $totalCoupons += $row['coupons_total'];
     $totalCredit += $row['credit_total'];
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['payment_date'] !== null ? date('M j, Y', strtotime($row['payment_date'])) : '', $headerWidths[0]));
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $row['payment_date'] !== null ? date('M j, Y', strtotime($row['payment_date'])) : '', 1, 0, 'L');    
+
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['firstname'] . ' ' .$row['lastname']  , $headerWidths[0]));
+    $pdf->Cell($headerWidths[0], $maxCellHeight, $row['firstname'] . ' ' .$row['lastname'] , 1, 0, 'L');   
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['cash_total'], $headerWidths[1]));
     $pdf->Cell($headerWidths[1], $maxCellHeight, number_format($row['cash_total'], 2), 1, 0, 'R');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['e_wallet_total'], $headerWidths[2]));
@@ -157,7 +169,6 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_amount'], $headerWidths[6]));
     $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['total_amount'], 2), 1, 0, 'R');
     $pdf->Ln();
-   
 }
 
 $pdf->SetFont('', 'B', 10); 
@@ -171,7 +182,7 @@ $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalAmount, 2), 1, 
 $pdf->Ln(); 
 
 $pdf->Output('paymentMethodList.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/payment_method/paymentMethodList.pdf';
+$pdfPath = __DIR__ . '/../assets/pdf/payment_method_users/paymentMethodList.pdf';
 if (file_exists($pdfPath)) {
     unlink($pdfPath);
 }
