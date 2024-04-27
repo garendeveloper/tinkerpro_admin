@@ -1482,92 +1482,537 @@
     return $stmt;
     }
 }
-public function getPaymentMethod($selectedMethod,$singleDateData,$startDate,$endDate){
-    if($selectedMethod && !$singleDateData && !$startDate && !$endDate){
+public function getPaymentMethod($singleDateData,$startDate,$endDate){
+    if($singleDateData && !$startDate && !$endDate){
         $sql = "SELECT 
-        jt.paymentType AS paymentType,
-        jt.amount AS amount,
-        t.receipt_id AS receipt_id,
-        payments.date_time_of_payment AS date,
-        CASE
-            WHEN jt.paymentType = 'credit' THEN 
-                CASE
-                    WHEN jt.amount - COALESCE(pc.total_paid_amount, 0) != 0 THEN jt.amount - COALESCE(pc.total_paid_amount, 0)
-                    ELSE NULL
-                END
-            ELSE jt.amount
-        END AS adjusted_amount
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+        FROM 
+        payments
+        CROSS JOIN JSON_TABLE(
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
+            amount DECIMAL(10, 2) PATH '$.amount'
+        )
+        ) AS jt
+        INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id FROM transactions WHERE 
+        ) AS t ON payments.id = t.payment_id
+        WHERE 
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND DATE(payments.date_time_of_payment) = :singleDateData
+        GROUP BY 
+        DATE(payments.date_time_of_payment)
+        ORDER BY 
+        payment_date ASC;";
+    
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+    }else if(!$singleDateData && $startDate && $endDate){
+        $sql = "SELECT 
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+        FROM 
+        payments
+        CROSS JOIN JSON_TABLE(
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
+            amount DECIMAL(10, 2) PATH '$.amount'
+        )
+        ) AS jt
+        INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id FROM transactions
+        ) AS t ON payments.id = t.payment_id
+        WHERE 
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND DATE(payments.date_time_of_payment) BETWEEN :startDate AND :endDate
+        GROUP BY 
+        DATE(payments.date_time_of_payment)
+        ORDER BY 
+        payment_date ASC;";
+    
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':startDate', $startDate);
+        $sql->bindParam(':endDate', $endDate);
+        $sql->execute();
+        return $sql;
+    }else{
+        $sql="SELECT 
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+        FROM 
+        payments
+        CROSS JOIN JSON_TABLE(
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
+            amount DECIMAL(10, 2) PATH '$.amount'
+        )
+        ) AS jt
+        INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id FROM transactions
+        ) AS t ON payments.id = t.payment_id
+        WHERE 
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00
+        GROUP BY 
+        DATE(payments.date_time_of_payment)
+        ORDER BY 
+        payment_date ASC;"; 
+
+            $stmt = $this->connect()->query($sql);
+            return $stmt;
+}
+}
+
+public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endDate){
+    if($userId && !$singleDateData && !$startDate && !$endDate){
+        $sql = "SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
     FROM 
         payments
     CROSS JOIN JSON_TABLE(
-        payments.payment_details,
-        '$[*]'
-        COLUMNS (
-            paymentType VARCHAR(255) PATH '$.paymentType',
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
             amount DECIMAL(10, 2) PATH '$.amount'
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id
-        FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
     ) AS t ON payments.id = t.payment_id
-    LEFT JOIN (
-        SELECT receipt_id, SUM(paid_amount) AS total_paid_amount
-        FROM paid_credits
-        GROUP BY receipt_id
-    ) AS pc ON t.receipt_id = pc.receipt_id
+    INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
-        JSON_VALID(payments.payment_details)
-        AND jt.amount != 0.00
-        AND (jt.paymentType != 'credit' OR (jt.paymentType = 'credit' AND jt.amount - COALESCE(pc.total_paid_amount, 0) != 0))
-        AND  jt.paymentType = :selectedMethod";
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND u.id = :userId
+    GROUP BY 
+        u.id
+    ORDER BY 
+        u.id ASC";
     
         $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedMethod',  $selectedMethod);
+        $sql->bindParam(':userId', $userId);
         $sql->execute();
         return $sql;
-    }else{
-//     $sql = "SELECT 
-//     jt.paymentType AS paymentType,
-//     jt.amount AS amount,
-//     t.receipt_id AS receipt_id,
-//     payments.date_time_of_payment AS date,
-//     CASE
-//         WHEN jt.paymentType = 'credit' THEN 
-//             CASE
-//                 WHEN jt.amount - COALESCE(pc.total_paid_amount, 0) != 0 THEN jt.amount - COALESCE(pc.total_paid_amount, 0)
-//                 ELSE NULL
-//             END
-//         ELSE jt.amount
-//     END AS adjusted_amount
-// FROM 
-//     payments
-// CROSS JOIN JSON_TABLE(
-//     payments.payment_details,
-//     '$[*]'
-//     COLUMNS (
-//         paymentType VARCHAR(255) PATH '$.paymentType',
-//         amount DECIMAL(10, 2) PATH '$.amount'
-//     )
-// ) AS jt
-// INNER JOIN (
-//     SELECT DISTINCT payment_id, receipt_id
-//     FROM transactions
-// ) AS t ON payments.id = t.payment_id
-// LEFT JOIN (
-//     SELECT receipt_id, SUM(paid_amount) AS total_paid_amount
-//     FROM paid_credits
-//     GROUP BY receipt_id
-// ) AS pc ON t.receipt_id = pc.receipt_id
-// WHERE 
-//     JSON_VALID(payments.payment_details)
-//     AND jt.amount != 0.00
-//     AND (jt.paymentType != 'credit' OR (jt.paymentType = 'credit' AND jt.amount - COALESCE(pc.total_paid_amount, 0) != 0))";
+    }else if(!$userId && $singleDateData && !$startDate && !$endDate){
+        $sql = "SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+    FROM 
+        payments
+    CROSS JOIN JSON_TABLE(
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
+            amount DECIMAL(10, 2) PATH '$.amount'
+        )
+    ) AS jt
+    INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+    ) AS t ON payments.id = t.payment_id
+    INNER JOIN users AS u ON u.id = t.cashier_id
+    WHERE 
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND   DATE(payments.date_time_of_payment) = :singleDateData
+    GROUP BY 
+        u.id
+    ORDER BY 
+        u.id ASC";
+    
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+    }else if(!$userId && !$singleDateData && $startDate && $endDate){
+        $sql = "SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+    FROM 
+        payments
+    CROSS JOIN JSON_TABLE(
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
+            amount DECIMAL(10, 2) PATH '$.amount'
+        )
+    ) AS jt
+    INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+    ) AS t ON payments.id = t.payment_id
+    INNER JOIN users AS u ON u.id = t.cashier_id
+    WHERE 
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND   DATE(payments.date_time_of_payment) BETWEEN :startDate AND :endDate
+    GROUP BY 
+        u.id
+    ORDER BY 
+        u.id ASC";
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':startDate', $startDate);
+        $sql->bindParam(':endDate', $endDate);
+        $sql->execute();
+        return $sql;
+    }else if($userId && $singleDateData && !$startDate && !$endDate){
+        $sql = "SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+    FROM 
+        payments
+    CROSS JOIN JSON_TABLE(
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
+            amount DECIMAL(10, 2) PATH '$.amount'
+        )
+    ) AS jt
+    INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+    ) AS t ON payments.id = t.payment_id
+    INNER JOIN users AS u ON u.id = t.cashier_id
+    WHERE 
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND u.id = :userId AND  DATE(payments.date_time_of_payment) = :singleDateData
+    GROUP BY 
+        u.id
+    ORDER BY 
+        u.id ASC";
+    
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':userId', $userId);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+    }else if($userId && !$singleDateData && $startDate && $endDate){
+        $sql = "SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+    FROM 
+        payments
+    CROSS JOIN JSON_TABLE(
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
+            amount DECIMAL(10, 2) PATH '$.amount'
+        )
+    ) AS jt
+    INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+    ) AS t ON payments.id = t.payment_id
+    INNER JOIN users AS u ON u.id = t.cashier_id
+    WHERE 
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND u.id = :userId AND DATE(payments.date_time_of_payment) BETWEEN :startDate AND :endDate
+    GROUP BY 
+        u.id
+    ORDER BY 
+        u.id ASC";
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':userId', $userId);
+        $sql->bindParam(':startDate', $startDate);
+        $sql->bindParam(':endDate', $endDate);
+        $sql->execute();
+        return $sql;
+    }
+    else{
+    $sql="SELECT 
+            u.id as id,
+            u.first_name as firstname,
+            u.last_name as lastname,
+            DATE(payments.date_time_of_payment) AS payment_date,
+            SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+            SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+            SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+            SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+            SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+            SUM(jt.amount) AS total_amount
+        FROM 
+            payments
+        CROSS JOIN JSON_TABLE(
+            payments.payment_details, '$[*]' COLUMNS (
+                paymentType VARCHAR(255) PATH '$.paymentType', 
+                amount DECIMAL(10, 2) PATH '$.amount'
+            )
+        ) AS jt
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        ) AS t ON payments.id = t.payment_id
+        INNER JOIN users AS u ON u.id = t.cashier_id
+        WHERE 
+            JSON_VALID(payments.payment_details) AND jt.amount != 0.00
+        GROUP BY 
+            u.id
+        ORDER BY 
+            u.id ASC"; 
+        $stmt = $this->connect()->query($sql);
+        return $stmt;
+    }
+}
 
- $sql="SELECT jt.paymentType AS paymentType, jt.amount AS amount, t.receipt_id AS receipt_id, DATE(payments.date_time_of_payment) AS date FROM payments CROSS JOIN JSON_TABLE( payments.payment_details, '$[*]' COLUMNS ( paymentType VARCHAR(255) PATH '$.paymentType', amount DECIMAL(10, 2) PATH '$.amount' ) ) AS jt INNER JOIN ( SELECT DISTINCT payment_id, receipt_id FROM transactions ) AS t ON payments.id = t.payment_id WHERE JSON_VALID(payments.payment_details) AND jt.amount != 0.00"; 
 
+public function getPaymentMethodByCustomer($customerId,$singleDateData,$startDate,$endDate){
+    if($customerId && !$singleDateData && !$startDate && !$endDate){
+        $sql="SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+        FROM 
+            payments
+        CROSS JOIN JSON_TABLE(
+            payments.payment_details, '$[*]' COLUMNS (
+                paymentType VARCHAR(255) PATH '$.paymentType', 
+                amount DECIMAL(10, 2) PATH '$.amount'
+            )
+        ) AS jt
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id, user_id FROM transactions
+        ) AS t ON payments.id = t.payment_id
+        INNER JOIN users AS u ON u.id = t.user_id
+        WHERE 
+            JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND u.id = :customerId
+        GROUP BY 
+            u.id
+        ORDER BY 
+            u.id ASC"; 
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':customerId', $customerId);
+        $sql->execute();
+        return $sql;
+
+    }else if(!$customerId && $singleDateData && !$startDate && !$endDate){
+        $sql="SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+        FROM 
+            payments
+        CROSS JOIN JSON_TABLE(
+            payments.payment_details, '$[*]' COLUMNS (
+                paymentType VARCHAR(255) PATH '$.paymentType', 
+                amount DECIMAL(10, 2) PATH '$.amount'
+            )
+        ) AS jt
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id, user_id FROM transactions
+        ) AS t ON payments.id = t.payment_id
+        INNER JOIN users AS u ON u.id = t.user_id
+        WHERE 
+            JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND DATE(payments.date_time_of_payment) = :singleDateData
+        GROUP BY 
+            u.id
+        ORDER BY 
+            u.id ASC"; 
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+    }else if(!$customerId && !$singleDateData && $startDate && $endDate){
+        $sql="SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+        FROM 
+            payments
+        CROSS JOIN JSON_TABLE(
+            payments.payment_details, '$[*]' COLUMNS (
+                paymentType VARCHAR(255) PATH '$.paymentType', 
+                amount DECIMAL(10, 2) PATH '$.amount'
+            )
+        ) AS jt
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id, user_id FROM transactions
+        ) AS t ON payments.id = t.payment_id
+        INNER JOIN users AS u ON u.id = t.user_id
+        WHERE 
+            JSON_VALID(payments.payment_details) AND jt.amount != 0.00  AND  DATE(payments.date_time_of_payment) BETWEEN :startDate AND :endDate
+        GROUP BY 
+            u.id
+        ORDER BY 
+            u.id ASC"; 
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':startDate', $startDate);
+        $sql->bindParam(':endDate', $endDate);
+        $sql->execute();
+        return $sql;
+    }else if($customerId && $singleDateData && !$startDate && !$endDate){
+        $sql="SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+        FROM 
+            payments
+        CROSS JOIN JSON_TABLE(
+            payments.payment_details, '$[*]' COLUMNS (
+                paymentType VARCHAR(255) PATH '$.paymentType', 
+                amount DECIMAL(10, 2) PATH '$.amount'
+            )
+        ) AS jt
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id, user_id FROM transactions
+        ) AS t ON payments.id = t.payment_id
+        INNER JOIN users AS u ON u.id = t.user_id
+        WHERE 
+            JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND u.id=:customerId AND DATE(payments.date_time_of_payment) = :singleDateData
+        GROUP BY 
+            u.id
+        ORDER BY 
+            u.id ASC"; 
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':customerId', $customerId);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+    }else if($customerId && !$singleDateData && $startDate && $endDate){
+        $sql="SELECT 
+        u.id as id,
+        u.first_name as firstname,
+        u.last_name as lastname,
+        DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+        SUM(jt.amount) AS total_amount
+        FROM 
+            payments
+        CROSS JOIN JSON_TABLE(
+            payments.payment_details, '$[*]' COLUMNS (
+                paymentType VARCHAR(255) PATH '$.paymentType', 
+                amount DECIMAL(10, 2) PATH '$.amount'
+            )
+        ) AS jt
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id, user_id FROM transactions 
+        ) AS t ON payments.id = t.payment_id
+        INNER JOIN users AS u ON u.id = t.user_id
+        WHERE 
+            JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND u.id=:customerId AND  DATE(payments.date_time_of_payment) BETWEEN :startDate AND :endDate
+        GROUP BY 
+            u.id
+        ORDER BY 
+            u.id ASC"; 
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':customerId', $customerId);
+        $sql->bindParam(':startDate', $startDate);
+        $sql->bindParam(':endDate', $endDate);
+        $sql->execute();
+        return $sql;
+    }
+    else{
+        $sql="SELECT 
+            u.id as id,
+            u.first_name as firstname,
+            u.last_name as lastname,
+            DATE(payments.date_time_of_payment) AS payment_date,
+            SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
+            SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+            SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
+            SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
+            SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
+            SUM(jt.amount) AS total_amount
+            FROM 
+                payments
+            CROSS JOIN JSON_TABLE(
+                payments.payment_details, '$[*]' COLUMNS (
+                    paymentType VARCHAR(255) PATH '$.paymentType', 
+                    amount DECIMAL(10, 2) PATH '$.amount'
+                )
+            ) AS jt
+            INNER JOIN (
+                SELECT DISTINCT payment_id, receipt_id, user_id FROM transactions
+            ) AS t ON payments.id = t.payment_id
+            INNER JOIN users AS u ON u.id = t.user_id
+            WHERE 
+                JSON_VALID(payments.payment_details) AND jt.amount != 0.00
+            GROUP BY 
+                u.id
+            ORDER BY 
+                u.id ASC"; 
     $stmt = $this->connect()->query($sql);
     return $stmt;
+        }
+
 }
+public function getDatePayments(){
+    $sql = 'SELECT DATE(date_time_of_payment) as date FROM payments GROUP BY date ORDER BY date ASC';
+    $stmt = $this->connect()->query($sql);
+    return $stmt;
 }
 }
