@@ -83,6 +83,21 @@
     #footer_lossand_damages {
         border: none;
     }
+    .ui-autocomplete {
+        background-color: #151515;
+        color: #ffff;
+    }
+    .ui-menu-item {
+        padding: 5px 10px;
+    }
+
+    .ui-menu-item:hover {
+        background-color: #FF6900; 
+        color: #ccc;
+    }
+    .ui-autocomplete .ui-menu-item.ui-state-focus, .ui-menu-item:hover {
+        background-color: #FF6900; 
+    }
 </style>
 <div class="fcontainer" id="lossanddamage_div" style="display: none">
     <form id="lossanddamage_form">
@@ -130,7 +145,7 @@
             <div class="search-container">
                 <input type="hidden" id="loss_and_damage_input_inventory_id" value="0">
                 <input type="text" style="width: 280px; height: 30px; font-size: 12px;"
-                    class="search-input italic-placeholder" placeholder="Search Prod..." name="loss_and_damage_input"
+                    class="search-input italic-placeholder" placeholder="Search Product,[Name, Barcode, Brand]" name="loss_and_damage_input"
                     onkeyup="$(this).removeClass('has-error')" id="loss_and_damage_input" autocomplete="off">
             </div>
             <button style="font-size: 12px; height: 30px; width: 120px; border-radius: 4px;" id="btn_searchLDProduct">
@@ -151,26 +166,26 @@
         </tbody>
 
     </table>
-    
+
     <div style="position: absolute;padding: 10px; width: 100%;">
-    <table id="footer_lossand_damages" class="" >
-        <thead style="border: none;">
-            <tr>
-                <th style="background-color: #1E1C11; width: 50%;" >TOTAL</th>
-                <th style="background-color: #1E1C11; width: 50px; text-align:center;" id="total_qty" >0</th>
-                <th style="background-color: #1E1C11; text-align: right;" id="total_cost">₱ 0.00</th>
-                <th style="background-color: #1E1C11; text-align: right;" id="overall_total_cost">₱ 0.00</th>
-            </tr>
-            <thead>
-    </table>
-    <div >
-        <textarea name="loss_and_damage_note" id="loss_and_damage_note" cols="80" rows="5" placeholder="Note"
-            style="background-color: #1E1C11; color: #ffff; width: 100%;">
+        <table id="footer_lossand_damages" class="">
+            <thead style="border: none;">
+                <tr>
+                    <th style="background-color: #1E1C11; width: 50%;">TOTAL</th>
+                    <th style="background-color: #1E1C11; width: 50px; text-align:center;" id="total_qty">0</th>
+                    <th style="background-color: #1E1C11; text-align: right;" id="total_cost">₱ 0.00</th>
+                    <th style="background-color: #1E1C11; text-align: right;" id="overall_total_cost">₱ 0.00</th>
+                </tr>
+                <thead>
+        </table>
+        <div>
+            <textarea name="loss_and_damage_note" id="loss_and_damage_note" cols="80" rows="5" placeholder="Note"
+                style="background-color: #1E1C11; color: #ffff; width: 100%;">
 
         </textarea>
+        </div>
     </div>
-    </div>
-    
+
 </div>
 
 
@@ -207,41 +222,74 @@
             });
             return isExist;
         }
-
-        $("#btn_searchLDProduct").on("click", function (e) {
+        $("#loss_and_damage_input").on("blur", function(e){
             e.preventDefault();
-            var search_value = $("#loss_and_damage_input").val();
+            var search_value = $(this).val();
             if (!isDataExistInTable(search_value)) {
                 var inventory_id = $("#loss_and_damage_input_inventory_id").val();
-                $("#loss_and_damage_input").val("---");
-                $("#loss_and_damage_input_inventory_id").val("");
                 $.ajax({
                     type: 'get',
                     url: 'api.php?action=get_inventoryDataById',
                     data: { inventory_id: inventory_id },
                     success: function (data) {
                         var row = "";
-                        row += "<tr data-id = "+data['inventory_id']+">";
+                        row += "<tr data-id = " + data['inventory_id'] + ">";
                         row += "<td>" + data['prod_desc'] + "</td>";
                         row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' ></input></td>";
-                        row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id="+data['cost']+">₱ " + numberWithCommas(data['cost']) + "</td>";
+                        row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
                         row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
                         row += "</tr>";
-                        if(data["isSerialized"] === 1)
-                        {
+                        if (data["isSerialized"] === 1) {
                             var sub_row = data["sub_row"];
                             var html_sub_row = "";
-                            for(var j = 0; j<sub_row.length; j++)
-                            {
+                            for (var j = 0; j < sub_row.length; j++) {
                                 html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
-                                html_sub_row += "<td data-id="+sub_row[j].serial_id+"><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+" readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
+                                html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
                                 html_sub_row += "</tr>";
                             }
-                            row +=html_sub_row;
+                            row += html_sub_row;
                         }
                         $("#tbl_lossand_damages").append(row);
                     }
                 })
+                $("#loss_and_damage_input_inventory_id").val("");
+            }
+            else {
+                alert("Product is already listed in the table.");
+            }
+            updateTotal();
+        })
+        $("#btn_searchLDProduct").on("click", function (e) {
+            e.preventDefault();
+            var search_value = $("#loss_and_damage_input").val();
+            if (!isDataExistInTable(search_value)) {
+                var inventory_id = $("#loss_and_damage_input_inventory_id").val();
+                $.ajax({
+                    type: 'get',
+                    url: 'api.php?action=get_inventoryDataById',
+                    data: { inventory_id: inventory_id },
+                    success: function (data) {
+                        var row = "";
+                        row += "<tr data-id = " + data['inventory_id'] + ">";
+                        row += "<td>" + data['prod_desc'] + "</td>";
+                        row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' ></input></td>";
+                        row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
+                        row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
+                        row += "</tr>";
+                        if (data["isSerialized"] === 1) {
+                            var sub_row = data["sub_row"];
+                            var html_sub_row = "";
+                            for (var j = 0; j < sub_row.length; j++) {
+                                html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
+                                html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
+                                html_sub_row += "</tr>";
+                            }
+                            row += html_sub_row;
+                        }
+                        $("#tbl_lossand_damages").append(row);
+                    }
+                })
+                $("#loss_and_damage_input_inventory_id").val("");
             }
             else {
                 alert("Product is already listed in the table.");
@@ -280,9 +328,8 @@
             var $cell = $(this);
             var prevCost = $cell.data('id');
             var newCost = $cell.text().trim();
-            if(newCost === null || newCost === "") $cell.text(prevCost);
-            else
-            {
+            if (newCost === null || newCost === "") $cell.text(prevCost);
+            else {
                 var cursorPosition = getCursorPosition($cell[0]);
                 newCost = acceptsOnlyTwoDecimal(newCost);
                 $cell.text(newCost);
@@ -295,13 +342,12 @@
                 $cell.closest('tr').find('td:nth-child(4)').html("&#x20B1;&nbsp;" + newTotal);
             }
             updateTotal();
-           
+
         });
-        function updateTotal() 
-        {
+        function updateTotal() {
             var totalQty = 0; var totalCost = 0; var overall_totalCost = 0;
 
-            $('#tbl_lossand_damages tbody tr:not(.sub-row)').each(function() {
+            $('#tbl_lossand_damages tbody tr:not(.sub-row)').each(function () {
                 var quantity = parseInt($(this).find('#qty_damage').val());
                 var cost = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
                 var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
@@ -311,8 +357,8 @@
                 overall_totalCost += subtotal;
             });
             $("#total_qty").html(totalQty);
-            $("#total_cost").html("&#x20B1;&nbsp;"+addCommasToNumber(totalCost));
-            $("#overall_total_cost").html("&#x20B1;&nbsp;"+addCommasToNumber(overall_totalCost));
+            $("#total_cost").html("&#x20B1;&nbsp;" + addCommasToNumber(totalCost));
+            $("#overall_total_cost").html("&#x20B1;&nbsp;" + addCommasToNumber(overall_totalCost));
         }
         function getCursorPosition(element) {
             var selection = window.getSelection();
@@ -336,13 +382,37 @@
                         var row = {
                             inventory_id: data[i].inventory_id,
                             product: data[i].prod_desc,
+                            barcode: data[i].barcode,
+                            brand: data[i].brand,
                         };
                         products.push(row);
                     }
-                    autocomplete_product(document.getElementById('loss_and_damage_input'), products);
+                    $("#loss_and_damage_input").autocomplete({
+                        source: function (request, response) {
+                            var term = request.term.toLowerCase();
+                            var filteredProducts = products.filter(function (row) {
+                                return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
+                                    (!row.brand && term === "");
+                            });
+                            response(filteredProducts.map(function (row) {
+                                return {
+                                    label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+                                    value: row.product,
+                                    id: row.inventory_id
+                                };
+                            }));
+                        },
+                        select: function (event, ui) {
+                            var selectedProductId = ui.item.id;
+                            $("#loss_and_damage_input_inventory_id").val(selectedProductId);
+                            return false;
+                        }
+                    });
                 }
             })
         }
+
+    
         function show_reference_no() {
             $.ajax({
                 type: 'get',
@@ -367,75 +437,6 @@
             range.collapse(true);
             sel.removeAllRanges();
             sel.addRange(range);
-        }
-        function autocomplete_product(inp, arr) {
-            var currentFocus;
-            inp.addEventListener("input", function (e) {
-                var a, b, i, val = this.value;
-                closeAllLists();
-                if (!val) { return false; }
-                currentFocus = -1;
-                a = document.createElement("DIV");
-                a.setAttribute("id", this.id + "autocomplete-list");
-                a.setAttribute("class", "autocomplete-items");
-                this.parentNode.appendChild(a);
-                for (i = 0; i < arr.length; i++) {
-                    if (arr[i].product.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                        const inventory_id = arr[i].inventory_id;
-                        b = document.createElement("DIV");
-                        b.innerHTML = "<strong style = 'color: #ffff'>" + arr[i].product.substr(0, val.length) + "</strong>";
-                        b.innerHTML += arr[i].product.substr(val.length);
-                        b.innerHTML += "<input type='hidden'  value='" + arr[i].product + "'>";
-                        b.addEventListener("click", function (e) {
-                            inp.value = this.getElementsByTagName("input")[0].value;
-                            $("#loss_and_damage_input_inventory_id").val(inventory_id);
-                            closeAllLists();
-                        });
-                        a.appendChild(b);
-                    }
-                }
-            });
-            inp.addEventListener("keydown", function (e) {
-                var x = document.getElementById(this.id + "autocomplete-list");
-                if (x) x = x.getElementsByTagName("div");
-                if (e.keyCode == 40) {
-                    currentFocus++;
-                    addActive(x);
-                }
-                else if (e.keyCode == 38) {
-                    currentFocus--;
-                    addActive(x);
-                }
-                else if (e.keyCode == 13) {
-                    e.preventDefault();
-                    if (currentFocus > -1) {
-                        if (x) x[currentFocus].click();
-                    }
-                }
-            });
-            function addActive(x) {
-                if (!x) return false;
-                removeActive(x);
-                if (currentFocus >= x.length) currentFocus = 0;
-                if (currentFocus < 0) currentFocus = (x.length - 1);
-                x[currentFocus].classList.add("autocomplete-active");
-            }
-            function removeActive(x) {
-                for (var i = 0; i < x.length; i++) {
-                    x[i].classList.remove("autocomplete-active");
-                }
-            }
-            function closeAllLists(elmnt) {
-                var x = document.getElementsByClassName("autocomplete-items");
-                for (var i = 0; i < x.length; i++) {
-                    if (elmnt != x[i] && elmnt != inp) {
-                        x[i].parentNode.removeChild(x[i]);
-                    }
-                }
-            }
-            document.addEventListener("click", function (e) {
-                closeAllLists(e.target);
-            });
         }
     })
 </script>

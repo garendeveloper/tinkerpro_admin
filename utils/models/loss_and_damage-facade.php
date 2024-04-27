@@ -61,7 +61,7 @@
             $total_qty = $this->remove_nonBreakingSpace($this->clean_number($formData["total_qty"])) ;
             $total_cost = $this->remove_nonBreakingSpace($this->clean_number($formData["total_cost"]));
             $over_all_total_cost = $this->remove_nonBreakingSpace($this->clean_number($formData['over_all_total_cost']));
-
+            $currentDate = date("Y-m-d");
             $loss_and_damage_info_id = 0;
             if($this->check_lossanddamageinfo_exist($reference_no))
             {
@@ -101,16 +101,23 @@
 
                 $loss_and_damage_id = $this->get_last_lossanddamages_id();
 
-                $stmt = $this->connect()->prepare("UPDATE stocks SET stock = stock - :quantity WHERE inventory_id = :id");
+                $stmt = $this->connect()->prepare("UPDATE inventory SET stock = stock - :quantity  WHERE id = :id");
                 $stmt->bindParam(":quantity", $qty_damage); 
                 $stmt->bindParam(":id", $inventory_id); 
+                $stmt->execute();
+                
+                $qty_damage = "-".$qty_damage;
+                $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
+                                                    VALUES (?, ?, ?)");
+                $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                $stmt->bindParam(2, $qty_damage, PDO::PARAM_STR); 
+                $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
                 $stmt->execute();
                 
                 if(isset($sub_row_data))
                 {
                     foreach($sub_row_data as $sr)
                     {
-                        $serial_number = $sr['serial_number'];
                         $serial_id = $sr['serial_id']; 
                         $is_check = $sr['is_serialCheck'];
                         if($is_check)

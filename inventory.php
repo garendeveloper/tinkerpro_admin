@@ -507,8 +507,6 @@
       var tbl_length = $("#tbl_purchaseOrders tbody tr").length;
       if(tbl_length > 0)
       {
-        if(confirm("Are you sure you want to update your orders?"))
-        {
           var dataArray = [];
           $('#tbl_purchaseOrders tbody tr').each(function() {
               var rowData = {};
@@ -555,10 +553,12 @@
                 $("#totalPrice").html("&#x20B1;&nbsp;0.00");
                 $("#overallTotal").html("&#x20B1;&nbsp;0.00");
                 show_response(response.message);
+                show_allInventories();
                 show_purchaseOrderNo();
-                show_allProducts(1, perPage);
+                show_allProducts();
                 show_allSuppliers();
                 display_datePurchased();
+                show_allReceivedItems_PurchaseOrders();
               }
               else
               {
@@ -578,12 +578,23 @@
               alert("Something went wrong!");
             }
           });
-        }
       }
       else
       {
         alert("The table should not be empty.");
       }
+    }
+    function show_allReceivedItems_PurchaseOrders() {
+        $.ajax({
+            type: 'GET',
+            url: 'api.php?action=get_allPurchaseOrders',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    po_numbers.push(data[i].po_number);
+                }
+                autocomplete(document.getElementById("r_PONumbers"), po_numbers);
+            }
+        });
     }
     $("#received_payment_confirmation #btn_paidClose, #btn_paidCancel").click(function(){
       $("#received_payment_confirmation").hide();
@@ -759,6 +770,7 @@
                     $("#tbl_inventory_count tbody").empty();
                     $("#inventorycount_form")[0].reset();
                     show_inventory_count_reference_no();
+                    show_allInventories();
                   }
                 }
               })
@@ -840,6 +852,7 @@
                     $("#footer_lossand_damages thead").find("#overall_total_cost").html("₱ 0.00");
                     $("#loss_and_damage_note").val("");
                     show_reference_no();
+                    show_allInventories();
                   }
                 }
               })
@@ -863,7 +876,7 @@
               backdrop: 'static',
               keyboard: false,
             });
-            $("#received_payment_confirmation #paid_title").html("Would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>");
+            $("#received_payment_confirmation #paid_title").html("Before proceeding, would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>");
             $("#received_payment_confirmation #total_paid").html($("#overallTotal").text());
             $("#received_payment_confirmation #paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color: #ffff;'>ATTENTION REQUIRED!</strong> ");
             $("#received_payment_confirmation #btn_confirmPayment").click(function(){
@@ -871,22 +884,11 @@
               var subRowData = [];
               $("#tbl_receivedItems tbody tr:not(.sub-row)").each(function(){
                 var rowData = {};
-                $(this).find('td').each(function(index, cell){
-                  if(index === 0)
-                  {
-                    rowData['isSelected'] = $(cell).find("#receive_item").prop("checked");
-                  }
-                  if(index === 1)
-                  {
-                    rowData['inventory_id'] = $(cell).data('id');
-                  }
-                  if(index === 5)
-                  {
-              
-                    rowData['isSerialized'] = $(cell).find("#check_isSerialized").hasClass('checked');
-                  }
-                  rowData['col_'+(index+1)] = $(cell).text();                 
-                })
+                rowData['isSelected'] = $(this).find("#receive_item").prop("checked");
+                rowData['inventory_id'] = $(this).data('id');
+                rowData['isSerialized'] = $(this).find("#check_isSerialized").hasClass('checked');
+                rowData['qty_received'] = $(this).find("td:nth-child(4)").text();
+                rowData['date_expired'] = $(this).find("td:nth-child(5)").text();
                 tbl_data.push(rowData);
               })
               $('#tbl_receivedItems tbody .sub-row').each(function() {
@@ -919,10 +921,11 @@
                       $("#response_modal").slideUp();
                     }, 10000);
                     $("#r_PONumbers").val("");
-                    $("#is_received").val("");
+                    $("#is_received").val("0");
                     $("#tbL_receivedItems tbody").empty();
                     $("#po_data_div").hide();
                     $("#received_payment_confirmation").hide();
+                    show_allInventories();
                   }
                 } 
               })
@@ -1018,7 +1021,7 @@
             keyboard: false,
           });
           $("#product_name").text(product);
-          $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+          $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong style = 'color:  #ffff'>ATTENTION REQUIRED!</strong> ");
         }
       }
       else
@@ -1171,7 +1174,7 @@
                 "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(total)+"</td>"+
               "</tr>"
             );
-            show_allProducts();
+  
             $("#totalQty").html(totalQty);
             $("#totalPrice").html("&#x20B1;&nbsp;"+addCommasToNumber(totalPrice.toFixed(2)));
             $("#overallTotal").html("&#x20B1;&nbsp;"+addCommasToNumber(overallTotal.toFixed(2)));
@@ -1179,6 +1182,7 @@
             $("#purchaseQty_modal").hide();
             $("#prod_form")[0].reset();
             $("#product").val("");
+            show_allProducts();
           }
         })
       }

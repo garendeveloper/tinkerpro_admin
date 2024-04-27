@@ -271,7 +271,7 @@
                 success: function (data) {
                     var table = "";
                     $("#r_supplier").html(data[0].supplier);
-                    $("#is_received").html(data[0].is_received);
+                    $("#is_received").val(data[0].is_received);
                     $("#r_datePurchased").html(date_format(data[0].date_purchased));
                     $("#r_po_number").html(data[0].po_number);
                     var isPaid = data[0].isPaid === 1 ?
@@ -283,19 +283,13 @@
                         table += "<tr data-id = " + data[i].inventory_id + ">";
                         table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
                         table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
-                        table += "<td style = 'text-align: center; '>" + data[i]
-                            .qty_purchased + "</td>";
-                        if (data[i].qty_received === null) {
-                            table +=
-                                "<td style = 'text-align: center; background-color: #262626; ' class ='editable' id='qty_received' ></td>";
-                        }
-                        else {
-                            table +=
-                                "<td style = 'text-align: center; background-color: #262626; ' class ='editable' id='qty_received'>" + data[i].qty_received + "</td>";
-                        }
+                        table += "<td style = 'text-align: center; '>" +data[i].qty_purchased+"</td>";
+           
+                        table += "<td style = 'text-align: center; background-color: #262626; ' data-id = "+data[i].sub_row.length+" ><input id = 'qty_received' placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
+                    
                         if (data[i].date_expired === null) {
                             table +=
-                                "<td style = 'text-align: center; background-color: #262626; '></td>";
+                                "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
                         }
                         else {
                             table +=
@@ -321,7 +315,7 @@
                             {
                                 html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
                                 html_sub_row += "<td>"+counter+"</td>";
-                                html_sub_row += "<td data-id = "+sub_row[j].serial_id+" id = 'serial_id'><input  style = 'width: 130px' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
+                                html_sub_row += "<td data-id = "+sub_row[j].serial_id+" id = 'serial_id'><input  style = 'width: 130px; height: 20px; font-size: 12px;' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
                                 html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
                                 html_sub_row += "</tr>";
                                 counter++;
@@ -338,24 +332,38 @@
                 }
             })
         }
-        $('#tbl_receivedItems tbody').on('keypress', 'td:nth-child(4)', function (event) {
+        $('#tbl_receivedItems tbody').on('keypress', '#qty_received', function (event) {
 
             var charCode = event.which ? event.which : event.keyCode;
             if (charCode < 48 || charCode > 57) {
                 event.preventDefault();
             }
         });
-        $('#tbl_receivedItems tbody').on('input', 'td:nth-child(4)', function () {
-            var qty_purchased = $(this).prev().text();
-            var currentValue = parseInt($(this).text().trim(), 10);
+        $('#tbl_receivedItems tbody').on('input', '#qty_received', function () {
+            var qty_purchased =$(this).prev().text();
+            var currentValue = parseInt($(this).val());
+       
             if (!isNaN(currentValue) && currentValue > qty_purchased) {
                 $(this).text(qty_purchased);
                 $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
             }
         });
+        $("#tbl_receivedItems tbody").on('blur', "#qty_received", function(){
+            var currentValue = $(this).val();
+            $(this).closest("td").text(currentValue);
+        })
+         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(4)', function () {
+            var text = $(this).text();
+            if(text !== "")
+            {
+                var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;'  placeholder='QTY'></input>";
+                $(this).empty().append(input);
+            }
+           
+        });
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(5)', function () {
             var currentText = $(this).text();
-            var input = $('<input type="text">');
+            var input = $('<input type="text" placeholder = "Date Expired" style = "width: 90px; height: 20px;">');
             $(this).empty().append(input);
             input.datepicker({
                 changeMonth: true,
@@ -375,20 +383,29 @@
         var subRowCount = 0;
         $('#tbl_receivedItems tbody').on('click', '#check_isSerialized', function () {
             var parentRow = $(this).closest("tr");
-            var qty_received = parentRow.find("#qty_received").text();
-            var inventory_id = parentRow.data('id');
-            if ($(this).hasClass('checked')) {
-                $(this).removeClass('checked');
-                $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
-            } else {
-                $(this).addClass('checked');
-                $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
-                for(var i = qty_received; i>=1; i--)
-            {   
-                var subRow = $("<tr class ='sub-row' data-id = " + inventory_id + "><td>"+i+"</td><td><input  style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder'></input></td><td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td></tr>");
-                parentRow.after(subRow);
+            var qty_received = parentRow.find("td:nth-child(4)").text();
+            if(qty_received != "")
+            {
+                parentRow.find("#qty_received").removeClass('has-error');
+                var inventory_id = parentRow.data('id');
+                if ($(this).hasClass('checked')) {
+                    $(this).removeClass('checked');
+                    $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
+                } else {
+                    $(this).addClass('checked');
+                    $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
+                    for(var i = qty_received; i>=1; i--)
+                    {   
+                        var subRow = $("<tr class ='sub-row' data-id = " + inventory_id + "><td>"+i+"</td><td><input  style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder'></input></td><td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td></tr>");
+                        parentRow.after(subRow);
+                    }
+                }
             }
+            else
+            {
+                parentRow.find("#qty_received").addClass('has-error');
             }
+           
         });
         $('#tbl_receivedItems tbody').on('click', '.btn_removeSerial', function (e) {
             e.preventDefault();

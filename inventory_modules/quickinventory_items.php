@@ -115,7 +115,7 @@
                     for (var i = 0; i < data.length; i++) {
                         table += "<tr data-id = " + data[i].inventory_id + ">";
                         table += "<td>"+data[i].prod_desc+"</td>";
-                        table += "<td class = 'text-center'>" + (data[i].qty_received === null ? 0 : data[i].qty_received) + "</td>";
+                        table += "<td class = 'text-center'>" + (data[i].stock === null ? 0 : data[i].stock) + "</td>";
                         table += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
                         table += "</tr>";
                     }

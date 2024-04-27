@@ -4,13 +4,12 @@ class InventoryFacade extends DBConnection
     public function get_allInventories()
     {
         // $offset = ($page - 1) * $perPage;
-        $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id, stocks.*
+        $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
                                             FROM inventory
                                             JOIN products ON products.id = inventory.product_id
                                             JOIN uom ON uom.id = products.uom_id
                                             JOIN orders ON orders.id = inventory.order_id
                                             JOIN supplier ON supplier.id = orders.supplier_id
-                                            JOIN stocks ON stocks.inventory_id = inventory.id
                                             ORDER BY inventory.id DESC;");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -37,13 +36,12 @@ class InventoryFacade extends DBConnection
         }
         if($type === "2")
         {
-            $sql = "SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id, stocks.*
+            $sql = "SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
                     FROM inventory
                     JOIN products ON products.id = inventory.product_id
                     JOIN uom ON uom.id = products.uom_id
                     JOIN orders ON orders.id = inventory.order_id
                     JOIN supplier ON supplier.id = orders.supplier_id
-                    JOIN stocks ON stocks.inventory_id = inventory.id
                     ORDER BY inventory.id DESC;";
 
             $stmt = $this->connect()->prepare($sql);
@@ -106,10 +104,19 @@ class InventoryFacade extends DBConnection
             $qty_onhand = (int)$row['col_2'];
             $newqty = (int)$row['newqty'];
             $newqty = $newqty + $qty_onhand;
+            $currentDate = date('Y-m-d');
 
-            $stmt = $this->connect()->prepare("UPDATE stocks SET stock = :new_stock WHERE inventory_id = :id");
+            $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock WHERE id = :id");
             $stmt->bindParam(":new_stock", $newqty); 
             $stmt->bindParam(":id", $inventory_id); 
+            $stmt->execute();
+
+            $newqty = "+".$newqty;
+            $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
+                                                VALUES (?, ?, ?)");
+            $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $newqty, PDO::PARAM_STR); 
+            $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
             $stmt->execute();
         }
         return [
@@ -119,7 +126,10 @@ class InventoryFacade extends DBConnection
     }
     public function get_allProducts()
     {
-        $sql = $this->connect()->prepare("SELECT * FROM products");
+        $sql = $this->connect()->prepare("SELECT A.*
+                                        FROM products A
+                                        LEFT JOIN  inventory B ON A.ID = B.product_id
+                                        WHERE B.product_id IS NULL");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -402,14 +412,15 @@ class InventoryFacade extends DBConnection
         foreach ($tbl_data as $row) 
         {
             $inventory_id = $row["inventory_id"];
-            $qty_received = $row["col_4"];
+            $qty_received = (int)$row["qty_received"];
             $expired_date = "";
-            if($row["col_5"] !== "")
+            if($row["date_expired"] !== "")
             {
-                $expired_date = date('Y-m-d', strtotime($row["col_5"]));
+                $expired_date = date('Y-m-d', strtotime($row["date_expired"]));
             }
             $isSerialized = $row["isSerialized"];
             $isSelected = $row["isSelected"];
+            $currentDate = date("Y-m-d");
 
             if ($isSelected) 
             {
@@ -432,11 +443,20 @@ class InventoryFacade extends DBConnection
 
                 if($is_received)
                 {
-                    $sqlStatement = $this->connect()->prepare("UPDATE stocks SET stock = :stock  WHERE inventory_id = :inventory_id");
-    
-                    $sqlStatement->bindParam(":stock", $qty_received);
-                    $sqlStatement->bindParam(":inventory_id", $inventory_id);
-                    $sqlStatement->execute();
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock, qty_received = :qty_received WHERE id = :id");
+                    $stmt->bindParam(":new_stock", $qty_received); 
+                    $stmt->bindParam(":qty_received", $qty_received, PDO::PARAM_STR);
+                    $stmt->bindParam(":id", $inventory_id); 
+                    $stmt->execute();
+
+                    $qty_received = "+".$qty_received;
+                    $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
+                                                        VALUES (?, ?, ?)");
+                    $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                    $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
+                    $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+                    $stmt->execute();
+
 
                     if ($isSerialized) 
                     {
@@ -452,23 +472,29 @@ class InventoryFacade extends DBConnection
                 }
                 else
                 {
-                    $sqlStatement = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock) 
-                                                                VALUES (?, ?)");
-    
-                    $sqlStatement->bindParam(1, $inventory_id, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(2, $qty_received, PDO::PARAM_STR);
-                    $sqlStatement->execute();
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock WHERE id = :id");
+                    $stmt->bindParam(":new_stock", $qty_received); 
+                    $stmt->bindParam(":id", $inventory_id); 
+                    $stmt->execute();
+
+                    $qty_received = "+".$qty_received;
+                    $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
+                                                        VALUES (?, ?, ?)");
+                    $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                    $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
+                    $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+                    $stmt->execute();
     
                     if ($isSerialized) 
                     {
                        foreach($subRowData as $sub_row)
                        {
-                            if($this->check_serialNumber($sub_row['inventory_id'], $sub_row['serial_number']) === false) 
+                            if($this->check_serialNumber($inventory_id, $sub_row['serial_number']) === false) 
                             {
                                 $sqlStatement = $this->connect()->prepare("INSERT INTO serialized_product (inventory_id, serial_number) 
                                 VALUES (?, ?)");
     
-                                $sqlStatement->bindParam(1, $sub_row['inventory_id'], PDO::PARAM_STR);
+                                $sqlStatement->bindParam(1, $inventory_id, PDO::PARAM_STR);
                                 $sqlStatement->bindParam(2, $sub_row['serial_number'], PDO::PARAM_STR);
                                 $sqlStatement->execute();
                             }
@@ -507,11 +533,19 @@ class InventoryFacade extends DBConnection
             $stmt->execute();
         }
     }
+    public function check_ifInventoryExist($product_id)
+    {
+        $sql = $this->connect()->prepare("SELECT * FROM inventory WHERE product_id = :product_id");
+        $sql->bindValue(":product_id", $product_id, PDO::PARAM_STR);
+        $sql->execute();
+        return $sql->rowCount() > 0;
+    }
     public function save_purchaseOrder($formData)
     {
         if ($this->validateData($formData)) {
             $tbldata = json_decode($formData['data'], true);
             $order_id = $this->save_order($formData);
+            $existed_product = [];
             if ($formData['order_id'] > 0) {
                 if (isset($formData['remove_inventories'])) {
                     $this->remove_inventories($formData['remove_inventories']);
@@ -537,19 +571,26 @@ class InventoryFacade extends DBConnection
                     }
                     if ($inventory_id === 0) {
 
-                        $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
-                                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-                        $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
-                        $sqlStatement->execute();
+                        if(!$this->check_ifInventoryExist($product_id))
+                        {
+                            $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
+                                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    
+                            $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
+                            $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
+                            $sqlStatement->execute();
+                        }
+                        else
+                        {
+                            $existed_product[] = [$product];
+                        }
                     } else {
                         $sql = "UPDATE inventory SET qty_purchased = :v1, amount_beforeTax = :v2, amount_afterTax = :v3, status = :v4, total = :v5, tax = :v6, order_id = :v7, product_id = :v8 WHERE id = :id";
                         $sqlStatement = $this->connect()->prepare($sql);
@@ -588,24 +629,31 @@ class InventoryFacade extends DBConnection
                         $amount_afterTax = $price - $tax;
                     }
 
-                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
-                                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    if(!$this->check_ifInventoryExist($product_id))
+                    {
+                        $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
+                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-                    $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
-                    $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
-                    $sqlStatement->execute();
+                        $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
+                        $sqlStatement->execute();
+                    }
+                    else{
+                        $existed_product[] = [$product];
+                    }
                 }
             }
             return [
                 'status' => true,
-                'message' => 'Purchase Orders has been successfully saved!'
+                'message' => 'Purchase Orders has been successfully saved!',
+                'existed_product'=>$existed_product,
             ];
         } else {
             return [

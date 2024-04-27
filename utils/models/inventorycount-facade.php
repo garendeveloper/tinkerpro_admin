@@ -58,6 +58,7 @@
     
                 $inventory_count_info_id = $this->get_last_id();
             }
+            $currentDate = date("Y-m-d");
             foreach($tbl_data as $row)
             {
                 $inventory_id = $row['inventory_id'];
@@ -74,10 +75,18 @@
                 $stmt->bindParam(5, $difference, PDO::PARAM_STR);
                 $stmt->execute();
 
-                $stmt = $this->connect()->prepare("UPDATE stocks SET stock = :new_stock WHERE inventory_id = :id");
+                $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock  WHERE id = :id");
                 $stmt->bindParam(":new_stock", $counted); 
                 $stmt->bindParam(":id", $inventory_id); 
                 $stmt->execute();
+
+                $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
+                                                    VALUES (?, ?, ?)");
+                $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                $stmt->bindParam(2, $counted, PDO::PARAM_STR); 
+                $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+                $stmt->execute();
+           
             }
             return [
                 'status'=>true,

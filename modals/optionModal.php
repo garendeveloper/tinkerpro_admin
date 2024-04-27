@@ -931,14 +931,12 @@ input {
 
 .fieldContainer label {
     margin-right: 10px;
-    /* Add spacing between label and input elements */
 }
 
 .fieldContainer input[type="text"],
 .fieldContainer input[type="date"],
 .fieldContainer .switch {
     margin-right: 10px;
-    /* Add spacing between input elements */
 }
 </style>
 <style>
@@ -1054,7 +1052,7 @@ input {
     color: #ffffff;
 }
 
-#tbl_purchaseOrders tbody tr td:first-child:hover::before {
+/* #tbl_purchaseOrders tbody tr td:first-child:hover::before {
     content: attr(title);
     position: absolute;
     background: none;
@@ -1066,7 +1064,7 @@ input {
     z-index: 1000;
     left: -150px;
     top: 0;
-}
+} */
 
 #tbl_purchaseOrders {
     width: 100%;
