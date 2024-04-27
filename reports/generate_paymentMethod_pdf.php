@@ -49,7 +49,7 @@ $pdf->SetFont('', 'I', 8);
 
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell(0, 10, 'PAYMENT METHOD', 0, 1, 'R', 0); 
+$pdf->Cell(0, 10, 'SALES BY PAYMENT TYPES', 0, 1, 'R', 0); 
 $pdf->Ln(-5);
 $pdf->SetFont('',  10);
 $pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
@@ -65,56 +65,71 @@ $pdf->Ln(-9);
 $current_date = date('F j, Y');
 $pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
 $pdf->Ln(-2);
+$pdf->SetDrawColor(192, 192, 192); 
 
 
-$header = array('No.', 'Payment Type', 'Receipt No.', 'Date', 'Amount(Php)');
-$headerWidths = array(10, 50, 40, 40, 50);
-$maxCellHeight = 5; 
 
-$hexColor = '#FF6900';
+
+
+
+$header = array('No.', 'Date', 'Cash', 'Credit', 'E-wallet', 'Debit/Credit', 'Total(Php)');
+$headerWidths = array(10, 30, 30, 30, 30, 30, 30);
+$maxCellHeight = 5;
+
+$hexColor = '#F5F5F5';
 list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
 $pdf->SetFillColor($r, $g, $b);
-
-
 $pdf->SetFont('', 'B', 10);
+
 for ($i = 0; $i < count($header); $i++) {
-    $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true); 
+    $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
 }
-$pdf->Ln(); 
+$pdf->Ln();
 
-$totalAmount = 0; 
-$pdf->SetFont('', '', 10); 
+$pdf->SetFont('', '', 10);
+// Define an array to store the sum of amounts for each payment type
+$sumByPaymentType = array(
+    'cash' => 0,
+    'credit' => 0,
+    'maya' => 0,
+    'alipay' => 0,
+    'master card' => 0,
+    'american express' => 0,
+    'coupon' => 0
+);
+
+// Loop through the fetched data to calculate the sum for each payment type
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalAmount += $row['adjusted_amount'];
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['paymentType'], $headerWidths[1]));
-    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['paymentType'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['receipt_id'], $headerWidths[2]));
-    $formatted_receipt_id = str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT);
-    $pdf->Cell($headerWidths[2], $maxCellHeight, $formatted_receipt_id, 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['date'] !== null ? date('M j, Y', strtotime($row['date'])) : '', $headerWidths[3]));
-    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['date'] !== null ? date('M j, Y', strtotime($row['date'])) : '', 1, 0, 'L'); 
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['adjusted_amount'], $headerWidths[4]));
-    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['adjusted_amount'], 2), 1, 0, 'L'); 
-   
-    $pdf->Ln(); // Move to next line
-    $counter++;
+    $paymentType = strtolower($row['paymentType']);
+    $amount = floatval($row['amount']);
+    $sumByPaymentType[$paymentType] += $amount;
 }
 
-$pdf->SetFont('', 'B', 10); 
-$pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3], $maxCellHeight, 'Total', 1, 0, 'C'); 
-$pdf->Cell($headerWidths[4], $maxCellHeight, number_format(  $totalAmount, 2), 1, 0, 'L'); 
- 
-$pdf->Ln(); 
 
+// Print the sum for each payment type
+// Print the sum for each payment type
+foreach ($sumByPaymentType as $paymentType => $sum) {
+    $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'LR'); // No content, just to maintain cell structure
+    $pdf->Cell($headerWidths[1], $maxCellHeight, $singleDateData, 'LR');
+    $pdf->Cell($headerWidths[2], $maxCellHeight, $paymentType == 'cash' ? number_format($sum, 2) : '', 'LR', 0, 'C');
+    $pdf->Cell($headerWidths[3], $maxCellHeight, '', 'LR'); // No content, just to maintain cell structure
+    $pdf->Cell($headerWidths[4], $maxCellHeight, '', 'LR'); // No content, just to maintain cell structure
+    $pdf->Cell($headerWidths[5], $maxCellHeight, '', 'LR'); // No content, just to maintain cell structure
+    $pdf->Cell($headerWidths[6], $maxCellHeight, '', 'LR'); // No content, just to maintain cell structure
+   // Move to the next line after each row
+   $pdf->Ln(); // Move to next line
+   $counter++;
+}
+
+$pdf->Ln(); 
 
 $pdf->Output('paymentMethodList.pdf', 'I');
 $pdfPath = __DIR__ . '/../assets/pdf/payment_method/paymentMethodList.pdf';
 
 if (file_exists($pdfPath)) {
- 
     unlink($pdfPath);
 }
+
 $pdf->Output($pdfPath, 'F');
 ?>

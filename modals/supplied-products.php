@@ -204,10 +204,12 @@
         $('#suppliedProductsClose').on('click', function(){
             $('#suppliedModal').hide();
             $('.form-check-input:checked').prop('checked', false);
-            
-            localStorage.removeItem('suppliedProductData');
             $('.form-check-input').removeClass('checked');
-            $('#suppliedTable tbody').empty();
+            localStorage.removeItem('removedItemsProductsStorage');
+            const suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData')) || [];
+            const filteredData = suppliedProductData.filter(item => item.id !== undefined);
+            localStorage.setItem('suppliedProductData', JSON.stringify(filteredData));
+            updateProductSupply(filteredData);
         });
    
 
@@ -217,21 +219,33 @@
         var productId = checkbox.value;
         var productName = checkbox.nextElementSibling.textContent;
         var isChecked = checkbox.checked;
-        var id = null;
+       
         
         if (isChecked) {
             var suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData')) || [];
-            suppliedProductData.push({id:id, productId: productId, name: productName });
+            suppliedProductData.push({productId: productId, name: productName });
             localStorage.setItem('suppliedProductData', JSON.stringify(suppliedProductData));
-        }else {
+            console.log(suppliedProductData)
+        }else{
+        
             var suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData')) || [];
             var indexToRemove = suppliedProductData.findIndex(function(item) {
-                return item.productId === productId;
+                return parseInt(item.productId) === parseInt(productId);
             });
-            if (indexToRemove !== -1) {
-                suppliedProductData.splice(indexToRemove, 1);
-                localStorage.setItem('suppliedProductData', JSON.stringify(suppliedProductData));
-            }
+
+
+          if (indexToRemove !== -1) {
+          var removedItem = suppliedProductData[indexToRemove];
+          suppliedProductData.splice(indexToRemove, 1);
+          localStorage.setItem('suppliedProductData', JSON.stringify(suppliedProductData));
+
+         
+          if (removedItem.hasOwnProperty('id')) {
+              var removedItemsProductsStorage = JSON.parse(localStorage.getItem('removedItemsProductsStorage')) || [];
+              removedItemsProductsStorage.push(removedItem);
+              localStorage.setItem('removedItemsProductsStorage', JSON.stringify(removedItemsProductsStorage));
+          }
+      }
             
         }
     }
@@ -241,8 +255,16 @@
     $('.okSuppliedProducts').on('click', function(){
         var suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData'));
         console.log("Supplied Product Data:", suppliedProductData); 
-        
-        var tableBody = $('#suppliedTable tbody');
+        updateProductSupply(suppliedProductData)
+        closeSupplied();
+
+
+    });
+    var suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData')) || [];
+    updateProductSupply(suppliedProductData);
+
+    function updateProductSupply(suppliedProductData){
+      var tableBody = $('#suppliedTable tbody');
         tableBody.empty(); 
         
         suppliedProductData.forEach(function(product, index) {
@@ -255,11 +277,7 @@
             
             tableBody.append(row);
         });
-        
-        closeSupplied();
-    });
-
-
+    }
 
     function closeSupplied(){
            $('#suppliedModal').hide();
