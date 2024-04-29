@@ -48,6 +48,13 @@
     font-style: italic;
     font-weight: bold;
 }
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
 </style>
 
 <?php include "layout/admin/css.php"?>

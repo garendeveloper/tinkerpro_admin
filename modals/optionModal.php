@@ -1176,6 +1176,7 @@ input[type="text"] {
     </div>
 </div>
 <?php include("./modals/print_orders-modal.php")?>
+
 <script>
   $(document).ready(function(){
   

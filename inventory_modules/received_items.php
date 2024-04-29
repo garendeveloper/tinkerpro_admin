@@ -144,25 +144,51 @@
         height: 8px;
     }
 
-    #tbl_receivedItems tbody{
+    #tbl_receivedItems tbody {
         font-size: 12px;
         border: none;
     }
-    #tbl_receivedItems thead th{
-       border: none;
-       color: #FF6900;
-    }
-    #tbl_receivedItems thead{
-       border: 1px solid #FF6900;
-    }
-    #tbl_receivedItems tbody td{
+
+    #tbl_receivedItems thead th {
         border: none;
-        
+        color: #FF6900;
     }
+
+    #tbl_receivedItems thead {
+        border: 1px solid #FF6900;
+    }
+
+    #tbl_receivedItems tbody td {
+        border: none;
+
+    }
+
     .custom-checkbox.disabled {
-    opacity: 0.5; 
-    pointer-events: none; 
-}
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .custom-select {
+        position: relative;
+        display: inline-block;
+
+    }
+
+    .custom-select select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 25px;
+        text-indent: 0.5em;
+    }
+
+    .custom-select i {
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+   
+    }
 </style>
 <div class="fcontainer" id="received_div" style="display: none;">
     <form id="receive_form">
@@ -170,7 +196,7 @@
             <img src="assets/img/barcode.png"
                 style="height: 50px; width: 50px; border-radius: 0;  margin-right: 2px; margin-left: 0px;">
             <div class="search-container">
-                <input type="hidden" id = "is_received" name = "is_received" value = "0"> 
+                <input type="hidden" id="is_received" name="is_received" value="0">
                 <input type="text" style="width: 280px; height: 30px; font-size: 16px;"
                     class="search-input italic-placeholder" placeholder="Search Purchase Order No." name="r_PONumbers"
                     id="r_PONumbers" onkeyup="$(this).removeClass('has-error')" autocomplete="off">
@@ -190,13 +216,38 @@
                     <label>STATUS: <strong id="r_isPaid"></strong></label>
                 </div>
             </div>
-            <div class="fieldContainer">
-                <div class="group">
+            <style>
+                #f_receive {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .left-aligned {
+                    margin-right: auto;
+                }
+
+                .right-aligned {
+                    margin-left: auto;
+                }
+            </style>
+            <div class="fieldContainer" id = "f_receive">
+                <div class="group left-aligned">
                     <label for=""><strong style="color: #ffff;">RECEIVE ALL</strong></label>
                     <label class="switch">
                         <input type="checkbox" name="receive_all" id="receive_all" checked>
                         <span class="slider round"></span>
                     </label>
+                </div>
+                <div class="group right-aligned">
+                    <div class="custom-select" style="margin-right: 0px; ">
+                        <select name="branches" id="branches"
+                            style="background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
+                            <option>Store</option>
+                            <option>Warehouse</option>
+                        </select>
+                        <i class="bi bi-chevron-double-down"></i>
+                    </div>
                 </div>
             </div>
             <table id="tbl_receivedItems" class="text-color" style="">
@@ -233,7 +284,7 @@
                 }
             });
         }
-        $("#tbl_receivedItems tbody").on("input", 'tr.sub-row input', function(){
+        $("#tbl_receivedItems tbody").on("input", 'tr.sub-row input', function () {
             $(this).removeClass("has-error");
         })
         $("#receive_all").change(function () {
@@ -283,10 +334,10 @@
                         table += "<tr data-id = " + data[i].inventory_id + ">";
                         table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
                         table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
-                        table += "<td style = 'text-align: center; '>" +data[i].qty_purchased+"</td>";
-           
-                        table += "<td style = 'text-align: center; background-color: #262626; ' data-id = "+data[i].sub_row.length+" ><input id = 'qty_received' placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
-                    
+                        table += "<td style = 'text-align: center; '>" + data[i].qty_purchased + "</td>";
+
+                        table += "<td style = 'text-align: center; background-color: #262626; ' data-id = " + data[i].sub_row.length + " ><input id = 'qty_received' placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
+
                         if (data[i].date_expired === null) {
                             table +=
                                 "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
@@ -295,34 +346,30 @@
                             table +=
                                 "<td style = 'text-align: center; background-color: #262626; '>" + date_format(data[i].date_expired) + "</td>";
                         }
-                        if(data[i].isSerialized === 1)
-                        {
-                          table +=
-                            "<td style = 'text-align: center'><div class='custom-checkbox checked disabled' id='check_isSerialized'></div></td>";
+                        if (data[i].isSerialized === 1) {
+                            table +=
+                                "<td style = 'text-align: center'><div class='custom-checkbox checked disabled' id='check_isSerialized'></div></td>";
                         }
-                        if(data[i].isSerialized === 0)
-                        {
-                          table +=
-                            "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
+                        if (data[i].isSerialized === 0) {
+                            table +=
+                                "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
                         }
                         table += "</tr>";
-                        if(data[i].isSerialized === 1)
-                        {
+                        if (data[i].isSerialized === 1) {
                             var sub_row = data[i].sub_row;
                             var html_sub_row = "";
                             var counter = 1;
-                            for(var j = 0; j<sub_row.length; j++)
-                            {
+                            for (var j = 0; j < sub_row.length; j++) {
                                 html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
-                                html_sub_row += "<td>"+counter+"</td>";
-                                html_sub_row += "<td data-id = "+sub_row[j].serial_id+" id = 'serial_id'><input  style = 'width: 130px; height: 20px; font-size: 12px;' placeholder='Serial Number' class='italic-placeholder' value = "+sub_row[j].serial_number+"></input></td>";
+                                html_sub_row += "<td>" + counter + "</td>";
+                                html_sub_row += "<td data-id = " + sub_row[j].serial_id + " id = 'serial_id'><input  style = 'width: 130px; height: 20px; font-size: 12px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + "></input></td>";
                                 html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
                                 html_sub_row += "</tr>";
                                 counter++;
                             }
-                          
+
                             table += html_sub_row;
-                           
+
                         }
                     }
                     $("#tbl_receivedItems tbody").html(table);
@@ -340,26 +387,25 @@
             }
         });
         $('#tbl_receivedItems tbody').on('input', '#qty_received', function () {
-            var qty_purchased =$(this).prev().text();
+            var qty_purchased = $(this).prev().text();
             var currentValue = parseInt($(this).val());
-       
+
             if (!isNaN(currentValue) && currentValue > qty_purchased) {
                 $(this).text(qty_purchased);
                 $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
             }
         });
-        $("#tbl_receivedItems tbody").on('blur', "#qty_received", function(){
+        $("#tbl_receivedItems tbody").on('blur', "#qty_received", function () {
             var currentValue = $(this).val();
             $(this).closest("td").text(currentValue);
         })
-         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(4)', function () {
+        $('#tbl_receivedItems tbody').on('click', 'td:nth-child(4)', function () {
             var text = $(this).text();
-            if(text !== "")
-            {
+            if (text !== "") {
                 var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;'  placeholder='QTY'></input>";
                 $(this).empty().append(input);
             }
-           
+
         });
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(5)', function () {
             var currentText = $(this).text();
@@ -384,8 +430,7 @@
         $('#tbl_receivedItems tbody').on('click', '#check_isSerialized', function () {
             var parentRow = $(this).closest("tr");
             var qty_received = parentRow.find("td:nth-child(4)").text();
-            if(qty_received != "")
-            {
+            if (qty_received != "") {
                 parentRow.find("#qty_received").removeClass('has-error');
                 var inventory_id = parentRow.data('id');
                 if ($(this).hasClass('checked')) {
@@ -394,18 +439,16 @@
                 } else {
                     $(this).addClass('checked');
                     $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
-                    for(var i = qty_received; i>=1; i--)
-                    {   
-                        var subRow = $("<tr class ='sub-row' data-id = " + inventory_id + "><td>"+i+"</td><td><input  style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder'></input></td><td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td></tr>");
+                    for (var i = qty_received; i >= 1; i--) {
+                        var subRow = $("<tr class ='sub-row' data-id = " + inventory_id + "><td>" + i + "</td><td><input  style = 'width: 100px' placeholder='Serial Number' class='italic-placeholder'></input></td><td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td></tr>");
                         parentRow.after(subRow);
                     }
                 }
             }
-            else
-            {
+            else {
                 parentRow.find("#qty_received").addClass('has-error');
             }
-           
+
         });
         $('#tbl_receivedItems tbody').on('click', '.btn_removeSerial', function (e) {
             e.preventDefault();

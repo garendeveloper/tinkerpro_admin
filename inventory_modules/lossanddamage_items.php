@@ -348,9 +348,13 @@
             var totalQty = 0; var totalCost = 0; var overall_totalCost = 0;
 
             $('#tbl_lossand_damages tbody tr:not(.sub-row)').each(function () {
-                var quantity = parseInt($(this).find('#qty_damage').val());
-                var cost = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
-                var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
+                var quantity = parseInt($(this).find('#qty_damage').val());;
+                var cost = $(this).find('td:nth-child(3)').text();
+                cost =  cost.replace(/[^0-9.]/g, '');
+                cost = parseFloat(cost);
+                var subtotal = $(this).find('td:nth-child(4)').text();
+                subtotal =subtotal.replace(/[^0-9.]/g, '');
+                subtotal = parseFloat(subtotal);
 
                 totalQty += quantity;
                 totalCost += cost;

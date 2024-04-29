@@ -66,17 +66,24 @@
             </div>
         </div>
         <div class="fieldContainer">
-            <div class="custom-select" style = "margin-right: 5px;">
-                <select name="qi_inventory_type" id = "qi_inventory_type"
-                    style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
-                    <option value="0">Select inventory type</option>
-                    <option value="1">B.O.M Inventory</option>
-                    <option value="2">Product Inventory</option>
-                </select>
-                <i class="bi bi-chevron-double-down"></i>
+            <div class="group left-aligned">
+                <div class="custom-select">
+                    <select name="qi_inventory_type" id = "qi_inventory_type"
+                        style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
+                        <option value="0">Select inventory type</option>
+                        <option value="1">B.O.M Inventory</option>
+                        <option value="2">Product Inventory</option>
+                    </select>
+                    <i class="bi bi-chevron-double-down"></i>
+                </div>
+                <button style="font-size: 12px; height: 30px; border-radius: 4px;" id="btn_go_inventory">
+                    GO</button>
             </div>
-            <button style="font-size: 12px; height: 30px; border-radius: 4px;" id="btn_go_inventory">
-                GO</button>
+            <div class="group right-aligned" style="display: flex; align-items: center;">
+                <button style="font-size: 12px; height: 30px; border-radius: 4px; width: 200px; " id="btn_open_print_count_modal" type = "button">
+                   <i class = "bi bi-printer"></i>&nbsp;&nbsp; Print Count Sheet</button>
+            </div>
+            
         </div>
     </form>
     <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh">
@@ -94,7 +101,7 @@
     </table>
 </div>
 
-
+<?php include("./modals/print-counts-modal.php")?>
 <script>
     $(document).ready(function () {
         show_reference_no();
@@ -107,6 +114,21 @@
                 }
             })
         }
+        $("#btn_open_print_count_modal").on("click", function() {
+            $("#printcount_modal").show();
+        });
+
+        $(".close").click(function() {
+            $("#printcount_modal").hide();
+        });
+
+        $(window).resize(function() {
+            if ($(window).width() < 768) {
+            $("#printcount_modal .modal-content").css("margin", "30% auto");
+            } else {
+            $("#printcount_modal.modal-content").css("margin", "15% auto");
+            }
+        });
         $('#date_counted').datepicker({
             changeMonth: true,
             changeYear: true,
