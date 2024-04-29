@@ -19,17 +19,25 @@ $refundFacade = new OtherReportsFacade();
 $products = new ProductFacade();
 
 $counter = 1;
+$exclude = $_GET['exclude'] ?? null;
 $userId = $_GET['userId'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade->getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endDate,$exclude);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
 
-$pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$paperSize = 'Letter'; 
+
+ if ($paperSize == 'Letter') {
+    $pageWidth = 279.4;
+    $pageHeight = 215.9;
+}
+
+$pdf = new TCPDF('L', PDF_UNIT, array($pageWidth, $pageHeight), true, 'UTF-8', false);
 $pdf->SetCreator('TinkerPro Inc.');
 $pdf->SetAuthor('TinkerPro Inc.');
 $pdf->SetTitle('PAYMENT TYPE BY USERS Table PDF');
@@ -50,7 +58,7 @@ $pdf->SetFont('', 'I', 8);
 
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell(0, 10, 'PAYMENT TYPE BY USERS', 0, 1, 'R', 0); 
+$pdf->Cell(0, 10, 'PAYMENT TYPES BY USERS', 0, 1, 'R', 0); 
 $pdf->Ln(-5);
 $pdf->SetFont('',  10);
 $pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
@@ -59,15 +67,15 @@ $pdf->Ln(-3);
 $pdf->SetFont('', '', 10); 
 $pdf->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'R');
 $pdf->Ln(-6);
-$pdf->SetFont('', 'I', 10); 
+$pdf->SetFont('', '', 10); 
 $pdf->MultiCell(0, 10, "{$shop['shop_email']}", 0, 'R');
 $pdf->Ln(-12);
 $pdf->SetFont('', '', 8); 
 $pdf->MultiCell(0, 10, "Contact: {$shop['contact_number']}", 0, 'L');
 
-$pdf->Ln(-6);
-$pdf->SetFont('' , 8); 
-$pdf->MultiCell(0, 10, "VAT REG TIN: {$shop['tin']}", 0, 'L');
+$pdf->Ln(-3);
+$pdf->SetFont('' , 10); 
+$pdf->MultiCell(0, 10, "VAT REG TIN: {$shop['tin']}", 0, 'R');
 $pdf->Ln(-6);
 $pdf->SetFont('' , 8); 
 $pdf->MultiCell(0, 10, "MIN: {$shop['min']}", 0, 'L');
@@ -111,18 +119,16 @@ if ($singleDateData && !$startDate && !$endDate) {
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
 
-$header = array( 'Cashier/User', 'Cash', 'E-Wallet', 'Credit/Debit Cards', 'Credit','Coupons', 'Total(Php)');
-$headerWidths = array(25, 25, 25, 35, 25, 25, 30);
+$header = array('Cashier/User', 'Cash', 'E-Wallet', 'Credit/Debit Cards', 'Credit', 'Coupons', 'Total(Php)');
 $pageWidth = $pdf->getPageWidth();
 $pageHeight = $pdf->getPageHeight();
 
 if ($pageWidth > $pageHeight) {
-    // Landscape orientation
-    $headerWidths = array(50, 35, 35, 45, 35, 35, 40);
-} else {
-    // Portrait orientation
-    $headerWidths = array(25, 25, 25, 35, 25, 25, 30);
-}
+    if ($pageWidth >= 279.4 && $pageHeight >= 215.9) {
+        $headerWidths = array(55, 35, 35, 40, 32, 30, 30);
+    }
+} 
+
 $maxCellHeight = 5; 
 
 $hexColor = '#F5F5F5';
@@ -180,6 +186,12 @@ $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($totalCredit, 2), 1, 
 $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($totalCoupons, 2), 1, 0, 'R'); 
 $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
+$pdf->SetFont('', 'I', 11); 
+if($exclude == 0){
+    $pdf->Cell(0, 10, "NOTE: This report includes transactions for refunds and exchanges.***", 0, 'L');
+}else{
+    $pdf->Cell(0, 10, "NOTE: This report does not include transactions for refunds and exchanges.***", 0, 'L');
+}
 
 $pdf->Output('paymentMethodList.pdf', 'I');
 $pdfPath = __DIR__ . '/../assets/pdf/payment_method_users/paymentMethodList.pdf';

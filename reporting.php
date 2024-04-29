@@ -171,6 +171,78 @@
    
 }
 
+/* toggle */
+
+.switchExcludes {
+  position: relative;
+  display: inline-block;
+  width: 40px; 
+  height: 20px; 
+  outline: none;
+}
+
+.switchExcludes input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sliderStatusExcludes {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #262626;
+  -webkit-transition: .4s;
+  transition: .4s;
+  outline: none;
+  border-radius: 10px; 
+}
+
+
+.sliderStatusExcludes:before {
+  position: absolute;
+  content: "";
+  height: 16px; 
+  width: 16px;
+  left: 2px; 
+  bottom: 2px;
+  background-color: #888888;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%; 
+}
+
+input:checked + .sliderStatusExcludes {
+  background-color: #00CC00;
+}
+
+input:focus + .sliderStatusExcludes {
+  box-shadow: 0 0 1px #262626;
+}
+
+input:checked + .sliderStatusExcludes:before {
+  -webkit-transform: translateX(20px); 
+  -ms-transform: translateX(20px);
+  transform: translateX(20px); 
+}
+
+.sliderStatusExcludes.round {
+  border-radius: 10px; 
+}
+
+.sliderStatusExcludes.round:before {
+  border-radius: 50%; 
+}
+.sliderStatusExcludes.active {
+  background-color: #00CC00;
+}
+input:not(:checked) + .sliderStatusExcludes {
+  background-color: white; 
+}
+
 </style>
 
  <?php include "layout/admin/css.php"?> 
@@ -453,7 +525,7 @@
                     <div class="select-arrow"></div>
                 </div>
             </div>
-             
+           
             <a hidden href="#" onclick="openModalDatePicker()"class="custom-input" id="dateTimeAnchor" style="margin-top: 20px">
                 <input readonly type="text" id="datepicker" style="padding-left: 35px; flex: 1; text-align: center;">
                 <svg class="calendar-icon" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -464,6 +536,17 @@
                     </g>
                 </svg>
              </a>
+             <div hidden id="toggleDivExcludes" style="margin-top: 10px; display: flex">
+            <?php
+                  $status = 'Active'; 
+                  $opposite_status = ($status == 'Active') ? 'Inactive' : 'Active';
+                  ?>
+                  <label class="switchExcludes" style="margin-left: 5px">
+                      <input readonly type="checkbox" id="statusExcludes"<?php if($status == 'Active')?>>
+                      <span class="sliderStatusExcludes round"></span>
+                  </label> 
+                  <p style="color: #fefefe; font-family: Century Gothic">&nbsp;Exclude Refund and Return Exchange</p>  
+            </div>
                 <div class="divider"></div>
                 <div style="display:flex;" class="topDiv">
                  <button id="showReport" class="custom_btn" style="margin-right: 5px"><svg height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#fefefe" d="M20.921,31.898c2.758,0,5.367-0.956,7.458-2.704l1.077,1.077l-0.358,0.358 c-0.188,0.188-0.293,0.442-0.293,0.707s0.105,0.52,0.293,0.707l8.257,8.256c0.195,0.195,0.451,0.293,0.707,0.293 s0.512-0.098,0.707-0.293l2.208-2.208c0.188-0.188,0.293-0.442,0.293-0.707s-0.105-0.52-0.293-0.707l-8.257-8.256 c-0.391-0.391-1.023-0.391-1.414,0l-0.436,0.436l-1.073-1.073c1.793-2.104,2.777-4.743,2.777-7.537c0-3.112-1.212-6.038-3.413-8.239 s-5.127-3.413-8.239-3.413s-6.038,1.212-8.238,3.413c-2.201,2.201-3.413,5.126-3.413,8.239c0,3.112,1.212,6.038,3.413,8.238 C14.883,30.687,17.809,31.898,20.921,31.898z M38.855,37.385l-0.794,0.793l-6.843-6.842l0.794-0.793L38.855,37.385z M14.097,13.423 c1.823-1.823,4.246-2.827,6.824-2.827s5.002,1.004,6.825,2.827c1.823,1.823,2.827,4.247,2.827,6.825 c0,2.578-1.004,5.001-2.827,6.824c-1.823,1.823-4.247,2.827-6.825,2.827s-5.001-1.004-6.824-2.827 c-1.823-1.823-2.827-4.247-2.827-6.824C11.27,17.669,12.273,15.246,14.097,13.423z"></path> </g></svg>&nbsp;Show Report</button>
@@ -539,6 +622,13 @@ function highlightDiv(id) {
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
 
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
+
         }else if(id==3){
           generatePdf(id)
           generateExcel(id)
@@ -581,6 +671,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
           
         }else if(id == 4){
           generatePdf(id)
@@ -624,6 +720,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
          
         }else if(id == 5){
           generatePdf(id)
@@ -667,6 +769,12 @@ function highlightDiv(id) {
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
 
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
+
         }else if(id == 28){
           generatePdf(id)
           generateExcel(id)
@@ -708,6 +816,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 29){
           generatePdf(id)
           generateExcel(id)
@@ -749,6 +863,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 30){
           generatePdf(id)
           generateExcel(id)
@@ -790,6 +910,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 31){
           generatePdf(id)
           generateExcel(id)
@@ -831,6 +957,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 1){
           generatePdf(id)
           generateExcel(id)
@@ -872,6 +1004,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 13){
           generatePdf(id)
           generateExcel(id)
@@ -913,6 +1051,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 12){
           generatePdf(id)
           generateExcel(id)
@@ -957,6 +1101,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 32){
           generatePdf(id)
           generateExcel(id)
@@ -1001,6 +1151,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 15){
           generatePdf(id)
           generateExcel(id)
@@ -1045,6 +1201,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 16){
           generatePdf(id)
           generateExcel(id)
@@ -1089,6 +1251,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }else if(id == 7){
           generatePdf(id)
           generateExcel(id)
@@ -1133,6 +1301,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden', true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.removeAttribute('hidden');
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
 
         }else if(id == 8){
           generatePdf(id)
@@ -1179,8 +1353,14 @@ function highlightDiv(id) {
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden', true);
 
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.removeAttribute('hidden');
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
+
         }else if(id == 9){
-  generatePdf(id)
+          generatePdf(id)
           generateExcel(id)
           printDocuments(id)
           showReports(id)
@@ -1223,6 +1403,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden', true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.removeAttribute('hidden');
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
           
         }
         else{
@@ -1262,6 +1448,12 @@ function highlightDiv(id) {
 
           var paymentMethodDIV = document.getElementById('paymentMethodDIV');
           paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
         }
    
   document.getElementById('highlightDiv' + id).classList.add('highlight');
@@ -2116,6 +2308,7 @@ function generatePdf(id){
     });
   }else if( id == 7){
     $('#PDFBtn').off('click').on('click',function() {
+      var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
       var paymentM = document.getElementById('paymentTypesSelect')
       var paymentMethod =  paymentM.value;
       var datepicker = document.getElementById('datepicker').value
@@ -2156,6 +2349,7 @@ function generatePdf(id){
               responseType: 'blob'
           },
            data: {
+                exclude :toggleDivExcludes,
                 selectedMethod: paymentMethod,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -2181,6 +2375,7 @@ function generatePdf(id){
     });
   }else if(id == 8){
     $('#PDFBtn').off('click').on('click',function() {
+      var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -2221,7 +2416,8 @@ function generatePdf(id){
               responseType: 'blob'
           },
            data: {
-               userId: selectedUser,
+                exclude :toggleDivExcludes,
+                userId: selectedUser,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -2245,6 +2441,7 @@ function generatePdf(id){
     });
   }else if(id == 9){//pdfme
     $('#PDFBtn').off('click').on('click',function() {
+      var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -2285,6 +2482,7 @@ function generatePdf(id){
               responseType: 'blob'
           },
            data: {
+                exclude :toggleDivExcludes,
                 customerId:selectedCustomers,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -3119,6 +3317,7 @@ function generateExcel(id){
 });
 }else if(id == 7){//excelPayment
   $('#EXCELBtn').click(function() {
+        var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -3157,6 +3356,7 @@ function generateExcel(id){
             responseType: 'blob'
         },
            data: {
+                exclude :toggleDivExcludes,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -3179,6 +3379,7 @@ function generateExcel(id){
 });
 }else if(id == 8){
   $('#EXCELBtn').click(function() {
+       var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
         var usersSelect = document.getElementById("usersSelect");
         var selectedUser = usersSelect.value;
         var datepicker = document.getElementById('datepicker').value
@@ -3219,6 +3420,7 @@ function generateExcel(id){
             responseType: 'blob'
         },
            data: { 
+                exclude :toggleDivExcludes,
                 userId: selectedUser,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -3242,6 +3444,7 @@ function generateExcel(id){
 });
 }else if(id == 9){
   $('#EXCELBtn').click(function() {
+        var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
         var customerSelect = document.getElementById('customersSelect')
         var selectedCustomers = customerSelect.value;
         var datepicker = document.getElementById('datepicker').value
@@ -3282,6 +3485,7 @@ function generateExcel(id){
             responseType: 'blob'
         },
            data: { 
+                exclude :toggleDivExcludes,
                 customerId:selectedCustomers,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -4170,6 +4374,7 @@ function printDocuments(id){
   });
   }else if(id == 7){
     $('#printDocu').off('click').on('click',function() {
+      var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
       var paymentM = document.getElementById('paymentTypesSelect')
       var paymentMethod =  paymentM.value;
       var datepicker = document.getElementById('datepicker').value
@@ -4210,6 +4415,7 @@ function printDocuments(id){
               responseType: 'blob'
           },
            data: {
+                 exclude :toggleDivExcludes,
                 selectedMethod: paymentMethod,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -4237,6 +4443,7 @@ function printDocuments(id){
   });
   }else if(id === 8){
     $('#printDocu').off('click').on('click',function() {
+      var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -4277,6 +4484,7 @@ function printDocuments(id){
               responseType: 'blob'
           },
            data: {
+                exclude :toggleDivExcludes,
                 userId: selectedUser,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -4304,6 +4512,7 @@ function printDocuments(id){
   });
   }else if(id == 9){
     $('#printDocu').off('click').on('click',function() {
+      var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -4344,6 +4553,7 @@ function printDocuments(id){
               responseType: 'blob'
           },
            data: {
+                exclude :toggleDivExcludes,
                 customerId:selectedCustomers,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -5270,6 +5480,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
+        var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
         var paymentM = document.getElementById('paymentTypesSelect')
         var paymentMethod =  paymentM.value;
         var datepicker = document.getElementById('datepicker').value
@@ -5310,6 +5521,7 @@ function showReports(id){
               responseType: 'blob'
           },
           data: {
+                exclude:toggleDivExcludes,
                 selectedMethod: paymentMethod,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -5339,6 +5551,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
+        var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
         var usersSelect = document.getElementById("usersSelect");
         var selectedUser = usersSelect.value;
         var datepicker = document.getElementById('datepicker').value
@@ -5379,6 +5592,7 @@ function showReports(id){
               responseType: 'blob'
           },
           data: {
+                exclude:toggleDivExcludes,
                 userId: selectedUser,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -5408,6 +5622,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
+        var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
         var customerSelect = document.getElementById('customersSelect')
         var selectedCustomers = customerSelect.value;
         var datepicker = document.getElementById('datepicker').value
@@ -5448,6 +5663,7 @@ function showReports(id){
               responseType: 'blob'
           },
           data: {
+                 exclude :toggleDivExcludes,
                 customerId:selectedCustomers,
                 singleDateData: singleDateData,
                 startDate: startDate,

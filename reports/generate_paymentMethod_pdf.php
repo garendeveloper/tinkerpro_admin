@@ -19,16 +19,20 @@ $refundFacade = new OtherReportsFacade();
 $products = new ProductFacade();
 
 $counter = 1;
+
+$exclude = $_GET['exclude'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate,$exclude);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
 
 $pdf = new TCPDF();
+
+
 $pdf->SetCreator('TinkerPro Inc.');
 $pdf->SetAuthor('TinkerPro Inc.');
 $pdf->SetTitle('SALES BY PAYMENT TYPES Table PDF');
@@ -36,7 +40,9 @@ $pdf->SetSubject('SALES BY PAYMENT TYPES Table PDF Document');
 $pdf->SetKeywords('TCPDF, PDF, SALES BY PAYMENT TYPES, table');
 $pdf->SetDrawColor(255, 199, 60); 
 $pdf->Rect(0, 0, $pdf->getPageWidth(), $pdf->getPageHeight(), 'D');
+
 $pdf->AddPage();
+
 
 
 $pdf->SetCellHeightRatio(1.5);
@@ -58,15 +64,15 @@ $pdf->Ln(-3);
 $pdf->SetFont('', '', 10); 
 $pdf->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'R');
 $pdf->Ln(-6);
-$pdf->SetFont('', 'I', 10); 
+$pdf->SetFont('', '', 10); 
 $pdf->MultiCell(0, 10, "{$shop['shop_email']}", 0, 'R');
 $pdf->Ln(-12);
 $pdf->SetFont('', '', 8); 
 $pdf->MultiCell(0, 10, "Contact: {$shop['contact_number']}", 0, 'L');
 
-$pdf->Ln(-6);
-$pdf->SetFont('' , 8); 
-$pdf->MultiCell(0, 10, "VAR REG TIN: {$shop['tin']}", 0, 'L');
+$pdf->Ln(-3);
+$pdf->SetFont('' , 10); 
+$pdf->MultiCell(0, 10, "VAT REG TIN: {$shop['tin']}", 0, 'R');
 $pdf->Ln(-6);
 $pdf->SetFont('' , 8); 
 $pdf->MultiCell(0, 10, "MIN: {$shop['min']}", 0, 'L');
@@ -169,6 +175,13 @@ $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($totalCredit, 2), 1, 
 $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($totalCoupons, 2), 1, 0, 'R'); 
 $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
+$pdf->SetFont('', 'I', 11); 
+
+if($exclude == 0){
+    $pdf->Cell(0, 10, "NOTE: This report includes transactions for refunds and exchanges.***", 0, 'L');
+}else{
+    $pdf->Cell(0, 10, "NOTE: This report does not include transactions for refunds and exchanges.***", 0, 'L');
+}
 
 $pdf->Output('paymentMethodList.pdf', 'I');
 $pdfPath = __DIR__ . '/../assets/pdf/payment_method/paymentMethodList.pdf';
