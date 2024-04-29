@@ -32,11 +32,12 @@ $sheet->getStyle('A1:G1')->applyFromArray($headerStyle);
 $refundFacade = new OtherReportsFacade();
 $products = new ProductFacade();
 
+$exclude = $_GET['exclude'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate,$exclude);
 
 $rowIndex = 2;
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
