@@ -66,7 +66,8 @@
     <a href="inventory" id = "inventory"><i class = "bi bi-box-seam"></i>&nbsp; Inventory</a>
     <a href="products" id = "products"><i class = "bi bi-bag-check"></i>&nbsp; Products</a>
     <a href="ingredients" id = "ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a>
-    <a href="suppliers" id = "suppliers"><i class="bi bi-egg bi-3x "></i>&nbsp; Suppliers</a>
+    <a href="suppliers" id = "suppliers"><i class="bi bi-people bi-3x "></i>&nbsp; Suppliers</a>
+    <a href="customer" id = "customers"><i class="bi bi-people bi-3x "></i>&nbsp; Customers</a>
     <a href="reporting" id = "reporting"><i class = "bi bi-bar-chart"></i>&nbsp; Reporting</a>
     <a href="users" id = "users"><i class = "bi bi-person"></i>&nbsp; Users</a>
     <a href="company" id = "company"><i class = "bi bi-building"></i>&nbsp; Company</a>
