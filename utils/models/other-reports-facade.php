@@ -2075,7 +2075,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2110,7 +2110,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2145,7 +2145,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2180,7 +2180,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2216,7 +2216,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2253,7 +2253,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
             )
         ) AS jt
         INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+            SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
         ) AS t ON payments.id = t.payment_id
         INNER JOIN users AS u ON u.id = t.cashier_id
         WHERE 
@@ -2769,16 +2769,158 @@ public function getPaymentMethodByCustomer($customerId,$singleDateData,$startDat
     }
 }
 
-public function getVoidedSales(){
-    $sql="SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-    u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
-    FROM transactions as t
-    INNER JOIN products as p
-    INNER JOIN users as u ON u.id = t.cashier_id
-    LEFT JOIN void_reason AS vr ON vr.id = t.void_id
-    WHERE t.is_paid = 0 AND t.is_void=1;"; 
-$stmt = $this->connect()->query($sql);
-return $stmt;
+public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDate,$endDate){
+    if($selectedProduct && !$userId && !$singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.prod_id = :selectedProduct
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->execute();
+        return $sql;
+    }else if(!$selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.cashier_id = :cashier_id
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':cashier_id',  $userId);
+        $sql->execute();
+        return $sql;
+
+    }else if(!$selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+    }else if(!$selectedProduct && !$userId && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':stratDate',  $startDate);
+        $sql->bindParam(':endDate',  $endDate);
+        $sql->execute();
+        return $sql;
+    }else if($selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.cashier_id = :cashier_id AND t.prod_id = :selectedProduct
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':cashier_id',  $userId);
+        $sql->execute();
+        return $sql;
+    }else if($selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData AND t.prod_id = :selectedProduct
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+
+    }else if(!$selectedProduct && $userId && $singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData AND t.cashier_id = :cashier_id
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':cashier_id',  $userId);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+
+    }else if($selectedProduct && !$userId && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate AND t.prod_id = :selectedProduct
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':stratDate',  $startDate);
+        $sql->bindParam(':endDate',  $endDate);
+        $sql->execute();
+        return $sql;
+
+    }else if(!$selectedProduct && $userId && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate AND t.cashier_id = :cashier_id
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':cashier_id',  $userId);
+        $sql->bindParam(':stratDate',  $startDate);
+        $sql->bindParam(':endDate',  $endDate);
+        $sql->execute();
+        return $sql;
+    }else{
+        $sql="SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) ORDER BY  t.prod_desc ASC"; 
+
+        $stmt = $this->connect()->query($sql);
+        return $stmt; 
+    }
+
 }
 public function getDatePayments(){
     $sql = 'SELECT DATE(date_time_of_payment) as date FROM payments GROUP BY date ORDER BY date ASC';
