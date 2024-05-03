@@ -36,9 +36,8 @@
     array_push($info, $error);
 	}
 
-  include('./modals/add-suppliers-modal.php');
-  include('./modals/supplied-products.php');
-  include('./modals/supplied-ingredients.php');
+  include('./modals/add-customers.php');
+ 
  
 ?>
 <style>
@@ -121,7 +120,7 @@
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
            <input  class="text-color searchIngredients" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Suppliers"/>
-           <button  class="btn-control addProducts" style="margin-left: 15px;margin-right:15px;width:180px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
+           <button  class="btn-control addCustomer" style="margin-left: 15px;margin-right:15px;width:180px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
               .cls-1 {
                 fill: #699f4c;
                 fill-rule: evenodd;
@@ -173,6 +172,8 @@
 
 <?php include("layout/footer.php") ?>
 <script>
-
+$('.addCustomer').on('click', function(){
+   $('#add_customer_modal').show()
+})
 
 </script>
