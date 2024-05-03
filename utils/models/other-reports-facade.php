@@ -2927,4 +2927,56 @@ public function getDatePayments(){
     $stmt = $this->connect()->query($sql);
     return $stmt;
 }
+
+public function zReadingReport(){
+    $sql = "SELECT 
+    JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
+    (SELECT 
+    JSON_VALUE(all_data, '$.end_si') AS end_si
+    FROM z_read
+    ORDER BY id DESC
+    LIMIT 1) as end_si,
+    SUM(JSON_VALUE(all_data, '$.present_accumulated_sale')) AS total_present_accumulated_sale,
+    SUM(JSON_VALUE(all_data, '$.previous_accumulated_sale')) AS total_previous_accumulated_sale,
+    SUM(JSON_VALUE(all_data, '$.totalSales')) AS total_sales,
+    SUM(JSON_VALUE(all_data, '$.vatable_sales')) AS total_vatable_sales,
+    SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount,
+    SUM(JSON_VALUE(all_data, '$.vat_exempt')) AS total_vat_exempt,
+    SUM(JSON_VALUE(all_data, '$.gross_amount')) AS total_gross_amount,
+    SUM(JSON_VALUE(all_data, '$.less_discount')) AS total_less_discount,
+    SUM(JSON_VALUE(all_data, '$.less_return_amount')) AS total_less_return_amount,
+    SUM(JSON_VALUE(all_data, '$.less_refund_amount')) AS total_less_refund_amount,
+    SUM(JSON_VALUE(all_data, '$.less_void')) AS total_less_void,
+    SUM(JSON_VALUE(all_data, '$.less_vat_adjustment')) AS total_less_vat_adjustment,
+    SUM(JSON_VALUE(all_data, '$.net_amount')) AS total_net_amount,
+    SUM(JSON_VALUE(all_data, '$.senior_discount')) AS total_senior_discount,
+    SUM(JSON_VALUE(all_data, '$.officer_discount')) AS total_officer_discount,
+    SUM(JSON_VALUE(all_data, '$.pwd_discount')) AS total_pwd_discount,
+    SUM(JSON_VALUE(all_data, '$.naac_discount')) AS total_naac_discount,
+    SUM(JSON_VALUE(all_data, '$.solo_parent_discount')) AS total_solo_parent_discount,
+    SUM(JSON_VALUE(all_data, '$.other_discount')) AS total_other_discount,
+    SUM(JSON_VALUE(all_data, '$.void')) AS total_void,
+    SUM(JSON_VALUE(all_data, '$.return')) AS total_return,
+    SUM(JSON_VALUE(all_data, '$.refund')) AS total_refund,
+    SUM(JSON_VALUE(all_data, '$.senior_citizen_vat')) AS total_senior_citizen_vat,
+    SUM(JSON_VALUE(all_data, '$.officers_vat')) AS total_officers_vat,
+    SUM(JSON_VALUE(all_data, '$.pwd_vat')) AS total_pwd_vat,
+    SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
+    SUM(JSON_VALUE(all_data, '$.total_void_vat')) AS total_void_vat,
+    SUM(JSON_VALUE(all_data, '$.vat_refunded')) AS total_vat_refunded,
+    SUM(JSON_VALUE(all_data, '$.vat_return')) AS total_vat_return,
+    SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS total_cash_in_receive,
+    SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS total_totalCcDb,
+    SUM(JSON_VALUE(all_data, '$.credit')) AS total_credit,
+    SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS total_totalEwallet,
+    SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS total_totalCoupon,
+    SUM(JSON_VALUE(all_data, '$.totalCashIn')) AS total_totalCashIn,
+    SUM(JSON_VALUE(all_data, '$.totalCashOut')) AS total_totalCashOut,
+    SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
+     date_time as date_time
+  FROM z_read;";
+    $stmt = $this->connect()->query($sql);
+    return $stmt;
+
+}
 }
