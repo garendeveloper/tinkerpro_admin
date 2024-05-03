@@ -39,6 +39,7 @@
   include('./modals/add-products-modal.php');
   include('./modals/category-modal.php');
   include('./modals/add-bom.php');
+  include('./modals/add-price-list.php');
 ?>
 <style>
   #topBar{
@@ -219,6 +220,18 @@
         toggleChangeColor(checkbox);
       }
 
+      var multiple = document.getElementById('multipleToggle');
+      var multiLbl = document.getElementById('multiLbl');
+      multiple.checked = false
+      if(multiple.checked){
+        ultiLbl.style.color = "#FF6900";
+        toggleMultiple(multiple)
+      }else{
+        toggleMultiple(multiple)
+        multiLbl.style.color = "";
+      }
+
+    
       var service = document.getElementById('serviceChargesToggle');
       service.checked = false
       var taxLabel = document.getElementById('taxtVatLbl');

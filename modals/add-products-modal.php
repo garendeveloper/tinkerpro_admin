@@ -1079,6 +1079,75 @@ input:checked + .warrantySpan:before {
 .warrantySpan.active {
   background-color: #FF6900;
 }
+
+/* new */
+.multiplePrice {
+  position: relative;
+  display: inline-block;
+  width: 40px; 
+  height: 20px; 
+  outline: none; 
+}
+
+.multiplePrice input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.multipleSpan {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #262626;
+  -webkit-transition: .4s;
+  transition: .4s;
+  outline: none;
+  border-radius: 10px; 
+}
+
+.multipleSpan:before {
+  position: absolute;
+  content: "";
+  height: 16px; 
+  width: 16px;
+  left: 2px; 
+  bottom: 2px;
+  background-color: #888888;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%; 
+}
+
+input:checked + .multipleSpan {
+  background-color: #FF6900;
+}
+
+input:focus + .multipleSpan {
+  box-shadow: 0 0 1px #262626;
+}
+
+input:checked + .multipleSpan:before {
+  -webkit-transform: translateX(20px); 
+  -ms-transform: translateX(20px);
+  transform: translateX(20px); 
+}
+
+.multipleSpan.round {
+  border-radius: 10px; 
+}
+
+.multipleSpan.round:before {
+  border-radius: 50%; 
+}
+
+.multipleSpan.active {
+  background-color: #FF6900;
+}
+
 </style>
 
 <div class="modal" id="add_products_modal" tabindex="0">
@@ -1200,9 +1269,20 @@ input:checked + .warrantySpan:before {
                         <td class="markupTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Mark-up (%)<sup>*</sup></td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="markup" name="markup" id="markup"  oninput="validateNumber(this)" /></td>
                     </tr>
-                    <tr>
+                    <tr> 
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Selling Price (Php)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input  class="selling_price" name="selling_price" id="selling_price"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input style="width: 105px"  class="selling_price" name="selling_price" id="selling_price"/>
+                        <span class="text-custom" id="multiLbl">Multiple Prices</span>
+                        <?php
+                          $multi = "yes"; 
+                          $other_Charge = ($taxVat== "yes") ? "no" : "yes";
+                          ?>
+                          <label class="multiplePrice" style="margin-left: 5px">
+                              <input type="checkbox" id="multipleToggle"<?php if($multi == "yes")?>  onclick="toggleMultiple(this)">
+                              <span class="multipleSpan round"></span>
+                          </label>
+                        <button disabled id="addMultiple" class="addMultiple addCategory">+Add</button>
+                        <button disabled class="editMultiple addCategory" hidden>+Edit</button> </td>
                     </tr>
                     <tr>
                         <td id="taxtVatLbl" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Tax (VAT) 12%</td>
@@ -1346,6 +1426,12 @@ input:checked + .warrantySpan:before {
 </div>
 <script>
 
+
+
+
+document.getElementById('addMultiple').addEventListener('click', function(){
+   $('#add_multiple_modal').show()
+})
 window.addEventListener('beforeunload', function() {
     localStorage.removeItem('bomData');
 });
@@ -1424,6 +1510,18 @@ function toggleShowText(checkbox) {
       triggers.removeAttribute('hidden');
     } else {
       triggers.setAttribute('hidden', 'hidden');
+    }
+  }
+
+  function toggleMultiple(checkbox){
+    var multiLbl = document.getElementById('multiLbl');
+    var addMultiple = document.getElementById('addMultiple')
+    if(checkbox.checked){
+      multiLbl.style.color = "#FF6900";
+      addMultiple.disabled = false;
+    }else{
+      multiLbl.style.color = "";
+      addMultiple.disabled = true;
     }
   }
 
@@ -2193,8 +2291,26 @@ function updateProducts(){
  }
   
 }
+document.getElementById('selling_price').addEventListener('input', function(){
+  var multipleToggle = document.getElementById('multipleToggle'); 
+  var sell =  document.getElementById('selling_price').value
+  if(sell){
+    multipleToggle.disabled = false; 
+  }else{
+    multipleToggle.disabled = true; 
+  }
+
+})
 
 document.addEventListener('DOMContentLoaded', function() {
+  var multipleToggle = document.getElementById('multipleToggle'); 
+  var sell =  document.getElementById('selling_price').value
+  if(sell){
+    multipleToggle.disabled = false; 
+  }else{
+    multipleToggle.disabled = true; 
+  }
+
   var isFirstInputZeroIndex = false; 
   var isFirstInputOneIndex = false;
   var isFirstInputTwoIndex = false;
@@ -2310,13 +2426,16 @@ otherCharges.addEventListener('change', function() {
 });
 
   function calculateSellingPrice() {
+    var multipleToggle = document.getElementById('multipleToggle'); 
     var cost = parseFloat($('#cost').val());
     var markup = parseFloat($('#markup').val());
     if (!isNaN(cost) && !isNaN(markup)) {
       var sellingPrice = (cost + (cost * markup / 100)).toFixed(2);
       $('#selling_price').val(sellingPrice);
+      multipleToggle.disabled = false; 
     } else {
       $('#selling_price').val('');
+      multipleToggle.disabled = true; 
     }
   }
 

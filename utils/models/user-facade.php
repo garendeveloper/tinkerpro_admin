@@ -402,6 +402,37 @@ public function getCustomersData(){
     $stmt = $this->connect()->query($sql);
     return $stmt;
 }
+public function addCustomer($formData){
+    $code = $formData['code'];
+    $firstrName = $formData['firstName'];
+    $lastName = $formData['lastName'];
+    $customerContact = $formData['customercontact'];
+    $customeremail = $formData['customeremail'];
+    $due = $formData['due'];
+    $pwdOrSCid = $formData['pwdOrSCid'];
+    $taxExempt =  $formData['taxExempt'];
+    $tin =  $formData['tin'];
+    $type =  $formData['type'];
+    $address = $formData['address'];
+    $role = 4;
+
+    
+    $sql = 'INSERT INTO users(first_name,role_id, last_name) VALUES (?, ?,?)';
+    $pdo = $this->connect();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$firstrName ,$role, $lastName]);
+    
+    $lastInsertId = $pdo->lastInsertId();
+    if($lastInsertId){
+        $sql = 'INSERT INTO customer(user_id,contact,code,type,email,address,is_tax_exempt,pwdOrScId,scOrPwdTIN,dueDateInterval	) VALUES (?,?,?,?,?,?,?,?,?,?)';
+        $pdo = $this->connect();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$lastInsertId ,$customerContact, $code , $type, $customeremail,$address,$taxExempt,$pwdOrSCid,$tin,$due]);
+    }
+    
+    return true;
+
+}
 
 }
 ?>
