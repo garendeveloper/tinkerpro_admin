@@ -239,16 +239,16 @@
                         row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
                         row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
                         row += "</tr>";
-                        if (data["isSerialized"] === 1) {
-                            var sub_row = data["sub_row"];
-                            var html_sub_row = "";
-                            for (var j = 0; j < sub_row.length; j++) {
-                                html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
-                                html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
-                                html_sub_row += "</tr>";
-                            }
-                            row += html_sub_row;
-                        }
+                        // if (data["isSerialized"] === 1) {
+                        //     var sub_row = data["sub_row"];
+                        //     var html_sub_row = "";
+                        //     for (var j = 0; j < sub_row.length; j++) {
+                        //         html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
+                        //         html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
+                        //         html_sub_row += "</tr>";
+                        //     }
+                        //     row += html_sub_row;
+                        // }
                         $("#tbl_lossand_damages").append(row);
                     }
                 })
@@ -276,16 +276,16 @@
                         row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
                         row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
                         row += "</tr>";
-                        if (data["isSerialized"] === 1) {
-                            var sub_row = data["sub_row"];
-                            var html_sub_row = "";
-                            for (var j = 0; j < sub_row.length; j++) {
-                                html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
-                                html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
-                                html_sub_row += "</tr>";
-                            }
-                            row += html_sub_row;
-                        }
+                        // if (data["isSerialized"] === 1) {
+                        //     var sub_row = data["sub_row"];
+                        //     var html_sub_row = "";
+                        //     for (var j = 0; j < sub_row.length; j++) {
+                        //         html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
+                        //         html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
+                        //         html_sub_row += "</tr>";
+                        //     }
+                        //     row += html_sub_row;
+                        // }
                         $("#tbl_lossand_damages").append(row);
                     }
                 })

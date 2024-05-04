@@ -29,17 +29,21 @@
         right: 5px;
         transform: translateY(-50%);
     }
-    #tbl_quickInventories tbody{
+
+    #tbl_quickInventories tbody {
         font-size: 12px;
     }
-    #tbl_quickInventories thead th{
-       border: none;
-       color: #FF6900;
+
+    #tbl_quickInventories thead th {
+        border: none;
+        color: #FF6900;
     }
-    #tbl_quickInventories thead{
-       border: 1px solid #FF6900;
+
+    #tbl_quickInventories thead {
+        border: 1px solid #FF6900;
     }
-    #tbl_quickInventories tbody td{
+
+    #tbl_quickInventories tbody td {
         border: none;
     }
 </style>
@@ -50,9 +54,9 @@
                 <select name="inventory_type"
                     style=" background: #1E1C11; color: #ffff; width: 250px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
                     <option value="">Select Inventory</option>
-                    <option value="1">B.O.M Inventory</option>
+                    <!-- <option value="1">B.O.M Inventory</option> -->
                     <option value="2">Product Inventory</option>
-                    <option value="3">All</option>
+                    <!-- <option value="3">All</option> -->
                 </select>
                 <i class="bi bi-chevron-double-down"></i>
             </div>
@@ -67,13 +71,14 @@
         <div class="fieldContainer" style="margin-top: -3px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
             <div class="search-container">
-            <!-- Search Product/Barcode/Code/SN -->
+                <input type="hidden" id="quickinventory_input_inventory_id" value="0">
                 <input type="text" style="width: 280px; height: 30px; font-size: 14px;"
-                    class="search-input italic-placeholder" placeholder="Search Purchase Number" name="q_product"
-                    onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
+                    class="search-input italic-placeholder" placeholder="Search Product [barcode,name,brand]"
+                    name="q_product" onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
             </div>
-            <button style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;" id="btn_searchQProduct">
-                    Search</button>
+            <button style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;"
+                id="btn_searchQProduct">
+                Search</button>
         </div>
     </form>
     <table id="tbl_quickInventories" class="text-color table-border" style="margin-top: -3px;">
@@ -97,119 +102,105 @@
         $("select[name='inventory_type']").on("change", function (e) {
             e.preventDefault();
             var value = $(this).val();
-            show_allProductsByInventoryType(value);
+            $("#quickinventory_input_inventory_id").val("");
+            $("#q_product").val("");
+            $(this).css("border", '1px solid #ffff')
+            get_allProductInventory();
         })
         $("#btn_searchQProduct").on("click", function (e) {
             e.preventDefault();
-            var po_number = $("#q_product").val();
-            show_inventory(po_number);
+            var search_value = $("#q_product").val();
+            display_productBy(search_value);
         })
-        function show_inventory(po_number) {
-            var negative_inventory = $("#negative_inventory").prop("checked");
+        function get_allProductInventory() {
             $.ajax({
                 type: 'GET',
-                url: 'api.php?action=get_orderDataByPurchaseNumber&po_number=' + po_number,
-                dataType: 'json',
+                url: 'api.php?action=get_allInventories',
                 success: function (data) {
-                    var table = "";
+                    var products = [];
                     for (var i = 0; i < data.length; i++) {
-                        table += "<tr data-id = " + data[i].inventory_id + ">";
-                        table += "<td>"+data[i].prod_desc+"</td>";
-                        table += "<td class = 'text-center'>" + (data[i].stock === null ? 0 : data[i].stock) + "</td>";
-                        table += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
-                        table += "</tr>";
+                        var row = {
+                            inventory_id: data[i].inventory_id,
+                            product: data[i].prod_desc,
+                            barcode: data[i].barcode,
+                            brand: data[i].brand,
+                        };
+                        products.push(row);
                     }
-                    $("#tbl_quickInventories tbody").html(table);
-                },
-                error: function (data) {
-                    alert("No response")
+                    $("#q_product").autocomplete({
+                        source: function (request, response) {
+                            var term = request.term.toLowerCase();
+                            var filteredProducts = products.filter(function (row) {
+                                return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
+                                    (!row.brand && term === "");
+                            });
+                            response(filteredProducts.map(function (row) {
+                                return {
+                                    label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+                                    value: row.product,
+                                    id: row.inventory_id
+                                };
+                            }));
+                        },
+                        select: function (event, ui) {
+                            var selectedProductId = ui.item.id;
+                            $("#quickinventory_input_inventory_id").val(selectedProductId);
+                            return false;
+                        }
+                    });
                 }
             })
         }
-        function show_allProductsByInventoryType(inventory_type) {
-            
-            $.ajax({
-                type: 'GET',
-                url: 'api.php?action=get_allProductByInventoryType',
-                data: { type: inventory_type },
-                success: function (data) {
-                    var tbody = "";
-                    for (var i = 0; i < data.length; i++) {
-                        var array = [data[i].po_number];
-                        products_forquickInventory.push(data[i].po_number);
-                    }
-                    autocomplete_product(document.getElementById("q_product"), products_forquickInventory);
+        function isDataExistInTable(data) {
+            var isExist = false;
+            $('#tbl_quickInventories tbody').each(function () {
+                var rowData = $(this).find('td:first').text();
+                if (rowData === data) {
+                    isExist = true;
+                    return false;
                 }
-            })
+            });
+            return isExist;
         }
-        function autocomplete_product(inp, arr) {
-            var currentFocus;
-            inp.addEventListener("input", function (e) {
-                var a, b, i, val = this.value;
-                closeAllLists();
-                if (!val) { return false; }
-                currentFocus = -1;
-                a = document.createElement("DIV");
-                a.setAttribute("id", this.id + "autocomplete-list");
-                a.setAttribute("class", "autocomplete-items");
-                this.parentNode.appendChild(a);
-                for(i = 0; i<arr.length; i++)
-                {
-                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                    b = document.createElement("DIV");
-                        b.innerHTML = "<strong style = 'color: #ffff'>" + arr[i].substr(0, val.length) + "</strong>";
-                        b.innerHTML += arr[i].substr(val.length);
-                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                        b.addEventListener("click", function (e) {
-                            inp.value = this.getElementsByTagName("input")[0].value;
-                            closeAllLists();
-                        });
-                        a.appendChild(b);
-                    }
-                }
-                
-            });
-            inp.addEventListener("keydown", function (e) {
-                var x = document.getElementById(this.id + "autocomplete-list");
-                if (x) x = x.getElementsByTagName("div");
-                if (e.keyCode == 40) {
-                    currentFocus++;
-                    addActive(x);
-                }
-                else if (e.keyCode == 38) {
-                    currentFocus--;
-                    addActive(x);
-                }
-                else if (e.keyCode == 13) {
-                    e.preventDefault();
-                    if (currentFocus > -1) {
-                        if (x) x[currentFocus].click();
-                    }
-                }
-            });
-            function addActive(x) {
-                if (!x) return false;
-                removeActive(x);
-                if (currentFocus >= x.length) currentFocus = 0;
-                if (currentFocus < 0) currentFocus = (x.length - 1);
-                x[currentFocus].classList.add("autocomplete-active");
+        $("#q_product").on("blur", function (e) {
+            e.preventDefault();
+            var search_value = $(this).val();
+            if (!search_value.trim()) {
+                $(this).addClass('has-error');
+            } else {
+                display_productBy(search_value);
             }
-            function removeActive(x) {
-                for (var i = 0; i < x.length; i++) {
-                    x[i].classList.remove("autocomplete-active");
+        })
+        function display_productBy(search_value) {
+            if ($("select[name='inventory_type']").val() === "") {
+                $("select[name='inventory_type']").css('border', '1px solid red');
+            }
+            else {
+                $("select[name='inventory_type']").css('border', '1px solid #ffff');
+                if (!isDataExistInTable(search_value)) {
+                    $("select[name='inventory_type']").removeClass('has-error');
+                    var inventory_id = $("#quickinventory_input_inventory_id").val();
+                    $.ajax({
+                        type: 'get',
+                        url: 'api.php?action=get_inventoryDataById',
+                        data: { inventory_id: inventory_id },
+                        success: function (data) {
+                            var row = "";
+                            row += "<tr data-id = " + data['inventory_id'] + ">";
+                            row += "<td>" + data['prod_desc'] + "</td>";
+                            row += "<td style = 'text-align:center'>" + data['stock'] + "</td>";
+                            row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                            row += "</tr>";
+                            $("#tbl_quickInventories tbody").append(row);
+                        }
+                    })
+                    $("#quickinventory_input_inventory_id").val("");
+                }
+                else {
+                    alert("Product is already listed in the table.");
                 }
             }
-            function closeAllLists(elmnt) {
-                var x = document.getElementsByClassName("autocomplete-items");
-                for (var i = 0; i < x.length; i++) {
-                    if (elmnt != x[i] && elmnt != inp) {
-                        x[i].parentNode.removeChild(x[i]);
-                    }
-                }
-            }
-            document.addEventListener("click", function (e) {
-                closeAllLists(e.target);
-            });
+
         }
     })
 </script>

@@ -217,7 +217,7 @@
                 </div>
             </div>
             <style>
-                #f_receive {
+                #f_receive {    
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -239,16 +239,6 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <div class="group right-aligned">
-                    <div class="custom-select" style="margin-right: 0px; ">
-                        <select name="branches" id="branches"
-                            style="background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
-                            <option>Store</option>
-                            <option>Warehouse</option>
-                        </select>
-                        <i class="bi bi-chevron-double-down"></i>
-                    </div>
-                </div>
             </div>
             <table id="tbl_receivedItems" class="text-color" style="">
                 <thead>
@@ -256,8 +246,8 @@
                         <th style="background-color: #1E1C11; width: 40%" colspan="2">ITEM DESCRIPTION</th>
                         <th style="background-color: #1E1C11;">QTY</th>
                         <th style="background-color: #1E1C11;">RECEIVED</th>
-                        <th style="background-color: #1E1C11;">EXP. DATE</th>
-                        <th style="background-color: #1E1C11;">SER.</th>
+                        <th style="background-color: #1E1C11; text-align: center">EXP. DATE</th>
+                        <!-- <th style="background-color: #1E1C11;">SER.</th> -->
                     </tr>
                 </thead>
                 <tbody style="border-collapse: collapse; border: none">
@@ -346,31 +336,31 @@
                             table +=
                                 "<td style = 'text-align: center; background-color: #262626; '>" + date_format(data[i].date_expired) + "</td>";
                         }
-                        if (data[i].isSerialized === 1) {
-                            table +=
-                                "<td style = 'text-align: center'><div class='custom-checkbox checked disabled' id='check_isSerialized'></div></td>";
-                        }
-                        if (data[i].isSerialized === 0) {
-                            table +=
-                                "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
-                        }
-                        table += "</tr>";
-                        if (data[i].isSerialized === 1) {
-                            var sub_row = data[i].sub_row;
-                            var html_sub_row = "";
-                            var counter = 1;
-                            for (var j = 0; j < sub_row.length; j++) {
-                                html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
-                                html_sub_row += "<td>" + counter + "</td>";
-                                html_sub_row += "<td data-id = " + sub_row[j].serial_id + " id = 'serial_id'><input  style = 'width: 130px; height: 20px; font-size: 12px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + "></input></td>";
-                                html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
-                                html_sub_row += "</tr>";
-                                counter++;
-                            }
+                        // if (data[i].isSerialized === 1) {
+                        //     table +=
+                        //         "<td style = 'text-align: center'><div class='custom-checkbox checked disabled' id='check_isSerialized'></div></td>";
+                        // }
+                        // if (data[i].isSerialized === 0) {
+                        //     table +=
+                        //         "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
+                        // }
+                        // table += "</tr>";
+                        // if (data[i].isSerialized === 1) {
+                        //     var sub_row = data[i].sub_row;
+                        //     var html_sub_row = "";
+                        //     var counter = 1;
+                        //     for (var j = 0; j < sub_row.length; j++) {
+                        //         html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
+                        //         html_sub_row += "<td>" + counter + "</td>";
+                        //         html_sub_row += "<td data-id = " + sub_row[j].serial_id + " id = 'serial_id'><input  style = 'width: 130px; height: 20px; font-size: 12px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + "></input></td>";
+                        //         html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
+                        //         html_sub_row += "</tr>";
+                        //         counter++;
+                        //     }
 
-                            table += html_sub_row;
+                        //     table += html_sub_row;
 
-                        }
+                        // }
                     }
                     $("#tbl_receivedItems tbody").html(table);
                 },

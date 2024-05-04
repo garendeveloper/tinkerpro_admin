@@ -41,8 +41,10 @@
         {
             $tbl_data = json_decode($formData["tbl_data"], true);
             $reference_no = $formData['reference_no'];
+            $inventory_count_info_id = $formData['refer_id'];
             $date_counted = date('Y-m-d', strtotime($formData['date_counted']));
 
+           
             $inventory_count_info_id = 0;
             if($this->check_inventorycountinfo_exist($reference_no) !== 0)
             {
@@ -86,11 +88,44 @@
                 $stmt->bindParam(2, $counted, PDO::PARAM_STR); 
                 $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
                 $stmt->execute();
-           
+            
             }
+           
             return [
                 'status'=>true,
                 'msg'=>'Inventory count has been successfully recorded.'
             ];
+        }
+
+        public function get_inventoryCountDataById($id)
+        {
+            $info = $this->get_data($id);
+            $sql = $this->connect()->prepare('SELECT inventory.*, products.*, inventory_count_items.*, inventory_count_items.qty as counted_qty, inventory_count_items.id as inventory_count_item_id
+                                            FROM inventory
+                                            JOIN products ON products.id = inventory.product_id
+                                            JOIN inventory_count_items ON inventory.id = inventory_count_items.inventory_id
+                                            WHERE inventory_count_items.inventory_count_info_id = '.$id.';
+                                            ');
+            $sql->execute();
+            $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return [
+                'info'=>$info,
+                'data'=>$data,
+            ];
+        }
+        public function get_data($id)
+        {
+            $sql = $this->connect()->prepare("SELECT * FROM inventory_count_info WHERE id = :id");
+            $sql->bindParam(":id", $id, PDO::PARAM_STR);
+            $sql->execute();
+            $row = $sql->fetch(PDO::FETCH_ASSOC);
+            return $row;
+        }
+        public function get_allData()
+        {
+            $sql = "SELECT * FROM inventory_count_info";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }

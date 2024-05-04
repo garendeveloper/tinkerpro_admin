@@ -1,6 +1,44 @@
 {
+    "name": "your-project-name/your-project-slug",
+    "description": "Your project description",
+    "type": "project",
+    "license": "MIT",
     "require": {
-        "tecnickcom/tcpdf": "^6.7",
-        "phpoffice/phpspreadsheet": "^2.0"
-    }
+        "php": "^8.2.0",
+        "chillerlan/php-qrcode": "*",
+        "endroid/qr-code": "*",
+        "endroid/qrcode": "*",
+        "guzzlehttp/guzzle": "*",
+        "intervention/image": "*",
+        "paymongo/paymongo-php": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+        "post-update-cmd": "php artisan optimize"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "github-protocols": ["https"],
+        "github-expose-hostname": true,
+        "github-domains": ["github.com"],
+        "process-timeout": 600,
+        "platform": {
+            "php": "8.3.1"
+        },
+        "platform-check": false
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

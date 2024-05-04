@@ -84,6 +84,10 @@
             $order_id = $_GET['order_id'];
             echo json_encode($inventory->get_orderPaymentHistory($order_id));
             break;
+        case 'get_inventoryCountDataById':
+            $inventorycount_id = $_GET['id'];
+            echo json_encode($inventory_count->get_inventoryCountDataById($inventorycount_id));
+            break;
         case 'get_allProducts':
             echo json_encode($inventory->get_allProducts());
             break;
@@ -91,9 +95,21 @@
             $product = $_GET['data'];
             echo json_encode($inventory->get_productInfo($product));
             break;
+        case 'get_allInventoryCounts':
+            echo json_encode($inventory_count->get_allData());
+            break;
+        case 'get_realtime_notifications':
+            echo json_encode($inventory->get_realtime_notifications());
+            break;
         case 'save_purchaseOrder':
             $formData = $_POST;
             echo json_encode($inventory->save_purchaseOrder($formData));
+            break;
+        case 'get_expirationNotification':
+            echo json_encode($inventory->get_expirationNotification());
+            break;
+        case 'save_expirationNotification':
+            echo json_encode($inventory->save_expirationNotification($_POST));
             break;
         case 'save_orderPayments':
             $formData = $_POST;

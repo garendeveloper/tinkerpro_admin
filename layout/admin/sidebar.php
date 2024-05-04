@@ -10,8 +10,6 @@
         margin: 0; 
         display: block;
     }
-
-    /* Sidebar styles */
     .sidebar {
         height: 100%;
         width: 200px;
@@ -62,8 +60,7 @@
 </header>
 <div class="sidebar">
     <a href="index" id = "index" ><i class = "bi bi-house-door"></i>&nbsp; Dashboard</a>
-    <a href="Branches" id = "branches"><i class = "bi bi-tree"></i>&nbsp; Branches</a>
-    <a href="inventory" id = "inventory"><i class = "bi bi-box-seam"></i>&nbsp; Inventory</a>
+    <a href="inventory" id = "inventory"><i class = "bi bi-box-seam"></i>&nbsp; Inventory </a>
     <a href="products" id = "products"><i class = "bi bi-bag-check"></i>&nbsp; Products</a>
     <a href="ingredients" id = "ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a>
     <a href="suppliers" id = "suppliers"><i class="bi bi-egg bi-3x "></i>&nbsp; Suppliers</a>

@@ -66,6 +66,7 @@ class InventoryFacade extends DBConnection
         $array = [
             "inventory_id" => $data["inventory_id"],
             "prod_desc"=> $data["prod_desc"],
+            'stock'=>$data['stock'],
             "cost"=> $data["cost"],            
             "sub_row"=> $this->get_allTheSerialized($inventory_id),
             "isSerialized"=> $data["isSerialized"],
@@ -95,6 +96,79 @@ class InventoryFacade extends DBConnection
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
+    public function get_expirationNotification()
+    {
+        $sql = $this->connect()->prepare("SELECT * FROM expiration_notification");
+        $sql->execute();
+        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
+    public function get_realtime_notifications()
+    {
+        $query = "SELECT products.*, inventory.*, inventory.id as inventory_id
+                    FROM inventory
+                    JOIN products ON products.id = inventory.product_id
+                    ORDER BY inventory.id DESC;";
+        $result = $this->connect()->prepare($query); 
+        $result->execute();
+        $result = $result->fetchAll(PDO::FETCH_ASSOC);
+        $products = []; $notifications = [];
+        foreach( $result as $row )
+        {
+            $expiration_date = new DateTime($row['date_expired']);
+            $now = new DateTime();
+            $interval = $expiration_date->diff($now);
+            $days_remaining = $interval->days;
+            $products[] = [
+                'days_remaining'=>$days_remaining,
+            ];
+        }
+        $notify_before = $this->get_expirationNotification();
+        foreach($notify_before as $nb)
+        {
+            $notifications[] = [
+                'notify_before' => $nb['notify_before'],
+                'is_active' => $nb['is_active'],
+            ];
+        }
+        return [
+            'products'=> $products,
+            'notifications'=> $notifications,
+        ];
+    }
+    public function save_expirationNotification($data)
+    {
+        $notifications = json_decode($data["notifications"], true);
+        foreach ($notifications as $notification) 
+        {
+            $is_active = $notification["value"] ? 1 : 0;
+            $notify_before = 0;
+            switch (strtolower($notification["label"]))
+            {
+                case "30 days":
+                    $notify_before = 30;
+                    break;
+                case "15 days":
+                    $notify_before = 15;
+                    break;
+                case "5 days":
+                    $notify_before = 5;
+                    break;
+                default:
+                    break;
+            }
+
+            $sql = $this->connect()->prepare("UPDATE expiration_notification SET is_active = :is_active WHERE notify_before = :notify_before");
+            $sql->bindParam(":is_active", $is_active);
+            $sql->bindParam(":notify_before", $notify_before);
+            $sql->execute();
+        }
+        return [
+            'status'=>true,
+            'msg'=>"Your expiration notification settings have been successfully saved",
+        ];
+    }
+    
     public function save_quickInventory($formData)
     {
         $tbl_data = json_decode($formData['tbl_data'], true);

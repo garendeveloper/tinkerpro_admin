@@ -1,4 +1,4 @@
-
+<?php include("./layout/admin/expiration.php")?>
 <script>
   $(document).ready(function(){
     $("#btn_logout").click(function(){

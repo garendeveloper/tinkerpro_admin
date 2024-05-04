@@ -568,7 +568,6 @@ input:not(:checked) + .sliderStatusExcludes {
 
 <script>
 
-
 function highlightDiv(id) {
   console.log(id)
   document.querySelectorAll('.anchor-container div').forEach(div => {
