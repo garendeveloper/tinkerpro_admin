@@ -20,17 +20,24 @@ $products = new ProductFacade();
 
 $counter = 1;
 
-$exclude = $_GET['exclude'] ?? null;
+
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->zReadingReport();
+$fetchRefund= $refundFacade->zReadingReport($singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
+$paperSize = 'Letter'; 
 
-$pdf = new TCPDF();
+if ($paperSize == 'Letter') {
+    $pageWidth = 215.9; 
+    $pageHeight = 279.4;
+}
+
+$pdf = new TCPDF('P', PDF_UNIT, array($pageWidth, $pageHeight), true, 'UTF-8', false);
+
 
 
 $pdf->SetCreator('TinkerPro Inc.');
@@ -120,12 +127,9 @@ $pdf->SetFont('', '', 10);
 while ($data = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
 
 
-// $jsonData =$row['all_data'];
-
-// $data = json_decode($jsonData, true);
-$presentAccumulatedSale = $data['total_present_accumulated_sale'];
-$previousAccumulatedSale = $data['total_previous_accumulated_sale'];
-$totalSales = $data['total_sales'];
+$presentAccumulatedSale = $data['total_present_accumulated_sale'] ?? 0;
+$previousAccumulatedSale = $data['total_previous_accumulated_sale'] ?? 0;
+$totalSales = $data['total_sales'] ?? 0;
 
 $presentAccumulatedSaleFormatted = number_format($presentAccumulatedSale, 2);
 $previousAccumulatedSaleFormatted = number_format($previousAccumulatedSale, 2);
@@ -138,24 +142,32 @@ $pdf->Ln(-3);
 
 $pdf->SetFont('', '', 10); 
 
-$pdf->SetFont('', '', 10); 
-$pdf->Cell(0, 10, "Beg. SI: {$data['beg_si']}", 0, 'L');
-$pdf->Ln(-5);
-$pdf->SetFont('', '', 10); 
-$pdf->Cell(0, 10, "End SI: {$data['end_si']}", 0, 'L');
-// $pdf->Ln(-23);
-// $pdf->SetFont('', '', 10); 
-// $pdf->MultiCell(0, 10, "Beg. Return: {$data['return_beg']}", 0, 'R');
-// $pdf->Ln(-5);
-// $pdf->SetFont('', '', 10); 
-// $pdf->MultiCell(0, 10, "End. Return: {$data['return_end']}", 0, 'R');
-// $pdf->Ln(-5);
-// $pdf->SetFont('', '', 10); 
-// $pdf->MultiCell(0, 10, "Beg. Refund: {$data['refund_beg']}", 0, 'R');
-// $pdf->Ln(-5);
-// $pdf->SetFont('', '', 10); 
-// $pdf->MultiCell(0, 10, "End. Refund: {$data['refund_end']}", 0, 'R');
-$pdf->Ln();
+
+if ($data['beg_si'] !== null && $data['end_si'] !== null && $data['void_beg'] !== null && $data['void_end'] !== null) {
+    $pdf->SetFont('', '', 10);
+    $pdf->Cell(0, 10, "Beg. SI: {$data['beg_si']}", 0, 'L');
+    $pdf->Ln(-5);
+    $pdf->SetFont('', '', 10);
+    $pdf->Cell(0, 10, "End. SI: {$data['end_si']}", 0, 'L');
+    $pdf->Ln(-5);
+    $pdf->Cell(0, 10, "Beg. Void: {$data['void_beg']}", 0, 'L');
+    $pdf->Ln(-5);
+    $pdf->Cell(0, 10, "End. Void: {$data['void_end']}", 0, 'L');
+    $pdf->Ln(-22);
+    $pdf->SetFont('', '', 10);
+    $pdf->MultiCell(0, 10, "Beg. Return: {$data['return_beg']}", 0, 'R');
+    $pdf->Ln(-5);
+    $pdf->SetFont('', '', 10);
+    $pdf->MultiCell(0, 10, "End. Return: {$data['return_end']}", 0, 'R');
+    $pdf->Ln(-5);
+    $pdf->SetFont('', '', 10);
+    $pdf->MultiCell(0, 10, "Beg. Refund: {$data['refund_beg']}", 0, 'R');
+    $pdf->Ln(-5);
+    $pdf->SetFont('', '', 10);
+    $pdf->MultiCell(0, 10, "End. Refund: {$data['refund_end']}", 0, 'R');
+    $pdf->Ln(-3);
+}
+
 
 
 $header = array('Description', 'Amount');
@@ -167,12 +179,12 @@ list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 $pdf->SetFillColor($r, $g, $b);
 $pdf->SetFont('', 'B', 10);
 
-$pdf->Cell(140, $maxCellHeight, $header[0], 1, 0, 'C', true);
+$pdf->Cell(150, $maxCellHeight, $header[0], 1, 0, 'C', true);
 $pdf->Cell(48, $maxCellHeight, $header[1], 1, 0, 'C', true);
 $pdf->Ln();
 $pdf->SetFont('', 'B', 10);
-
-$pdf->Cell(188, $maxCellHeight, "ITEMS", 1, 0, 'L');
+$pdf->SetFillColor(137, 148, 153);
+$pdf->Cell(198, $maxCellHeight, "ITEMS", 1, 0, 'L', true);
 $pdf->Ln();
 $pdf->SetFont('', '', 10);
 
@@ -183,132 +195,131 @@ $dataRows = array(
 );
 
 foreach ($dataRows as $row) {
-    $pdf->Cell(140, $maxCellHeight, $row[0], 1, 0, 'L');
+    $pdf->Cell(150, $maxCellHeight, $row[0], 1, 0, 'L');
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
 }
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell(188, $maxCellHeight, "BREAKDOWN OF SALES", 1, 0, 'L');
+$pdf->SetFillColor(137, 148, 153);
+$pdf->Cell(198, $maxCellHeight, "BREAKDOWN OF SALES", 1, 0, 'L', true);
 $pdf->Ln();
 
 $pdf->SetFont('', '', 10);
 
 $dataRows = array(
-    array('Vatable Sales',  number_format($data['total_vatable_sales'], 2)),
-    array('VAT Amount',  number_format($data['total_vat_amount'], 2)),
-    array('VAT Exempt Sales', number_format($data['total_vat_exempt'],2)),
+    array('Vatable Sales',  number_format($data['total_vatable_sales'] ?? 0, 2)),
+    array('VAT Amount',  number_format($data['total_vat_amount'] ?? 0, 2)),
+    array('VAT Exempt Sales', number_format($data['total_vat_exempt'] ?? 0,2)),
     array('Zero Rated Sales', number_format(0,2))
 );
 
 foreach ($dataRows as $row) {
-    $pdf->Cell(140, $maxCellHeight, $row[0], 1, 0, 'L');
+    $pdf->Cell(150, $maxCellHeight, $row[0], 1, 0, 'L');
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
 }
-$pdf->SetFont('', 'B', 10);
 
-$pdf->Cell(188, $maxCellHeight, "", 1, 0, 'L');
-$pdf->Ln();
 $pdf->SetFont('', '', 10);
 
 $dataRows = array(
-    array('Gross Amount',  number_format($data['total_gross_amount'], 2)),
-    array('Less Discount',  number_format($data['total_less_discount'], 2)),
-    array('Less Return', number_format($data['total_less_return_amount'],2)),
-    array('Less Refund', number_format($data['total_less_refund_amount'],2)),
-    array('Less Void',  number_format($data['total_less_void'], 2)),
-    array('Less VAT Adjsutment',  number_format($data['total_less_vat_adjustment'], 2)),
-    array('Net Amount', number_format($data['total_net_amount'],2))
+    array('Gross Amount', number_format(isset($data['total_gross_amount']) ? $data['total_gross_amount'] : 0, 2)),
+    array('Less Discount',  number_format($data['total_less_discount'] ? $data['total_less_discount'] : 0, 2)),
+    array('Less Return', number_format($data['total_less_return_amount'] ? $data['total_less_return_amount']: 0,2)),
+    array('Less Refund', number_format($data['total_less_refund_amount'] ? $data['total_less_refund_amount'] : 0,2)),
+    array('Less Void',  number_format($data['total_less_void'] ? $data['total_less_void'] : 0, 2)),
+    array('Less VAT Adjsutment',  number_format($data['total_less_vat_adjustment'] ? $data['total_less_vat_adjustment'] : 0, 2)),
+    array('Net Amount', number_format($data['total_net_amount'] ?? 0,2))
    
 );
 
 foreach ($dataRows as $row) {
-    $pdf->Cell(140, $maxCellHeight, $row[0], 1, 0, 'L');
+    $pdf->Cell(150, $maxCellHeight, $row[0], 1, 0, 'L');
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
 }
 $pdf->SetFont('', 'B', 10);
-
-$pdf->Cell(188, $maxCellHeight, "DISCOUNT SUMMARY", 1, 0, 'L');
+$pdf->SetFillColor(137, 148, 153);
+$pdf->Cell(198, $maxCellHeight, "DISCOUNT SUMMARY", 1, 0, 'L',true);
 $pdf->Ln();
 $pdf->SetFont('', '', 10);
 $dataRows = array(
-    array('SC Discount',  number_format($data['total_senior_discount'], 2)),
-    array('UP Discount',  number_format($data['total_officer_discount'], 2)),
-    array('PWD Discount', number_format($data['total_pwd_discount'],2)),
-    array('NAAC Discount', number_format($data['total_naac_discount'],2)),
-    array('SOLO Parent Discount',  number_format($data['total_solo_parent_discount'], 2)),
-    array('Other Discount',  number_format($data['total_other_discount'], 2)),
+    array('SC Discount',  number_format($data['total_senior_discount'] ?? 0, 2)),
+    array('UP Discount',  number_format($data['total_officer_discount'] ?? 0, 2)),
+    array('PWD Discount', number_format($data['total_pwd_discount'] ?? 0,2)),
+    array('NAAC Discount', number_format($data['total_naac_discount'] ?? 0,2)),
+    array('SOLO Parent Discount',  number_format($data['total_solo_parent_discount'] ?? 0, 2)),
+    array('Other Discount',  number_format($data['total_other_discount'] ?? 0, 2)),
     
    
 );
 
 foreach ($dataRows as $row) {
-    $pdf->Cell(140, $maxCellHeight, $row[0], 1, 0, 'L');
+    $pdf->Cell(150, $maxCellHeight, $row[0], 1, 0, 'L');
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
 }  
 $pdf->SetFont('', 'B', 10);
-
-$pdf->Cell(188, $maxCellHeight, "SALES ADJUSTMENT", 1, 0, 'L');
+$pdf->SetFillColor(137, 148, 153);
+$pdf->Cell(198, $maxCellHeight, "SALES ADJUSTMENT", 1, 0, 'L',true);
 $pdf->Ln();
 $pdf->SetFont('', '', 10);
 $dataRows = array(
-    array('Void',  number_format($data['total_void'], 2)),
-    array('Return',  number_format($data['total_return'], 2)),
-    array('Refund', number_format($data['total_refund'],2))
+    array('Void',  number_format($data['total_void'] ?? 0, 2)),
+    array('Return',  number_format($data['total_return'] ?? 0, 2)),
+    array('Refund', number_format($data['total_refund'] ?? 0,2))
     
 );
 
 foreach ($dataRows as $row) {
-    $pdf->Cell(140, $maxCellHeight, $row[0], 1, 0, 'L');
+    $pdf->Cell(150, $maxCellHeight, $row[0], 1, 0, 'L');
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
 }  
 $pdf->SetFont('', 'B', 10);
-
-$pdf->Cell(188, $maxCellHeight, "VAT ADJUSTMENT", 1, 0, 'L');
+$pdf->SetFillColor(137, 148, 153);
+$pdf->Cell(198, $maxCellHeight, "VAT ADJUSTMENT", 1, 0, 'L', true);
 $pdf->Ln();
 $pdf->SetFont('', '', 10);
 
 $dataRows = array(
-    array('SC VAT',  number_format($data['total_senior_citizen_vat'], 2)),
-    array('UP VAT',  number_format($data['total_officers_vat'], 2)),
-    array('PWD VAT',  number_format($data['total_pwd_vat'], 2)),
-    array('Zero Rated VAT', number_format($data['total_zero_rated'],2)),
-    array('Void VAT', number_format($data['total_void_vat'],2)),
-    array('VAT on Return', number_format($data['total_vat_return'],2)),
-    array('VAT on Refund', number_format($data['total_vat_refunded'],2)),
+    array('SC VAT',  number_format($data['total_senior_citizen_vat'] ?? 0, 2)),
+    array('SC VAT',  number_format($data['total_senior_citizen_vat'] ?? 0, 2)),
+    array('UP VAT',  number_format($data['total_officers_vat'] ?? 0 , 2)),
+    array('PWD VAT',  number_format($data['total_pwd_vat'] ?? 0, 2)),
+    array('Zero Rated VAT', number_format($data['total_zero_rated'] ?? 0,2)),
+    array('Void VAT', number_format($data['total_void_vat'] ?? 0, 2)),
+    array('VAT on Return', number_format($data['total_vat_return'] ?? 0,2)),
+    array('VAT on Refund', number_format($data['total_vat_refunded'] ?? 0,2)),
 
     
 );
 
 foreach ($dataRows as $row) {
-    $pdf->Cell(140, $maxCellHeight, $row[0], 1, 0, 'L');
+    $pdf->Cell(150, $maxCellHeight, $row[0], 1, 0, 'L');
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
 }  
 
 $pdf->SetFont('', 'B', 10);
-
-$pdf->Cell(188, $maxCellHeight, "TRANSACTION SUMMARY", 1, 0, 'L');
+$pdf->SetFillColor(137, 148, 153);
+$pdf->Cell(198, $maxCellHeight, "TRANSACTION SUMMARY", 1, 0, 'L',true);
 $pdf->Ln();
 $pdf->SetFont('', '', 10);
 
 $dataRows = array(
-    array('Cash in Drawer',  number_format($data['total_cash_in_receive'], 2)),
-    array('Credit/Debit Card',  number_format($data['total_totalCcDb'], 2)),
-    array('E-wallet',  number_format($data['total_totalEwallet'], 2)),
-    array('Coupon/Voucher', number_format($data['total_totalCoupon'],2)),
-    array('Credit', number_format($data['total_credit'],2)),
-    array('Cash In', number_format($data['total_totalCashIn'],2)),
-    array('Cash Out', number_format($data['total_totalCashOut'],2)),  
-    array('Payment Receieve', number_format($data['total_payment_receive'],2))
+    array('Cash in Drawer',  number_format($data['total_cash_in_receive'] ?? 0, 2)),
+    array('Credit/Debit Card',  number_format($data['total_totalCcDb']?? 0, 2)),
+    array('E-wallet',  number_format($data['total_totalEwallet'] ?? 0, 2)),
+    array('Coupon/Voucher', number_format($data['total_totalCoupon']  ?? 0 ,2)),
+    array('Credit', number_format($data['total_credit']  ?? 0,2)),
+    array('Cash In', number_format($data['total_totalCashIn']  ?? 0,2)),
+    array('Cash Out', number_format($data['total_totalCashOut']  ?? 0,2)),  
+    array('Payment Receieve', number_format($data['total_payment_receive']  ?? 0,2))
 );
 
 foreach ($dataRows as $row) {
-    $pdf->Cell(140, $maxCellHeight, $row[0], 1, 0, 'L');
+    $pdf->Cell(150, $maxCellHeight, $row[0], 1, 0, 'L');
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
 } 
@@ -316,12 +327,12 @@ foreach ($dataRows as $row) {
 }
 
 
-$pdf->SetFooterData('', '', 'Page {PAGENO}', '');
-$pdf->Output('zReadReportList.pdf', 'I');
-// $pdfPath = __DIR__ . '/../assets/pdf/payment_method/paymentMethodList.pdf';
-// if (file_exists($pdfPath)) {
-//     unlink($pdfPath);
-// }
 
-// $pdf->Output($pdfPath, 'F');
+$pdf->Output('zReadReportList.pdf', 'I');
+$pdfPath = __DIR__ . '/../assets/pdf/zread/zReadReportList.pdf';
+if (file_exists($pdfPath)) {
+    unlink($pdfPath);
+}
+
+$pdf->Output($pdfPath, 'F');
  ?>
