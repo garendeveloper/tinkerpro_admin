@@ -10,7 +10,8 @@
         "endroid/qrcode": "*",
         "guzzlehttp/guzzle": "*",
         "intervention/image": "*",
-        "paymongo/paymongo-php": "*"
+        "paymongo/paymongo-php": "*",
+        "xendit/xendit-php": "*"
     },
     "autoload": {
         "psr-4": {

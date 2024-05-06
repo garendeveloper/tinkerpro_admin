@@ -84,6 +84,13 @@
             $order_id = $_GET['order_id'];
             echo json_encode($inventory->get_orderPaymentHistory($order_id));
             break;
+        case 'get_all_lostanddamageinfo':
+            echo json_encode($loss_and_damage->get_all_lostanddamageinfo());
+            break;
+        case 'get_lostanddamage_data':
+            $id = $_GET['id'];
+            echo json_encode($loss_and_damage->get_lostanddamage_data($id));
+            break;
         case 'get_inventoryCountDataById':
             $inventorycount_id = $_GET['id'];
             echo json_encode($inventory_count->get_inventoryCountDataById($inventorycount_id));

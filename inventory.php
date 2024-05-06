@@ -108,9 +108,9 @@ body {
                 </div>
                 <div class="division">
                     <div class="grid-container">
-                        <button id="loss-damage1" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button>
+                        <button id="loss-damage" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button>
                         <!-- <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button> -->
-                        <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration  <span id="expirationNotification" class="badge badge-danger" style = "font-size: 11px; background-color: red; color: white;">4</span></button>
+                        <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration  <span id="expirationNotification" class="badge badge-danger" style = "font-size: 11px; background-color: red; color: white; "></span></button>
                         <!-- <button id="loss-damage2" class="grid-item text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button> -->
                         <!-- <button id="bom2" class="grid-item text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button> -->
                         <button id="print-price-tags" class="grid-item text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button>
@@ -386,6 +386,129 @@ body {
       $(this).addClass('active');
       show_allInventoryCounts();
     })
+    $("#expiration").on('click', function(){
+      $("button").removeClass('active');
+      $(this).addClass('active');
+      show_expiredProducts();
+    })
+    $("#loss-damage").on('click', function(){
+      $("button").removeClass('active');
+      $(this).addClass('active');
+      show_allLossAndDamagesInfo();
+    })
+    function show_allLossAndDamagesInfo()
+    {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_all_lostanddamageinfo',
+        success: function(data)
+        {
+          var rows = data.map(function(item) {
+              return "<tr>" +
+                    "<td class='autofit'>" + item.reference_no + "</td>" +
+                    "<td class='autofit' style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
+                    "<td class='autofit' style='text-align: center'>" + item.reason + "</td>" +
+                    "<td class='autofit' style='text-align: center'>" + item.total_qty + "</td>" +
+                    "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
+                    "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
+                    "<td class='autofit' style='text-align: center'>" + item.note + "</td>" +
+                    "<td style='text-align: center' class='autofit'><button data-id = "+item.id+" id='btn_view_lossanddamage'><i class='bi bi-eye'></i></button></td>" +
+                    "</tr>";
+          });
+
+          var tbl = "<table id='tbl_all_lostanddamages' class='text-color table-border' style='font-size: 12px;'>" +
+                    "<thead>" +
+                      "<tr>" +
+                        "<th >Reference No.</th>" +
+                        "<th style = 'text-align:center'>Date of Transaction</th>" +
+                        "<th style = 'text-align:center; background-color:red'>Reason</th>" +
+                        "<th style = 'text-align:center'>Total Qty</th>" +
+                        "<th style = 'text-align:center'>Total Cost</th>" +
+                        "<th style = 'text-align:center'>Overall Cost</th>" +
+                        "<th style = 'text-align:center'>Note</th>" +
+                        "<th style = 'text-align:center'>Action</th>" +
+                      "</tr>" +
+                    "</thead>" +
+                    "<tbody>" +
+                      rows.join('') +
+                    "</tbody>" +
+                    "</table>";
+
+          $(".inventoryCard").html(tbl);
+        }
+      })
+    }
+    function show_expiredProducts()
+    {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_realtime_notifications',
+        success: function(resp_data){
+          var data = resp_data.products;
+          var notifications = resp_data.notifications;
+          function isActive(value) {
+              return value === 1;
+          }
+          var firstNotif_isActive = isActive(notifications[0].is_active);//30
+          var secondNotif_isActive = isActive(notifications[1].is_active);//15
+          var thirdNotif_isActive = isActive(notifications[2].is_active);//5
+          var fourthNotif_isActive = isActive(notifications[3].is_active);//0
+          var totalExpired = 0;
+          var temp = false;
+          var verifier = false;
+          var expiry = data.map(function(item) {
+            var days_remaining = item.days_remaining;
+            if (firstNotif_isActive && days_remaining <= 30 && days_remaining >= 16) {
+                temp = true;
+                verifier = true;
+            } else if (secondNotif_isActive && days_remaining <= 15 && days_remaining >= 6) {
+                temp = true;
+                verifier = true;
+            } else if (days_remaining <= 5 && days_remaining >= 1) {
+                temp = true;
+                verifier=true;
+            }
+            else if (fourthNotif_isActive && days_remaining === 0) {
+                temp = true;
+                verifier=true;
+            }
+            else 
+            {
+              temp = false;
+            }
+            if (temp) {
+                return `<tr>
+                    <td class="autofit">${item.prod_desc}</td>
+                    <td class="autofit">${item.barcode}</td>
+                    <td class="autofit" style="text-align: center">${date_format(item.date_expired)}</td>
+                    <td class="autofit" style="text-align: center">This product has a remaining shelf life of <span style = 'color: red; font-size: 14px;'>${days_remaining}</span> days</td>
+                </tr>`;
+            }
+          });
+          var tbl_expiry = `
+                      <table id="tbl_expiredProducts" class="text-color table-border" style="font-size: 12px;">
+                          <thead>
+                              <tr>
+                                  <th>Product</th>
+                                  <th>Barcode</th>
+                                  <th style="text-align: center">Expiration Date</th>
+                                  <th style="text-align: center; background-color: red">Days Remaining</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              ${verifier? expiry.join('') : `
+                                  <tr>
+                                      <td class="autofit" colspan="4">There are no expired products</td>
+                                  </tr>`
+                              }
+                          </tbody>
+                      </table>`;
+
+
+          $(".inventoryCard").html(tbl_expiry);
+        }
+      })
+    }
     function show_allInventoryCounts()
     {
       $.ajax({
@@ -404,8 +527,8 @@ body {
           var inv_count_tbl = "<table id='tbl_orders' class='text-color table-border' style='font-size: 12px;'>" +
                               "<thead>" +
                               "<tr>" +
-                              "<th >PO#</th>" +
-                              "<th style = 'text-align:center'>Date Counted</th>" +
+                              "<th >Reference No.</th>" +
+                              "<th style = 'text-align:center'>Date of Transaction</th>" +
                               "<th style = 'text-align:center'>Action</th>" +
                               "</tr>" +
                               "</thead>" +
@@ -418,6 +541,56 @@ body {
         }
       })
     }
+    $(".inventoryCard").on('click', "#btn_view_lossanddamage", function(e){
+      e.preventDefault();
+      var id = $(this).data('id');
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_lostanddamage_data',
+        data: {
+          id: id,
+        },
+        success: function(data){
+          var infoData = data.info;
+          var ld_data = data.data;
+          var tbody = $("#tbl_lossand_damages tbody");
+          $("#ld_reference").val(infoData['reference_no']);
+          $("#date_damage").val(date_format(infoData['date_transact']));
+          $("#ld_reason").val(infoData['reason']);
+          $("#footer_lossand_damages #total_qty").html(infoData['total_qty']);
+          $("#footer_lossand_damages #total_cost").html("₱ "+infoData['total_cost']);
+          $("#footer_lossand_damages #overall_total_cost").html("₱ "+infoData['over_all_total_cost']);
+          $("#loss_and_damage_note").val(infoData['note']);
+          var rows = [];
+          for(var i = 0; i < ld_data.length; i++) {
+            var inventory = ld_data[i];
+            var row = "<tr data-id=" + inventory.inventory_id + ">";
+            row += "<td>" + inventory.prod_desc + "</td>";
+            row += "<td style='text-align:center'>" + inventory.qty_damage + "</td>";
+            row += "<td style='text-align:right'>₱ "+addCommasToNumber(inventory.cost)+"</td>";
+            row += "<td style='text-align:right'>₱ "+addCommasToNumber(inventory.total_cost)+"</td>";
+            rows.push(row);
+          }
+          tbody.html(rows.join(''));
+        }
+      })
+      $("#loss_and_damage_input").attr('disabled', true);
+      $("#btn_searchLDProduct").attr('disabled', true);
+      $("#stocktransfer_div").hide();
+      $("#received_div").hide()
+      $("#quickinventory_div").hide()
+      $("#expiration_div").hide()
+      $("#lossanddamage_div").show();
+      $("button").removeClass('active');
+      $("#btn_lossDamage").addClass('active');
+      $("#purchaseItems_div").hide();
+      $("#inventorycount_div").hide();
+      $("#open_po_report").hide();
+      $("#btn_savePO").attr("disabled", true);
+      $("#btn_omCancel").attr("disabled", true);
+      $("#lossanddamage_form").find('input').removeClass('has-error');
+      openOptionModal(); 
+    })
     $(".inventoryCard").on("click", "#btn_view_inventoryCount", function(e){
       e.preventDefault();
       var id = $(this).data('id');
@@ -449,6 +622,7 @@ body {
             rows.push(row);
           }
           tbody.html(rows.join(''));
+          $("#btn_open_print_count_modal").show();
           $("#stocktransfer_div").hide();
           $("#received_div").hide()
           $("#quickinventory_div").hide()
@@ -1486,7 +1660,7 @@ body {
                         <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount Before Tax</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount After Tax</th>
-                        <th class='auto-fit' style = 'text-align: center'>Markup Profit</th>
+                        <th class='auto-fit' style = 'text-align: center'>Is Paid</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1775,6 +1949,17 @@ body {
     })
     $("#btn_lossDamage").click(function(e){
       e.preventDefault();
+      $("#loss_and_damage_input").attr('disabled', false);
+      $("#btn_searchLDProduct").attr('disabled', false);
+      $("#lossanddamage_form")[0].reset();
+      $("#footer_lossand_damages #total_qty").html("0");
+      $("#footer_lossand_damages #total_cost").html("₱ 0.0");
+      $("#footer_lossand_damages #overall_total_cost").html("₱ 0.0");
+      $("#loss_and_damage_note").val("");
+      show_reference_no();
+      $("#tbl_lossand_damages tbody").empty();
+      $("#btn_savePO").attr("disabled", false);
+      $("#btn_omCancel").attr("disabled", false);
       $("button").removeClass('active');
       $(this).addClass("active");
       $("#purchaseItems_div").hide();
@@ -1787,6 +1972,7 @@ body {
     })
     $("#btn_inventoryCount").click(function(e){
       e.preventDefault();
+      $("#btn_open_print_count_modal").hide();
       $("#btn_savePO").attr("disabled", false);
       $("#btn_omCancel").attr("disabled", false);
       $("#inventorycount_form")[0].reset();

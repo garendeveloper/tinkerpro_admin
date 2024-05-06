@@ -124,6 +124,7 @@
     }
 
     #tbl_expirationItems td:nth-child(3) {
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center
@@ -215,38 +216,26 @@
                 url: 'api.php?action=get_expirationNotification',
                 success: function(data){
                     $("#tbl_expirationItems tbody").find("input[type=checkbox]").prop("checked", false);
-                    for(var i = 0; i<data.length; i++)
-                    {
-                        switch(data[i].notify_before)
-                        {
-                            case 30:
-                                if(data[i].is_active === 1)
-                                {
+                    data.forEach(item => {
+                        if (item.is_active === 1) {
+                            switch (item.notify_before) {
+                                case 30:
                                     $("#first_expiration").prop("checked", true);
-                                }
-                                break;
-                            case 15:
-                                if(data[i].is_active === 1)
-                                {
+                                    break;
+                                case 15:
                                     $("#second_expiration").prop("checked", true);
-                                }
-                                break;
-                            case 5:
-                                if(data[i].is_active === 1)
-                                {
+                                    break;
+                                case 5:
                                     $("#third_expiration").prop("checked", true);
-                                }
-                                break;
-                            case 0:
-                                if(data[i].is_active === 1)
-                                {
+                                    break;
+                                case 0:
                                     $("#fourth_expiration").prop("checked", true);
-                                }
-                                break;
-                            default:
-                                break;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                    }
+                    });
                 }
             })
         }
