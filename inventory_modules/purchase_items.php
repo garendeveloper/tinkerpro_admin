@@ -66,7 +66,7 @@
             <div class="search-container">
                 <input type="text" style="width: 280px; height: 30px;" class="search-input italic-placeholder"
                     placeholder="Search Product" name="product" onkeyup="$(this).removeClass('has-error')" id="product"
-                    autocomplete="off">
+                    autocomplete="off" >
             </div>
             <button style=" height: 30px; width: 120px; font-size: 12px;" id="btn_addPO">
                     Add Product</button>
@@ -99,3 +99,10 @@
         </thead>
     </table>
 </div>
+
+
+<script>
+    $(document).ready(function(){
+        $("#product").focus();
+    })
+</script>

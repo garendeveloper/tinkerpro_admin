@@ -1145,16 +1145,15 @@ input[type="text"] {
                             <button class="grid-item" id="btn_expiration">Expiration</button>
                             <button class="grid-item" id="btn_receiveItems">Receive Items</button>
                             <button class="grid-item" id="btn_quickInventory">Quick Inventory</button>
-                            <button class="grid-item" id="btn_batchNumber">Batch Number</button>
-                            <button class="grid-item" id="btn_stockTransfer">Stocks Transfer</button>
+                            <!-- <button class="grid-item" id="btn_batchNumber">Batch Number</button> -->
+                            <!-- <button class="grid-item" id="btn_stockTransfer">Stocks Transfer</button> -->
                             <button class="grid-item" id="btn_lossDamage">Loss & Damage</button>
-                            <button class="grid-item" id="btn_LOT">Lot Number</button>
+                            <!-- <button class="grid-item" id="btn_LOT">Lot Number</button> -->
                         </div>
                         <?php include("./inventory_modules/purchase_items.php")?>
                         <?php include("./inventory_modules/received_items.php")?>
                         <?php include("./inventory_modules/expiration_items.php")?>
                         <?php include("./inventory_modules/quickinventory_items.php")?>
-                        <?php include("./inventory_modules/stocks_transfer_items.php")?>
                         <?php include("./inventory_modules/lossanddamage_items.php")?>
                         <?php include("./inventory_modules/inventorycount_items.php")?>
                     </div>

@@ -40,7 +40,7 @@
   .horizontal-container {
     display: flex;
     align-items: center;
-    margin-right: 10px; /* Adjust margin as needed */
+    margin-right: 10px; 
     width: 100%;
     max-width: 100%;
   }
@@ -54,6 +54,15 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 0;
+}
+.autofit {
+    width: 1%; /* Set width to auto-fit content */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow content */
+    text-overflow: ellipsis; /* Show ellipsis for overflow content */
+}
+.text-center{
+  text-align: center;
 }
 </style>
 
@@ -92,18 +101,18 @@ body {
                         <button id="stocks" class="grid-item text-color button"><i class="bi bi-graph-up"></i>&nbsp; Stocks</button>
                         <button id="purchase-order" class="grid-item text-color button"><i class="bi bi-cart-check"></i>&nbsp; Purchase Orders</button>
                         <button id="inventory-count" class="grid-item text-color button"><i class="bi bi-archive"></i>&nbsp; Inventory Count</button>
-                        <button id="bom" class="grid-item text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button>
-                        <button id="low-stocks" class="grid-item text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
-                        <button id="reorder-point" class="grid-item text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button>
+                        <!-- <button id="bom" class="grid-item text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button> -->
+                        <!-- <button id="low-stocks" class="grid-item text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
+                        <button id="reorder-point" class="grid-item text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button> -->
                     </div>
                 </div>
                 <div class="division">
                     <div class="grid-container">
                         <button id="loss-damage1" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button>
-                        <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button>
-                        <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration</button>
-                        <button id="loss-damage2" class="grid-item text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button>
-                        <button id="bom2" class="grid-item text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button>
+                        <!-- <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button> -->
+                        <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration  <span id="expirationNotification" class="badge badge-danger" style = "font-size: 11px; background-color: red; color: white;">4</span></button>
+                        <!-- <button id="loss-damage2" class="grid-item text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button> -->
+                        <!-- <button id="bom2" class="grid-item text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button> -->
                         <button id="print-price-tags" class="grid-item text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button>
                     </div>
                 </div>
@@ -116,44 +125,7 @@ body {
           </div>
           <div class="row">
             <div class="card inventoryCard" style = "width: 100%; ">
-              <table id="tbl_products" class="text-color table-border" style ="font-size: 12px;">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 4%;">ID</th>
-                    <th style="width: 8%;">Product</th>
-                    <th style="width: 4%;">Barcode</th>
-                    <th class="text-center" style="width: 2%;">Unit</th>
-                    <th class="text-center" style="width: 2%;">Qty in Store</th>
-                    <th class="text-center" style="width: 2%;">Qty in Warehouse</th>
-                    <th class="text-center" style="width: 3%;">Amount Before Tax </th>
-                    <th class="text-center" style="width: 3%;">Amount After Tax</th>
-                    <th class="text-center" style="width: 3%;">Markup Profit</th>
-                  </tr>
-                </thead>
-                <tbody >
-                  
-                </tbody>
-              </table>
-              <table id="tbl_orders" class="text-color table-border" style ="font-size: 12px; ">
-                <thead>
-                  <tr>
-                    <th style="width: 2%;">PO#</th>
-                    <th style="width: 4%;">Supplier</th>
-                    <th style="width: 2%;">Date Purchased</th>
-                    <th style="width: 2%;">Due Date</th>
-                    <th style="width: 2%;">Total</th>
-                    <th style="width: 2%;">Is Paid</th>
-                    <th style="width: 1%;">Action</th>
-                  </tr>
-                </thead>
-                <tbody >
-                  
-                </tbody>
-              </table>
-              <!-- <div id="pagination" class="pagination-container">
-                  <button class="paginate grid-item text-color" id="previous"><i class="bi bi-arrow-left"></i>&nbsp; Previous</button> |
-                  <button class="paginate grid-item text-color" id="next">Next <i class="bi bi-arrow-right"></i>&nbsp;</button>
-              </div> -->
+
           </div>
         </div>
       </div>
@@ -328,7 +300,7 @@ body {
       show_allOrders(1, perPage); 
       $("#tbl_products").hide();
     })
-    $("#tbl_orders tbody").on('click', '#btn_openPayment', function(){
+    $(".inventoryCard").on('click', '.btn_openPayment', function(){
       $("#purchase_modal_payment #modalTitle").html("<i class = 'bi bi-exclamation-triangle bi-lg exclamation-icon'></i>&nbsp; <strong style = 'color: #ffff'>ATTENTION REQUIRED!</strong> ");
       $("#purchase_modal_payment").slideDown({
         backdrop: 'static',
@@ -412,16 +384,90 @@ body {
     $("#inventory-count").on('click', function(){
       $("button").removeClass('active');
       $(this).addClass('active');
-      $("#response_modal").slideDown({
-        backdrop: 'static',
-        keyboard: false,
-      });
-      var inventory_count = $("#tbl_products tbody tr").length;
-      $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; Inventory Count: "+inventory_count);
-      setTimeout(function() {
-        $("#response_modal").slideUp();
-        $("#inventory-count").removeClass('active');
-      }, 10000);
+      show_allInventoryCounts();
+    })
+    function show_allInventoryCounts()
+    {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_allInventoryCounts',
+        success:function(data)
+        {
+          var inv_count_rows = data.map(function(item) {
+              return "<tr>" +
+                    "<td class='autofit'>" + item.reference_no + "</td>" +
+                    "<td class='autofit' style='text-align: center'>" + date_format(item.date_counted) + "</td>" +
+                    "<td style='text-align: center' class='autofit'><button data-id = "+item.id+" id='btn_view_inventoryCount'><i class='bi bi-eye'></i></button></td>" +
+                    "</tr>";
+          });
+
+          var inv_count_tbl = "<table id='tbl_orders' class='text-color table-border' style='font-size: 12px;'>" +
+                              "<thead>" +
+                              "<tr>" +
+                              "<th >PO#</th>" +
+                              "<th style = 'text-align:center'>Date Counted</th>" +
+                              "<th style = 'text-align:center'>Action</th>" +
+                              "</tr>" +
+                              "</thead>" +
+                              "<tbody>" +
+                              inv_count_rows.join('') +
+                              "</tbody>" +
+                              "</table>";
+
+          $(".inventoryCard").html(inv_count_tbl);
+        }
+      })
+    }
+    $(".inventoryCard").on("click", "#btn_view_inventoryCount", function(e){
+      e.preventDefault();
+      var id = $(this).data('id');
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_inventoryCountDataById',
+        data: {
+          id: id,
+        },
+        success: function(data){
+          var infoData = data.info;
+          var inventoryData = data.data;
+          var tbody = $("#tbl_inventory_count tbody");
+          $("#ic_reference").val(infoData['reference_no']);
+          $("#inventory_count_info_id").val(infoData.id);
+          $("#date_counted").val(date_format(infoData['date_counted']));
+
+          var rows = [];
+          for(var i = 0; i < inventoryData.length; i++) {
+            var inventory = inventoryData[i];
+            var row = "<tr data-id=" + inventory.inventory_id + " data-ic_id = "+inventory.inventory_count_item_id+">";
+            row += "<td>" + inventory.prod_desc + "</td>";
+            row += "<td style='text-align:center'>" + inventory.counted_qty + "</td>";
+            row += "<td class='text-center'><input placeholder='QTY' style='text-align:center; width: 60px; height: 20px; font-size: 12px;' class='counted-input' value = "+inventory.counted+" disabled></input></td>";
+            var difference = inventory.difference;
+            var differenceDisplay = difference > 0 ? "+" + difference : difference;
+            row += "<td style='text-align: right'>" + differenceDisplay + "</td>";
+            row += "</tr>";
+            rows.push(row);
+          }
+          tbody.html(rows.join(''));
+          $("#stocktransfer_div").hide();
+          $("#received_div").hide()
+          $("#quickinventory_div").hide()
+          $("#expiration_div").hide()
+          $("#lossanddamage_div").hide();
+          $("button").removeClass('active');
+          $("#btn_inventoryCount").addClass('active');
+          $("#purchaseItems_div").hide();
+          $("#inventorycount_div").show();
+          $("#open_po_report").hide();
+          $("#qi_inventory_type").attr("disabled", true);
+          $("#btn_go_inventory").attr("disabled", true);
+          $("#btn_savePO").attr("disabled", true);
+          $("#btn_omCancel").attr("disabled", true);
+          $("#inventorycount_form").find('input').removeClass('has-error');
+          openOptionModal(); 
+        
+        }
+      })
     })
     function display_datePurchased()
     {
@@ -696,9 +742,81 @@ body {
               }
           })
       }
+      function show_expiration()
+      {
+        $.ajax({
+            type: 'get',
+            url: 'api.php?action=get_expirationNotification',
+            success: function(data){
+                $("#tbl_expirationItems tbody").find("input[type=checkbox]").prop("checked", false);
+                for(var i = 0; i<data.length; i++)
+                {
+                    switch(data[i].notify_before)
+                    {
+                        case 30:
+                            if(data[i].is_active === 1)
+                            {
+                                $("#first_expiration").prop("checked", true);
+                            }
+                            break;
+                        case 15:
+                            if(data[i].is_active === 1)
+                            {
+                                $("#second_expiration").prop("checked", true);
+                            }
+                            break;
+                        case 5:
+                            if(data[i].is_active === 1)
+                            {
+                                $("#third_expiration").prop("checked", true);
+                            }
+                            break;
+                        case 0:
+                            if(data[i].is_active === 1)
+                            {
+                                $("#fourth_expiration").prop("checked", true);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        })
+      }
     $("#btn_savePO").click(function(e){
       e.preventDefault();
       var activeModuleId = $("button.active").attr('id');
+      if(activeModuleId === "btn_expiration")
+      {
+        var tbl_data = [];
+        $("#tbl_expirationItems tbody tr").each(function(){
+          var row_data = {};
+          var notify_before  = $(this).find("td:nth-child(2)").text();
+          row_data['label'] = notify_before;
+          row_data['value'] = $(this).find("input[type=checkbox]").prop("checked");
+          tbl_data.push(row_data);
+        })
+        $.ajax({
+          type: 'post',
+          url: 'api.php?action=save_expirationNotification',
+          data: {notifications: JSON.stringify(tbl_data)},
+          success: function(response){
+            if(response.status)
+            {
+              $("#response_modal").slideDown({
+                backdrop: 'static',
+                keyboard: false,
+              });
+              $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
+              setTimeout(function() {
+                $("#response_modal").slideUp();
+              }, 10000);
+              show_expiration();
+            }
+          }
+        })
+      }
       if(activeModuleId === "btn_quickInventory")
       {
         var formData = $("#quickinventory_form").serialize();
@@ -749,6 +867,7 @@ body {
               $("#tbl_inventory_count tbody tr").each(function(){
                 var rowData = {};
                 rowData['inventory_id'] = $(this).data('id');
+                rowData['inventory_count_item_id'] = $(this).data('ic_id');
                 rowData['qty'] = $(this).find("td:nth-child(2)").text();
                 rowData['counted'] = $(this).find("#counted").val();
                 rowData['difference'] = $(this).find("td:nth-child(4)").text();
@@ -762,6 +881,7 @@ body {
                     tbl_data:JSON.stringify(tbl_data),
                     reference_no: $("#ic_reference").val(),
                     date_counted: $("#date_counted").val(),
+                    refer_id: $("#inventory_count_info_id").val(),
                 },
                 success: function(response){
                   if(response.status)
@@ -1209,17 +1329,7 @@ body {
             }
         });
     });
-    $("#pagination").on("click", "#previous", function() {
-      var currentPage = $(this).data("page");
-      if (currentPage > 1) 
-      {
-        show_allInventories(currentPage - 1, perPage);
-      }
-    });
-    $("#pagination").on("click", "#next", function() {
-        var currentPage = $(this).data("page");
-        show_allInventories(currentPage + 1, perPage);
-    });
+  
     function show_allSuppliers()
     {
       $.ajax({
@@ -1342,31 +1452,49 @@ body {
         url: 'api.php?action=get_allInventories',
         success: function(data)
         {
-          var tbl_data = "";
-          if(data.length > 0)
-          {
-            for(var i = 0; i < data.length; i++)
-            {
-              tbl_data += "<tr>";
-              tbl_data += "<td style = 'text-align: center'>"+data[i].inventory_id+"</td>";
-              tbl_data += "<td>"+data[i].prod_desc+"</td>";
-              tbl_data += "<td>"+data[i].barcode+"</td>";
-              tbl_data += "<td style = 'text-align: center'>"+data[i].uom_name+"</td>";
-              tbl_data += "<td style = 'text-align: center'>"+data[i].qty_purchased+"</td>";
-              tbl_data += "<td style = 'text-align: center'>"+ data[i].stock +"</td>";
-              tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
-              tbl_data += "<td style = 'text-align: right'>&#x20B1; "+addCommasToNumber(data[i].amount_afterTax)+"</td>";
-              tbl_data += "<td>"+data[i].isPaid == 1 ? "YES" : "NO" +"</td>";
-              tbl_data += "<td></td>";
-              tbl_data += "</tr>";
+          var tblRows = [];
+
+          if (data.length > 0) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                var currentItem = data[i];
+                
+                tblRows.push(
+                    `<tr>
+                        <td class="text-center">${currentItem.inventory_id}</td>
+                        <td>${currentItem.prod_desc}</td>
+                        <td>${currentItem.barcode}</td>
+                        <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
+                        <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
+                        <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
+                        <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
+                        <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "YES" : "NO"}</td>
+                    </tr>`
+                );
             }
-          } 
-          else
-          {
-            tbl_data = "<tr><td colspan = '10'>No more available data.</td></tr>";
+          } else {
+              tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
           }
-          $("#tbl_products tbody").html(tbl_data);
-          // $("#previous, #next").data("page", currentPage);
+
+          var tblData = `
+            <table id='tbl_products' class='text-color table-border' style='font-size: 12px;'>
+                <thead>
+                    <tr>
+                        <th class='text-center auto-fit'>ID</th>
+                        <th class = 'auto-fit'>Product</th>
+                        <th class='auto-fit'>Barcode</th>
+                        <th class='auto-fit' style = 'text-align: center'>Unit</th>
+                        <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
+                        <th class='auto-fit' style = 'text-align: center'>Amount Before Tax</th>
+                        <th class='auto-fit' style = 'text-align: center'>Amount After Tax</th>
+                        <th class='auto-fit' style = 'text-align: center'>Markup Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tblRows.join('')}
+                </tbody>
+            </table>`;
+
+          $(".inventoryCard").html(tblData);
         }
       });
     }
@@ -1384,49 +1512,56 @@ body {
         url: 'api.php?action=get_allOrders&currentPage=' + currentPage + '&perPage=' + perPage,
         success: function(data)
         {
-          var tbl_data = "";
-          if(data.length > 0)
-          {
-            for(var i = 0; i < data.length; i++)
-            {
-              if(data[i].order_type === 1)
-              {
-                tbl_data += "<tr>";
-                tbl_data += "<td style = 'text-align: center'>"+data[i].po_number+"</td>";
-                tbl_data += "<td>"+data[i].supplier+"</td>";
-                tbl_data += "<td class = 'text-center'>"+date_format(data[i].date_purchased)+"</td>";
-                if(data[i].due_date === null)
-                  tbl_data += "<td class = 'text-center'> Not Available </td>";
-                else 
-                  tbl_data += "<td class = 'text-center'>"+date_format(data[i].due_date)+"</td>";
-                tbl_data += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].price)+"</td>";
-                if(data[i].isPaid === 1)
-                {
-                  tbl_data += "<td class = 'text-center badge-success'>Paid</td>";
-                  tbl_data += "<td style = 'text-align: center'><button data-id = "+data[i].order_id+" class = 'grid-item button ' id = 'btn_openPayment' disabled><i  class = 'bi bi-cash bi-md'></i></button><button data-id = "+data[i].order_id+" class = 'grid-item button' id = 'btn_editOrder' ><i  class = 'bi bi-pencil-fill bi-md'></i></button></td>";
-                }
-        
-                else 
-                {
-                  tbl_data += "<td class = 'text-center badge-danger'>Unpaid</td>";
-                  tbl_data += "<td style = 'text-align: center'><button data-id = "+data[i].order_id+" class = 'grid-item button' id = 'btn_openPayment' ><i  class = 'bi bi-cash bi-md'></i></button><button data-id = "+data[i].order_id+" class = 'grid-item button' id = 'btn_editOrder' ><i  class = 'bi bi-pencil-fill bi-md'></i></button></td>";
-                }
-                 
-         
-                tbl_data += "</tr>";
+          var tblRows = [];
+
+          for (var i = 0, len = data.length; i < len; i++) {
+              var currentItem = data[i];
+              
+              if (currentItem.order_type === 1) {
+                  var dueDateCell = currentItem.due_date === null ? "Not Available" : date_format(currentItem.due_date);
+                  var isPaidCell = currentItem.isPaid === 1 ? "<td class='text-center badge-success'>Paid</td>" : "<td class='text-center badge-danger'>Unpaid</td>";
+
+                  tblRows.push(
+                      `<tr>
+                          <td style='text-align: center'>${currentItem.po_number}</td>
+                          <td>${currentItem.supplier}</td>
+                          <td class='text-center'>${date_format(currentItem.date_purchased)}</td>
+                          <td class='text-center'>${dueDateCell}</td>
+                          <td style='text-align: right'>&#x20B1;&nbsp;${addCommasToNumber(currentItem.price)}</td>
+                          ${isPaidCell}
+                          <td style='text-align: center'>
+                              <button data-id='${currentItem.order_id}' class='grid-item button btn_openPayment' id = "btn_openPayment" ${currentItem.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
+                              <button data-id='${currentItem.order_id}' class='grid-item button btn_editOrder' id = "btn_editOrder"><i class='bi bi-pencil-fill bi-md'></i></button>
+                          </td>
+                      </tr>`
+                  );
               }
-            }
-          } 
-          else
-          {
-            tbl_data = "<tr><td colspan = '10'>No more available data.</td></tr>";
           }
-          $("#tbl_orders tbody").html(tbl_data);
-          $("#previous, #next").data("page", currentPage);
+
+          var tblData = `
+              <table id='tbl_orders' class='text-color table-border' style='font-size: 12px;'>
+                  <thead>
+                      <tr>
+                          <th style='width: 2%;'>PO#</th>
+                          <th style='width: 4%;'>Supplier</th>
+                          <th style='width: 2%;'>Date Purchased</th>
+                          <th style='width: 2%;'>Due Date</th>
+                          <th style='width: 2%;'>Total</th>
+                          <th style='width: 2%;'>Is Paid</th>
+                          <th style='width: 1%;'>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      ${tblRows.join('')}
+                  </tbody>
+              </table>`;
+
+          $(".inventoryCard").html(tblData);
+
         }
       });
     }
-    $("#tbl_orders tbody").on('click', '#btn_editOrder', function(e){
+    $(".inventoryCard").on('click', '.btn_editOrder', function(e){
       e.preventDefault();
       var order_id = $(this).data('id');
       $("#stocktransfer_div").hide();
@@ -1652,6 +1787,14 @@ body {
     })
     $("#btn_inventoryCount").click(function(e){
       e.preventDefault();
+      $("#btn_savePO").attr("disabled", false);
+      $("#btn_omCancel").attr("disabled", false);
+      $("#inventorycount_form")[0].reset();
+      $("#inventory_count_info_id").val("");
+      $("#qi_inventory_type").attr("disabled", false);
+      $("#btn_go_inventory").attr("disabled", false);
+      $("#tbl_inventory_count tbody").empty();
+      show_inventory_count_reference_no();
       $("button").removeClass('active');
       $(this).addClass("active");
       $("#purchaseItems_div").hide();
