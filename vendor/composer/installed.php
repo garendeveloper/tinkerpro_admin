@@ -3,7 +3,7 @@
         'name' => 'your-project-name/your-project-slug',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '8d98b689ce7b48cb3fa5f01b67ff08fc8f8c3bb3',
+        'reference' => '8e17dba685c315e77bef7e77c67158b6862cad1a',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -226,6 +226,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'tecnickcom/tcpdf' => array(
+            'pretty_version' => '6.7.5',
+            'version' => '6.7.5.0',
+            'reference' => '951eabf0338ec2522bd0d5d9c79b08a3a3d36b36',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tecnickcom/tcpdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'vlucas/phpdotenv' => array(
             'pretty_version' => 'v5.6.0',
             'version' => '5.6.0.0',
@@ -247,7 +256,7 @@
         'your-project-name/your-project-slug' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '8d98b689ce7b48cb3fa5f01b67ff08fc8f8c3bb3',
+            'reference' => '8e17dba685c315e77bef7e77c67158b6862cad1a',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

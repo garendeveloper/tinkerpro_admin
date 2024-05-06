@@ -294,6 +294,35 @@ body {
     show_purchaseOrderNo();
     display_datePurchased();
 
+    $("#generatePDFBtn").on("click", function(){
+      var active_tbl_id = $(".inventoryCard table").attr('id');
+
+      $.ajax({
+          url: './reports/generate_inventory_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+              active_type: active_tbl_id,
+          },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'inventory.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+          }
+      });
+    })
     $("#purchase-order").on('click', function(){
       $("button").removeClass('active');
       $(this).addClass('active');
@@ -524,7 +553,7 @@ body {
                     "</tr>";
           });
 
-          var inv_count_tbl = "<table id='tbl_orders' class='text-color table-border' style='font-size: 12px;'>" +
+          var inv_count_tbl = "<table id='tbl_all_inventoryCounts' class='text-color table-border' style='font-size: 12px;'>" +
                               "<thead>" +
                               "<tr>" +
                               "<th >Reference No.</th>" +
@@ -541,6 +570,7 @@ body {
         }
       })
     }
+    
     $(".inventoryCard").on('click', "#btn_view_lossanddamage", function(e){
       e.preventDefault();
       var id = $(this).data('id');
