@@ -294,9 +294,56 @@ body {
     show_purchaseOrderNo();
     display_datePurchased();
 
+   $("#printThis").on("click", function(){
+    var active_tbl_id = $(".inventoryCard table").attr('id');
+      if(active_tbl_id !== "tbl_expiredProducts" || active_tbl_id !== 'tbl_all_inventoryCounts')
+      {
+        $.ajax({
+            url: './reports/generate_inventory_pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+                active_type: active_tbl_id,
+            },
+            success: function(response) {
+              var newBlob = new Blob([response], { type: 'application/pdf' });
+        var blobURL = URL.createObjectURL(newBlob);
+
+        var newWindow = window.open(blobURL, '_blank');
+        if (newWindow) {
+            newWindow.onload = function() {
+                // Print the thermal print
+                newWindow.print();
+                newWindow.focus();
+            };
+        } else {
+            alert('Please allow popups for this website');
+        }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+      }
+      else
+      {
+        var modal = $("#response_modal");
+        $("#response_modal").slideDown({
+          backdrop: 'static',
+          keyboard: false,
+        });
+        $("#r_message").html("<i class = 'bi bi-exclamation-triangle bi-lg exclamation-icon'></i>&nbsp; Unfortunately, there are no download features available for this table.");
+        setTimeout(function() {
+          $("#response_modal").slideUp();
+        }, 3000);
+      }
+
+   })
     $("#generatePDFBtn").on("click", function(){
       var active_tbl_id = $(".inventoryCard table").attr('id');
-      if(active_tbl_id !== "tbl_expiredProducts")
+      if(active_tbl_id !== "tbl_expiredProducts" || active_tbl_id !== 'tbl_all_inventoryCounts')
       {
         $.ajax({
             url: './reports/generate_inventory_pdf.php',
