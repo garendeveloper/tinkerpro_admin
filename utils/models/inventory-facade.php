@@ -120,6 +120,9 @@ class InventoryFacade extends DBConnection
             $interval = $expiration_date->diff($now);
             $days_remaining = $interval->days;
             $products[] = [
+                'prod_desc'=>$row['prod_desc'],
+                'barcode'=>$row['barcode'],
+                'date_expired'=>$row['date_expired'],
                 'days_remaining'=>$days_remaining,
             ];
         }

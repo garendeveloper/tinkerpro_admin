@@ -30,7 +30,7 @@
 }
 .btn-control:hover {
     border-color: #FF6900; 
-    color: #FF6900; 
+    color: #fff; 
 }
 .productTable{
     position: absolute; 
@@ -131,7 +131,7 @@ td, th {
   }
   .btn-control:hover{
     border-color: #FF6700; 
-    color: #FF6700; 
+    color: #fff; 
   }
   /* .btn-control:hover, button:hover {
     background-color: #FF6700; 

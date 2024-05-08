@@ -25,6 +25,47 @@
             $row = $result->fetch(PDO::FETCH_ASSOC);
             return empty($row) ? 0 : $row["id"];
         }
+        public function get_last_lostanddamageinfo_byID($id)
+        {
+            $sql = "SELECT * FROM loss_and_damage_info WHERE id = :id";
+            $result = $this->connect()->prepare($sql);
+            $result->bindParam(':id', $id);
+            $result->execute();
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            return $row;
+        }
+        public function get_all_lostanddamageinfo()
+        {
+            $sql = "SELECT * FROM loss_and_damage_info ORDER BY id ASC";
+            $result = $this->connect()->prepare($sql);
+            $result->execute();
+            return $result->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function get_lostanddamage_data($id)
+        {
+            $sql = "SELECT
+                        inventory.*,
+                        products.*,
+                        loss_and_damages.*,
+                        loss_and_damages.id AS loss_and_damage_id
+                    FROM
+                        inventory
+                    JOIN
+                        products ON products.id = inventory.product_id
+                    JOIN
+                        loss_and_damages ON inventory.id = loss_and_damages.inventory_id
+                    WHERE
+                        loss_and_damages.loss_and_damage_info_id = :ref_id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":ref_id", $id);
+            $stmt->execute();
+            $data =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $info = $this->get_last_lostanddamageinfo_byID($id);
+            return [
+                'info'=> $info,
+                'data'=> $data,
+            ];
+        }
         public function get_latest_reference_no()
         {
             $id = $this->get_last_lostanddamageinfo_id() ??0;
