@@ -268,3 +268,12 @@ button:hover {
     right: 2px;
   }
 </style>
+<style>
+    /* Custom CSS to minimize the height of the sweet alert */
+    .swal2-popup {
+      padding: 0.2rem; /* Adjust padding to reduce height */
+    }
+    .swal2-title {
+      font-size: 0.5rem; /* Adjust font size as needed */
+    }
+  </style>

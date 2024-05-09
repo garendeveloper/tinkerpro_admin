@@ -56,14 +56,21 @@ body {
   padding: 0;
 }
 .autofit {
-    width: 1%; /* Set width to auto-fit content */
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflow content */
-    text-overflow: ellipsis; /* Show ellipsis for overflow content */
+    width: 1%; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 .text-center{
   text-align: center;
 }
+/* .custom-toast {
+    border: 2px solid #1E1C11; 
+    color: #fff; 
+    opacity: 3; 
+    width: 900px; 
+    background-color: #006400;
+} */
 </style>
 
 <?php include "layout/admin/css.php"?>
@@ -296,7 +303,7 @@ body {
 
    $("#printThis").on("click", function(){
     var active_tbl_id = $(".inventoryCard table").attr('id');
-      if(active_tbl_id !== "tbl_expiredProducts" || active_tbl_id !== 'tbl_all_inventoryCounts')
+      if(active_tbl_id !== "tbl_expiredProducts" || active_tbl_id !== 'tbl_all_inventoryCounts' || active_tbl_id !== 'tbl_all_stocks')
       {
         $.ajax({
             url: './reports/generate_inventory_pdf.php',
@@ -343,7 +350,7 @@ body {
    })
     $("#generatePDFBtn").on("click", function(){
       var active_tbl_id = $(".inventoryCard table").attr('id');
-      if(active_tbl_id !== "tbl_expiredProducts" || active_tbl_id !== 'tbl_all_inventoryCounts')
+      if(active_tbl_id !== "tbl_expiredProducts" || active_tbl_id !== 'tbl_all_inventoryCounts' || active_tbl_id !== 'tbl_all_stocks')
       {
         $.ajax({
             url: './reports/generate_inventory_pdf.php',
@@ -487,6 +494,62 @@ body {
       $(this).addClass('active');
       show_allLossAndDamagesInfo();
     })
+    $("#stocks").on('click', function(){
+      $("button").removeClass('active');
+      $(this).addClass('active');
+      show_allStocks();
+    })
+    function show_allStocks()
+    {
+      $.ajax({
+        type: 'GET',
+        url: 'api.php?action=get_allInventories',
+        success: function(data)
+        {
+          var tblRows = [];
+          var counter = 0;
+          if (data.length > 0) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                var currentItem = data[i];
+                var stock =currentItem.stock;
+                if(stock > 10) stock = "<span style = 'color: yellowgreen'>"+stock+"</span>";
+                if(stock <= 10) stock = "<span style = 'color: red'>"+stock+"</span>";
+                tblRows.push(
+                    `<tr>
+                        <td class="text-center">${i+1}</td>
+                        <td>${currentItem.prod_desc}</td>
+                        <td>${currentItem.barcode}</td>
+                        <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
+                        <td class="text-center" style = 'text-align: center'>${stock} </td>
+                        <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;">History</button></td>
+                    </tr>`
+                );
+            }
+          } else {
+              tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
+          }
+
+          var tblData = `
+            <table id='tbl_all_stocks' class='text-color table-border' style='font-size: 12px;'>
+                <thead>
+                    <tr>
+                        <th class='text-center auto-fit'>No.</th>
+                        <th class = 'auto-fit'>Product</th>
+                        <th class='auto-fit'>Barcode</th>
+                        <th class='auto-fit' style = 'text-align: center'>Unit</th>
+                        <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
+                        <th class='auto-fit' style = 'text-align: center'>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tblRows.join('')}
+                </tbody>
+            </table>`;
+
+          $(".inventoryCard").html(tblData);
+        }
+      });
+    }
     function show_allLossAndDamagesInfo()
     {
       $.ajax({
@@ -871,7 +934,7 @@ body {
                 $("#totalQty").html("0");
                 $("#totalPrice").html("&#x20B1;&nbsp;0.00");
                 $("#overallTotal").html("&#x20B1;&nbsp;0.00");
-                show_response(response.message);
+                show_sweetReponse(response.message);
                 show_allInventories();
                 show_purchaseOrderNo();
                 show_allProducts();
@@ -1050,6 +1113,33 @@ body {
             }
         })
       }
+      function show_sweetReponse(message)
+      {
+          toastr.options = {
+            "onShown": function () {
+                  $('.custom-toast').css({
+                      "opacity": 1,
+                      "width": "600px",
+                      "text-align":"center",
+                      "border":"2px solid #1E1C11",
+                  });
+              },
+              "closeButton": true,
+              "positionClass": "toast-top-right",
+              "timeOut": "5000",
+              "extendedTimeOut": "1000", 
+              "progressBar": true, 
+              "showEasing": "swing", 
+              "hideEasing": "linear", 
+              "showMethod": "fadeIn", 
+              "hideMethod": "fadeOut", 
+              "tapToDismiss": false, 
+              "toastClass": "custom-toast", 
+              "onclick": function() { alert('Clicked'); }
+              
+          };
+        toastr.success(message);
+      }
     $("#btn_savePO").click(function(e){
       e.preventDefault();
       var activeModuleId = $("button.active").attr('id');
@@ -1070,14 +1160,8 @@ body {
           success: function(response){
             if(response.status)
             {
-              $("#response_modal").slideDown({
-                backdrop: 'static',
-                keyboard: false,
-              });
-              $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
-              setTimeout(function() {
-                $("#response_modal").slideUp();
-              }, 10000);
+             
+              show_sweetReponse(response.msg);
               show_expiration();
             }
           }
@@ -1152,14 +1236,7 @@ body {
                 success: function(response){
                   if(response.status)
                   {
-                    $("#response_modal").slideDown({
-                      backdrop: 'static',
-                      keyboard: false,
-                    });
-                    $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
-                    setTimeout(function() {
-                      $("#response_modal").slideUp();
-                    }, 10000);
+                    show_sweetReponse(response.msg);
                     $("#tbl_inventory_count tbody").empty();
                     $("#inventorycount_form")[0].reset();
                     show_inventory_count_reference_no();
@@ -1230,14 +1307,7 @@ body {
                 {
                   if(response.status)
                   {
-                    $("#response_modal").slideDown({
-                      backdrop: 'static',
-                      keyboard: false,
-                    });
-                    $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
-                    setTimeout(function() {
-                      $("#response_modal").slideUp();
-                    }, 10000);
+                    show_sweetReponse(response.msg);
                     $("#lossanddamage_form")[0].reset();
                     $("#tbl_lossand_damages tbody").empty();
                     $("#footer_lossand_damages thead").find("#total_qty").html("0");
@@ -1305,14 +1375,7 @@ body {
                 success: function(response){
                   if(response.status)
                   {
-                    $("#response_modal").slideDown({
-                      backdrop: 'static',
-                      keyboard: false,
-                    });
-                    $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; "+response.msg);
-                    setTimeout(function() {
-                      $("#response_modal").slideUp();
-                    }, 10000);
+                    show_sweetReponse(response.msg);
                     $("#r_PONumbers").val("");
                     $("#is_received").val("0");
                     $("#tbL_receivedItems tbody").empty();
