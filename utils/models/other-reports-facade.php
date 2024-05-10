@@ -3105,7 +3105,7 @@ public function zReadingReport($singleDateData,$startDate,$endDate){
     LIMIT 1) as void_end,
     (SELECT 
     IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.totalSales'), 0) AS total_sales
-    FROM z_read
+    FROM z_read  
     ORDER BY id DESC
     LIMIT 1) as total_sales,
     SUM(JSON_VALUE(all_data, '$.present_accumulated_sale')) AS total_present_accumulated_sale,

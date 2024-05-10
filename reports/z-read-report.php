@@ -333,6 +333,5 @@ $pdfPath = __DIR__ . '/../assets/pdf/zread/zReadReportList.pdf';
 if (file_exists($pdfPath)) {
     unlink($pdfPath);
 }
-
 $pdf->Output($pdfPath, 'F');
  ?>

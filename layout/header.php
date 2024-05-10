@@ -18,7 +18,6 @@
   <link rel="icon" href="assets/img/tinkerpro-logo-dark.png" type="image/png">
   <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="assets/vendors/base/vendor.bundle.base.css">
-  <link rel="stylesheet" href="assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/others/flatpicker.min.css">
   <link rel="stylesheet" href="assets/icons-main/font/bootstrap-icons.min.css">
@@ -28,9 +27,9 @@
   <link rel="stylesheet" href="assets/css/flatpickr.min.css">
   <link rel="stylesheet" href="assets/css/jquery-ui.css">
   <link rel="stylesheet" href="assets/js/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="assets/css/toastr.min.css">
 
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>
-  <script src="assets/js/bootstrap.min.js" crossorigin="anonymous"></script>
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/vendors/chart.js/Chart.min.js"></script>
   <script src="assets/vendors/datatables.net/jquery.dataTables.js"></script>
@@ -50,6 +49,7 @@
   <script src="assets/js/flatpickr.js"></script>
   <script src="assets/js/daterangepicker/moment.min.js"></script>
   <script src="assets/js/daterangepicker/daterangepicker.min.js"></script>
-  
+  <script src="assets/js/sweetalert.js"></script>
+  <script src="assets/js/toastr.min.js"></script>
 </head>
 <body>
