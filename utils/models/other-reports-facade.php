@@ -5,11 +5,19 @@
    public function getRefundData($selectedProduct,$singleDateData,$startDate,$endDate ){
 
       if($selectedProduct && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT r.id AS refunded_id, p.id as payment_id, products.prod_desc as prod_desc, 
-        r.refunded_qty as qty, r.reference_num as reference_num, r.refunded_amt as amount, r.date as date, r.refunded_method_id as method,
-        ( SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1 ) AS receipt_id FROM refunded AS r
-         INNER JOIN payments AS p ON r.payment_id = p.id 
-         INNER JOIN products ON r.prod_id = products.id WHERE r.prod_id = :selectedProduct';
+        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id
+        FROM refunded AS r
+        INNER JOIN payments AS p ON r.payment_id = p.id 
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id
+            FROM transactions
+        ) AS t ON t.payment_id = p.id
+        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
+        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
+        INNER JOIN products ON r.prod_id = products.id 
+        WHERE r.prod_id = :selectedProduct';
 
         $sql = $this->connect()->prepare($sql);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -17,13 +25,18 @@
         return $sql;
 
       }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT r.id AS refunded_id, p.id as payment_id, products.prod_desc as prod_desc, 
-        r.refunded_qty as qty, r.reference_num as reference_num, r.refunded_amt as amount, 
-        DATE(r.date) as date, r.refunded_method_id as method,
-        (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id 
+        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
-        INNER JOIN products ON r.prod_id = products.id 
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id
+            FROM transactions
+        ) AS t ON t.payment_id = p.id
+        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
+        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
+        INNER JOIN products ON r.prod_id = products.id
         WHERE DATE(r.date) = :singleDateData';
 
         $sql = $this->connect()->prepare($sql);
@@ -32,13 +45,18 @@
         return $sql;
 
       }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT r.id AS refunded_id, p.id as payment_id, products.prod_desc as prod_desc, 
-        r.refunded_qty as qty, r.reference_num as reference_num, r.refunded_amt as amount, 
-        DATE(r.date) as date, r.refunded_method_id as method,
-        (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id 
+        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
-        INNER JOIN products ON r.prod_id = products.id 
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id
+            FROM transactions
+        ) AS t ON t.payment_id = p.id
+        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
+        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
+        INNER JOIN products ON r.prod_id = products.id
         WHERE DATE(r.date) BETWEEN :startDate AND :endDate ';
 
         $sql = $this->connect()->prepare($sql);
@@ -47,13 +65,18 @@
         $sql->execute();
         return $sql;
       }else if($selectedProduct && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT r.id AS refunded_id, p.id as payment_id, products.prod_desc as prod_desc, 
-        r.refunded_qty as qty, r.reference_num as reference_num, r.refunded_amt as amount, 
-        DATE(r.date) as date, r.refunded_method_id as method,
-        (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id 
+        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+            r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
+            r.date AS date, r.refunded_method_id AS method, t.receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
-        INNER JOIN products ON r.prod_id = products.id 
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id
+            FROM transactions
+        ) AS t ON t.payment_id = p.id
+        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
+        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
+        INNER JOIN products ON r.prod_id = products.id
         WHERE r.prod_id = :selectedProduct AND DATE(r.date) = :singleDateData';
 
         $sql = $this->connect()->prepare($sql);
@@ -63,12 +86,17 @@
         return $sql;
 
       }else if($selectedProduct && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT r.id AS refunded_id, p.id as payment_id, products.prod_desc as prod_desc, 
-        r.refunded_qty as qty, r.reference_num as reference_num, r.refunded_amt as amount, 
-        DATE(r.date) as date, r.refunded_method_id as method,
-        (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id 
+        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
+        INNER JOIN (
+            SELECT DISTINCT payment_id, receipt_id
+            FROM transactions
+        ) AS t ON t.payment_id = p.id
+        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
+        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
         INNER JOIN products ON r.prod_id = products.id 
         WHERE r.prod_id = :selectedProduct AND DATE(r.date) BETWEEN :startDate AND :endDate';
 
@@ -79,11 +107,18 @@
         $sql->execute();
         return $sql;
       }else{
-        $sql = 'SELECT r.id AS refunded_id, p.id as payment_id, products.prod_desc as prod_desc, 
-        r.refunded_qty as qty, r.reference_num as reference_num, r.refunded_amt as amount, r.date as date, r.refunded_method_id as method,
-        ( SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1 ) AS receipt_id FROM refunded AS r
-         INNER JOIN payments AS p ON r.payment_id = p.id 
-         INNER JOIN products ON r.prod_id = products.id';
+        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id 
+    INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id
+        FROM transactions
+    ) AS t ON t.payment_id = p.id
+    INNER JOIN receipt AS rt ON rt.id = t.receipt_id
+    LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
+    INNER JOIN products ON r.prod_id = products.id;';
         $stmt = $this->connect()->query($sql);
         return $stmt;
       }
@@ -245,12 +280,15 @@
    }
    public function getReturnAndEx($selectedProduct,$singleDateData,$startDate,$endDate ){
     if($selectedProduct && !$singleDateData&& !$startDate && !$endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id as payment_id, products.prod_desc as prod_desc, 
-          r.return_qty as qty, r.date as date,
-          products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount,
-          ( SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1 ) AS receipt_id FROM return_exchange AS r
-          INNER JOIN payments AS p ON r.payment_id = p.id 
-          INNER JOIN products ON r.product_id = products.id WHERE r.product_id = :selectedProduct';
+          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+          SUM(r.return_qty) AS qty, r.date AS date,
+          products.prod_price AS prod_price, r.return_amount AS amount,
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+            FROM return_exchange AS r
+            INNER JOIN payments AS p ON r.payment_id = p.id 
+            INNER JOIN products ON r.product_id = products.id
+            WHERE r.product_id = :selectedProduct
+            GROUP BY p.id, products.id';
 
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -258,24 +296,30 @@
           return $sql;
 
     }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id as payment_id, products.prod_desc as prod_desc, 
-          r.return_qty as qty, r.date as date,
-          products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount,
-          ( SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1 ) AS receipt_id FROM return_exchange AS r
-          INNER JOIN payments AS p ON r.payment_id = p.id 
-          INNER JOIN products ON r.product_id = products.id WHERE DATE(r.date) = :singleDateData';
+          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+          SUM(r.return_qty) AS qty, r.date AS date,
+          products.prod_price AS prod_price, r.return_amount AS amount,
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+            FROM return_exchange AS r
+            INNER JOIN payments AS p ON r.payment_id = p.id 
+            INNER JOIN products ON r.product_id = products.id
+            WHERE DATE(r.date) = :singleDateData
+            GROUP BY p.id, products.id';
 
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':singleDateData', $singleDateData);
           $sql->execute();
           return $sql;
     }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id as payment_id, products.prod_desc as prod_desc, 
-          r.return_qty as qty, r.date as date,
-          products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount,
-          ( SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1 ) AS receipt_id FROM return_exchange AS r
-          INNER JOIN payments AS p ON r.payment_id = p.id 
-          INNER JOIN products ON r.product_id = products.id WHERE DATE(r.date) BETWEEN :startDate AND :endDate';
+          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+          SUM(r.return_qty) AS qty, r.date AS date,
+          products.prod_price AS prod_price, r.return_amount AS amount,
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+            FROM return_exchange AS r
+            INNER JOIN payments AS p ON r.payment_id = p.id 
+            INNER JOIN products ON r.product_id = products.id
+            WHERE DATE(r.date) BETWEEN :startDate AND :endDate 
+            GROUP BY p.id, products.id';
 
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':startDate', $startDate);
@@ -283,12 +327,15 @@
           $sql->execute();
           return $sql;
     }else if($selectedProduct && $singleDateData && !$startDate && !$endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id as payment_id, products.prod_desc as prod_desc, 
-          r.return_qty as qty, r.date as date,
-          products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount,
-          ( SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1 ) AS receipt_id FROM return_exchange AS r
-          INNER JOIN payments AS p ON r.payment_id = p.id 
-          INNER JOIN products ON r.product_id = products.id WHERE r.product_id = :selectedProduct AND DATE(r.date) = :singleDateData';
+          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+          SUM(r.return_qty) AS qty, r.date AS date,
+          products.prod_price AS prod_price, r.return_amount AS amount,
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+            FROM return_exchange AS r
+            INNER JOIN payments AS p ON r.payment_id = p.id 
+            INNER JOIN products ON r.product_id = products.id
+            WHERE r.product_id = :selectedProduct AND DATE(r.date) = :singleDateData 
+            GROUP BY p.id, products.id';
 
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -296,13 +343,15 @@
           $sql->execute();
           return $sql;
     }else if($selectedProduct && !$singleDateData && $startDate && $endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id as payment_id, products.prod_desc as prod_desc, 
-          r.return_qty as qty, r.date as date,
-          products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount,
-          ( SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1 ) AS receipt_id FROM return_exchange AS r
-          INNER JOIN payments AS p ON r.payment_id = p.id 
-          INNER JOIN products ON r.product_id = products.id WHERE  r.product_id = :selectedProduct AND DATE(r.date) BETWEEN :startDate AND :endDate';
-
+          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+          SUM(r.return_qty) AS qty, r.date AS date,
+          products.prod_price AS prod_price,  r.return_amount AS amount,
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+            FROM return_exchange AS r
+            INNER JOIN payments AS p ON r.payment_id = p.id 
+            INNER JOIN products ON r.product_id = products.id
+            WHERE  r.product_id = :selectedProduct AND DATE(r.date) BETWEEN :startDate AND :endDate
+            GROUP BY p.id, products.id';
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':selectedProduct', $selectedProduct);
           $sql->bindParam(':startDate', $startDate);
@@ -311,12 +360,16 @@
           return $sql;
     }
     else{
-      $sql = 'SELECT r.id AS return_id, p.id as payment_id, products.prod_desc as prod_desc, 
-      r.return_qty as qty, r.date as date,
-      products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount,
-      ( SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1 ) AS receipt_id FROM return_exchange AS r
-       INNER JOIN payments AS p ON r.payment_id = p.id 
-       INNER JOIN products ON r.product_id = products.id';
+
+        $sql= "SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+        SUM(r.return_qty) AS qty, r.date AS date,
+        products.prod_price AS prod_price,  r.return_amount AS amount,
+        (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+        FROM return_exchange AS r
+        INNER JOIN payments AS p ON r.payment_id = p.id 
+        INNER JOIN products ON r.product_id = products.id
+        GROUP BY p.id, products.id";
+
       $stmt = $this->connect()->query($sql);
       return $stmt;
     }
@@ -544,17 +597,17 @@
         GROUP BY 
             receipt_id
     )
-    
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
         c.first_name AS c_firstname,
         c.last_name AS c_lastname,
-        r.id AS receipt_id,
-        p.date_time_of_payment as date,
-        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-        COALESCE(p.creditTotal, 0) AS credit_amount,
-        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+        t.user_id,
+        cust.code as code,
+        cust.type as type,
+        SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+        SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+        SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
     FROM 
         payments AS p 
     RIGHT JOIN 
@@ -573,15 +626,16 @@
         receipt AS r ON r.id = t.receipt_id 
     INNER JOIN 
         users AS u ON u.id = t.user_id 
+    INNER JOIN customer as cust ON u.id = cust.user_id
     INNER JOIN 
-    users as c ON c.id = t.cashier_id
+        users AS c ON c.id = t.cashier_id
     LEFT JOIN 
         TotalPaid AS tp ON tp.receipt_id = r.id
     WHERE 
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId
     GROUP BY
-        u.first_name, u.last_name, p.creditTotal, r.id';
+        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':customerId', $selectedCustomers);
@@ -597,17 +651,17 @@
         GROUP BY 
             receipt_id
     )
-    
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
         c.first_name AS c_firstname,
         c.last_name AS c_lastname,
-        r.id AS receipt_id,
-        p.date_time_of_payment as date,
-        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-        COALESCE(p.creditTotal, 0) AS credit_amount,
-        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+        t.user_id,
+        cust.code as code,
+        cust.type as type,
+        SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+        SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+        SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
     FROM 
         payments AS p 
     RIGHT JOIN 
@@ -626,15 +680,16 @@
         receipt AS r ON r.id = t.receipt_id 
     INNER JOIN 
         users AS u ON u.id = t.user_id 
+    INNER JOIN customer as cust ON u.id = cust.user_id
     INNER JOIN 
-    users as c ON c.id = t.cashier_id
+        users AS c ON c.id = t.cashier_id
     LEFT JOIN 
         TotalPaid AS tp ON tp.receipt_id = r.id
     WHERE 
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY
-        u.first_name, u.last_name, p.creditTotal, r.id';
+         u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':singleDateData', $singleDateData);
@@ -650,17 +705,17 @@
         GROUP BY 
             receipt_id
     )
-    
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
         c.first_name AS c_firstname,
         c.last_name AS c_lastname,
-        r.id AS receipt_id,
-        p.date_time_of_payment as date,
-        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-        COALESCE(p.creditTotal, 0) AS credit_amount,
-        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+        t.user_id,
+        cust.code as code,
+        cust.type as type,
+        SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+        SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+        SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
     FROM 
         payments AS p 
     RIGHT JOIN 
@@ -679,15 +734,16 @@
         receipt AS r ON r.id = t.receipt_id 
     INNER JOIN 
         users AS u ON u.id = t.user_id 
+    INNER JOIN customer as cust ON u.id = cust.user_id
     INNER JOIN 
-    users as c ON c.id = t.cashier_id
+        users AS c ON c.id = t.cashier_id
     LEFT JOIN 
         TotalPaid AS tp ON tp.receipt_id = r.id
     WHERE 
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
     GROUP BY
-        u.first_name, u.last_name, p.creditTotal, r.id';
+        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':startDate', $startDate);
@@ -704,17 +760,17 @@
         GROUP BY 
             receipt_id
     )
-    
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
         c.first_name AS c_firstname,
         c.last_name AS c_lastname,
-        r.id AS receipt_id,
-        p.date_time_of_payment as date,
-        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-        COALESCE(p.creditTotal, 0) AS credit_amount,
-        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+        t.user_id,
+        cust.code as code,
+        cust.type as type,
+        SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+        SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+        SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
     FROM 
         payments AS p 
     RIGHT JOIN 
@@ -733,15 +789,16 @@
         receipt AS r ON r.id = t.receipt_id 
     INNER JOIN 
         users AS u ON u.id = t.user_id 
+    INNER JOIN customer as cust ON u.id = cust.user_id
     INNER JOIN 
-    users as c ON c.id = t.cashier_id
+        users AS c ON c.id = t.cashier_id
     LEFT JOIN 
         TotalPaid AS tp ON tp.receipt_id = r.id
     WHERE 
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY
-        u.first_name, u.last_name, p.creditTotal, r.id';
+        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':customerId', $selectedCustomers);
@@ -758,17 +815,17 @@
         GROUP BY 
             receipt_id
     )
-    
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
         c.first_name AS c_firstname,
         c.last_name AS c_lastname,
-        r.id AS receipt_id,
-        p.date_time_of_payment as date,
-        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-        COALESCE(p.creditTotal, 0) AS credit_amount,
-        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+        t.user_id,
+        cust.code as code,
+        cust.type as type,
+        SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+        SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+        SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
     FROM 
         payments AS p 
     RIGHT JOIN 
@@ -787,15 +844,16 @@
         receipt AS r ON r.id = t.receipt_id 
     INNER JOIN 
         users AS u ON u.id = t.user_id 
+    INNER JOIN customer as cust ON u.id = cust.user_id
     INNER JOIN 
-    users as c ON c.id = t.cashier_id
+        users AS c ON c.id = t.cashier_id
     LEFT JOIN 
         TotalPaid AS tp ON tp.receipt_id = r.id
     WHERE 
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId  AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
-    GROUP BY
-        u.first_name, u.last_name, p.creditTotal, r.id';
+     GROUP BY
+        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':startDate', $startDate);
@@ -813,17 +871,17 @@
         GROUP BY 
             receipt_id
     )
-    
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
         c.first_name AS c_firstname,
         c.last_name AS c_lastname,
-        r.id AS receipt_id,
-        p.date_time_of_payment as date,
-        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-        COALESCE(p.creditTotal, 0) AS credit_amount,
-        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+        t.user_id,
+        cust.code as code,
+        cust.type as type,
+        SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+        SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+        SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
     FROM 
         payments AS p 
     RIGHT JOIN 
@@ -842,15 +900,16 @@
         receipt AS r ON r.id = t.receipt_id 
     INNER JOIN 
         users AS u ON u.id = t.user_id 
+    INNER JOIN customer as cust ON u.id = cust.user_id
     INNER JOIN 
-    users as c ON c.id = t.cashier_id
+        users AS c ON c.id = t.cashier_id
     LEFT JOIN 
         TotalPaid AS tp ON tp.receipt_id = r.id
     WHERE 
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId
     GROUP BY
-        u.first_name, u.last_name, p.creditTotal, r.id';
+         u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':userId',  $userId);
@@ -866,17 +925,17 @@
         GROUP BY 
             receipt_id
     )
-    
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
         c.first_name AS c_firstname,
         c.last_name AS c_lastname,
-        r.id AS receipt_id,
-        p.date_time_of_payment as date,
-        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-        COALESCE(p.creditTotal, 0) AS credit_amount,
-        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+        t.user_id,
+        cust.code as code,
+        cust.type as type,
+        SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+        SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+        SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
     FROM 
         payments AS p 
     RIGHT JOIN 
@@ -895,15 +954,16 @@
         receipt AS r ON r.id = t.receipt_id 
     INNER JOIN 
         users AS u ON u.id = t.user_id 
+    INNER JOIN customer as cust ON u.id = cust.user_id
     INNER JOIN 
-    users as c ON c.id = t.cashier_id
+        users AS c ON c.id = t.cashier_id
     LEFT JOIN 
         TotalPaid AS tp ON tp.receipt_id = r.id
     WHERE 
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY
-        u.first_name, u.last_name, p.creditTotal, r.id';
+        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':userId',  $userId);
@@ -920,17 +980,17 @@
         GROUP BY 
             receipt_id
     )
-    
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
         c.first_name AS c_firstname,
         c.last_name AS c_lastname,
-        r.id AS receipt_id,
-        p.date_time_of_payment as date,
-        IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-        COALESCE(p.creditTotal, 0) AS credit_amount,
-        COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
+        t.user_id,
+        cust.code as code,
+        cust.type as type,
+        SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+        SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+        SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
     FROM 
         payments AS p 
     RIGHT JOIN 
@@ -949,15 +1009,16 @@
         receipt AS r ON r.id = t.receipt_id 
     INNER JOIN 
         users AS u ON u.id = t.user_id 
+    INNER JOIN customer as cust ON u.id = cust.user_id
     INNER JOIN 
-    users as c ON c.id = t.cashier_id
+        users AS c ON c.id = t.cashier_id
     LEFT JOIN 
         TotalPaid AS tp ON tp.receipt_id = r.id
     WHERE 
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
     GROUP BY
-        u.first_name, u.last_name, p.creditTotal, r.id';
+        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':startDate', $startDate);
@@ -968,51 +1029,52 @@
     }
     else{
         $sql = 'WITH TotalPaid AS (
-          SELECT 
-              receipt_id,
-              COALESCE(SUM(paid_amount), 0) AS total_paid_amount
-          FROM 
-              paid_credits 
-          GROUP BY 
-              receipt_id
-      )
-      
-      SELECT 
-          u.first_name AS first_name,
-          u.last_name AS last_name,
-          c.first_name AS c_firstname,
-          c.last_name AS c_lastname,
-          r.id AS receipt_id,
-          p.date_time_of_payment as date,
-          IFNULL(tp.total_paid_amount, 0) AS total_paid_amount,
-          COALESCE(p.creditTotal, 0) AS credit_amount,
-          COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0)  AS balance
-      FROM 
-          payments AS p 
-      RIGHT JOIN 
-          (
-              SELECT 
-                  payment_id, 
-                  user_id, 
-                  cashier_id,
-                  MAX(receipt_id) AS receipt_id
-              FROM 
-                  transactions 
-              GROUP BY 
-                  payment_id
-          ) AS t ON p.id = t.payment_id 
-      LEFT JOIN 
-          receipt AS r ON r.id = t.receipt_id 
-      INNER JOIN 
-          users AS u ON u.id = t.user_id 
-      INNER JOIN users as c ON c.id = t.cashier_id
-      LEFT JOIN 
-          TotalPaid AS tp ON tp.receipt_id = r.id
-      WHERE 
-          COALESCE(p.creditTotal, 0) != 0
-          AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0
-      GROUP BY
-          u.first_name, u.last_name, p.creditTotal, r.id;';
+            SELECT 
+                receipt_id,
+                COALESCE(SUM(paid_amount), 0) AS total_paid_amount
+            FROM 
+                paid_credits 
+            GROUP BY 
+                receipt_id
+        )
+        SELECT 
+            u.first_name AS first_name,
+            u.last_name AS last_name,
+            c.first_name AS c_firstname,
+            c.last_name AS c_lastname,
+            t.user_id,
+            cust.code as code,
+            cust.type as type,
+            SUM(IFNULL(tp.total_paid_amount, 0)) AS total_paid_amount,
+            SUM(COALESCE(p.creditTotal, 0)) AS credit_amount,
+            SUM(COALESCE(p.creditTotal, 0)) - SUM(IFNULL(tp.total_paid_amount, 0)) AS balance
+        FROM 
+            payments AS p 
+        RIGHT JOIN 
+            (
+                SELECT 
+                    payment_id, 
+                    user_id, 
+                    cashier_id,
+                    MAX(receipt_id) AS receipt_id
+                FROM 
+                    transactions 
+                GROUP BY 
+                    payment_id
+            ) AS t ON p.id = t.payment_id 
+        LEFT JOIN 
+            receipt AS r ON r.id = t.receipt_id 
+        INNER JOIN 
+            users AS u ON u.id = t.user_id 
+        INNER JOIN customer as cust ON u.id = cust.user_id
+        INNER JOIN 
+            users AS c ON c.id = t.cashier_id
+        LEFT JOIN 
+            TotalPaid AS tp ON tp.receipt_id = r.id
+        WHERE 
+            COALESCE(p.creditTotal, 0) != 0
+        GROUP BY
+            u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
         $stmt = $this->connect()->query($sql);
         return $stmt;
       }
@@ -2013,7 +2075,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2048,7 +2110,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2083,7 +2145,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2118,7 +2180,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2154,7 +2216,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         )
     ) AS jt
     INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+        SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
     ) AS t ON payments.id = t.payment_id
     INNER JOIN users AS u ON u.id = t.cashier_id
     WHERE 
@@ -2191,7 +2253,7 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
             )
         ) AS jt
         INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions
+            SELECT DISTINCT payment_id, receipt_id, cashier_id FROM transactions WHERE is_paid = 1 AND is_void = 0
         ) AS t ON payments.id = t.payment_id
         INNER JOIN users AS u ON u.id = t.cashier_id
         WHERE 
@@ -2706,9 +2768,387 @@ public function getPaymentMethodByCustomer($customerId,$singleDateData,$startDat
         }
     }
 }
+
+public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDate,$endDate){
+    if($selectedProduct && !$userId && !$singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.prod_id = :selectedProduct
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->execute();
+        return $sql;
+    }else if(!$selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.cashier_id = :cashier_id
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':cashier_id',  $userId);
+        $sql->execute();
+        return $sql;
+
+    }else if(!$selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+    }else if(!$selectedProduct && !$userId && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':stratDate',  $startDate);
+        $sql->bindParam(':endDate',  $endDate);
+        $sql->execute();
+        return $sql;
+    }else if($selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.cashier_id = :cashier_id AND t.prod_id = :selectedProduct
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':cashier_id',  $userId);
+        $sql->execute();
+        return $sql;
+    }else if($selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData AND t.prod_id = :selectedProduct
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+
+    }else if(!$selectedProduct && $userId && $singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData AND t.cashier_id = :cashier_id
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':cashier_id',  $userId);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+
+    }else if($selectedProduct && !$userId && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate AND t.prod_id = :selectedProduct
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':selectedProduct', $selectedProduct);
+        $sql->bindParam(':stratDate',  $startDate);
+        $sql->bindParam(':endDate',  $endDate);
+        $sql->execute();
+        return $sql;
+
+    }else if(!$selectedProduct && $userId && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate AND t.cashier_id = :cashier_id
+        ORDER BY  t.prod_desc ASC';
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':cashier_id',  $userId);
+        $sql->bindParam(':stratDate',  $startDate);
+        $sql->bindParam(':endDate',  $endDate);
+        $sql->execute();
+        return $sql;
+    }else{
+        $sql="SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        FROM transactions as t
+        INNER JOIN products as p
+        INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) ORDER BY  t.prod_desc ASC"; 
+
+        $stmt = $this->connect()->query($sql);
+        return $stmt; 
+    }
+
+}
 public function getDatePayments(){
     $sql = 'SELECT DATE(date_time_of_payment) as date FROM payments GROUP BY date ORDER BY date ASC';
     $stmt = $this->connect()->query($sql);
     return $stmt;
+}
+
+public function zReadingReport($singleDateData,$startDate,$endDate){
+    if($singleDateData && !$startDate && !$endDate ){
+        $sql = "SELECT 
+        JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
+        JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
+        JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
+        JSON_VALUE(all_data, '$[0].void_beg') AS void_beg,
+        (SELECT 
+        JSON_VALUE(all_data, '$.end_si') AS end_si
+        FROM z_read
+        ORDER BY id DESC
+        LIMIT 1) as end_si,
+        (SELECT 
+        JSON_VALUE(all_data, '$.return_end') AS return_end
+        FROM z_read
+        ORDER BY id DESC
+        LIMIT 1) as return_end,
+        (SELECT 
+        JSON_VALUE(all_data, '$.refund_end') AS refund_end
+        FROM z_read
+        ORDER BY id DESC
+        LIMIT 1) as refund_end,
+        (SELECT 
+        JSON_VALUE(all_data, '$.void_end') AS void_end
+        FROM z_read
+        ORDER BY id DESC
+        LIMIT 1) as void_end,
+        (SELECT 
+        IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.totalSales'), 0) AS total_sales
+        FROM z_read  WHERE DATE(date_time) = :singleDateData
+        ORDER BY id DESC
+        LIMIT 1) as total_sales,
+        SUM(JSON_VALUE(all_data, '$.present_accumulated_sale')) AS total_present_accumulated_sale,
+        SUM(JSON_VALUE(all_data, '$.previous_accumulated_sale')) AS total_previous_accumulated_sale,
+        SUM(JSON_VALUE(all_data, '$.vatable_sales')) AS total_vatable_sales,
+        SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount,
+        SUM(JSON_VALUE(all_data, '$.vat_exempt')) AS total_vat_exempt,
+        SUM(JSON_VALUE(all_data, '$.gross_amount')) AS total_gross_amount,
+        SUM(JSON_VALUE(all_data, '$.less_discount')) AS total_less_discount,
+        SUM(JSON_VALUE(all_data, '$.less_return_amount')) AS total_less_return_amount,
+        SUM(JSON_VALUE(all_data, '$.less_refund_amount')) AS total_less_refund_amount,
+        SUM(JSON_VALUE(all_data, '$.less_void')) AS total_less_void,
+        SUM(JSON_VALUE(all_data, '$.less_vat_adjustment')) AS total_less_vat_adjustment,
+        SUM(JSON_VALUE(all_data, '$.net_amount')) AS total_net_amount,
+        SUM(JSON_VALUE(all_data, '$.senior_discount')) AS total_senior_discount,
+        SUM(JSON_VALUE(all_data, '$.officer_discount')) AS total_officer_discount,
+        SUM(JSON_VALUE(all_data, '$.pwd_discount')) AS total_pwd_discount,
+        SUM(JSON_VALUE(all_data, '$.naac_discount')) AS total_naac_discount,
+        SUM(JSON_VALUE(all_data, '$.solo_parent_discount')) AS total_solo_parent_discount,
+        SUM(JSON_VALUE(all_data, '$.other_discount')) AS total_other_discount,
+        SUM(JSON_VALUE(all_data, '$.void')) AS total_void,
+        SUM(JSON_VALUE(all_data, '$.return')) AS total_return,
+        SUM(JSON_VALUE(all_data, '$.refund')) AS total_refund,
+        SUM(JSON_VALUE(all_data, '$.senior_citizen_vat')) AS total_senior_citizen_vat,
+        SUM(JSON_VALUE(all_data, '$.officers_vat')) AS total_officers_vat,
+        SUM(JSON_VALUE(all_data, '$.pwd_vat')) AS total_pwd_vat,
+        SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
+        SUM(JSON_VALUE(all_data, '$.total_void_vat')) AS total_void_vat,
+        SUM(JSON_VALUE(all_data, '$.vat_refunded')) AS total_vat_refunded,
+        SUM(JSON_VALUE(all_data, '$.vat_return')) AS total_vat_return,
+        SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS total_cash_in_receive,
+        SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS total_totalCcDb,
+        SUM(JSON_VALUE(all_data, '$.credit')) AS total_credit,
+        SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS total_totalEwallet,
+        SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS total_totalCoupon,
+        SUM(JSON_VALUE(all_data, '$.totalCashIn')) AS total_totalCashIn,
+        SUM(JSON_VALUE(all_data, '$.totalCashOut')) AS total_totalCashOut,
+        SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
+         date_time as date_time
+      FROM z_read WHERE DATE(date_time) = :singleDateData";
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+    }else if(!$singleDateData && $startDate && $endDate){
+        $sql = "SELECT 
+        JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
+        JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
+        JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
+        JSON_VALUE(all_data, '$[0].void_beg') AS void_beg,
+        (SELECT 
+        JSON_VALUE(all_data, '$.end_si') AS end_si
+        FROM z_read
+        ORDER BY id DESC
+        LIMIT 1) as end_si,
+        (SELECT 
+        JSON_VALUE(all_data, '$.return_end') AS return_end
+        FROM z_read
+        ORDER BY id DESC
+        LIMIT 1) as return_end,
+        (SELECT 
+        JSON_VALUE(all_data, '$.refund_end') AS refund_end
+        FROM z_read
+        ORDER BY id DESC
+        LIMIT 1) as refund_end,
+        (SELECT 
+        JSON_VALUE(all_data, '$.void_end') AS void_end
+        FROM z_read
+        ORDER BY id DESC
+        LIMIT 1) as void_end,
+        (SELECT 
+        IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.totalSales'), 0) AS total_sales
+        FROM z_read  WHERE DATE(date_time) BETWEEN :stratDate AND :endDate
+        ORDER BY id DESC
+        LIMIT 1) as total_sales,
+        SUM(JSON_VALUE(all_data, '$.present_accumulated_sale')) AS total_present_accumulated_sale,
+        SUM(JSON_VALUE(all_data, '$.previous_accumulated_sale')) AS total_previous_accumulated_sale,
+        SUM(JSON_VALUE(all_data, '$.vatable_sales')) AS total_vatable_sales,
+        SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount,
+        SUM(JSON_VALUE(all_data, '$.vat_exempt')) AS total_vat_exempt,
+        SUM(JSON_VALUE(all_data, '$.gross_amount')) AS total_gross_amount,
+        SUM(JSON_VALUE(all_data, '$.less_discount')) AS total_less_discount,
+        SUM(JSON_VALUE(all_data, '$.less_return_amount')) AS total_less_return_amount,
+        SUM(JSON_VALUE(all_data, '$.less_refund_amount')) AS total_less_refund_amount,
+        SUM(JSON_VALUE(all_data, '$.less_void')) AS total_less_void,
+        SUM(JSON_VALUE(all_data, '$.less_vat_adjustment')) AS total_less_vat_adjustment,
+        SUM(JSON_VALUE(all_data, '$.net_amount')) AS total_net_amount,
+        SUM(JSON_VALUE(all_data, '$.senior_discount')) AS total_senior_discount,
+        SUM(JSON_VALUE(all_data, '$.officer_discount')) AS total_officer_discount,
+        SUM(JSON_VALUE(all_data, '$.pwd_discount')) AS total_pwd_discount,
+        SUM(JSON_VALUE(all_data, '$.naac_discount')) AS total_naac_discount,
+        SUM(JSON_VALUE(all_data, '$.solo_parent_discount')) AS total_solo_parent_discount,
+        SUM(JSON_VALUE(all_data, '$.other_discount')) AS total_other_discount,
+        SUM(JSON_VALUE(all_data, '$.void')) AS total_void,
+        SUM(JSON_VALUE(all_data, '$.return')) AS total_return,
+        SUM(JSON_VALUE(all_data, '$.refund')) AS total_refund,
+        SUM(JSON_VALUE(all_data, '$.senior_citizen_vat')) AS total_senior_citizen_vat,
+        SUM(JSON_VALUE(all_data, '$.officers_vat')) AS total_officers_vat,
+        SUM(JSON_VALUE(all_data, '$.pwd_vat')) AS total_pwd_vat,
+        SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
+        SUM(JSON_VALUE(all_data, '$.total_void_vat')) AS total_void_vat,
+        SUM(JSON_VALUE(all_data, '$.vat_refunded')) AS total_vat_refunded,
+        SUM(JSON_VALUE(all_data, '$.vat_return')) AS total_vat_return,
+        SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS total_cash_in_receive,
+        SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS total_totalCcDb,
+        SUM(JSON_VALUE(all_data, '$.credit')) AS total_credit,
+        SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS total_totalEwallet,
+        SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS total_totalCoupon,
+        SUM(JSON_VALUE(all_data, '$.totalCashIn')) AS total_totalCashIn,
+        SUM(JSON_VALUE(all_data, '$.totalCashOut')) AS total_totalCashOut,
+        SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
+         date_time as date_time
+      FROM z_read WHERE DATE(date_time) BETWEEN :stratDate AND :endDate";
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':stratDate',  $startDate);
+        $sql->bindParam(':endDate',  $endDate);
+        $sql->execute();
+        return $sql;
+    }else{
+    $sql = "SELECT 
+    JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
+    JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
+    JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
+    JSON_VALUE(all_data, '$[0].void_beg') AS void_beg,
+    (SELECT 
+    JSON_VALUE(all_data, '$.end_si') AS end_si
+    FROM z_read
+    ORDER BY id DESC
+    LIMIT 1) as end_si,
+    (SELECT 
+    JSON_VALUE(all_data, '$.return_end') AS return_end
+    FROM z_read
+    ORDER BY id DESC
+    LIMIT 1) as return_end,
+    (SELECT 
+    JSON_VALUE(all_data, '$.refund_end') AS refund_end
+    FROM z_read
+    ORDER BY id DESC
+    LIMIT 1) as refund_end,
+    (SELECT 
+    JSON_VALUE(all_data, '$.void_end') AS void_end
+    FROM z_read
+    ORDER BY id DESC
+    LIMIT 1) as void_end,
+    (SELECT 
+    IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.totalSales'), 0) AS total_sales
+    FROM z_read  
+    ORDER BY id DESC
+    LIMIT 1) as total_sales,
+    SUM(JSON_VALUE(all_data, '$.present_accumulated_sale')) AS total_present_accumulated_sale,
+    SUM(JSON_VALUE(all_data, '$.previous_accumulated_sale')) AS total_previous_accumulated_sale,
+    SUM(JSON_VALUE(all_data, '$.vatable_sales')) AS total_vatable_sales,
+    SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount,
+    SUM(JSON_VALUE(all_data, '$.vat_exempt')) AS total_vat_exempt,
+    SUM(JSON_VALUE(all_data, '$.gross_amount')) AS total_gross_amount,
+    SUM(JSON_VALUE(all_data, '$.less_discount')) AS total_less_discount,
+    SUM(JSON_VALUE(all_data, '$.less_return_amount')) AS total_less_return_amount,
+    SUM(JSON_VALUE(all_data, '$.less_refund_amount')) AS total_less_refund_amount,
+    SUM(JSON_VALUE(all_data, '$.less_void')) AS total_less_void,
+    SUM(JSON_VALUE(all_data, '$.less_vat_adjustment')) AS total_less_vat_adjustment,
+    SUM(JSON_VALUE(all_data, '$.net_amount')) AS total_net_amount,
+    SUM(JSON_VALUE(all_data, '$.senior_discount')) AS total_senior_discount,
+    SUM(JSON_VALUE(all_data, '$.officer_discount')) AS total_officer_discount,
+    SUM(JSON_VALUE(all_data, '$.pwd_discount')) AS total_pwd_discount,
+    SUM(JSON_VALUE(all_data, '$.naac_discount')) AS total_naac_discount,
+    SUM(JSON_VALUE(all_data, '$.solo_parent_discount')) AS total_solo_parent_discount,
+    SUM(JSON_VALUE(all_data, '$.other_discount')) AS total_other_discount,
+    SUM(JSON_VALUE(all_data, '$.void')) AS total_void,
+    SUM(JSON_VALUE(all_data, '$.return')) AS total_return,
+    SUM(JSON_VALUE(all_data, '$.refund')) AS total_refund,
+    SUM(JSON_VALUE(all_data, '$.senior_citizen_vat')) AS total_senior_citizen_vat,
+    SUM(JSON_VALUE(all_data, '$.officers_vat')) AS total_officers_vat,
+    SUM(JSON_VALUE(all_data, '$.pwd_vat')) AS total_pwd_vat,
+    SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
+    SUM(JSON_VALUE(all_data, '$.total_void_vat')) AS total_void_vat,
+    SUM(JSON_VALUE(all_data, '$.vat_refunded')) AS total_vat_refunded,
+    SUM(JSON_VALUE(all_data, '$.vat_return')) AS total_vat_return,
+    SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS total_cash_in_receive,
+    SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS total_totalCcDb,
+    SUM(JSON_VALUE(all_data, '$.credit')) AS total_credit,
+    SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS total_totalEwallet,
+    SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS total_totalCoupon,
+    SUM(JSON_VALUE(all_data, '$.totalCashIn')) AS total_totalCashIn,
+    SUM(JSON_VALUE(all_data, '$.totalCashOut')) AS total_totalCashOut,
+    SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
+     date_time as date_time
+  FROM z_read;";
+    $stmt = $this->connect()->query($sql);
+    return $stmt;
+    }
+
 }
 }
