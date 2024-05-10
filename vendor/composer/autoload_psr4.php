@@ -17,6 +17,7 @@ return array(
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src/PhpOption'),
     'Paymongo\\' => array($vendorDir . '/paymongo/paymongo-php/src'),
+    'Mike42\\' => array($vendorDir . '/mike42/escpos-php/src/Mike42', $vendorDir . '/mike42/gfx-php/src/Mike42'),
     'Intervention\\Image\\' => array($vendorDir . '/intervention/image/src'),
     'Intervention\\Gif\\' => array($vendorDir . '/intervention/gif/src'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),

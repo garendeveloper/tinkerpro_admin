@@ -9,6 +9,7 @@
         "endroid/qr-code": "*",
         "guzzlehttp/guzzle": "*",
         "intervention/image": "*",
+        "mike42/escpos-php": "*",
         "paymongo/paymongo-php": "*",
         "tecnickcom/tcpdf": "*",
         "xendit/xendit-php": "*"

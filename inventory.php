@@ -510,8 +510,9 @@ body {
           var counter = 0;
           if (data.length > 0) {
             for (var i = 0, len = data.length; i < len; i++) {
-                var currentItem = data[i];
-                var stock =currentItem.stock;
+              var currentItem = data[i];
+              var stock =currentItem.stock;
+              if(currentItem.isReceived === 1){
                 if(stock > 10) stock = "<span style = 'color: yellowgreen'>"+stock+"</span>";
                 if(stock <= 10) stock = "<span style = 'color: red'>"+stock+"</span>";
                 tblRows.push(
@@ -524,6 +525,7 @@ body {
                         <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;">History</button></td>
                     </tr>`
                 );
+              }
             }
           } else {
               tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
@@ -1786,17 +1788,17 @@ body {
           if (data.length > 0) {
             for (var i = 0, len = data.length; i < len; i++) {
                 var currentItem = data[i];
-                
                 tblRows.push(
                     `<tr>
-                        <td class="text-center">${currentItem.inventory_id}</td>
+                        <td class="text-center">${i+1}</td>
                         <td>${currentItem.prod_desc}</td>
                         <td>${currentItem.barcode}</td>
                         <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
                         <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
                         <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
                         <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
-                        <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "YES" : "NO"}</td>
+                        <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "<span style = 'color: lightgreen'>Yes</span>" : "<span style = 'color: red'>No</span>"}</td>
+                        <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>Received</span>" : "<span style = 'color: yellow'>Purchased</span>"}</td>
                     </tr>`
                 );
             }
@@ -1808,7 +1810,7 @@ body {
             <table id='tbl_products' class='text-color table-border' style='font-size: 12px;'>
                 <thead>
                     <tr>
-                        <th class='text-center auto-fit'>ID</th>
+                        <th class='text-center auto-fit'>No.</th>
                         <th class = 'auto-fit'>Product</th>
                         <th class='auto-fit'>Barcode</th>
                         <th class='auto-fit' style = 'text-align: center'>Unit</th>
@@ -1816,6 +1818,7 @@ body {
                         <th class='auto-fit' style = 'text-align: center'>Amount Before Tax</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount After Tax</th>
                         <th class='auto-fit' style = 'text-align: center'>Is Paid</th>
+                        <th class='auto-fit' style = 'text-align: center'>Inventory Type</th>
                     </tr>
                 </thead>
                 <tbody>
