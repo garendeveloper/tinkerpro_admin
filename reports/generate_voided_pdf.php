@@ -20,22 +20,31 @@ $products = new ProductFacade();
 
 $counter = 1;
 $selectedProduct = $_GET['selectedProduct'] ?? null;
+$userId = $_GET['userId'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getDiscountPerItem($selectedProduct,$singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade-> getVoidedSales($selectedProduct,$userId,$singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
 
-$pdf = new TCPDF();
+$paperSize = 'Letter'; 
+
+ if ($paperSize == 'Letter') {
+    $pageWidth = 279.4;
+    $pageHeight = 215.9;
+}
+
+$pdf = new TCPDF('L', PDF_UNIT, array($pageWidth, $pageHeight), true, 'UTF-8', false);
 $pdf->SetCreator('TinkerPro Inc.');
 $pdf->SetAuthor('TinkerPro Inc.');
-$pdf->SetTitle('ITEMS DISCOUNTS Table PDF');
-$pdf->SetSubject('ITEMS DISCOUNTS PDF Document');
-$pdf->SetKeywords('TCPDF, PDF, ITEMS DISCOUNTS, table');
-
+$pdf->SetTitle('VOIDED ITEMS Table PDF');
+$pdf->SetSubject('VOIDED ITEMS Table PDF Document');
+$pdf->SetKeywords('TCPDF, PDF, VOIDED ITEMS, table');
+$pdf->SetDrawColor(255, 199, 60); 
+$pdf->Rect(0, 0, $pdf->getPageWidth(), $pdf->getPageHeight(), 'D');
 $pdf->AddPage();
 
 
@@ -49,7 +58,7 @@ $pdf->SetFont('', 'I', 8);
 
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell(0, 10, 'ITEMS DISCOUNTS', 0, 1, 'R', 0); 
+$pdf->Cell(0, 10, 'VOIDED ITEMS', 0, 1, 'R', 0); 
 $pdf->Ln(-5);
 $pdf->SetFont('',  10);
 $pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
@@ -107,19 +116,24 @@ if ($singleDateData && !$startDate && !$endDate) {
     } 
 }
 
-
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
-$header = array('No.', 'Product','Receipt No.','Date', 'Discount(Php)');
-$headerWidths = array(10, 60, 40, 40, 40);
+$header = array('Product','Cashier/User', 'Discount', 'Price', 'Qty.', 'Created', 'Voided', 'Reasons', 'Total(Php)');
+$pageWidth = $pdf->getPageWidth();
+$pageHeight = $pdf->getPageHeight();
+
+if ($pageWidth > $pageHeight) {
+    if ($pageWidth >= 279.4 && $pageHeight >= 215.9) {
+        $headerWidths = array(35, 35, 30, 20, 10, 40, 40,30,20);
+    }
+} 
+
 $maxCellHeight = 5; 
 
 $hexColor = '#F5F5F5';
 list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
 $pdf->SetFillColor($r, $g, $b);
-
-
 $pdf->SetFont('', 'B', 10);
 for ($i = 0; $i < count($header); $i++) {
     if ($header[$i] === 'Product') {
@@ -130,51 +144,66 @@ for ($i = 0; $i < count($header); $i++) {
 }
 $pdf->Ln(); 
 
-$totalPrice = 0; 
-$totalSubtotal = 0;
-$totalDiscount = 0;
+$totalAmount = 0; 
+$totalCash = 0;
+$totalEwallet = 0;
+$totalCC  = 0;
+$totalCredit = 0;
+$totalCoupons = 0;
 $pdf->SetFont('', '', 10); 
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalPrice += $row['prod_price'];
-    $totalSubtotal +=  $row['subtotal'];
-    $totalDiscount += $row['discount_amount'];
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[1]));
-    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), $headerWidths[2]));
-    $pdf->Cell($headerWidths[2], $maxCellHeight, str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['date'] !== null ? date('M j, Y H:i A', strtotime($row['date'])) : '', $headerWidths[3]));
-    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['date'] !== null ? date('M j, Y H:i A', strtotime($row['date'])) : '', 1, 0, 'L');
- ; 
+    $totalAmount += $row['subtotal'];
+     $dateVoided = null;
 
-
-    if ($row['discount_amount']) {
-        $discountValue = $row['discount_amount']; 
-        $discountPercentage = ($discountValue / ($row['prod_price'] * $row['qty'])) * 100; 
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
+     $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['first_name'] . ' ' .$row['last_name']  , $headerWidths[1]));
+     $pdf->Cell($headerWidths[1], $maxCellHeight, $row['first_name'] . ' ' .$row['last_name'] , 1, 0, 'L');   
+     if ($row['discount']) {
+        $discountValue = $row['discount']; 
+        $discountPercentage = ($discountValue / ($row['price'] * $row['qty'])) * 100; 
         $discountText = number_format($discountPercentage, 2) . '%'; 
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $discountText, $headerWidths[2]));
-        $discountDisplay = number_format(($discountValue /($row['prod_price'] * $row['qty'])) * 100, 2) . '% (' . number_format($discountValue, 2) . ')';
-        $pdf->Cell($headerWidths[4], $maxCellHeight, $discountDisplay, 1, 0, 'R');
+        $discountDisplay = number_format(($discountValue /($row['price'] * $row['qty'])) * 100, 2) . '% (' . number_format($discountValue, 2) . ')';
+        $pdf->Cell($headerWidths[2], $maxCellHeight, $discountDisplay, 1, 0, 'R');
     }else{
-        $pdf->Cell($headerWidths[4], $maxCellHeight, '', 1, 0, 'R');
+        $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
     }
-
-   
-    $pdf->Ln(); 
-    $counter++;
+     
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['price'], $headerWidths[3]));
+     $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['price'], 2), 1, 0, 'R');
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['qty'], $headerWidths[4]));
+     $pdf->Cell($headerWidths[4], $maxCellHeight, $row['qty'], 1, 0, 'C');
+     $dateCreated = date('M d, Y g:i A', strtotime($row['dateCreated']));
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $dateCreated, $headerWidths[5]));
+     $pdf->Cell($headerWidths[5], $maxCellHeight, $dateCreated, 1, 0, 'L');
+     if ($row['voided'] !== null) {
+        $dateVoided = date('M d, Y g:i A', strtotime($row['voided']));
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $dateVoided, $headerWidths[6]));
+        $pdf->Cell($headerWidths[6], $maxCellHeight, $dateVoided, 1, 0, 'L');
+    } else {
+        $pdf->Cell($headerWidths[6], $maxCellHeight, '', 1, 0, 'L');
+    }
+    
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['note'], $headerWidths[7]));
+    $pdf->Cell($headerWidths[7], $maxCellHeight, $row['note'], 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['subtotal'], $headerWidths[8]));
+    $pdf->Cell($headerWidths[8], $maxCellHeight, number_format($row['subtotal'], 2), 1, 0, 'R');
+    $pdf->Ln();
 }
 
 $pdf->SetFont('', 'B', 10); 
-$pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, 'C'); 
-$pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Total(Php)', 1, 0, 'L'); 
+
+$pdf->Cell($headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5] + $headerWidths[6] + $headerWidths[7]+ $headerWidths[8], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
-
-$pdf->Output('itemsDiscounts.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/discounts_items/itemsDiscounts.pdf';
-
-if (file_exists($pdfPath)) {
  
+
+$pdf->Output('voidedList.pdf', 'I');
+$pdfPath = __DIR__ . '/../assets/pdf/voided/voidedList.pdf';
+if (file_exists($pdfPath)) {
     unlink($pdfPath);
 }
+
 $pdf->Output($pdfPath, 'F');
-?>
+ ?>

@@ -272,10 +272,15 @@
             $result =  $supplier->getSuppliedIng($supplier_id);
             echo json_encode(['success' => true, 'result' =>  $result]); 
             break;
-        case "updateSupplier";
+        case "updateSupplier":
             $formData = $_POST;
-            $result =  $supplier->updateSupplier($formData);
+            // $result =  $supplier->updateSupplier($formData);
             echo json_encode([ 'success' => true, 'result' => $formData]);
+            break;
+        case "addCustomer":
+            $formData = $_POST;
+            $result =  $userFacade->addCustomer($formData);
+            echo json_encode([ 'success' => true, 'result' =>  $result]);
             break;
         default:
             header("HTTP/1.0 400 Bad Request");

@@ -113,41 +113,11 @@ $pdf->SetLineWidth(0.3);
 
 
 
-$totalAmount = 0; 
+
 $pdf->SetFont('', '', 10); 
-// while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-
-//     $pdf->SetFont('', 'B', 10);
-//     $pdf->Cell(0, 10, "Refund No.: {$row['reference_num']}", 0, 'L');
-//     $pdf->Ln(-1); 
-//     $header = array( 'Product', 'Barcode', 'SKU', 'Total Qty.', 'Amount(Php)');
-//     $headerWidths = array( 80, 25, 25, 20, 40);
-//     $maxCellHeight = 5; 
-
-//     $hexColor = '#F5F5F5';
-//     list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
-
-//     $pdf->SetFillColor($r, $g, $b);
-//     $pdf->SetFont('', 'B', 10);
-//     for ($i = 0; $i < count($header); $i++) {
-//         if ($header[$i] === 'Product') {
-//             $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
-//         } else {
-//             $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
-//         }
-//     }
-//     $pdf->Ln(); 
-//     $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
-//     $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'L');
-//     $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'L');
-//     $pdf->Cell($headerWidths[3], $maxCellHeight, $row['qty'], 1, 0, 'L');
-//     $pdf->Cell($headerWidths[4], $maxCellHeight, $row['amount'], 1, 0, 'R');
-//     $pdf->Ln(); 
-    
-// }
 
 $header = array('Product', 'Barcode', 'SKU', 'Total Qty.', 'Amount(Php)');
-$headerWidths = array(80, 25, 25, 20, 40);
+$headerWidths = array(70, 40, 20, 20, 40);
 $maxCellHeight = 5;
 
 $hexColor = '#F5F5F5';
@@ -156,28 +126,128 @@ list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 $pdf->SetFillColor($r, $g, $b);
 $pdf->SetFont('', 'B', 10);
 
+
+
+
+$amountPerRef = array();
+$previousRefNum = null;
+
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $pdf->SetFont('', 'B', 10);
-    $pdf->Cell(0, 10, "Refund No.: {$row['reference_num']}", 0, 'L');
-    $pdf->Ln(-1);
+    $referenceNum = $row['reference_num'] ?? null;
+    $method = $row['method'] ?? null;
 
-    $pdf->SetFont('', 'B', 10);
-    for ($i = 0; $i < count($header); $i++) {
-        if ($header[$i] === 'Product') {
-            $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
-        } else {
-            $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
+if($referenceNum ){
+    if ($referenceNum !== $previousRefNum) {
+        if (!is_null($previousRefNum)) {
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell($headerWidths[0], $maxCellHeight, 'Total(Php)', 1, 0, 'L');
+            $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum], 2), 1, 0, 'R');
+            $pdf->Ln();
         }
+        $pdf->SetFont('', 'B', 10);
+        $pdf->Cell(0, 10, "Refund No.: {$referenceNum}", 0, 'L');
+        $pdf->Ln(-1);
+
+        if( $method   == 7){
+           $pdf->Ln(-5);
+           $pdf->Cell(0, 10, "Refund Type.: Coupon/Voucher", 0, 'L');
+           $pdf->Ln(-6);
+           $pdf->SetFont('', 'I', 10);
+           $pdf->Cell(0, 10, "QR No.: {$row['qrNumber']}", 0, 'L');
+           $pdf->Ln(-1);
+        }else if( $method  == 1){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: Cash", 0, 'L');
+            $pdf->Ln(-1);
+          
+        }else if( $method  == 9){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: Shopee Pay", 0, 'L');
+            $pdf->Ln(-1);
+        }else if( $method  == 2){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: GCash", 0, 'L');
+            $pdf->Ln(-1);
+        }else if( $method  == 3){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: Pay Maya", 0, 'L');
+            $pdf->Ln(-1);
+
+        }else if( $method  == 4){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: Grab Pay", 0, 'L');
+            $pdf->Ln(-1);
+        }else if( $method  == 8){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: Ali Pay", 0, 'L');
+            $pdf->Ln(-1);
+
+        }else if( $method  == 5){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: Visa", 0, 'L');
+            $pdf->Ln(-1);
+
+        }else if( $method  == 6){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: Master Card", 0, 'L');
+            $pdf->Ln(-1);
+
+        }else if( $method  == 10){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: Discover", 0, 'L');
+            $pdf->Ln(-1);
+
+        }else if( $method  == 11){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: American Express", 0, 'L');
+            $pdf->Ln(-1);
+
+
+        }else if( $method  == 12){
+            $pdf->Ln(-5);
+            $pdf->Cell(0, 10, "Refund Type.: JCB", 0, 'L');
+            $pdf->Ln(-1);
+
+        }
+
+        $pdf->SetFont('', 'B', 10);
+        for ($i = 0; $i < count($header); $i++) {
+            if ($header[$i] === 'Product') {
+                $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
+            } else {
+                $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
+            }
+        }
+        $pdf->Ln();
+
+        $previousRefNum = $referenceNum;
+        $amountPerRef[$referenceNum] = 0;
     }
+
+
+    $pdf->SetFont('', '', 10);
+    $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
+    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['barcode'], 1, 0, 'L');
+    $pdf->Cell($headerWidths[2], $maxCellHeight, $row['sku'], 1, 0, 'C');
+    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['qty'], 1, 0, 'C');
+    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['amount'], 2), 1, 0, 'R');
     $pdf->Ln();
 
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
-    $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'L');
-    $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'L');
-    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['qty'], 1, 0, 'L');
-    $pdf->Cell($headerWidths[4], $maxCellHeight, $row['amount'], 1, 0, 'R');
-    $pdf->Ln();
+    $amountPerRef[$referenceNum] += $row['amount'] ?? null;
 }
+$pdf->SetFont('', 'B', 10);
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Total(Php)', 1, 0, 'L');
+$pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum], 2), 1, 0, 'R');
+$pdf->Ln();
+}
+
+
 
 
 $pdf->Output('refundList.pdf', 'I');
