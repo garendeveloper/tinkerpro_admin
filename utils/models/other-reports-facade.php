@@ -282,7 +282,7 @@
     if($selectedProduct && !$singleDateData&& !$startDate && !$endDate ){
           $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
-          products.prod_price AS prod_price, SUM(r.return_qty * products.prod_price) AS amount,
+          products.prod_price AS prod_price, r.return_amount AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
@@ -298,7 +298,7 @@
     }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate ){
           $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
-          products.prod_price AS prod_price, SUM(r.return_qty * products.prod_price) AS amount,
+          products.prod_price AS prod_price, r.return_amount AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
@@ -313,7 +313,7 @@
     }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate ){
           $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
-          products.prod_price AS prod_price, SUM(r.return_qty * products.prod_price) AS amount,
+          products.prod_price AS prod_price, r.return_amount AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
@@ -329,7 +329,7 @@
     }else if($selectedProduct && $singleDateData && !$startDate && !$endDate ){
           $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
-          products.prod_price AS prod_price, SUM(r.return_qty * products.prod_price) AS amount,
+          products.prod_price AS prod_price, r.return_amount AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
@@ -345,7 +345,7 @@
     }else if($selectedProduct && !$singleDateData && $startDate && $endDate ){
           $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
-          products.prod_price AS prod_price, SUM(r.return_qty * products.prod_price) AS amount,
+          products.prod_price AS prod_price,  r.return_amount AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
@@ -363,7 +363,7 @@
 
         $sql= "SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
         SUM(r.return_qty) AS qty, r.date AS date,
-        products.prod_price AS prod_price, SUM(r.return_qty * products.prod_price) AS amount,
+        products.prod_price AS prod_price,  r.return_amount AS amount,
         (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
         FROM return_exchange AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
