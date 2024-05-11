@@ -267,6 +267,11 @@ button:hover {
   .ui-datepicker-next {
     right: 2px;
   }
+  table thead tr th{
+        background-color: #FF6900;
+        color: white;
+        border-color: 1px solid #ccc;
+    }
 </style>
 <style>
     /* Custom CSS to minimize the height of the sweet alert */

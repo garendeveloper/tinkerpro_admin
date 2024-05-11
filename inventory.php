@@ -120,12 +120,12 @@ body {
                         <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration  <span id="expirationNotification" class="badge badge-danger" style = "font-size: 11px; background-color: red; color: white; "></span></button>
                         <!-- <button id="loss-damage2" class="grid-item text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button> -->
                         <!-- <button id="bom2" class="grid-item text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button> -->
-                        <button id="print-price-tags" class="grid-item text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button>
+                        <!-- <button id="print-price-tags" class="grid-item text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button> -->
                     </div>
                 </div>
                 <div class="division">
                     <div class="grid-container">
-                        <button id="recalculate-stocks" class="grid-item text-color button"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button>
+                        <!-- <button id="recalculate-stocks" class="grid-item text-color button"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button> -->
                     </div>
                 </div>
             </div>
@@ -151,6 +151,7 @@ body {
 <?php include("./modals/response-modal.php")?>
 <?php include("./modals/purchase_modal_payment.php")?>
 <?php include("./modals/received_payment_confirmation.php")?>
+<?php include("./modals/stockhistory.php")?>
 <?php include("layout/footer.php") ?>
 <?php include("layout/admin/keyboardfunction.php") ?>
 
@@ -303,7 +304,7 @@ body {
 
    $("#printThis").on("click", function(){
     var active_tbl_id = $(".inventoryCard table").attr('id');
-      if(active_tbl_id !== "tbl_expiredProducts" || active_tbl_id !== 'tbl_all_inventoryCounts' || active_tbl_id !== 'tbl_all_stocks')
+      if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
       {
         $.ajax({
             url: './reports/generate_inventory_pdf.php',
@@ -315,19 +316,18 @@ body {
                 active_type: active_tbl_id,
             },
             success: function(response) {
-              var newBlob = new Blob([response], { type: 'application/pdf' });
-        var blobURL = URL.createObjectURL(newBlob);
+                var newBlob = new Blob([response], { type: 'application/pdf' });
+                var blobURL = URL.createObjectURL(newBlob);
 
-        var newWindow = window.open(blobURL, '_blank');
-        if (newWindow) {
-            newWindow.onload = function() {
-                // Print the thermal print
-                newWindow.print();
-                newWindow.focus();
-            };
-        } else {
-            alert('Please allow popups for this website');
-        }
+                var newWindow = window.open(blobURL, '_blank');
+                if (newWindow) {
+                    newWindow.onload = function() {
+                        newWindow.print();
+                        newWindow.focus();
+                    };
+                } else {
+                    alert('Please allow popups for this website');
+                }
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -336,21 +336,23 @@ body {
       }
       else
       {
-        var modal = $("#response_modal");
-        $("#response_modal").slideDown({
-          backdrop: 'static',
-          keyboard: false,
-        });
-        $("#r_message").html("<i class = 'bi bi-exclamation-triangle bi-lg exclamation-icon'></i>&nbsp; Unfortunately, there are no download features available for this table.");
-        setTimeout(function() {
-          $("#response_modal").slideUp();
-        }, 3000);
+        // var modal = $("#response_modal");
+        // $("#response_modal").slideDown({
+        //   backdrop: 'static',
+        //   keyboard: false,
+        // });
+        // $("#r_message").html("<i class = 'bi bi-exclamation-triangle bi-lg exclamation-icon'></i>&nbsp; Unfortunately, there are no download features available for this table.");
+        // setTimeout(function() {
+        //   $("#response_modal").slideUp();
+        // }, 3000);
+        var message = "Unfortunately, there are no download features available for this table.";
+        show_errorResponse(message)
       }
 
    })
     $("#generatePDFBtn").on("click", function(){
       var active_tbl_id = $(".inventoryCard table").attr('id');
-      if(active_tbl_id !== "tbl_expiredProducts" || active_tbl_id !== 'tbl_all_inventoryCounts' || active_tbl_id !== 'tbl_all_stocks')
+      if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
       {
         $.ajax({
             url: './reports/generate_inventory_pdf.php',
@@ -381,15 +383,8 @@ body {
       }
       else
       {
-        var modal = $("#response_modal");
-        $("#response_modal").slideDown({
-          backdrop: 'static',
-          keyboard: false,
-        });
-        $("#r_message").html("<i class = 'bi bi-exclamation-triangle bi-lg exclamation-icon'></i>&nbsp; Unfortunately, there are no download features available for this table.");
-        setTimeout(function() {
-          $("#response_modal").slideUp();
-        }, 3000);
+        var message = "Unfortunately, there are no download features available for this table.";
+        show_errorResponse(message)
       }
     })
     $("#purchase-order").on('click', function(){
@@ -499,6 +494,43 @@ body {
       $(this).addClass('active');
       show_allStocks();
     })
+    $(".inventoryCard").on("click", "#btn_openStockHistory", function(){
+      var id = $(this).data('id');
+      $("#stockhistory_modal").slideDown({
+        backdrop: 'static',
+        keyboard: false,
+      });
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_allStocksData',
+        data: {inventory_id: id},
+        success: function(data)
+        {
+          var info = data.inventoryInfo;
+          var stocks = data.stocks;
+          var tbl_rows = [];
+          $("#stockhistory_modal").find(".modal-title").text("Inventory Ledger for "+info.prod_desc)
+          for(var i = 0, len = stocks.length; i<len; i++)
+          {
+            var stockItem = stocks[i];
+            var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+"+stockItem.stock+"</span>" : "<span style = 'color: red'>"+stockItem.stock + "<span>";
+            tbl_rows.push(
+              `<tr>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${date_format(stockItem.date)}</td>
+                  <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
+              </tr>`
+            );
+          }
+          var tfoot = `<tr>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>Remaining Stock</td>
+                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc'>${info.stock}</td>
+              </tr>`;
+
+          $("#tbl_stocks_history tbody").html(tbl_rows);
+          $("#tbl_stocks_history tfoot").html(tfoot);
+        }
+      })
+    })
     function show_allStocks()
     {
       $.ajax({
@@ -522,7 +554,7 @@ body {
                         <td>${currentItem.barcode}</td>
                         <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
                         <td class="text-center" style = 'text-align: center'>${stock} </td>
-                        <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;">History</button></td>
+                        <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;" data-id = '${currentItem.inventory_id}' id = "btn_openStockHistory">History</button></td>
                     </tr>`
                 );
               }
@@ -751,6 +783,7 @@ body {
     $(".inventoryCard").on("click", "#btn_view_inventoryCount", function(e){
       e.preventDefault();
       var id = $(this).data('id');
+      $("#printcount_modal").find("#inv_id").val(id);
       $.ajax({
         type: 'get',
         url: 'api.php?action=get_inventoryCountDataById',
@@ -1141,6 +1174,33 @@ body {
               
           };
         toastr.success(message);
+      }
+      function show_errorResponse(message)
+      {
+          toastr.options = {
+            "onShown": function () {
+                  $('.custom-toast').css({
+                      "opacity": 1,
+                      "width": "600px",
+                      "text-align":"center",
+                      "border":"2px solid #1E1C11",
+                  });
+              },
+              "closeButton": true,
+              "positionClass": "toast-top-right",
+              "timeOut": "5000",
+              "extendedTimeOut": "1000", 
+              "progressBar": true, 
+              "showEasing": "swing", 
+              "hideEasing": "linear", 
+              "showMethod": "fadeIn", 
+              "hideMethod": "fadeOut", 
+              "tapToDismiss": false, 
+              "toastClass": "custom-toast", 
+              "onclick": function() { alert('Clicked'); }
+              
+          };
+        toastr.error(message);
       }
     $("#btn_savePO").click(function(e){
       e.preventDefault();

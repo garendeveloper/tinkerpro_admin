@@ -69,6 +69,9 @@
             // $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
             echo json_encode($inventory->get_allInventories());
             break;
+        case 'get_allStocksData':
+            echo json_encode($inventory->get_allStocksData($_GET['inventory_id']));
+            break;
         case 'get_allProductByInventoryType':
             $inventory_type = $_GET['type'];
             echo json_encode($inventory->get_allProductByInventoryType($inventory_type));

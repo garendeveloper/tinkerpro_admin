@@ -114,7 +114,8 @@
             </span>
         </div>
         <div class="modal-body">
-            <input type="hidden" id = "active_print" value = "1">
+            <input type="hidden" id="active_print" value="1">
+            <input type="hidden" value = "0" id = "inv_id">
             <div class="firstCard">
                 <button id="btn_ic_bondpaper">
                     <h6>Print on Bond Paper Size</h6>
@@ -156,14 +157,44 @@
             $("#active_print").val("2");
         });
         $("#printcount_modal #btn_print").on("click", function () {
+            var inventory_id = $("#inv_id").val();
+            var type = $("#active_print").val();
             $.ajax({
                 url: "./toprint/printcount_sheet.php",
                 method: "GET",
+                xhrFields: {
+                    responseType: 'blob'
+                },
                 data: {
-                    type: $("#active_print").val(),
+                    type: type,
+                    inv_id: inventory_id,
                 },
                 success: function (response) {
-                    alert("Printing successful!");
+                    if(type === "1")
+                    {
+                        var newBlob = new Blob([response], { type: 'application/pdf' });
+                        var blobURL = URL.createObjectURL(newBlob);
+
+                        var newWindow = window.open(blobURL, '_blank');
+                        if (newWindow) {
+                            newWindow.onload = function() {
+                                newWindow.print();
+                                newWindow.focus();
+                            };
+                        } else {
+                            alert('Please allow popups for this website');
+                        }
+                    }
+                   else
+                   { 
+                    var previewWin = window.open('', 'Print-Window');
+                    previewWin.document.open();
+                    previewWin.document.write('<html><body>' + response + '</body></html>');
+                    previewWin.document.close();
+                    previewWin.focus();
+                    previewWin.print();
+                    previewWin.close();
+                   }
                 },
                 error: function (xhr, status, error) {
                     alert("Printing failed: " + xhr.responseText);

@@ -96,6 +96,21 @@ class InventoryFacade extends DBConnection
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
+    public function get_allStocksData($inventory_id)
+    {
+        $sql = "SELECT inventory.*, stocks.* 
+                FROM inventory
+                INNER JOIN stocks ON stocks.inventory_id = inventory.id
+                WHERE inventory.id = :inventory_id";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":inventory_id", $inventory_id);
+        $stmt->execute();
+        $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return [
+            'inventoryInfo' => $this->get_inventoryDataById($inventory_id),
+            'stocks' => $stocks,
+        ];
+    }
     public function get_expirationNotification()
     {
         $sql = $this->connect()->prepare("SELECT * FROM expiration_notification");
@@ -115,7 +130,7 @@ class InventoryFacade extends DBConnection
         $products = []; $notifications = [];
         foreach( $result as $row )
         {
-            $expiration_date = new DateTime($row['date_expired']);
+            $expiration_date = new DateTime($row['date_expired'] ?? '');
             $now = new DateTime();
             $interval = $expiration_date->diff($now);
             $days_remaining = $interval->days;
