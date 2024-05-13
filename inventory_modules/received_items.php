@@ -268,9 +268,30 @@
                 url: 'api.php?action=get_allPurchaseOrders',
                 success: function (data) {
                     for (var i = 0; i < data.length; i++) {
-                        po_numbers.push(data[i].po_number);
+                        if(data[i].is_received === 0)
+                        {
+                            po_numbers.push(data[i].po_number);
+                        }
                     }
-                    autocomplete(document.getElementById("r_PONumbers"), po_numbers);
+                    $("#r_PONumbers").autocomplete({
+                        source: function (request, response) {
+                            var term = request.term.toLowerCase();
+                            var array = po_numbers.filter(function (row) {
+                                return row.includes(term);
+                            });
+                            response(array.map(function (row) {
+                                return {
+                                    label: row,
+                                    value: row,
+                                };
+                            }));
+                        },
+                        select: function (event, ui) {
+                            var selectedItem = ui.value;
+                            // $("#r_PONumbers").val(selectedItem);
+                            return false;
+                        }
+                    });
                 }
             });
         }
@@ -382,7 +403,7 @@
 
             if (!isNaN(currentValue) && currentValue > qty_purchased) {
                 $(this).text(qty_purchased);
-                $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
+                // $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
             }
         });
         $("#tbl_receivedItems tbody").on('blur', "#qty_received", function () {
@@ -392,7 +413,7 @@
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(4)', function () {
             var text = $(this).text();
             if (text !== "") {
-                var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;'  placeholder='QTY'></input>";
+                var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;' placeholder='QTY'></input>";
                 $(this).empty().append(input);
             }
 

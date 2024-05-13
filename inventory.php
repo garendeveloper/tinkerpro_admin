@@ -544,20 +544,18 @@ body {
             for (var i = 0, len = data.length; i < len; i++) {
               var currentItem = data[i];
               var stock =currentItem.stock;
-              if(currentItem.isReceived === 1){
-                if(stock > 10) stock = "<span style = 'color: yellowgreen'>"+stock+"</span>";
-                if(stock <= 10) stock = "<span style = 'color: red'>"+stock+"</span>";
-                tblRows.push(
-                    `<tr>
-                        <td class="text-center">${i+1}</td>
-                        <td>${currentItem.prod_desc}</td>
-                        <td>${currentItem.barcode}</td>
-                        <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                        <td class="text-center" style = 'text-align: center'>${stock} </td>
-                        <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;" data-id = '${currentItem.inventory_id}' id = "btn_openStockHistory">History</button></td>
-                    </tr>`
-                );
-              }
+              if(stock > 10) stock = "<span style = 'color: yellowgreen'>"+stock+"</span>";
+              if(stock <= 10) stock = "<span style = 'color: red'>"+stock+"</span>";
+              tblRows.push(
+                  `<tr>
+                      <td class="text-center">${i+1}</td>
+                      <td>${currentItem.prod_desc}</td>
+                      <td>${currentItem.barcode}</td>
+                      <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
+                      <td class="text-center" style = 'text-align: center'>${stock} </td>
+                      <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;" data-id = '${currentItem.inventory_id}' id = "btn_openStockHistory">History</button></td>
+                  </tr>`
+              );
             }
           } else {
               tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
@@ -1006,10 +1004,30 @@ body {
             type: 'GET',
             url: 'api.php?action=get_allPurchaseOrders',
             success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    po_numbers.push(data[i].po_number);
-                }
-                autocomplete(document.getElementById("r_PONumbers"), po_numbers);
+              for (var i = 0; i < data.length; i++) {
+                  if(data[i].is_received === 0)
+                  {
+                      po_numbers.push(data[i].po_number);
+                  }
+              }
+              $("#r_PONumbers").autocomplete({
+                  source: function (request, response) {
+                      var term = request.term.toLowerCase();
+                      var array = po_numbers.filter(function (row) {
+                          return row.includes(term);
+                      });
+                      response(array.map(function (row) {
+                          return {
+                              label: row,
+                              value: row,
+                          };
+                      }));
+                  },
+                  select: function (event, ui) {
+                      var selectedItem = ui.value;
+                      return false;
+                  }
+              });
             }
         });
     }
@@ -1443,6 +1461,7 @@ body {
                     $("#tbL_receivedItems tbody").empty();
                     $("#po_data_div").hide();
                     $("#received_payment_confirmation").hide();
+                    show_allReceivedItems_PurchaseOrders();
                     show_allInventories();
                   }
                 } 
