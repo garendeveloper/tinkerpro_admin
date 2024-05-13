@@ -136,7 +136,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $referenceNum = $row['reference_num'] ?? null;
     $method = $row['method'] ?? null;
 
-if($referenceNum ){
+
     if ($referenceNum !== $previousRefNum) {
         if (!is_null($previousRefNum)) {
             $pdf->SetFont('', 'B', 10);
@@ -233,19 +233,19 @@ if($referenceNum ){
     $pdf->Cell($headerWidths[1], $maxCellHeight, $row['barcode'], 1, 0, 'L');
     $pdf->Cell($headerWidths[2], $maxCellHeight, $row['sku'], 1, 0, 'C');
     $pdf->Cell($headerWidths[3], $maxCellHeight, $row['qty'], 1, 0, 'C');
-    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['amount'], 2), 1, 0, 'R');
+    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['amount'] ?? 0, 2), 1, 0, 'R');
     $pdf->Ln();
 
-    $amountPerRef[$referenceNum] += $row['amount'] ?? null;
+    $amountPerRef[$referenceNum] += $row['amount'] ?? 0;
 }
 $pdf->SetFont('', 'B', 10);
 $pdf->Cell($headerWidths[0], $maxCellHeight, 'Total(Php)', 1, 0, 'L');
 $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
-$pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum], 2), 1, 0, 'R');
+$pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum] ?? 0, 2), 1, 0, 'R');
 $pdf->Ln();
-}
+
 
 
 
