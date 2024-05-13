@@ -239,6 +239,9 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
+                <div class="group">
+                    <label>RECEIVED STATUS: <strong id="received_status">RECEIVED</strong></label>
+                </div>
             </div>
             <table id="tbl_receivedItems" class="text-color" style="">
                 <thead>
@@ -268,10 +271,8 @@
                 url: 'api.php?action=get_allPurchaseOrders',
                 success: function (data) {
                     for (var i = 0; i < data.length; i++) {
-                        if(data[i].is_received === 0)
-                        {
                             po_numbers.push(data[i].po_number);
-                        }
+                        
                     }
                     $("#r_PONumbers").autocomplete({
                         source: function (request, response) {
@@ -332,8 +333,10 @@
                 dataType: 'json',
                 success: function (data) {
                     var table = "";
+                    if(data[0].isReceived === 1) $("#received_status").html("RECEIVED");
+                    else $("#received_status").html("PENDING");
                     $("#r_supplier").html(data[0].supplier);
-                    $("#is_received").val(data[0].is_received);
+                    $("#is_received").val(data[0].isReceived);
                     $("#r_datePurchased").html(date_format(data[0].date_purchased));
                     $("#r_po_number").html(data[0].po_number);
                     var isPaid = data[0].isPaid === 1 ?
@@ -408,7 +411,11 @@
         });
         $("#tbl_receivedItems tbody").on('blur', "#qty_received", function () {
             var currentValue = $(this).val();
-            $(this).closest("td").text(currentValue);
+            if(!isNaN(currentValue) && currentValue !== "")
+            {
+                $(this).closest("td").text(currentValue);
+            }
+           
         })
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(4)', function () {
             var text = $(this).text();

@@ -533,9 +533,10 @@ class InventoryFacade extends DBConnection
 
                 if($is_received)
                 {
-                    $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock, qty_received = :qty_received WHERE id = :id");
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock, qty_received = :qty_received, qty_purchased = qty_purchased - :qty_received WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
                     $stmt->bindParam(":qty_received", $qty_received, PDO::PARAM_STR);
+                    $stmt->bindParam(":qty_received", $qty_received);
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
@@ -563,9 +564,10 @@ class InventoryFacade extends DBConnection
                 else
                 {
                     $isReceived = 1;
-                    $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock, isReceived = :isReceived WHERE id = :id");
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock, qty_purchased = qty_purchased - :qty_received, isReceived = :isReceived WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
                     $stmt->bindParam(":isReceived", $isReceived); 
+                    $stmt->bindParam(":qty_received", $qty_received);
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 

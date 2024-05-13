@@ -67,7 +67,9 @@ class OrderFacade extends DBConnection
                 'prod_desc' => $row['prod_desc'],
                 'date_expired' => $row['date_expired'],
                 'stock'=>$row['stock'],
+                'isReceived'=>$row['isReceived'],
                 'is_received'=>$row['is_received'],
+                'isPaid'=>$row['isPaid'],
                 'sub_row'=>$this->get_allTheSerialized($row['inventory_id']),
             ];
         }

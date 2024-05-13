@@ -1005,10 +1005,7 @@ body {
             url: 'api.php?action=get_allPurchaseOrders',
             success: function (data) {
               for (var i = 0; i < data.length; i++) {
-                  if(data[i].is_received === 0)
-                  {
                       po_numbers.push(data[i].po_number);
-                  }
               }
               $("#r_PONumbers").autocomplete({
                   source: function (request, response) {
