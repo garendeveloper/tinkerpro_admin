@@ -3242,6 +3242,68 @@ public function zReadingReport($singleDateData,$startDate,$endDate){
 }
 
 public function birSalesReport($singleDateData,$startDate,$endDate){
+    if($singleDateData && !$startDate && !$endDate){
+        $sql = "SELECT z.id AS id,
+        s.shop_tin AS tin,
+        s.branch_code AS branch,
+        s.min,
+        MONTH(z.date_time) AS month,
+        YEAR(z.date_time) AS year,
+        ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vatable_sales'), 0)), 2) AS total_vatable_sales,
+        ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vat_exempt'), 0)), 2) AS total_vat_exempt,
+        MAX(JSON_VALUE(z.all_data, '$.end_si')) AS last_receipt
+    FROM shop AS s
+    CROSS JOIN (
+     SELECT 
+         MAX(JSON_VALUE(all_data, '$.end_si')) AS max_end_si,
+         MONTH(date_time) AS month,
+         YEAR(date_time) AS year
+     FROM z_read
+     GROUP BY MONTH(date_time), YEAR(date_time)
+    ) AS max_end_si_table
+    INNER JOIN z_read AS z ON JSON_VALUE(z.all_data, '$.end_si') = max_end_si_table.max_end_si
+                       AND MONTH(z.date_time) = max_end_si_table.month
+                       AND YEAR(z.date_time) = max_end_si_table.year
+    WHERE z.id IS NOT NULL AND DATE(z.date_time) = :singleDateData
+    GROUP BY s.shop_tin, s.branch_code, MONTH(z.date_time), YEAR(z.date_time);";
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':singleDateData',  $singleDateData);
+        $sql->execute();
+        return $sql;
+
+    }else if(!$singleDateData && $startDate && $endDate){
+        $sql = "SELECT z.id AS id,
+        s.shop_tin AS tin,
+        s.branch_code AS branch,
+        s.min,
+        MONTH(z.date_time) AS month,
+        YEAR(z.date_time) AS year,
+        ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vatable_sales'), 0)), 2) AS total_vatable_sales,
+        ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vat_exempt'), 0)), 2) AS total_vat_exempt,
+        MAX(JSON_VALUE(z.all_data, '$.end_si')) AS last_receipt
+    FROM shop AS s
+    CROSS JOIN (
+     SELECT 
+         MAX(JSON_VALUE(all_data, '$.end_si')) AS max_end_si,
+         MONTH(date_time) AS month,
+         YEAR(date_time) AS year
+     FROM z_read
+     GROUP BY MONTH(date_time), YEAR(date_time)
+    ) AS max_end_si_table
+    INNER JOIN z_read AS z ON JSON_VALUE(z.all_data, '$.end_si') = max_end_si_table.max_end_si
+                       AND MONTH(z.date_time) = max_end_si_table.month
+                       AND YEAR(z.date_time) = max_end_si_table.year
+    WHERE z.id IS NOT NULL AND DATE(z.date_time) BETWEEN :stratDate AND :endDate
+    GROUP BY s.shop_tin, s.branch_code, MONTH(z.date_time), YEAR(z.date_time);";
+
+        $sql = $this->connect()->prepare($sql);
+        $sql->bindParam(':stratDate',  $startDate);
+        $sql->bindParam(':endDate',  $endDate);
+        $sql->execute();
+        return $sql;
+
+    }else{
     $sql="SELECT z.id AS id,
     s.shop_tin AS tin,
     s.branch_code AS branch,
@@ -3267,5 +3329,12 @@ WHERE z.id IS NOT NULL
 GROUP BY s.shop_tin, s.branch_code, MONTH(z.date_time), YEAR(z.date_time);"; 
 $stmt = $this->connect()->query($sql);
 return $stmt;
+}
+}
+
+public function zReadDate(){
+    $sql="SELECT date_time AS date FROM z_read"; 
+    $stmt = $this->connect()->query($sql);
+    return $stmt;
 }
 }

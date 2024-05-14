@@ -96,7 +96,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $pdf->Cell(0, 10, "Period: $formattedStartDate - $formattedEndDate", 0, 'L');
 } else {
     $otherFacade = new OtherReportsFacade;
-    $others =    $otherFacade->getDatePayments();
+    $others =    $otherFacade->zReadDate();
     $dates = [];
     while ($row = $others->fetch(PDO::FETCH_ASSOC)) {
         $dates[] = $row['date'];
@@ -116,12 +116,12 @@ if ($singleDateData && !$startDate && !$endDate) {
 
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
-$header = array('TIN','Branch','Month','Year', 'MIN', 'Vatable Sales', 'Vat Zero Rated Sales', 'Vat Exempt Sales', 'Sales Subject to other percentage taxes');
+$header = array('TIN','Branch','Month','Year', 'MIN','Last OR','Vatable Sales', 'Vat 0 Rated Sales', 'Vat(E) Sales', 'Other percentage taxes');
 $pageWidth = $pdf->getPageWidth();
 $pageHeight = $pdf->getPageHeight();
 
 $headerWidths = array();
-$headerWidths = array(23, 20, 20, 20, 20, 30, 37, 37, 70);
+$headerWidths = array(23, 23, 23, 23,20, 30, 35, 30, 30, 40);
     
 $maxCellHeight = 5; 
 $hexColor = '#F5F5F5';
@@ -170,14 +170,17 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $pdf->Cell($headerWidths[3], $maxCellHeight, $row['year'], 1, 0, 'C');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['min'], $headerWidths[4]));   
     $pdf->Cell($headerWidths[4], $maxCellHeight, $row['min'], 1, 0, 'C');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_vatable_sales'] ?? 0, $headerWidths[5]));   
-    $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['total_vatable_sales'] ?? 0, 2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, 0, $headerWidths[6]));   
-    $pdf->Cell($headerWidths[6], $maxCellHeight, number_format( 0 ,2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_vat_exempt'] ?? 0, $headerWidths[7]));   
-    $pdf->Cell($headerWidths[7], $maxCellHeight, number_format($row['total_vat_exempt'] ?? 0, 2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, 0, $headerWidths[8]));   
-    $pdf->Cell($headerWidths[8], $maxCellHeight, number_format( 0 ,2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['last_receipt'] ?? 0, $headerWidths[5]));
+    $lastOR = str_pad($row['last_receipt'] ?? '', 9, '0', STR_PAD_LEFT); 
+    $pdf->Cell($headerWidths[5], $maxCellHeight, $lastOR, 1, 0, 'R');    
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_vatable_sales'] ?? 0, $headerWidths[6]));   
+    $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['total_vatable_sales'] ?? 0, 2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, 0, $headerWidths[7]));
+    $pdf->Cell($headerWidths[7], $maxCellHeight, number_format( 0 ,2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_vat_exempt'] ?? 0, $headerWidths[8]));   
+    $pdf->Cell($headerWidths[8], $maxCellHeight, number_format($row['total_vat_exempt'] ?? 0, 2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, 0, $headerWidths[9]));   
+    $pdf->Cell($headerWidths[9], $maxCellHeight, number_format( 0 ,2), 1, 0, 'R');
     $pdf->Ln();
 }
 
@@ -187,10 +190,11 @@ $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'L');
 $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'L'); 
 $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'L'); 
 $pdf->Cell($headerWidths[4], $maxCellHeight, '', 1, 0, 'L'); 
-$pdf->Cell($headerWidths[5], $maxCellHeight, number_format($totalAmountVatSales, 2), 1, 0, 'R'); 
-$pdf->Cell($headerWidths[6], $maxCellHeight, number_format(0, 2), 1, 0, 'R'); 
-$pdf->Cell($headerWidths[7], $maxCellHeight, number_format($totalAmountExemptSales, 2), 1, 0, 'R'); 
-$pdf->Cell($headerWidths[8], $maxCellHeight, number_format(0, 2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[5], $maxCellHeight, '', 1, 0, 'L'); 
+$pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalAmountVatSales, 2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[7], $maxCellHeight, number_format(0, 2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[8], $maxCellHeight, number_format($totalAmountExemptSales, 2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[9], $maxCellHeight, number_format(0, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
  
 
