@@ -102,7 +102,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $pdf->Cell(0, 10, "Period: $formattedStartDate - $formattedEndDate", 0, 'L');
 } else {
     $otherFacade = new OtherReportsFacade;
-    $others =    $otherFacade->getDatePayments();
+    $others =    $otherFacade->zReadDate();
     $dates = [];
     while ($data = $others->fetch(PDO::FETCH_ASSOC)) {
         $dates[] = $data['date'];
