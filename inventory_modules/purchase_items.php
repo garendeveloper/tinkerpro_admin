@@ -41,7 +41,7 @@
                 readonly />
             <div class="toggle-switch-container">
                 <label for="paidSwitch" class="switch-label" style="color: #28a745; ">Paid</label>
-                <div class="form-check form-switch" style="margin-left: 30px; ">
+                <div class="form-check form-switch" style="margin-left: 15px; ">
                     <input class="form-check-input" type="checkbox" id="paidSwitch" name="isPaid" style="height: 15px;">
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 </button>
             </div>
         </div>
-        <div class="fieldContainer" style = "margin-top: -3px;">
+        <div class="fieldContainer" style = "margin-top: 2px;">
             <label>Supplier</label>
             <div class="search-container">
                 <input type="text" class="search-input" autocomplete="off" type="text" 
@@ -62,10 +62,11 @@
           
         </div>
         <div class="fieldContainer" style = "margin-top: -3px;">
+            <input type = "hidden" id = "selected_product_id" value = "0" >
             <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
             <div class="search-container">
                 <input type="text" style="width: 280px; height: 30px;" class="search-input italic-placeholder"
-                    placeholder="Search Product" name="product" onkeyup="$(this).removeClass('has-error')" id="product"
+                    placeholder="Search Product,[Name, Barcode, Brand]" name="product" onkeyup="$(this).removeClass('has-error')" id="product"
                     autocomplete="off" >
             </div>
             <button style=" height: 30px; width: 120px; font-size: 12px;" id="btn_addPO">

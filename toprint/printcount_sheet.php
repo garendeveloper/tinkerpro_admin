@@ -80,7 +80,7 @@ try {
         $headerWidths = array(15, 70, 35, 35, 35);
         $maxCellHeight = 5;
 
-        $hexColor = '#FF6900';
+        $hexColor = 'gray';
         list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
         $pdf->SetFillColor($r, $g, $b);

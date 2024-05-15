@@ -78,7 +78,7 @@ switch($active_id)
         $headerWidths = array(7, 50, 35, 25, 20, 20, 20, 15);
         $maxCellHeight = 5;
         
-        $hexColor = '#FF6900';
+        $hexColor = '#F5F5F5';
         list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
         
         $pdf->SetFillColor($r, $g, $b);
@@ -143,7 +143,7 @@ switch($active_id)
         $headerWidths = array(10, 35, 50, 35, 35, 25);
         $maxCellHeight = 5;
         
-        $hexColor = '#FF6900';
+        $hexColor = '#F5F5F5';
         list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
         
         $pdf->SetFillColor($r, $g, $b);
@@ -199,7 +199,7 @@ switch($active_id)
         $headerWidths = array(10, 35, 25, 25, 25, 25, 25, 25);
         $maxCellHeight = 5;
         
-        $hexColor = '#FF6900';
+        $hexColor = '#F5F5F5';
         list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
         
         $pdf->SetFillColor($r, $g, $b);

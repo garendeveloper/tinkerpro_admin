@@ -219,7 +219,7 @@ class InventoryFacade extends DBConnection
     }
     public function get_allProducts()
     {
-        $sql = $this->connect()->prepare("SELECT A.*, B.id as inventory_id
+        $sql = $this->connect()->prepare("SELECT A.*
                                         FROM products A
                                         LEFT JOIN  inventory B ON A.ID = B.product_id
                                         WHERE B.product_id IS NULL");
@@ -245,10 +245,17 @@ class InventoryFacade extends DBConnection
     }
     public function get_productInfo($product)
     {
-        $sql = "SELECT *, isVat FROM products WHERE id = :id";
+        $data = explode(":", $product);
+        $data = array_map('trim', $data);
+        $prod_desc = $data[0];
+        $barcode = $data[1];
+
+        $sql = "SELECT id, isVat FROM products WHERE prod_desc = :prod_desc and barcode = :barcode";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(':id', $product, PDO::PARAM_STR);
+        $stmt->bindParam(':prod_desc', $prod_desc, PDO::PARAM_STR);
+        $stmt->bindParam(':barcode', $barcode, PDO::PARAM_STR);
         $stmt->execute();
+
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
@@ -390,7 +397,7 @@ class InventoryFacade extends DBConnection
         $totalPrice = $this->remove_nonBreakingSpace($this->clean_number($formData['totalPrice']));
         $order_type = 1;
       
-        $order_id = $this->get_lastOrderData() === false ? 0 : $this->get_lastOrderData()['id'];
+        $order_id = $this->get_lastOrderData()['id'];
         if ($formData['order_id'] !== "0") {
             $sql = "UPDATE orders SET isPaid = :v1, supplier_id = :v2, date_purchased = :v3, price = :v4, totalTax = :v5, totalQty = :v6, totalPrice = :v7 WHERE id = :id";
             $sqlStatement = $this->connect()->prepare($sql);
@@ -424,66 +431,63 @@ class InventoryFacade extends DBConnection
 
                 $order_id = $this->get_lastOrderData()['id'];
             }
-            if($order_id > 0)
-            {
-                if ($isPaid === 0) {
-                    $serializedFormData = $formData['payment_settings'];
-                   
-                    $payment_settings = [];
-                    parse_str($serializedFormData, $payment_settings);
-    
-                    $due_date = date('Y-m-d', strtotime($payment_settings['s_due']));
-                    $loanAmount = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_amount']));
-                    $interestRate = $payment_settings['interest_rate'];
-                    $withInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['withInterest']));
-                    $totalWithInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['total_withInterest']));
-                    $loanTerm = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_term']));
-                    $amortizationFrequency = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['amortization_frequency']));
-                    $amortizationFrequencyText = $formData['amortization_frequency_text'];
-                    $installment = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['installment']));
-                    $rBalance = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['r_balance']));
-                    $orderId = $order_id;
-                    $payment = $installment;
-                    if($rBalance === "0.00")
-                    {
-                        $changePaid = 1;
-                        $sql = "UPDATE orders SET isPaid = :v1 WHERE id = :id";
-                        $sqlStatement = $this->connect()->prepare($sql);
-                        $sqlStatement->bindParam(':v1', $changePaid);
-                        $sqlStatement->bindParam(':id', $orderId);
-                        $sqlStatement->execute();
-                    }
-                    $sql = "INSERT INTO order_payment_settings (loan, loan_percentage, interest, with_interest, due_date, term, amortization_value, amortization_text, installment, balance, order_id)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    $stmt = $this->connect()->prepare($sql);
-                    $stmt->bindParam(1, $loanAmount, PDO::PARAM_STR);
-                    $stmt->bindParam(2, $interestRate, PDO::PARAM_STR);
-                    $stmt->bindParam(3, $withInterest, PDO::PARAM_STR);
-                    $stmt->bindParam(4, $totalWithInterest, PDO::PARAM_STR);
-                    $stmt->bindParam(5, $due_date, PDO::PARAM_STR);
-                    $stmt->bindParam(6, $loanTerm, PDO::PARAM_STR);
-                    $stmt->bindParam(7, $amortizationFrequency, PDO::PARAM_STR);
-                    $stmt->bindParam(8, $amortizationFrequencyText, PDO::PARAM_STR);
-                    $stmt->bindParam(9, $installment, PDO::PARAM_STR);
-                    $stmt->bindParam(10, $rBalance, PDO::PARAM_STR);
-                    $stmt->bindParam(11, $orderId, PDO::PARAM_STR);
-                    $stmt->execute();
-    
-                    $last_setting_id = $this->get_lastSettingData()['id'];
-    
-                    $sql_payment = "INSERT INTO order_payments (order_setting_id, payment, balance, date_paid)
-                                        VALUES (?, ?, ?, ?)";
-    
-                    $orderSettingId = $last_setting_id;
-    
-                    $date_paid = date("Y-m-d");
-                    $stmt_payment = $this->connect()->prepare($sql_payment);
-                    $stmt_payment->bindParam(1, $orderSettingId, PDO::PARAM_INT);
-                    $stmt_payment->bindParam(2, $payment, PDO::PARAM_STR);
-                    $stmt_payment->bindParam(3, $rBalance, PDO::PARAM_STR);
-                    $stmt_payment->bindParam(4, $date_paid, PDO::PARAM_STR);
-                    $stmt_payment->execute();
+            if ($isPaid === 0) {
+                $serializedFormData = $formData['payment_settings'];
+               
+                $payment_settings = [];
+                parse_str($serializedFormData, $payment_settings);
+
+                $due_date = date('Y-m-d', strtotime($payment_settings['s_due']));
+                $loanAmount = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_amount']));
+                $interestRate = $payment_settings['interest_rate'];
+                $withInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['withInterest']));
+                $totalWithInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['total_withInterest']));
+                $loanTerm = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_term']));
+                $amortizationFrequency = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['amortization_frequency']));
+                $amortizationFrequencyText = $formData['amortization_frequency_text'];
+                $installment = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['installment']));
+                $rBalance = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['r_balance']));
+                $orderId = $order_id;
+                $payment = $installment;
+                if($rBalance === "0.00")
+                {
+                    $changePaid = 1;
+                    $sql = "UPDATE orders SET isPaid = :v1 WHERE id = :id";
+                    $sqlStatement = $this->connect()->prepare($sql);
+                    $sqlStatement->bindParam(':v1', $changePaid);
+                    $sqlStatement->bindParam(':id', $orderId);
+                    $sqlStatement->execute();
                 }
+                $sql = "INSERT INTO order_payment_settings (loan, loan_percentage, interest, with_interest, due_date, term, amortization_value, amortization_text, installment, balance, order_id)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->bindParam(1, $loanAmount, PDO::PARAM_STR);
+                $stmt->bindParam(2, $interestRate, PDO::PARAM_STR);
+                $stmt->bindParam(3, $withInterest, PDO::PARAM_STR);
+                $stmt->bindParam(4, $totalWithInterest, PDO::PARAM_STR);
+                $stmt->bindParam(5, $due_date, PDO::PARAM_STR);
+                $stmt->bindParam(6, $loanTerm, PDO::PARAM_STR);
+                $stmt->bindParam(7, $amortizationFrequency, PDO::PARAM_STR);
+                $stmt->bindParam(8, $amortizationFrequencyText, PDO::PARAM_STR);
+                $stmt->bindParam(9, $installment, PDO::PARAM_STR);
+                $stmt->bindParam(10, $rBalance, PDO::PARAM_STR);
+                $stmt->bindParam(11, $orderId, PDO::PARAM_STR);
+                $stmt->execute();
+
+                $last_setting_id = $this->get_lastSettingData()['id'];
+
+                $sql_payment = "INSERT INTO order_payments (order_setting_id, payment, balance, date_paid)
+                                    VALUES (?, ?, ?, ?)";
+
+                $orderSettingId = $last_setting_id;
+
+                $date_paid = date("Y-m-d");
+                $stmt_payment = $this->connect()->prepare($sql_payment);
+                $stmt_payment->bindParam(1, $orderSettingId, PDO::PARAM_INT);
+                $stmt_payment->bindParam(2, $payment, PDO::PARAM_STR);
+                $stmt_payment->bindParam(3, $rBalance, PDO::PARAM_STR);
+                $stmt_payment->bindParam(4, $date_paid, PDO::PARAM_STR);
+                $stmt_payment->execute();
             }
         }
         return $order_id;
@@ -506,7 +510,7 @@ class InventoryFacade extends DBConnection
                 $expired_date = date('Y-m-d', strtotime($row["date_expired"]));
             }
             $isSerialized = $row["isSerialized"];
-            $isSelected = isset($row["isSelected"]);
+            $isSelected = $row["isSelected"];
             $currentDate = date("Y-m-d");
 
             if ($isSelected) 
@@ -530,12 +534,10 @@ class InventoryFacade extends DBConnection
 
                 if($is_received)
                 {
-                    $isReceived = 1;
-                    $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = :qty_received, qty_purchased = qty_purchased - :counted WHERE id = :id");
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET stock = stock + :new_stock, qty_received = :qty_received, qty_purchased = qty_purchased - :qty_received WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
-                    $stmt->bindParam(":isReceived", $isReceived); 
+                    $stmt->bindParam(":qty_received", $qty_received, PDO::PARAM_STR);
                     $stmt->bindParam(":qty_received", $qty_received);
-                    $stmt->bindParam(":counted", $qty_received);
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
@@ -564,11 +566,10 @@ class InventoryFacade extends DBConnection
                 else
                 {
                     $isReceived = 1;
-                    $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = :qty_received, qty_purchased = qty_purchased - :counted WHERE id = :id");
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET stock = stock + :new_stock, qty_purchased = qty_purchased - :qty_received, isReceived = :isReceived WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
                     $stmt->bindParam(":isReceived", $isReceived); 
                     $stmt->bindParam(":qty_received", $qty_received);
-                    $stmt->bindParam(":counted", $qty_received);
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
@@ -630,7 +631,7 @@ class InventoryFacade extends DBConnection
     }
     public function check_ifInventoryExist($product_id)
     {
-        $sql = $this->connect()->prepare("SELECT id FROM inventory WHERE product_id = :product_id");
+        $sql = $this->connect()->prepare("SELECT * FROM inventory WHERE product_id = :product_id");
         $sql->bindValue(":product_id", $product_id, PDO::PARAM_STR);
         $sql->execute();
         return $sql->rowCount() > 0;
@@ -647,7 +648,6 @@ class InventoryFacade extends DBConnection
                 }
                 foreach ($tbldata as $row) {
                     $inventory_id = $row['inventory_id'];
-                    $product_id = $row['product_id'];
                     $product = $row['column_1'];
                     $quantity = $row['column_2'];
                     $price = $this->remove_nonBreakingSpace($this->clean_number($row['column_3']));
@@ -655,7 +655,8 @@ class InventoryFacade extends DBConnection
                     $status = 1;
                     $isSelected = 1;
 
-                    $isVat = $this->get_productInfo($product_id)['isVat'] === 1;
+                    $product_id = $this->get_productInfo($product)['id'];
+                    $isVat = $this->get_productInfo($product)['isVat'] == 1 ? true : false;
 
                     $amount_beforeTax = $price;
                     $amount_afterTax = 0;
@@ -684,7 +685,7 @@ class InventoryFacade extends DBConnection
                         }
                         else
                         {
-                            $existed_product[] = [$product_id];
+                            $existed_product[] = [$product];
                         }
                     } else {
                         $sql = "UPDATE inventory SET qty_purchased = :v1, amount_beforeTax = :v2, amount_afterTax = :v3, status = :v4, total = :v5, tax = :v6, order_id = :v7, product_id = :v8 WHERE id = :id";
@@ -706,7 +707,6 @@ class InventoryFacade extends DBConnection
             } else {
                 $order_id = $this->save_order($formData);
                 foreach ($tbldata as $row) {
-                    $product_id = $row['product_id'];
                     $product = $row['column_1'];
                     $quantity = $row['column_2'];
                     $price = $this->remove_nonBreakingSpace($this->clean_number($row['column_3']));
@@ -714,8 +714,9 @@ class InventoryFacade extends DBConnection
                     $status = 1;
                     $isSelected = 1;
 
-                    $isVat = $this->get_productInfo($product_id)['isVat'] === 1;
-               
+                    $product_id = $this->get_productInfo($product)['id'];
+                    $isVat = $this->get_productInfo($product)['isVat'] == 1 ? true : false;
+
                     $amount_beforeTax = $price;
                     $amount_afterTax = 0;
                     $tax = 0;
@@ -741,7 +742,7 @@ class InventoryFacade extends DBConnection
                         $sqlStatement->execute();
                     }
                     else{
-                        $existed_product[] = [$this->get_productInfo($product_id)['prod_desc']];
+                        $existed_product[] = [$product];
                     }
                 }
             }

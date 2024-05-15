@@ -19,26 +19,31 @@
                     totalExpired = 0;
                     products.forEach(function (product) {
                         var daysRemaining = product.days_remaining;
-                        if (firstNotif_isActive) {
-                            if(daysRemaining <= 30 && daysRemaining >= 16){
-                                totalExpired += 1;
+                        var isReceived = product.is_received === 1;
+                        if(isReceived)
+                        {
+                            if (firstNotif_isActive) {
+                                if(daysRemaining <= 30 && daysRemaining >= 16){
+                                    totalExpired += 1;
+                                }
+                            }
+                            if (secondNotif_isActive) {
+                                if(daysRemaining <= 15 && daysRemaining >= 6){
+                                    totalExpired += 1;
+                                }
+                            }
+                            if (thirdNotif_isActive) {
+                                if(daysRemaining <= 5 && daysRemaining >= 1){
+                                    totalExpired += 1;
+                                }
+                            }
+                            if (fourthNotif_isActive) {
+                                if(daysRemaining === 0){
+                                    totalExpired += 1;
+                                }
                             }
                         }
-                        if (secondNotif_isActive) {
-                            if(daysRemaining <= 15 && daysRemaining >= 6){
-                                totalExpired += 1;
-                            }
-                        }
-                        if (thirdNotif_isActive) {
-                            if(daysRemaining <= 5 && daysRemaining >= 1){
-                                totalExpired += 1;
-                            }
-                        }
-                        if (fourthNotif_isActive) {
-                            if(daysRemaining === 0){
-                                totalExpired += 1;
-                            }
-                        }
+                      
                         
                     });
                     if(totalExpired > 0)
