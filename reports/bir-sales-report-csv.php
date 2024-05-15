@@ -59,9 +59,9 @@ try {
             $row['min'] ?? '',
             $row['last_receipt'] ?? '',
             $row['total_vatable_sales'] ?? 0,
-            '',
+            0,
             $row['total_vat_exempt'] ?? 0,
-            ''
+            0
         ];
 
         if (fputcsv($output, $data) === false) {
