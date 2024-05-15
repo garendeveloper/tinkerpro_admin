@@ -351,6 +351,37 @@ body {
       }
 
    })
+   $('#generateEXCELBtn').click(function() {
+        var active_tbl_id = $(".inventoryCard table").attr('id');
+        if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
+        {
+          var fileName =active_tbl_id.replace("tbl_", "");
+          $.ajax({
+            url: './reports/generate_inventory_excel.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+                active_type: active_tbl_id, 
+            },
+          success: function(response) {
+                var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName+'.xlsx'; 
+                document.body.appendChild(link);
+                link.click();
+
+                // Clean up
+                document.body.removeChild(link);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+          });
+        }
+    });
     $("#generatePDFBtn").on("click", function(){
       var active_tbl_id = $(".inventoryCard table").attr('id');
       if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
