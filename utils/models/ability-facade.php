@@ -1,58 +1,65 @@
 <?php
 
   class AbilityFacade extends DBConnection {
-    public function processFormData($selectedUsers, $refundPermissions, $salesReportPermissions) {
-        $permissionData = array();
-        
-        if (!empty($refundPermissions)) {
-            $permissionData[] = array(
-                'Refund' => $refundPermissions
-            );
-        }
-    
-        if (!empty($salesReportPermissions)) {
-            $permissionData[] = array(
-                'SalesReport' => $salesReportPermissions
-            );
-        }
-    
-        $jsonData = json_encode($permissionData);
-        $query = "SELECT COUNT(*) AS count FROM abilities WHERE user_id = :user_id";
-        $statement = $this->connect()->prepare($query);
-    
-        $updateQuery = "UPDATE abilities SET permission = :permission WHERE user_id = :user_id";
-        $updateStatement = $this->connect()->prepare($updateQuery);
-    
-        $insertQuery = "INSERT INTO abilities (permission, user_id, created_at) VALUES (:permission, :user_id, now())";
-        $insertStatement = $this->connect()->prepare($insertQuery);
-    
-        foreach ($selectedUsers as $userId) {
-            $statement->bindParam(':user_id', $userId);
-            $statement->execute();
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-    
-            if ($result['count'] > 0) {
-                $updateStatement->bindParam(':permission', $jsonData);
-                $updateStatement->bindParam(':user_id', $userId);
-                $updateStatement->execute();
-            } else {
-                $insertStatement->bindParam(':permission', $jsonData);
-                $insertStatement->bindParam(':user_id', $userId);
-                $insertStatement->execute();
+    // public function getPermissionData($user_id){
+    //     $sql = $this->connect()->prepare("SELECT * FROM abilities WHERE user_id = :user_id");
+    //     $sql->bindParam(':user_id', $user_id);
+    //     $sql->execute();
+    //     $perm =  $sql->fetchAll(PDO::FETCH_ASSOC);
+    //   return  $perm;
+    // }
+    public function permission($userID){
+        // $permi = $this->connect()->prepare("SELECT level FROM ability  WHERE user_id = :userID");
+        $permi = $this->connect()->prepare("SELECT permission FROM abilities  WHERE user_id = :userID");
+        $permi->bindParam(':userID', $userID, PDO::PARAM_STR);
+        $permi->execute();
+
+        $id =  $permi->fetchAll(PDO::FETCH_ASSOC);
+        return $id;
+    }
+
+    public function checkCredentials($inputPassword) {
+        $stmt = $this->connect()->prepare("SELECT role_id, username, password FROM users  WHERE password = :password");
+        $stmt->bindParam(':password', $inputPassword, PDO::PARAM_STR);
+        $stmt->execute();
+       
+        if ($user = $stmt->fetch()) {
+            if ($inputPassword === $user['password']) {
+                if ($user['role_id'] == 1) {
+                    return 'superadmin';
+                } elseif ($user['role_id'] == 2) {
+                    return 'admin';
+                }
             }
         }
+
+        return false; 
+    }
+
+    public function perm($userID){
+        $permissions = [];
+        try {
+            $permi = $this->connect()->prepare("SELECT permission FROM abilities WHERE user_id = :userID");
+            $permi->bindParam(':userID', $userID, PDO::PARAM_INT);
+            $permi->execute();
+            
+            // Fetch the permissions data
+            $permissionsData = $permi->fetch(PDO::FETCH_ASSOC);
     
-       
-        $success = true;
-        return $success;
+            if ($permissionsData) {
+                // Decode the JSON data to an associative array
+                $permissions = json_decode($permissionsData['permission'], true);
+            }
+        } catch (PDOException $e) {
+            // Handle any potential exceptions or errors here
+            echo "Error: " . $e->getMessage();
+        }
+    
+        return $permissions;
     }
-    public function getPermissionData($user_id){
-        $sql = $this->connect()->prepare("SELECT * FROM abilities WHERE user_id = :user_id");
-        $sql->bindParam(':user_id', $user_id);
-        $sql->execute();
-        $perm =  $sql->fetchAll(PDO::FETCH_ASSOC);
-      return  $perm;
     }
-    }
+    
+
+    
     
   

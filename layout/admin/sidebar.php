@@ -1,3 +1,10 @@
+<?php include ("./modals/permissionModal.php") ?>
+<?php include ("./modals/access_granted.php") ?>
+<?php include ("./modals/access_denied.php") ?>
+
+
+
+
 <style>
     .site-header {
         color: #fff;
@@ -64,6 +71,8 @@
         text-align: right; 
         bottom: 0;
         min-height: 5vh; 
+
+    
     }
 </style>
 <header class="site-header">
@@ -74,16 +83,103 @@
 </header>
 <div class="sidebar">
     <a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp; Dashboard</a>
-    <a href="inventory" id="inventory"><i class="bi bi-box-seam"></i>&nbsp; Inventory </a>
-    <a href="products" id="products"><i class="bi bi-bag-check"></i>&nbsp; Products</a>
+    <a href="#" id="inventory"><i class="bi bi-box-seam"></i>&nbsp; Inventory </a>
+    <a href="#" id="products"><i class="bi bi-bag-check"></i>&nbsp; Products</a>
     <a href="ingredients" id="ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a>
     <a href="suppliers" id="suppliers"><i class="bi bi-people bi-3x "></i>&nbsp; Suppliers</a>
     <a href="customer" id="suppliers"><i class="bi bi-people bi-3x "></i>&nbsp; Customers</a>
-    <a href="reporting" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp; Reporting</a>
-    <a href="users" id="users"><i class="bi bi-person"></i>&nbsp; Users</a>
+    <a href="#" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp; Reporting</a>
+    <a href="#" id="users"><i class="bi bi-person"></i>&nbsp; Users</a>
     <a href="company" id="company"><i class="bi bi-building"></i>&nbsp; Company</a>
     <a href="machine-details" id="machine-details"><i class="bi bi-tools"></i>&nbsp; Machine Details</a>
     <a href="backup-restore" id="backup-restore"><i class="bi bi-cloud-arrow-up-fill"></i>&nbsp; Backup & Restore</a>
     <a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp; Logout</a>
-   
+    <input hidden class="userId" id="userId" value="<?php echo $userId; ?>"/>
 </div>
+<script>
+let  productSValidate  = false;  
+let  reportingsValidate = false;
+let  inventoryValidate = false;
+let  userValidate = false;
+$('#products').on('click', function(){
+// $('#toChangeText').text("Products")
+var forUser = document.getElementById('forUser')
+forUser.setAttribute('hidden',true)
+var forInventory = document.getElementById('forInventory')
+forInventory.setAttribute('hidden',true);
+var forProducts = document.getElementById('forProducts')
+forProducts.removeAttribute('hidden');
+var forUsers = document.getElementById('forUsers')
+forUsers.setAttribute('hidden',true)
+var forReportings = document.getElementById('forReportings')
+forReportings.setAttribute('hidden',true);
+  userSValidate  = false;  
+  productSValidate  = true; 
+  reportingsValidate = false;
+  inventoryValidate = false;
+  userValidate = false;
+  permModals() 
+})
+
+
+$('#reporting').on('click', function(){
+//  $('#toChangeText').text("Reports")
+ var forUser = document.getElementById('forUser')
+forUser.setAttribute('hidden',true)
+var forInventory = document.getElementById('forInventory')
+forInventory.setAttribute('hidden',true);
+var forReportings = document.getElementById('forReportings')
+forReportings.removeAttribute('hidden');
+var forProducts = document.getElementById('forProducts')
+forProducts.setAttribute('hidden',true);
+var forUsers = document.getElementById('forUsers')
+forUsers.setAttribute('hidden',true)
+  userSValidate  = false;  
+  productSValidate  = false;  
+  reportingsValidate = true;
+  inventoryValidate = false;
+  userValidate = false;
+  permModals() 
+})
+
+$('#inventory').on('click', function(){
+//  $('#toChangeText').text("Inventory")
+var forUser = document.getElementById('forUser')
+forUser.setAttribute('hidden',true)
+var forInventory = document.getElementById('forInventory')
+forInventory.removeAttribute('hidden');
+var forReportings = document.getElementById('forReportings')
+forReportings.setAttribute('hidden',true);
+var forProducts = document.getElementById('forProducts')
+forProducts.setAttribute('hidden',true);
+var forUsers = document.getElementById('forUsers')
+forUsers.setAttribute('hidden',true)
+  userSValidate  = false;  
+  productSValidate  = false;  
+  reportingsValidate = false;
+  inventoryValidate = true;
+  userValidate = false;
+  permModals() 
+})
+$('#users').on('click', function(){
+//  $('#toChangeText').text("Users")
+var forUser = document.getElementById('forUser')
+forUser.removeAttribute('hidden')
+var forInventory = document.getElementById('forInventory')
+forInventory.setAttribute('hidden',true);
+var forReportings = document.getElementById('forReportings')
+forReportings.setAttribute('hidden',true);
+var forProducts = document.getElementById('forProducts')
+forProducts.setAttribute('hidden',true);
+var forUsers = document.getElementById('forUsers')
+forUsers.setAttribute('hidden',true)
+  userSValidate  = false;  
+  productSValidate  = false;  
+  reportingsValidate = false;
+  inventoryValidate = false;
+  userValidate = true;
+  permModals() 
+})
+    
+    
+</script>

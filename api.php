@@ -7,6 +7,7 @@
     include( __DIR__ . '/utils/models/loss_and_damage-facade.php');
     include( __DIR__ . '/utils/models/supplier-facade.php');
     include( __DIR__ . '/utils/models/inventorycount-facade.php');
+    include( __DIR__ . '/utils/models/ability-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
@@ -21,6 +22,7 @@
     // $products = new ProductFacade();
     $ingredients = new IngredientsFacade();
     $supplier = new SupplierFacade();
+    $abilitties = new AbilityFacade();
 
     header("Content-Type: application/json");
     $json = file_get_contents('php://input');
@@ -285,6 +287,21 @@
             $result =  $userFacade->addCustomer($formData);
             echo json_encode([ 'success' => true, 'result' =>  $result]);
             break;
+       case 'credentialsAdmin':
+                $inputPassword = isset($_GET['credentials']) ? $_GET['credentials'] : null;
+                $crdentials = $abilitties->checkCredentials($inputPassword);
+                echo json_encode(["success" => true,
+                "credentials" =>  $crdentials
+                ]);
+        break; 
+        case 'getPermissionLevel':
+            $userID =  isset($_GET['userID']) ? $_GET['userID'] : null;
+            $permission = $abilitties->permission($userID);
+
+            echo json_encode( ["success" => true,
+            "permission" =>   $permission 
+        ]);
+        break; 
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
