@@ -1,5 +1,48 @@
 <?php include ("./layout/admin/expiration.php") ?>
 <?php include ("./modals/admin/add-products-modal.php") ?>
+<?php include ("./modals/alertModal.php") ?>
+<?php include ("./modals/permissionModal.php") ?>
+<?php include ("./modals/access_granted.php") ?>
+<?php include ("./modals/access_denied.php") ?>
+
+<?php
+
+
+$userId = 0;
+$firstName = "";
+$lastName = "";
+
+if (isset($_SESSION["user_id"])) {
+    $userId = $_SESSION["user_id"];
+}
+if (isset($_SESSION["first_name"])) {
+    $firstName = $_SESSION["first_name"];
+}
+if (isset($_SESSION["last_name"])) {
+    $lastName = $_SESSION["last_name"];
+}
+
+
+if ($userId == 0) {
+    header("Location: login");
+}
+
+$success = [];
+$info = [];
+
+if (isset($_GET["add_user"])) {
+    $error = $_GET["add_user"];
+    array_push($success, $error);
+}
+if (isset($_GET["update_user"])) {
+    $error = $_GET["update_user"];
+    array_push($info, $error);
+}
+if (isset($_GET["delete_user"])) {
+    $error = $_GET["delete_user"];
+    array_push($info, $error);
+}
+?>
 <script>
 
   $(document).ready(function () {
@@ -414,4 +457,163 @@
     }
 
   }
+  var modifiedMessageModal = $('#modifiedMessageModal');
+function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel) {
+  
+  if (type == 'error') {
+    document.getElementById('modalTitle').innerText = message;
+    document.getElementById('modalTitle').style.color = 'red';
+  } else {
+    document.getElementById('modalTitle').innerText = message;
+    document.getElementById('modalTitle').style.color = 'green';
+  }
+
+
+  if (isButtonYes) {
+    document.getElementById('yesBtn').classList.remove('d-none');
+  } else {
+    document.getElementById('yesBtn').classList.add('d-none');
+  }
+
+
+  var setIntervalMessage = setInterval(function () {
+    modifiedMessageModal.fadeIn('fast');
+    
+  }, 1);
+
+  setTimeout(function () {
+    clearInterval(setIntervalMessage);
+    modifiedMessageModal.fadeOut('fast');
+   
+  }, 1500);
+}
+
 </script>
+<style>
+   #permModal .modal-dialog {
+    max-width: fit-content;
+    min-width: 600px;
+
+  }
+
+  @media (max-width: 768px) {
+    #permModal .modal-dialog {
+      max-width: 90vw;
+    }
+  }
+
+  .modal-perm {
+    color: #ffff;
+    background: #262625;
+    border-radius: 0;
+    min-height: 300px;
+    position: relative;
+ 
+  }
+
+  #permModal .close-button {
+    position: absolute;
+    right: 1.6em;
+    top: 10px;
+    background: #FF6900;
+    color: #fff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 1vh;
+    
+  }
+
+  #permModalLabel{
+    font-family: Century Gothic;
+    font-size: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    display: flex;
+    align-items: center;
+   
+  }
+
+  #permModal .warning-container {
+    display: flex;
+    align-items: center;
+  }
+
+  #permModal .warning-container img {
+    width: 35px;
+    height: 35px;
+    margin-right: 0.5em;
+    margin-left: 1vh;
+    margin-top: -0.5em;
+  }
+
+.warningCards{
+    min-width: fit-content;
+    height: 180px;
+    margin-left: 2em;
+    border: 2px solid #4B413E;
+    border-radius: 0;
+    padding: 1.5vw;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    align-items: center;
+    background: #262625;
+    margin-right: 2em;
+    flex-shrink: 0;
+    margin-top: -5px;
+    z-index: 1060;
+  }
+
+  #permModal .warningText {
+    color: #fff;
+    margin-right: 2vw;
+    font-size: 1.5em;
+    font-family: "Century Gothic", sans-serif;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  #permModal .warning-container svg {
+    width: 35px;
+    height: 35px;
+    margin-right: 0.5em;
+    margin-left: 1em;
+    margin-top: -0.5em;
+  }
+
+  .confirmation-container {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    display: flex;
+    z-index: 1060;
+  }
+
+  .requestPermissionBtn {
+    font-family: Century Gothic;
+    width: 180px;
+    height: 40px;
+    margin-right: 2em;
+  
+  }
+
+  #adminCredentials {
+    margin-top: 1vh;
+ 
+  }
+
+.permissions:active,
+.permissions:focus {
+  background-color: #FF6900 !important;
+  color: #fff;
+  outline: 0 !important;
+}
+.permissions{
+  background-color: #FF6900 !important;
+  color:#fff;
+  outline: 0 !important;
+}
+  
+</style>
