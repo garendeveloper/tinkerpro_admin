@@ -323,7 +323,12 @@ switch($active_id)
                 $pdf->Ln(); 
                 $counter++;
             }
+           
         }
+        $footerText = "Total No: ".count($data);
+        $totalWidth = array_sum($headerWidths);
+        $pdf->Cell($totalWidth, $maxCellHeight, $footerText, 1, 0, 'R');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $days_remaining, $headerWidths[4]));
         
         break;
     default:

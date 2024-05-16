@@ -77,7 +77,7 @@ body {
   <div class="container-scroller">
     <div class="" >
       <?php include 'layout/admin/sidebar.php' ?>
-      <div class="main-panel" style = "display: grid; gird-template-columns: 4.5rem auto auto; align-items: center">
+      <div class="main-panel main-content" id="main-content" style = "display: grid; gird-template-columns: 4.5rem auto auto; align-items: center">
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px; width: 100%; margin-left: 15px; align-items: center;">
             <div class="horizontal-container" style="display: flex; align-items: center;">

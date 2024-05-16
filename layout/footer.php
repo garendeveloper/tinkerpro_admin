@@ -1,6 +1,7 @@
 <?php include ("./layout/admin/expiration.php") ?>
 <?php include ("./modals/admin/add-products-modal.php") ?>
 <script>
+
   $(document).ready(function () {
     $("#btn_logout").click(function () {
       if (confirm("Do you wish to proceed to logout?")) {

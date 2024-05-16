@@ -65,14 +65,33 @@
         bottom: 0;
         min-height: 5vh; 
     }
+    .sidebar .toggle-btn {
+  background-color: #444;
+  border: none;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-size: 18px;
+}
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  transition: margin-left 0.3s;
+}
+
+.main-content.shifted {
+  margin-left: 60px;
+}
 </style>
 <header class="site-header">
     <div class="header-container">
         <h6 class="logo">Management&nbsp; <i class="bi bi-globe" style="font-size: 0.5rem;"></i> <span
-                id="pointer"></span></h6>
+                id="pointer"></span> </h6>
     </div>
 </header>
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
     <a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp; Dashboard</a>
     <a href="inventory" id="inventory"><i class="bi bi-box-seam"></i>&nbsp; Inventory </a>
     <a href="products" id="products"><i class="bi bi-bag-check"></i>&nbsp; Products</a>
@@ -87,3 +106,4 @@
     <a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp; Logout</a>
    
 </div>
+
