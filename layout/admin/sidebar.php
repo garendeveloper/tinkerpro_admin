@@ -102,7 +102,7 @@ let  reportingsValidate = false;
 let  inventoryValidate = false;
 let  userValidate = false;
 $('#products').on('click', function(){
-// $('#toChangeText').text("Products")
+$('#toChangeText').text("Products")
 var forUser = document.getElementById('forUser')
 forUser.setAttribute('hidden',true)
 var forInventory = document.getElementById('forInventory')
@@ -123,7 +123,7 @@ forReportings.setAttribute('hidden',true);
 
 
 $('#reporting').on('click', function(){
-//  $('#toChangeText').text("Reports")
+ $('#toChangeText').text("Reports")
  var forUser = document.getElementById('forUser')
 forUser.setAttribute('hidden',true)
 var forInventory = document.getElementById('forInventory')
@@ -143,7 +143,7 @@ forUsers.setAttribute('hidden',true)
 })
 
 $('#inventory').on('click', function(){
-//  $('#toChangeText').text("Inventory")
+ $('#toChangeText').text("Inventory")
 var forUser = document.getElementById('forUser')
 forUser.setAttribute('hidden',true)
 var forInventory = document.getElementById('forInventory')
@@ -162,7 +162,7 @@ forUsers.setAttribute('hidden',true)
   permModals() 
 })
 $('#users').on('click', function(){
-//  $('#toChangeText').text("Users")
+ $('#toChangeText').text("Users")
 var forUser = document.getElementById('forUser')
 forUser.removeAttribute('hidden')
 var forInventory = document.getElementById('forInventory')
