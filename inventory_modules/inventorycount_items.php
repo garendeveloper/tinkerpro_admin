@@ -65,8 +65,8 @@
             <input type="text" name="ref" id="ic_reference" name="ic_reference"
                 style="width: 250px; height: 30px; font-size: 14px;" readonly>
             <div class="date-input-container">
-                <input type="text" name="date_counted" oninput="$(this).removeClass('has-error')" id="date_counted"
-                    style="height: 30px;  text-align: center" placeholder="Select date" readonly>
+                <input type="text" name="date_counted" value = "" oninput="$(this).removeClass('has-error')" id="date_counted"
+                    style="height: 30px;  text-align: center" >
                 <button id="btn_dateCounted" class="button" type="button" style="height: 30px;">
                     <i class="bi bi-calendar2" aria-hidden="true"></i>
                 </button>
@@ -110,6 +110,13 @@
 
 <?php include("./modals/print-counts-modal.php")?>
 <script>
+    $('#date_counted').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'M dd y',
+        minDate: 0,
+    });
+
     $(document).ready(function () {
         show_reference_no();
         function show_reference_no() {
@@ -136,15 +143,9 @@
             $("#printcount_modal.modal-content").css("margin", "15% auto");
             }
         });
-        $('#date_counted').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'M dd y',
-            altFormat: 'M dd y',
-            altField: '#date_counted',
-            minDate: 0,
-            onSelect: function (dateText, inst) { }
-        });
+  
+       
+        
         $("#qi_inventory_type").on("change", function(){
             $(this).css("border", "1px solid #ffff")
         })

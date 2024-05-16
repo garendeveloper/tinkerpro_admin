@@ -187,7 +187,7 @@
         top: 50%;
         right: 5px;
         transform: translateY(-50%);
-   
+
     }
 </style>
 <div class="fcontainer" id="received_div" style="display: none;">
@@ -217,7 +217,7 @@
                 </div>
             </div>
             <style>
-                #f_receive {    
+                #f_receive {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -231,7 +231,7 @@
                     margin-left: auto;
                 }
             </style>
-            <div class="fieldContainer" id = "f_receive">
+            <div class="fieldContainer" id="f_receive">
                 <div class="group left-aligned">
                     <label for=""><strong style="color: #ffff;">RECEIVE ALL</strong></label>
                     <label class="switch">
@@ -271,8 +271,8 @@
                 url: 'api.php?action=get_allPurchaseOrders',
                 success: function (data) {
                     for (var i = 0; i < data.length; i++) {
-                            po_numbers.push(data[i].po_number);
-                        
+                        po_numbers.push(data[i].po_number);
+
                     }
                     $("#r_PONumbers").autocomplete({
                         source: function (request, response) {
@@ -314,7 +314,7 @@
             var po_number = $("#r_PONumbers").val().trim();
             if (po_number !== '') {
                 po_number = $("#r_PONumbers").val();
-                if ($.inArray(po_number, po_numbers) !== -1) {
+                if(po_number !== ""){
                     show_orders(po_number);
                     $("#po_data_div").show();
                 } else {
@@ -333,7 +333,7 @@
                 dataType: 'json',
                 success: function (data) {
                     var table = "";
-                    if(data[0].isReceived === 1) $("#received_status").html("RECEIVED");
+                    if (data[0].isReceived === 1) $("#received_status").html("RECEIVED");
                     else $("#received_status").html("PENDING");
                     $("#r_supplier").html(data[0].supplier);
                     $("#is_received").val(data[0].isReceived);
@@ -343,48 +343,64 @@
                         "<span style = 'color: lightgreen'>PAID</span>" :
                         "<span style = 'color: red'>UNPAID</span>"
                     $("#r_isPaid").html(isPaid);
-
+                    
                     for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
                         table += "<tr data-id = " + data[i].inventory_id + ">";
-                        table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
-                        table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
+                        if(item.qty_purchased === 0)
+                        {
+                            table += "<td data-id = " + data[i].inventory_id + " colspan = '2'>" + data[i].prod_desc + "</td>";
+                        }
+                        else
+                        {
+                            table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
+                            table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
+                        }
+
                         table += "<td style = 'text-align: center; '>" + data[i].qty_purchased + "</td>";
 
-                        table += "<td style = 'text-align: center; background-color: #262626; ' data-id = " + data[i].sub_row.length + " ><input id = 'qty_received' placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
-
-                        if (data[i].date_expired === null) {
-                            table +=
-                                "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
+                        if(item.qty_purchased === 0)
+                        {
+                            table += "<td style = 'text-align: center; background-color: #262626; font-style: italic; color: green' colspan = '2'><b>Fully Received</b></td>";
                         }
-                        else {
-                            table +=
-                                "<td style = 'text-align: center; background-color: #262626; '>" + date_format(data[i].date_expired) + "</td>";
+                        else
+                        {
+                            table += "<td style = 'text-align: center; background-color: #262626; '  ><input id = 'qty_received'  placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
+
+                            if (data[i].date_expired === null) {
+                                table +=
+                                    "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
+                            }
+                            else {
+                                table +=
+                                    "<td style = 'text-align: center; background-color: #262626; '>" + date_format(data[i].date_expired) + "</td>";
+                            }
+                            // if (data[i].isSerialized === 1) {
+                            //     table +=
+                            //         "<td style = 'text-align: center'><div class='custom-checkbox checked disabled' id='check_isSerialized'></div></td>";
+                            // }
+                            // if (data[i].isSerialized === 0) {
+                            //     table +=
+                            //         "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
+                            // }
+                            // table += "</tr>";
+                            // if (data[i].isSerialized === 1) {
+                            //     var sub_row = data[i].sub_row;
+                            //     var html_sub_row = "";
+                            //     var counter = 1;
+                            //     for (var j = 0; j < sub_row.length; j++) {
+                            //         html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
+                            //         html_sub_row += "<td>" + counter + "</td>";
+                            //         html_sub_row += "<td data-id = " + sub_row[j].serial_id + " id = 'serial_id'><input  style = 'width: 130px; height: 20px; font-size: 12px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + "></input></td>";
+                            //         html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
+                            //         html_sub_row += "</tr>";
+                            //         counter++;
+                            //     }
+
+                            //     table += html_sub_row;
+
+                            // }
                         }
-                        // if (data[i].isSerialized === 1) {
-                        //     table +=
-                        //         "<td style = 'text-align: center'><div class='custom-checkbox checked disabled' id='check_isSerialized'></div></td>";
-                        // }
-                        // if (data[i].isSerialized === 0) {
-                        //     table +=
-                        //         "<td style = 'text-align: center'><div class='custom-checkbox' id='check_isSerialized'></div></td>";
-                        // }
-                        // table += "</tr>";
-                        // if (data[i].isSerialized === 1) {
-                        //     var sub_row = data[i].sub_row;
-                        //     var html_sub_row = "";
-                        //     var counter = 1;
-                        //     for (var j = 0; j < sub_row.length; j++) {
-                        //         html_sub_row += "<tr class ='sub-row' data-id = " + data[i].inventory_id + ">";
-                        //         html_sub_row += "<td>" + counter + "</td>";
-                        //         html_sub_row += "<td data-id = " + sub_row[j].serial_id + " id = 'serial_id'><input  style = 'width: 130px; height: 20px; font-size: 12px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + "></input></td>";
-                        //         html_sub_row += "<td><button class='btn_removeSerial button-cancel'><i class='bi bi-x'></i></button></td>";
-                        //         html_sub_row += "</tr>";
-                        //         counter++;
-                        //     }
-
-                        //     table += html_sub_row;
-
-                        // }
                     }
                     $("#tbl_receivedItems tbody").html(table);
                 },
@@ -394,33 +410,36 @@
             })
         }
         $('#tbl_receivedItems tbody').on('keypress', '#qty_received', function (event) {
-
             var charCode = event.which ? event.which : event.keyCode;
-            if (charCode < 48 || charCode > 57) {
+            if ((charCode < 48 || charCode > 57)) {
                 event.preventDefault();
             }
+            
         });
         $('#tbl_receivedItems tbody').on('input', '#qty_received', function () {
-            var qty_purchased = $(this).prev().text();
+            var closestTr = $(this).closest('tr');
+            var qtyPurchasedTd = closestTr.find('td:nth-child(3)');
+            var qty_purchased = parseInt(qtyPurchasedTd.text());
             var currentValue = parseInt($(this).val());
-
             if (!isNaN(currentValue) && currentValue > qty_purchased) {
-                $(this).text(qty_purchased);
+                $(this).val(qty_purchased);
                 // $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
             }
         });
         $("#tbl_receivedItems tbody").on('blur', "#qty_received", function () {
             var currentValue = $(this).val();
-            if(!isNaN(currentValue) && currentValue !== "")
-            {
+            if (!isNaN(currentValue) && currentValue !== "") {
+                $(this).removeClass('has-error');
                 $(this).closest("td").text(currentValue);
             }
-           
+            else{
+                $(this).addClass('has-error');
+            }
         })
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(4)', function () {
             var text = $(this).text();
             if (text !== "") {
-                var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;' placeholder='QTY'></input>";
+                var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;'  placeholder='QTY'></input>";
                 $(this).empty().append(input);
             }
 

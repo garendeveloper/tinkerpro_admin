@@ -21,7 +21,8 @@ class OrderFacade extends DBConnection
     {
         $sql = "SELECT orders.*, supplier.*
                 FROM orders
-                INNER JOIN supplier ON supplier.id = orders.supplier_id";
+                INNER JOIN supplier ON supplier.id = orders.supplier_id
+                ORDER BY orders.po_number asc";
 
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();

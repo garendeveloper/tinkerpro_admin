@@ -295,6 +295,7 @@ body {
     var totalPrice = 0;
     var overallTotal = 0;
     var selected_products = [];
+    var isSaving = false;
     $("#tbl_orders").hide();
     show_allInventories(); 
     show_allSuppliers();
@@ -350,6 +351,37 @@ body {
       }
 
    })
+   $('#generateEXCELBtn').click(function() {
+        var active_tbl_id = $(".inventoryCard table").attr('id');
+        if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
+        {
+          var fileName =active_tbl_id.replace("tbl_", "");
+          $.ajax({
+            url: './reports/generate_inventory_excel.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+                active_type: active_tbl_id, 
+            },
+          success: function(response) {
+                var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = fileName+'.xlsx'; 
+                document.body.appendChild(link);
+                link.click();
+
+                // Clean up
+                document.body.removeChild(link);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+          });
+        }
+    });
     $("#generatePDFBtn").on("click", function(){
       var active_tbl_id = $(".inventoryCard table").attr('id');
       if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
@@ -589,19 +621,29 @@ body {
         url: 'api.php?action=get_all_lostanddamageinfo',
         success: function(data)
         {
-          var rows = data.map(function(item) {
-              return "<tr>" +
-                    "<td class='autofit'>" + item.reference_no + "</td>" +
-                    "<td class='autofit' style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
-                    "<td class='autofit' style='text-align: center'>" + item.reason + "</td>" +
-                    "<td class='autofit' style='text-align: center'>" + item.total_qty + "</td>" +
-                    "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
-                    "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
-                    "<td class='autofit' style='text-align: center'>" + item.note + "</td>" +
-                    "<td style='text-align: center' class='autofit'><button data-id = "+item.id+" id='btn_view_lossanddamage'><i class='bi bi-eye'></i></button></td>" +
+          var rows;
+          if(data.length === 0)
+          {
+            var rows = "<tr>" +
+                    "<td class='autofit' colspan = '8'>There are no more losses or damages available.</td>" +
                     "</tr>";
-          });
-
+          }
+          else
+          {
+            rows = data.map(function(item) {
+                return "<tr>" +
+                      "<td class='autofit'>" + item.reference_no + "</td>" +
+                      "<td class='autofit' style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
+                      "<td class='autofit' style='text-align: center'>" + item.reason + "</td>" +
+                      "<td class='autofit' style='text-align: center'>" + item.total_qty + "</td>" +
+                      "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
+                      "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
+                      "<td class='autofit' style='text-align: center'>" + item.note + "</td>" +
+                      "<td style='text-align: center' class='autofit'><button data-id = "+item.id+" id='btn_view_lossanddamage'><i class='bi bi-eye'></i></button></td>" +
+                      "</tr>";
+            }).join('');
+          }
+      
           var tbl = "<table id='tbl_all_lostanddamages' class='text-color table-border' style='font-size: 12px;'>" +
                     "<thead>" +
                       "<tr>" +
@@ -616,7 +658,7 @@ body {
                       "</tr>" +
                     "</thead>" +
                     "<tbody>" +
-                      rows.join('') +
+                      rows+
                     "</tbody>" +
                     "</table>";
 
@@ -702,13 +744,23 @@ body {
         url: 'api.php?action=get_allInventoryCounts',
         success:function(data)
         {
-          var inv_count_rows = data.map(function(item) {
+          var inv_count_rows;
+          if(data.length > 0)
+          {
+            inv_count_rows = data.map(function(item) {
               return "<tr>" +
                     "<td class='autofit'>" + item.reference_no + "</td>" +
                     "<td class='autofit' style='text-align: center'>" + date_format(item.date_counted) + "</td>" +
                     "<td style='text-align: center' class='autofit'><button data-id = "+item.id+" id='btn_view_inventoryCount'><i class='bi bi-eye'></i></button></td>" +
-                    "</tr>";
-          });
+                    "</tr>";    
+              }).join('');
+          }
+          else
+          {
+            inv_count_rows =   "<tr>" +
+                    "<td class='autofit' colspan = '3'>No inventory counts available.</td>" +
+                    "</tr>";   
+          }
 
           var inv_count_tbl = "<table id='tbl_all_inventoryCounts' class='text-color table-border' style='font-size: 12px;'>" +
                               "<thead>" +
@@ -719,7 +771,7 @@ body {
                               "</tr>" +
                               "</thead>" +
                               "<tbody>" +
-                              inv_count_rows.join('') +
+                              inv_count_rows +
                               "</tbody>" +
                               "</table>";
 
@@ -917,23 +969,28 @@ body {
         submit_purchaseOrder();
       }
     })
+    var isSavingPO = false;
     function submit_purchaseOrder()
     {
+      if(isSavingPO) return;
       var tbl_length = $("#tbl_purchaseOrders tbody tr").length;
       if(tbl_length > 0)
       {
+        isSavingPO = true;
           var dataArray = [];
           $('#tbl_purchaseOrders tbody tr').each(function() {
               var rowData = {};
               $(this).find('td').each(function(index, cell) {
                 if (index === 0) 
                 {
-                  rowData['inventory_id'] = $(cell).data('id'); 
+                  rowData['product_id'] = $(cell).data('id'); 
+                  rowData['inventory_id'] = $(cell).data('inv_id'); 
                 }
                 rowData['column_' + (index + 1)] = $(cell).text(); 
               });
               dataArray.push(rowData);
           });
+          
           $.ajax({
             type: 'POST',
             url: 'api.php?action=save_purchaseOrder', 
@@ -957,6 +1014,7 @@ body {
             dataType: 'json',
             success: function(response) 
             {
+              isSavingPO = false;
               if(response.status)
               {
                 resetPurchaseOrderForm();
@@ -996,7 +1054,7 @@ body {
       }
       else
       {
-        alert("The table should not be empty.");
+        show_errorResponse("The table should not be empty.")
       }
     }
     function show_allReceivedItems_PurchaseOrders() {
@@ -1004,6 +1062,7 @@ body {
             type: 'GET',
             url: 'api.php?action=get_allPurchaseOrders',
             success: function (data) {
+              var po_numbers = [];
               for (var i = 0; i < data.length; i++) {
                       po_numbers.push(data[i].po_number);
               }
@@ -1217,8 +1276,11 @@ body {
           };
         toastr.error(message);
       }
+
     $("#btn_savePO").click(function(e){
       e.preventDefault();
+ 
+   
       var activeModuleId = $("button.active").attr('id');
       if(activeModuleId === "btn_expiration")
       {
@@ -1406,6 +1468,8 @@ body {
       }
       if(activeModuleId === "btn_receiveItems")
       {
+       
+  
         var table_id = "tbl_receivedItems";
         var received_items_length = $("#tbl_receivedItems tbody tr").length;
         if(received_items_length > 0)
@@ -1419,7 +1483,11 @@ body {
             $("#received_payment_confirmation #paid_title").html("Before proceeding, would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>");
             $("#received_payment_confirmation #total_paid").html($("#overallTotal").text());
             $("#received_payment_confirmation #paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color: #ffff;'>ATTENTION REQUIRED!</strong> ");
-            $("#received_payment_confirmation #btn_confirmPayment").click(function(){
+            $("#received_payment_confirmation #btn_confirmPayment").on("click", function(e){
+              
+              e.preventDefault();
+              if (isSaving) return;
+              isSaving = true;
               var tbl_data = [];
               var subRowData = [];
               $("#tbl_receivedItems tbody tr:not(.sub-row)").each(function(){
@@ -1450,6 +1518,7 @@ body {
                   is_received: $("#is_received").val(),
                 },
                 success: function(response){
+       
                   if(response.status)
                   {
                     show_sweetReponse(response.msg);
@@ -1460,8 +1529,12 @@ body {
                     $("#received_payment_confirmation").hide();
                     show_allReceivedItems_PurchaseOrders();
                     show_allInventories();
+                    isSaving = false;
                   }
-                } 
+               
+                },
+                error: function(){
+                }
               })
             })
           }
@@ -1521,7 +1594,7 @@ body {
         }
         else if(tbl_poL === 0 && validatePOForm())
         {
-          alert("Please choose a product to purchase");
+          show_errorResponse("Kindly add a product to your cart to proceed with the purchase.");
         }
         else
         {
@@ -1531,13 +1604,13 @@ body {
     })
     function isDataExistInTable(data) 
     {
+      var data = data;
       var isExist = false;
       $('#tbl_purchaseOrders tbody').each(function() {
-          var rowData = $(this).find('td:first').text(); 
-          if (rowData === data) 
+          var rowData = $(this).find('td:first').data('id');
+          if (rowData == data ) 
           {
             isExist = true;
-            return false; 
           }
       });
       return isExist;
@@ -1545,23 +1618,33 @@ body {
     $("#btn_addPO").click(function(e){
       e.preventDefault();
       var product = $("#product").val();
-      if(!isDataExistInTable(product))
+      var product_id = $("#selected_product_id").val();
+      if(!isDataExistInTable(product_id))
       {
         if(validatePOForm())
         {
-          
           $("#purchaseQty_modal").slideDown({
             backdrop: 'static',
             keyboard: false,
           });
-          $("#product_name").text(product);
-          $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong style = 'color:  #ffff'>ATTENTION REQUIRED!</strong> ");
+          $.ajax({
+            type: 'get',
+            url: 'api.php?action=get_productInfo',
+            data: {data:product_id},
+            success: function(data)
+            {
+              $("#product_name").text(data['prod_desc'] + " : " + data['barcode']);
+              $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong style = 'color:  #ffff'>ATTENTION REQUIRED!</strong> ");
+            }
+          });
+         
         }
       }
       else
       {
-        alert("Data is already in the table");
+        show_errorResponse("Item is already in the table");
         $("#product").val("");
+        $("#selected_product_id").val("0");
       }
     })
     function roundToTwoDecimalPlaces(number) 
@@ -1679,13 +1762,12 @@ body {
       {
         var p_qty = parseInt($("#p_qty").val());
         var price = parseFloat($("#price").val());
-        var product = $("#product").val();
+        var product_id = $("#selected_product_id").val();
         var total = (price * p_qty);  
-
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_productInfo',
-          data: {data:product},
+          data: {data:product_id},
           success: function(data)
           {
             var tax = 0;
@@ -1702,7 +1784,7 @@ body {
             $("#totalTax").html(totalTax.toFixed(2));
             $("#tbl_purchaseOrders tbody").append(
               "<tr>"+
-                "<td data-id = '0'>"+product+"</td>"+
+                "<td data-id = "+ data['id'] + ">"+data['prod_desc']+"</td>"+
                 "<td style = 'text-align: center' class ='editable'>"+p_qty+"</td>"+
                 "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;"+addCommasToNumber(price)+"</td>"+
                 "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(total)+"</td>"+
@@ -1839,16 +1921,49 @@ body {
         type: 'GET',
         url: 'api.php?action=get_allProducts',
         success: function(data){
+          // var products = [];
+          // for(var i = 0; i<data.length; i++)
+          // {
+          //   var isSelected = selected_products.includes(data[i].prod_desc+" : "+data[i].barcode);
+          //   if(!isSelected)
+          //   {
+          //     products.push(data[i].prod_desc+" : "+data[i].barcode);
+          //   }
+          // }
+          // autocomplete(document.getElementById("product"), products);
           var products = [];
-          for(var i = 0; i<data.length; i++)
-          {
-            var isSelected = selected_products.includes(data[i].prod_desc+" : "+data[i].barcode);
-            if(!isSelected)
-            {
-              products.push(data[i].prod_desc+" : "+data[i].barcode);
-            }
+          for (var i = 0; i < data.length; i++) {
+              var row = {
+                  inventory_id: data[i].inventory_id,
+                  product_id: data[i].id,
+                  product: data[i].prod_desc,
+                  barcode: data[i].barcode,
+                  brand: data[i].brand,
+              };
+              products.push(row);
           }
-          autocomplete(document.getElementById("product"), products);
+          $("#product").autocomplete({
+              source: function (request, response) {
+                  var term = request.term.toLowerCase();
+                  var filteredProducts = products.filter(function (row) {
+                      return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
+                          (!row.brand && term === "");
+                  });
+                  response(filteredProducts.map(function (row) {
+                      return {
+                          label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+                          value: row.barcode,
+                          inventory_id: row.inventory_id,
+                          id: row.product_id
+                      };
+                  }));
+              },
+              select: function (event, ui) {
+                  var selectedProductId = ui.item.id;
+                  $("#selected_product_id").val(selectedProductId);
+                  return false;
+              }
+          });
         }
       })
     }
@@ -1921,8 +2036,9 @@ body {
         success: function(data)
         {
           var tblRows = [];
-
-          for (var i = 0, len = data.length; i < len; i++) {
+          if(data.length > 0)
+          {
+            for (var i = 0, len = data.length; i < len; i++) {
               var currentItem = data[i];
               
               if (currentItem.order_type === 1) {
@@ -1944,7 +2060,15 @@ body {
                       </tr>`
                   );
               }
+            }
           }
+          else
+          {
+            tblRows.push( `<tr>
+                          <td colspan='7'>No purchased order yet.</td>
+                      </tr>`);
+          }
+          
 
           var tblData = `
               <table id='tbl_orders' class='text-color table-border' style='font-size: 12px;'>
@@ -2017,7 +2141,7 @@ body {
           for(var i = 0; i<data.length; i++)
           {
             table +=  "<tr>";
-            table += "<td data-id = "+data[i].inventory_id+">"+data[i].prod_desc+" : "+data[i].barcode+"</td>";
+            table += "<td data-id = "+data[i].product_id+" data-inv_id = "+data[i].inventory_id+">"+data[i].prod_desc+" : "+data[i].barcode+"</td>";
             table += "<td style = 'text-align: center' class ='editable'>"+data[i].qty_purchased+"</td>";
             table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].amount_beforeTax)+"</td>";
             table += "<td style = 'text-align: right'>&#x20B1;&nbsp;"+addCommasToNumber(data[i].total)+"</td>";
@@ -2159,6 +2283,7 @@ body {
     })
     $("#btn_expiration").click(function(e){
       e.preventDefault();
+      $("#open_po_report").hide();
       $("button").removeClass('active');
       $(this).addClass('active');
       $("#purchaseItems_div").hide();
@@ -2203,6 +2328,10 @@ body {
       $("#quickinventory_div").hide();
       $("#inventorycount_div").hide();
       $("#lossanddamage_div").show();
+      var currentDate = new Date();
+      var formattedDate = formatDate(currentDate);
+      $('#date_damage').datepicker('setDate', currentDate);
+      $('#date_damage').val(formattedDate);
     })
     $("#btn_inventoryCount").click(function(e){
       e.preventDefault();
@@ -2214,6 +2343,10 @@ body {
       $("#qi_inventory_type").attr("disabled", false);
       $("#btn_go_inventory").attr("disabled", false);
       $("#tbl_inventory_count tbody").empty();
+      var currentDate = new Date();
+      var formattedDate = formatDate(currentDate);
+      $('#date_counted').datepicker('setDate', currentDate);
+      $('#date_counted').val(formattedDate);
       show_inventory_count_reference_no();
       $("button").removeClass('active');
       $(this).addClass("active");
