@@ -305,7 +305,7 @@ body {
 
    $("#printThis").on("click", function(){
     var active_tbl_id = $(".inventoryCard table").attr('id');
-      if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
+      if(active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
       {
         $.ajax({
             url: './reports/generate_inventory_pdf.php',
@@ -331,7 +331,7 @@ body {
                 }
             },
             error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+                console.error(xhr.responseText);  
             }
         });
       }
@@ -353,7 +353,7 @@ body {
    })
    $('#generateEXCELBtn').click(function() {
         var active_tbl_id = $(".inventoryCard table").attr('id');
-        if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
+        if( active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
         {
           var fileName =active_tbl_id.replace("tbl_", "");
           $.ajax({
@@ -381,10 +381,15 @@ body {
             }
           });
         }
+        else
+        {
+          var message = "Unfortunately, there are no download features available for this table.";
+          show_errorResponse(message)
+        }
     });
     $("#generatePDFBtn").on("click", function(){
       var active_tbl_id = $(".inventoryCard table").attr('id');
-      if(active_tbl_id !== "tbl_expiredProducts" && active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
+      if(active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks')
       {
         $.ajax({
             url: './reports/generate_inventory_pdf.php',

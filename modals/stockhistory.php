@@ -42,7 +42,7 @@
             <thead>
                 <tr>
                     <th style = 'text-align:center'>Transaction Date</th>
-                    <th style = 'text-align:center'>Stock Counting (+-)</th>
+                    <th style = 'text-align:center'>Stock Movement (+-)</th>
                 </tr>
             </thead>
             <tbody></tbody>
