@@ -6,10 +6,37 @@
   include( __DIR__ . '/utils/models/ingredients-facade.php');
   include(__DIR__ . '/utils/models/user-facade.php');
   include(__DIR__ . '/utils/models/other-reports-facade.php');
+  include(__DIR__ . '/utils/models/ability-facade.php');
   $productFacade = new ProductFacade;
 
   $userId = 0;
+  
+  $abilityFacade = new AbilityFacade;
 
+if (isset($_SESSION['user_id'])) {
+ 
+    $userID = $_SESSION['user_id'];
+
+    
+    $permissions = $abilityFacade->perm($userID);
+
+    
+    $accessGranted = false;
+    foreach ($permissions as $permission) {
+        if (isset($permission['Reports']) && $permission['Reports'] == "Access Granted") {
+            $accessGranted = true;
+            break;
+        }
+    }
+    if (!$accessGranted) {
+      header("Location: 403.php");
+      exit;
+  }
+} else {
+    header("Location: login.php");
+    exit;
+
+}
   if (isset($_SESSION["user_id"])){
     $userId = $_SESSION["user_id"];
   }

@@ -2,7 +2,7 @@
 #add_users_modal {
   display: none;
   position: fixed; 
-  z-index: 9999;
+  z-index: 100;
   top: 0;
   top: 0;
   bottom: 0;
@@ -425,15 +425,26 @@
 </div>
 
 <script>
-
+let userSValidate = false;
 function removeReadOnly(){
-    $('#permModal').show()
-    
-    var checkboxes = document.querySelectorAll('.accessLevel input[type="checkbox"]');
-checkboxes.forEach(function(checkbox) {
-    checkbox.disabled = false;
-});
-}
+    $('#toChangeText').text("Users Abilities")
+    var forUser = document.getElementById('forUser')
+    forUser.setAttribute('hidden',true)
+    var forInventory = document.getElementById('forInventory')
+    forInventory.setAttribute('hidden',true);
+    var forUsers = document.getElementById('forUsers')
+    forUsers.removeAttribute('hidden')
+    var forProducts = document.getElementById('forProducts')
+    forProducts.setAttribute('hidden',true);
+    var forReportings = document.getElementById('forReportings')
+    forReportings.setAttribute('hidden',true);
+    userSValidate = true;
+    productSValidate  = false;
+    reportingsValidate = false;
+    inventoryValidate = false;
+    userValidate = false;
+    permModals()
+    }
 
 var checkboxes = document.querySelectorAll('.accessLevel input[type="checkbox"]');
 checkboxes.forEach(function(checkbox) {
@@ -826,6 +837,11 @@ function closeAddUserModal() {
     uncheckAllCheckboxes();
     clearAllInputs();
   });
+
+  var checkboxes = document.querySelectorAll('.accessLevel input[type="checkbox"]');
+  checkboxes.forEach(function(checkbox) {
+    checkbox.disabled = true;
+});
 }
 
 
