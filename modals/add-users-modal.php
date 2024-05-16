@@ -340,7 +340,7 @@
                     <h5 class="text-custom">Special Access</h5>
                 </div>
                 <div style="width:50%; display:flex; justify-content:right">
-                    <button style="margin-right:20px; width:100px;" class="btn-success-custom">Edit</button>
+                    <button style="margin-right:20px; width:100px;" class="btn-success-custom" onclick="removeReadOnly()">Edit</button>
                 </div>
             </div>
             <div class="accessLevel">
@@ -425,6 +425,15 @@
 </div>
 
 <script>
+
+function removeReadOnly(){
+    $('#permModal').show()
+    
+    var checkboxes = document.querySelectorAll('.accessLevel input[type="checkbox"]');
+checkboxes.forEach(function(checkbox) {
+    checkbox.disabled = false;
+});
+}
 
 var checkboxes = document.querySelectorAll('.accessLevel input[type="checkbox"]');
 checkboxes.forEach(function(checkbox) {

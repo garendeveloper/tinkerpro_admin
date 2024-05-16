@@ -37,6 +37,7 @@
 	}
 
   include('./modals/add-users-modal.php');
+  include('./modals/permissionModal.php');
 
 ?>
 <?php include "layout/admin/css.php"?>

@@ -3251,21 +3251,27 @@ public function birSalesReport($singleDateData,$startDate,$endDate){
         YEAR(z.date_time) AS year,
         ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vatable_sales'), 0)), 2) AS total_vatable_sales,
         ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vat_exempt'), 0)), 2) AS total_vat_exempt,
-        MAX(JSON_VALUE(z.all_data, '$.end_si')) AS last_receipt
+        max_end_si_table.max_end_si AS last_receipt  
     FROM shop AS s
     CROSS JOIN (
-     SELECT 
-         MAX(JSON_VALUE(all_data, '$.end_si')) AS max_end_si,
-         MONTH(date_time) AS month,
-         YEAR(date_time) AS year
-     FROM z_read
-     GROUP BY MONTH(date_time), YEAR(date_time)
+       SELECT
+           MAX(JSON_VALUE(all_data, '$.end_si')) AS max_end_si,
+           MONTH(date_time) AS month,
+           YEAR(date_time) AS year
+       FROM z_read
+       GROUP BY MONTH(date_time), YEAR(date_time)
     ) AS max_end_si_table
-    INNER JOIN z_read AS z ON JSON_VALUE(z.all_data, '$.end_si') = max_end_si_table.max_end_si
-                       AND MONTH(z.date_time) = max_end_si_table.month
-                       AND YEAR(z.date_time) = max_end_si_table.year
-    WHERE z.id IS NOT NULL AND DATE(z.date_time) = :singleDateData
-    GROUP BY s.shop_tin, s.branch_code, MONTH(z.date_time), YEAR(z.date_time);";
+    INNER JOIN z_read AS z 
+       ON MONTH(z.date_time) = max_end_si_table.month        
+       AND YEAR(z.date_time) = max_end_si_table.year         
+    WHERE DATE(z.date_time) = :singleDateData
+    GROUP BY 
+        s.shop_tin, 
+        s.branch_code,
+        MONTH(z.date_time), 
+        YEAR(z.date_time),
+        max_end_si_table.max_end_si;
+   ";
 
         $sql = $this->connect()->prepare($sql);
         $sql->bindParam(':singleDateData',  $singleDateData);
@@ -3281,21 +3287,26 @@ public function birSalesReport($singleDateData,$startDate,$endDate){
         YEAR(z.date_time) AS year,
         ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vatable_sales'), 0)), 2) AS total_vatable_sales,
         ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vat_exempt'), 0)), 2) AS total_vat_exempt,
-        MAX(JSON_VALUE(z.all_data, '$.end_si')) AS last_receipt
+        max_end_si_table.max_end_si AS last_receipt  
     FROM shop AS s
     CROSS JOIN (
-     SELECT 
-         MAX(JSON_VALUE(all_data, '$.end_si')) AS max_end_si,
-         MONTH(date_time) AS month,
-         YEAR(date_time) AS year
-     FROM z_read
-     GROUP BY MONTH(date_time), YEAR(date_time)
+       SELECT
+           MAX(JSON_VALUE(all_data, '$.end_si')) AS max_end_si,
+           MONTH(date_time) AS month,
+           YEAR(date_time) AS year
+       FROM z_read
+       GROUP BY MONTH(date_time), YEAR(date_time)
     ) AS max_end_si_table
-    INNER JOIN z_read AS z ON JSON_VALUE(z.all_data, '$.end_si') = max_end_si_table.max_end_si
-                       AND MONTH(z.date_time) = max_end_si_table.month
-                       AND YEAR(z.date_time) = max_end_si_table.year
-    WHERE z.id IS NOT NULL AND DATE(z.date_time) BETWEEN :stratDate AND :endDate
-    GROUP BY s.shop_tin, s.branch_code, MONTH(z.date_time), YEAR(z.date_time);";
+    INNER JOIN z_read AS z 
+       ON MONTH(z.date_time) = max_end_si_table.month        
+       AND YEAR(z.date_time) = max_end_si_table.year         
+    WHERE DATE(z.date_time) BETWEEN :stratDate AND :endDate
+    GROUP BY 
+        s.shop_tin, 
+        s.branch_code,
+        MONTH(z.date_time), 
+        YEAR(z.date_time),
+        max_end_si_table.max_end_si;";
 
         $sql = $this->connect()->prepare($sql);
         $sql->bindParam(':stratDate',  $startDate);
@@ -3312,21 +3323,26 @@ public function birSalesReport($singleDateData,$startDate,$endDate){
     YEAR(z.date_time) AS year,
     ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vatable_sales'), 0)), 2) AS total_vatable_sales,
     ROUND(SUM(COALESCE(JSON_VALUE(z.all_data, '$.vat_exempt'), 0)), 2) AS total_vat_exempt,
-    MAX(JSON_VALUE(z.all_data, '$.end_si')) AS last_receipt
+    max_end_si_table.max_end_si AS last_receipt  
 FROM shop AS s
 CROSS JOIN (
- SELECT 
-     MAX(JSON_VALUE(all_data, '$.end_si')) AS max_end_si,
-     MONTH(date_time) AS month,
-     YEAR(date_time) AS year
- FROM z_read
- GROUP BY MONTH(date_time), YEAR(date_time)
+   SELECT
+       MAX(JSON_VALUE(all_data, '$.end_si')) AS max_end_si,
+       MONTH(date_time) AS month,
+       YEAR(date_time) AS year
+   FROM z_read
+   GROUP BY MONTH(date_time), YEAR(date_time)
 ) AS max_end_si_table
-INNER JOIN z_read AS z ON JSON_VALUE(z.all_data, '$.end_si') = max_end_si_table.max_end_si
-                   AND MONTH(z.date_time) = max_end_si_table.month
-                   AND YEAR(z.date_time) = max_end_si_table.year
+INNER JOIN z_read AS z 
+   ON MONTH(z.date_time) = max_end_si_table.month        
+   AND YEAR(z.date_time) = max_end_si_table.year         
 WHERE z.id IS NOT NULL 
-GROUP BY s.shop_tin, s.branch_code, MONTH(z.date_time), YEAR(z.date_time);"; 
+GROUP BY 
+    s.shop_tin, 
+    s.branch_code,
+    MONTH(z.date_time), 
+    YEAR(z.date_time),
+    max_end_si_table.max_end_si;"; 
 $stmt = $this->connect()->query($sql);
 return $stmt;
 }
