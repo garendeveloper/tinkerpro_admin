@@ -102,7 +102,7 @@ body {
 
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
-    <div class="" >
+    <div class="main" >
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel main-content" id="main-content" style = "display: grid; gird-template-columns: 4.5rem auto auto; align-items: center">
         <div class="content-wrapper">
@@ -1953,16 +1953,6 @@ body {
         type: 'GET',
         url: 'api.php?action=get_allProducts',
         success: function(data){
-          // var products = [];
-          // for(var i = 0; i<data.length; i++)
-          // {
-          //   var isSelected = selected_products.includes(data[i].prod_desc+" : "+data[i].barcode);
-          //   if(!isSelected)
-          //   {
-          //     products.push(data[i].prod_desc+" : "+data[i].barcode);
-          //   }
-          // }
-          // autocomplete(document.getElementById("product"), products);
           var products = [];
           for (var i = 0; i < data.length; i++) {
               var row = {

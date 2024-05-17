@@ -2,14 +2,23 @@
   #topBar{
   background-color:#262626
 }
+body{
+  font-family: 'Calibri', sans-serif;
+    font-size: 16px;
+    font-weight: 400; /* Regular weight */
+    line-height: 1.5;
+}
 .content-wrapper{
   position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     background-color: #262626;
-    padding: 20px; /* Optional: Add padding to the container */
+    padding: 12px; /* Optional: Add padding to the container */
     box-sizing: border-box; /* Ensure padding is included in the width */
+}
+.container-scroller{
+    height: 100%;
 }
   .searchProducts{
     background-color: #7C7C7C;
@@ -274,11 +283,22 @@ button:hover {
     }
 </style>
 <style>
-    /* Custom CSS to minimize the height of the sweet alert */
     .swal2-popup {
-      padding: 0.2rem; /* Adjust padding to reduce height */
+      padding: 0.2rem; 
     }
     .swal2-title {
-      font-size: 0.5rem; /* Adjust font size as needed */
+      font-size: 0.5rem; 
     }
+    .main{
+      display: grid;
+      grid-template-areas: 
+        "head head head"
+        "side content content"
+        "foot foot foot";
+      grid-template-columns: 10px auto 10px;
+    }
+    header{  grid-area: head; }
+    .main-panel {grid-area: content; }
+    .sidebar { grid-area: side;}
+    footer { grid-area: foot;}
   </style>

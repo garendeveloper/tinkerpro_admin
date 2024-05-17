@@ -44,7 +44,17 @@ if (isset($_GET["delete_user"])) {
 }
 ?>
 <script>
-
+$(document).ready(function() {
+    $('#toggle-sidebar').click(function() {
+        $('#sidebar').toggleClass('collapsed');
+        $('.main-panel').toggleClass('expanded');
+        if ($('#sidebar').hasClass('collapsed')) {
+            $('#toggle-sidebar').find('i').removeClass('bi-chevron-double-left').addClass('bi-chevron-double-right');
+        } else {
+            $('#toggle-sidebar').find('i').removeClass('bi-chevron-double-right').addClass('bi-chevron-double-left');
+        }
+    });
+});
   $(document).ready(function () {
     $("#btn_logout").click(function () {
       if (confirm("Do you wish to proceed to logout?")) {
@@ -61,6 +71,48 @@ if (isset($_GET["delete_user"])) {
       $("#response_modal").hide();
     })
   })
+  function show_allProducts()
+  {
+    $.ajax({
+      type: 'GET',
+      url: 'api.php?action=get_allProducts',
+      success: function(data){
+        var products = [];
+        for (var i = 0; i < data.length; i++) {
+            var row = {
+                inventory_id: data[i].inventory_id,
+                product_id: data[i].id,
+                product: data[i].prod_desc,
+                barcode: data[i].barcode,
+                brand: data[i].brand,
+            };
+            products.push(row);
+        }
+        $("#product").autocomplete({
+            source: function (request, response) {
+                var term = request.term.toLowerCase();
+                var filteredProducts = products.filter(function (row) {
+                    return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
+                        (!row.brand && term === "");
+                });
+                response(filteredProducts.map(function (row) {
+                    return {
+                        label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+                        value: row.barcode,
+                        inventory_id: row.inventory_id,
+                        id: row.product_id
+                    };
+                }));
+            },
+            select: function (event, ui) {
+                var selectedProductId = ui.item.id;
+                $("#selected_product_id").val(selectedProductId);
+                return false;
+            }
+        });
+      }
+    })
+  }
   function addProduct() {
     //products
     var productname = document.getElementById('productname').value;
@@ -175,6 +227,7 @@ if (isset($_GET["delete_user"])) {
       axios.post('api.php?action=addProduct', formData).then(function (response) {
         console.log(response)
         refreshProductsTable()
+        show_allProducts();
         closeAddProductsModal()
       }).catch(function (error) {
         console.log(error)
@@ -449,6 +502,7 @@ if (isset($_GET["delete_user"])) {
       axios.post('api.php?action=updateProduct', formData).then(function (response) {
         refreshProductsTable()
         closeAddProductsModal()
+        show_allProducts()
       }).catch(function (error) {
         console.log(error)
       })
