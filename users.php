@@ -66,6 +66,7 @@ if (isset($_SESSION['user_id'])) {
   include('./modals/permissionModal.php');
   include('./modals/access_denied.php');
   include('./modals/access_granted.php');
+  include('./modals/user-logs-modal.php');
 ?>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -587,6 +588,26 @@ document.addEventListener("click", function(event) {
     dropdownContent.style.display = "none";
   }
 });
+$(document.body).on('click', '.viewLogs', function() {
+        var userId = $(this).closest('tr').find('.userId').text();
+        var dataFirstName =  $(this).closest('tr').find('.f_name').text();
+        var dataLastName =  $(this).closest('tr').find('.l_name').text();
+        var employeeNum =  $(this).closest('tr').find('.employeeNum').text();
+        var pw =  $(this).closest('tr').find('.pw').text();
+        var imageName =  $(this).closest('tr').find('.imageName').text();
+        var datastats =  $(this).closest('tr').find('.statsData').text();
+        var datastatsID =  $(this).closest('tr').find('.statsDataID').text();
+        var roleN =  $(this).closest('tr').find('.roleN').text();
+        var roleID =  $(this).closest('tr').find('.roleidNum').text();
+        var identification =  $(this).closest('tr').find('.identification').text();
+        var datehired =  $(this).closest('tr').find('.datehired').text();
+        var perm =  $(this).closest('tr').find('.permission').text();
+        $('.highlightedUser').removeClass('highlightedUser');
+        var $row = $(this).closest('tr').addClass('highlightedUser');
+        console.log(userId)
 
+        openUsersLogs()
+       
+    });
 
 </script>

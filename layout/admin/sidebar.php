@@ -1,6 +1,51 @@
+<?php
+   require_once('./utils/models/ability-facade.php');
+$userId = 0;
+
+
+
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+    $abilityFacade = new AbilityFacade;
+    $permissions = $abilityFacade->perm($userId);
+    $accessInventory= false;
+    $accessProducts = false;
+    $accessReporting = false;
+    $accessUsers = false;
+    foreach ($permissions as $permission) {
+        if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
+            $accessInventory = true;
+            break;
+        }
+    }
+    foreach ($permissions as $permission) {
+        if (isset($permission['Products']) && $permission['Products'] == "Access Granted") {
+            $accessProducts  = true;
+            break;
+        }
+    }
+    foreach ($permissions as $permission) {
+        if (isset($permission['Reports']) && $permission['Reports'] == "Access Granted") {
+            $accessReporting  = true;
+            break;
+        }
+    }
+    foreach ($permissions as $permission) {
+        if (isset($permission['Users']) && $permission['Users'] == "Access Granted") {
+            $accessUsers = true;
+            break;
+        }
+    }
+}
+?>
+
+
+
 <?php include ("./modals/permissionModal.php") ?>
 <?php include ("./modals/access_granted.php") ?>
 <?php include ("./modals/access_denied.php") ?>
+
+
 
 <style>
     .site-header {
@@ -69,6 +114,9 @@
         bottom: 0;
         min-height: 5vh; 
     }   
+
+
+
 </style>
 <header class="site-header">
     <div class="header-container">
@@ -78,18 +126,29 @@
 </header>
 <div class="sidebar" id="sidebar">
     <a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp; Dashboard</a>
-    <a href="#" id="inventory"><i class="bi bi-box-seam"></i>&nbsp; Inventory </a>
-    <a href="#" id="products"><i class="bi bi-bag-check"></i>&nbsp; Products</a>
-    <a href="ingredients" id="ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a>
+    <?php if ($accessInventory): ?>
+        <a href="#" id="inventory"><i class="bi bi-box-seam"></i>&nbsp; Inventory </a>
+    <?php endif; ?>
+    <?php if ($accessProducts): ?>
+        <a href="#" id="products"><i class="bi bi-bag-check"></i>&nbsp; Products</a>
+    <?php endif; ?>
+
     <a href="suppliers" id="suppliers"><i class="bi bi-people bi-3x "></i>&nbsp; Suppliers</a>
     <a href="customer" id="suppliers"><i class="bi bi-people bi-3x "></i>&nbsp; Customers</a>
-    <a href="#" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp; Reporting</a>
-    <a href="#" id="users"><i class="bi bi-person"></i>&nbsp; Users</a>
-    <a href="company" id="company"><i class="bi bi-building"></i>&nbsp; Company</a>
-    <a href="machine-details" id="machine-details"><i class="bi bi-tools"></i>&nbsp; Machine Details</a>
-    <a href="backup-restore" id="backup-restore"><i class="bi bi-cloud-arrow-up-fill"></i>&nbsp; Backup & Restore</a>
+    <?php if ($accessReporting): ?>
+        <a href="#" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp; Reporting</a>
+    <?php endif; ?>
+    <?php if ($accessUsers): ?>
+        <a href="#" id="users"><i class="bi bi-person"></i>&nbsp; Users</a>
+    <?php endif; ?>
     <a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp; Logout</a>
     <input hidden class="userId" id="userId" value="<?php echo $userId; ?>"/>
+    <!-- for v2 -->
+    <!-- <a href="company" id="company"><i class="bi bi-building"></i>&nbsp; Company</a>
+    <a href="machine-details" id="machine-details"><i class="bi bi-tools"></i>&nbsp; Machine Details</a>
+    <a href="backup-restore" id="backup-restore"><i class="bi bi-cloud-arrow-up-fill"></i>&nbsp; Backup & Restore</a> -->
+<!-- <a href="ingredients" id="ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a> -->
+  
 </div>
 <script>
 let  productSValidate  = false;  

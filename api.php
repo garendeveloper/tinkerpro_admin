@@ -302,6 +302,29 @@
             "permission" =>   $permission 
         ]);
         break; 
+        case 'deleteProduct':
+            $prod_id =  isset($_GET['prod_id']) ? $_GET['prod_id'] : null;
+            $delete = $products->deleteProducts($prod_id);
+            if ($delete) {
+                echo json_encode(['success' => true, 'id' => $delete]); 
+            } else {
+                echo json_encode(['success' => false]); 
+            }
+            break;
+            case 'importProduct':
+                if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+                    $formData = $_FILES['file'];
+                    $importProduct = $products->importProducts($formData);
+                    if ($importProduct) {
+                        echo json_encode(['success' => true, 'message' => 'Products imported successfully']);
+                    } else {
+                        echo json_encode(['success' => false, 'error' => 'Failed to import products']);
+                    }
+                } else {
+                    echo json_encode(['success' => false, 'error' => 'File upload failed']);
+                }
+                break;
+            
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
