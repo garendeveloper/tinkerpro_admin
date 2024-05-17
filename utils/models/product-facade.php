@@ -2,7 +2,7 @@
 
   class ProductFacade extends DBConnection {
 
-    public function fetchProducts($searchQuery,$selectedProduct,$singleDateData,$startDate,$endDate,$selectedCategories,$selectedSubCategories) {
+    public function fetchProducts($searchQuery,$selectedProduct,$singleDateData,$startDate,$endDate,$selectedCategories,$selectedSubCategories, $offset, $recordsPerPage) {
     
       if (!empty($searchQuery)) {
         $sqlQuery = "SELECT 
@@ -39,7 +39,7 @@
         products.barcode LIKE :searchQuery OR 
         products.sku LIKE :searchQuery OR 
         products.code LIKE :searchQuery OR 
-        products.brand LIKE :searchQuery ORDER BY prod_desc ASC";
+        products.brand LIKE :searchQuery ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
         $sql = $this->connect()->prepare($sqlQuery);
 
@@ -81,7 +81,7 @@
         products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.id = :selectedProduct ORDER BY prod_desc ASC";
+        products.id = :selectedProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -119,7 +119,7 @@
         products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.category_id= :selectedCategoryProduct ORDER BY prod_desc ASC";
+        products.category_id= :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
@@ -156,7 +156,7 @@
         products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.variant_id= :selectedVariantroduct ORDER BY prod_desc ASC";
+        products.variant_id= :selectedVariantroduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
@@ -193,7 +193,7 @@
         products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct ORDER BY prod_desc ASC";
+        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -231,7 +231,7 @@
         products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC";
+        products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -269,7 +269,7 @@
         products.is_warranty as is_warranty
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
-        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC";
+        products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
         $sql = $this->connect()->prepare($sqlQuery);
         $sql->bindParam(':selectedProduct', $selectedProduct);
@@ -307,7 +307,7 @@
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty
     FROM products 
-    LEFT JOIN uom ON uom.id = products.uom_id ORDER BY prod_desc ASC";
+    LEFT JOIN uom ON uom.id = products.uom_id ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
     $sql = $this->connect()->prepare($sqlQuery);
     $sql->execute();
@@ -744,6 +744,79 @@ public function getSuppliersData(){
   $stmt = $this->connect()->query($sql);
   return $stmt;
 }
+public function deleteProducts($prod_id) {
+  $sql = 'DELETE FROM products
+      WHERE id = :prod_id
+      AND NOT EXISTS (
+          SELECT 1
+          FROM transactions
+          WHERE prod_id = :prod_id
+      )';
+
+  $stmt = $this->connect()->prepare($sql);
+  $stmt->bindParam(':prod_id', $prod_id, PDO::PARAM_INT);
+  $stmt->execute();
+
+  $rowCount = $stmt->rowCount();
+
+  return $rowCount > 0; 
+}
+public function importProducts($fileData) {
+  $file = $fileData['tmp_name'];
+  $csvData = array_map('str_getcsv', file($file));
+  $headers = array_shift($csvData);
+
+  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status) 
+              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status)";
+  
+  $conn = $this->connect();
+  $conn->beginTransaction(); 
+
+  try {
+      $stmt = $conn->prepare($query);
+    
+      foreach ($csvData as $row) {
+          $product = array_combine($headers, $row);
+
+          // Bind parameters
+          $stmt->bindParam(':prod_desc', $product['Name']);
+          $stmt->bindParam(':sku', $product['SKU']);
+          $stmt->bindParam(':barcode', $product['Barcode']);
+          $stmt->bindParam(':cost', $product['Cost']);
+          $stmt->bindParam(':markup', $product['Markup']);
+          $stmt->bindParam(':prod_price', $product['Price']);
+          $stmt->bindParam(':isVAT', $product['Tax']);
+          $stmt->bindParam(':is_taxIncluded', $product['IsTaxInclusivePrice']);
+          $stmt->bindParam(':IsPriceChangeAllowed', $product['IsPriceChangeAllowed']);
+          $stmt->bindParam(':IsUsingDefaultQuantity', $product['IsUsingDefaultQuantity']);
+          $stmt->bindParam(':IsService', $product['IsService']);
+          $stmt->bindParam(':status', $product['IsEnabled']);
+
+          $stmt->execute();
+      }
+
+      $conn->commit(); 
+      return true;
+  } catch (PDOException $e) {
+      $conn->rollBack(); 
+      error_log("Import failed: " . $e->getMessage());
+      return false;
+  }
+}
+public function getTotalProductsCount() {
+  try {
+      $pdo = $this->connect(); 
+
+      $query = "SELECT COUNT(*) AS total_count FROM products";
+      $stmt = $pdo->query($query);
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      return $result['total_count'];
+  } catch (PDOException $e) {
+      return 0;
+  }
+}
+
 }  
 
 
