@@ -74,6 +74,7 @@ if (isset($_SESSION['user_id'])) {
   include('./modals/category-modal.php');
   include('./modals/add-bom.php');
   include('./modals/add-price-list.php');
+  include('./modals/loading-modal.php');
 ?>
 <style>
   #topBar{
@@ -150,15 +151,21 @@ if (isset($_SESSION['user_id'])) {
      border: 2px solid #00B050; 
   }
   .paginationTag {
-        text-decoration: none; 
-        border: 1px solid #33557F;
-        padding: 5px 10px;
-        margin-right: 1px; 
-        width: 40px;
-        height: 40px;
-        display: inline-block; 
-        text-align: center;
-    }
+    text-decoration: none; 
+    border: 1px solid #fefefe;
+    margin-right: 1px; 
+    width: 40px;
+    height: 40px;
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center; 
+    background-color: #888888;
+    color: #fefefe;
+}
+
+.paginationTag:hover{
+  color: #FF6900;
+}
 
     #paginationDiv{
       margin-top: 20px;
@@ -238,15 +245,7 @@ if (isset($_SESSION['user_id'])) {
                 </div>
               </div>
               <div id="paginationDiv">
-                <?php
-                $totalRecords = $productFacade->getTotalProductsCount();
-                $totalPages = ceil($totalRecords / 500);
-                echo "<div id='paginationBtns'>";
-                for ($i = 1; $i <= $totalPages; $i++) {
-                    echo "<a class='paginationTag' href='javascript:void(0)' onclick='refreshProductsTable($i)'>$i</a> ";
-                }
-                echo "</div>";
-                ?>
+
             </div>
               <div style="display: flex; margin-top: 10px">
                 <input type="file" id="fileImports" style="display: none;" accept=".csv, text/csv">
@@ -269,16 +268,18 @@ if (isset($_SESSION['user_id'])) {
 <script>
 
 document.getElementById("importProducts").addEventListener("click", function() {
+   
     document.getElementById("fileImports").click();
 });
 document.getElementById("fileImports").addEventListener("change", function(e) {
+  $('#modalCashPrint').show()
     const file = this.files[0];
     const formData = new FormData();
     formData.append('file', file);
     axios.post('api.php?action=importProduct',formData)
     .then(function(response) {
-        console.log(response);
         refreshProductsTable();
+        show_allProducts()
     })
     .catch(function(error) {
         console.error(error);
@@ -387,23 +388,41 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
     });
 }
 
+function showPaginationBtn(){
+    $.ajax({
+        url: './fetch-data/pagination-data.php', 
+        type: 'GET',
+        success: function(response) {
+            $('#paginationDiv').html(response)
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText); 
+        }
+    });
 
+}
 
 
 function refreshProductsTable(page) {
+  $('#modalCashPrint').show()
     $.ajax({
         url: './fetch-data/fetch-products.php', 
         type: 'GET',
         data: { page: page},
         success: function(response) {
             $('#productTable').html(response); 
+            showPaginationBtn()
+            
+            $('#modalCashPrint').hide()
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText); 
         }
     });
 }
-refreshProductsTable()
+refreshProductsTable(1)
+
+
 
   $(document).ready(function() {
     $('#generateProductPDFBtn').click(function() {
@@ -546,7 +565,8 @@ $('.searchProducts').on('input', function(){
         var desc = $(this).closest('tr').find('.description').text();
         var isBOM = $(this).closest('tr').find('.isBOM').text();
         var isWarranty = $(this).closest('tr').find('.isWarranty').text();
-
+        var is_stockable = $(this).closest('tr').find('.is_stockable').text();
+       
        
         $('.highlighteds').removeClass('highlighteds');
         $('.highlightedss').removeClass('highlightedss')
@@ -558,10 +578,10 @@ $('.searchProducts').on('input', function(){
         }
         var category = $(this).closest('tr').find('.categoryDetails').text();
         var categoryid = $(this).closest('tr').find('.categoryid').text();
-        var variantid = $(this).closest('tr').find('.variantid').text();//deleteProducts
+        var variantid = $(this).closest('tr').find('.variantid').text();
 
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
-        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty)
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable)
     });
     $(document.body).on('click', '.deleteProducts', function() {
         var productId = $(this).closest('tr').find('.productsId').text();
@@ -600,6 +620,43 @@ $('.searchProducts').on('input', function(){
     });
       })
     });
-    
+    function openModal(row){
+    var productId = row.querySelector('.productsId').innerText;
+    var productName =  row.querySelector('.productsName').innerText
+    var productSKU = row.querySelector('.sku').innerText
+    var productCode = row.querySelector('.code').innerText
+    var productBarcode = row.querySelector('.barcode').innerText;
+    var productOUM = row.querySelector('.uom_name').innerText;
+    var productBrand = row.querySelector('.brand').innerText;
+    var productCost = row.querySelector('.cost').innerText;
+    var productMakup = row.querySelector('.markup').innerText;
+    var productPrice = row.querySelector('.prod_price').innerText;
+    var productStatus = row.querySelector('.status').innerText;
+    var productuomid  = row.querySelector('.oumId').innerText;
+    var isDiscounted = row.querySelector('.isDiscounted').innerText;
+    var isTax = row.querySelector('.isTax').innerText;
+    var isTaxIncluded = row.querySelector('.isTaxIncluded').innerText;
+    var serviceCharge = row.querySelector('.service').innerText;
+    var displayService = row.querySelector('.displayService').innerText;
+    var otherCharges = row.querySelector('.other').innerText;
+    var displayOtherCharges = row.querySelector('.displayOthers').innerText;
+    var status = row.querySelector('.statusData').innerText;
+    var image = row.querySelector('.productImgs').innerText;
+    var desc = row.querySelector('.description').innerText;
+    var isBOM = row.querySelector('.isBOM').innerText;
+    var isWarranty = row.querySelector('.isWarranty').innerText;
+    var category = row.querySelector('.categoryDetails').innerText;
+    var categoryid  = row.querySelector('.categoryid').innerText;
+    var variantid = row.querySelector('.variantid').innerText;
+    var is_stockable = row.querySelector('.is_stockable').innerText;
+  
+    $('.highlighteds').removeClass('highlighteds');
+    $('.highlightedss').removeClass('highlightedss');
+
+    $(row).addClass('highlighteds');
+
+    toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable)
+    }
 
 </script>

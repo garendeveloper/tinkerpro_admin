@@ -162,8 +162,12 @@ $(document).ready(function() {
     var file = document.getElementById("fileInputs").files[0];
     var description = document.getElementById('description').value
 
+    //warranty
     var warranty = document.getElementById('warrantyToggle');
     var warrant = warranty.checked ? 1 : 0;
+    //stockable
+    var stockable = document.getElementById('stockeableToggle');
+    var stckble = stockable.checked ? 1 : 0;
 
     //category details
     var catID = document.getElementById('catID').value ?? null;
@@ -216,6 +220,7 @@ $(document).ready(function() {
     formData.append("varID", varID);
     formData.append("category_details", jsonString);
     formData.append("warranty", warrant);
+    formData.append("stockable", stckble);
     if (checkbox.checked) {
       var bomValue = 1;
       formData.append('bomStat', bomValue);
@@ -250,7 +255,7 @@ $(document).ready(function() {
 
 
   function toUpdateProducts(productId, productName, productSKU, productCode, productBarcode, productOUM, productuomid, productBrand, productCost, productMakup, productPrice,
-    productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty) {
+    productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable) {
     $('#add_products_modal').show();
     productId ? document.getElementById('productid').value = productId : null;
     productName ? document.getElementById("productname").value = productName : null;
@@ -313,6 +318,9 @@ $(document).ready(function() {
     var discountedCheckbox = document.getElementById('discountToggle');
     discountedCheckbox.checked = (isDiscounted == 1) ? true : false;
 
+  
+    var stockable = document.getElementById('stockeableToggle');
+    stockable.checked = (is_stockable == 1) ? true : false;
 
     var taxCheckbox = document.getElementById('taxVatToggle');
     taxCheckbox.checked = (isTax == 1) ? true : false;
@@ -430,7 +438,10 @@ $(document).ready(function() {
     // warranty
     var warranty = document.getElementById('warrantyToggle');
     var warrant = warranty.checked ? 1 : 0;
-
+    //stockable
+    var stockable = document.getElementById('stockeableToggle');
+    var stckble = stockable.checked ? 1 : 0;
+   
     //productImage
     var file = document.getElementById("fileInputs").files[0];
     var description = document.getElementById('description').value
@@ -484,7 +495,7 @@ $(document).ready(function() {
     formData.append("varID", varID);
     formData.append("category_details", jsonString);
     formData.append("warranty", warrant);
-
+    formData.append("stockable", stckble);
     var checkbox = document.getElementById('bomToggle');
     if (checkbox.checked) {
       var bomValue = 1;
@@ -509,6 +520,7 @@ $(document).ready(function() {
 
     if (productname && barcode && cost && markup) {
       axios.post('api.php?action=updateProduct', formData).then(function (response) {
+        console.log(response)
         refreshProductsTable()
         closeAddProductsModal()
         show_allProducts()
