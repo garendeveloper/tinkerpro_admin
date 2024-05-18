@@ -153,6 +153,7 @@ td, th {
 button:active {
   background-color: #FF6900; 
   color: #ffffff;
+ 
 }
 button:hover {
     background-color: #FF6700; 
@@ -161,6 +162,7 @@ button:hover {
 .active {
   background-color: #FF6900; 
   color: #ffffff;
+  border-color: 1px solid #ffffff;
 }
 .button-cancel:hover{
   background-color: red;
@@ -234,40 +236,41 @@ button:hover {
       flex-grow: 1; 
       margin: 0 10px;
   } */
-  /* .grid-container {
+  .purchase-grid-container {
       display: grid;
       grid-template-columns: repeat(3, auto); 
       gap: 10px; 
+      padding: 10px;
+      margin-top: -20px;
+      margin-bottom: 5px;
   }
-  .grid-item{
+  .purchase-grid-item{
     height: 35px;
     border-radius: 10px;
     border: 1px solid #595959;
-  } */
+  }
   .grid-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between; /* Adjust alignment as needed */
-        }
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between; 
+  }
 
-        .grid-item {
-            text-align: center;
-            padding: 10px;
-            border-color: #33557F !important;
-            border-radius: 5px;
-            color: #ffffff;
-            font-size: 14px;
-            margin-bottom: 10px; /* Add margin between buttons */
-            flex-basis: calc(33.33% - 20px); /* Adjust width for 3 items per row */
-        }
-
-        /* Adjustments for smaller screens */
-        @media only screen and (max-width: 600px) {
-            .grid-item {
-                font-size: 12px; /* Decrease font size for smaller screens */
-                flex-basis: calc(50% - 20px); /* Adjust width for 2 items per row */
-            }
-        }
+  .grid-item {
+      text-align: center;
+      padding: 10px;
+      border-color: #33557F !important;
+      border-radius: 5px;
+      color: #ffffff;
+      font-size: 14px;
+      margin-bottom: 10px; 
+      flex-basis: calc(20% - 20px); 
+  }
+  @media only screen and (max-width: 600px) {
+      .grid-item {
+          font-size: 12px; 
+          flex-basis: calc(50% - 20px); 
+      }
+  }
   .switch-error {
       border: 2px solid red;
       border-radius: 10px;

@@ -1139,15 +1139,15 @@ input[type="text"] {
                 </div>
                 <div class="warning-container">
                     <div class="tableCard">
-                        <div class="grid-container">
-                            <button class="grid-item" id="btn_createPO">Purchase Order</button>
-                            <button class="grid-item" id="btn_inventoryCount">Inventory Count</button>
-                            <button class="grid-item" id="btn_expiration">Expiration</button>
-                            <button class="grid-item" id="btn_receiveItems">Receive Items</button>
-                            <button class="grid-item" id="btn_quickInventory">Quick Inventory</button>
+                        <div class="purchase-grid-container">
+                            <button class="purchase-grid-item" id="btn_createPO">Purchase Order</button>
+                            <button class="purchase-grid-item" id="btn_inventoryCount">Inventory Count</button>
+                            <button class="purchase-grid-item" id="btn_expiration">Expiration</button>
+                            <button class="purchase-grid-item" id="btn_receiveItems">Receive Items</button>
+                            <button class="purchase-grid-item" id="btn_quickInventory">Quick Inventory</button>
                             <!-- <button class="grid-item" id="btn_batchNumber">Batch Number</button> -->
                             <!-- <button class="grid-item" id="btn_stockTransfer">Stocks Transfer</button> -->
-                            <button class="grid-item" id="btn_lossDamage">Loss & Damage</button>
+                            <button class="purchase-grid-item" id="btn_lossDamage">Loss & Damage</button>
                             <!-- <button class="grid-item" id="btn_LOT">Lot Number</button> -->
                         </div>
                         <?php include("./inventory_modules/purchase_items.php")?>

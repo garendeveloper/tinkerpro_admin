@@ -1,5 +1,5 @@
 <?php
-   require_once('./utils/models/ability-facade.php');
+require_once ('./utils/models/ability-facade.php');
 $userId = 0;
 
 
@@ -8,7 +8,7 @@ if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
     $abilityFacade = new AbilityFacade;
     $permissions = $abilityFacade->perm($userId);
-    $accessInventory= false;
+    $accessInventory = false;
     $accessProducts = false;
     $accessReporting = false;
     $accessUsers = false;
@@ -20,13 +20,13 @@ if (isset($_SESSION['user_id'])) {
     }
     foreach ($permissions as $permission) {
         if (isset($permission['Products']) && $permission['Products'] == "Access Granted") {
-            $accessProducts  = true;
+            $accessProducts = true;
             break;
         }
     }
     foreach ($permissions as $permission) {
         if (isset($permission['Reports']) && $permission['Reports'] == "Access Granted") {
-            $accessReporting  = true;
+            $accessReporting = true;
             break;
         }
     }
@@ -68,7 +68,7 @@ if (isset($_SESSION['user_id'])) {
         top: 30px;
         left: 0;
         overflow-x: auto;
-        overflow-y: auto; 
+        overflow-y: auto;
         padding-top: 10px, 0;
         transition: width 0.3s;
     }
@@ -154,9 +154,8 @@ if (isset($_SESSION['user_id'])) {
 
     .main-panel.expanded {
         left: 50px;
-        width: calc(100% - 50px); 
-    }   
-
+        width: calc(100% - 50px);
+    }
 </style>
 <header class="site-header">
     <div class="header-container">
@@ -165,35 +164,38 @@ if (isset($_SESSION['user_id'])) {
     </div>
 </header>
 <div class="sidebar" id="sidebar">
-<nav>
+    <nav>
         <ul>
             <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
                         class="text">Dashboard</span></a></li>
-                        <?php if ($accessInventory): ?>
-            <li><a href="#" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span class="text">Inventory</span></a>
-            </li>
-            <?php endif?>
-            <?php if($accessProducts) :?>
-            <li><a href="#" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span class="text">Products</span></a>
-            </li>
-            <?php endif?>
+            <?php if ($accessInventory): ?>
+                <li><a href="#" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span
+                            class="text">Inventory</span></a>
+                </li>
+            <?php endif ?>
+            <?php if ($accessProducts): ?>
+                <li><a href="#" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
+                            class="text">Products</span></a>
+                </li>
+            <?php endif ?>
             <li><a href="ingredients" id="ingredients"><i class="bi bi-egg"></i>&nbsp;&nbsp; <span
                         class="text">Ingredients</span></a></li>
             <li><a href="suppliers" id="suppliers"><i class="bi bi-building"></i>&nbsp;&nbsp; <span
                         class="text">Suppliers</span></a></li>
             <li><a href="customer" id="customers"><i class="bi bi-people"></i>&nbsp;&nbsp; <span
                         class="text">Customers</span></a></li>
-                        <?php if ($accessReporting): ?>
-            <li><a href="#" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span class="text">Reporting</span></a>
-            </li>
-            <?php endif?>
+            <?php if ($accessReporting): ?>
+                <li><a href="#" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span
+                            class="text">Reporting</span></a>
+                </li>
+            <?php endif ?>
             <?php if ($accessUsers): ?>
-            <li><a href="#" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text">Users</span></a></li>
-            <?php endif?>
+                <li><a href="#" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text">Users</span></a></li>
+            <?php endif ?>
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text">Logout</span></a></li>
-            <li ><a href="#" id="toggle-sidebar" class="d-flex justify-content-end" ><i class="bi bi-chevron-double-left"></i>&nbsp;&nbsp; <span
-                        class="text"></span></a></li>
+            <li><a href="#" id="toggle-sidebar" class="d-flex justify-content-end"><i
+                        class="bi bi-chevron-double-left"></i>&nbsp;&nbsp; <span class="text"></span></a></li>
         </ul>
         <input hidden class="userId" id="userId" value="<?php echo $userId; ?>" />
     </nav>
@@ -201,93 +203,93 @@ if (isset($_SESSION['user_id'])) {
     <!-- <a href="company" id="company"><i class="bi bi-building"></i>&nbsp; Company</a>
     <a href="machine-details" id="machine-details"><i class="bi bi-tools"></i>&nbsp; Machine Details</a>
     <a href="backup-restore" id="backup-restore"><i class="bi bi-cloud-arrow-up-fill"></i>&nbsp; Backup & Restore</a> -->
-<!-- <a href="ingredients" id="ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a> -->
-  
+    <!-- <a href="ingredients" id="ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a> -->
+
 </div>
 <script>
-let  productSValidate  = false;  
-let  reportingsValidate = false;
-let  inventoryValidate = false;
-let  userValidate = false;
-$('#products').on('click', function(){
-$('#toChangeText').text("Products")
-var forUser = document.getElementById('forUser')
-forUser.setAttribute('hidden',true)
-var forInventory = document.getElementById('forInventory')
-forInventory.setAttribute('hidden',true);
-var forProducts = document.getElementById('forProducts')
-forProducts.removeAttribute('hidden');
-var forUsers = document.getElementById('forUsers')
-forUsers.setAttribute('hidden',true)
-var forReportings = document.getElementById('forReportings')
-forReportings.setAttribute('hidden',true);
-  userSValidate  = false;  
-  productSValidate  = true; 
-  reportingsValidate = false;
-  inventoryValidate = false;
-  userValidate = false;
-  permModals() 
-})
+    let productSValidate = false;
+    let reportingsValidate = false;
+    let inventoryValidate = false;
+    let userValidate = false;
+    $('#products').on('click', function () {
+        $('#toChangeText').text("Products")
+        var forUser = document.getElementById('forUser')
+        forUser.setAttribute('hidden', true)
+        var forInventory = document.getElementById('forInventory')
+        forInventory.setAttribute('hidden', true);
+        var forProducts = document.getElementById('forProducts')
+        forProducts.removeAttribute('hidden');
+        var forUsers = document.getElementById('forUsers')
+        forUsers.setAttribute('hidden', true)
+        var forReportings = document.getElementById('forReportings')
+        forReportings.setAttribute('hidden', true);
+        userSValidate = false;
+        productSValidate = true;
+        reportingsValidate = false;
+        inventoryValidate = false;
+        userValidate = false;
+        permModals()
+    })
 
 
-$('#reporting').on('click', function(){
- $('#toChangeText').text("Reports")
- var forUser = document.getElementById('forUser')
-forUser.setAttribute('hidden',true)
-var forInventory = document.getElementById('forInventory')
-forInventory.setAttribute('hidden',true);
-var forReportings = document.getElementById('forReportings')
-forReportings.removeAttribute('hidden');
-var forProducts = document.getElementById('forProducts')
-forProducts.setAttribute('hidden',true);
-var forUsers = document.getElementById('forUsers')
-forUsers.setAttribute('hidden',true)
-  userSValidate  = false;  
-  productSValidate  = false;  
-  reportingsValidate = true;
-  inventoryValidate = false;
-  userValidate = false;
-  permModals() 
-})
+    $('#reporting').on('click', function () {
+        $('#toChangeText').text("Reports")
+        var forUser = document.getElementById('forUser')
+        forUser.setAttribute('hidden', true)
+        var forInventory = document.getElementById('forInventory')
+        forInventory.setAttribute('hidden', true);
+        var forReportings = document.getElementById('forReportings')
+        forReportings.removeAttribute('hidden');
+        var forProducts = document.getElementById('forProducts')
+        forProducts.setAttribute('hidden', true);
+        var forUsers = document.getElementById('forUsers')
+        forUsers.setAttribute('hidden', true)
+        userSValidate = false;
+        productSValidate = false;
+        reportingsValidate = true;
+        inventoryValidate = false;
+        userValidate = false;
+        permModals()
+    })
 
-$('#inventory').on('click', function(){
- $('#toChangeText').text("Inventory")
-var forUser = document.getElementById('forUser')
-forUser.setAttribute('hidden',true)
-var forInventory = document.getElementById('forInventory')
-forInventory.removeAttribute('hidden');
-var forReportings = document.getElementById('forReportings')
-forReportings.setAttribute('hidden',true);
-var forProducts = document.getElementById('forProducts')
-forProducts.setAttribute('hidden',true);
-var forUsers = document.getElementById('forUsers')
-forUsers.setAttribute('hidden',true)
-  userSValidate  = false;  
-  productSValidate  = false;  
-  reportingsValidate = false;
-  inventoryValidate = true;
-  userValidate = false;
-  permModals() 
-})
-$('#users').on('click', function(){
- $('#toChangeText').text("Users")
-var forUser = document.getElementById('forUser')
-forUser.removeAttribute('hidden')
-var forInventory = document.getElementById('forInventory')
-forInventory.setAttribute('hidden',true);
-var forReportings = document.getElementById('forReportings')
-forReportings.setAttribute('hidden',true);
-var forProducts = document.getElementById('forProducts')
-forProducts.setAttribute('hidden',true);
-var forUsers = document.getElementById('forUsers')
-forUsers.setAttribute('hidden',true)
-  userSValidate  = false;  
-  productSValidate  = false;  
-  reportingsValidate = false;
-  inventoryValidate = false;
-  userValidate = true;
-  permModals() 
-})
-    
-    
+    $('#inventory').on('click', function () {
+        $('#toChangeText').text("Inventory")
+        var forUser = document.getElementById('forUser')
+        forUser.setAttribute('hidden', true)
+        var forInventory = document.getElementById('forInventory')
+        forInventory.removeAttribute('hidden');
+        var forReportings = document.getElementById('forReportings')
+        forReportings.setAttribute('hidden', true);
+        var forProducts = document.getElementById('forProducts')
+        forProducts.setAttribute('hidden', true);
+        var forUsers = document.getElementById('forUsers')
+        forUsers.setAttribute('hidden', true)
+        userSValidate = false;
+        productSValidate = false;
+        reportingsValidate = false;
+        inventoryValidate = true;
+        userValidate = false;
+        permModals()
+    })
+    $('#users').on('click', function () {
+        $('#toChangeText').text("Users")
+        var forUser = document.getElementById('forUser')
+        forUser.removeAttribute('hidden')
+        var forInventory = document.getElementById('forInventory')
+        forInventory.setAttribute('hidden', true);
+        var forReportings = document.getElementById('forReportings')
+        forReportings.setAttribute('hidden', true);
+        var forProducts = document.getElementById('forProducts')
+        forProducts.setAttribute('hidden', true);
+        var forUsers = document.getElementById('forUsers')
+        forUsers.setAttribute('hidden', true)
+        userSValidate = false;
+        productSValidate = false;
+        reportingsValidate = false;
+        inventoryValidate = false;
+        userValidate = true;
+        permModals()
+    })
+
+
 </script>
