@@ -184,6 +184,10 @@ $('.close-button').on('click', function(){
                             $('#granted_modal').hide()
                             if(!$('#granted_modal').is(':visible')){
                               window.location.href = "products";
+
+                               
+    
+
                             }
                         })
                    } 
