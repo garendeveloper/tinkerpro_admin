@@ -150,15 +150,21 @@ if (isset($_SESSION['user_id'])) {
      border: 2px solid #00B050; 
   }
   .paginationTag {
-        text-decoration: none; 
-        border: 1px solid #33557F;
-        padding: 5px 10px;
-        margin-right: 1px; 
-        width: 40px;
-        height: 40px;
-        display: inline-block; 
-        text-align: center;
-    }
+    text-decoration: none; 
+    border: 1px solid #fefefe;
+    margin-right: 1px; 
+    width: 40px;
+    height: 40px;
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center; 
+    background-color: #888888;
+    color: #fefefe;
+}
+
+.paginationTag:hover{
+  color: #FF6900;
+}
 
     #paginationDiv{
       margin-top: 20px;
@@ -558,7 +564,7 @@ $('.searchProducts').on('input', function(){
         }
         var category = $(this).closest('tr').find('.categoryDetails').text();
         var categoryid = $(this).closest('tr').find('.categoryid').text();
-        var variantid = $(this).closest('tr').find('.variantid').text();//deleteProducts
+        var variantid = $(this).closest('tr').find('.variantid').text();
 
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty)
@@ -600,6 +606,43 @@ $('.searchProducts').on('input', function(){
     });
       })
     });
-    
+    function openModal(row){
+    var productId = row.querySelector('.productsId').innerText;
+    var productName =  row.querySelector('.productsName').innerText
+    var productSKU = row.querySelector('.sku').innerText
+    var productCode = row.querySelector('.code').innerText
+    var productBarcode = row.querySelector('.barcode').innerText;
+    var productOUM = row.querySelector('.uom_name').innerText;
+    var productBrand = row.querySelector('.brand').innerText;
+    var productCost = row.querySelector('.cost').innerText;
+    var productMakup = row.querySelector('.markup').innerText;
+    var productPrice = row.querySelector('.prod_price').innerText;
+    var productStatus = row.querySelector('.status').innerText;
+    var productuomid  = row.querySelector('.oumId').innerText;
+    var isDiscounted = row.querySelector('.isDiscounted').innerText;
+    var isTax = row.querySelector('.isTax').innerText;
+    var isTaxIncluded = row.querySelector('.isTaxIncluded').innerText;
+    var serviceCharge = row.querySelector('.service').innerText;
+    var displayService = row.querySelector('.displayService').innerText;
+    var otherCharges = row.querySelector('.other').innerText;
+    var displayOtherCharges = row.querySelector('.displayOthers').innerText;
+    var status = row.querySelector('.statusData').innerText;
+    var image = row.querySelector('.productImgs').innerText;
+    var desc = row.querySelector('.description').innerText;
+    var isBOM = row.querySelector('.isBOM').innerText;
+    var isWarranty = row.querySelector('.isWarranty').innerText;
+    var category = row.querySelector('.categoryDetails').innerText;
+    var categoryid  = row.querySelector('.categoryid').innerText;
+    var variantid = row.querySelector('.variantid').innerText;
+
+  
+    $('.highlighteds').removeClass('highlighteds');
+    $('.highlightedss').removeClass('highlightedss');
+
+    $(row).addClass('highlighteds');
+
+    toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty)
+    }
 
 </script>

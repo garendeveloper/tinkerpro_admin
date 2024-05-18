@@ -766,8 +766,8 @@ public function importProducts($fileData) {
   $csvData = array_map('str_getcsv', file($file));
   $headers = array_shift($csvData);
 
-  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status) 
-              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status)";
+  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted) 
+              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted)";
   
   $conn = $this->connect();
   $conn->beginTransaction(); 
@@ -791,6 +791,7 @@ public function importProducts($fileData) {
           $stmt->bindParam(':IsUsingDefaultQuantity', $product['IsUsingDefaultQuantity']);
           $stmt->bindParam(':IsService', $product['IsService']);
           $stmt->bindParam(':status', $product['IsEnabled']);
+          $stmt->bindParam(':isDiscounted', $product['isDiscounted']);
 
           $stmt->execute();
       }
