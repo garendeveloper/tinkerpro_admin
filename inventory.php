@@ -10,30 +10,30 @@
   
   $abilityFacade = new AbilityFacade;
 
-if (isset($_SESSION['user_id'])) {
+// if (isset($_SESSION['user_id'])) {
  
-    $userID = $_SESSION['user_id'];
+//     $userID = $_SESSION['user_id'];
 
     
-    $permissions = $abilityFacade->perm($userID);
+//     $permissions = $abilityFacade->perm($userID);
 
     
-    $accessGranted = false;
-    foreach ($permissions as $permission) {
-        if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
-            $accessGranted = true;
-            break;
-        }
-    }
-    if (!$accessGranted) {
-      header("Location: 403.php");
-      exit;
-  }
-} else {
-    header("Location: login.php");
-    exit;
+//     $accessGranted = false;
+//     foreach ($permissions as $permission) {
+//         if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
+//             $accessGranted = true;
+//             break;
+//         }
+//     }
+//     if (!$accessGranted) {
+//       header("Location: 403.php");
+//       exit;
+//   }
+// } else {
+//     header("Location: login.php");
+//     exit;
 
-}
+// }
 
   if (isset($_SESSION["user_id"])){
     $userId = $_SESSION["user_id"];
@@ -326,7 +326,6 @@ body {
     $("#tbl_orders").hide();
     show_allInventories(); 
     show_allSuppliers();
-    show_allProducts();
     show_purchaseOrderNo();
     display_datePurchased();
 
@@ -1947,47 +1946,98 @@ body {
         closeAllLists(e.target);
       });
     }
+    // function show_allProducts()
+    // {
+    //   $.ajax({
+    //     type: 'GET',
+    //     url: 'api.php?action=get_allProducts',
+    //     success: function(data){
+    //       var products = [];
+    //       for (var i = 0; i < data.length; i++) {
+    //           var row = {
+    //               inventory_id: data[i].inventory_id,
+    //               product_id: data[i].id,
+    //               product: data[i].prod_desc,
+    //               barcode: data[i].barcode,
+    //               brand: data[i].brand,
+    //           };
+    //           products.push(row);
+    //       }
+    //       $("#product").autocomplete({
+    //           source: function (request, response) {
+    //               var term = request.term.toLowerCase();
+    //               var filteredProducts = products.filter(function (row) {
+    //                   return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
+    //                       (!row.brand && term === "");
+    //               });
+    //               response(filteredProducts.map(function (row) {
+    //                   return {
+    //                       label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+    //                       value: row.barcode ?? row.product,
+    //                       inventory_id: row.inventory_id,
+    //                       id: row.product_id
+    //                   };
+    //               }));
+    //           },
+    //           select: function (event, ui) {
+    //               var selectedProductId = ui.item.id;
+    //               $("#selected_product_id").val(selectedProductId);
+    //               return false;
+    //           }
+    //       })
+    //     }
+    //   })
+    // }
+    var productsCache = []; 
+    show_allProducts();
+    $("#product").autocomplete({
+          minLength: 2, 
+          source: function(request, response) {
+              var term = request.term;
+              var filteredProducts = filterProducts(term);
+              var slicedProducts = filteredProducts.slice(0, 5); 
+              response(slicedProducts);
+          },
+          select: function(event, ui) {
+              var selectedProductId = ui.item.id;
+              $("#selected_product_id").val(selectedProductId);
+              return false;
+          }
+      });
+
+    function filterProducts(term) {
+        return productsCache.filter(function(row) {
+            return row.product.toLowerCase().includes(term) || 
+                   row.barcode.includes(term) || 
+                   (row.brand && row.brand.toLowerCase().includes(term)) || 
+                   (!row.brand && term === "");
+        }).map(function(row) {
+            return {
+                label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+                value: row.barcode ?? row.product,
+                inventory_id: row.inventory_id,
+                id: row.product_id
+            };
+        });
+    }
     function show_allProducts()
     {
       $.ajax({
-        type: 'GET',
-        url: 'api.php?action=get_allProducts',
-        success: function(data){
-          var products = [];
-          for (var i = 0; i < data.length; i++) {
-              var row = {
-                  inventory_id: data[i].inventory_id,
-                  product_id: data[i].id,
-                  product: data[i].prod_desc,
-                  barcode: data[i].barcode,
-                  brand: data[i].brand,
-              };
-              products.push(row);
+          type: 'GET',
+          url: 'api.php?action=get_allProducts',
+          success: function(data) {
+            for (var i = 0; i < data.length; i++) {
+                var row = {
+                    inventory_id: data[i].inventory_id,
+                    product_id: data[i].id,
+                    product: data[i].prod_desc,
+                    barcode: data[i].barcode,
+                    brand: data[i].brand,
+                };
+                productsCache.push(row);
+            }
           }
-          $("#product").autocomplete({
-              source: function (request, response) {
-                  var term = request.term.toLowerCase();
-                  var filteredProducts = products.filter(function (row) {
-                      return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
-                          (!row.brand && term === "");
-                  });
-                  response(filteredProducts.map(function (row) {
-                      return {
-                          label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
-                          value: row.barcode,
-                          inventory_id: row.inventory_id,
-                          id: row.product_id
-                      };
-                  }));
-              },
-              select: function (event, ui) {
-                  var selectedProductId = ui.item.id;
-                  $("#selected_product_id").val(selectedProductId);
-                  return false;
-              }
-          });
-        }
-      })
+      });
     }
     function show_allInventories()
     {
