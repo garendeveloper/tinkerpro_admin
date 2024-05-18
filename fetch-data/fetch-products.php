@@ -71,12 +71,8 @@ while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
     $counter++;
 }
 
-
 $html = ob_get_clean();
 echo $html;
-
-
-
 ?>
 <style>
 .td-h {

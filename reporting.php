@@ -600,7 +600,7 @@ input:not(:checked) + .sliderStatusExcludes {
     <!-- main-panel ends -->
 </div>
 <!-- container-scroller -->
-
+<?php include("layout/footer.php") ?>
 
 <script>
 

@@ -185,7 +185,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
            <input  class="text-color searchProducts" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Product,[code, barcode, name, brand]"/>
-           <button class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+           <button onclick="searchProducts()" id="searchBtn" name="productSearch" class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
               viewBox="0 0 491.52 491.52" xml:space="preserve">
             <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
             <path style="opacity:0.5;fill:#FFFFFF;enable-background:new    ;" d="M98.081,234.62c-43.316-43.315-43.882-112.979-1.264-155.595
@@ -253,6 +253,7 @@ if (isset($_SESSION['user_id'])) {
                 <button class="btn-control" id="generateProductPDFBtn" style="width:160px; height:45px; margin-right: 10px"><svg width="25px" height="25px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2.5 6.5V6H2V6.5H2.5ZM6.5 6.5V6H6V6.5H6.5ZM6.5 10.5H6V11H6.5V10.5ZM13.5 3.5H14V3.29289L13.8536 3.14645L13.5 3.5ZM10.5 0.5L10.8536 0.146447L10.7071 0H10.5V0.5ZM2.5 7H3.5V6H2.5V7ZM3 11V8.5H2V11H3ZM3 8.5V6.5H2V8.5H3ZM3.5 8H2.5V9H3.5V8ZM4 7.5C4 7.77614 3.77614 8 3.5 8V9C4.32843 9 5 8.32843 5 7.5H4ZM3.5 7C3.77614 7 4 7.22386 4 7.5H5C5 6.67157 4.32843 6 3.5 6V7ZM6 6.5V10.5H7V6.5H6ZM6.5 11H7.5V10H6.5V11ZM9 9.5V7.5H8V9.5H9ZM7.5 6H6.5V7H7.5V6ZM9 7.5C9 6.67157 8.32843 6 7.5 6V7C7.77614 7 8 7.22386 8 7.5H9ZM7.5 11C8.32843 11 9 10.3284 9 9.5H8C8 9.77614 7.77614 10 7.5 10V11ZM10 6V11H11V6H10ZM10.5 7H13V6H10.5V7ZM10.5 9H12V8H10.5V9ZM2 5V1.5H1V5H2ZM13 3.5V5H14V3.5H13ZM2.5 1H10.5V0H2.5V1ZM10.1464 0.853553L13.1464 3.85355L13.8536 3.14645L10.8536 0.146447L10.1464 0.853553ZM2 1.5C2 1.22386 2.22386 1 2.5 1V0C1.67157 0 1 0.671573 1 1.5H2ZM1 12V13.5H2V12H1ZM2.5 15H12.5V14H2.5V15ZM14 13.5V12H13V13.5H14ZM12.5 15C13.3284 15 14 14.3284 14 13.5H13C13 13.7761 12.7761 14 12.5 14V15ZM1 13.5C1 14.3284 1.67157 15 2.5 15V14C2.22386 14 2 13.7761 2 13.5H1Z" fill="#ffff"></path> </g></svg>&nbsp;Save as PDF</button>
                 <button class="btn-control" id="generateProductsEXCELBtn" style="width:160px; height:45px;"><svg height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 26" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffff;" d="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162 C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8 h-4V6h4V8z"></path> <path style="fill:#ffff;" d="M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678 H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037 c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 L9.488,18.08L9.488,18.08z"></path> </g> </g></svg>&nbsp;Save as Excel</button>
                 <button class="btn-control" id="importProducts" style="width:200px; height:45px;"><svg height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 26" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffff;" d="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162 C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8 h-4V6h4V8z"></path> <path style="fill:#ffff;" d="M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678 H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037 c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 L9.488,18.08L9.488,18.08z"></path> </g> </g></svg>&nbsp;Import Products</button>
+                <button class="btn-control" id="exportProducts" style="width:200px; height:45px;"><svg height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 26" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffff;" d="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162 C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8 h-4V6h4V8z"></path> <path style="fill:#ffff;" d="M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678 H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037 c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 L9.488,18.08L9.488,18.08z"></path> </g> </g></svg>&nbsp;Save as CSV</button>
               </div>
             </div>
           </div>
@@ -404,6 +405,7 @@ function showPaginationBtn(){
 
 
 function refreshProductsTable(page) {
+  $('.searchProducts').focus();
   $('#modalCashPrint').show()
     $.ajax({
         url: './fetch-data/fetch-products.php', 
@@ -422,13 +424,31 @@ function refreshProductsTable(page) {
 }
 refreshProductsTable(1)
 
-
+function searchProducts(){
+  var searchData = $('.searchProducts').val();
+    $.ajax({
+        url: './fetch-data/fetch-products.php', 
+        type: 'GET',
+        data: {
+            searchQuery: searchData 
+        },
+        success: function(response) {
+          $('#productTable').html(response); 
+          $('.searchProducts').val("")
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText); 
+        }
+    });
+}
 
   $(document).ready(function() {
+  
     $('#generateProductPDFBtn').click(function() {
+      $('#modalCashPrint').show()
       var searchData = $('.searchProducts').val();
     // var statusValue = $("#filterStatus").val(); 
-    console.log(searchData)
+   
     $.ajax({
         url: './reports/generate_products_pdf.php',
         type: 'GET',
@@ -449,6 +469,7 @@ refreshProductsTable(1)
 
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
+            $('#modalCashPrint').hide()
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -459,7 +480,7 @@ refreshProductsTable(1)
 $('#printProduct').click(function() {
     var searchData = $('.searchProducts').val();
     // var statusValue = $("#filterStatus").val(); 
-    
+    $('#modalCashPrint').show()
     $.ajax({
         url: './reports/generate_products_pdf.php',
         type: 'GET',
@@ -482,6 +503,7 @@ $('#printProduct').click(function() {
             }
 
             window.URL.revokeObjectURL(url);
+            $('#modalCashPrint').hide()
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -490,6 +512,7 @@ $('#printProduct').click(function() {
     });
   });
   $('#generateProductsEXCELBtn').click(function() {
+    $('#modalCashPrint').show()
     var searchData = $('.searchProducts').val();
     console.log(searchData)
     $.ajax({
@@ -511,6 +534,7 @@ $('#printProduct').click(function() {
 
             // Clean up
             document.body.removeChild(link);
+            $('#modalCashPrint').hide()
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -518,7 +542,7 @@ $('#printProduct').click(function() {
     });
 });
 $('.searchProducts').on('input', function(){
-    var searchData = $(this).val();
+    var searchData = $('.searchProducts').val();
     $.ajax({
         url: './fetch-data/fetch-products.php', 
         type: 'GET',
@@ -533,6 +557,48 @@ $('.searchProducts').on('input', function(){
         }
     });
 });
+
+$('#exportProducts').click(function() {
+    $('#modalCashPrint').show();
+    var searchData = $('.searchProducts').val();
+    console.log(searchData);
+    $.ajax({
+        url: './reports/export-products-csv.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        data: {
+            searchQuery: searchData 
+        },
+        success: function(response) {
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(response);
+            a.href = url;
+            a.download = 'productList.csv';
+            document.body.append(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+            $('#modalCashPrint').hide();
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+
+
+  $('.searchProducts').keydown(function(e) {
+        switch(e.which){
+         case 13:
+         $('button[name="productSearch"]').click();
+         break;
+        default: return; 
+        }
+      e.preventDefault(); 
+    });
+
  $('.clearproductsBtn').on('click', function(){
   $('.searchProducts').val("")
   refreshProductsTable()
