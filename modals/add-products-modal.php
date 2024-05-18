@@ -1272,17 +1272,17 @@ input:checked + .multipleSpan:before {
                     <tr> 
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Selling Price (Php)</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input style="width: 105px"  class="selling_price" name="selling_price" id="selling_price"/>
-                        <span class="text-custom" id="multiLbl">Multiple Prices</span>
+                        <span hidden class="text-custom" id="multiLbl">Multiple Prices</span>
                         <?php
                           $multi = "yes"; 
                           $other_Charge = ($taxVat== "yes") ? "no" : "yes";
                           ?>
-                          <label class="multiplePrice" style="margin-left: 5px">
-                              <input type="checkbox" id="multipleToggle"<?php if($multi == "yes")?>  onclick="toggleMultiple(this)">
-                              <span class="multipleSpan round"></span>
+                          <label hidden class="multiplePrice" style="margin-left: 5px">
+                              <input hidden type="checkbox" id="multipleToggle"<?php if($multi == "yes")?>  onclick="toggleMultiple(this)">
+                              <span hidden  class="multipleSpan round"></span>
                           </label>
-                        <button disabled id="addMultiple" class="addMultiple addCategory">+Add</button>
-                        <button disabled class="editMultiple addCategory" hidden>+Edit</button> </td>
+                        <button hidden disabled id="addMultiple" class="addMultiple addCategory">+Add</button>
+                        <button hidden disabled class="editMultiple addCategory" hidden>+Edit</button> </td>
                     </tr>
                     <tr>
                         <td id="taxtVatLbl" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Tax (VAT) 12%</td>
