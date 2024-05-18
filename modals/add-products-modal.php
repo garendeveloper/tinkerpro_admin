@@ -151,7 +151,7 @@
 }
 .imageButtonDiv{
   position:absolute;
-  top: 710px;
+  top: 740px;
   left: 20px
 }
 .removeImage{
@@ -165,7 +165,7 @@
   font-family: Century Gothic;
   font-weight: bold;
   position: absolute;
-  top: 750px
+  top: 770px
 }
 
 .switch {
@@ -1147,6 +1147,73 @@ input:checked + .multipleSpan:before {
 .multipleSpan.active {
   background-color: #FF6900;
 }
+/* new */
+.stockeable {
+  position: relative;
+  display: inline-block;
+  width: 40px; 
+  height: 20px; 
+  outline: none; 
+}
+
+.stockeable input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.stockeableSpan {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #262626;
+  -webkit-transition: .4s;
+  transition: .4s;
+  outline: none;
+  border-radius: 10px; 
+}
+
+.stockeableSpan:before {
+  position: absolute;
+  content: "";
+  height: 16px; 
+  width: 16px;
+  left: 2px; 
+  bottom: 2px;
+  background-color: #888888;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%; 
+}
+
+input:checked + .stockeableSpan {
+  background-color: #FF6900;
+}
+
+input:focus + .stockeableSpan {
+  box-shadow: 0 0 1px #262626;
+}
+
+input:checked + .stockeableSpan:before {
+  -webkit-transform: translateX(20px); 
+  -ms-transform: translateX(20px);
+  transform: translateX(20px); 
+}
+
+.stockeableSpan.round {
+  border-radius: 10px; 
+}
+
+.stockeableSpan.round:before {
+  border-radius: 50%; 
+}
+
+.stockeableSpan.active {
+  background-color: #FF6900;
+}
 
 </style>
 
@@ -1257,6 +1324,21 @@ input:checked + .multipleSpan:before {
                             <div class="dropdown-content" id="discountDropDown">
                            
                             </div> -->
+                            </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Stockable</td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;">
+                        <?php
+                          $stockable = "no"; 
+                          $other_Charge = ($stockable == "no") ? "yes" : "no";
+                          ?>
+                          <label class="stockeable" style="margin-left: 5px">
+                              <input type="checkbox" id="stockeableToggle"<?php if($stockable  == "no") ?>  >
+                              <span class="stockeableSpan round"></span>
+                          </label>
                             </div>
                         </div>
                       </td>

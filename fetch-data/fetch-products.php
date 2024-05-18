@@ -1,4 +1,5 @@
 <?php
+
 include(__DIR__ . '/../utils/db/connector.php');
 include(__DIR__ . '/../utils/models/product-facade.php');
 include(__DIR__ . '/../utils/models/user-facade.php');
@@ -15,7 +16,7 @@ $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$recordsPerPage = 500;
+$recordsPerPage = 300;
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($page - 1) * $recordsPerPage;
 
@@ -28,8 +29,8 @@ ob_start();
 while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
 //   var_dump( $row['category_details'] ?? null)
     ?>
-    <tr  href="#" onclick="highlightBorder(this)" ondblclick="openModal(this)">
-    <td hidden class='text-center td-h'><span class="isBOM"><?= $row['is_BOM'] ?></span><span class="isWarranty"><?= $row['is_warranty'] ?></span></td>
+    <tr  href="#" onclick="highlightBorder(this)" ondblclick="openModal(this)">//is_stockable
+    <td hidden class='text-center td-h'><span class="isBOM"><?= $row['is_BOM'] ?></span><span class="isWarranty"><?= $row['is_warranty'] ?></span><span class="is_stockable"><?= $row['is_stockable'] ?></span></td>
     <td hidden class='text-center td-h'><span class="categoryDetails"><?= $row['category_details'] ?? null ?></span><span class="categoryid"><?= $row['category_id'] ?? null ?></span></span><span class="variantid"><?= $row['variant_id'] ?? null ?></span></td> 
     <td hidden class='text-center td-h'><span class="isTaxIncluded"><?= $row['taxIncluded'] ?></td> 
     <td hidden class='text-center td-h'><span class="description"><?= $row['description'] ?></span><<span class="statusData"><?= $row['status'] ?></span><span class="productImgs"><?= $row['image'] ?></span></td> 
@@ -37,7 +38,7 @@ while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
     <td hidden class='text-center td-h'><span class="service"><?= $row['serviceCharge'] ?></span><span class="displayService"><?= $row['displayService'] ?></span></td>
     <td hidden class='text-center td-h'><span hidden class="isDiscounted"><?= $row['discounted'] ?></span><span hidden class="isTax"><?= $row['isVAT'] ?></span></td>
     <td class='text-center td-h'><?= $counter?><span hidden class="productsId"><?= $row['id'] ?></span><span hidden class="oumId"><?= $row['uom_id'] ?></span></td>
-    <td class='productsName text-center td-h'><?= $row['prod_desc']?></td>
+    <td class='productsName text-left td-h' style='padding-left: 10px;'><?= $row['prod_desc']?></td>
     <td class='barcode text-center td-h'><?= $row['barcode']?></td>
     <td class='sku text-center td-h'><?= $row['sku']?></td>
     <td class='code text-center td-h'><?= $row['code']?></td>

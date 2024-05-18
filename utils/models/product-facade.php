@@ -32,7 +32,8 @@
         products.category_id as category_id,
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
-        products.is_warranty as is_warranty
+        products.is_warranty as is_warranty,
+        products.is_stockable as is_stockable
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.prod_desc LIKE :searchQuery OR 
@@ -78,7 +79,8 @@
         products.category_id as category_id,
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
-        products.is_warranty as is_warranty
+        products.is_warranty as is_warranty,
+        products.is_stockable as is_stockable
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id = :selectedProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -116,7 +118,8 @@
         products.category_id as category_id,
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
-        products.is_warranty as is_warranty
+        products.is_warranty as is_warranty,
+        products.is_stockable as is_stockable
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.category_id= :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -153,7 +156,8 @@
         products.category_id as category_id,
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
-        products.is_warranty as is_warranty
+        products.is_warranty as is_warranty,
+        products.is_stockable as is_stockable
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.variant_id= :selectedVariantroduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -190,7 +194,8 @@
         products.category_id as category_id,
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
-        products.is_warranty as is_warranty
+        products.is_warranty as is_warranty,
+        products.is_stockable as is_stockable
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -228,7 +233,8 @@
         products.category_id as category_id,
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
-        products.is_warranty as is_warranty
+        products.is_warranty as is_warranty,
+        products.is_stockable as is_stockable
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -266,7 +272,8 @@
         products.category_id as category_id,
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
-        products.is_warranty as is_warranty
+        products.is_warranty as is_warranty,
+        products.is_stockable as is_stockable
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -305,7 +312,8 @@
         products.category_details as category_details, 
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
-        products.is_warranty as is_warranty
+        products.is_warranty as is_warranty,
+        products.is_stockable as is_stockable
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
@@ -343,7 +351,7 @@
     $category_details = $formData['category_details'] ?? null;
     $bomStat = $formData['bomStat'] ?? null;
     $warranty = $formData['warranty'] ?? null;
-    
+    $stockable = $formData['stockable'] ?? null;
     // Handle file upload
     $fileName = null;
     if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
@@ -355,9 +363,9 @@
     }
 
     // Insert product information into the database
-    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)';
+    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty,is_stockable) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)';
     $stmt = $this->connect()->prepare($sql);
-    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty]);
+    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty,$stockable]);
 
  
 
@@ -427,6 +435,7 @@ public function updateProduct($formData) {
   $category_details = $formData['category_details'] ?? null;
   $bomStat = $formData['bomStat'] ?? null;
   $warranty = $formData['warranty'] ?? null;
+  $stockable = $formData['stockable'] ?? null;
 
   if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
       $tempPath = $uploadedFile['tmp_name'];
@@ -471,12 +480,14 @@ public function updateProduct($formData) {
           variant_id = ?,
           category_details = ?,
           is_BOM = ?,
-          is_warranty = ?
+          is_warranty = ?,
+          is_multiple = ?,
+          is_stockable = ?
           WHERE id = ?';
 
   $stmt = $this->connect()->prepare($sql);
   $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
-  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty, $id]);
+  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty,0,$stockable, $id]);
   
   $bomData = $formData['productBOM'] ?? [];
   $updateData = [];
@@ -536,7 +547,7 @@ public function updateProduct($formData) {
       return $sql;
     }
     public function latestSKU() {
-      $query = "SELECT sku FROM products ORDER BY CAST(sku AS UNSIGNED) ASC"; 
+      $query = "SELECT sku FROM products WHERE sku REGEXP '^[0-9]+$' ORDER BY CAST(sku AS UNSIGNED) ASC;"; 
       $statement = $this->connect()->prepare($query);
       $statement->execute();
       $skus = $statement->fetchAll(PDO::FETCH_COLUMN);
@@ -766,8 +777,8 @@ public function importProducts($fileData) {
   $csvData = array_map('str_getcsv', file($file));
   $headers = array_shift($csvData);
 
-  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted) 
-              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted)";
+  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable) 
+              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable)";
   
   $conn = $this->connect();
   $conn->beginTransaction(); 
@@ -792,6 +803,7 @@ public function importProducts($fileData) {
           $stmt->bindParam(':IsService', $product['IsService']);
           $stmt->bindParam(':status', $product['IsEnabled']);
           $stmt->bindParam(':isDiscounted', $product['isDiscounted']);
+          $stmt->bindParam(':is_stockable', $product['Stockable']);
 
           $stmt->execute();
       }
