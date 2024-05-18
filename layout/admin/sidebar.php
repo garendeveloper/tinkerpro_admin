@@ -67,18 +67,50 @@ if (isset($_SESSION['user_id'])) {
         position: fixed;
         top: 30px;
         left: 0;
-        overflow-x: hidden;
+        overflow-x: auto;
+        overflow-y: auto; 
         padding-top: 10px, 0;
+        transition: width 0.3s;
     }
 
     .sidebar a {
-        padding: 5px 15px;
+        padding: 15px;
         text-decoration: none;
         font-size: 14px;
         color: #ffff;
         font-family: Century Gothic;
         display: block;
         margin-top: 10px;
+
+    }
+
+    .sidebar.collapsed {
+        width: 60px;
+    }
+
+    .sidebar nav ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .sidebar nav ul li {
+        margin: 20px 0;
+    }
+
+    .sidebar nav ul li a {
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .sidebar nav ul li a .icon {
+        font-size: 24px;
+        margin-right: 10px;
+    }
+
+    .sidebar.collapsed nav ul li a .text {
+        display: none;
     }
 
     .header-container {
@@ -90,7 +122,7 @@ if (isset($_SESSION['user_id'])) {
         align-items: center;
     }
 
-    .sidebar a:hover {
+    .sidebar nav ul li:hover {
         background-color: #FF6700;
     }
 
@@ -110,39 +142,61 @@ if (isset($_SESSION['user_id'])) {
     .sidebar-footer {
         background-color: #151515;
         color: #fff;
-        text-align: right; 
+        text-align: right;
         bottom: 0;
-        min-height: 5vh; 
+        min-height: 5vh;
+    }
+
+    .main-panel {
+        padding: 15px;
+        transition: margin-left 0.3s;
+    }
+
+    .main-panel.expanded {
+        left: 50px;
+        width: calc(100% - 50px); 
     }   
-
-
 
 </style>
 <header class="site-header">
     <div class="header-container">
-        <h6 class="logo">Management&nbsp; <i class="bi bi-globe" style="font-size: 0.5rem;"></i> <span
+        <h6 class="logo">Management&nbsp; <i class="bi bi-globe" style="font-size: 0.75rem;"></i> <span
                 id="pointer"></span> </h6>
     </div>
 </header>
 <div class="sidebar" id="sidebar">
-    <a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp; Dashboard</a>
-    <?php if ($accessInventory): ?>
-        <a href="#" id="inventory"><i class="bi bi-box-seam"></i>&nbsp; Inventory </a>
-    <?php endif; ?>
-    <?php if ($accessProducts): ?>
-        <a href="#" id="products"><i class="bi bi-bag-check"></i>&nbsp; Products</a>
-    <?php endif; ?>
-
-    <a href="suppliers" id="suppliers"><i class="bi bi-people bi-3x "></i>&nbsp; Suppliers</a>
-    <a href="customer" id="suppliers"><i class="bi bi-people bi-3x "></i>&nbsp; Customers</a>
-    <?php if ($accessReporting): ?>
-        <a href="#" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp; Reporting</a>
-    <?php endif; ?>
-    <?php if ($accessUsers): ?>
-        <a href="#" id="users"><i class="bi bi-person"></i>&nbsp; Users</a>
-    <?php endif; ?>
-    <a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp; Logout</a>
-    <input hidden class="userId" id="userId" value="<?php echo $userId; ?>"/>
+<nav>
+        <ul>
+            <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
+                        class="text">Dashboard</span></a></li>
+                        <?php if ($accessInventory): ?>
+            <li><a href="#" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span class="text">Inventory</span></a>
+            </li>
+            <?php endif?>
+            <?php if($accessProducts) :?>
+            <li><a href="#" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span class="text">Products</span></a>
+            </li>
+            <?php endif?>
+            <li><a href="ingredients" id="ingredients"><i class="bi bi-egg"></i>&nbsp;&nbsp; <span
+                        class="text">Ingredients</span></a></li>
+            <li><a href="suppliers" id="suppliers"><i class="bi bi-building"></i>&nbsp;&nbsp; <span
+                        class="text">Suppliers</span></a></li>
+            <li><a href="customer" id="customers"><i class="bi bi-people"></i>&nbsp;&nbsp; <span
+                        class="text">Customers</span></a></li>
+                        <?php if ($accessReporting): ?>
+            <li><a href="#" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span class="text">Reporting</span></a>
+            </li>
+            <?php endif?>
+            <?php if ($accessUsers): ?>
+            <li><a href="#" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text">Users</span></a></li>
+            <?php endif?>
+            <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
+                        class="text">Logout</span></a></li>
+            <li ><a href="#" id="toggle-sidebar" class="d-flex justify-content-end" ><i class="bi bi-chevron-double-left"></i>&nbsp;&nbsp; <span
+                        class="text"></span></a></li>
+        </ul>
+        <input hidden class="userId" id="userId" value="<?php echo $userId; ?>" />
+    </nav>
     <!-- for v2 -->
     <!-- <a href="company" id="company"><i class="bi bi-building"></i>&nbsp; Company</a>
     <a href="machine-details" id="machine-details"><i class="bi bi-tools"></i>&nbsp; Machine Details</a>

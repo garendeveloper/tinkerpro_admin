@@ -227,14 +227,14 @@ button:hover {
 .has-error{
   border: 1px solid red;
 }
-.tbl_buttonsContainer {
+/* .tbl_buttonsContainer {
     display: flex; 
   }
   .division {
       flex-grow: 1; 
       margin: 0 10px;
-  }
-  .grid-container {
+  } */
+  /* .grid-container {
       display: grid;
       grid-template-columns: repeat(3, auto); 
       gap: 10px; 
@@ -243,7 +243,31 @@ button:hover {
     height: 35px;
     border-radius: 10px;
     border: 1px solid #595959;
-  }
+  } */
+  .grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Adjust alignment as needed */
+        }
+
+        .grid-item {
+            text-align: center;
+            padding: 10px;
+            border-color: #33557F !important;
+            border-radius: 5px;
+            color: #ffffff;
+            font-size: 14px;
+            margin-bottom: 10px; /* Add margin between buttons */
+            flex-basis: calc(33.33% - 20px); /* Adjust width for 3 items per row */
+        }
+
+        /* Adjustments for smaller screens */
+        @media only screen and (max-width: 600px) {
+            .grid-item {
+                font-size: 12px; /* Decrease font size for smaller screens */
+                flex-basis: calc(50% - 20px); /* Adjust width for 2 items per row */
+            }
+        }
   .switch-error {
       border: 2px solid red;
       border-radius: 10px;
