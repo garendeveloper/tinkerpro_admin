@@ -6,6 +6,17 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
+$pdfFolder = __DIR__ . '/../assets/pdf/zread/';
+
+// Delete all files in the folder
+$files = glob($pdfFolder . '*'); // Get all file names
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); // Delete file
+    }
+}
+
+
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -329,9 +340,11 @@ foreach ($dataRows as $row) {
 
 
 $pdf->Output('zReadReportList.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/zread/zReadReportList.pdf';
-if (file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
+// $pdfPath = __DIR__ . '/../assets/pdf/zread/zReadReportList.pdf';
+// if (file_exists($pdfPath)) {
+//     unlink($pdfPath);
+// }
+// $pdf->Output($pdfPath, 'F');
+$pdfPath = $pdfFolder . 'zReadReportList.pdf';
 $pdf->Output($pdfPath, 'F');
  ?>

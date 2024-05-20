@@ -33,7 +33,7 @@ $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 $pdf = new TCPDF();
 $pdf->SetCreator('TinkerPro Inc.');
 $pdf->SetAuthor('TinkerPro Inc.');
-$pdf->SetTitle('Discounts Granted Table PDF');
+$pdf->SetTitle('Discounts Granted PDF');
 $pdf->SetSubject('Discounts Granted PDF Document');
 $pdf->SetKeywords('TCPDF, PDF, Discounts Granted, table');
 
@@ -47,6 +47,7 @@ $imageHeight = 15;
 $imageX = 10; 
 $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
 $pdf->SetFont('', 'I', 8);
+
 
 
 $pdf->SetFont('', 'B', 10);
@@ -108,60 +109,71 @@ if ($singleDateData && !$startDate && !$endDate) {
     } 
 }
 
-
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
-$header = array('No.', 'Customer Name','Receipt No.', 'Type', 'Rate(%)', 'Date', 'Discount(Php)');
-$headerWidths = array(10, 50, 25, 20, 20, 40, 25);
-$maxCellHeight = 5; 
 
 
-$hexColor = '#F5F5F5';
-list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+$groupedData = [];
+$totalDiscount = 0;
 
-$pdf->SetFillColor($r, $g, $b);
-
-
-$pdf->SetFont('', 'B', 10);
-for ($i = 0; $i < count($header); $i++) {
-    $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true); 
-}
-$pdf->Ln(); 
-
-$totalDiscount = 0; 
-$pdf->SetFont('', '', 10); 
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalDiscount += $row['discountAmount'];
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['last_name'] . ' ' . $row['first_name'], $headerWidths[1]));
-    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['last_name'] . ' ' . $row['first_name'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), $headerWidths[2]));
-    $pdf->Cell($headerWidths[2], $maxCellHeight, str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['rate'], $headerWidths[3]));
-    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['discountType'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['rate'], $headerWidths[4]));
-    $pdf->Cell($headerWidths[4], $maxCellHeight, $row['rate'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['date'] !== null ? date('M j, Y H:i A', strtotime($row['date'])) : '', $headerWidths[5]));
-    $pdf->Cell($headerWidths[5], $maxCellHeight, $row['date'] !== null ? date('M j, Y H:i A', strtotime($row['date'])) : '', 1, 0, 'L');   
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['discountAmount'], $headerWidths[6]));
-    $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['discountAmount'], 2), 1, 0, 'R'); 
+    $lastName = $row['last_name'];
+    $firstName = $row['first_name'];
    
-   
-    $pdf->Ln(); 
-    $counter++;
+    if (!isset($groupedData[$lastName])) {
+        $groupedData[$lastName] = [];
+    }
+    $groupedData[$lastName][] = $row;
 }
 
-$pdf->SetFont('', 'B', 10); 
-$pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total', 1, 0, 'C'); 
+foreach ($groupedData as $lastName => $customerData) {
+    $totalDiscount = 0; // Initialize total discount for the current customer
 
-$pdf->Cell($headerWidths[5] + $headerWidths[6], $maxCellHeight, number_format($totalDiscount, 2), 1, 0, 'R'); 
-$pdf->Ln(); 
+    $pdf->SetFont('', 'B', 10);
+    $pdf->Cell(0, 10, 'Customer Name: ' . $firstName . ' ' . $lastName, 0, 1, 'L', 0);
+    $pdf->Ln(-2); 
+    $pdf->SetDrawColor(192, 192, 192); 
+    $pdf->SetLineWidth(0.3); 
+    $header = array('No.', 'User', 'Receipt No', 'Date', 'Discount(Php)');
+    $headerWidths = array(10, 60, 40, 40, 40);
+    $maxCellHeight = 5; 
+
+    $hexColor = '#F5F5F5';
+    list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+    
+    $pdf->SetFillColor($r, $g, $b);
+    
+    $pdf->SetFont('', 'B', 10);
+    foreach ($header as $i => $headerItem) {
+        $pdf->Cell($headerWidths[$i], $maxCellHeight, $headerItem, 1, 0, 'C', true);
+    }  
+    $pdf->Ln();
+
+    $counter = 1;
+    foreach ($customerData as $row) {
+        $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
+        $pdf->Cell($headerWidths[1], $maxCellHeight, $row['c_first_name'] .' '. $row['c_last_name'], 1, 0, 'C');
+        $pdf->Cell($headerWidths[2], $maxCellHeight, str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), 1, 0, 'C');
+        $formattedDate = date('M d, Y', strtotime($row['date']));
+        $pdf->Cell($headerWidths[3], $maxCellHeight, $formattedDate, 1, 0, 'C');
+        $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['discountAmount'], 2), 1, 0, 'R');
+
+        $totalDiscount += $row['discountAmount']; 
+        $pdf->Ln(); 
+        $counter++;
+    }
+
+
+    $pdf->SetFont('', 'B', 10); 
+    $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, 'C'); 
+    $pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
+    $pdf->Ln(); 
+}
 
 $pdf->Output('discountsGranted.pdf', 'I');
 $pdfPath = __DIR__ . '/../assets/pdf/discounts_granted/discountsGranted.pdf';
 
 if (file_exists($pdfPath)) {
- 
     unlink($pdfPath);
 }
 $pdf->Output($pdfPath, 'F');

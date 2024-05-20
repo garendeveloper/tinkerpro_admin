@@ -956,6 +956,7 @@ input:checked + .sliderbom:before {
   outline: 0;
   background-color: #404040;
   border-color: #595959;
+  margin-top: 20px
 }
 .btns-bom:hover{
   background-color: #FF6900;

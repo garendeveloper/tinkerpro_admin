@@ -583,6 +583,17 @@ input:not(:checked) + .sliderStatusExcludes {
                   </label> 
                   <p style="color: #fefefe; font-family: Century Gothic">&nbsp;Exclude Refund and Return & Exchange</p>  
             </div>
+            <div hidden class="custom-select" id="soldDiv">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Options</label>
+                <div class="select-container">
+                    <select id="soldSelect">
+                    <option value="sold" selected >Sold</option>
+                    <option value="unsold">Not Sold</option>
+                 
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+            </div>
                 <div class="divider"></div>
                 <div style="display:flex;justify-content:center" class="topDiv">
                  <button id="showReport" class="custom_btn" style="margin-right: 10px;"><svg height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#fefefe" d="M20.921,31.898c2.758,0,5.367-0.956,7.458-2.704l1.077,1.077l-0.358,0.358 c-0.188,0.188-0.293,0.442-0.293,0.707s0.105,0.52,0.293,0.707l8.257,8.256c0.195,0.195,0.451,0.293,0.707,0.293 s0.512-0.098,0.707-0.293l2.208-2.208c0.188-0.188,0.293-0.442,0.293-0.707s-0.105-0.52-0.293-0.707l-8.257-8.256 c-0.391-0.391-1.023-0.391-1.414,0l-0.436,0.436l-1.073-1.073c1.793-2.104,2.777-4.743,2.777-7.537c0-3.112-1.212-6.038-3.413-8.239 s-5.127-3.413-8.239-3.413s-6.038,1.212-8.238,3.413c-2.201,2.201-3.413,5.126-3.413,8.239c0,3.112,1.212,6.038,3.413,8.238 C14.883,30.687,17.809,31.898,20.921,31.898z M38.855,37.385l-0.794,0.793l-6.843-6.842l0.794-0.793L38.855,37.385z M14.097,13.423 c1.823-1.823,4.246-2.827,6.824-2.827s5.002,1.004,6.825,2.827c1.823,1.823,2.827,4.247,2.827,6.825 c0,2.578-1.004,5.001-2.827,6.824c-1.823,1.823-4.247,2.827-6.825,2.827s-5.001-1.004-6.824-2.827 c-1.823-1.823-2.827-4.247-2.827-6.824C11.27,17.669,12.273,15.246,14.097,13.423z"></path> </g></svg>&nbsp;Show Report</button>
@@ -620,6 +631,9 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var usersSelect = document.getElementById('usersDIV');
           usersSelect.removeAttribute('hidden');
@@ -670,7 +684,9 @@ function highlightDiv(id) {
           printDocuments(id)
           showReports(id)
 
-  
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.removeAttribute('hidden');
+
           var usersSelect = document.getElementById('usersDIV');
           usersSelect.setAttribute('hidden',true);
 
@@ -718,6 +734,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.removeAttribute('hidden');
@@ -768,6 +786,9 @@ function highlightDiv(id) {
           printDocuments(id)
           showReports(id)
 
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
+
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
 
@@ -815,6 +836,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -862,6 +885,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -909,6 +934,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -956,6 +983,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.removeAttribute('hidden');
@@ -1003,6 +1032,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1050,6 +1081,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1097,6 +1130,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1147,6 +1182,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1197,6 +1234,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1247,6 +1286,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1297,6 +1338,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1348,6 +1391,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1399,6 +1444,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1450,6 +1497,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1500,6 +1549,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1550,6 +1601,8 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1597,6 +1650,10 @@ function highlightDiv(id) {
           toggleDivExcludes.checked = false
         }
         else{
+
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
+
           var usersSelect = document.getElementById('usersDIV');
           usersSelect.setAttribute('hidden',true);
 
@@ -1728,6 +1785,8 @@ function generatePdf(id){
     });
   }else if(id == 3){
     $('#PDFBtn').off('click').on('click',function() {
+      var soldSelect = document.getElementById('soldSelect')
+      var selectedOption = soldSelect.value;
       var productSelect = document.getElementById('selectProducts')
       var selectedProduct = productSelect.value;
       var categoriesSelect = document.getElementById('categoreisSelect')
@@ -1766,12 +1825,13 @@ function generatePdf(id){
         endDate = ""
       }
         $.ajax({
-            url: './reports/generate_products_pdf.php',
+            url: './reports/generate-products-data-inventory.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
             },
             data: {
+                selectedOption: selectedOption,
                 selectedProduct: selectedProduct,
                 selectedCategories: selectedCategories,
                 selectedSubCategories:  selectedSubCategories,
@@ -1784,7 +1844,7 @@ function generatePdf(id){
               var url = window.URL.createObjectURL(blob);
               var a = document.createElement('a');
               a.href = url;
-              a.download = 'product_list.pdf';
+              a.download = 'product_report.pdf';
               document.body.appendChild(a);
               a.click();
 
@@ -2954,6 +3014,8 @@ function generateExcel(id){
     });
   }else if(id==3){
     $('#EXCELBtn').click(function() {
+      var soldSelect = document.getElementById('soldSelect')
+      var selectedOption = soldSelect.value;
       var productSelect = document.getElementById('selectProducts')
       var selectedProduct = productSelect.value;
       var categoriesSelect = document.getElementById('categoreisSelect')
@@ -2993,12 +3055,13 @@ function generateExcel(id){
         endDate = ""
       }
     $.ajax({
-        url: './reports/generateProductsExcel.php',
+        url: './reports/generate-products-data-inventory-excel.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
         },
         data: {
+            selectedOption:selectedOption,
             selectedProduct: selectedProduct,
             selectedCategories: selectedCategories,
             selectedSubCategories:  selectedSubCategories,
@@ -3010,7 +3073,7 @@ function generateExcel(id){
             var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             var link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'productList.xlsx'; 
+            link.download = 'product_report.xlsx'; 
             document.body.appendChild(link);
             link.click();
 
@@ -4144,6 +4207,8 @@ function printDocuments(id){
     });
     }else if(id==3){
       $('#printDocu').off('click').on('click',function() {
+        var soldSelect = document.getElementById('soldSelect')
+        var selectedOption = soldSelect.value;
         var productSelect = document.getElementById('selectProducts')
         var selectedProduct = productSelect.value;
         var categoriesSelect = document.getElementById('categoreisSelect')
@@ -4183,12 +4248,13 @@ function printDocuments(id){
         endDate = ""
       }
     $.ajax({
-        url: './reports/generate_products_pdf.php',
+        url: './reports/generate-products-data-inventory.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
         },
         data: {
+          selectedOption: selectedOption,
             selectedProduct: selectedProduct,
             selectedCategories: selectedCategories,
             selectedSubCategories:  selectedSubCategories,
@@ -5418,6 +5484,8 @@ function showReports(id){
     $('#showReport').off('click').on('click', function(){
        $('#showReportsModal').show()
     if($('#showReportsModal').is(":visible")){
+      var soldSelect = document.getElementById('soldSelect')
+      var selectedOption = soldSelect.value;
         var loadingImage = document.getElementById("loadingImage");
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
@@ -5461,12 +5529,13 @@ function showReports(id){
         endDate = ""
       }
         $.ajax({
-            url: './reports/generate_products_pdf.php',
+            url: './reports/generate-products-data-inventory.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
             },
             data: {
+              selectedOption: selectedOption,
               selectedProduct: selectedProduct,
               selectedCategories: selectedCategories,
               selectedSubCategories:  selectedSubCategories,
@@ -5479,7 +5548,7 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/product/product_list.pdf';
+                  var pdfUrl = './assets/pdf/product/product_report.pdf';
                   $('#pdfViewer').attr('src', pdfUrl);
               }
             },
