@@ -1090,6 +1090,8 @@
         t.receipt_id as receipt_id,
         u.first_name as first_name, 
         u.last_name as last_name, 
+        c.first_name as c_first_name,
+        c.last_name as c_last_name,
         d.name as discountType,
         d.discount_amount as rate,
         SUM(t.subtotal) as total,
@@ -1101,6 +1103,7 @@
         INNER JOIN users as u ON u.id = t.user_id 
         INNER JOIN discounts as d ON u.discount_id = d.id 
         INNER JOIN payments as p on p.id = t.payment_id
+        INNER JOIN users as c on t.cashier_id = c.id
     WHERE 
         t.is_paid = 1 
         AND t.is_void = 0 
@@ -1437,13 +1440,16 @@
         d.discount_amount as rate,
         SUM(t.subtotal) as total,
         SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
+        p.date_time_of_payment as date,
+        c.first_name as c_first_name,
+        c.last_name as c_last_name
     FROM 
         transactions as t
         INNER JOIN receipt as r ON r.id = t.receipt_id
         INNER JOIN users as u ON u.id = t.user_id 
         INNER JOIN discounts as d ON u.discount_id = d.id 
         INNER JOIN payments as p on p.id = t.payment_id
+        INNER JOIN users as c ON c.id = t.cashier_id 
     WHERE 
         t.is_paid = 1 
         AND t.is_void = 0 
@@ -3352,5 +3358,316 @@ public function zReadDate(){
     $sql="SELECT date_time AS date FROM z_read"; 
     $stmt = $this->connect()->query($sql);
     return $stmt;
+}
+
+public function geProductSalesData($selectedProduct,$selectedCategories,$selectedSubCategories,$singleDateData,$startDate,$endDate,$selectedOption){
+    if($selectedOption == "sold"){
+        if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.sold * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.id = :selectedProduct
+            HAVING i.sold > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql->execute();
+            return $sql;
+
+        }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.sold * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.category_id = :selectedCategoryProduct
+            HAVING i.sold > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+            $sql->execute();
+            return $sql;
+        }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.sold * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.variant_id = :selectedVariantroduct
+            HAVING i.sold > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
+            $sql->execute();
+            return $sql;
+        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.sold * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.category_id = :selectedCategoryProduct AND p.id = :selectedProduct
+            HAVING i.sold > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+            $sql->execute();
+            return $sql;
+        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.sold * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.variant_id = :selectedVariantroduct AND p.id = :selectedProduct
+            HAVING i.sold > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
+            $sql->execute();
+            return $sql;
+        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && $selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.sold * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.variant_id = :selectedVariantroduct AND p.id = :selectedProduct AND p.category_id = :selectedCategoryProduct
+            HAVING i.sold > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
+            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+            $sql->execute();
+            return $sql;
+        }
+        else{
+        $sql="SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
+        CASE
+                WHEN p.isVAT = 1 THEN 
+                    ROUND(
+                        ((i.sold * p.prod_price) / 1.12) * 0.12,
+                        2
+                    )
+                ELSE 0
+            END AS totalVat
+        FROM inventory as i 
+        INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        HAVING i.sold > 0;";
+     
+    $stmt = $this->connect()->query($sql);
+    return $stmt;
+    }
+    }else{
+        if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.stock * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.id = :selectedProduct
+            HAVING i.stock > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql->execute();
+            return $sql;
+
+        }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.stock * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.category_id = :selectedCategoryProduct
+            HAVING i.stock > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+            $sql->execute();
+            return $sql;
+        }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.stock * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.variant_id = :selectedVariantroduct
+            HAVING i.stock > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
+            $sql->execute();
+            return $sql;
+        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.stock * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.category_id = :selectedCategoryProduct AND p.id = :selectedProduct
+            HAVING i.stock > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+            $sql->execute();
+            return $sql;
+        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.stock * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.variant_id = :selectedVariantroduct AND p.id = :selectedProduct
+            HAVING i.stock > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
+            $sql->execute();
+            return $sql;
+        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && $selectedSubCategories){
+            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
+            CASE
+                    WHEN p.isVAT = 1 THEN 
+                        ROUND(
+                            ((i.stock * p.prod_price) / 1.12) * 0.12,
+                            2
+                        )
+                    ELSE 0
+                END AS totalVat
+            FROM inventory as i 
+            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+            LEFT JOIN category as c ON c.id = p.category_id
+            LEFT JOIN variants as v ON v.id = p.variant_id
+            WHERE p.variant_id = :selectedVariantroduct AND p.id = :selectedProduct AND p.category_id = :selectedCategoryProduct
+            HAVING i.stock > 0;";
+
+            $sql = $this->connect()->prepare($sqlQuery);
+            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
+            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
+            $sql->execute();
+            return $sql;
+        }
+        else{
+        $sql="SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
+        CASE
+                WHEN p.isVAT = 1 THEN 
+                    ROUND(
+                        ((i.stock * p.prod_price) / 1.12) * 0.12,
+                        2
+                    )
+                ELSE 0
+            END AS totalVat
+        FROM inventory as i 
+        INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        HAVING i.stock > 0;";
+     
+    $stmt = $this->connect()->query($sql);
+    return $stmt;
+    }
+
+    }
+ 
+
 }
 }

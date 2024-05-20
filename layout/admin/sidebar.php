@@ -178,8 +178,7 @@ if (isset($_SESSION['user_id'])) {
                             class="text">Products</span></a>
                 </li>
             <?php endif ?>
-            <li><a href="ingredients" id="ingredients"><i class="bi bi-egg"></i>&nbsp;&nbsp; <span
-                        class="text">Ingredients</span></a></li>
+        
             <li><a href="suppliers" id="suppliers"><i class="bi bi-building"></i>&nbsp;&nbsp; <span
                         class="text">Suppliers</span></a></li>
             <li><a href="customer" id="customers"><i class="bi bi-people"></i>&nbsp;&nbsp; <span
@@ -204,6 +203,8 @@ if (isset($_SESSION['user_id'])) {
     <a href="machine-details" id="machine-details"><i class="bi bi-tools"></i>&nbsp; Machine Details</a>
     <a href="backup-restore" id="backup-restore"><i class="bi bi-cloud-arrow-up-fill"></i>&nbsp; Backup & Restore</a> -->
     <!-- <a href="ingredients" id="ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a> -->
+        <!-- <li><a href="ingredients" id="ingredients"><i class="bi bi-egg"></i>&nbsp;&nbsp; <span
+                        class="text">Ingredients</span></a></li> --> 
 
 </div>
 <script>

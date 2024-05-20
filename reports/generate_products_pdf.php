@@ -148,11 +148,10 @@ $pdf->Ln();
 
 
 $pdf->Output('product_list.pdf', 'I');
-$pdfPath = __DIR__ . '/assets/pdf/product/product_list.pdf';
-
-if (file_exists($pdfPath)) {
+// $pdfPath = __DIR__ . '/assets/pdf/product/product_list.pdf';
+// if (file_exists($pdfPath)) {
  
-    unlink($pdfPath);
-}
-$pdf->Output($pdfPath, 'F');
+//     unlink($pdfPath);
+// }
+// $pdf->Output($pdfPath, 'F');
 ?>
