@@ -127,7 +127,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
 }
 
 foreach ($groupedData as $lastName => $customerData) {
-    $totalDiscount = 0; // Initialize total discount for the current customer
+    $totalDiscount = 0;
 
     $pdf->SetFont('', 'B', 10);
     $pdf->Cell(0, 10, 'Customer Name: ' . $firstName . ' ' . $lastName, 0, 1, 'L', 0);
