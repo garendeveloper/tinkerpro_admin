@@ -1087,31 +1087,122 @@
   public function getDiscountDataReceipt($customerId,$discountType,$singleDateData,$startDate,$endDate){
     if($customerId && !$discountType && !$singleDateData && !$startDate && !$endDate){
         $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        c.first_name as c_first_name,
-        c.last_name as c_last_name,
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
     FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
-        INNER JOIN users as c on t.cashier_id = c.id
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
     WHERE 
         t.is_paid = 1 
         AND t.is_void = 0 
         AND u.discount_id IS NOT NULL 
         AND d.id NOT IN (5) 
-        AND u.id = :customerId
+       AND u.id = :customerId
     GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
+        p.id
+        HAVING 
+    discountAmount != 0;';
     
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':customerId',  $customerId);
@@ -1120,20 +1211,112 @@
 
     }else if(!$customerId && $discountType && !$singleDateData && !$startDate && !$endDate){
         $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
     FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
     WHERE 
         t.is_paid = 1 
         AND t.is_void = 0 
@@ -1141,7 +1324,9 @@
         AND d.id NOT IN (5) 
         AND d.id = :discountType
     GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
+        p.id
+        HAVING 
+    discountAmount != 0;';
     
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':discountType', $discountType);
@@ -1149,28 +1334,122 @@
           return $sql;
     }else if(!$customerId && !$discountType && $singleDateData && !$startDate && !$endDate){
         $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
     FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
     WHERE 
         t.is_paid = 1 
         AND t.is_void = 0 
         AND u.discount_id IS NOT NULL 
         AND d.id NOT IN (5) 
-        AND DATE(p.date_time_of_payment) = :singleDateData
+       AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
+        p.id
+        HAVING 
+    discountAmount != 0;';
     
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':singleDateData', $singleDateData);
@@ -1178,28 +1457,122 @@
           return $sql;
     }else if(!$customerId && !$discountType && !$singleDateData && $startDate && $endDate){
         $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
     FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
     WHERE 
         t.is_paid = 1 
         AND t.is_void = 0 
         AND u.discount_id IS NOT NULL 
         AND d.id NOT IN (5) 
-        AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+ AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
     GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
+        p.id
+        HAVING 
+    discountAmount != 0;';
     
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':startDate', $startDate);
@@ -1208,29 +1581,123 @@
           return $sql;
     }else if($customerId && $discountType && !$singleDateData && !$startDate && !$endDate){
         $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
     FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
     WHERE 
         t.is_paid = 1 
         AND t.is_void = 0 
         AND u.discount_id IS NOT NULL 
         AND d.id NOT IN (5) 
-        AND u.id = :customerId
+          AND u.id = :customerId
         AND d.id = :discountType
     GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
+        p.id
+        HAVING 
+    discountAmount != 0;';
     
           $sql = $this->connect()->prepare($sql);
           $sql->bindParam(':customerId',  $customerId);
@@ -1238,200 +1705,6 @@
           $sql->execute();
           return $sql;
     }else if($customerId && !$discountType && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
-    FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
-    WHERE 
-        t.is_paid = 1 
-        AND t.is_void = 0 
-        AND u.discount_id IS NOT NULL 
-        AND d.id NOT IN (5) 
-        AND u.id = :customerId
-        AND DATE(p.date_time_of_payment) = :singleDateData
-    GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if($customerId && !$discountType && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
-    FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
-    WHERE 
-        t.is_paid = 1 
-        AND t.is_void = 0 
-        AND u.discount_id IS NOT NULL 
-        AND d.id NOT IN (5) 
-        AND u.id = :customerId
-        AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
-    GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }else if(!$customerId && $discountType && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
-    FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
-    WHERE 
-        t.is_paid = 1 
-        AND t.is_void = 0 
-        AND u.discount_id IS NOT NULL 
-        AND d.id NOT IN (5) 
-        AND d.id = :discountType
-        AND DATE(p.date_time_of_payment) = :singleDateData
-    GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if(!$customerId && $discountType && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
-    FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
-    WHERE 
-        t.is_paid = 1 
-        AND t.is_void = 0 
-        AND u.discount_id IS NOT NULL 
-        AND d.id NOT IN (5) 
-        AND d.id = :discountType
-        AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
-    GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }else if($customerId && $discountType && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
-    FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
-    WHERE 
-        t.is_paid = 1 
-        AND t.is_void = 0 
-        AND u.discount_id IS NOT NULL 
-        AND d.id NOT IN (5) 
-        AND u.id = :customerId
-        AND d.id = :discountType
-        AND DATE(p.date_time_of_payment) = :singleDateData
-    GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if($customerId && $discountType && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT 
-        t.receipt_id as receipt_id,
-        u.first_name as first_name, 
-        u.last_name as last_name, 
-        d.name as discountType,
-        d.discount_amount as rate,
-        SUM(t.subtotal) as total,
-        SUM(t.subtotal) * d.discount_amount / 100 as discountAmount,
-        p.date_time_of_payment as date
-    FROM 
-        transactions as t
-        INNER JOIN receipt as r ON r.id = t.receipt_id
-        INNER JOIN users as u ON u.id = t.user_id 
-        INNER JOIN discounts as d ON u.discount_id = d.id 
-        INNER JOIN payments as p on p.id = t.payment_id
-    WHERE 
-        t.is_paid = 1 
-        AND t.is_void = 0 
-        AND u.discount_id IS NOT NULL 
-        AND d.id NOT IN (5) 
-        AND u.id = :customerId
-        AND d.id = :discountType
-        AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
-    GROUP BY 
-        t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }
-    else{
         $sql = 'SELECT 
         t.receipt_id as receipt_id,
         u.first_name as first_name, 
@@ -1455,8 +1728,766 @@
         AND t.is_void = 0 
         AND u.discount_id IS NOT NULL 
         AND d.id NOT IN (5) 
+        AND u.id = :customerId
+        AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY 
         t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
+    
+          $sql = $this->connect()->prepare($sql);
+          $sql->bindParam(':customerId',  $customerId);
+          $sql->bindParam(':singleDateData', $singleDateData);
+          $sql->execute();
+          return $sql;
+    }else if($customerId && !$discountType && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT 
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
+    FROM 
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
+    WHERE 
+        t.is_paid = 1 
+        AND t.is_void = 0 
+        AND u.discount_id IS NOT NULL 
+        AND d.id NOT IN (5) 
+        AND u.id = :customerId
+        AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+    GROUP BY 
+        p.id
+        HAVING 
+    discountAmount != 0;';
+    
+          $sql = $this->connect()->prepare($sql);
+          $sql->bindParam(':customerId',  $customerId);
+          $sql->bindParam(':startDate', $startDate);
+          $sql->bindParam(':endDate', $endDate);
+          $sql->execute();
+          return $sql;
+    }else if(!$customerId && $discountType && $singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT 
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
+    FROM 
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
+    WHERE 
+        t.is_paid = 1 
+        AND t.is_void = 0 
+        AND u.discount_id IS NOT NULL 
+        AND d.id NOT IN (5) 
+        AND d.id = :discountType
+        AND DATE(p.date_time_of_payment) = :singleDateData
+    GROUP BY 
+        p.id
+        HAVING 
+    discountAmount != 0;';
+    
+          $sql = $this->connect()->prepare($sql);
+          $sql->bindParam(':discountType', $discountType);
+          $sql->bindParam(':singleDateData', $singleDateData);
+          $sql->execute();
+          return $sql;
+    }else if(!$customerId && $discountType && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT 
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
+    FROM 
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
+    WHERE 
+        t.is_paid = 1 
+        AND t.is_void = 0 
+        AND u.discount_id IS NOT NULL 
+        AND d.id NOT IN (5) 
+        AND d.id = :discountType
+        AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+    GROUP BY 
+        p.id
+        HAVING 
+    discountAmount != 0;';
+    
+          $sql = $this->connect()->prepare($sql);
+          $sql->bindParam(':discountType', $discountType);
+          $sql->bindParam(':startDate', $startDate);
+          $sql->bindParam(':endDate', $endDate);
+          $sql->execute();
+          return $sql;
+    }else if($customerId && $discountType && $singleDateData && !$startDate && !$endDate){
+        $sql = 'SELECT 
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
+    FROM 
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
+    WHERE 
+        t.is_paid = 1 
+        AND t.is_void = 0 
+        AND u.discount_id IS NOT NULL 
+        AND d.id NOT IN (5) 
+        AND u.id = :customerId
+        AND d.id = :discountType
+        AND DATE(p.date_time_of_payment) = :singleDateData
+    GROUP BY 
+        p.id
+        HAVING 
+    discountAmount != 0;';
+    
+          $sql = $this->connect()->prepare($sql);
+          $sql->bindParam(':customerId',  $customerId);
+          $sql->bindParam(':discountType', $discountType);
+          $sql->bindParam(':singleDateData', $singleDateData);
+          $sql->execute();
+          return $sql;
+    }else if($customerId && $discountType && !$singleDateData && $startDate && $endDate){
+        $sql = 'SELECT 
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
+    FROM 
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
+    WHERE 
+        t.is_paid = 1 
+        AND t.is_void = 0 
+        AND u.discount_id IS NOT NULL 
+        AND d.id NOT IN (5) 
+        AND u.id = :customerId
+        AND d.id = :discountType
+        AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+    GROUP BY 
+        p.id
+        HAVING 
+    discountAmount != 0;';
+    
+          $sql = $this->connect()->prepare($sql);
+          $sql->bindParam(':customerId',  $customerId);
+          $sql->bindParam(':discountType', $discountType);
+          $sql->bindParam(':startDate', $startDate);
+          $sql->bindParam(':endDate', $endDate);
+          $sql->execute();
+          return $sql;
+    }
+    else{
+        $sql = 'SELECT 
+        p.id AS payment_id,
+        t.receipt_id AS receipt_id,
+        u.first_name AS first_name, 
+        u.last_name AS last_name, 
+        d.name AS discountType,
+        d.discount_amount AS rate,
+        SUM(t.subtotal) AS total,
+        ROUND((((SUM(t.subtotal)/1.12) * (d.discount_amount / 100)) - COALESCE(rd.customer_discount, 0)-COALESCE(rc.customer_discount, 0)), 2) AS discountAmount,
+        p.date_time_of_payment AS date,
+        c.first_name AS c_first_name,
+        c.last_name AS c_last_name,
+        COALESCE(rd.customer_discount, 0) AS total_discount_refund,
+        COALESCE(rc.customer_discount, 0) AS total_discount_return
+    FROM 
+        transactions AS t
+        INNER JOIN receipt AS r ON r.id = t.receipt_id
+        INNER JOIN users AS u ON u.id = t.user_id 
+        INNER JOIN discounts AS d ON u.discount_id = d.id 
+        INNER JOIN payments AS p ON p.id = t.payment_id
+        INNER JOIN users AS c ON c.id = t.cashier_id
+        LEFT JOIN (
+         SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        ((refunded.refunded_qty * products.prod_price) - 
+                        ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (refunded.refunded_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            refunded
+            INNER JOIN products ON products.id = refunded.prod_id
+            INNER JOIN payments ON payments.id = refunded.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY refunded.payment_id
+        ) AS rd ON rd.payment_id = p.id
+        LEFT JOIN (
+            SELECT
+         payments.id as payment_id,
+     SUM(
+        CASE
+            WHEN products.isVAT = 1 THEN 
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                    ) / 1.12) * discounts.discount_amount / 100,
+                    2
+                )
+            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+                ROUND(
+                    (
+                        (( return_exchange.return_qty * products.prod_price) - 
+                        (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / ( return_exchange.return_qty * products.prod_price)) * 100) / 100)
+                    ) * discounts.discount_amount / 100),
+                    2
+                )
+            ELSE 0
+        END) AS customer_discount
+         
+        FROM
+            return_exchange
+            INNER JOIN products ON products.id =  return_exchange.product_id
+            INNER JOIN payments ON payments.id =  return_exchange.payment_id
+            INNER JOIN (
+                SELECT DISTINCT t.payment_id, t.prod_qty, t.receipt_id, t.user_id
+                FROM transactions t
+                INNER JOIN (
+                    SELECT  payment_id, MAX(prod_qty) AS max_prod_qty
+                    FROM transactions
+                    GROUP BY payment_id
+                ) AS max_t ON t.payment_id = max_t.payment_id AND t.prod_qty = max_t.max_prod_qty
+            ) AS t ON t.payment_id = payments.id
+            INNER JOIN receipt ON t.receipt_id = receipt.id
+            INNER JOIN users ON users.id = t.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN customer ON customer.user_id = users.id
+            GROUP BY  return_exchange.payment_id
+        ) AS rc ON rc.payment_id = p.id
+    WHERE 
+        t.is_paid = 1 
+        AND t.is_void = 0 
+        AND u.discount_id IS NOT NULL 
+        AND d.id NOT IN (5) 
+    GROUP BY 
+        p.id
+        HAVING 
+    discountAmount != 0;';
 
         $stmt = $this->connect()->query($sql);
         return $stmt;
