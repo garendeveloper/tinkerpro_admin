@@ -19,12 +19,12 @@ $refundFacade = new OtherReportsFacade();
 $products = new ProductFacade();
 
 $counter = 1;
-$selectedProduct = $_GET['selectedProduct'] ?? null;
+
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getDiscountPerItem($selectedProduct,$singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade->taxRates($singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -32,9 +32,9 @@ $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 $pdf = new TCPDF();
 $pdf->SetCreator('TinkerPro Inc.');
 $pdf->SetAuthor('TinkerPro Inc.');
-$pdf->SetTitle('ITEMS DISCOUNTS Table PDF');
-$pdf->SetSubject('ITEMS DISCOUNTS PDF Document');
-$pdf->SetKeywords('TCPDF, PDF, ITEMS DISCOUNTS, table');
+$pdf->SetTitle('TAX RATES Table PDF');
+$pdf->SetSubject('TAX RATES PDF Document');
+$pdf->SetKeywords('TCPDF, PDF, TAX RATES, table');
 
 $pdf->AddPage();
 
@@ -49,7 +49,7 @@ $pdf->SetFont('', 'I', 8);
 
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell(0, 10, 'ITEMS DISCOUNTS', 0, 1, 'R', 0); 
+$pdf->Cell(0, 10, 'TAX RATES', 0, 1, 'R', 0); 
 $pdf->Ln(-5);
 $pdf->SetFont('',  10);
 $pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
@@ -89,7 +89,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $pdf->Cell(0, 10, "Period: $formattedStartDate - $formattedEndDate", 0, 'L');
 } else {
     $otherFacade = new OtherReportsFacade;
-    $others =    $otherFacade->getDatePayments();
+    $others =    $otherFacade->zReadDate();
     $dates = [];
     while ($row = $others->fetch(PDO::FETCH_ASSOC)) {
         $dates[] = $row['date'];
@@ -110,8 +110,8 @@ if ($singleDateData && !$startDate && !$endDate) {
 
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
-$header = array('No.', 'Product','Receipt No.','Date', 'Discount(Php)');
-$headerWidths = array(10, 60, 40, 40, 40);
+$header = array('No.','Zero Rated','Others','Vatable Sales','VAT');
+$headerWidths = array(30, 40,40, 40, 40);
 $maxCellHeight = 5; 
 
 $hexColor = '#F5F5F5';
@@ -122,7 +122,7 @@ $pdf->SetFillColor($r, $g, $b);
 
 $pdf->SetFont('', 'B', 8);
 for ($i = 0; $i < count($header); $i++) {
-    if ($header[$i] === 'Product') {
+    if ($header[$i] === 'No.') {
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
     } else {
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
@@ -130,40 +130,46 @@ for ($i = 0; $i < count($header); $i++) {
 }
 $pdf->Ln(); 
 
-$totalPrice = 0; 
-$totalSubtotal = 0;
-$totalDiscount = 0;
+$totalVatableSales = 0;
+$totalTax = 0;
+$totalOther = 0;
+$totalZeroRated = 0;
 $pdf->SetFont('', '', 8); 
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalPrice += $row['prod_price'];
-    $totalSubtotal +=  $row['subtotal'];
-    $totalDiscount += $row['amountdiscounted'];
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[1]));
-    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), $headerWidths[2]));
-    $pdf->Cell($headerWidths[2], $maxCellHeight, str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), 1, 0, 'C');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['date'] !== null ? date('M j, Y H:i A', strtotime($row['date'])) : '', $headerWidths[3]));
-    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['date'] !== null ? date('M j, Y H:i A', strtotime($row['date'])) : '', 1, 0, 'L');
- ; 
- $pdf->SetFont('', '', autoAdjustFontSize($pdf, str_pad($row['amountdiscounted'], 9, '0', STR_PAD_LEFT), $headerWidths[4]));
- $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['amountdiscounted'],2), 1, 0, 'R');
-
-
+    $totalVatableSales += $row['total_vatable_sales'] ??  0;
+    $totalTax += $row['total_vat_amount'] ?? 0;
+    $totalOther +=  $row['total_other'] ?? 0;
+    $totalZeroRated  += $row['total_zero_rated'] ?? 0;
+    $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'L');
+    // $formatted_date = date("M j, Y", strtotime($row['date_time']));
+    // $pdf->SetFont('', '', autoAdjustFontSize($pdf, $formatted_date, $headerWidths[1]));
+    // $pdf->Cell($headerWidths[1], $maxCellHeight, $formatted_date, 1, 0, 'C');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_zero_rated'], $headerWidths[2]));
+    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['total_zero_rated'] ?? 0,2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_other'], $headerWidths[2]));
+    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['total_other'] ?? 0,2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_vatable_sales'], $headerWidths[3]));
+    $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['total_vatable_sales'] ?? 0,2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_vat_amount'], $headerWidths[4]));
+    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['total_vat_amount'] ?? 0,2), 1, 0, 'R');
+  
  
 
-   
     $pdf->Ln(); 
     $counter++;
 }
 
 $pdf->SetFont('', 'B', 8); 
-$pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, 'C'); 
-$pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
-$pdf->Ln(); 
+$pdf->Cell($headerWidths[0] , $maxCellHeight, 'Total', 1, 0, 'L'); 
+$pdf->Cell($headerWidths[2] , $maxCellHeight,  $totalZeroRated, 1, 0, 'R');
+$pdf->Cell($headerWidths[2] , $maxCellHeight,  $totalOther, 1, 0, 'R');
+$pdf->Cell($headerWidths[3] , $maxCellHeight,  $totalVatableSales, 1, 0, 'R'); 
+$pdf->Cell($headerWidths[4] , $maxCellHeight,   $totalTax, 1, 0, 'R'); 
+// $pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
+// $pdf->Ln(); 
 
-$pdf->Output('itemsDiscounts.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/discounts_items/itemsDiscounts.pdf';
+$pdf->Output('tax-rates.pdf', 'I');
+$pdfPath = __DIR__ . '/../assets/pdf/tax/tax-rates.pdf';
 
 if (file_exists($pdfPath)) {
  
