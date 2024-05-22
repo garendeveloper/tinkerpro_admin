@@ -294,9 +294,9 @@ input:not(:checked) + .sliderStatusExcludes {
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Users</span></a></div>
                   <div id="highlightDiv3" style="width: 100%"><a href="#" onclick="highlightDiv(3)" class="text-color productssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Products</span></a></div>
-                  <div id="highlightDiv4" style="width: 100%"><a href="#" onclick="highlightDiv(4)" class="text-color ingredientsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div hidden id="highlightDiv4" style="width: 100%"><a href="#" onclick="highlightDiv(4)" class="text-color ingredientsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Ingredients</span></a></div>
-                  <div id="highlightDiv31" style="width: 100%"><a href="#" onclick="highlightDiv(31)" class="text-color bomAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <div hidden id="highlightDiv31" style="width: 100%"><a href="#" onclick="highlightDiv(31)" class="text-color bomAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Bill of Materials (B.O.M)</span></a></div>
                   <div id="highlightDiv5" style="width: 100%"><a href="#" onclick="highlightDiv(5)" class="text-color refundAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Refund by Products</span></a></div>
@@ -678,7 +678,109 @@ function highlightDiv(id) {
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
 
-        }else if(id==3){
+        }else if(id == 10){
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.removeAttribute('hidden');
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden',true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.setAttribute('hidden',true);
+
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.setAttribute('hidden',true);
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.removeAttribute('hidden');
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.removeAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.removeAttribute('hidden');
+
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+
+          var discountDIV = document.getElementById('discountDIV');
+          discountDIV.setAttribute('hidden',true);
+
+          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
+          paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
+        }else if (id == 6){
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden',true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.removeAttribute('hidden');
+          
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.setAttribute('hidden',true);
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+          
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+          
+          var discountDIV = document.getElementById('discountDIV');
+          discountDIV.setAttribute('hidden',true);
+
+          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
+          paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
+        }
+        else if(id==3){
           generatePdf(id)
           generateExcel(id)
           printDocuments(id)
@@ -2941,6 +3043,143 @@ function generatePdf(id){
             }
         });
     });
+  }else if(id == 6){//taxpdf
+
+    $('#PDFBtn').off('click').on('click',function() {
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+        $.ajax({
+            url: './reports/tax-rates-pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+            success: function(response) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'tax-rates.pdf';
+                document.body.appendChild(a);
+                a.click();
+
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+        });
+    });
+  }else if(id==10){//profitpdf
+    $('#PDFBtn').off('click').on('click',function() {
+      var soldSelect = document.getElementById('soldSelect')
+      var selectedOption = soldSelect.value;
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+        $.ajax({
+            url: './reports/profit-pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+                selectedOption: selectedOption,
+                selectedProduct: selectedProduct,
+                selectedCategories: selectedCategories,
+                selectedSubCategories:  selectedSubCategories,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+            success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'profit.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+        });
+    });
   }
 }
 
@@ -4122,6 +4361,65 @@ success: function(response) {
   var url = window.URL.createObjectURL(response);
   a.href = url;
   a.download = 'SALESREPORT.csv';
+  document.body.append(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+},
+error: function(xhr, status, error) {
+    console.error(xhr.responseText);
+}
+});
+});
+}else if(id==6){//exceltax
+  $('#EXCELBtn').click(function() {
+var datepicker = document.getElementById('datepicker').value
+var singleDateData = null;
+var startDate;
+var endDate;
+if (datepicker.includes('-')) {
+  var dateRange = datepicker.split(' - ');
+  var startDates = new Date(dateRange[0].trim());
+  var endDate = new Date(dateRange[1].trim());
+
+  var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+  var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+  startDate = formattedStartDate;
+  endDate = formattedEndDate;
+} else {
+  var singleDate = datepicker.trim();
+  var singleDate = datepicker.trim();
+  var dateObj = new Date(singleDate);
+  var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+  singleDateData =  formattedDate
+
+}
+if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+  singleDateData = ""
+}
+if(startDate == "" || startDate == null){
+  startDate = ""
+}
+  if(endDate == "" || endDate == null){
+  endDate = ""
+}
+$.ajax({
+url: './reports/tax-rates-excel.php',
+type: 'GET',
+xhrFields: {
+    responseType: 'blob'
+},
+   data: { 
+        singleDateData: singleDateData,
+        startDate: startDate,
+        endDate: endDate
+    },
+success: function(response) {
+  var a = document.createElement('a');
+  var url = window.URL.createObjectURL(response);
+  a.href = url;
+  a.download = 'TAXRATES.csv';
   document.body.append(a);
   a.click();
   a.remove();
@@ -5381,6 +5679,146 @@ function printDocuments(id){
               responseType: 'blob'
           },
            data: {
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              
+          }
+          });
+  });
+  }else if(id == 6){//printtax
+    $('#printDocu').off('click').on('click',function() {
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+        url: './reports/tax-rates-pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              
+          }
+          });
+  });
+  }else if(id==10){//printprofit
+    $('#printDocu').off('click').on('click',function() {
+      var soldSelect = document.getElementById('soldSelect')
+      var selectedOption = soldSelect.value;
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/profit-pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                selectedOption: selectedOption,
+                selectedProduct: selectedProduct,
+                selectedCategories: selectedCategories,
+                selectedSubCategories:  selectedSubCategories,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -6708,6 +7146,150 @@ function showReports(id){
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
                   var pdfUrl = './assets/pdf/salesReport/salesReport.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+     }
+    })
+  }else if(id == 6){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } else {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+          url: './reports/tax-rates-pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/tax/tax-rates.pdf';
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+     }
+    })
+  }else if(id==10){
+    $('#showReport').off('click').on('click', function(){
+       $('#showReportsModal').show()
+    if($('#showReportsModal').is(":visible")){
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var soldSelect = document.getElementById('soldSelect')
+      var selectedOption = soldSelect.value;
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/profit-pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+                selectedOption: selectedOption,
+                selectedProduct: selectedProduct,
+                selectedCategories: selectedCategories,
+                selectedSubCategories:  selectedSubCategories,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                  var pdfUrl = './assets/pdf/profit/profit.pdf';
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },

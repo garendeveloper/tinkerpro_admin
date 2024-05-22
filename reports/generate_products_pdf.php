@@ -8,7 +8,7 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
-function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
+function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 8) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
         $initialFontSize--;
@@ -52,12 +52,13 @@ $pdf->AddPage();
 
 
 $pdf->SetCellHeightRatio(1.5);
-$imageFile = './assets/img/tinkerpro-logo-dark.png'; 
+$imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
 $imageWidth = 45; 
 $imageHeight = 15; 
-$imageX = 10; // Adjust this value to your desired left margin
+$imageX = 10; 
 $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
 $pdf->SetFont('', 'I', 8);
+
 
 
 $pdf->SetFont('', 'B', 10);
@@ -67,11 +68,24 @@ $pdf->SetFont('',  10);
 $pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
 
 $pdf->Ln(-3);
-$pdf->SetFont('', 'I', 10); // Bold, size 10
+$pdf->SetFont('', '', 10); 
 $pdf->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'R');
-$pdf->Ln(-9);
-$pdf->SetFont('', 'I', 8); // Italic, size 8
+$pdf->Ln(-6);
+$pdf->SetFont('', '', 10); 
+$pdf->MultiCell(0, 10, "{$shop['shop_email']}", 0, 'R');
+$pdf->Ln(-12);
+$pdf->SetFont('', '', 8); 
 $pdf->MultiCell(0, 10, "Contact: {$shop['contact_number']}", 0, 'L');
+
+$pdf->Ln(-3);
+$pdf->SetFont('' , 10); 
+$pdf->MultiCell(0, 10, "VAT REG TIN: {$shop['tin']}", 0, 'R');
+$pdf->Ln(-6);
+$pdf->SetFont('' , 8); 
+$pdf->MultiCell(0, 10, "MIN: {$shop['min']}", 0, 'L');
+$pdf->Ln(-6);
+$pdf->SetFont('' , 8); 
+$pdf->MultiCell(0, 10, "S/N: {$shop['series_num']}", 0, 'L');
 $pdf->SetFont('' , 8); 
 $pdf->Ln(-9);
 $current_date = date('F j, Y');
@@ -80,17 +94,23 @@ $pdf->Ln(-2);
 
 
 $header = array('No.','SKU','Product Name', 'UOM', 'Markup(%)', 'Cost(Php)', 'Unit Price(Php)','Tax(Php)');
-$headerWidths = array(10, 15, 50, 25, 22, 22, 27, 20);
+$headerWidths = array(10, 20, 50, 20, 22, 22, 27, 20);
 $maxCellHeight = 5; 
 
-$hexColor = '#FF6900';
+$hexColor = '#F5F5F5';
 list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
 $pdf->SetFillColor($r, $g, $b);
+$pdf->SetFont('', 'B', 10);
+
 
 $pdf->SetFont('', 'B', 10);
 for ($i = 0; $i < count($header); $i++) {
-    $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true); 
+    if ($header[$i] === 'Product') {
+        $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
+    } else {
+        $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
+    }
 }
 $pdf->Ln(); 
 
@@ -124,15 +144,15 @@ while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[2]));
     $pdf->Cell($headerWidths[2], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['uom_name'], $headerWidths[3]));
-    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['uom_name'], 1, 0, 'L');
+    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['uom_name'], 1, 0, 'C');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['markup'], $headerWidths[4]));
-    $pdf->Cell($headerWidths[4], $maxCellHeight, $row['markup'], 1, 0, 'L');
+    $pdf->Cell($headerWidths[4], $maxCellHeight, $row['markup'], 1, 0, 'R');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $formatted_cost, $headerWidths[5]));
-    $pdf->Cell($headerWidths[5], $maxCellHeight,  $formatted_cost, 1, 0, 'L');
+    $pdf->Cell($headerWidths[5], $maxCellHeight,  $formatted_cost, 1, 0, 'R');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $formatted_price , $headerWidths[6]));
-    $pdf->Cell($headerWidths[6], $maxCellHeight, $formatted_price , 1, 0, 'L');    
+    $pdf->Cell($headerWidths[6], $maxCellHeight, $formatted_price , 1, 0, 'R');    
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $formatted_tax, $headerWidths[7]));
-    $pdf->Cell($headerWidths[7], $maxCellHeight, $row['isVAT'] == 1 ? $formatted_tax : "", 1, 0, 'L');
+    $pdf->Cell($headerWidths[7], $maxCellHeight, $row['isVAT'] == 1 ? $formatted_tax : "", 1, 0, 'R');
     $pdf->Ln(); // Move to next line
     $counter++;
 }
@@ -141,9 +161,9 @@ while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {
 
 $pdf->SetFont('', 'B', 10); 
 $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total', 1, 0, 'C'); 
-$pdf->Cell($headerWidths[5], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'L'); 
-$pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalSellingPrice, 2), 1, 0, 'L'); 
-$pdf->Cell($headerWidths[7], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'L'); 
+$pdf->Cell($headerWidths[5], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalSellingPrice, 2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[7], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
 
 
