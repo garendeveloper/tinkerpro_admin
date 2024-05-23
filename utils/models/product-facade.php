@@ -364,9 +364,15 @@
 
     // Insert product information into the database
     $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty,is_stockable) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)';
-    $stmt = $this->connect()->prepare($sql);
+    $pdo = $this->connect();
+    $stmt = $pdo->prepare($sql); 
     $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty,$stockable]);
+    $lastInsertId = $pdo->lastInsertId();
 
+  
+    $sqlInventory = 'INSERT INTO inventory(product_id) VALUES (?)';
+    $stmtInventory = $this->connect()->prepare($sqlInventory);
+    $stmtInventory->execute([$lastInsertId]);
  
 
   
@@ -806,15 +812,23 @@ public function importProducts($fileData) {
           $stmt->bindParam(':is_stockable', $product['Stockable']);
 
           $stmt->execute();
+          $lastInsertIds[] = $conn->lastInsertId();
       }
 
       $conn->commit(); 
+      foreach ($lastInsertIds as $productId) {
+        $sqlInventory = 'INSERT INTO inventory (product_id) VALUES (:product_id)';
+        $stmtInventory = $conn->prepare($sqlInventory);
+        $stmtInventory->bindParam(':product_id', $productId);
+        $stmtInventory->execute();
+    }
       return true;
   } catch (PDOException $e) {
       $conn->rollBack(); 
       error_log("Import failed: " . $e->getMessage());
       return false;
   }
+  
 }
 public function getTotalProductsCount() {
   try {

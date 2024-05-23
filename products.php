@@ -114,7 +114,7 @@ if (isset($_SESSION['user_id'])) {
 }
 .table-border{
     border-collapse: collapse;
-    width: 100%;
+   
     border: 1px solid white;
 }
 
@@ -131,12 +131,12 @@ if (isset($_SESSION['user_id'])) {
   }
   .table-responsive {
     max-height: 600px;
-    width: 200%; 
+
    
 }
 
 .table-responsive table {
-    width: 100%;
+    width: 100px;
     border-collapse: collapse;
 }
 .card{
@@ -221,20 +221,20 @@ if (isset($_SESSION['user_id'])) {
                     <table id="recentusers" class="text-color table-border">
                       <thead>
                         <tr>
-                          <th class="text-center" style="width: 2%;">No.</th>
-                          <th class="text-center" style="width: 17%;">Name</th>
-                          <th class="text-center" style="width: 7%;">Barcode</th>
-                          <th class="text-center" style="width: 7%;">SKU</th>
-                          <th class="text-center" style="width: 7%;">Code</th>
-                          <th class="text-center" style="width: 7%;">Unit</th>
-                          <th class="text-center" style="width: 7%;">Brand</th>
-                          <th class="text-center" style="width: 7%;">Price (Php)</th>
-                          <th class="text-center" style="width: 7%;">Mark-up (%)</th>
-                          <th class="text-center" style="width: 7%;">Cost (Php)</th>
+                          <th class="text-center" style="width: 20px">No.</th>
+                          <th class="text-center"  style="width: 350px">Name</th>
+                          <th class="text-center" style="width: 100px" >Barcode</th>
+                          <th class="text-center"   style="width: 100px" >SKU</th>
+                          <th class="text-center" style="width: 100px" >Code</th>
+                          <th class="text-center" style="width: 100px"  >Unit</th>
+                          <th class="text-center"  style="width: 100px" >Brand</th>
+                          <th class="text-center"  style="width: 100px" >Price (Php)</th>
+                          <th class="text-center"  style="width: 100px" >Mark-up (%)</th>
+                          <th class="text-center" style="width: 100px"  >Cost (Php)</th>
                           <!-- <th class="text-center" style="width: 7%;">Serial No.</th> -->
-                          <th class="text-center" style="width: 15%;">Category</th>
-                          <th class="text-center" style="width: 5%;">Status</th>
-                          <th class="text-center" style="width: 7%;">Action</th>
+                          <th class="text-center"  style="width: 300px" >Category</th>
+                          <th class="text-center" style="width: 100px" >Status</th>
+                          <th class="text-center"  style="width: 200px" >Action</th>
                         </tr>
                       </thead>
                       <tbody id="productTable">
@@ -541,21 +541,32 @@ $('#printProduct').click(function() {
         }
     });
 });
-$('.searchProducts').on('input', function(){
-    var searchData = $('.searchProducts').val();
-    $.ajax({
-        url: './fetch-data/fetch-products.php', 
-        type: 'GET',
-        data: {
-            searchQuery: searchData 
-        },
-        success: function(response) {
-          $('#productTable').html(response); 
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText); 
+var timeout = null;
+
+$('.searchProducts').on('input', function() {
+    var searchData = $(this).val();
+
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+        if (searchData.trim() === '') {
+            $('.searchProducts').val("");
+        } else {
+            $.ajax({
+                url: './fetch-data/fetch-products.php',
+                type: 'GET',
+                data: {
+                    searchQuery: searchData
+                },
+                success: function(response) {
+                    $('#productTable').html(response);
+                    $('.searchProducts').val("");
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
         }
-    });
+    }, 500); 
 });
 
 $('#exportProducts').click(function() {

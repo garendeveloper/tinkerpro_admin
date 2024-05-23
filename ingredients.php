@@ -92,11 +92,11 @@
     color: #ffff;
     font-family: Century Gothic;
   }
-  .table-responsive {
+  /* .table-responsive {
     max-height: 600px;
     width: 100%; 
    
-}
+} */
 
 
 .card{

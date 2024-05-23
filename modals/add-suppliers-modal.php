@@ -570,7 +570,8 @@ function updateSupplied(){
     // formData.append("suppliedIngredientsData", JSON.stringify(suppliedIngredientsData));
     axios.post('api.php?action=updateSupplier', formData).then(function(response){
       console.log(response)
-      // closeAddSupplierModal()
+      closeAddSupplierModal()
+      refreshSupplierTable()
     }).catch(function(error){
       console.log("error")
     })

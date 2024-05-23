@@ -279,7 +279,7 @@
             break;
         case "updateSupplier":
             $formData = $_POST;
-            // $result =  $supplier->updateSupplier($formData);
+            $result =  $supplier->updateSupplier($formData);
             echo json_encode([ 'success' => true, 'result' => $formData]);
             break;
         case "addCustomer":

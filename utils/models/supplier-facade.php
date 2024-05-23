@@ -86,18 +86,20 @@
         $s_email =  $formData['supplierEmail'] ?? null;
         $s_company =  $formData['supplierCompany'] ?? null;
         $s_status =  $formData['supplierStatus'] ?? null;
-        $p_supplied = $formData['suppliedProductData'] ?? null;
-        $i_supplied = $formData['suppliedIngredientsData'] ?? null;
         $id =  $formData['id'] ?? null;
-        $r_products = $formData['removedItemsIngStorage'] ?? null;
-        $r_ing = $formData['removedItemsProductsStorage'] ?? null;
-
-        $sql = 'UPDATE supplier SET 
     
-        WHERE id = ?';
-
-$stmt = $this->connect()->prepare($sql);
-$stmt->execute([ $id]);
-}
+        $sql = 'UPDATE supplier SET 
+                 supplier = ?,
+                 contact = ?,
+                 email = ?,
+                 company = ?,
+                 is_active = ?
+                 WHERE id = ?';
+    
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$s_name, $s_contact, $s_email, $s_company, $s_status, $id]);
+    
+        return $stmt;
+    }
      
 }

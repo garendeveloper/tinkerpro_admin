@@ -262,7 +262,8 @@ $(document).ready(function() {
 
     var p_id = document.getElementById('productid').value
     if (p_id) {
-      productName ? (document.getElementById("modalHeaderTxt").value = productName, $('.modalHeaderTxt').text(productName)) : null;
+      const limitedName = productName.split(' ').slice(0, 2).join(' ');
+      productName ? (document.getElementById("modalHeaderTxt").value = productName, $('.modalHeaderTxt').text(limitedName)) : null;
     } else {
       $('.modalHeaderTxt').text("Add New Product")
     }
