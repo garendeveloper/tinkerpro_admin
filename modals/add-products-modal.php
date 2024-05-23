@@ -21,7 +21,7 @@
   margin: 0 auto; 
   border: none;
   width: 100%;
-  height: 1200px; 
+  height: fit-content; 
   animation: slideInRight 0.5s; 
   border-radius: 0;
   margin-top: -28px;
@@ -151,7 +151,7 @@
 }
 .imageButtonDiv{
   position:absolute;
-  top: 740px;
+  top: 730px;
   left: 20px
 }
 .removeImage{
@@ -165,7 +165,7 @@
   font-family: Century Gothic;
   font-weight: bold;
   position: absolute;
-  top: 770px
+  top: 760px
 }
 
 .switch {
@@ -865,6 +865,10 @@ font-weight: bold;
 }.button-container {
   padding-top: 5px;
   margin: 0;
+  bottom: 20px;
+  right:0;
+  margin-bottom: 20px;
+
 }
 .bomHeader{
 color: #ffff;
@@ -965,7 +969,7 @@ input:checked + .sliderbom:before {
 #myTable {
   border-collapse: collapse;
   width: 100%;
-  margin-top:10px;
+  margin-top:15px;
 }
 
 #myTable td {
@@ -1216,14 +1220,16 @@ input:checked + .stockeableSpan:before {
   background-color: #FF6900;
 }
 
+
 </style>
 
 <div class="modal" id="add_products_modal" tabindex="0">
   <div class="modal-dialog ">
     <div class="modal-content product-modal">
+      <!-- <div id="scrollable-data"> -->
       <div class="modal-title">
         <div style="margin-top: 30px; margin-left: 20px">
-           <h2 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">Add New Product</h2>
+           <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">Add New Product</h5>
         </div>
         <div class="warning-container">
           <div class="tableCard">
@@ -1466,7 +1472,7 @@ input:checked + .stockeableSpan:before {
                          </div>
                       </div>
                       <h6 class="enablingTxt">By enabling BOM, you are <br>activating the ingredients module.</h6>
-                      <div  style="width: 100%; display: flex; align-items: right; justify-content: right">
+                      <div  style="width: 100%; display: flex; align-items: right; justify-content: right; margin-top: -10px">
                           <button class="btns-bom" id="addIngredients" onclick="openBomModal()" style="margin-right: 5px; width: 70px">+ Add</button>
                           <button class="btns-bom" id="delIngredients" style="margin-right: 20px; width: 70px">- Del</button>
                       </div>
@@ -1491,7 +1497,7 @@ input:checked + .stockeableSpan:before {
             <button onclick="clearImageProduct()" class="btnCustom removeImage">-Del</button>
             <button class="btnCustom addImage" id="addImage">+ Add Image</button>
           </div>
-          <div style="margin-bottom: 30px">
+          <div style="margin-bottom: 20px">
             <h4 class="descripTion"  style="color:#FF6900;">Description</h4>
           </div>
           <div style="margin-left: 20px;width: 100%; margin-right: 20px">
@@ -1505,8 +1511,9 @@ input:checked + .stockeableSpan:before {
         </div>
       </div>
     </div>
+    </div>
   </div>
-</div>
+<!-- </div> -->
 <script>
 
 

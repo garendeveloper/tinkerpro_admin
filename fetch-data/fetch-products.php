@@ -76,7 +76,7 @@ echo $html;
 ?>
 <style>
 .td-h {
-    font-size: 14px;
+    font-size: 12px;
     margin: 0; 
     padding: 0;
     height: auto; 
