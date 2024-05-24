@@ -2880,195 +2880,251 @@
 }
 public function getPaymentMethod($singleDateData,$startDate,$endDate,$exclude){
     if($exclude == 1){
-        if($singleDateData && !$startDate && !$endDate){
-            $sql = "SELECT 
-            DATE(payments.date_time_of_payment) AS payment_date,
-            -- SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0) AS credit_total,
-            -- SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'cash' THEN rf.refunded_amt ELSE 0 END), 0) AS cash_total,
-            -- SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN rf.refunded_amt ELSE 0 END), 0) AS e_wallet_total,
-            -- SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN rf.refunded_amt ELSE 0 END), 0) AS cdcards_total,
-            -- SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'coupon' THEN rf.refunded_amt ELSE 0 END), 0) AS coupons_total,
-            -- SUM(jt.amount) - COALESCE(SUM(rf.refunded_amt), 0) - COALESCE(SUM(re.total_return_amount), 0) AS total_amount
-            GREATEST(SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0), 0) AS credit_total,
-            GREATEST(SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'cash' THEN rf.refunded_amt ELSE 0 END), 0), 0) AS cash_total,
-            GREATEST(SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN rf.refunded_amt ELSE 0 END), 0), 0) AS e_wallet_total,
-            GREATEST(SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN rf.refunded_amt ELSE 0 END), 0), 0) AS cdcards_total,
-            GREATEST(SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'coupon' THEN rf.refunded_amt ELSE 0 END), 0), 0) AS coupons_total,
-            GREATEST(SUM(jt.amount) - COALESCE(SUM(rf.refunded_amt), 0) - COALESCE(SUM(re.total_return_amount), 0), 0) AS total_amount
+     
+    
+        $sql="SELECT 
+        payments.id AS id,
+        SUM(DISTINCT payments.change_amount) AS change_amount,
+        DATE(payments.date_time_of_payment) AS payment_date,
+GREATEST(
+    SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) 
+    - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0) 
+    - CASE
+        WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) > rc.credit_amount THEN
+            rc.credit_amount
+        WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) <= rc.credit_amount THEN
+            (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount)
+        ELSE 
+            0
+    END, 
+    0
+) AS credit_total,
+
+          GREATEST(
+            SUM(
+                CASE 
+                    WHEN jt.paymentType = 'cash' THEN (jt.amount - payments.change_amount) 
+                    ELSE 0 
+                END
+            ) 
+            - COALESCE(
+                SUM(
+                    CASE 
+                        WHEN jt.paymentType = 'cash' THEN rf.refunded_amt 
+                        ELSE 0 
+                    END
+                ), 0
+            )
+            - CASE
+                WHEN rc.cash_amount > 0 AND rc.total_return_amount > rc.cash_amount THEN rc.cash_amount
+                WHEN rc.cash_amount > 0 AND rc.total_return_amount <= rc.cash_amount THEN rc.total_return_amount
+                ELSE 0
+              END,
+            0
+        ) AS cash_total,
+          GREATEST(
+            SUM(
+                CASE 
+                    WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount 
+                    ELSE 0 
+                END
+            ) 
+            - COALESCE(
+                SUM(
+                    CASE 
+                        WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN rf.refunded_amt 
+                        ELSE 0 
+                    END
+                ), 0
+            )
+            - CASE
+                WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount THEN rc.ewallet_amount
+                WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount THEN rc.total_return_amount - rc.cash_amount
+                ELSE 0
+              END,
+            0
+        ) AS e_wallet_total,
+          GREATEST(
+            SUM(
+                CASE 
+                    WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount 
+                    ELSE 0 
+                END
+            ) 
+            - COALESCE(
+                SUM(
+                    CASE 
+                        WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN rf.refunded_amt 
+                        ELSE 0 
+                    END
+                ), 0
+            )
+            - CASE 
+                WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) > rc.cc_amount THEN rc.cc_amount
+                WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) <= rc.cc_amount THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount
+                ELSE 0
+              END,
+            0
+        ) AS cdcards_total,
+        GREATEST(
+            SUM(
+                CASE 
+                    WHEN jt.paymentType = 'coupon' THEN jt.amount 
+                    ELSE 0 
+                END
+            ) 
+            - COALESCE(
+                SUM(
+                    CASE 
+                        WHEN jt.paymentType = 'coupon' THEN rf.refunded_amt 
+                        ELSE 0 
+                    END
+                ), 0
+            )
+            - CASE
+                WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.coupon_amount) THEN rc.coupon_amount
+                WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.coupon_amount) THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount
+                ELSE 0
+              END,
+            0
+        ) AS coupons_total,
+    GREATEST(
+        (SUM(jt.amount) - SUM(DISTINCT payments.change_amount)) 
+        - COALESCE(SUM(rf.refunded_amt), 0) 
+        - COALESCE(rc.total_return_amount, 0),
+        0
+    ) AS total_amount,
+    
+    
+        COALESCE(rc.total_return_amount, 0) AS total_return_amount,
+        COALESCE(rc.cash_amount, 0) AS return_cash_amount,
+        CASE
+           WHEN rc.cash_amount > 0 AND (rc.total_return_amount > rc.cash_amount) THEN 
+           rc.cash_amount
+           WHEN rc.cash_amount > 0 AND (rc.total_return_amount <= rc.cash_amount) THEN
+           rc.total_return_amount
+        ELSE 0
+        END AS tobe_deducted_cash,
+        CASE
+           WHEN rc.ewallet_amount > 0 AND ((rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount) THEN
+           rc.ewallet_amount
+           WHEN rc.ewallet_amount > 0 AND ((rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount) THEN
+           rc.total_return_amount - rc.cash_amount
+           ELSE 0
+         END AS tobe_deducted_ewallet,
+            CASE 
+            WHEN rc.cc_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount ) > rc.cc_amount) THEN
+            rc.cc_amount
+          WHEN rc.cc_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount ) <= rc.cc_amount)  THEN
+          (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount )
+         ELSE 0
+        END AS tobe_deducted_cc,
+        CASE
+         WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.cc_amount) THEN
+            rc.coupon_amount
+          WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.cc_amount) THEN
+          (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount)
+          ELSE 0
+           END AS tobe_deducted_coupon,
+  CASE
+    WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) > rc.credit_amount THEN
+        rc.credit_amount
+    WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) <= rc.credit_amount THEN
+        (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount)
+    ELSE 
+        0
+END AS tobe_deducted_credits
+
+    FROM 
+        payments
+    CROSS JOIN JSON_TABLE(
+        payments.payment_details, '$[*]' COLUMNS (
+            paymentType VARCHAR(255) PATH '$.paymentType', 
+            amount DECIMAL(10, 2) PATH '$.amount'
+        )
+    ) AS jt
+    INNER JOIN (
+        SELECT DISTINCT payment_id, receipt_id 
+        FROM transactions 
+        WHERE is_paid = 1 AND is_void = 0
+    ) AS t ON payments.id = t.payment_id
+    LEFT JOIN (
+        SELECT payment_id, SUM(refunded_amt) AS refunded_amt
+        FROM refunded
+        GROUP BY payment_id
+    ) AS rf ON rf.payment_id = payments.id
+    LEFT JOIN (
+    SELECT 
+        re.payment_id as payment_id,
+        COALESCE(jt.cash_amount, 0) as cash_amount,
+        COALESCE(jt.credit_amount, 0) as credit_amount,
+        COALESCE(jt.gcash_amount, 0) as gcash_amount,
+        COALESCE(jt.maya_amount, 0) as maya_amount,
+        COALESCE(jt.alipay_amount, 0) as alipay_amount,
+        COALESCE(jt.grab_pay_amount, 0) as grab_pay_amount,
+        COALESCE(jt.shopee_pay_amount, 0) as shopee_pay_amount,
+        COALESCE(jt.ewallet_amount, 0) as ewallet_amount,
+        COALESCE(jt.visa_amount, 0) as visa_amount,
+        COALESCE(jt.master_card_amount, 0) as master_card_amount,
+        COALESCE(jt.discover_card_amount, 0) as discover_card_amount,
+        COALESCE(jt.american_express_card_amount, 0) as american_express_card_amount,
+        COALESCE(jt.jcb_card_amount, 0) as jcb_card_amount,
+        COALESCE(jt.cc_amount, 0) as cc_amount,
+        COALESCE(jt.coupon_amount, 0) as coupon_amount,
+        ROUND(SUM(re.return_amount), 2) AS total_return_amount
+    FROM 
+        return_exchange re
+    LEFT JOIN (
+        SELECT 
+            p.id as payment_id,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END, 0)) as coupon_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END, 0)) as cash_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END, 0)) as credit_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'gcash' THEN jt.amount ELSE 0 END, 0)) as gcash_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'maya' THEN jt.amount ELSE 0 END, 0)) as maya_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'alipay' THEN jt.amount ELSE 0 END, 0)) as alipay_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'grab pay' THEN jt.amount ELSE 0 END, 0)) as grab_pay_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'shopee pay' THEN jt.amount ELSE 0 END, 0)) as shopee_pay_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END, 0)) as ewallet_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'visa' THEN jt.amount ELSE 0 END, 0)) as visa_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'master_card' THEN jt.amount ELSE 0 END, 0)) as master_card_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'discover' THEN jt.amount ELSE 0 END, 0)) as discover_card_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'american_express' THEN jt.amount ELSE 0 END, 0)) as american_express_card_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'jcb' THEN jt.amount ELSE 0 END, 0)) as jcb_card_amount,
+            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType IN ('visa', 'master_card', 'discover', 'american_express', 'jcb') THEN jt.amount ELSE 0 END, 0)) as cc_amount
         FROM 
-            payments
+            payments p
         CROSS JOIN JSON_TABLE(
-            payments.payment_details, '$[*]' COLUMNS (
+            p.payment_details, '$[*]' COLUMNS (
                 paymentType VARCHAR(255) PATH '$.paymentType', 
                 amount DECIMAL(10, 2) PATH '$.amount'
             )
         ) AS jt
-        INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id FROM transactions WHERE is_paid = 1 AND is_void = 0
-        ) AS t ON payments.id = t.payment_id
-        LEFT JOIN (
-            SELECT payment_id, SUM(refunded_amt) AS refunded_amt
-            FROM refunded
-            GROUP BY payment_id
-        ) AS rf ON rf.payment_id = payments.id
-        LEFT JOIN (
-            SELECT payment_id, SUM(return_amount) AS total_return_amount
-            FROM return_exchange
-            INNER JOIN products ON products.id = return_exchange.product_id
-            GROUP BY payment_id
-        ) AS re ON re.payment_id = payments.id
-        WHERE 
-            JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND DATE(payments.date_time_of_payment) = :singleDateData
         GROUP BY 
-            DATE(payments.date_time_of_payment)
-        ORDER BY 
-            payment_date ASC;";
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':singleDateData',  $singleDateData);
-            $sql->execute();
-            return $sql;
-        }else if(!$singleDateData && $startDate && $endDate){
-            $sql = "SELECT 
-            DATE(payments.date_time_of_payment) AS payment_date,
-            -- SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0) AS credit_total,
-            -- SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'cash' THEN rf.refunded_amt ELSE 0 END), 0) AS cash_total,
-            -- SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN rf.refunded_amt ELSE 0 END), 0) AS e_wallet_total,
-            -- SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN rf.refunded_amt ELSE 0 END), 0) AS cdcards_total,
-            -- SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'coupon' THEN rf.refunded_amt ELSE 0 END), 0) AS coupons_total,
-            -- SUM(jt.amount) - COALESCE(SUM(rf.refunded_amt), 0) - COALESCE(SUM(re.total_return_amount), 0) AS total_amount
-            GREATEST(SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0), 0) AS credit_total,
-            GREATEST(SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'cash' THEN rf.refunded_amt ELSE 0 END), 0), 0) AS cash_total,
-            GREATEST(SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN rf.refunded_amt ELSE 0 END), 0), 0) AS e_wallet_total,
-            GREATEST(SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN rf.refunded_amt ELSE 0 END), 0), 0) AS cdcards_total,
-            GREATEST(SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount - COALESCE(re.total_return_amount, 0) ELSE 0 END) - COALESCE(SUM(CASE WHEN jt.paymentType = 'coupon' THEN rf.refunded_amt ELSE 0 END), 0), 0) AS coupons_total,
-            GREATEST(SUM(jt.amount) - COALESCE(SUM(rf.refunded_amt), 0) - COALESCE(SUM(re.total_return_amount), 0), 0) AS total_amount
-
-        FROM 
-            payments
-        CROSS JOIN JSON_TABLE(
-            payments.payment_details, '$[*]' COLUMNS (
-                paymentType VARCHAR(255) PATH '$.paymentType', 
-                amount DECIMAL(10, 2) PATH '$.amount'
-            )
-        ) AS jt
-        INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id FROM transactions WHERE is_paid = 1 AND is_void = 0
-        ) AS t ON payments.id = t.payment_id
-        LEFT JOIN (
-            SELECT payment_id, SUM(refunded_amt) AS refunded_amt
-            FROM refunded
-            GROUP BY payment_id
-        ) AS rf ON rf.payment_id = payments.id
-        LEFT JOIN (
-            SELECT payment_id, SUM(return_amount) AS total_return_amount
-            FROM return_exchange
-            INNER JOIN products ON products.id = return_exchange.product_id
-            GROUP BY payment_id
-        ) AS re ON re.payment_id = payments.id
-        WHERE 
-            JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND DATE(payments.date_time_of_payment) BETWEEN :startDate AND :endDate
-        GROUP BY 
-            DATE(payments.date_time_of_payment)
-        ORDER BY 
-            payment_date ASC;";
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':startDate', $startDate);
-            $sql->bindParam(':endDate', $endDate);
-            $sql->execute();
-            return $sql;
-
-        }else{
- 
-          $sql="SELECT 
-          DATE(payments.date_time_of_payment) AS payment_date,
-          SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END)AS credit_total,
-          SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) - COALESCE(rf_cash.total_refunded, 0) AS cash_total,
-          SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) - COALESCE(rf_ewallet.total_refunded, 0) AS e_wallet_total,
-          SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) - COALESCE(rf_cc.total_refunded, 0) AS cdcards_total,
-          SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) - COALESCE(rf_coupons.total_refunded, 0) AS coupons_total,
-          ROUND(SUM(jt.amount), 2) - COALESCE(rf_ewallet.total_refunded, 0) - COALESCE(rf_cash.total_refunded, 0) - COALESCE(rf_cc.total_refunded, 0) - COALESCE(rf_coupons.total_refunded, 0) AS total_amount,
-          SUM(jt.amount) as  amount,
-          COALESCE(rf_cash.total_refunded, 0) AS total_cash_refunded,
-          COALESCE(rf_ewallet.total_refunded, 0) AS total_ewallet_refunded,
-          COALESCE(rf_cc.total_refunded, 0) AS total_cdcards_refunded,
-          COALESCE(rf_coupons.total_refunded, 0) AS total_coupons_refunded
-      FROM 
-          payments
-      CROSS JOIN JSON_TABLE(
-          payments.payment_details, '$[*]' COLUMNS (
-              paymentType VARCHAR(255) PATH '$.paymentType', 
-              amount DECIMAL(10, 2) PATH '$.amount'
-          )
-      ) AS jt
-      INNER JOIN (
-          SELECT DISTINCT payment_id, receipt_id FROM transactions WHERE is_paid = 1 AND is_void = 0
-      ) AS t ON payments.id = t.payment_id
-      LEFT JOIN (
-          SELECT 
-              payment_id,
-              SUM(refunded_amt) AS total_refunded
-          FROM 
-              refunded
-          WHERE 
-              refunded_method_id = 1
-          GROUP BY 
-              payment_id
-      ) AS rf_cash ON rf_cash.payment_id = payments.id
-      LEFT JOIN (
-          SELECT 
-              payment_id,
-              SUM(refunded_amt) AS total_refunded
-          FROM 
-              refunded
-          WHERE 
-              refunded_method_id IN (9,2,3,4,8)
-          GROUP BY 
-              payment_id
-      ) AS rf_ewallet ON rf_ewallet.payment_id = payments.id
-      LEFT JOIN (
-          SELECT 
-              payment_id,
-              SUM(refunded_amt) AS total_refunded
-          FROM 
-              refunded
-          WHERE 
-              refunded_method_id = 6
-          GROUP BY 
-              payment_id
-      ) AS rf_cc ON rf_cc.payment_id = payments.id
-      LEFT JOIN (
-          SELECT 
-              payment_id,
-              SUM(refunded_amt) AS total_refunded
-          FROM 
-              refunded
-          WHERE 
-              refunded_method_id = 7
-          GROUP BY 
-              payment_id
-      ) AS rf_coupons ON rf_coupons.payment_id = payments.id
-      WHERE 
-          JSON_VALID(payments.payment_details) AND jt.amount != 0.00
-      GROUP BY 
-          DATE(payments.date_time_of_payment)
-      ORDER BY 
-          payment_date ASC;"; 
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
-    }
+            p.id
+    ) jt ON jt.payment_id = re.payment_id
+    
+    ) AS rc ON rc.payment_id = payments.id
+    WHERE 
+        JSON_VALID(payments.payment_details) AND jt.amount != 0.00
+    GROUP BY 
+       DATE(payment_date)
+    ORDER BY 
+        payment_date ASC;"; 
+  $stmt = $this->connect()->query($sql);
+  return $stmt;
 
     }else{
     if($singleDateData && !$startDate && !$endDate){
         $sql = "SELECT 
         DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(DISTINCT payments.change_amount) as change_amount,
         SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
-        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        (SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END)-SUM(DISTINCT payments.change_amount))AS cash_total,
         SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
         SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
         SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
-        SUM(jt.amount) AS total_amount
+        SUM(jt.amount) - SUM(DISTINCT payments.change_amount) AS total_amount
         FROM 
         payments
         CROSS JOIN JSON_TABLE(
@@ -3094,12 +3150,13 @@ public function getPaymentMethod($singleDateData,$startDate,$endDate,$exclude){
     }else if(!$singleDateData && $startDate && $endDate){
         $sql = "SELECT 
         DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(DISTINCT payments.change_amount) as change_amount,
         SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
-        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        (SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END)-SUM(DISTINCT payments.change_amount))AS cash_total,
         SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
         SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
         SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
-        SUM(jt.amount) AS total_amount
+        SUM(jt.amount) - SUM(DISTINCT payments.change_amount) AS total_amount
         FROM 
         payments
         CROSS JOIN JSON_TABLE(
@@ -3126,12 +3183,13 @@ public function getPaymentMethod($singleDateData,$startDate,$endDate,$exclude){
     }else{
         $sql="SELECT 
         DATE(payments.date_time_of_payment) AS payment_date,
+        SUM(DISTINCT payments.change_amount) as change_amount,
         SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
-        SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END) AS cash_total,
+        (SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END)-SUM(DISTINCT payments.change_amount))AS cash_total,
         SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
         SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
         SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
-        SUM(jt.amount) AS total_amount
+        SUM(jt.amount) - SUM(DISTINCT payments.change_amount) AS total_amount
         FROM 
         payments
         CROSS JOIN JSON_TABLE(
