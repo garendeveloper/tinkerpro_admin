@@ -169,12 +169,12 @@ if (isset($_SESSION['user_id'])) {
             <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
                         class="text">Dashboard</span></a></li>
             <?php if ($accessInventory): ?>
-                <li><a href="#" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span
+                <li><a href="inventory" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span
                             class="text">Inventory</span></a>
                 </li>
             <?php endif ?>
             <?php if ($accessProducts): ?>
-                <li><a href="#" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
+                <li><a href="products" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
                             class="text">Products</span></a>
                 </li>
             <?php endif ?>
@@ -184,12 +184,12 @@ if (isset($_SESSION['user_id'])) {
             <li><a href="customer" id="customers"><i class="bi bi-people"></i>&nbsp;&nbsp; <span
                         class="text">Customers</span></a></li>
             <?php if ($accessReporting): ?>
-                <li><a href="#" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span
+                <li><a href="reporting" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span
                             class="text">Reporting</span></a>
                 </li>
             <?php endif ?>
             <?php if ($accessUsers): ?>
-                <li><a href="#" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text">Users</span></a></li>
+                <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text">Users</span></a></li>
             <?php endif ?>
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text">Logout</span></a></li>
@@ -212,85 +212,85 @@ if (isset($_SESSION['user_id'])) {
     let reportingsValidate = false;
     let inventoryValidate = false;
     let userValidate = false;
-    $('#products').on('click', function () {
-        $('#toChangeText').text("Products")
-        var forUser = document.getElementById('forUser')
-        forUser.setAttribute('hidden', true)
-        var forInventory = document.getElementById('forInventory')
-        forInventory.setAttribute('hidden', true);
-        var forProducts = document.getElementById('forProducts')
-        forProducts.removeAttribute('hidden');
-        var forUsers = document.getElementById('forUsers')
-        forUsers.setAttribute('hidden', true)
-        var forReportings = document.getElementById('forReportings')
-        forReportings.setAttribute('hidden', true);
-        userSValidate = false;
-        productSValidate = true;
-        reportingsValidate = false;
-        inventoryValidate = false;
-        userValidate = false;
-        permModals()
-    })
+    // $('#products').on('click', function () {
+    //     $('#toChangeText').text("Products")
+    //     var forUser = document.getElementById('forUser')
+    //     forUser.setAttribute('hidden', true)
+    //     var forInventory = document.getElementById('forInventory')
+    //     forInventory.setAttribute('hidden', true);
+    //     var forProducts = document.getElementById('forProducts')
+    //     forProducts.removeAttribute('hidden');
+    //     var forUsers = document.getElementById('forUsers')
+    //     forUsers.setAttribute('hidden', true)
+    //     var forReportings = document.getElementById('forReportings')
+    //     forReportings.setAttribute('hidden', true);
+    //     userSValidate = false;
+    //     productSValidate = true;
+    //     reportingsValidate = false;
+    //     inventoryValidate = false;
+    //     userValidate = false;
+    //     permModals()
+    // })
 
 
-    $('#reporting').on('click', function () {
-        $('#toChangeText').text("Reports")
-        var forUser = document.getElementById('forUser')
-        forUser.setAttribute('hidden', true)
-        var forInventory = document.getElementById('forInventory')
-        forInventory.setAttribute('hidden', true);
-        var forReportings = document.getElementById('forReportings')
-        forReportings.removeAttribute('hidden');
-        var forProducts = document.getElementById('forProducts')
-        forProducts.setAttribute('hidden', true);
-        var forUsers = document.getElementById('forUsers')
-        forUsers.setAttribute('hidden', true)
-        userSValidate = false;
-        productSValidate = false;
-        reportingsValidate = true;
-        inventoryValidate = false;
-        userValidate = false;
-        permModals()
-    })
+    // $('#reporting').on('click', function () {
+    //     $('#toChangeText').text("Reports")
+    //     var forUser = document.getElementById('forUser')
+    //     forUser.setAttribute('hidden', true)
+    //     var forInventory = document.getElementById('forInventory')
+    //     forInventory.setAttribute('hidden', true);
+    //     var forReportings = document.getElementById('forReportings')
+    //     forReportings.removeAttribute('hidden');
+    //     var forProducts = document.getElementById('forProducts')
+    //     forProducts.setAttribute('hidden', true);
+    //     var forUsers = document.getElementById('forUsers')
+    //     forUsers.setAttribute('hidden', true)
+    //     userSValidate = false;
+    //     productSValidate = false;
+    //     reportingsValidate = true;
+    //     inventoryValidate = false;
+    //     userValidate = false;
+    //     permModals()
+    // })
 
-    $('#inventory').on('click', function () {
-        $('#toChangeText').text("Inventory")
-        var forUser = document.getElementById('forUser')
-        forUser.setAttribute('hidden', true)
-        var forInventory = document.getElementById('forInventory')
-        forInventory.removeAttribute('hidden');
-        var forReportings = document.getElementById('forReportings')
-        forReportings.setAttribute('hidden', true);
-        var forProducts = document.getElementById('forProducts')
-        forProducts.setAttribute('hidden', true);
-        var forUsers = document.getElementById('forUsers')
-        forUsers.setAttribute('hidden', true)
-        userSValidate = false;
-        productSValidate = false;
-        reportingsValidate = false;
-        inventoryValidate = true;
-        userValidate = false;
-        permModals()
-    })
-    $('#users').on('click', function () {
-        $('#toChangeText').text("Users")
-        var forUser = document.getElementById('forUser')
-        forUser.removeAttribute('hidden')
-        var forInventory = document.getElementById('forInventory')
-        forInventory.setAttribute('hidden', true);
-        var forReportings = document.getElementById('forReportings')
-        forReportings.setAttribute('hidden', true);
-        var forProducts = document.getElementById('forProducts')
-        forProducts.setAttribute('hidden', true);
-        var forUsers = document.getElementById('forUsers')
-        forUsers.setAttribute('hidden', true)
-        userSValidate = false;
-        productSValidate = false;
-        reportingsValidate = false;
-        inventoryValidate = false;
-        userValidate = true;
-        permModals()
-    })
+    // $('#inventory').on('click', function () {
+    //     $('#toChangeText').text("Inventory")
+    //     var forUser = document.getElementById('forUser')
+    //     forUser.setAttribute('hidden', true)
+    //     var forInventory = document.getElementById('forInventory')
+    //     forInventory.removeAttribute('hidden');
+    //     var forReportings = document.getElementById('forReportings')
+    //     forReportings.setAttribute('hidden', true);
+    //     var forProducts = document.getElementById('forProducts')
+    //     forProducts.setAttribute('hidden', true);
+    //     var forUsers = document.getElementById('forUsers')
+    //     forUsers.setAttribute('hidden', true)
+    //     userSValidate = false;
+    //     productSValidate = false;
+    //     reportingsValidate = false;
+    //     inventoryValidate = true;
+    //     userValidate = false;
+    //     permModals()
+    // })
+    // $('#users').on('click', function () {
+    //     $('#toChangeText').text("Users")
+    //     var forUser = document.getElementById('forUser')
+    //     forUser.removeAttribute('hidden')
+    //     var forInventory = document.getElementById('forInventory')
+    //     forInventory.setAttribute('hidden', true);
+    //     var forReportings = document.getElementById('forReportings')
+    //     forReportings.setAttribute('hidden', true);
+    //     var forProducts = document.getElementById('forProducts')
+    //     forProducts.setAttribute('hidden', true);
+    //     var forUsers = document.getElementById('forUsers')
+    //     forUsers.setAttribute('hidden', true)
+    //     userSValidate = false;
+    //     productSValidate = false;
+    //     reportingsValidate = false;
+    //     inventoryValidate = false;
+    //     userValidate = true;
+    //     permModals()
+    // })
 
 
 </script>
