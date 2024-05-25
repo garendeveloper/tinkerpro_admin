@@ -5907,7 +5907,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/users/usersList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/users/usersList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
             },
@@ -5986,7 +5987,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/product/product_report.pdf';
+                var timestamp = new Date().getTime(); 
+                  var pdfUrl = './assets/pdf/product/product_report.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
             },
@@ -6022,7 +6024,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/ingredients/ingredients_list.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/ingredients/ingredients_list.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
             },
@@ -6091,7 +6094,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/refund/refundList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/refund/refundList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6163,7 +6167,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/refund/refundList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/refund/refundList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6232,7 +6237,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/return/returnAndExchangeList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/return/returnAndExchangeList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6301,7 +6307,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/return/returnAndExchangeList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/return/returnAndExchangeList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6339,7 +6346,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/bom/bomList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/bom/bomList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6374,7 +6382,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/customer/customerList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/customer/customerList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6443,7 +6452,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/entries/cashEntriesList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/entries/cashEntriesList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6515,7 +6525,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/unpaid/unpaidSalesList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/unpaid/unpaidSalesList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6587,7 +6598,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/unpaidByUser/unpaidSalesList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/unpaidByUser/unpaidSalesList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6659,7 +6671,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/discounts_granted/discountsGranted.pdf';
+                var timestamp = new Date().getTime(); 
+                 var pdfUrl = './assets/pdf/discounts_granted/discountsGranted.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6728,7 +6741,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/discounts_items/itemsDiscounts.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/discounts_items/itemsDiscounts.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6799,7 +6813,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/payment_method/paymentMethodList.pdf';
+                var timestamp = new Date().getTime(); 
+                  var pdfUrl = './assets/pdf/payment_method/paymentMethodList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6870,7 +6885,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/payment_method_users/paymentMethodList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/payment_method_users/paymentMethodList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -6941,7 +6957,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/payment_method_customer/paymentMethodList.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/payment_method_customer/paymentMethodList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -7013,7 +7030,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/voided/voidedList.pdf';
+                var timestamp = new Date().getTime(); 
+               var pdfUrl = './assets/pdf/voided/voidedList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -7079,7 +7097,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/zread/zReadReportList.pdf';
+                var timestamp = new Date().getTime(); 
+                  var pdfUrl = './assets/pdf/zread/zReadReportList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -7145,7 +7164,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/salesReport/salesReport.pdf';
+                  var timestamp = new Date().getTime(); 
+                  var pdfUrl = './assets/pdf/salesReport/salesReport.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -7211,7 +7231,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/tax/tax-rates.pdf';
+                var timestamp = new Date().getTime(); 
+                  var pdfUrl = './assets/pdf/tax/tax-rates.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },
@@ -7289,7 +7310,8 @@ function showReports(id){
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
-                  var pdfUrl = './assets/pdf/profit/profit.pdf';
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/profit/profit.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
           },

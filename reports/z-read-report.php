@@ -148,7 +148,8 @@ $totalSalesFormatted = number_format($totalSales, 2);
 $pdf->Ln();
 $pdf->SetFont('', 'B', 11); 
 $pdf->Cell(0, 10, "REPORT DETAILS", 0, 'L');
-
+$pdf->SetFont('', '', 10);
+$pdf->Cell(0, 10, "ZRead Counter: {$data['zReadCounter']}", 0, 'L');
 $pdf->Ln(-3);
 
 $pdf->SetFont('', '', 10); 

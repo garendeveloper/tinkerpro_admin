@@ -8,6 +8,7 @@
     include( __DIR__ . '/utils/models/supplier-facade.php');
     include( __DIR__ . '/utils/models/inventorycount-facade.php');
     include( __DIR__ . '/utils/models/ability-facade.php');
+    include( __DIR__ . '/utils/models/customer-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
@@ -23,6 +24,7 @@
     $ingredients = new IngredientsFacade();
     $supplier = new SupplierFacade();
     $abilitties = new AbilityFacade();
+    $customer = new CustomerFacade();
 
     header("Content-Type: application/json");
     $json = file_get_contents('php://input');
@@ -311,7 +313,7 @@
                 echo json_encode(['success' => false]); 
             }
             break;
-            case 'importProduct':
+        case 'importProduct':
                 if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
                     $formData = $_FILES['file'];
                     $importProduct = $products->importProducts($formData);
@@ -325,6 +327,11 @@
                 }
                 break;
             
+        case 'updateCustomer':
+            $formData = $_POST;
+            $result =  $customer->updateCustomer($formData);
+            echo json_encode([ 'success' => true, 'result' => $formData]);
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
