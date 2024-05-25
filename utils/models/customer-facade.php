@@ -2,14 +2,53 @@
 
   class CustomerFacade extends DBConnection {
 
-    public function getCustomersData(){
+    public function getCustomersData($searchQuery){
+     if ($searchQuery !== null && $searchQuery !== '') {
+            $sql = 'SELECT 
+            u.id AS id, 
+            c.id AS customerId, 
+            c.contact AS contact, 
+            u.first_name AS firstname, 
+            u.last_name AS lastname, 
+            c.code AS code, 
+            c.type AS type, 
+            c.email AS email, 
+            c.address AS address,
+            c.is_tax_exempt AS is_tax_exempt,
+            c.pwdOrScId AS pwdOrScId,
+            c.scOrPwdTIN AS scOrPwdTIN,
+            c.dueDateInterval AS dueDateInterval, 
+            c.privilege_id AS privilege_id
+            FROM customer AS c 
+            INNER JOIN users AS u ON u.id = c.user_id';
+
+            if (!empty($searchQuery)) {
+            $sql .= ' WHERE 
+                u.first_name LIKE :searchQuery 
+                OR u.last_name LIKE :searchQuery 
+                OR c.address LIKE :searchQuery 
+                OR c.contact LIKE :searchQuery';
+            }
+
+            $stmt = $this->connect()->prepare($sql);
+
+            if (!empty($searchQuery)) {
+            $searchParam = "%$searchQuery%";
+            $stmt->bindParam(':searchQuery', $searchParam);
+            }
+
+            $stmt->execute();
+            return $stmt;
+
+    }else{
         $sql="SELECT u.id as id, c.id as customerId, c.contact as contact,u.first_name as firstname, u.last_name as lastname, c.code as code, c.type as type, c.email as email, c.address as address,
         c.is_tax_exempt as is_tax_exempt,c.pwdOrScId as pwdOrScId,c.scOrPwdTIN as scOrPwdTIN,c.dueDateInterval as dueDateInterval, c.privilege_id as privilege_id
         FROM customer AS c INNER JOIN users as u ON u.id = c.user_id;";
          
+        
         $stmt = $this->connect()->query($sql);
         return $stmt; 
-
+    }
     }
     public function updateCustomer($formData) {
       $code = $formData['code'];

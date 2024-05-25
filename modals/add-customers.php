@@ -404,6 +404,7 @@ input:checked + .sliderTax:before {
 <script>
 
 function closeAddingModal(){
+  $('.highlighteds').removeClass('highlighteds');
     $('#add_customer_modal').css('animation', 'slideOutRight 0.5s forwards');
     $('.customer-modal').css('animation', 'slideOutRight 0.5s forwards');
     $('#add_customer_modal').one('animationend', function() {
@@ -418,6 +419,7 @@ function closeAddingModal(){
 
 
 function clearFields(){
+ 
     document.getElementById('firstName').value="";
     document.getElementById('firstName').value = "";
     document.getElementById('customerContact').value = "";
@@ -542,7 +544,7 @@ function  toUpdateCustomer(userId,customerId,firstName,lastName,contact,code,typ
   var taxExempts = document.getElementById('taxExempt');
      taxExempts.checked = (taxExempt == 1) ? true: false;
 
-
+    
      
      var uptBtn = document.querySelector('.updateCustomerBtn');
      var saveBtn = document.querySelector('.saveCustomerBtn');

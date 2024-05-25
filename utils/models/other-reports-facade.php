@@ -3380,6 +3380,7 @@ public function getPaymentMethod($singleDateData,$startDate,$endDate,$exclude){
         transactions.is_void, 
         SUM(DISTINCT payments.change_amount) AS change_amount,
         DATE(payments.date_time_of_payment) AS payment_date,
+        SUM( DISTINCT COALESCE(rf_cash.total_refunded, 0)) as refundCash,
 GREATEST(
     SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) 
     - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0) 
@@ -3401,14 +3402,7 @@ GREATEST(
                     ELSE 0 
                 END
             ) 
-            - COALESCE(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType = 'cash' THEN rf.refunded_amt 
-                        ELSE 0 
-                    END
-                ), 0
-            )
+            - SUM(DISTINCT COALESCE(rf_cash.total_refunded, 0))
             - CASE
                 WHEN rc.cash_amount > 0 AND rc.total_return_amount > rc.cash_amount THEN rc.cash_amount
                 WHEN rc.cash_amount > 0 AND rc.total_return_amount <= rc.cash_amount THEN rc.total_return_amount
@@ -3423,14 +3417,7 @@ GREATEST(
                     ELSE 0 
                 END
             ) 
-            - COALESCE(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN rf.refunded_amt 
-                        ELSE 0 
-                    END
-                ), 0
-            )
+          - SUM(DISTINCT COALESCE(rf_ewallet.total_refunded, 0))
             - CASE
                 WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount THEN rc.ewallet_amount
                 WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount THEN rc.total_return_amount - rc.cash_amount
@@ -3445,14 +3432,7 @@ GREATEST(
                     ELSE 0 
                 END
             ) 
-            - COALESCE(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN rf.refunded_amt 
-                        ELSE 0 
-                    END
-                ), 0
-            )
+            - SUM(DISTINCT COALESCE(rf_cc.total_refunded, 0))
             - CASE 
                 WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) > rc.cc_amount THEN rc.cc_amount
                 WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) <= rc.cc_amount THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount
@@ -3467,14 +3447,7 @@ GREATEST(
                     ELSE 0 
                 END
             ) 
-            - COALESCE(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType = 'coupon' THEN rf.refunded_amt 
-                        ELSE 0 
-                    END
-                ), 0
-            )
+            - SUM(DISTINCT COALESCE(rf_coupons.total_refunded, 0))
             - CASE
                 WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.coupon_amount) THEN rc.coupon_amount
                 WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.coupon_amount) THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount
@@ -3484,7 +3457,7 @@ GREATEST(
         ) AS coupons_total,
     GREATEST(
         (SUM(jt.amount) - SUM(DISTINCT payments.change_amount)) 
-        - COALESCE(SUM(rf.refunded_amt), 0) 
+        - SUM(DISTINCT COALESCE(rf_ewallet.total_refunded, 0)) - SUM(DISTINCT COALESCE(rf_cash.total_refunded, 0)) - SUM(DISTINCT COALESCE(rf_cc.total_refunded, 0)) - SUM(DISTINCT COALESCE(rf_coupons.total_refunded, 0))
         - COALESCE(rc.total_return_amount, 0),
         0
     ) AS total_amount,
@@ -3599,6 +3572,50 @@ END AS tobe_deducted_credits
     ) jt ON jt.payment_id = re.payment_id
     
     ) AS rc ON rc.payment_id = payments.id
+    LEFT JOIN (
+    SELECT 
+        payment_id,
+        SUM(refunded_amt) AS total_refunded
+    FROM 
+        refunded
+    WHERE 
+        refunded_method_id = 1
+    GROUP BY 
+        payment_id
+) AS rf_cash ON rf_cash.payment_id = payments.id
+LEFT JOIN (
+    SELECT 
+        payment_id,
+        SUM(refunded_amt) AS total_refunded
+    FROM 
+        refunded
+    WHERE 
+        refunded_method_id IN (9,2,3,4,8)
+    GROUP BY 
+        payment_id
+) AS rf_ewallet ON rf_ewallet.payment_id = payments.id
+LEFT JOIN (
+    SELECT 
+        payment_id,
+        SUM(refunded_amt) AS total_refunded
+    FROM 
+        refunded
+    WHERE 
+        refunded_method_id = 6
+    GROUP BY 
+        payment_id
+) AS rf_cc ON rf_cc.payment_id = payments.id
+LEFT JOIN (
+    SELECT 
+        payment_id,
+        SUM(refunded_amt) AS total_refunded
+    FROM 
+        refunded
+    WHERE 
+        refunded_method_id = 7
+    GROUP BY 
+        payment_id
+) AS rf_coupons ON rf_coupons.payment_id = payments.id
    INNER JOIN (
     SELECT DISTINCT payment_id, receipt_id,is_paid,is_void 
     FROM transactions 

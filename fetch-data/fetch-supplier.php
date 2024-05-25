@@ -10,7 +10,7 @@ $searchQuery = $_GET['searchQuery'] ?? null;
 
 // $selectedIngredients = $_GET['selectedIngredients'] ?? null;
 // Fetch users with pagination
-$fetchSupplier = $supplierFacade->getSupplierAndSuppliedData();
+$fetchSupplier = $supplierFacade->getSupplierAndSuppliedData($searchQuery);
 $counter = 1;
 
 ob_start();
