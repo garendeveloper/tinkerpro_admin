@@ -545,12 +545,7 @@ var timeout = null;
 
 $('.searchProducts').on('input', function() {
     var searchData = $(this).val();
-
-    clearTimeout(timeout);
-    timeout = setTimeout(function() {
-        if (searchData.trim() === '') {
-            $('.searchProducts').val("");
-        } else {
+      
             $.ajax({
                 url: './fetch-data/fetch-products.php',
                 type: 'GET',
@@ -559,14 +554,14 @@ $('.searchProducts').on('input', function() {
                 },
                 success: function(response) {
                     $('#productTable').html(response);
-                    $('.searchProducts').val("");
+                   
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
                 }
             });
-        }
-    }, 500); 
+
+   
 });
 
 $('#exportProducts').click(function() {

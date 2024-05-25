@@ -402,6 +402,7 @@ function toggleStatusSupplier(checkbox) {
     }
 }
 function closeAddSupplierModal(){
+  $('.highlighteds').removeClass('highlighteds');
   clearInputs()
   $('.form-check-input:checked').prop('checked', false);
   localStorage.removeItem('suppliedProductData');
@@ -430,6 +431,10 @@ function clearInputs(){
   document.getElementById('supplierCompany').value = "";
   document.getElementById('supplierid').value = "";
 
+
+  var status = document.getElementById('statusValueSupplier')
+  status.checked = false;
+  
   var uptBtn = document.querySelector('.updateSuppliedBtn');
     uptBtn.setAttribute('hidden',true);
     var saveBtn = document.querySelector('.saveSuppliedBtn');

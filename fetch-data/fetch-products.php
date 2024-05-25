@@ -29,7 +29,7 @@ ob_start();
 while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
 //   var_dump( $row['category_details'] ?? null)
     ?>
-    <tr  href="#" onclick="highlightBorder(this)" ondblclick="openModal(this)">//is_stockable
+    <tr  href="#" onclick="highlightBorder(this)" ondblclick="openModal(this)">
     <td hidden class='text-center td-h'><span class="isBOM"><?= $row['is_BOM'] ?></span><span class="isWarranty"><?= $row['is_warranty'] ?></span><span class="is_stockable"><?= $row['is_stockable'] ?></span></td>
     <td hidden class='text-center td-h'><span class="categoryDetails"><?= $row['category_details'] ?? null ?></span><span class="categoryid"><?= $row['category_id'] ?? null ?></span></span><span class="variantid"><?= $row['variant_id'] ?? null ?></span></td> 
     <td hidden class='text-center td-h'><span class="isTaxIncluded"><?= $row['taxIncluded'] ?></td> 

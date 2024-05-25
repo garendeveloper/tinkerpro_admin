@@ -8,7 +8,7 @@ $customerFacade = new CustomerFacade;
 
 $searchQuery = $_GET['searchQuery'] ?? null;
 
-$customer = $customerFacade-> getCustomersData();
+$customer = $customerFacade->getCustomersData($searchQuery);
 $counter = 1;
 
 ob_start();

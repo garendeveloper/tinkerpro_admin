@@ -54,10 +54,33 @@
         
 
     }
-    public function getSupplierAndSuppliedData(){
+    public function getSupplierAndSuppliedData($searchQuery){
+        if ($searchQuery !== null && $searchQuery !== '') {
+            $sql = 'SELECT s.id as id, s.supplier as name,s.contact as contact, s.email as email, s.company as company, s.is_active as status FROM `supplier` as s';
+
+            if (!empty($searchQuery)) {
+            $sql .= ' WHERE 
+                s.supplier LIKE :searchQuery 
+                OR s.contact  LIKE :searchQuery 
+                OR  s.email LIKE :searchQuery 
+                OR s.company LIKE :searchQuery';
+            }
+
+            $stmt = $this->connect()->prepare($sql);
+
+            if (!empty($searchQuery)) {
+            $searchParam = "%$searchQuery%";
+            $stmt->bindParam(':searchQuery', $searchParam);
+            }
+
+            $stmt->execute();
+            return $stmt;
+
+        }else{
         $sql = "SELECT s.id as id, s.supplier as name,s.contact as contact, s.email as email, s.company as company, s.is_active as status FROM `supplier` as s";
         $stmt = $this->connect()->query($sql);
         return $stmt;
+        }
     }
     public function getSuppliedProducts($supplier_id){
 
