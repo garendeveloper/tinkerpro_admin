@@ -48,7 +48,7 @@
     background-color: #262626;
   
   }
-  .searchIngredients{
+  .searchCustomer{
   background-color: #7C7C7C;
   }
   .text-color::placeholder {
@@ -119,14 +119,14 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
-           <input  class="text-color searchIngredients" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Suppliers"/>
+           <input  class="text-color searchCustomer" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Customer"/>
            <button  class="btn-control addCustomer" style="margin-left: 15px;margin-right:15px;width:180px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
               .cls-1 {
                 fill: #699f4c;
                 fill-rule: evenodd;
               }
             </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp;Add Customer</button>
-            <button class="btn-control clearIngBtn" style="width:180px;order: 1" ><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
+            <button class="btn-control clearBtn" style="width:180px;order: 1" ><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
           </div>
           <div>
           <div class="row">
@@ -135,20 +135,20 @@
                 <div class="card-body">
                   <?php include('errors.php'); ?>
                   <div class="productTable" >
-                    <table id="recentsuppliers" class="text-color table-border" style = "width: 100%">
+                    <table id="recentcustomer" class="text-color table-border" style = "width: 100%">
                       <thead>
                         <tr>
                           <th class="text-center" style="width: 2%;">No.</th>
                           <th class="text-center" style="width: 15%;">Customer</th>
-                          <th class="text-center" style="width: 15%;">Code</th>
+                          <th class="text-center" style="width: 15%;">Contact</th>
+                          <th class="text-center" style="width: 15%;">Code/Employee ID</th>
                           <th class="text-center" style="width: 15%;">Type</th>
                           <th class="text-center" style="width: 15%;">Email</th>
-                          <th class="text-center" style="width: 15%;">Tax Exempt</th>
-                          <th class="text-center" style="width: 10%;">Status</th>
+                          <th class="text-center" style="width: 15%;">Address</th>
                           <th class="text-center" style="width: 7%;">Action</th>
                         </tr>
                       </thead>
-                      <tbody id="fetchsuppliers">
+                      <tbody id="fetchCustomer">
                         
                       </tbody>
                     </table>
@@ -174,6 +174,47 @@
 <script>
 $('.addCustomer').on('click', function(){
    $('#add_customer_modal').show()
+
+ var type = document.getElementById('customerType') 
+ type.checked = false;
+ var taxExempt = document.getElementById('taxExempt')
+ taxExempt.checked = false;
+
 })
 
+function refreshCustomerTable() {
+        $.ajax({
+            url: './fetch-data/fetch-customers.php', 
+            type: 'GET',
+            success: function(response) {
+                $('#fetchCustomer').html(response); 
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText); 
+            }
+        });
+    }
+    refreshCustomerTable()
+
+    $(document.body).on('click', '.editCustomer', function() {
+       var userId          =  $(this).closest('tr').find('.userId').text();
+       var customerId      =  $(this).closest('tr').find('.customerId').text();
+       var firstName    =  $(this).closest('tr').find('.firstName').text();
+       var lastName    =  $(this).closest('tr').find('.lastName').text();
+       var contact =  $(this).closest('tr').find('.customerContact').text();
+       var type =  $(this).closest('tr').find('.customerType').text();
+       var code =  $(this).closest('tr').find('.customerCode').text();
+       var email   =  $(this).closest('tr').find('.customerEmail').text();
+       var address =  $(this).closest('tr').find('.customerAddress').text();
+       var pwdID =  $(this).closest('tr').find('.pwdID').text();
+       var pwdTIN =  $(this).closest('tr').find('.pwdTIN').text();
+       var dueDate =  $(this).closest('tr').find('.dueDate').text();
+       var taxExempt =  $(this).closest('tr').find('.taxExempt').text();
+       toUpdateCustomer(userId,customerId,firstName,lastName,contact,code,type, email,address,pwdID,pwdTIN,dueDate,taxExempt)
+    })
+
+    $('.clearBtn').on('click', function(){
+       $('.searchCustomer').val("")
+       refreshCustomerTable()
+    })
 </script>
