@@ -10,26 +10,26 @@ $userId = 0;
 
 $abilityFacade = new AbilityFacade;
 
-if (isset($_SESSION['user_id'])) {
-    $userID = $_SESSION['user_id'];
-    $permissions = $abilityFacade->perm($userID);
+// if (isset($_SESSION['user_id'])) {
+//     $userID = $_SESSION['user_id'];
+//     $permissions = $abilityFacade->perm($userID);
 
-    $accessGranted = false;
-    foreach ($permissions as $permission) {
-        if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
-            $accessGranted = true;
-            break;
-        }
-    }
-    if (!$accessGranted) {
-      header("Location: 403.php");
-      exit;
-  }
-} else {
-    header("Location: login.php");
-    exit;
+//     $accessGranted = false;
+//     foreach ($permissions as $permission) {
+//         if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
+//             $accessGranted = true;
+//             break;
+//         }
+//     }
+//     if (!$accessGranted) {
+//       header("Location: 403.php");
+//       exit;
+//   }
+// } else {
+//     header("Location: login.php");
+//     exit;
 
-}
+// }
 
 if (isset($_SESSION["user_id"])) {
   $userId = $_SESSION["user_id"];
@@ -155,8 +155,6 @@ include ('./layout/admin/table-pagination-css.php');
           <div class="tbl_buttonsContainer">
             <div class="division">
               <div class="grid-container">
-                <button id="inventories" class="grid-item text-color button"><i class="bi bi-box-seam"></i>&nbsp;
-                  Inventories</button>
                 <button id="stocks" class="grid-item text-color button"><i class="bi bi-graph-up"></i>&nbsp;
                   Stocks</button>
                 <button id="purchase-order" class="grid-item text-color button"><i class="bi bi-cart-check"></i>&nbsp;
@@ -262,11 +260,10 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("./modals/stockhistory.php") ?>
   <?php include ("layout/footer.php") ?>
   <?php include ("layout/admin/keyboardfunction.php") ?>
-  <?php include('./modals/loading-modal.php'); ?>
+
   <script>
     $(document).ready(function () {
       $("#inventory").addClass('active');
-      $("#inventories").addClass('active');
       $("#pointer").html("Inventory");
 
       $(".tablinks").click(function (e) {
@@ -602,11 +599,6 @@ include ('./layout/admin/table-pagination-css.php');
         $(this).addClass('active');
         show_allStocks();
       })
-      $("#inventories").on('click', function () {
-        $(".grid-container button").removeClass('active');
-        $(this).addClass('active');
-        show_allInventories();
-      })
       $(".inventoryCard").on("click", "#btn_openStockHistory", function () {
         var id = $(this).data('id');
         $("#stockhistory_modal").slideDown({
@@ -661,7 +653,7 @@ include ('./layout/admin/table-pagination-css.php');
                       <td>${currentItem.prod_desc}</td>
                       <td>${currentItem.barcode}</td>
                       <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                      <td class="text-center" style = 'text-align: center'>${stock === -1 ? 0 : stock} </td>
+                      <td class="text-center" style = 'text-align: center'>${stock} </td>
                       <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;" data-id = '${currentItem.inventory_id}' id = "btn_openStockHistory">History</button></td>
                   </tr>`
                 );
@@ -1972,7 +1964,6 @@ include ('./layout/admin/table-pagination-css.php');
         });
       }
       function show_allInventories() {
-        $('#modalCashPrint').show();
         $.ajax({
           type: 'GET',
           url: 'api.php?action=get_allInventories',
@@ -1982,38 +1973,19 @@ include ('./layout/admin/table-pagination-css.php');
             if (data.length > 0) {
               for (var i = 0, len = data.length; i < len; i++) {
                 var currentItem = data[i];
-                if(currentItem.stock === -1)
-                {
-                  tblRows.push(
-                    `<tr>
-                          <td class="text-center">${i + 1}</td>
-                          <td>${currentItem.prod_desc}</td>
-                          <td>${currentItem.barcode}</td>
-                          <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                          <td class="text-center" style = 'text-align: center' colspan='5'><span style = 'color: yellow'><i>To Process</i></span></td>
-                      </tr>`
-                  );
-                  // <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
-                  // <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
-                  // <td style = 'text-align: center'><span style = 'color: yellow'><i>To Process</i></span></td>
-                  // <td style = 'text-align: center'><span style = 'color: yellow'><i>To Process</i></span></td>
-                }
-                else
-                {
-                  tblRows.push(
-                      `<tr>
-                            <td class="text-center">${i + 1}</td>
-                            <td>${currentItem.prod_desc}</td>
-                            <td>${currentItem.barcode}</td>
-                            <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                            <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
-                            <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
-                            <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
-                            <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "<span style = 'color: lightgreen'>Yes</span>" : "<span style = 'color: red'>No</span>"}</td>
-                            <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>Received</span>" : "<span style = 'color: yellow'>Purchased</span>"}</td>
-                        </tr>`
-                    );
-                }
+                tblRows.push(
+                  `<tr>
+                        <td class="text-center">${i + 1}</td>
+                        <td>${currentItem.prod_desc}</td>
+                        <td>${currentItem.barcode}</td>
+                        <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
+                        <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
+                        <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
+                        <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
+                        <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "<span style = 'color: lightgreen'>Yes</span>" : "<span style = 'color: red'>No</span>"}</td>
+                        <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>Received</span>" : "<span style = 'color: yellow'>Purchased</span>"}</td>
+                    </tr>`
+                );
               }
             } else {
               tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
@@ -2040,7 +2012,6 @@ include ('./layout/admin/table-pagination-css.php');
             </table>`;
 
             $(".inventoryCard").html(tblData);
-            $('#modalCashPrint').hide();
           }
         });
       }

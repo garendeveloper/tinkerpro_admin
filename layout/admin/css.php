@@ -263,7 +263,7 @@ button:hover {
       color: #ffffff;
       font-size: 14px;
       margin-bottom: 10px; 
-      flex-basis: calc(20% - 20px); 
+      flex-basis: calc(16.66% - 20px); 
   }
   @media only screen and (max-width: 600px) {
       .grid-item {
