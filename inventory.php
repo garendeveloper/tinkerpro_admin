@@ -1932,8 +1932,9 @@ include ('./layout/admin/table-pagination-css.php');
             (row.brand && row.brand.toLowerCase().includes(term)) ||
             (!row.brand && term === "");
         }).map(function (row) {
+          var brand = row.brand === null ? " " : row.brand;
           return {
-            label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+            label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
             value: row.barcode ?? row.product,
             inventory_id: row.inventory_id,
             id: row.product_id
@@ -2247,7 +2248,6 @@ include ('./layout/admin/table-pagination-css.php');
       })
       $("#btn_createPO").click(function (e) {
         e.preventDefault();
-   
         $(".purchase-grid-container button").removeClass('active');
         $(this).addClass('active');
         $("#expiration_div").hide();
