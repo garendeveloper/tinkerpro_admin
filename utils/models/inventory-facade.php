@@ -3,7 +3,7 @@ class InventoryFacade extends DBConnection
 {
     public function get_allInventories()
     {
-        // $offset = ($page - 1) * $perPage;
+        $offset = isset($_GET['page']) ? $_GET['page'] : 1;
         // $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
         //                                     FROM inventory
         //                                     JOIN products ON products.id = inventory.product_id
@@ -30,7 +30,7 @@ class InventoryFacade extends DBConnection
                                         JOIN uom ON uom.id = products.uom_id
                                         JOIN orders ON orders.id = inventory.order_id
                                         JOIN supplier ON supplier.id = orders.supplier_id
-                                        
+
                                         UNION ALL
                                         
                                         SELECT 
@@ -257,10 +257,11 @@ class InventoryFacade extends DBConnection
     }
     public function get_allProducts()
     {
-        $sql = $this->connect()->prepare("SELECT A.*, B.id as inventory_id
-                                        FROM products A
-                                        LEFT JOIN  inventory B ON A.ID = B.product_id
-                                        WHERE B.product_id IS NULL");
+        // $sql = $this->connect()->prepare("SELECT A.*, B.id as inventory_id
+        //                                 FROM products A
+        //                                 LEFT JOIN  inventory B ON A.ID = B.product_id
+        //                                 WHERE B.product_id IS NULL");
+        $sql = $this->connect()->prepare("SELECT * FROM PRODUCTS");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 

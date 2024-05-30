@@ -30,6 +30,25 @@
     #tbl_purchaseOrders_footer thead{
        border: 1px solid #FF6900;
     }
+    .custom-select {
+        position: relative;
+        display: inline-block;
+    }
+
+    .custom-select select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: 25px;
+        text-indent: 0.5em;
+    }
+
+    .custom-select i {
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+    }
 </style>
 <div class="fcontainer" id = "purchaseItems_div" style = "display: none">
     <form id="po_form">
@@ -54,11 +73,18 @@
         </div>
         <div class="fieldContainer" style = "margin-top: 2px;">
             <label>Supplier</label>
-            <div class="search-container">
+            <!-- <div class="search-container">
                 <input type="text" class="search-input" autocomplete="off" type="text" 
                     onkeyup="$(this).removeClass('has-error')" name="supplier" id="supplier" value=""
                     style="width: 390px;  height: 30px;" autocomplete="off">
-            </div> 
+            </div>  -->
+            <div class="custom-select" style="margin-right: 0px; ">
+                <select name="supplier" id = "supplier"
+                    style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                    
+                </select>
+                <i class="bi bi-chevron-double-down"></i>
+            </div>
           
         </div>
         <div class="fieldContainer" style = "margin-top: -3px;">
@@ -67,7 +93,7 @@
             <div class="search-container">
                 <input type="text" style="width: 280px; height: 30px;" class="search-input italic-placeholder"
                     placeholder="Search Product,[Name, Barcode, Brand]" name="product" onkeyup="$(this).removeClass('has-error')" id="product"
-                    autocomplete="off" >
+                    autocomplete="off" autofocus>
             </div>
             <button style=" height: 30px; width: 120px; font-size: 12px;" id="btn_addPO">
                     Add Product</button>
@@ -103,7 +129,4 @@
 
 
 <script>
-    $(document).ready(function(){
-        $("#product").focus();
-    })
 </script>

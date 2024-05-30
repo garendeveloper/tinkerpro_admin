@@ -172,6 +172,8 @@
 
 <?php include("layout/footer.php") ?>
 <script>
+  $("#suppliers").addClass('active');
+  $("#pointer").html("Suppliers");
 function addSuppliers(){
     $('#add_supplier_modal').show()
     if($('#add_supplier_modal').is(":visible")){

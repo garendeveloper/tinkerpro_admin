@@ -82,15 +82,13 @@ if ($decProductSales == NULL) {
 
 ?>
 <style>
-  .col {
-    background-color: #151515;
+ .col {
+    /* background-color: #151515; */
     color: white;
-    height: 200px;
+    height: 300px;
     width: 100%;
-  }
-
+}
   .col1 {
-    background-color: #151515;
     color: white;
     height: 300px;
   }
@@ -200,9 +198,13 @@ if ($decProductSales == NULL) {
     position: relative;
     height: 300px;
   }
+  @media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 2400px;
+    }
+}
 </style>
 <?php include "layout/admin/css.php" ?>
-
 <div class="container-scroller">
   <div class="main">
     <?php include "layout/admin/sidebar.php" ?>
@@ -225,12 +227,12 @@ if ($decProductSales == NULL) {
                 </div>
                 <p>Sales data grouped by month</p>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <canvas id="salesChart" width="400" height="40"></canvas>
+                <canvas id="salesChart" width="1081" height="107" style="display: block; height: 240px; width: 1200px;" class="chartjs-render-monitor"></canvas>
                 </div>
               </div>
             </div>
             <div class="col-12 col-md-4">
-              <div class="border p-3 col1" style="    height: 200px;">
+              <div class="border p-3 col1" style = "height: 300px;">
                 <h5>Total Sales</h5>
                 <div class="center-total">
                   <p>No data to display</p>

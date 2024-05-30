@@ -1250,6 +1250,7 @@ include ('./layout/admin/table-pagination-css.php');
           }
         })
       }
+     
       function show_sweetReponse(message) {
         toastr.options = {
           "onShown": function () {
