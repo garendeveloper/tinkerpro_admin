@@ -106,6 +106,7 @@
             $("#q_product").val("");
             $(this).css("border", '1px solid #ffff')
             get_allProductInventory();
+            $("#quickinventory_form #q_product").focus();
         })
         $("#btn_searchQProduct").on("click", function (e) {
             e.preventDefault();
@@ -119,13 +120,18 @@
                 success: function (data) {
                     var products = [];
                     for (var i = 0; i < data.length; i++) {
-                        var row = {
-                            inventory_id: data[i].inventory_id,
-                            product: data[i].prod_desc,
-                            barcode: data[i].barcode,
-                            brand: data[i].brand,
-                        };
-                        products.push(row);
+                        var stock = data[i].stock;
+                        if(stock !== -1)
+                        {
+                            var row = {
+                                inventory_id: data[i].inventory_id,
+                                product: data[i].prod_desc,
+                                barcode: data[i].barcode,
+                                brand: data[i].brand,
+                            };
+                            products.push(row);
+                        }
+                      
                     }
                     $("#q_product").autocomplete({
                         source: function (request, response) {

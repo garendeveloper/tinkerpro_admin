@@ -24,7 +24,8 @@ class InventoryFacade extends DBConnection
                                             inventory.amount_beforeTax,
                                             inventory.amount_afterTax,
                                             orders.isPaid,
-                                            inventory.isReceived
+                                            inventory.isReceived,
+                                            inventory.qty_purchased
                                         FROM inventory
                                         JOIN products ON products.id = inventory.product_id
                                         JOIN uom ON uom.id = products.uom_id
@@ -46,7 +47,8 @@ class InventoryFacade extends DBConnection
                                             NULL AS amount_beforeTax,
                                             NULL AS amount_afterTax,
                                             NULL AS isPaid,
-                                            NULL AS isReceived
+                                            NULL AS isReceived,
+                                            0 AS qty_purchased
                                         FROM products p
                                         JOIN uom u ON u.id = p.uom_id;");
         $sql->execute();

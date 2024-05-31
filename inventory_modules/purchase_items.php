@@ -129,7 +129,5 @@
 
 
 <script>
-    if (!("autofocus" in document.createElement("input"))) {
-        $("#product").focus();
-    }
+   
 </script>

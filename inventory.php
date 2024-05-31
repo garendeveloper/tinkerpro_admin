@@ -263,8 +263,12 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("layout/footer.php") ?>
   <?php include ("layout/admin/keyboardfunction.php") ?>
   <?php include('./modals/loading-modal.php'); ?>
+
+  
   <script>
+  
     $(document).ready(function () {
+      
       $("#inventory").addClass('active');
       $("#inventories").addClass('active');
       $("#pointer").html("Inventory");
@@ -392,6 +396,8 @@ include ('./layout/admin/table-pagination-css.php');
       var overallTotal = 0;
       var selected_products = [];
       var isSaving = false;
+      var lastInputTime = 0; 
+      var productsCache = [];
       $("#tbl_orders").hide();
       show_allInventories();
       show_allSuppliers();
@@ -1619,26 +1625,14 @@ include ('./layout/admin/table-pagination-css.php');
         });
         return isExist;
       }
+     
       $("#btn_addPO").click(function (e) {
         e.preventDefault();
         var product = $("#product").val();
         var product_id = $("#selected_product_id").val();
         if (!isDataExistInTable(product_id)) {
           if (validatePOForm()) {
-            $("#purchaseQty_modal").slideDown({
-              backdrop: 'static',
-              keyboard: false,
-            });
-            $.ajax({
-              type: 'get',
-              url: 'api.php?action=get_productInfo',
-              data: { data: product_id },
-              success: function (data) {
-                $("#product_name").text(data['prod_desc'] + " : " + data['barcode']);
-                $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong style = 'color:  #ffff'>ATTENTION REQUIRED!</strong> ");
-              }
-            });
-
+           show_purchaseQtyModal(product_id);
           }
         }
         else {
@@ -1895,8 +1889,7 @@ include ('./layout/admin/table-pagination-css.php');
           closeAllLists(e.target);
         });
       }
- 
-      var productsCache = [];
+
       var finish = 0;
       show_allProducts();
       $("#product").autocomplete({
@@ -1924,6 +1917,13 @@ include ('./layout/admin/table-pagination-css.php');
       $("#product").on("input", function() {
         var term = $(this).val();
         $(this).autocomplete('search',term);
+        var product_id = $("#selected_product_id").val();
+        console.log(isDataExistInTable(product_id))
+        if(!isDataExistInTable(product_id))
+        {
+          show_purchaseQtyModal(product_id);
+        }
+       
       })
       function filterProducts(term) {
         return productsCache.filter(function (row) {
@@ -1941,7 +1941,37 @@ include ('./layout/admin/table-pagination-css.php');
           };
         });
       }
-
+      function check_ifProductCacheExists(product_id)
+      {
+        var searchDataExists = false;
+ 
+        $.each(productsCache, function(index, item){
+            if(item.product_id === product_id){
+                searchDataExists = true;
+                return false; 
+            }
+        });
+        return searchDataExists;
+      }
+      function show_purchaseQtyModal(product_id)
+      {
+        if(product_id !== -1)
+        {
+          $("#purchaseQty_modal").slideDown({
+            backdrop: 'static',
+            keyboard: false,
+          });
+          $.ajax({
+            type: 'get',
+            url: 'api.php?action=get_productInfo',
+            data: { data: product_id },
+            success: function (data) {
+              $("#product_name").text(data['prod_desc'] + " : " + data['barcode']);
+              $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color:  #ffff'>ATTENTION REQUIRED!</strong> ");
+            }
+          });
+        }
+      }
       function show_allProducts() {
         $.ajax({
           type: 'GET',
@@ -1979,7 +2009,7 @@ include ('./layout/admin/table-pagination-css.php');
                           <td>${currentItem.prod_desc}</td>
                           <td>${currentItem.barcode}</td>
                           <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                          <td class="text-center" style = 'text-align: center' colspan='5'><span style = 'color: yellow'><i>To Process</i></span></td>
+                          <td class="text-center" style = 'text-align: center' colspan='6'><span style = 'color: yellow'><i>To Process</i></span></td>
                       </tr>`
                   );
                   // <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
@@ -1995,6 +2025,7 @@ include ('./layout/admin/table-pagination-css.php');
                             <td>${currentItem.prod_desc}</td>
                             <td>${currentItem.barcode}</td>
                             <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
+                            <td class="text-center" style = 'text-align: center'>${currentItem.qty_purchased}</td>
                             <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
                             <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
                             <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
@@ -2016,11 +2047,12 @@ include ('./layout/admin/table-pagination-css.php');
                         <th class = 'auto-fit'>Product</th>
                         <th class='auto-fit'>Barcode</th>
                         <th class='auto-fit' style = 'text-align: center'>Unit</th>
+                        <th class='auto-fit' style = 'text-align: center'>Qty Purchased</th>
                         <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount Before Tax</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount After Tax</th>
                         <th class='auto-fit' style = 'text-align: center'>Is Paid</th>
-                        <th class='auto-fit' style = 'text-align: center'>Inventory Type</th>
+                        <th class='auto-fit' style = 'text-align: center'>Document Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -2224,13 +2256,13 @@ include ('./layout/admin/table-pagination-css.php');
         }, 100);
       }
       $('#btn_minimizeModal').click(function () {
-             $(".purchase-grid-container button").removeClass('active');
+        $(".purchase-grid-container button").removeClass('active');
         hideModals();
+        $("#searchInput").focus();
       });
       $("#product-form").on("submit", function (e) {
         e.preventDefault();
         var formData = $(this).serialize();
-        console.log(formData);
       })
       $("#btn_openOption").click(function (e) {
         e.preventDefault();
@@ -2245,6 +2277,7 @@ include ('./layout/admin/table-pagination-css.php');
         $("#purchaseItems_div").show();
         openOptionModal();
         $("#open_po_report").hide();
+        $("#po_form #product").focus();
       })
       $("#btn_createPO").click(function (e) {
         e.preventDefault();
@@ -2259,7 +2292,7 @@ include ('./layout/admin/table-pagination-css.php');
         $("#purchaseItems_div").show();
         openOptionModal();
         $("#open_po_report").hide();
-    
+        $("#po_form #product").focus();
       })
       $("#btn_receiveItems").click(function (e) {
         e.preventDefault();
@@ -2274,6 +2307,7 @@ include ('./layout/admin/table-pagination-css.php');
         $("#lossanddamage_div").hide()
         $("#inventorycount_div").hide();
         $("#open_po_report").hide();
+        $("#receive_form #r_PONumbers").focus();
       })
       $("#btn_stockTransfer").click(function (e) {
         e.preventDefault();
@@ -2311,6 +2345,7 @@ include ('./layout/admin/table-pagination-css.php');
         $("#lossanddamage_div").hide()
         $("#inventorycount_div").hide();
         $("#quickinventory_div").show();
+        $("#quickinventory_form #q_product").focus();
       })
       $("#btn_lossDamage").click(function (e) {
         e.preventDefault();
@@ -2338,6 +2373,7 @@ include ('./layout/admin/table-pagination-css.php');
         var formattedDate = formatDate(currentDate);
         $('#date_damage').datepicker('setDate', currentDate);
         $('#date_damage').val(formattedDate);
+        $("#lossanddamage_form #loss_and_damage_input").focus();
       })
       $("#btn_inventoryCount").click(function (e) {
         e.preventDefault();
@@ -2374,7 +2410,6 @@ include ('./layout/admin/table-pagination-css.php');
           $("#optionModal").show();
           $(".optionmodal-content").show();
         }, 100);
-   
       }
     })
   </script>

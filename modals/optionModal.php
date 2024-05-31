@@ -1175,6 +1175,7 @@ input[type="text"] {
     </div>
 </div>
 <?php include("./modals/print_orders-modal.php")?>
+<?php include('./modals/show_purchasePrintModal.php'); ?>
 
 <script>
   $(document).ready(function(){
@@ -1331,10 +1332,41 @@ input[type="text"] {
         }
     }, 'tr');
     $("#open_po_report").click(function(){
-      $("#print_orders_modal").slideDown({
-        backdrop: 'static',
-        keyboard: false,
-      });
+        $('#show_purchasePrintModal').show()
+        if($('#show_purchasePrintModal').is(":visible"))
+        {
+            var loadingImage = document.getElementById("loadingImage");
+            loadingImage.removeAttribute("hidden");
+            var pdfFile= document.getElementById("pdfFile");
+            pdfFile.setAttribute('hidden',true);
+            $.ajax({
+                url: './toprint/purchaseorder_print.php',
+                type: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: {
+                    order_id: $("#_order_id").val(),
+                    po_number: $("#pcs_no").val(),
+                },
+                success: function(response) {
+                loadingImage.setAttribute("hidden",true);
+                var pdfFile = document.getElementById("pdfFile");
+                pdfFile.removeAttribute('hidden')
+                if( loadingImage.hasAttribute('hidden')) {
+                    // var timestamp = new Date().getTime(); 
+                    // var pdfUrl = './assets/pdf/inventory/purchaseorder.pdf?t=' + timestamp; 
+                    var newBlob = new Blob([response], { type: 'application/pdf' });
+                    var blobURL = URL.createObjectURL(newBlob);
+                    
+                    $('#pdfViewer').attr('src', blobURL);
+                }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
     })
     $("#print_po").click(function(){
       var printContents = document.getElementById("report_toPrint").innerHTML;

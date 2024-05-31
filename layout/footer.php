@@ -66,8 +66,8 @@ $(document).ready(function() {
       $("#response_modal").hide();
     })
   })
-  var productsCache = []; 
-  show_allProducts();
+  // var productsCache = []; 
+  // show_allProducts();
  
   // $("#product").autocomplete({
   //       minLength: 2, 
@@ -99,25 +99,25 @@ $(document).ready(function() {
     //         };
     //     });
     // }
-  function show_allProducts()
-  {
-    $.ajax({
-        type: 'GET',
-        url: 'api.php?action=get_allProducts',
-        success: function(data) {
-          for (var i = 0; i < data.length; i++) {
-              var row = {
-                  inventory_id: data[i].inventory_id,
-                  product_id: data[i].id,
-                  product: data[i].prod_desc,
-                  barcode: data[i].barcode,
-                  brand: data[i].brand,
-              };
-              productsCache.push(row);
-          }
-        }
-    });
-  }
+  // function show_allProducts()
+  // {
+  //   $.ajax({
+  //       type: 'GET',
+  //       url: 'api.php?action=get_allProducts',
+  //       success: function(data) {
+  //         for (var i = 0; i < data.length; i++) {
+  //             var row = {
+  //                 inventory_id: data[i].inventory_id,
+  //                 product_id: data[i].id,
+  //                 product: data[i].prod_desc,
+  //                 barcode: data[i].barcode,
+  //                 brand: data[i].brand,
+  //             };
+  //             productsCache.push(row);
+  //         }
+  //       }
+  //   });
+  // }
   function addProduct() {
     //products
     var productname = document.getElementById('productname').value;

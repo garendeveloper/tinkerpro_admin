@@ -199,7 +199,7 @@
                 <input type="hidden" id="is_received" name="is_received" value="0">
                 <input type="text" style="width: 280px; height: 30px; font-size: 16px;"
                     class="search-input italic-placeholder" placeholder="Search Purchase Order No." name="r_PONumbers"
-                    id="r_PONumbers" onkeyup="$(this).removeClass('has-error')" autocomplete="off">
+                    id="r_PONumbers" onkeyup="$(this).removeClass('has-error')" autofocus="autofocus">
             </div>
             <button type="button" style="font-size: 14px; height: 30px; width: 120px;" id="btn_searchPO"><i
                     class="bi bi-search bi-md"></i>&nbsp; Search</button>
@@ -264,7 +264,7 @@
     $(document).ready(function () {
         show_allPurchaseOrders();
         var po_numbers = [];
-
+       
         function show_allPurchaseOrders() {
             $.ajax({
                 type: 'GET',
@@ -309,6 +309,22 @@
             }
         })
 
+        $("#r_PONumbers").on("keyup", function(e){
+            e.preventDefault();
+            var po_number = $(this).val();
+            if (po_number !== '') {
+                po_number = $("#r_PONumbers").val();
+                if(po_number !== ""){
+                    show_orders(po_number);
+                    $("#po_data_div").show();
+                } else {
+                    $("#po_data_div").hide();
+                    $("#tbl_receivedItems tbody").empty();
+                }
+            } else {
+                $("#po_data_div").hide();
+            }
+        });
         $("#btn_searchPO").click(function (e) {
             e.preventDefault();
             var po_number = $("#r_PONumbers").val().trim();
@@ -442,7 +458,6 @@
                 var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;'  placeholder='QTY'></input>";
                 $(this).empty().append(input);
             }
-
         });
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(5)', function () {
             var currentText = $(this).text();
