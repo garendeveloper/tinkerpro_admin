@@ -21,7 +21,7 @@
   margin: 0 auto; 
   border: none;
   width: 100%;
-  height: fit-content; 
+  height: 100vh; 
   animation: slideInRight 0.5s; 
   border-radius: 0;
   margin-top: -28px;
