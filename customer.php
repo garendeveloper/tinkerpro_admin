@@ -175,6 +175,8 @@
 
 <?php include("layout/footer.php") ?>
 <script>
+  $("#customers").addClass('active');
+  $("#pointer").html("Customers");
 $('.addCustomer').on('click', function(){
    $('#add_customer_modal').show()
 

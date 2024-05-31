@@ -8,7 +8,7 @@ class OrderFacade extends DBConnection
                                             FROM orders
                                             INNER JOIN supplier
                                             ON supplier.id = orders.supplier_id
-                                            ORDER BY orders.id DESC; LIMIT :offset, :perPage ");
+                                            ORDER BY orders.id ASC; LIMIT :offset, :perPage ");
 
         $sql->bindParam(':offset', $offset, PDO::PARAM_INT);
         $sql->bindParam(':perPage', $perPage, PDO::PARAM_INT);
@@ -16,6 +16,12 @@ class OrderFacade extends DBConnection
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
+    }
+    public function fetch_products()
+    {
+        $stmt = $this->connect()->prepare("SELECT products.*, orders.*
+                                           FROM products
+                                            ");
     }
     public function get_allPurchaseOrders()
     {

@@ -61,48 +61,44 @@ $(document).ready(function() {
         window.location.href = "logout.php";
       }
     })
-    $('#searchInput').on('keyup', function () {
-      var value = $(this).val().toLowerCase();
-      $('table tbody tr').filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
-    });
+   
     $("#r_close").click(function () {
       $("#response_modal").hide();
     })
   })
   var productsCache = []; 
   show_allProducts();
-  $("#product").autocomplete({
-        minLength: 2, 
-        source: function(request, response) {
-            var term = request.term;
-            var filteredProducts = filterProducts(term);
-            var slicedProducts = filteredProducts.slice(0, 5); 
-            response(slicedProducts);
-        },
-        select: function(event, ui) {
-            var selectedProductId = ui.item.id;
-            $("#selected_product_id").val(selectedProductId);
-            return false;
-        }
-    });
+ 
+  // $("#product").autocomplete({
+  //       minLength: 2, 
+  //       source: function(request, response) {
+  //           var term = request.term;
+  //           var filteredProducts = filterProducts(term);
+  //           var slicedProducts = filteredProducts.slice(0, 5); 
+  //           response(slicedProducts);
+  //       },
+  //       select: function(event, ui) {
+  //           var selectedProductId = ui.item.id;
+  //           $("#selected_product_id").val(selectedProductId);
+  //           return false;
+  //       }
+  //   });
 
-    function filterProducts(term) {
-        return productsCache.filter(function(row) {
-            return row.product.toLowerCase().includes(term) || 
-                   row.barcode.includes(term) || 
-                   (row.brand && row.brand.toLowerCase().includes(term)) || 
-                   (!row.brand && term === "");
-        }).map(function(row) {
-            return {
-                label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
-                value: row.barcode ?? row.product,
-                inventory_id: row.inventory_id,
-                id: row.product_id
-            };
-        });
-    }
+    // function filterProducts(term) {
+    //     return productsCache.filter(function(row) {
+    //         return row.product.toLowerCase().includes(term) || 
+    //                row.barcode.includes(term) || 
+    //                (row.brand && row.brand.toLowerCase().includes(term)) || 
+    //                (!row.brand && term === "");
+    //     }).map(function(row) {
+    //         return {
+    //             label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+    //             value: row.barcode ?? row.product,
+    //             inventory_id: row.inventory_id,
+    //             id: row.product_id
+    //         };
+    //     });
+    // }
   function show_allProducts()
   {
     $.ajax({

@@ -46,21 +46,24 @@ switch ($active_id) {
         $counter = 1;
 
         foreach ($items as $item) {
-            $isPaid = $item['isPaid'] === 1 ? "YES" : "NO";
-            $sheet->setCellValue('A' . ($counter + 1), $counter);
-            $sheet->setCellValue('B' . ($counter + 1), $item['prod_desc']);
-            $sheet->setCellValue('C' . ($counter + 1), $item['barcode']);
-            $sheet->setCellValue('D' . ($counter + 1), $item['stock']);
-            $sheet->setCellValue('E' . ($counter + 1), number_format($item['amount_beforeTax'], 2));
-            $sheet->setCellValue('F' . ($counter + 1), number_format($item['amount_afterTax'], 2));
-            $sheet->setCellValue('G' . ($counter + 1), $isPaid);
-
-            $sheet->getStyle('A' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-            $sheet->getStyle('B' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-            $sheet->getStyle('C' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-            $sheet->getStyle('G' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-
-            $counter++;
+            if($item['stock'] !== -1)
+            {
+                $isPaid = $item['isPaid'] === 1 ? "YES" : "NO";
+                $sheet->setCellValue('A' . ($counter + 1), $counter);
+                $sheet->setCellValue('B' . ($counter + 1), $item['prod_desc']);
+                $sheet->setCellValue('C' . ($counter + 1), $item['barcode']);
+                $sheet->setCellValue('D' . ($counter + 1), $item['stock']);
+                $sheet->setCellValue('E' . ($counter + 1), number_format($item['amount_beforeTax'], 2));
+                $sheet->setCellValue('F' . ($counter + 1), number_format($item['amount_afterTax'], 2));
+                $sheet->setCellValue('G' . ($counter + 1), $isPaid);
+    
+                $sheet->getStyle('A' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                $sheet->getStyle('B' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('C' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+                $sheet->getStyle('G' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+    
+                $counter++;
+            }
         }
 
         foreach (range('A', 'G') as $column) {

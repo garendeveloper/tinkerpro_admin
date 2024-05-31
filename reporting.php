@@ -614,7 +614,8 @@ input:not(:checked) + .sliderStatusExcludes {
 <?php include("layout/footer.php") ?>
 
 <script>
-
+$("#reporting").addClass('active');
+  $("#pointer").html("Reporting");
 function highlightDiv(id) {
   console.log(id)
   document.querySelectorAll('.anchor-container div').forEach(div => {

@@ -10,26 +10,26 @@ $userId = 0;
 
 $abilityFacade = new AbilityFacade;
 
-if (isset($_SESSION['user_id'])) {
-    $userID = $_SESSION['user_id'];
-    $permissions = $abilityFacade->perm($userID);
+// if (isset($_SESSION['user_id'])) {
+//     $userID = $_SESSION['user_id'];
+//     $permissions = $abilityFacade->perm($userID);
 
-    $accessGranted = false;
-    foreach ($permissions as $permission) {
-        if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
-            $accessGranted = true;
-            break;
-        }
-    }
-    if (!$accessGranted) {
-      header("Location: 403.php");
-      exit;
-  }
-} else {
-    header("Location: login.php");
-    exit;
+//     $accessGranted = false;
+//     foreach ($permissions as $permission) {
+//         if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
+//             $accessGranted = true;
+//             break;
+//         }
+//     }
+//     if (!$accessGranted) {
+//       header("Location: 403.php");
+//       exit;
+//   }
+// } else {
+//     header("Location: login.php");
+//     exit;
 
-}
+// }
 
 if (isset($_SESSION["user_id"])) {
   $userId = $_SESSION["user_id"];
@@ -138,7 +138,7 @@ include ('./layout/admin/table-pagination-css.php');
           <div class="horizontal-container" style="display: flex; align-items: center;">
             <img src="assets/img/barcode.png" style="color: white; height: 60px; width: 50px; margin-right:5px;">
             <input class="text-color italic-placeholder" id="searchInput" style="flex: 1 1 100%; height: 35px;"
-              placeholder="Search Product,[code,serial no., barcode, name, brand]" autofocus />
+              placeholder="Search Product,[code,serial no., barcode, name, brand]" />
           </div>
           <div style="display: flex; align-items: center;">
             <button class="icon-button" style="margin-right: 10px;">
@@ -155,8 +155,6 @@ include ('./layout/admin/table-pagination-css.php');
           <div class="tbl_buttonsContainer">
             <div class="division">
               <div class="grid-container">
-                <button id="inventories" class="grid-item text-color button"><i class="bi bi-box-seam"></i>&nbsp;
-                  Inventories</button>
                 <button id="stocks" class="grid-item text-color button"><i class="bi bi-graph-up"></i>&nbsp;
                   Stocks</button>
                 <button id="purchase-order" class="grid-item text-color button"><i class="bi bi-cart-check"></i>&nbsp;
@@ -262,11 +260,10 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("./modals/stockhistory.php") ?>
   <?php include ("layout/footer.php") ?>
   <?php include ("layout/admin/keyboardfunction.php") ?>
-  <?php include('./modals/loading-modal.php'); ?>
+
   <script>
     $(document).ready(function () {
       $("#inventory").addClass('active');
-      $("#inventories").addClass('active');
       $("#pointer").html("Inventory");
 
       $(".tablinks").click(function (e) {
@@ -602,11 +599,6 @@ include ('./layout/admin/table-pagination-css.php');
         $(this).addClass('active');
         show_allStocks();
       })
-      $("#inventories").on('click', function () {
-        $(".grid-container button").removeClass('active');
-        $(this).addClass('active');
-        show_allInventories();
-      })
       $(".inventoryCard").on("click", "#btn_openStockHistory", function () {
         var id = $(this).data('id');
         $("#stockhistory_modal").slideDown({
@@ -643,12 +635,10 @@ include ('./layout/admin/table-pagination-css.php');
         })
       })
       function show_allStocks() {
-        $('#modalCashPrint').show();
         $.ajax({
           type: 'GET',
           url: 'api.php?action=get_allInventories',
           success: function (data) {
-            $('#modalCashPrint').hide();
             var tblRows = [];
             var counter = 0;
             if (data.length > 0) {
@@ -656,14 +646,14 @@ include ('./layout/admin/table-pagination-css.php');
                 var currentItem = data[i];
                 var stock = currentItem.stock;
                 if (stock > 10) stock = "<span style = 'color: yellowgreen'>" + stock + "</span>";
-                if (stock <= 10 && stock > 0) stock = "<span style = 'color: red'>" + stock + "</span>";
+                if (stock <= 10) stock = "<span style = 'color: red'>" + stock + "</span>";
                 tblRows.push(
                   `<tr>
                       <td class="text-center">${i + 1}</td>
                       <td>${currentItem.prod_desc}</td>
                       <td>${currentItem.barcode}</td>
                       <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                      <td class="text-center" style = 'text-align: center'>${stock === -1 ? 0 : stock} </td>
+                      <td class="text-center" style = 'text-align: center'>${stock} </td>
                       <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;" data-id = '${currentItem.inventory_id}' id = "btn_openStockHistory">History</button></td>
                   </tr>`
                 );
@@ -690,7 +680,6 @@ include ('./layout/admin/table-pagination-css.php');
             </table>`;
 
             $(".inventoryCard").html(tblData);
-          
           }
         });
       }
@@ -1261,6 +1250,7 @@ include ('./layout/admin/table-pagination-css.php');
           }
         })
       }
+     
       function show_sweetReponse(message) {
         toastr.options = {
           "onShown": function () {
@@ -1802,29 +1792,16 @@ include ('./layout/admin/table-pagination-css.php');
         });
       });
 
-      // function show_allSuppliers() {
-      //   $.ajax({
-      //     type: 'GET',
-      //     url: 'api.php?action=get_allSuppliers',
-      //     success: function (data) {
-      //       var suppliers = [];
-      //       for (var i = 0; i < data.length; i++) {
-      //         suppliers.push(data[i].supplier)
-      //       }
-      //       autocomplete(document.getElementById("supplier"), suppliers);
-      //     }
-      //   })
-      // }
       function show_allSuppliers() {
         $.ajax({
           type: 'GET',
           url: 'api.php?action=get_allSuppliers',
           success: function (data) {
-            var options = "";
+            var suppliers = [];
             for (var i = 0; i < data.length; i++) {
-              options += "<option>"+data[i].supplier+"</option>";
+              suppliers.push(data[i].supplier)
             }
-           $("#supplier").html(options);
+            autocomplete(document.getElementById("supplier"), suppliers);
           }
         })
       }
@@ -1895,9 +1872,49 @@ include ('./layout/admin/table-pagination-css.php');
           closeAllLists(e.target);
         });
       }
- 
+      // function show_allProducts()
+      // {
+      //   $.ajax({
+      //     type: 'GET',
+      //     url: 'api.php?action=get_allProducts',
+      //     success: function(data){
+      //       var products = [];
+      //       for (var i = 0; i < data.length; i++) {
+      //           var row = {
+      //               inventory_id: data[i].inventory_id,
+      //               product_id: data[i].id,
+      //               product: data[i].prod_desc,
+      //               barcode: data[i].barcode,
+      //               brand: data[i].brand,
+      //           };
+      //           products.push(row);
+      //       }
+      //       $("#product").autocomplete({
+      //           source: function (request, response) {
+      //               var term = request.term.toLowerCase();
+      //               var filteredProducts = products.filter(function (row) {
+      //                   return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
+      //                       (!row.brand && term === "");
+      //               });
+      //               response(filteredProducts.map(function (row) {
+      //                   return {
+      //                       label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+      //                       value: row.barcode ?? row.product,
+      //                       inventory_id: row.inventory_id,
+      //                       id: row.product_id
+      //                   };
+      //               }));
+      //           },
+      //           select: function (event, ui) {
+      //               var selectedProductId = ui.item.id;
+      //               $("#selected_product_id").val(selectedProductId);
+      //               return false;
+      //           }
+      //       })
+      //     }
+      //   })
+      // }
       var productsCache = [];
-      var finish = 0;
       show_allProducts();
       $("#product").autocomplete({
         minLength: 2,
@@ -1906,25 +1923,14 @@ include ('./layout/admin/table-pagination-css.php');
           var filteredProducts = filterProducts(term);
           var slicedProducts = filteredProducts.slice(0, 5);
           response(slicedProducts);
-          if (slicedProducts.length > 0) {
-            $('#filters').show();
-          } else {
-              $('#filters').hide();
-          }
-          var slicedProductsLength = slicedProducts.length - 1;
-          var selectedProductId = slicedProducts[slicedProductsLength].id;
-            $("#selected_product_id").val(selectedProductId);
-          },
-          select: function (event, ui) {
-            var selectedProductId = ui.item.id;
-            $("#selected_product_id").val(selectedProductId);
-            return false;
-          }
+        },
+        select: function (event, ui) {
+          var selectedProductId = ui.item.id;
+          $("#selected_product_id").val(selectedProductId);
+          return false;
+        }
       });
-      $("#product").on("input", function() {
-        var term = $(this).val();
-        $(this).autocomplete('search',term);
-      })
+
       function filterProducts(term) {
         return productsCache.filter(function (row) {
           return row.product.toLowerCase().includes(term) ||
@@ -1932,16 +1938,14 @@ include ('./layout/admin/table-pagination-css.php');
             (row.brand && row.brand.toLowerCase().includes(term)) ||
             (!row.brand && term === "");
         }).map(function (row) {
-          var brand = row.brand === null ? " " : row.brand;
           return {
-            label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
+            label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
             value: row.barcode ?? row.product,
             inventory_id: row.inventory_id,
             id: row.product_id
           };
         });
       }
-
       function show_allProducts() {
         $.ajax({
           type: 'GET',
@@ -1961,7 +1965,6 @@ include ('./layout/admin/table-pagination-css.php');
         });
       }
       function show_allInventories() {
-        $('#modalCashPrint').show();
         $.ajax({
           type: 'GET',
           url: 'api.php?action=get_allInventories',
@@ -1971,38 +1974,19 @@ include ('./layout/admin/table-pagination-css.php');
             if (data.length > 0) {
               for (var i = 0, len = data.length; i < len; i++) {
                 var currentItem = data[i];
-                if(currentItem.stock === -1)
-                {
-                  tblRows.push(
-                    `<tr>
-                          <td class="text-center">${i + 1}</td>
-                          <td>${currentItem.prod_desc}</td>
-                          <td>${currentItem.barcode}</td>
-                          <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                          <td class="text-center" style = 'text-align: center' colspan='5'><span style = 'color: yellow'><i>To Process</i></span></td>
-                      </tr>`
-                  );
-                  // <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
-                  // <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
-                  // <td style = 'text-align: center'><span style = 'color: yellow'><i>To Process</i></span></td>
-                  // <td style = 'text-align: center'><span style = 'color: yellow'><i>To Process</i></span></td>
-                }
-                else
-                {
-                  tblRows.push(
-                      `<tr>
-                            <td class="text-center">${i + 1}</td>
-                            <td>${currentItem.prod_desc}</td>
-                            <td>${currentItem.barcode}</td>
-                            <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                            <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
-                            <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
-                            <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
-                            <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "<span style = 'color: lightgreen'>Yes</span>" : "<span style = 'color: red'>No</span>"}</td>
-                            <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>Received</span>" : "<span style = 'color: yellow'>Purchased</span>"}</td>
-                        </tr>`
-                    );
-                }
+                tblRows.push(
+                  `<tr>
+                        <td class="text-center">${i + 1}</td>
+                        <td>${currentItem.prod_desc}</td>
+                        <td>${currentItem.barcode}</td>
+                        <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
+                        <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
+                        <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
+                        <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
+                        <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "<span style = 'color: lightgreen'>Yes</span>" : "<span style = 'color: red'>No</span>"}</td>
+                        <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>Received</span>" : "<span style = 'color: yellow'>Purchased</span>"}</td>
+                    </tr>`
+                );
               }
             } else {
               tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
@@ -2029,7 +2013,6 @@ include ('./layout/admin/table-pagination-css.php');
             </table>`;
 
             $(".inventoryCard").html(tblData);
-            $('#modalCashPrint').hide();
           }
         });
       }
@@ -2183,23 +2166,13 @@ include ('./layout/admin/table-pagination-css.php');
       function clean_number(number) {
         return number.replace(/[₱\s]/g, '');
       }
-      // $('#product').on('input', function () {
-      //   var barcode = $(this).val().trim().toLowerCase();
-      //   filterPO(barcode);
-      // })
       $('#searchInput').on('input', function () {
-          var value = $(this).val().trim().toLowerCase(); 
-          $('table tbody tr').each(function () {
-              var rowText = $(this).text().toLowerCase(); 
-              $(this).toggle(rowText.includes(value)); 
-          });
-      }).trigger('input');
-
-      
-      $('#searchInput').on('keyup', function (event) {
-        if (event.keyCode === 13) { 
-            $(this).val(''); 
-        }
+        var barcode = $(this).val().trim().toLowerCase();
+        filterTable(barcode);
+      });
+      $('#product').on('input', function () {
+        var barcode = $(this).val().trim().toLowerCase();
+        filterPO(barcode);
       });
       function filterPO(barcode) {
         $('.search-dropdown-item').each(function () {
@@ -2259,7 +2232,6 @@ include ('./layout/admin/table-pagination-css.php');
         $("#purchaseItems_div").show();
         openOptionModal();
         $("#open_po_report").hide();
-    
       })
       $("#btn_receiveItems").click(function (e) {
         e.preventDefault();
@@ -2374,33 +2346,31 @@ include ('./layout/admin/table-pagination-css.php');
           $("#optionModal").show();
           $(".optionmodal-content").show();
         }, 100);
-   
       }
     })
   </script>
   <script>
-    // $(document).on('input', '#product', function () {
-    //   var searchTerm = $(this).val().trim().toLowerCase();
-    //   $('.search-dropdown-item').each(function () {
-    //     var text = $(this).text().trim().toLowerCase();
-    //     if (text.includes(searchTerm)) {
-    //       $(this).show();
-    //     }
-    //     else {
-    //       $(this).hide();
-    //     }
-    //   });
-    //   $("#d_products").css('display', searchTerm ? 'block' : 'none');
-    // });
-    // $(document).on('click', '.search-dropdown-item', function () {
-    //   var clickedItem = $(this);
-    //   $("#product").val(clickedItem.text());
-    //   $("#d_products").css('display', 'none');
-    // });
+    $(document).on('input', '#product', function () {
+      var searchTerm = $(this).val().trim().toLowerCase();
+      $('.search-dropdown-item').each(function () {
+        var text = $(this).text().trim().toLowerCase();
+        if (text.includes(searchTerm)) {
+          $(this).show();
+        }
+        else {
+          $(this).hide();
+        }
+      });
+      $("#d_products").css('display', searchTerm ? 'block' : 'none');
+    });
+    $(document).on('click', '.search-dropdown-item', function () {
+      var clickedItem = $(this);
+      $("#product").val(clickedItem.text());
+      $("#d_products").css('display', 'none');
+    });
     $("#supplier").on('change', function () {
       $("#tbl_purchaseOrders tbody").empty();
     })
-  
     $(document).on('click', '.search-dropdown-item1', function () {
       var clickedItem = $(this);
       $("#supplier").val(clickedItem.text());

@@ -92,33 +92,36 @@ switch($active_id)
         }
         $pdf->Ln();
         
-        $pdf->SetFont('', '', 10);
+        $pdf->SetFont('', '', 8);
         $totalCost = 0;
         $totalSellingPrice = 0;
         $totalTax = 0;
         $formatted_tax = 0;
         foreach ($items as $item) {
 
-            $amountBeforeTaxFormatted = '₱' . number_format($item['amount_beforeTax'], 2);
-            $amountAfterTaxFormatted = '₱' . number_format($item['amount_afterTax'], 2);
-
-            $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['id'], $headerWidths[1]));
-            $pdf->Cell($headerWidths[1], $maxCellHeight, $item['prod_desc'], 1, 0, 'L');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['prod_desc'], $headerWidths[2]));
-            $pdf->Cell($headerWidths[2], $maxCellHeight, $item['barcode'], 1, 0, 'L');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['barcode'], $headerWidths[3]));
-            $pdf->Cell($headerWidths[3], $maxCellHeight, $item['uom_name'], 1, 0, 'L');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['uom_name'], $headerWidths[4]));
-            $pdf->Cell($headerWidths[4], $maxCellHeight, $item['stock'], 1, 0, 'C');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['stock'], $headerWidths[5]));
-            $pdf->Cell($headerWidths[5], $maxCellHeight, $amountBeforeTaxFormatted, 1, 0, 'R');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[6]));
-            $pdf->Cell($headerWidths[6], $maxCellHeight, $amountAfterTaxFormatted, 1, 0, 'R');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountAfterTaxFormatted, $headerWidths[7]));
-            $pdf->Cell($headerWidths[7], $maxCellHeight, $item['isPaid'] == 1 ? "Yes" : "No", 1, 0, 'C');
-            $pdf->Ln(); 
-            $counter++;
+            if($item['stock'] !== -1)
+            {
+                $amountBeforeTaxFormatted = '₱' . number_format($item['amount_beforeTax'], 2);
+                $amountAfterTaxFormatted = '₱' . number_format($item['amount_afterTax'], 2);
+    
+                $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
+                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[1]));
+                $pdf->Cell($headerWidths[1], $maxCellHeight, $item['prod_desc'], 1, 0, 'L');
+                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['prod_desc'], $headerWidths[2]));
+                $pdf->Cell($headerWidths[2], $maxCellHeight, $item['barcode'], 1, 0, 'L');
+                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['barcode'], $headerWidths[3]));
+                $pdf->Cell($headerWidths[3], $maxCellHeight, $item['uom_name'], 1, 0, 'L');
+                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['uom_name'], $headerWidths[4]));
+                $pdf->Cell($headerWidths[4], $maxCellHeight, $item['stock'], 1, 0, 'C');
+                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['stock'], $headerWidths[5]));
+                $pdf->Cell($headerWidths[5], $maxCellHeight, $amountBeforeTaxFormatted, 1, 0, 'R');
+                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[6]));
+                $pdf->Cell($headerWidths[6], $maxCellHeight, $amountAfterTaxFormatted, 1, 0, 'R');
+                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountAfterTaxFormatted, $headerWidths[7]));
+                $pdf->Cell($headerWidths[7], $maxCellHeight, $item['isPaid'] == 1 ? "Yes" : "No", 1, 0, 'C');
+                $pdf->Ln(); 
+                $counter++;
+            }
         }
         
         break;
