@@ -40,7 +40,7 @@
         products.barcode LIKE :searchQuery OR 
         products.sku LIKE :searchQuery OR 
         products.code LIKE :searchQuery OR 
-        products.brand LIKE :searchQuery ORDER BY prod_desc ASC LIMIT  5";
+        products.brand LIKE :searchQuery ORDER BY prod_desc ASC LIMIT  10";
 
         $sql = $this->connect()->prepare($sqlQuery);
 
