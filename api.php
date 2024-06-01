@@ -70,7 +70,7 @@
             break;
         case 'get_allInventories':
             // $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
-            // $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
+            // $perPage = isset($_GET['page']) ? $_GET['page'] : 10;
             echo json_encode($inventory->get_allInventories());
             break;
         case 'get_allStocksData':

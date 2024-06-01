@@ -823,6 +823,7 @@ include ('./layout/admin/table-pagination-css.php');
           url: 'api.php?action=get_allInventoryCounts',
           success: function (data) {
             var inv_count_rows;
+            console.log(data);
             if (data.length > 0) {
               inv_count_rows = data.map(function (item) {
                 return "<tr>" +
@@ -1094,6 +1095,7 @@ include ('./layout/admin/table-pagination-css.php');
                 show_allSuppliers();
                 display_datePurchased();
                 show_allReceivedItems_PurchaseOrders();
+                hideModals();
                 $(".inventoryCard table").attr('id') === "tbl_orders" ? show_allOrders() : show_allInventories();
               }
               else {
@@ -1146,6 +1148,21 @@ include ('./layout/admin/table-pagination-css.php');
           }
         });
       }
+      $("#receive_form").on("submit", function(e){
+           e.preventDefault();
+            var po_number = $("#").val();
+            if (po_number !== '') {
+                if(po_number !== ""){
+                    show_orders(po_number);
+                    $("#receive_form #po_data_div").show();
+                } else {
+                    $("#receive_form #po_data_div").hide();
+                    $("#receive_form #tbl_receivedItems tbody").empty();
+                }
+            } else {
+                $("#po_data_div").hide();
+            }
+        });
       $("#received_payment_confirmation #btn_paidClose, #btn_paidCancel").click(function () {
         $("#received_payment_confirmation").hide();
       })
@@ -1322,8 +1339,6 @@ include ('./layout/admin/table-pagination-css.php');
 
       $("#btn_savePO").click(function (e) {
         e.preventDefault();
-
-
         var activeModuleId = $("button.active").attr('id');
         if (activeModuleId === "btn_expiration") {
           var tbl_data = [];
@@ -1378,6 +1393,7 @@ include ('./layout/admin/table-pagination-css.php');
                 }, 10000);
                 var po_number = $("#q_product").val();
                 $("#tbl_quickInventories tbody").empty();
+                hideModals();
               }
             }
           })
@@ -1414,6 +1430,7 @@ include ('./layout/admin/table-pagination-css.php');
                       $("#inventorycount_form")[0].reset();
                       show_inventory_count_reference_no();
                       show_allInventories();
+                      hideModals();
                     }
                   }
                 })
@@ -1481,6 +1498,7 @@ include ('./layout/admin/table-pagination-css.php');
                       $("#loss_and_damage_note").val("");
                       show_reference_no();
                       show_allInventories();
+                      hideModals();
                     }
                   }
                 })
@@ -1492,8 +1510,6 @@ include ('./layout/admin/table-pagination-css.php');
           }
         }
         if (activeModuleId === "btn_receiveItems") {
-
-
           var table_id = "tbl_receivedItems";
           var received_items_length = $("#tbl_receivedItems tbody tr").length;
           if (received_items_length > 0) {
@@ -1551,6 +1567,7 @@ include ('./layout/admin/table-pagination-css.php');
                       show_allReceivedItems_PurchaseOrders();
                       show_allInventories();
                       isSaving = false;
+                      hideModals();
                     }
 
                   },
@@ -1912,13 +1929,12 @@ include ('./layout/admin/table-pagination-css.php');
             var selectedProductId = ui.item.id;
             $("#selected_product_id").val(selectedProductId);
             return false;
-          }
+          },
       });
       $("#product").on("input", function() {
         var term = $(this).val();
         $(this).autocomplete('search',term);
         var product_id = $("#selected_product_id").val();
-        console.log(isDataExistInTable(product_id))
         if(!isDataExistInTable(product_id))
         {
           show_purchaseQtyModal(product_id);
@@ -1990,6 +2006,7 @@ include ('./layout/admin/table-pagination-css.php');
           }
         });
       }
+      
       function show_allInventories() {
         $('#modalCashPrint').show();
         $.ajax({
@@ -1997,7 +2014,6 @@ include ('./layout/admin/table-pagination-css.php');
           url: 'api.php?action=get_allInventories',
           success: function (data) {
             var tblRows = [];
-
             if (data.length > 0) {
               for (var i = 0, len = data.length; i < len; i++) {
                 var currentItem = data[i];
@@ -2012,10 +2028,6 @@ include ('./layout/admin/table-pagination-css.php');
                           <td class="text-center" style = 'text-align: center' colspan='6'><span style = 'color: yellow'><i>To Process</i></span></td>
                       </tr>`
                   );
-                  // <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
-                  // <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
-                  // <td style = 'text-align: center'><span style = 'color: yellow'><i>To Process</i></span></td>
-                  // <td style = 'text-align: center'><span style = 'color: yellow'><i>To Process</i></span></td>
                 }
                 else
                 {
@@ -2220,19 +2232,20 @@ include ('./layout/admin/table-pagination-css.php');
       //   filterPO(barcode);
       // })
       $('#searchInput').on('input', function () {
-          var value = $(this).val().trim().toLowerCase(); 
-          $('table tbody tr').each(function () {
-              var rowText = $(this).text().toLowerCase(); 
-              $(this).toggle(rowText.includes(value)); 
-          });
-      }).trigger('input');
-
-      
-      $('#searchInput').on('keyup', function (event) {
-        if (event.keyCode === 13) { 
-            $(this).val(''); 
-        }
+        var value = $(this).val().trim().toLowerCase();
+        $('.inventoryCard table tbody tr').hide().filter(function () {
+            var rowText = $(this).text().toLowerCase();
+            return rowText.includes(value);
+        }).show();
       });
+
+      $('#searchInput').on('keyup', function (event) {
+        if (event.keyCode === 13 || $(this).val().length >= 12)
+          {
+            $(this).val(''); 
+          }
+      });
+
       function filterPO(barcode) {
         $('.search-dropdown-item').each(function () {
           var $row = $(this);

@@ -159,47 +159,65 @@
         $("#printcount_modal #btn_print").on("click", function () {
             var inventory_id = $("#inv_id").val();
             var type = $("#active_print").val();
-            $.ajax({
-                url: "./toprint/printcount_sheet.php",
-                method: "GET",
-                xhrFields: {
-                    responseType: 'blob'
-                },
-                data: {
-                    type: type,
-                    inv_id: inventory_id,
-                },
-                success: function (response) {
-                    if(type === "1")
-                    {
-                        var newBlob = new Blob([response], { type: 'application/pdf' });
-                        var blobURL = URL.createObjectURL(newBlob);
+            $('#show_purchasePrintModal').show()
+            if($('#show_purchasePrintModal').is(":visible"))
+            {
+                var loadingImage = document.getElementById("loadingImage");
+                loadingImage.removeAttribute("hidden");
+                var pdfFile= document.getElementById("pdfFile");
+                pdfFile.setAttribute('hidden',true);
 
-                        var newWindow = window.open(blobURL, '_blank');
-                        if (newWindow) {
-                            newWindow.onload = function() {
-                                newWindow.print();
-                                newWindow.focus();
-                            };
-                        } else {
-                            alert('Please allow popups for this website');
+                $.ajax({
+                    url: "./toprint/printcount_sheet.php",
+                    method: "GET",
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    data: {
+                        type: type,
+                        inv_id: inventory_id,
+                    },
+                    success: function (response) {
+                        if(type === "1")
+                        {
+                            // var newBlob = new Blob([response], { type: 'application/pdf' });
+                            // var blobURL = URL.createObjectURL(newBlob);
+
+                            // var newWindow = window.open(blobURL, '_blank');
+                            // if (newWindow) {
+                            //     newWindow.onload = function() {
+                            //         newWindow.print();
+                            //         newWindow.focus();
+                            //     };
+                            // } else {
+                            //     alert('Please allow popups for this website');
+                            // }
+                            loadingImage.setAttribute("hidden",true);
+                            var pdfFile = document.getElementById("pdfFile");
+                            pdfFile.removeAttribute('hidden')
+                            if( loadingImage.hasAttribute('hidden')) {
+                                var newBlob = new Blob([response], { type: 'application/pdf' });
+                                var blobURL = URL.createObjectURL(newBlob);
+                                
+                                $('#pdfViewer').attr('src', blobURL);
+                            }
                         }
+                    else
+                    { 
+                        var previewWin = window.open('', 'Print-Window');
+                        previewWin.document.open();
+                        previewWin.document.write('<html><body>' + response + '</body></html>');
+                        previewWin.document.close();
+                        previewWin.focus();
+                        previewWin.print();
+                        previewWin.close();
                     }
-                   else
-                   { 
-                    var previewWin = window.open('', 'Print-Window');
-                    previewWin.document.open();
-                    previewWin.document.write('<html><body>' + response + '</body></html>');
-                    previewWin.document.close();
-                    previewWin.focus();
-                    previewWin.print();
-                    previewWin.close();
-                   }
-                },
-                error: function (xhr, status, error) {
-                    alert("Printing failed: " + xhr.responseText);
-                }
-            });
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Printing failed: " + xhr.responseText);
+                    }
+                });
+            }
         })
     });
 </script>

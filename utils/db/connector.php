@@ -2,8 +2,8 @@
 
   class DBConnection
   {
-    private $host = "localhost";
-    private $user = "root";
+    private $host = "192.168.0.113";
+    private $user = "rey";
     private $pass = "";
     private $db = "tinkerpro";
 
@@ -18,7 +18,6 @@
         echo '<img src="./assets/icons/db-offline.jpg" style="width: 20px; margin-bottom: 3px"> Offline';
       }
     }
-
   }
 
 ?>

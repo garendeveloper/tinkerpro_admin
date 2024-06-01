@@ -3,14 +3,10 @@ class InventoryFacade extends DBConnection
 {
     public function get_allInventories()
     {
-        $offset = isset($_GET['page']) ? $_GET['page'] : 1;
-        // $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
-        //                                     FROM inventory
-        //                                     JOIN products ON products.id = inventory.product_id
-        //                                     JOIN uom ON uom.id = products.uom_id
-        //                                     JOIN orders ON orders.id = inventory.order_id
-        //                                     JOIN supplier ON supplier.id = orders.supplier_id
-        //                                     ORDER BY inventory.id ASC;");
+        // $page = isset($_GET['page']) ? $_GET['page'] : 1; 
+        // $perPage = 10;
+        // $offset = ($page - 1) * $perPage;
+
         $sql = $this->connect()->prepare(" SELECT 
                                             supplier.id AS supplier_id, 
                                             products.id AS product_id, 
@@ -55,6 +51,16 @@ class InventoryFacade extends DBConnection
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
+        // $sql->bindValue(':perPage', $perPage, PDO::PARAM_INT);
+        // $sql->bindValue(':offset', $offset, PDO::PARAM_INT);
+        // $sql->execute();
+        // $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        
+        // $totalItems = count($data);
+
+        // $totalPages = ceil($totalItems / $perPage); 
+
+        // return ['data' => $data, 'totalPages' => $totalPages];
     }
     public function get_allProductByInventoryType($type)
     {
