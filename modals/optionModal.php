@@ -1354,8 +1354,6 @@ input[type="text"] {
                 var pdfFile = document.getElementById("pdfFile");
                 pdfFile.removeAttribute('hidden')
                 if( loadingImage.hasAttribute('hidden')) {
-                    // var timestamp = new Date().getTime(); 
-                    // var pdfUrl = './assets/pdf/inventory/purchaseorder.pdf?t=' + timestamp; 
                     var newBlob = new Blob([response], { type: 'application/pdf' });
                     var blobURL = URL.createObjectURL(newBlob);
                     
