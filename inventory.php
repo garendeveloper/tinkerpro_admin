@@ -310,7 +310,7 @@ include ('./layout/admin/table-pagination-css.php');
       });
 
 
-      $('#calendar-btn').click(function () {
+      $('#calendar-btn').on('click',function () {
         $('#date_purchased').datepicker('show');
       });
 
@@ -325,7 +325,7 @@ include ('./layout/admin/table-pagination-css.php');
       });
 
 
-      $('#calendar-btn2').click(function () {
+      $('#calendar-btn2').on('click',function () {
         $('#s_due').datepicker('show');
       });
 
@@ -634,12 +634,35 @@ include ('./layout/admin/table-pagination-css.php');
             var info = data.inventoryInfo;
             var stocks = data.stocks;
             var tbl_rows = [];
+<<<<<<< HEAD
             $("#stockhistory_modal").find(".modal-title").text(info.prod_desc + " - STOCK HISTORY")
             var tbl_rows = [];
             tbl_rows.push(
               `<tr>
                 <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan = '7'>No available data.</td>
               </tr>`);
+=======
+            $("#stockhistory_modal").find(".modal-title").text("STOCK MOVEMENT OF " + info.prod_desc)
+            for (var i = 0, len = stocks.length; i < len; i++) {
+              var stockItem = stocks[i];
+              var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+              tbl_rows.push(
+                `<tr>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.document_number}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_customer}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${date_format(stockItem.date)}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
+                    <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
+                </tr>`
+              );
+            }
+            var tfoot = `<tr>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan= "5">Remaining Stock</td>
+                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc'>${info.stock}</td>
+              </tr>`;
+
+>>>>>>> aecec79349c2f15f65a5c8450df6172bdc341a96
             $("#tbl_stocks_history tbody").html(tbl_rows);
           }
         })
@@ -1928,15 +1951,22 @@ include ('./layout/admin/table-pagination-css.php');
           },
       });
       $("#product").on("input", function() {
-        var term = $(this).val();
-        $(this).autocomplete('search',term);
+          var term = $(this).val();
+          $(this).autocomplete('search', term);
+          $("#date_purchased").datepicker("widget").hide();
+      });
+
+      $("#product").on("autocompletechange", function(event, ui) {
         var product_id = $("#selected_product_id").val();
-        if(!isDataExistInTable(product_id))
-        {
-          show_purchaseQtyModal(product_id);
-        }
-       
-      })
+          if (!isDataExistInTable(product_id)) {
+              show_purchaseQtyModal(product_id);
+          }
+          else
+          {
+            show_errorResponse("Product already exists in the purchase table")
+          }
+          $(this).val('');
+      });
       function filterProducts(term) {
         return productsCache.filter(function (row) {
           return row.product.toLowerCase().includes(term) ||
@@ -2021,7 +2051,13 @@ include ('./layout/admin/table-pagination-css.php');
                           <td>${currentItem.prod_desc}</td>
                           <td>${currentItem.barcode}</td>
                           <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                          <td class="text-center" style = 'text-align: center' colspan='6'><span style = 'color: yellow'><i>To Process</i></span></td>
+                          <td class="text-center" style = 'text-align: center'>0</td>
+                            <td class="text-center" style = 'text-align: center'>0</td>
+                            <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
+                            <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
+                            <td style = 'text-align: center'> - </td>
+                          <td class="text-center" style = 'text-align: center' colspan='6'><span style = 'color: violet'><i>TO PURCHASE</i></span></td>
+
                       </tr>`
                   );
                 }
@@ -2037,8 +2073,8 @@ include ('./layout/admin/table-pagination-css.php');
                             <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
                             <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
                             <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
-                            <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "<span style = 'color: lightgreen'>Yes</span>" : "<span style = 'color: red'>No</span>"}</td>
-                            <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>Received</span>" : "<span style = 'color: yellow'>Purchased</span>"}</td>
+                            <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "<span style = 'color: lightgreen'>YES</span>" : "<span style = 'color: red'>NO</span>"}</td>
+                            <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>RECEIVED</span>" : "<span style = 'color: yellow'>PURCHASED</span>"}</td>
                         </tr>`
                     );
                 }
@@ -2223,6 +2259,7 @@ include ('./layout/admin/table-pagination-css.php');
       function clean_number(number) {
         return number.replace(/[₱\s]/g, '');
       }
+<<<<<<< HEAD
       $('#searchInput').on('keyup', function(){
           var searchText = $(this).val().toLowerCase();
 
@@ -2235,6 +2272,19 @@ include ('./layout/admin/table-pagination-css.php');
                       $(this).hide();
                   }
               });
+=======
+      $('#searchInput').on('input', function(){
+          var searchText = $(this).val().toLowerCase();
+
+          $('.inventoryCard table tbody tr').each(function(){
+              var rowText = $(this).text().toLowerCase();
+              if(rowText.includes(searchText)){
+                  $(this).show();
+              } else {
+                  $(this).hide();
+              }
+          });
+>>>>>>> aecec79349c2f15f65a5c8450df6172bdc341a96
           
       });
 
