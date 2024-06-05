@@ -634,35 +634,12 @@ include ('./layout/admin/table-pagination-css.php');
             var info = data.inventoryInfo;
             var stocks = data.stocks;
             var tbl_rows = [];
-<<<<<<< HEAD
             $("#stockhistory_modal").find(".modal-title").text(info.prod_desc + " - STOCK HISTORY")
             var tbl_rows = [];
             tbl_rows.push(
               `<tr>
                 <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan = '7'>No available data.</td>
               </tr>`);
-=======
-            $("#stockhistory_modal").find(".modal-title").text("STOCK MOVEMENT OF " + info.prod_desc)
-            for (var i = 0, len = stocks.length; i < len; i++) {
-              var stockItem = stocks[i];
-              var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
-              tbl_rows.push(
-                `<tr>
-                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
-                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.document_number}</td>
-                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_customer}</td>
-                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${date_format(stockItem.date)}</td>
-                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
-                    <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
-                </tr>`
-              );
-            }
-            var tfoot = `<tr>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan= "5">Remaining Stock</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc'>${info.stock}</td>
-              </tr>`;
-
->>>>>>> aecec79349c2f15f65a5c8450df6172bdc341a96
             $("#tbl_stocks_history tbody").html(tbl_rows);
           }
         })
@@ -2259,20 +2236,6 @@ include ('./layout/admin/table-pagination-css.php');
       function clean_number(number) {
         return number.replace(/[₱\s]/g, '');
       }
-<<<<<<< HEAD
-      $('#searchInput').on('keyup', function(){
-          var searchText = $(this).val().toLowerCase();
-
-              $('.inventoryCard table tbody tr').each(function(){
-                  var rowText = $(this).text().toLowerCase();
-                  if(rowText.includes(searchText)){
-                      $(this).show();
-                  } else {
-                    show_errorResponse("No data found.")
-                      $(this).hide();
-                  }
-              });
-=======
       $('#searchInput').on('input', function(){
           var searchText = $(this).val().toLowerCase();
 
@@ -2284,7 +2247,6 @@ include ('./layout/admin/table-pagination-css.php');
                   $(this).hide();
               }
           });
->>>>>>> aecec79349c2f15f65a5c8450df6172bdc341a96
           
       });
 
