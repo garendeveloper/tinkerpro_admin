@@ -2,8 +2,8 @@
 
   class DBConnection
   {
-    private $host = "192.168.0.113";
-    private $user = "rey";
+    private $host = "localhost";
+    private $user = "root";
     private $pass = "";
     private $db = "tinkerpro";
 

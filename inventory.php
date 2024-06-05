@@ -12,6 +12,8 @@ $abilityFacade = new AbilityFacade;
 
 if (isset($_SESSION['user_id'])) {
     $userID = $_SESSION['user_id'];
+  
+
     $permissions = $abilityFacade->perm($userID);
 
     $accessGranted = false;
@@ -130,6 +132,8 @@ include ('./layout/admin/table-pagination-css.php');
 <div class="container-scroller">
   <div class="main">
     <?php include 'layout/admin/sidebar.php' ?>
+    <input type="hidden" value = "<?php echo $_SESSION['first_name'] ?>" id = "first_name">
+    <input type="hidden" value = "<?php echo $_SESSION['last_name'] ?>" id = "last_name">
     <div class="main-panel main-content" id="main-content"
       style="display: grid; grid-template-columns: 4.5rem auto auto; align-items: center">
       <div class="content-wrapper">
@@ -615,6 +619,7 @@ include ('./layout/admin/table-pagination-css.php');
       })
       $(".inventoryCard").on("click", "#btn_openStockHistory", function () {
         var id = $(this).data('id');
+        $("#stockhistory_modal #inventory_id").val(id);
         $("#stockhistory_modal").slideDown({
           backdrop: 'static',
           keyboard: false,
@@ -622,29 +627,20 @@ include ('./layout/admin/table-pagination-css.php');
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_allStocksData',
-          data: { inventory_id: id },
+          data: { 
+            inventory_id: id
+          },
           success: function (data) {
             var info = data.inventoryInfo;
             var stocks = data.stocks;
             var tbl_rows = [];
-            $("#stockhistory_modal").find(".modal-title").text("Inventory Ledger for " + info.prod_desc)
-            for (var i = 0, len = stocks.length; i < len; i++) {
-              var stockItem = stocks[i];
-              var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
-              tbl_rows.push(
-                `<tr>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${date_format(stockItem.date)}</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
-              </tr>`
-              );
-            }
-            var tfoot = `<tr>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>Remaining Stock</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc'>${info.stock}</td>
-              </tr>`;
-
+            $("#stockhistory_modal").find(".modal-title").text(info.prod_desc + " - STOCK HISTORY")
+            var tbl_rows = [];
+            tbl_rows.push(
+              `<tr>
+                <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan = '7'>No available data.</td>
+              </tr>`);
             $("#tbl_stocks_history tbody").html(tbl_rows);
-            $("#tbl_stocks_history tfoot").html(tfoot);
           }
         })
       })
@@ -2227,24 +2223,27 @@ include ('./layout/admin/table-pagination-css.php');
       function clean_number(number) {
         return number.replace(/[₱\s]/g, '');
       }
-      // $('#product').on('input', function () {
-      //   var barcode = $(this).val().trim().toLowerCase();
-      //   filterPO(barcode);
-      // })
-      $('#searchInput').on('input', function () {
-        var value = $(this).val().trim().toLowerCase();
-        $('.inventoryCard table tbody tr').hide().filter(function () {
-            var rowText = $(this).text().toLowerCase();
-            return rowText.includes(value);
-        }).show();
+      $('#searchInput').on('keyup', function(){
+          var searchText = $(this).val().toLowerCase();
+
+              $('.inventoryCard table tbody tr').each(function(){
+                  var rowText = $(this).text().toLowerCase();
+                  if(rowText.includes(searchText)){
+                      $(this).show();
+                  } else {
+                    show_errorResponse("No data found.")
+                      $(this).hide();
+                  }
+              });
+          
       });
 
-      $('#searchInput').on('keyup', function (event) {
-        if (event.keyCode === 13 || $(this).val().length >= 12)
-          {
-            $(this).val(''); 
-          }
-      });
+      // $('#searchInput').on('keyup', function (event) {
+      //   if (event.keyCode === 13 || $(this).val().length >= 12)
+      //     {
+      //       $(this).val(''); 
+      //     }
+      // });
 
       function filterPO(barcode) {
         $('.search-dropdown-item').each(function () {

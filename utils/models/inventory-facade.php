@@ -62,6 +62,7 @@ class InventoryFacade extends DBConnection
 
         // return ['data' => $data, 'totalPages' => $totalPages];
     }
+
     public function get_allProductByInventoryType($type)
     {
         $data = "";
@@ -144,12 +145,32 @@ class InventoryFacade extends DBConnection
     }
     public function get_allStocksData($inventory_id)
     {
-        $sql = "SELECT inventory.*, stocks.* 
+        $sql = "SELECT inventory.*, stocks.*, stocks.date as stock_date
                 FROM inventory
                 INNER JOIN stocks ON stocks.inventory_id = inventory.id
                 WHERE inventory.id = :inventory_id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(":inventory_id", $inventory_id);
+        $stmt->execute();
+        $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return [
+            'inventoryInfo' => $this->get_inventoryDataById($inventory_id),
+            'stocks' => $stocks,
+        ];
+    }
+    public function get_allStocksDataByDate($inventory_id, $start_date, $end_date)
+    {
+        $start_date =  date("Y-m-d", strtotime($start_date));
+        $end_date =  date("Y-m-d", strtotime($end_date));
+        $sql = "SELECT inventory.*, stocks.*, stocks.date as stock_date
+                FROM inventory
+                INNER JOIN stocks ON stocks.inventory_id = inventory.id
+                WHERE inventory.id = :inventory_id
+                AND FROM_UNIXTIME(stocks.date) BETWEEN :st_date AND :end_date";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":inventory_id", $inventory_id);
+        $stmt->bindParam(":st_date", $start_date); 
+        $stmt->bindParam(":end_date", $end_date);    
         $stmt->execute();
         $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return [
@@ -233,7 +254,10 @@ class InventoryFacade extends DBConnection
             'msg'=>"Your expiration notification settings have been successfully saved",
         ];
     }
-    
+    function getSessionVariable($key) 
+    {
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
+    }
     public function save_quickInventory($formData)
     {
         $tbl_data = json_decode($formData['tbl_data'], true);
@@ -242,7 +266,6 @@ class InventoryFacade extends DBConnection
             $inventory_id = $row['inventory_id'];
             $qty_onhand = (int)$row['col_2'];
             $newqty = (int)$row['newqty'];
-            $newqty = $newqty + $qty_onhand;
             $currentDate = date('Y-m-d');
 
             $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock WHERE id = :id");
@@ -251,11 +274,18 @@ class InventoryFacade extends DBConnection
             $stmt->execute();
 
             $newqty = "+".$newqty;
-            $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
-                                                VALUES (?, ?, ?)");
+            $stock_customer = $this->getSessionVariable('first_name')." ".$this->getSessionVariable('last_name');
+            $document_number = "---";
+            $transaction_type = "Quick Inventory";
+            $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                                VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-            $stmt->bindParam(2, $newqty, PDO::PARAM_STR); 
-            $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+            $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+            $stmt->bindParam(3, $newqty, PDO::PARAM_STR); 
+            $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
+            $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+            $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+            $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
             $stmt->execute();
         }
         return [
