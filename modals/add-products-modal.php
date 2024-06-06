@@ -1744,6 +1744,7 @@ function generateRandomNumber(minDigits) {
     return randomNumber;
 }
 function displayImage(imageUrl) {
+  
     document.getElementById('imageProduct').innerHTML = '<img src="' + imageUrl + '" style="max-width: 100%; max-height: 100%;">';
 }
 

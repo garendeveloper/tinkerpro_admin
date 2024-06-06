@@ -374,7 +374,7 @@ include ('./layout/admin/table-pagination-css.php');
   </script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var price_ids = ['price', 's_price', 'p_qty', 'u_pay', 'loan_amount', 'interest_rate', 'loan_term'];
+      var price_ids = ['price', 's_price', 'u_pay', 'loan_amount', 'interest_rate', 'loan_term'];
       price_ids.forEach(function (id) {
         var element = document.getElementById(id);
         if (element) {
@@ -1003,7 +1003,11 @@ include ('./layout/admin/table-pagination-css.php');
         resetPurchaseOrderForm();
       })
       var remove_inventories = [];
-
+      $('#tbl_purchaseOrders tbody').on('click', 'tr td:first-child', function () {
+        updateTotal();
+        remove_inventories.push($(this).data('id'));
+        $(this).closest('tr').remove();
+      });
       function updateTotal() {
         var totalQty = 0;
         var totalPrice = 0;
@@ -1372,8 +1376,6 @@ include ('./layout/admin/table-pagination-css.php');
             url: 'api.php?action=save_quickInventory',
             data: {
               tbl_data: JSON.stringify(tbl_data),
-              user_name: $("#first_name").val()+" "+$("#last_name").val(),
-
             },
             success: function (response) {
               if (response.status) {
@@ -1643,9 +1645,7 @@ include ('./layout/admin/table-pagination-css.php');
         var product_id = $("#selected_product_id").val();
         if (!isDataExistInTable(product_id)) {
           if (validatePOForm()) {
-            var qty = 0;
-            var price = 0;
-           show_purchaseQtyModal(product_id, qty, price);
+           show_purchaseQtyModal(product_id);
           }
         }
         else {
@@ -1744,9 +1744,13 @@ include ('./layout/admin/table-pagination-css.php');
           $(this).val(inputValue);
         });
       });
+      $("#supplier").change(function (e) {
+        e.preventDefault()
+        $('#tbl_purchaseOrders tbody').empty();
+      })
       $("#prod_form").submit(function (e) {
         e.preventDefault();
-        
+
         if (validateProductForm()) {
           var p_qty = parseInt($("#p_qty").val());
           var price = parseFloat($("#price").val());
@@ -1768,38 +1772,14 @@ include ('./layout/admin/table-pagination-css.php');
               totalPrice += price;
               overallTotal += total;
               $("#totalTax").html(totalTax.toFixed(2));
-              if(isDataExistInTable(data['id']))
-              {
-                var id = data['id']; 
-                var $row_id = $("#tbl_purchaseOrders tbody").find("tr").data('rowid');
-                if(id === $row_id)
-                {
-                  var $rowToUpdate = $("#tbl_purchaseOrders tbody").find("tr[data-rowid='" + $row_id + "']");
-                  if ($rowToUpdate.length > 0) {
-                      $rowToUpdate.find("td").eq(0).text(data['prod_desc']);
-                      $rowToUpdate.find("td").eq(1).text(p_qty); 
-                      $rowToUpdate.find("td").eq(2).html("&#x20B1;&nbsp;" + addCommasToNumber(price)); 
-                      $rowToUpdate.find("td").eq(3).html("&#x20B1;&nbsp;" + addCommasToNumber(total)); 
-                  } else {
-                      console.log("Row with ID " + id + " not found.");
-                  }
-                }
-        
-              }
-            
-              else
-              {
-               
-                $("#tbl_purchaseOrders tbody").append(
-                  "<tr data-rowid = "+data['id']+">" +
-                  "<td data-rowid = "+data['id']+" data-id = " + data['id'] + " data-inv_id = " + data['inventory_id']+ " data-qty = " + p_qty+ " data-price = " + price + " >" + data['prod_desc'] + "</td>" +
-                  "<td style = 'text-align: center' class ='editable'>" + p_qty + "</td>" +
-                  "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(price) + "</td>" +
-                  "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(total) + "</td>" +
-                  "</tr>"
-                );
-              }
-            
+              $("#tbl_purchaseOrders tbody").append(
+                "<tr>" +
+                "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>" +
+                "<td style = 'text-align: center' class ='editable'>" + p_qty + "</td>" +
+                "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(price) + "</td>" +
+                "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(total) + "</td>" +
+                "</tr>"
+              );
 
               $("#totalQty").html(totalQty);
               $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice.toFixed(2)));
@@ -1809,7 +1789,6 @@ include ('./layout/admin/table-pagination-css.php');
               $("#prod_form")[0].reset();
               $("#product").val("");
               show_allProducts();
-              $("#item_verifier").val("");
             }
           })
         }
@@ -1957,9 +1936,7 @@ include ('./layout/admin/table-pagination-css.php');
         if(event.which === 13){
           var product_id = $("#selected_product_id").val();
           if (!isDataExistInTable(product_id)) {
-            var qty = 0;
-            var price = 0;
-           show_purchaseQtyModal(product_id, qty, price);
+              show_purchaseQtyModal(product_id);
           }
           else
           {
@@ -1973,9 +1950,7 @@ include ('./layout/admin/table-pagination-css.php');
       $("#product").on("autocompletechange", function(event, ui) {
         var product_id = $("#selected_product_id").val();
         if (!isDataExistInTable(product_id)) {
-          var qty = 0;
-          var price = 0;
-          show_purchaseQtyModal(product_id, qty, price);
+            show_purchaseQtyModal(product_id);
         }
         else
         {
@@ -2011,11 +1986,10 @@ include ('./layout/admin/table-pagination-css.php');
         });
         return searchDataExists;
       }
-      function show_purchaseQtyModal(product_id, qty, price )
+      function show_purchaseQtyModal(product_id)
       {
         if(product_id !== -1)
         {
-          $("#selected_product_id").val(product_id);
           $("#purchaseQty_modal").slideDown({
             backdrop: 'static',
             keyboard: false,
@@ -2025,12 +1999,7 @@ include ('./layout/admin/table-pagination-css.php');
             url: 'api.php?action=get_productInfo',
             data: { data: product_id },
             success: function (data) {
-         
-              var _price = price === 0 ? data['prod_price'] : price;
-              var _qty = qty === 0 ? data['qty_purchased'] : qty;
               $("#product_name").text(data['prod_desc'] + " : " + data['barcode']);
-              $("#purchaseQty_modal #p_qty").val(_qty);
-              $("#purchaseQty_modal #price").val(_price);
               $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color:  #ffff'>ATTENTION REQUIRED!</strong> ");
             }
           });
@@ -2198,13 +2167,6 @@ include ('./layout/admin/table-pagination-css.php');
           }
         });
       }
-      $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
-          var productId = $(this).find("td[data-id]").data("id");
-          var qty_purchased = $(this).find("td:nth-child(2)").text();
-          var price = $(this).find("td:nth-child(3)").text();
-          $("#item_verifier").val(productId);
-          show_purchaseQtyModal(productId, qty_purchased, price);
-      });
       $(".inventoryCard").on('click', '.btn_editOrder', function (e) {
         e.preventDefault();
         var order_id = $(this).data('id');
@@ -2214,7 +2176,7 @@ include ('./layout/admin/table-pagination-css.php');
         $("#expiration_div").hide()
         $("#lossanddamage_div").hide()
         $("#inventorycount_div").hide();
-        $(".purchase-grid-container button").removeClass('active');
+             $(".purchase-grid-container button").removeClass('active');
         $("#btn_createPO").addClass('active');
         $("#purchaseItems_div").show()
         openOptionModal();
@@ -2226,6 +2188,7 @@ include ('./layout/admin/table-pagination-css.php');
           success: function (data) {
             var table = "";
             var tbl_report = "";
+
             $("#supplier").val(data[0].supplier);
             $("#date_purchased").val(date_format(data[0].date_purchased));
             $("#_order_id").val(data[0].order_id);
@@ -2246,18 +2209,10 @@ include ('./layout/admin/table-pagination-css.php');
               $("#paidSwitch").css('background-color', '#ffff');
               $('#paidSwitch').prop('checked', false).prop('disabled', true);
             }
-          
             for (var i = 0; i < data.length; i++) {
-              // var rowId = data[i].product_id;
-              // table = $("<tr data-rowid = "+rowId+">").append(
-              //     $("<td>", { "data-rowid": rowId , "data-id": data[i].product_id, "data-inv_id": '0', "data-qty": data[i].qty_purchased, "data-price":data[i].amount_beforeTax }).text(data[i].prod_desc + " : " + data[i].barcode),
-              //     $("<td>", { "data-qty": data[i].qty_purchased, "data-price": data[i].amount_beforeTax, style: "text-align: center" }).text(data[i].qty_purchased),
-              //     $("<td>", { style: "text-align: right" }).html("&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax)),
-              //     $("<td>", { style: "text-align: right" }).html("&#x20B1;&nbsp;" + addCommasToNumber(data[i].total))
-              // );
-              table += "<tr data-rowid = "+data[i].product_id+" id = 'show_pqtymodal'>";
-              table += "<td data-rowid = "+data[i].product_id+" data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " : " + data[i].barcode + "</td>";
-              table += "<td style = 'text-align: center' class ='editable' data-qty = "+data[i].qty_purchased+" data-price= "+data[i].amount_beforeTax+">" + data[i].qty_purchased + "</td>";
+              table += "<tr>";
+              table += "<td data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " : " + data[i].barcode + "</td>";
+              table += "<td style = 'text-align: center' class ='editable'>" + data[i].qty_purchased + "</td>";
               table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
               table += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].total) + "</td>";
               table += "</tr>";
@@ -2267,8 +2222,8 @@ include ('./layout/admin/table-pagination-css.php');
               tbl_report += "<tr>";
               tbl_report += "<td >" + counter + "</td>";
               tbl_report += "<td >" + data[i].prod_desc + "</td>";
-              tbl_report += "<td style = 'text-align: center' >" + data[i].qty_purchased + "</td>";
-              tbl_report += "<td style = 'text-align: right' >&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
+              tbl_report += "<td style = 'text-align: center' class ='editable'>" + data[i].qty_purchased + "</td>";
+              tbl_report += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
               tbl_report += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + data[i].tax + "</td>";
               tbl_report += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + data[i].total + "</td>";
               tbl_report += "</tr>";
@@ -2308,7 +2263,6 @@ include ('./layout/admin/table-pagination-css.php');
           });
           
       });
-
 
       // $('#searchInput').on('keyup', function (event) {
       //   if (event.keyCode === 13 || $(this).val().length >= 12)
@@ -2516,6 +2470,9 @@ include ('./layout/admin/table-pagination-css.php');
     //   $("#product").val(clickedItem.text());
     //   $("#d_products").css('display', 'none');
     // });
+    $("#supplier").on('change', function () {
+      $("#tbl_purchaseOrders tbody").empty();
+    })
   
     $(document).on('click', '.search-dropdown-item1', function () {
       var clickedItem = $(this);

@@ -438,17 +438,18 @@ input:not(:checked) + .sliderStatusExcludes {
             <div hidden class="custom-select" id="productsDIV">
                 <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Products</label>
                 <div class="select-container">
-                    <select id="selectProducts" >
+                        <input type="text" id = "selectProducts">
+                    <!-- <select id="selectProducts" >
                     <option value="" selected >All Products</option>
                     <?php
-                        $productFacade = new ProductFacade;
-                        $products =  $productFacade->getProductsData();
-                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['prod_desc'] .' </option>';
-                        }
-                        ?>
+                        // $productFacade = new ProductFacade;
+                        // $products =  $productFacade->getProductsData();
+                        // while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
+                        //     echo '<option value="' . $row['id'] . '">' . $row['prod_desc'] .' </option>';
+                        // }
+                        // ?>
                     </select>
-                    <div class="select-arrow"></div>
+                    <div class="select-arrow"></div> -->
                 </div>
             </div>
             <div hidden class="custom-select" id="categoriesDiv">
@@ -610,7 +611,62 @@ input:not(:checked) + .sliderStatusExcludes {
     </div>
 </div>
 <?php include("layout/footer.php") ?>
-
+<script>
+  $(document).ready(function(e){
+    var productsCache = [];
+    show_allProducts();
+    $("#selectProducts").autocomplete({
+      minLength: 2,
+      source: function (request, response) {
+        var term = request.term;
+        var filteredProducts = filterProducts(term);
+        var slicedProducts = filteredProducts.slice(0, 5);
+        response(slicedProducts);
+        if (slicedProducts.length > 0) {
+          $('#filters').show();
+        } else {
+            $('#filters').hide();
+        }
+        },
+        select: function (event, ui) {
+          var selectedProductId = ui.item.id;
+          $("#selectProducts").val(selectedProductId);
+          return false;
+        },
+    });
+    function show_allProducts() {
+      $.ajax({
+        type: 'GET',
+        url: 'api.php?action=get_allProducts',
+        success: function (data) {
+          for (var i = 0; i < data.length; i++) {
+            var row = {
+              product_id: data[i].id,
+              product: data[i].prod_desc,
+              barcode: data[i].barcode,
+              brand: data[i].brand,
+            };
+            productsCache.push(row);
+          }
+        }
+      });
+    }
+    function filterProducts(term) {
+      return productsCache.filter(function (row) {
+        return row.product.toLowerCase().includes(term) ||
+          row.barcode.includes(term) ||
+          (row.brand && row.brand.toLowerCase().includes(term)) ||
+          (!row.brand && term === "");
+      }).map(function (row) {
+        return {
+          label: row.product ,
+          value: row.product,
+          id: row.product_id
+        };
+      });
+    }
+  })
+</script>
 <script>
 $("#reporting").addClass('active');
   $("#pointer").html("Reporting");

@@ -37,6 +37,19 @@
     .has-error{
       border: 1px solid red;
     }
+    .modal-footer button{
+      height: 40px; 
+      width: 200px;
+    }
+    #purchaseQty_modal #btn_pqtyClose:hover{
+      color: #ffffffff;
+    }
+    .modal{
+      font-family: Century Gothic;
+    }
+    input{
+      height: 30px;
+    }
 </style>
 <div class="modal" id = "purchaseQty_modal" tabindex="-1" role="dialog" style = "display:none">
   <div class="modal-dialog" role="document" >
@@ -48,6 +61,8 @@
         </button>
       </div>
       <form id = "prod_form">
+        <input type="hidden" id = "pqty_inventoryId" value = "0">
+        <input type="hidden" id = "item_verifier" value = "0">
         <div class="modal-body" style = "border: none" >
           <div style = "border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,1); margin: 0 8px; ">
               <p></p>
@@ -68,8 +83,8 @@
           </div>
         </div>
         <div class="modal-footer" style = 'border: none'>
-          <button class = "grid-item text-color button-cancel" style = "border-radius: 0; width: 300px;" id = "btn_pqtyCancel" data-dismiss="modal"><i class = "bi bi-x"></i>&nbsp; Cancel</button>
-          <button  class = "grid-item text-color button" style = "border-radius: 0;" type = "submit"><i class = "bi bi-arrow-right-circle"></i>&nbsp; Continue</button>
+          <button class = "text-color button-cancel" style = "border-radius: 0; " id = "btn_pqtyCancel" data-dismiss="modal"><i class = "bi bi-x"></i>&nbsp; Cancel</button>
+          <button  class = "text-color button" style = "border-radius: 0;" type = "submit"><i class = "bi bi-arrow-right-circle"></i>&nbsp; Continue</button>
         </div>
       </form>
     </div>

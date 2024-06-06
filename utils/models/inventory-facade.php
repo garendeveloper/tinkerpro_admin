@@ -274,7 +274,7 @@ class InventoryFacade extends DBConnection
             $stmt->execute();
 
             $newqty = "+".$newqty;
-            $stock_customer = $this->getSessionVariable('first_name')." ".$this->getSessionVariable('last_name');
+            $stock_customer = $formData['user_name'];
             $document_number = "---";
             $transaction_type = "Quick Inventory";
             $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
