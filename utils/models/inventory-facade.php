@@ -887,6 +887,8 @@ class InventoryFacade extends DBConnection
             return [
                 'status' => true,
                 'message' => 'Purchase Orders has been successfully saved!',
+                // 'order_id' => ,
+                // 'po_number' => ,
                 'existed_product'=>$existed_product,
             ];
         } else {
@@ -895,5 +897,40 @@ class InventoryFacade extends DBConnection
                 'errors' => $this->validateData($formData),
             ];
         }
+    }
+    public function get_orderDataByPurchaseNumber($po_number)
+    {
+        $sql = "SELECT orders.*, products.*, supplier.*, inventory.*, inventory.id as inventory_id
+                FROM orders
+                INNER JOIN inventory ON orders.id = inventory.order_id 
+                INNER JOIN supplier ON supplier.id = orders.supplier_id
+                INNER JOIN products ON products.id = inventory.product_id
+                WHERE orders.po_number = :po_number";
+
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(':po_number', $po_number, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $tbl_data = [];
+        foreach ($data as $row) {
+            $tbl_data[] = [
+                'inventory_id' => $row['inventory_id'],
+                'po_number' => $row['po_number'],
+                'date_purchased' => $row['date_purchased'],
+                'supplier' => $row['supplier'],
+                'isSelected' => $row['isSelected'],
+                'isSerialized' => $row['isSerialized'],
+                'qty_received' => $row['qty_received'],
+                'qty_purchased' => $row['qty_purchased'],
+                'prod_desc' => $row['prod_desc'],
+                'date_expired' => $row['date_expired'],
+                'stock'=>$row['stock'],
+                'isReceived'=>$row['isReceived'],
+                'is_received'=>$row['is_received'],
+                'isPaid'=>$row['isPaid'],
+                'sub_row'=>$this->get_allTheSerialized($row['inventory_id']),
+            ];
+        }
+        return $tbl_data;
     }
 }

@@ -1174,6 +1174,39 @@ include ('./layout/admin/table-pagination-css.php');
                 display_datePurchased();
                 show_allReceivedItems_PurchaseOrders();
                 hideModals();
+                $('#show_purchasePrintModal').show()
+                if($('#show_purchasePrintModal').is(":visible"))
+                {
+                    var loadingImage = document.getElementById("loadingImage");
+                    loadingImage.removeAttribute("hidden");
+                    var pdfFile= document.getElementById("pdfFile");
+                    pdfFile.setAttribute('hidden',true);
+                    $.ajax({
+                        url: './toprint/purchaseorder_print.php',
+                        type: 'GET',
+                        xhrFields: {
+                            responseType: 'blob'
+                        },
+                        data: {
+                            order_id: $("#_order_id").val(),
+                            po_number: $("#pcs_no").val(),
+                        },
+                        success: function(response) {
+                        loadingImage.setAttribute("hidden",true);
+                        var pdfFile = document.getElementById("pdfFile");
+                        pdfFile.removeAttribute('hidden')
+                        if( loadingImage.hasAttribute('hidden')) {
+                            var newBlob = new Blob([response], { type: 'application/pdf' });
+                            var blobURL = URL.createObjectURL(newBlob);
+                            
+                            $('#pdfViewer').attr('src', blobURL);
+                        }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
                 $(".inventoryCard table").attr('id') === "tbl_orders" ? show_allOrders() : show_allInventories();
               }
               else {
@@ -2155,43 +2188,28 @@ include ('./layout/admin/table-pagination-css.php');
             var tblRows = [];
 
             if (data.length > 0) {
-              for (var i = 0, len = data.length; i < len; i++) {
+              for (var i = 0, len = data.length; i < len; i++) 
+              {
                 var currentItem = data[i];
-                if(currentItem.stock === -1)
-                {
-                  tblRows.push(
+                var stock = currentItem.stock !== null ? currentItem.stock : 0;
+                tblRows.push(
                     `<tr>
                           <td class="text-center">${i + 1}</td>
                           <td>${currentItem.prod_desc}</td>
                           <td>${currentItem.barcode}</td>
                           <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                          <td class="text-center" style = 'text-align: center'>0</td>
-                            <td class="text-center" style = 'text-align: center'>0</td>
-                            <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
-                            <td class="text-right" style = 'text-align: center'>&#x20B1; 0.00</td>
-                            <td style = 'text-align: center'> - </td>
-                          <td class="text-center" style = 'text-align: center' colspan='6'><span style = 'color: violet'><i>TO PURCHASE</i></span></td>
-
+                          <td class="text-center" style = 'text-align: center'>${currentItem.qty_purchased}</td>
+                          <td class="text-center" style = 'text-align: center'>${stock}</td>
+                          <td class="text-center" style = 'text-align: center'>${currentItem.isReceived}</td>
+                          <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.cost)}</td>
+                          <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.prod_price)}</td>
+                          <td style='text-align: center'>
+                          ${stock <= 10 && currentItem.isReceived == 0 ? "<span style='color: violet'><i>TO PURCHASE</i></span>" :
+                            (stock > 0 && currentItem.isReceived == 2 ? "<span style='color: yellow'>PURCHASED</span>" :
+                              "<span style='color: lightgreen'>RECEIVED</span>")}
+                        </td>
                       </tr>`
                   );
-                }
-                else
-                {
-                  tblRows.push(
-                      `<tr>
-                            <td class="text-center">${i + 1}</td>
-                            <td>${currentItem.prod_desc}</td>
-                            <td>${currentItem.barcode}</td>
-                            <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                            <td class="text-center" style = 'text-align: center'>${currentItem.qty_purchased}</td>
-                            <td class="text-center" style = 'text-align: center'>${currentItem.qty_received}</td>
-                            <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
-                            <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
-                            <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
-                            <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>RECEIVED</span>" : "<span style = 'color: yellow'>PURCHASED</span>"}</td>
-                        </tr>`
-                    );
-                }
               }
             } else {
               tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
