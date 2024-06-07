@@ -98,7 +98,9 @@
 
 <script>
     $(document).ready(function () {
+
         var products_forquickInventory = [];
+        var products = [];
         $("select[name='inventory_type']").on("change", function (e) {
             e.preventDefault();
             var value = $(this).val();
@@ -106,101 +108,174 @@
             $("#q_product").val("");
             $(this).css("border", '1px solid #ffff')
             get_allProductInventory();
+            $("#quickinventory_form #q_product").focus();
         })
-        $("#btn_searchQProduct").on("click", function (e) {
+        $("#btn_searchQProduct").click(function (e) {
             e.preventDefault();
-            var search_value = $("#q_product").val();
-            display_productBy(search_value);
+            var inventory_id = $("#quickinventory_input_inventory_id").val();
+            if(inventory_id !== 0)
+            {
+                if ($("select[name='inventory_type']").val() === "") {
+                    $("select[name='inventory_type']").css('border', '1px solid red');
+                }
+                else {
+                    $("select[name='inventory_type']").css('border', '1px solid #ffff');
+                    if (!isDataExistInTable1(inventory_id)) 
+                    {
+                    
+                        display_productBy(inventory_id);
+                    }
+                    else
+                    {
+                        alert("Product is already in the table.")
+                    }
+                }
+            }
         })
         function get_allProductInventory() {
             $.ajax({
                 type: 'GET',
                 url: 'api.php?action=get_allInventories',
                 success: function (data) {
-                    var products = [];
                     for (var i = 0; i < data.length; i++) {
-                        var row = {
-                            inventory_id: data[i].inventory_id,
-                            product: data[i].prod_desc,
-                            barcode: data[i].barcode,
-                            brand: data[i].brand,
-                        };
-                        products.push(row);
-                    }
-                    $("#q_product").autocomplete({
-                        source: function (request, response) {
-                            var term = request.term.toLowerCase();
-                            var filteredProducts = products.filter(function (row) {
-                                return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
-                                    (!row.brand && term === "");
-                            });
-                            response(filteredProducts.map(function (row) {
-                                return {
-                                    label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
-                                    value: row.product,
-                                    id: row.inventory_id
-                                };
-                            }));
-                        },
-                        select: function (event, ui) {
-                            var selectedProductId = ui.item.id;
-                            $("#quickinventory_input_inventory_id").val(selectedProductId);
-                            return false;
+                        var stock = data[i].stock;
+                        if(stock !== -1)
+                        {
+                            var row = {
+                                inventory_id: data[i].inventory_id,
+                                product: data[i].prod_desc,
+                                barcode: data[i].barcode,
+                                brand: data[i].brand,
+                            };
+                            products.push(row);
                         }
-                    });
+                      
+                    }
                 }
             })
         }
-        function isDataExistInTable(data) {
-            var isExist = false;
-            $('#tbl_quickInventories tbody').each(function () {
-                var rowData = $(this).find('td:first').text();
-                if (rowData === data) {
-                    isExist = true;
+        // function show_errorResponse(message) {
+        //     toastr.options = {
+        //     "onShown": function () {
+        //         $('.custom-toast').css({
+        //         "opacity": 1,
+        //         "width": "600px",
+        //         "text-align": "center",
+        //         "border": "2px solid #1E1C11",
+        //         });
+        //     },
+        //     "closeButton": true,
+        //     "positionClass": "toast-top-right",
+        //     "timeOut": "5000",
+        //     "extendedTimeOut": "1000",
+        //     "progressBar": true,
+        //     "showEasing": "swing",
+        //     "hideEasing": "linear",
+        //     "showMethod": "fadeIn",
+        //     "hideMethod": "fadeOut",
+        //     "tapToDismiss": false,
+        //     "toastClass": "custom-toast",
+        //     "onclick": function () { alert('Clicked'); }
+
+        //     };
+        //     toastr.error(message);
+        // }
+        $("#q_product").on("input", function(e) {
+            var term = $(this).val();
+            $(this).autocomplete('search', term);
+
+        });
+        $("#q_product").autocomplete({
+            source: function (request, response) {
+                // var term = request.term.toLowerCase();
+                // var filteredProducts = products.filter(function (row) {
+                //     return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
+                //         (!row.brand && term === "");
+                // });
+                // response(filteredProducts.map(function (row) {
+                //     return {
+                //         label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+                //         value: row.barcode,
+                //         id: row.inventory_id
+                //     };
+                // }));
+                // $("#quickinventory_input_inventory_id").val(selectedProductId);
+                var term = request.term;
+                var filteredProducts = filterProducts(term);
+                var slicedProducts = filteredProducts.slice(0, 5);
+                response(slicedProducts);
+                if (slicedProducts.length > 0) {
+                    $('#filters').show();
+                } else {
+                    $('#filters').hide();
+                }
+                var slicedProductsLength = slicedProducts.length - 1;
+                var selectedProductId = typeof slicedProducts[slicedProductsLength]?.id !== 'undefined' ? slicedProducts[slicedProductsLength].id : 0;
+                $("#quickinventory_input_inventory_id").val(selectedProductId);
+
+            },
+            select: function (event, ui) {
+                var selectedProductId = ui.item.id;
+                if(typeof selectedProductId !== 'undefined')
+                {
+                    $("#quickinventory_input_inventory_id").val(selectedProductId);
                     return false;
                 }
+            }
+        });
+        function filterProducts(term) {
+            return products.filter(function (row) {
+                return row.product.toLowerCase().includes(term) ||
+                    row.barcode.includes(term) ||
+                    (row.brand && row.brand.toLowerCase().includes(term)) ||
+                    (!row.brand && term === "");
+                }).map(function (row) {
+                var brand = typeof row.brand === "undefined" ? " " : row.brand;
+                return {
+                    label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
+                    value: row.barcode ?? row.product,
+                    id: row.inventory_id
+                };
             });
-            return isExist;
         }
-        $("#q_product").on("blur", function (e) {
-            e.preventDefault();
-            var search_value = $(this).val();
-            if (!search_value.trim()) {
-                $(this).addClass('has-error');
-            } else {
-                display_productBy(search_value);
+        function isDataExistInTable1(data) {
+            var $matchingRow = $('#tbl_quickInventories tbody td:first[data-id="' + data + '"]').closest('tr');
+            
+            if ($matchingRow.length > 0) {
+                return true;
             }
-        })
-        function display_productBy(search_value) {
-            if ($("select[name='inventory_type']").val() === "") {
-                $("select[name='inventory_type']").css('border', '1px solid red');
-            }
-            else {
-                $("select[name='inventory_type']").css('border', '1px solid #ffff');
-                if (!isDataExistInTable(search_value)) {
-                    $("select[name='inventory_type']").removeClass('has-error');
-                    var inventory_id = $("#quickinventory_input_inventory_id").val();
-                    $.ajax({
-                        type: 'get',
-                        url: 'api.php?action=get_inventoryDataById',
-                        data: { inventory_id: inventory_id },
-                        success: function (data) {
-                            var row = "";
-                            row += "<tr data-id = " + data['inventory_id'] + ">";
-                            row += "<td>" + data['prod_desc'] + "</td>";
-                            row += "<td style = 'text-align:center'>" + data['stock'] + "</td>";
-                            row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
-                            row += "</tr>";
-                            $("#tbl_quickInventories tbody").append(row);
-                        }
-                    })
-                    $("#quickinventory_input_inventory_id").val("");
-                }
-                else {
-                    alert("Product is already listed in the table.");
-                }
-            }
+            
+            return false;
+        }
+       
+        // $("#q_product").on("autocompletechange", function(event, ui) {
+        //     $(this).val("");
+        //     $("#quickinventory_input_inventory_id").val("0");
+        // });
+        
+        
 
+        // $("#q_product").on("autocompletechange", function(event, ui) {
+        //     var search_value = $(this).val();
+            
+         
+        // });
+        function display_productBy(inventory_id) 
+        {
+            $.ajax({
+                type: 'get',
+                url: 'api.php?action=get_inventoryDataById',
+                data: { inventory_id: inventory_id },
+                success: function (data) {
+                    var row = "";
+                    row += "<tr data-id = " + data['inventory_id'] + ">";
+                    row += "<td data-id = " + inventory_id + ">" + data['prod_desc'] + "</td>";
+                    row += "<td style = 'text-align:center'>" + data['stock'] + "</td>";
+                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                    row += "</tr>";
+                    $("#tbl_quickInventories tbody").append(row);
+                }
+            })
         }
     })
 </script>

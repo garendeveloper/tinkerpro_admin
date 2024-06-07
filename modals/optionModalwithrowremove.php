@@ -55,10 +55,7 @@
 }
 
 
-.tableCard{
-    height: 100%;
-    max-height: none; 
-}
+
 @media (max-width: 768px) {
     .modal {
         left: 0;
@@ -913,7 +910,7 @@ input {
     padding: 3px;
     margin-left: 10px;
     margin-right: 10px;
-    height: 80vh;
+    height: 70vh;
     overflow: auto;
     position: relative;
 }
@@ -1068,10 +1065,7 @@ input {
     left: -150px;
     top: 0;
 } */
-.optionmodal-content{
-    height: auto;
-    max-height: auto;
-}
+
 #tbl_purchaseOrders {
     width: 100%;
     table-layout: auto;
@@ -1145,7 +1139,7 @@ input[type="text"] {
                 </div>
                 <div class="warning-container">
                     <div class="tableCard">
-                        <div class="purchase-grid-container" style = "font-size: 14px;">
+                        <div class="purchase-grid-container">
                             <button class="purchase-grid-item" id="btn_createPO">Purchase Order</button>
                             <button class="purchase-grid-item" id="btn_inventoryCount">Inventory Count</button>
                             <button class="purchase-grid-item" id="btn_expiration">Expiration</button>
@@ -1319,6 +1313,15 @@ input[type="text"] {
     });
     $('#tbl_purchaseOrders tbody').on({
         mouseenter: function() {
+            $(this).attr('title', 'Click me to remove this row');
+        },
+        mouseleave: function() {
+            $(this).removeAttr('title');
+        }
+    }, 'tr td:first-child');
+
+    $('#tbl_purchaseOrders tbody').on({
+        mouseenter: function() {
             $(this).find('td:nth-child(2)').attr('title', 'Click me to edit');
         },
         mouseleave: function() {
@@ -1334,6 +1337,14 @@ input[type="text"] {
         }
     }, 'tr');
 
+    $('#tbl_purchaseOrders tbody').on({
+        mouseenter: function() {
+            $(this).find('td:nth-child(4)').attr('title', 'Click me to remove this row');
+        },
+        mouseleave: function() {
+            $(this).find('td:nth-child(4)').removeAttr('title');
+        }
+    }, 'tr');
     $("#open_po_report").click(function(){
         $('#show_purchasePrintModal').show()
         if($('#show_purchasePrintModal').is(":visible"))

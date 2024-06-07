@@ -62,10 +62,6 @@ try {
         $pdf->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'R');
         $pdf->Ln(-6);
 
-        $pdf->SetFont('', 'B', 10); 
-        $pdf->MultiCell(0, 10, "Products Inventory", 0, 'R');
-        $pdf->Ln(-12);
-
         $pdf->SetFont('', 'I', 10);
         $pdf->Cell(0, 10, "Reference No: {$items_info['reference_no']}", 0, 1, 'L', 0);
         $pdf->SetFont('', 10);
@@ -80,7 +76,7 @@ try {
         $headerWidths = array(15, 70, 35, 35, 35);
         $maxCellHeight = 5;
 
-        $hexColor = 'gray';
+        $hexColor = '#808080';
         list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
         $pdf->SetFillColor($r, $g, $b);
@@ -132,12 +128,19 @@ try {
         }
         $pdf->Output($pdfPath, 'F');
     } else {
-        $connector = new WindowsPrintConnector("EPSON_TM-T20II");
+        $connector = new WindowsPrintConnector("XP_80C");
         $printer = new Printer($connector);
         $printer->text("Hello, Thermal Printer!\n");
-        $printer->cut();
 
-        $printer->close();
+        
+        $pdf->Output('inventory_list.pdf', 'I');
+        $pdfPath = __DIR__ . '/assets/pdf/inventory/inventory_list.pdf';
+
+        if (file_exists($pdfPath)) {
+
+            unlink($pdfPath);
+        }
+        $pdf->Output($pdfPath, 'F');
     }
 
 } catch (Exception $e) {

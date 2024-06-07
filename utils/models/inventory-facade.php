@@ -3,57 +3,63 @@ class InventoryFacade extends DBConnection
 {
     public function get_allInventories()
     {
-        $offset = isset($_GET['page']) ? $_GET['page'] : 1;
-        // $sql = $this->connect()->prepare("SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
-        //                                     FROM inventory
-        //                                     JOIN products ON products.id = inventory.product_id
-        //                                     JOIN uom ON uom.id = products.uom_id
-        //                                     JOIN orders ON orders.id = inventory.order_id
-        //                                     JOIN supplier ON supplier.id = orders.supplier_id
-        //                                     ORDER BY inventory.id ASC;");
-        $sql = $this->connect()->prepare(" SELECT 
-                                            supplier.id AS supplier_id, 
-                                            products.id AS product_id, 
-                                            products.prod_desc,
-                                            products.barcode,
-                                            inventory.id AS inventory_id, 
-                                            uom.uom_name,
-                                            orders.id AS order_id, 
-                                            orders.supplier_id,
-                                            inventory.stock,
-                                            inventory.amount_beforeTax,
-                                            inventory.amount_afterTax,
-                                            orders.isPaid,
-                                            inventory.isReceived
+        $sql = $this->connect()->prepare(" SELECT inventory.*, products.*, uom.*
                                         FROM inventory
                                         JOIN products ON products.id = inventory.product_id
-                                        JOIN uom ON uom.id = products.uom_id
-                                        JOIN orders ON orders.id = inventory.order_id
-                                        JOIN supplier ON supplier.id = orders.supplier_id
-
-                                        UNION ALL
-                                        
-                                        SELECT 
-                                            NULL AS supplier_id, 
-                                            p.id AS product_id, 
-                                            p.prod_desc,
-                                            p.barcode,
-                                            NULL AS inventory_id, 
-                                            u.uom_name,
-                                            NULL AS order_id, 
-                                            NULL AS supplier_id, 
-                                            -1 AS stock,
-                                            NULL AS amount_beforeTax,
-                                            NULL AS amount_afterTax,
-                                            NULL AS isPaid,
-                                            NULL AS isReceived
-                                        FROM products p
-                                        JOIN uom u ON u.id = p.uom_id;");
+                                        JOIN uom ON uom.id = products.uom_id");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
     }
+    // public function get_allInventories()
+    // {
+    //     $sql = $this->connect()->prepare(" SELECT 
+    //                                         supplier.id AS supplier_id, 
+    //                                         products.id AS product_id, 
+    //                                         products.prod_desc,
+    //                                         products.barcode,
+    //                                         inventory.id AS inventory_id, 
+    //                                         uom.uom_name,
+    //                                         orders.id AS order_id, 
+    //                                         orders.supplier_id,
+    //                                         inventory.stock,
+    //                                         inventory.amount_beforeTax,
+    //                                         inventory.amount_afterTax,
+    //                                         orders.isPaid,
+    //                                         inventory.isReceived,
+    //                                         inventory.qty_purchased
+    //                                     FROM inventory
+    //                                     JOIN products ON products.id = inventory.product_id
+    //                                     JOIN uom ON uom.id = products.uom_id
+    //                                     JOIN orders ON orders.id = inventory.order_id
+    //                                     JOIN supplier ON supplier.id = orders.supplier_id
+
+    //                                     UNION ALL
+                                        
+    //                                     SELECT 
+    //                                         NULL AS supplier_id, 
+    //                                         p.id AS product_id, 
+    //                                         p.prod_desc,
+    //                                         p.barcode,
+    //                                         NULL AS inventory_id, 
+    //                                         u.uom_name,
+    //                                         NULL AS order_id, 
+    //                                         NULL AS supplier_id, 
+    //                                         -1 AS stock,
+    //                                         NULL AS amount_beforeTax,
+    //                                         NULL AS amount_afterTax,
+    //                                         NULL AS isPaid,
+    //                                         NULL AS isReceived,
+    //                                         0 AS qty_purchased
+    //                                     FROM products p
+    //                                     JOIN uom u ON u.id = p.uom_id;");
+    //     $sql->execute();
+    //     $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+    //     return $data;
+    // }
+
     public function get_allProductByInventoryType($type)
     {
         $data = "";
@@ -136,12 +142,32 @@ class InventoryFacade extends DBConnection
     }
     public function get_allStocksData($inventory_id)
     {
-        $sql = "SELECT inventory.*, stocks.* 
+        $sql = "SELECT inventory.*, stocks.*, stocks.date as stock_date
                 FROM inventory
                 INNER JOIN stocks ON stocks.inventory_id = inventory.id
                 WHERE inventory.id = :inventory_id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(":inventory_id", $inventory_id);
+        $stmt->execute();
+        $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return [
+            'inventoryInfo' => $this->get_inventoryDataById($inventory_id),
+            'stocks' => $stocks,
+        ];
+    }
+    public function get_allStocksDataByDate($inventory_id, $start_date, $end_date)
+    {
+        $start_date =  date("Y-m-d", strtotime($start_date));
+        $end_date =  date("Y-m-d", strtotime($end_date));
+        $sql = "SELECT inventory.*, stocks.*, stocks.date as stock_date
+                FROM inventory
+                INNER JOIN stocks ON stocks.inventory_id = inventory.id
+                WHERE inventory.id = :inventory_id
+                AND FROM_UNIXTIME(stocks.date) BETWEEN :st_date AND :end_date";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":inventory_id", $inventory_id);
+        $stmt->bindParam(":st_date", $start_date); 
+        $stmt->bindParam(":end_date", $end_date);    
         $stmt->execute();
         $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return [
@@ -225,7 +251,10 @@ class InventoryFacade extends DBConnection
             'msg'=>"Your expiration notification settings have been successfully saved",
         ];
     }
-    
+    function getSessionVariable($key) 
+    {
+        return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
+    }
     public function save_quickInventory($formData)
     {
         $tbl_data = json_decode($formData['tbl_data'], true);
@@ -234,7 +263,6 @@ class InventoryFacade extends DBConnection
             $inventory_id = $row['inventory_id'];
             $qty_onhand = (int)$row['col_2'];
             $newqty = (int)$row['newqty'];
-            $newqty = $newqty + $qty_onhand;
             $currentDate = date('Y-m-d');
 
             $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock WHERE id = :id");
@@ -243,11 +271,18 @@ class InventoryFacade extends DBConnection
             $stmt->execute();
 
             $newqty = "+".$newqty;
-            $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
-                                                VALUES (?, ?, ?)");
+            $stock_customer = $formData['user_name'];
+            $document_number = "---";
+            $transaction_type = "Quick Inventory";
+            $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                                VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-            $stmt->bindParam(2, $newqty, PDO::PARAM_STR); 
-            $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+            $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+            $stmt->bindParam(3, $newqty, PDO::PARAM_STR); 
+            $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
+            $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+            $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+            $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
             $stmt->execute();
         }
         return [
@@ -680,11 +715,13 @@ class InventoryFacade extends DBConnection
             $tbldata = json_decode($formData['data'], true);
             $order_id = $this->save_order($formData);
             $existed_product = [];
+            
             if ($formData['order_id'] > 0) {
                 if (isset($formData['remove_inventories'])) {
                     $this->remove_inventories($formData['remove_inventories']);
                 }
-                foreach ($tbldata as $row) {
+                foreach ($tbldata as $row) 
+                {
                     $inventory_id = $row['inventory_id'];
                     $product_id = $row['product_id'];
                     $product = $row['column_1'];
@@ -703,6 +740,28 @@ class InventoryFacade extends DBConnection
                         $tax = $price / 1.12;
                         $amount_afterTax = $price - $tax;
                     }
+
+                    $is_taxInclusive = $this->get_productInfo($product_id)['is_taxIncluded'] === 1;
+                    $new_selling_price = $this->get_productInfo($product_id)['prod_price'];
+                    $new_cost_price = $price;
+                    if($is_taxInclusive)
+                    {
+                        $mark_up = $this->get_productInfo($product_id)['markup']; 
+                        $interest = $price * ($mark_up/100);
+                        $new_selling_price = $new_cost_price + $interest;
+                        $new_selling_price = number_format($new_selling_price, 2, '.', '');
+                    }
+                    else
+                    {
+                        $mark_up = $this->get_productInfo($product_id)['markup']; 
+                        $interest = $price * ($mark_up/100);
+                        $selling_price = $new_cost_price + $interest;
+        
+                        $withTax = ($new_selling_price/1.12) * 0.12;
+                        $new_selling_price = $withTax;
+                        $new_selling_price = number_format($new_selling_price, 2, '.', '');
+                    }
+
                     if ($inventory_id === 0) {
 
                         if(!$this->check_ifInventoryExist($product_id))
@@ -720,6 +779,12 @@ class InventoryFacade extends DBConnection
                             $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
                             $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
                             $sqlStatement->execute();
+
+                            $product_sql = $this->connect()->prepare("UPDATE products SET cost = :cost, prod_price = :prod_price WHERE id = :id");
+                            $product_sql->bindParam(":cost", $new_cost_price);
+                            $product_sql->bindParam(":prod_price", $new_selling_price);
+                            $product_sql->bindParam(":id", $product_id);
+                            $product_sql->execute();
                         }
                         else
                         {
@@ -739,6 +804,12 @@ class InventoryFacade extends DBConnection
                         $sqlStatement->bindParam(':v8', $product_id);
                         $sqlStatement->bindParam(':id', $inventory_id);
                         $sqlStatement->execute();
+
+                        $product_sql = $this->connect()->prepare("UPDATE products SET cost = :cost, prod_price = :prod_price WHERE id = :id");
+                        $product_sql->bindParam(":cost", $new_cost_price);
+                        $product_sql->bindParam(":prod_price", $new_selling_price);
+                        $product_sql->bindParam(":id", $product_id);
+                        $product_sql->execute();
                     }
 
                 }
@@ -763,6 +834,28 @@ class InventoryFacade extends DBConnection
                         $amount_afterTax = $price - $tax;
                     }
 
+
+                    $is_taxInclusive = $this->get_productInfo($product_id)['is_taxIncluded'] === 1;
+                    $new_selling_price = $this->get_productInfo($product_id)['prod_price'];
+                    $new_cost_price = $price;
+                    if($is_taxInclusive)
+                    {
+                        $mark_up = $this->get_productInfo($product_id)['markup']; //percent
+                        $interest = $price * ($mark_up/100);
+                        $new_selling_price = $new_cost_price + $interest;
+                        $new_selling_price = number_format($new_selling_price, 2, '.', '');
+                    }
+                    else
+                    {
+                        $mark_up = $this->get_productInfo($product_id)['markup']; //percent
+                        $interest = $price * ($mark_up/100);
+                        $selling_price = $new_cost_price + $interest;
+        
+                        $withTax = ($new_selling_price/1.12) * 0.12;
+                        $new_selling_price = $withTax;
+                        $new_selling_price = number_format($new_selling_price, 2, '.', '');
+                    }
+
                     if(!$this->check_ifInventoryExist($product_id))
                     {
                         $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
@@ -778,6 +871,13 @@ class InventoryFacade extends DBConnection
                         $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
                         $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
                         $sqlStatement->execute();
+                        
+                        $product_sql = $this->connect()->prepare("UPDATE products SET cost = :cost, prod_price = :prod_price WHERE id = :id");
+                        $product_sql->bindParam(":cost", $new_cost_price);
+                        $product_sql->bindParam(":prod_price", $new_selling_price);
+                        $product_sql->bindParam(":id", $product_id);
+                        $product_sql->execute();
+
                     }
                     else{
                         $existed_product[] = [$this->get_productInfo($product_id)['prod_desc']];
