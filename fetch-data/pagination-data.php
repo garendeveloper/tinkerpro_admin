@@ -9,6 +9,7 @@ $totalRecords = $productFacade->getTotalProductsCount();
 $totalPages = ceil($totalRecords / 300);
 echo "<div id='paginationBtns'>";
 for ($i = 1; $i <= $totalPages; $i++) {
-    echo "<a class='paginationTag' href='javascript:void(0)' onclick='refreshProductsTable($i)'>$i</a> ";
+    $activeClass = ($i == 1) ? 'active' : ''; // Add 'active' class to the first button initially
+    echo "<a class='paginationTag $activeClass' href='javascript:void(0)' onclick='refreshProductsTable($i)'>$i</a> ";
 }
 echo "</div>";
