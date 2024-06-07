@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="assets/css/jquery-ui.css">
   <link rel="stylesheet" href="assets/js/daterangepicker/daterangepicker.css">
   <link rel="stylesheet" href="assets/css/toastr.min.css">
+  <link rel="stylesheet" href="assets/table-sortable/dataTables.dataTables.min.css">
 
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>
   <script src="assets/js/jquery.min.js"></script>
@@ -51,5 +52,6 @@
   <script src="assets/js/daterangepicker/daterangepicker.min.js"></script>
   <script src="assets/js/sweetalert.js"></script>
   <script src="assets/js/toastr.min.js"></script>
+  <script src="assets/table-sortable/dataTables.min.js"></script>
 </head>
 <body>

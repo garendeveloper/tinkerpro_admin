@@ -327,5 +327,11 @@ button:hover {
     header{  grid-area: head; }
     .main-panel {grid-area: content; }
     .sidebar { grid-area: side;}
-    footer { grid-area: foot;}
+    footer { grid-area: foot;},
+    .dataTables_filter {
+            display: none; /* Hide the default search box */
+        }
+        .inventoryCard table tr:hover {
+    border: 1px solid green;
+}
   </style>

@@ -73,7 +73,7 @@
             <div class="fieldContainer" style = "display:flex; margin-bottom: 2px;">
                 <div class="form-group" >
                     <label for="p_qty" id="lbl_pqty" class="l_input" style="color: #FF6900;"><strong>QTY:</strong></label>
-                    <input type="text" class="p_input" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
+                    <input type="text" class="p_input" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right" autofocus="autofocus ">
                 </div>
                 <div class="form-group" >
                     <label for="price" id="lbl_price" class="l_input" style="color: #FF6900; "><strong>RATE:</strong></label>

@@ -126,6 +126,17 @@ include ('./layout/admin/table-pagination-css.php');
       margin-top: 10px;
     }
   }
+  /* tr.normal td {
+      color: black;
+      background-color: white;
+  } */
+  tr.highlighted td {
+      color: white;
+      background-color: red;
+  }
+  .highlighteds{
+     border: 2px solid #00B050; 
+  }
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -142,7 +153,7 @@ include ('./layout/admin/table-pagination-css.php');
           <div class="horizontal-container" style="display: flex; align-items: center;">
             <img src="assets/img/barcode.png" style="color: white; height: 60px; width: 50px; margin-right:5px;">
             <input class="text-color italic-placeholder" id="searchInput" style="flex: 1 1 100%; height: 35px;"
-              placeholder="Search Product,[code,serial no., barcode, name, brand]" autofocus />
+              placeholder="Search Product,[code,serial no., barcode, name, brand]" autocomplete="off" autofocus />
           </div>
           <div style="display: flex; align-items: center;">
             <button class="icon-button" style="margin-right: 10px;">
@@ -299,20 +310,31 @@ include ('./layout/admin/table-pagination-css.php');
           $('#paidSwitch').css('background-color', '');
         }
       });
-      $('#date_purchased').datepicker({
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'M dd y',
-        altFormat: 'M dd y',
-        altField: '#date_purchased',
-        maxDate: 0,
-        onSelect: function (dateText, inst) { }
-      });
+      // $('#date_purchased').datepicker({
+      //   changeMonth: true,
+      //   changeYear: true,
+      //   dateFormat: 'M dd y',
+      //   altFormat: 'M dd y',
+      //   altField: '#date_purchased',
+      //   maxDate: 0,
+      //   onSelect: function (dateText, inst) { }
+      // });
+      $("#date_purchased").prop("readonly", true).flatpickr({
+        dateFormat: "M d y",
+        onClose: function(selectedDates) {
+        }
+    });
 
+    // Event handler for the calendar button
+    $('#calendar-btn').on('click', function () {
 
-      $('#calendar-btn').on('click',function () {
-        $('#date_purchased').datepicker('show');
-      });
+        if (!$("#date_purchased").hasClass("flatpickr-open")) {
+            $("#date_purchased").flatpickr().open();
+        }
+    });
+      // $('#calendar-btn').on('click',function () {
+      //   $('#date_purchased').datepicker('show');
+      // });
 
       $('#s_due').datepicker({
         changeMonth: true,
@@ -645,6 +667,7 @@ include ('./layout/admin/table-pagination-css.php');
         })
       })
       function show_allStocks() {
+        $("#searchInput").focus();
         $('#modalCashPrint').show();
         $.ajax({
           type: 'GET',
@@ -692,7 +715,26 @@ include ('./layout/admin/table-pagination-css.php');
             </table>`;
 
             $(".inventoryCard").html(tblData);
-          
+            $('.inventoryCard #tbl_all_stocks').DataTable({
+                ordering: true,
+                order: [[0, 'asc']], 
+                pageLength: 50,
+                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                language: {
+                    paginate: {
+                        previous: '<i class="fa fa-angle-left"></i>',
+                        next: '<i class="fa fa-angle-right"></i>'
+                    }
+                },
+            });
+            $('#searchInput').on('keyup', function(event) {
+              $('.inventoryCard #tbl_all_stocks').DataTable().search($(this).val()).draw();
+              // if (event.keyCode === 13 || $(this).val().length >= 12)
+              // {
+               
+              //   $(this).val(''); 
+              // }
+            });
           }
         });
       }
@@ -741,6 +783,22 @@ include ('./layout/admin/table-pagination-css.php');
               "</table>";
 
             $(".inventoryCard").html(tbl);
+
+            $('.inventoryCard #tbl_all_lostanddamages').DataTable({
+                ordering: true,
+                order: [[0, 'asc']], 
+                pageLength: 50,
+                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                language: {
+                    paginate: {
+                        previous: '<i class="fa fa-angle-left"></i>',
+                        next: '<i class="fa fa-angle-right"></i>'
+                    }
+                },
+            });
+            $('#searchInput').on('keyup', function(event) {
+              $('.inventoryCard #tbl_all_lostanddamages').DataTable().search($(this).val()).draw();
+            });
           }
         })
       }
@@ -800,16 +858,28 @@ include ('./layout/admin/table-pagination-css.php');
                               </tr>
                           </thead>
                           <tbody>
-                              ${verifier ? expiry.join('') : `
-                                  <tr>
-                                      <td class="autofit" colspan="4">There are no expired products</td>
-                                  </tr>`
-              }
+                              ${ expiry.join('') }
                           </tbody>
                       </table>`;
 
 
             $(".inventoryCard").html(tbl_expiry);
+
+            $('.inventoryCard #tbl_expiredProducts').DataTable({
+                ordering: true,
+                order: [[0, 'asc']], 
+                pageLength: 50,
+                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                language: {
+                    paginate: {
+                        previous: '<i class="fa fa-angle-left"></i>',
+                        next: '<i class="fa fa-angle-right"></i>'
+                    }
+                },
+            });
+            $('#searchInput').on('keyup', function(event) {
+              $('.inventoryCard #tbl_expiredProducts').DataTable().search($(this).val()).draw();
+            });
           }
         })
       }
@@ -849,6 +919,22 @@ include ('./layout/admin/table-pagination-css.php');
               "</table>";
 
             $(".inventoryCard").html(inv_count_tbl);
+
+            $('.inventoryCard #tbl_all_inventoryCounts').DataTable({
+                ordering: true,
+                order: [[0, 'asc']], 
+                pageLength: 50,
+                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                language: {
+                    paginate: {
+                        previous: '<i class="fa fa-angle-left"></i>',
+                        next: '<i class="fa fa-angle-right"></i>'
+                    }
+                },
+            });
+            $('#searchInput').on('keyup', function(event) {
+              $('.inventoryCard #tbl_all_inventoryCounts').DataTable().search($(this).val()).draw();
+            });
           }
         })
       }
@@ -1629,7 +1715,7 @@ include ('./layout/admin/table-pagination-css.php');
         var data = data;
         var isExist = false;
         $('#tbl_purchaseOrders tbody').each(function () {
-          var rowData = $(this).find('td:first').data('id');
+          var rowData = $(this).find('td:first').data('rowid');
           if (rowData == data) {
             isExist = true;
           }
@@ -1645,6 +1731,7 @@ include ('./layout/admin/table-pagination-css.php');
           if (validatePOForm()) {
             var qty = 0;
             var price = 0;
+            hidePopups();
            show_purchaseQtyModal(product_id, qty, price);
           }
         }
@@ -1744,8 +1831,13 @@ include ('./layout/admin/table-pagination-css.php');
           $(this).val(inputValue);
         });
       });
-      $("#prod_form").submit(function (e) {
-        e.preventDefault();
+      $('#prod_form input').on('keypress', function(event) {
+          if (event.keyCode === 13) {
+              $('#prod_form').submit();
+          }
+      });
+      $("#prod_form").on("submit", function (event) {
+        event.preventDefault();
         
         if (validateProductForm()) {
           var p_qty = parseInt($("#p_qty").val());
@@ -1768,28 +1860,17 @@ include ('./layout/admin/table-pagination-css.php');
               totalPrice += price;
               overallTotal += total;
               $("#totalTax").html(totalTax.toFixed(2));
-              if(isDataExistInTable(data['id']))
-              {
-                var id = data['id']; 
-                var $row_id = $("#tbl_purchaseOrders tbody").find("tr").data('rowid');
-                if(id === $row_id)
-                {
-                  var $rowToUpdate = $("#tbl_purchaseOrders tbody").find("tr[data-rowid='" + $row_id + "']");
-                  if ($rowToUpdate.length > 0) {
-                      $rowToUpdate.find("td").eq(0).text(data['prod_desc']);
-                      $rowToUpdate.find("td").eq(1).text(p_qty); 
-                      $rowToUpdate.find("td").eq(2).html("&#x20B1;&nbsp;" + addCommasToNumber(price)); 
-                      $rowToUpdate.find("td").eq(3).html("&#x20B1;&nbsp;" + addCommasToNumber(total)); 
-                  } else {
-                      console.log("Row with ID " + id + " not found.");
-                  }
-                }
-        
-              }
-            
+
+              var $rowToUpdate = $("#tbl_purchaseOrders tbody").find("tr[data-rowid='" + product_id + "']");
+                if ($rowToUpdate.length > 0) {
+                    $rowToUpdate.find("td").eq(0).text(data['prod_desc']);
+                    $rowToUpdate.find("td").eq(1).text(p_qty); 
+                    $rowToUpdate.find("td").eq(2).html("&#x20B1;&nbsp;" + addCommasToNumber(price)); 
+                    $rowToUpdate.find("td").eq(3).html("&#x20B1;&nbsp;" + addCommasToNumber(total)); 
+                } 
               else
               {
-               
+                console.log("No")
                 $("#tbl_purchaseOrders tbody").append(
                   "<tr data-rowid = "+data['id']+">" +
                   "<td data-rowid = "+data['id']+" data-id = " + data['id'] + " data-inv_id = " + data['inventory_id']+ " data-qty = " + p_qty+ " data-price = " + price + " >" + data['prod_desc'] + "</td>" +
@@ -1938,23 +2019,26 @@ include ('./layout/admin/table-pagination-css.php');
           } else {
               $('#filters').hide();
           }
+          hidePopups();
           var slicedProductsLength = slicedProducts.length - 1;
           var selectedProductId = slicedProducts[slicedProductsLength].id;
             $("#selected_product_id").val(selectedProductId);
           },
           select: function (event, ui) {
+            hidePopups();
             var selectedProductId = ui.item.id;
             $("#selected_product_id").val(selectedProductId);
             return false;
           },
       });
       $("#product").on("input", function() {
+        hidePopups();
           var term = $(this).val();
           $(this).autocomplete('search', term);
-          $("#date_purchased").datepicker("widget").hide();
       });
       $("#product").on("keypress", function(event){
         if(event.which === 13){
+          hidePopups();
           var product_id = $("#selected_product_id").val();
           if (!isDataExistInTable(product_id)) {
             var qty = 0;
@@ -2011,8 +2095,15 @@ include ('./layout/admin/table-pagination-css.php');
         });
         return searchDataExists;
       }
+      function hidePopups() {
+        $('#date_purchased').removeAttr('autofocus');
+        $("#date_purchased").blur();
+        $("#date_purchased").flatpickr().close();
+      }
       function show_purchaseQtyModal(product_id, qty, price )
       {
+        hidePopups();
+        $("#prod_form #p_qty").focus();
         if(product_id !== -1)
         {
           $("#selected_product_id").val(product_id);
@@ -2026,7 +2117,7 @@ include ('./layout/admin/table-pagination-css.php');
             data: { data: product_id },
             success: function (data) {
          
-              var _price = price === 0 ? data['prod_price'] : price;
+              var _price = price === 0 ? data['cost'] : price;
               var _qty = qty === 0 ? data['qty_purchased'] : qty;
               $("#product_name").text(data['prod_desc'] + " : " + data['barcode']);
               $("#purchaseQty_modal #p_qty").val(_qty);
@@ -2054,7 +2145,7 @@ include ('./layout/admin/table-pagination-css.php');
           }
         });
       }
-      
+     
       function show_allInventories() {
         $('#modalCashPrint').show();
         $.ajax({
@@ -2062,6 +2153,7 @@ include ('./layout/admin/table-pagination-css.php');
           url: 'api.php?action=get_allInventories',
           success: function (data) {
             var tblRows = [];
+
             if (data.length > 0) {
               for (var i = 0, len = data.length; i < len; i++) {
                 var currentItem = data[i];
@@ -2092,10 +2184,10 @@ include ('./layout/admin/table-pagination-css.php');
                             <td>${currentItem.barcode}</td>
                             <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
                             <td class="text-center" style = 'text-align: center'>${currentItem.qty_purchased}</td>
+                            <td class="text-center" style = 'text-align: center'>${currentItem.qty_received}</td>
                             <td class="text-center" style = 'text-align: center'>${currentItem.stock}</td>
                             <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_beforeTax)}</td>
                             <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.amount_afterTax)}</td>
-                            <td style = 'text-align: center'>${currentItem.isPaid == 1 ? "<span style = 'color: lightgreen'>YES</span>" : "<span style = 'color: red'>NO</span>"}</td>
                             <td style = 'text-align: center'>${currentItem.isReceived == 1 ? "<span style = 'color: lightgreen'>RECEIVED</span>" : "<span style = 'color: yellow'>PURCHASED</span>"}</td>
                         </tr>`
                     );
@@ -2106,7 +2198,7 @@ include ('./layout/admin/table-pagination-css.php');
             }
 
             var tblData = `
-            <table id='tbl_products' class='text-color table-border' style='font-size: 12px;'>
+            <table tabindex = '0' id='tbl_products' class='text-color table-border' style='font-size: 12px;'>
                 <thead>
                     <tr>
                         <th class='text-center auto-fit'>No.</th>
@@ -2115,9 +2207,9 @@ include ('./layout/admin/table-pagination-css.php');
                         <th class='auto-fit' style = 'text-align: center'>Unit</th>
                         <th class='auto-fit' style = 'text-align: center'>Qty Purchased</th>
                         <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
+                        <th class='auto-fit' style = 'text-align: center'>Qty Received</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount Before Tax</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount After Tax</th>
-                        <th class='auto-fit' style = 'text-align: center'>Is Paid</th>
                         <th class='auto-fit' style = 'text-align: center'>Document Type</th>
                     </tr>
                 </thead>
@@ -2128,9 +2220,34 @@ include ('./layout/admin/table-pagination-css.php');
 
             $(".inventoryCard").html(tblData);
             $('#modalCashPrint').hide();
+
+            $('.inventoryCard #tbl_products').DataTable({
+                ordering: true,
+                order: [[0, 'asc']], 
+                pageLength: 50,
+                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                language: {
+                    paginate: {
+                        previous: '<i class="fa fa-angle-left"></i>',
+                        next: '<i class="fa fa-angle-right"></i>'
+                    }
+                },
+                keys: true,
+            });
+            $('#searchInput').on('keyup', function(event) {
+              $('.inventoryCard #tbl_products').DataTable().search($(this).val()).draw();
+              if (event.keyCode === 13 || event.keyCode === 27) { // Clear input on Enter or Escape key press
+                  $(this).val('');
+              }
+            });
           }
         });
       }
+      $('#product').on('keypress', function(event) {
+        if (event.keyCode === 13 || event.keyCode === 27) { // Clear input on Enter or Escape key press
+           hidePopups();
+        }
+      });
       function date_format(date) {
         var date = new Date(date);
         var formattedDate = $.datepicker.formatDate("M dd yy", date);
@@ -2194,17 +2311,33 @@ include ('./layout/admin/table-pagination-css.php');
               </table>`;
 
             $(".inventoryCard").html(tblData);
-
+            $('.inventoryCard #tbl_orders').DataTable({
+                ordering: true,
+                order: [[0, 'asc']], 
+                pageLength: 50,
+                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                language: {
+                    paginate: {
+                        previous: '<i class="fa fa-angle-left"></i>',
+                        next: '<i class="fa fa-angle-right"></i>'
+                    }
+                },
+            });
+            $('#searchInput').on('keyup', function(event) {
+              $('.inventoryCard #tbl_orders').DataTable().search($(this).val()).draw();
+            });
           }
         });
       }
       $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
           var productId = $(this).find("td[data-id]").data("id");
           var qty_purchased = $(this).find("td:nth-child(2)").text();
-          var price = $(this).find("td:nth-child(3)").text();
-          $("#item_verifier").val(productId);
+          var price = clean_number($(this).find("td:nth-child(3)").text());
+
+          $("#selected_product_id").val(productId);
           show_purchaseQtyModal(productId, qty_purchased, price);
       });
+      
       $(".inventoryCard").on('click', '.btn_editOrder', function (e) {
         e.preventDefault();
         var order_id = $(this).data('id');
@@ -2256,7 +2389,7 @@ include ('./layout/admin/table-pagination-css.php');
               //     $("<td>", { style: "text-align: right" }).html("&#x20B1;&nbsp;" + addCommasToNumber(data[i].total))
               // );
               table += "<tr data-rowid = "+data[i].product_id+" id = 'show_pqtymodal'>";
-              table += "<td data-rowid = "+data[i].product_id+" data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " : " + data[i].barcode + "</td>";
+              table += "<td data-rowid = "+data[i].product_id+" data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " </td>";
               table += "<td style = 'text-align: center' class ='editable' data-qty = "+data[i].qty_purchased+" data-price= "+data[i].amount_beforeTax+">" + data[i].qty_purchased + "</td>";
               table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
               table += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].total) + "</td>";
@@ -2295,19 +2428,19 @@ include ('./layout/admin/table-pagination-css.php');
       function clean_number(number) {
         return number.replace(/[₱\s]/g, '');
       }
-      $('#searchInput').on('input', function(){
-          var searchText = $(this).val().toLowerCase();
+      // $('#searchInput').on('input', function(){
+      //     var searchText = $(this).val().toLowerCase();
 
-          $('.inventoryCard table tbody tr').each(function(){
-              var rowText = $(this).text().toLowerCase();
-              if(rowText.includes(searchText)){
-                  $(this).show();
-              } else {
-                  $(this).hide();
-              }
-          });
+      //     $('.inventoryCard table tbody tr').each(function(){
+      //         var rowText = $(this).text().toLowerCase();
+      //         if(rowText.includes(searchText)){
+      //             $(this).show();
+      //         } else {
+      //             $(this).hide();
+      //         }
+      //     });
           
-      });
+      // });
 
 
       // $('#searchInput').on('keyup', function (event) {

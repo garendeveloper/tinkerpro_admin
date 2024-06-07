@@ -204,18 +204,17 @@ $(document).ready(function() {
     });
 
     $("#stockhistory_modal #start_date").flatpickr({
-    dateFormat: "d M Y",
-    onClose: function(selectedDates) {
-        if(selectedDates[0] !== undefined) {
-            // Destroy the existing end date picker before re-initializin
-            $("#stockhistory_modal #end_date").flatpickr().destroy();
-            $("#stockhistory_modal #end_date").flatpickr({
-                minDate: selectedDates[0],
-                dateFormat: "d M Y",
-            });
+        dateFormat: "d M Y",
+        onClose: function(selectedDates) {
+            if(selectedDates[0] !== undefined) {
+                $("#stockhistory_modal #end_date").flatpickr().destroy();
+                $("#stockhistory_modal #end_date").flatpickr({
+                    minDate: selectedDates[0],
+                    dateFormat: "d M Y",
+                });
+            }
         }
-    }
-});
+    });
 
     $("#stockhistory_modal #end_date").flatpickr({
       dateFormat: "d M Y",

@@ -370,10 +370,9 @@
     $lastInsertId = $pdo->lastInsertId();
 
   
-    // $sqlInventory = 'INSERT INTO inventory(product_id) VALUES (?)';
-    // $stmtInventory = $this->connect()->prepare($sqlInventory);
-    // $stmtInventory->execute([$lastInsertId]);
- 
+    $sqlInventory = 'INSERT INTO inventory(product_id) VALUES (?)';
+    $stmtInventory = $this->connect()->prepare($sqlInventory);
+    $stmtInventory->execute([$lastInsertId]);
 
   
     if ($bomStat == 1) {
@@ -813,6 +812,12 @@ public function importProducts($fileData) {
 
           $stmt->execute();
           $lastInsertIds[] = $conn->lastInsertId();
+
+          $lastInsertId = $conn->lastInsertId();
+  
+          // $sqlInventory = 'INSERT INTO inventory(product_id) VALUES (?)';
+          // $stmtInventory = $this->connect()->prepare($sqlInventory);
+          // $stmtInventory->execute([$lastInsertId]);
       }
 
       $conn->commit(); 
