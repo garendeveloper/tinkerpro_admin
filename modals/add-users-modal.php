@@ -787,6 +787,7 @@ function addUsers() {
                 timerProgressBar: true, 
                 showConfirmButton: false 
             });
+            console.log(response.data)
               closeAddUserModal()
             })
             .catch(function(error) {
