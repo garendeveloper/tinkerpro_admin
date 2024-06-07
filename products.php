@@ -148,7 +148,7 @@ if (isset($_SESSION['user_id'])) {
     padding: 16px; 
   }
   .highlighteds{
-     border: 2px solid #00B050; 
+     border: 2px solid #00B050 !important; 
   }
   .paginationTag {
     text-decoration: none; 
@@ -174,6 +174,21 @@ if (isset($_SESSION['user_id'])) {
       justify-content: center;
       align-items: center;
     }
+    .paginationTag {
+    text-decoration: none;
+    padding: 5px 10px;
+    margin: 2px;
+    border: 1px solid #ddd;
+    color: #000;
+}
+.paginationTag:hover {
+    background-color: #f0f0f0;
+}
+.paginationTag.active {
+    background-color: #00B050;
+    color: white;
+    outline: none;
+}
 </style>
 
 <?php include "layout/admin/css.php"?> 
@@ -403,28 +418,37 @@ function showPaginationBtn(){
 
 }
 
-
+showPaginationBtn()
 function refreshProductsTable(page) {
+  $('.paginationTag').removeClass('active');
+  $('.paginationTag').eq(page - 1).addClass('active');
   $('.searchProducts').focus();
-  $('#modalCashPrint').show()
+  $('#modalCashPrint').show();
+  var cachedData = localStorage.getItem('productsPage' + page);
+  if (cachedData) {
+    $('#productTable').html(cachedData);
+    $('#modalCashPrint').hide();
+  } else {
     $.ajax({
-        url: './fetch-data/fetch-products.php', 
-        type: 'GET',
-        data: { page: page},
-        success: function(response) {
-            $('#productTable').html(response); 
-            showPaginationBtn()
-            
-            $('#modalCashPrint').hide()
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText); 
-        }
+      url: './fetch-data/fetch-products.php',
+      type: 'GET',
+      data: { page: page },
+      success: function (response) {
+        $('#productTable').html(response);
+        $('#modalCashPrint').hide();
+        localStorage.setItem('productsPage' + page, response);
+      },
+      error: function (xhr, status, error) {
+        console.error(xhr.responseText);
+      }
     });
+  }
 }
-refreshProductsTable(1)
+refreshProductsTable()
 
 function searchProducts(){
+  $('.paginationTag').removeClass('active'); 
+  $('.paginationTag').eq(page - 1).addClass('active');
   var searchData = $('.searchProducts').val();
     $.ajax({
         url: './fetch-data/fetch-products.php', 

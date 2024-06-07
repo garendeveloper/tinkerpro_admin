@@ -42,7 +42,7 @@
         case 'addUsersData': 
             $formData = $_POST;
             $result = $userFacade->addNewUsers($formData);
-            echo json_encode( $formData);
+            echo json_encode( $result);
             break; 
         case 'updateUserData':
             $formData = $_POST;

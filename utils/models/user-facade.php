@@ -273,8 +273,14 @@ class UserFacade extends DBConnection {
         }
     
         $sql = 'INSERT INTO users (role_id, last_name, first_name, password, username, profileImage,date_hired,employee_number,users_identification,status_id) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?)';
-        $stmt = $this->connect()->prepare($sql);
+        $pdo = $this->connect();
+        $stmt =  $pdo->prepare($sql);
         $stmt->execute([$role_id, $last_name, $first_name, $password, $username, $fileName, $newDateHired, $employeeNum, $identification, $status]);
+
+        $lastUserInserted =  $pdo->lastInsertId();
+        $sqls = "INSERT INTO `series`(`cashier_id`, `series`) VALUES (?,?)";
+        $stmt = $pdo->prepare($sqls);
+        $stmt->execute([$lastUserInserted, $lastUserInserted]);
     
         $userId = null;
         if ($stmt) {
@@ -311,7 +317,7 @@ class UserFacade extends DBConnection {
             }
         }
     
-        return ['success' => true, 'message' => 'User added successfully'];
+        return ['success' => true, 'message' => 'User added successfully', 'userId' => $lastUserInserted];
     }
     
 
