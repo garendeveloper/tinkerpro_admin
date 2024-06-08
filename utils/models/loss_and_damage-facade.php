@@ -142,17 +142,27 @@
 
                 $loss_and_damage_id = $this->get_last_lossanddamages_id();
 
-                $stmt = $this->connect()->prepare("UPDATE inventory SET stock = stock - :quantity  WHERE id = :id");
+                $stmt = $this->connect()->prepare("UPDATE products SET product_stock = product_stock - :quantity WHERE id = :id");
                 $stmt->bindParam(":quantity", $qty_damage); 
                 $stmt->bindParam(":id", $inventory_id); 
                 $stmt->execute();
-                
-                $qty_damage = "-".$qty_damage;
-                $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
-                                                    VALUES (?, ?, ?)");
+    
+                $currentStock = $this->get_productInfo($inventory_id)['product_stock'];
+                $currentDate = date('Y-m-d H:i:s');
+                $qty_damage = $this->makeNegative($qty_damage);
+                $stock_customer = $formData['user_name'];
+                $document_number = $reference_no;
+                $transaction_type = "Loss and Damage (".$reason." )";
+                $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+    
                 $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                $stmt->bindParam(2, $qty_damage, PDO::PARAM_STR); 
-                $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+                $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+                $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
+                $stmt->bindParam(4, $qty_damage, PDO::PARAM_STR); 
+                $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+                $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+                $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
                 $stmt->execute();
                 
                 if(isset($sub_row_data))
@@ -176,5 +186,24 @@
                 'status'=>true,
                 'msg'=>'loss and damage has been successfully saved'
             ];
+        }
+        public function makeNegative($qty_damage) 
+        {
+            $qty_damage = (float)$qty_damage;
+            
+            if ($qty_damage > 0) {
+                $qty_damage = -$qty_damage;
+            }
+            
+            return $qty_damage;
+        }
+        public function get_productInfo($product)
+        {
+            $sql = "SELECT *, isVat FROM products WHERE id = :id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(':id', $product, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
         }
     }

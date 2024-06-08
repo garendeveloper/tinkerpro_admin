@@ -65,15 +65,28 @@ $pdf->AddPage();
 // $pdf->Cell(0, 10, "Date: $current_date", 0, 'R');
 // $pdf->Ln(-2);
 $barcodeValue = $_GET['po_number']; 
-$barcodeFormat = 'C39'; 
+$barcodeFormat = 'CUPC';
+$barcodeWidth = 10;
+$barcodeHeight= 10; 
+$barcodePosX = $this->getPageWidth() - 70; 
+$barcodePosY = 12; 
+$this->write1DBarcode($barcodeValue, $barcodeFormat, $barcodePosX, $barcodePosY, '', $barcodeWidth, $barcodeHeight, null, 'N');
 
-$barcodeWidth = 5; 
-$barcodeHeight = 5; 
-$barcodePosX = 20; 
-$barcodePosY = 20; 
+$textWidth = $this->GetStringWidth('PURCHASE ORDER');
+$xPos = $barcodePosX + (50 - $textWidth); 
+$this->SetY($barcodePosY - 7); 
+$this->SetX($xPos + 3);
+$this->SetFont('', 'B', 12); 
+$this->MultiCell(0, 10, "PURCHASE ORDER", 0, 'C');
 
-$pdf->write1DBarcode($barcodeValue, $barcodeFormat, $barcodePosX, $barcodePosY, '', $barcodeWidth, $barcodeHeight, null, 'N');
+$this->SetY($barcodePosY + $barcodeHeight + 3); 
+$this->SetX($barcodePosX);
+$this->SetFont('', '', 12); 
+$this->MultiCell(0, 10, "{$barcodeValue}", 0, 'R');   
 
+$this->Ln(-4);
+$this->Cell(0, 10, '', 0, 1, 'R', 0);
+$this->SetFont('', '', 10);
 $items = $orders->get_orderData($order_id);
 $header = array('No.', 'S/N', 'ITEM DESCRIPTION', 'QTY', 'PRICE', 'PRICE(Php.)', 'VAT(12%)', 'TOTAL (Php.)');
 $headerWidths = array(7, 35, 50, 20, 20, 20, 20, 20);

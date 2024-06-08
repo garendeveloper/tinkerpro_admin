@@ -216,6 +216,7 @@ $(document).ready(function() {
         }
     });
 
+   
     $("#stockhistory_modal #end_date").flatpickr({
       dateFormat: "d M Y",
     });
@@ -244,7 +245,7 @@ $(document).ready(function() {
               var stockItem = stocks[i];
               var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
               var stockTimestamp = stockItem.stock_date;
-              var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+              var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
               tbl_rows.push(
                 `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>

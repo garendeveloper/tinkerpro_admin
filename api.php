@@ -77,7 +77,7 @@
             echo json_encode($inventory->get_allStocksData($_GET['inventory_id']));
             break;
         case 'get_allStocksDataByDate':
-            echo json_encode($inventory->get_allStocksData($_GET['inventory_id'], $_GET['start_date'], $_GET['end_date']));
+            echo json_encode($inventory->get_allStocksDataByDate($_GET['inventory_id'], $_GET['start_date'], $_GET['end_date']));
             break;
         case 'get_allProductByInventoryType':
             $inventory_type = $_GET['type'];
