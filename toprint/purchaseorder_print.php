@@ -73,14 +73,29 @@
         }    
     }
 
-    function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10)
-    {
-        $pdf->SetFont('dejavusans', '', $initialFontSize);
-        while ($pdf->GetStringWidth($text) > $maxWidth) {
-            $initialFontSize--;
-            $pdf->SetFont('', '', $initialFontSize);
+    // function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10)
+    // {
+    //     $pdf->SetFont('dejavusans', '', $initialFontSize);
+    //     while ($pdf->GetStringWidth($text) > $maxWidth) {
+    //         $initialFontSize--;
+    //         $pdf->SetFont('', '', $initialFontSize);
+    //     }
+    //     return $initialFontSize;
+    // }
+    function autoAdjustFontSize($pdf, $text, $width) {
+        $maxFontSize = 12; // Starting font size (you can adjust this as needed)
+        $minFontSize = 6;  // Minimum font size
+        $pdf->SetFont('dejavusans', '', $width);
+        // Calculate the width of the text using different font sizes
+        while ($maxFontSize >= $minFontSize) {
+            $pdf->SetFont('', '', $maxFontSize);
+            if ($pdf->GetStringWidth($text) <= $width) {
+                break;
+            }
+            $maxFontSize--;
         }
-        return $initialFontSize;
+    
+        return $maxFontSize;
     }
 
     function addFooter($pdf, $preparedBy, $receivedBy) {
@@ -116,15 +131,15 @@
     $pdf->Ln(24);
 
     $items = $orders->get_orderData($order_id);
-    $header = array('No.', 'S/N', 'ITEM DESCRIPTION', 'QTY', 'PRICE(Php.)', 'VAT(12%)', 'TOTAL (Php.)');
+    $header = array('No.', 'ITEM DESCRIPTION', 'QTY', 'PRICE(Php.)', 'VAT(12%)', 'TOTAL (Php.)');
     $headerWidths = [];
     $maxCellHeight = 5;
     foreach ($header as $title) {
-        $cellWidth = $pdf->GetStringWidth($title) + 8; 
+        $cellWidth = $pdf->GetStringWidth($title) + 11; 
         $headerWidths[] = $cellWidth;
     }
 
-    $hexColor = '#F5F5F5';
+    $hexColor = '#FFA500';
     list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
     $pdf->SetFillColor($r, $g, $b);
@@ -143,26 +158,33 @@
 
     foreach ($items as $item) 
     {
-        $amountBeforeTaxFormatted = '₱' . number_format($item['amount_beforeTax'], 2);
+        $amountBeforeTaxFormatted = '₱' . number_format($item['cost'], 2);
         $tax = '₱' . number_format($item['tax'], 2);
         $total = '₱' . number_format($item['total'], 2);
-
+    
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[0]));
         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[1]));
-        $pdf->Cell($headerWidths[1], $maxCellHeight, $item['sku'], 1, 0, 'L');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['sku'], $headerWidths[2]));
-        $pdf->Cell($headerWidths[2], $maxCellHeight, $item['prod_desc'], 1, 0, 'L');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['prod_desc'], $headerWidths[3]));
-        $pdf->Cell($headerWidths[3], $maxCellHeight, $item['qty_purchased'], 1, 0, 'L');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['qty_purchased'], $headerWidths[4]));
-        $pdf->Cell($headerWidths[4], $maxCellHeight, $amountBeforeTaxFormatted, 1, 0, 'C');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[5]));
-        $pdf->Cell($headerWidths[5], $maxCellHeight, $tax, 1, 0, 'R');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $tax, $headerWidths[6]));
-        $pdf->Cell($headerWidths[6], $maxCellHeight, $total, 1, 0, 'R');
+
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['prod_desc'], $headerWidths[1]));
+        $pdf->Cell($headerWidths[1], $maxCellHeight, $item['prod_desc'], 1, 0, 'L');
+    
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['qty_purchased'], $headerWidths[2]));
+        $pdf->Cell($headerWidths[2], $maxCellHeight, $item['qty_purchased'], 1, 0, 'C');
+    
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[3]));
+        $pdf->Cell($headerWidths[3], $maxCellHeight, $amountBeforeTaxFormatted, 1, 0, 'R');
+    
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $tax, $headerWidths[4]));
+        $pdf->Cell($headerWidths[4], $maxCellHeight, $tax, 1, 0, 'R');
+
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $total, $headerWidths[5]));
+        $pdf->Cell($headerWidths[5], $maxCellHeight, $total, 1, 0, 'R');
+    
         $pdf->Ln(); 
         $counter++;
     }
+    
+    
 
     addFooter($pdf, '_______________________________', '_______________________________');
 

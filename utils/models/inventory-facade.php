@@ -3,10 +3,21 @@ class InventoryFacade extends DBConnection
 {
     public function get_allInventories()
     {
-        $sql = $this->connect()->prepare(" SELECT inventory.*, products.*, uom.*
-                                        FROM inventory
-                                        JOIN products ON products.id = inventory.product_id
-                                        JOIN uom ON uom.id = products.uom_id");
+        // $sql = $this->connect()->prepare("SELECT inventory.*, products.*, uom.*
+        //                                 FROM inventory
+        //                                 JOIN products ON products.id = inventory.product_id
+        //                                 JOIN uom ON uom.id = products.uom_id");
+        $sql = $this->connect()->prepare("SELECT 
+                                            inventory.*, products.*, uom.*,
+                                            SUM(products.product_stock) AS total_stock
+                                        FROM 
+                                            inventory
+                                        JOIN 
+                                            products ON products.id = inventory.product_id
+                                        JOIN 
+                                            uom ON uom.id = products.uom_id
+                                        GROUP BY 
+                                            products.id, products.prod_desc");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -117,6 +128,20 @@ class InventoryFacade extends DBConnection
         ];
         return $array;
     }
+    public function get_productDataById($inventory_id)
+    {
+        $sql = "SELECT products.*, uom.*
+                FROM products
+                INNER JOIN uom ON uom.id = products.uom_id
+                WHERE products.id = :inventory_id";
+
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(":inventory_id", $inventory_id);
+        $stmt->execute();
+        $data =  $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data;
+
+    }
     public function get_allTheSerialized($inventory_id)
     {
         $sql = "SELECT serialized_product.*, inventory.*, serialized_product.serial_number, serialized_product.id as serial_id
@@ -141,35 +166,51 @@ class InventoryFacade extends DBConnection
         return $data;
     }
     public function get_allStocksData($inventory_id)
-    {
-        $sql = "SELECT inventory.*, stocks.*, stocks.date as stock_date
-                FROM inventory
-                INNER JOIN stocks ON stocks.inventory_id = inventory.id
-                WHERE inventory.id = :inventory_id";
+    {   
+        $sql = "SELECT products.*, stocks.*, stocks.date as stock_date
+                FROM products
+                INNER JOIN stocks ON stocks.inventory_id = products.id
+                WHERE products.id = :inventory_id";
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(":inventory_id", $inventory_id);
         $stmt->execute();
         $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return [
-            'inventoryInfo' => $this->get_inventoryDataById($inventory_id),
-            'stocks' => $stocks,
+            'inventoryInfo' => $this->get_productDataById($inventory_id),
+            'stocks' =>$stocks,
         ];
     }
     public function get_allStocksDataByDate($inventory_id, $start_date, $end_date)
     {
-        $start_date =  date("Y-m-d", strtotime($start_date));
-        $end_date =  date("Y-m-d", strtotime($end_date));
-        $sql = "SELECT inventory.*, stocks.*, stocks.date as stock_date
-                FROM inventory
-                INNER JOIN stocks ON stocks.inventory_id = inventory.id
-                WHERE inventory.id = :inventory_id
-                AND FROM_UNIXTIME(stocks.date) BETWEEN :st_date AND :end_date";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(":inventory_id", $inventory_id);
-        $stmt->bindParam(":st_date", $start_date); 
-        $stmt->bindParam(":end_date", $end_date);    
-        $stmt->execute();
-        $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stocks = [];
+        if($start_date !== "" AND $end_date !== "")
+        {
+            $start_date =  date("Y-m-d", strtotime($start_date));
+            $end_date =  date("Y-m-d", strtotime($end_date));
+            $sql = "SELECT products.*, stocks.*, stocks.date as stock_date
+                    FROM products
+                    INNER JOIN stocks ON stocks.inventory_id = products.id
+                    WHERE products.id = :inventory_id
+                    AND FROM_UNIXTIME(stocks.date) BETWEEN :st_date AND :end_date";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":inventory_id", $inventory_id);
+            $stmt->bindParam(":st_date", $start_date); 
+            $stmt->bindParam(":end_date", $end_date);    
+            $stmt->execute();
+            $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            $sql = "SELECT products.*, stocks.*, stocks.date as stock_date
+                    FROM products
+                    INNER JOIN stocks ON stocks.inventory_id = products.id
+                    WHERE products.id = :inventory_id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->bindParam(":inventory_id", $inventory_id);
+            $stmt->execute();
+            $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+     
         return [
             'inventoryInfo' => $this->get_inventoryDataById($inventory_id),
             'stocks' => $stocks,
@@ -263,22 +304,24 @@ class InventoryFacade extends DBConnection
             $inventory_id = $row['inventory_id'];
             $qty_onhand = (int)$row['col_2'];
             $newqty = (int)$row['newqty'];
-            $currentDate = date('Y-m-d');
+            $currentDate = date('Y-m-d H:i:s');
 
-            $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock WHERE id = :id");
+            $stmt = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
             $stmt->bindParam(":new_stock", $newqty); 
             $stmt->bindParam(":id", $inventory_id); 
             $stmt->execute();
 
+            $currentStock = 0;
             $newqty = "+".$newqty;
             $stock_customer = $formData['user_name'];
             $document_number = "---";
             $transaction_type = "Quick Inventory";
             $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
                                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
+
             $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
             $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-            $stmt->bindParam(3, $newqty, PDO::PARAM_STR); 
+            $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
             $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
             $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
             $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
@@ -463,7 +506,7 @@ class InventoryFacade extends DBConnection
         $totalQty = $formData['totalQty'];
         $totalPrice = $this->remove_nonBreakingSpace($this->clean_number($formData['totalPrice']));
         $order_type = 1;
-      
+        
         $order_id = $this->get_lastOrderData() === false ? 0 : $this->get_lastOrderData()['id'];
         if ($formData['order_id'] !== "0") {
             $sql = "UPDATE orders SET isPaid = :v1, supplier_id = :v2, date_purchased = :v3, price = :v4, totalTax = :v5, totalQty = :v6, totalPrice = :v7 WHERE id = :id";
@@ -562,6 +605,17 @@ class InventoryFacade extends DBConnection
         }
         return $order_id;
     }
+    public function get_productInfoByInventoryId($inventory_id)
+    {
+        $sql = $this->connect()->prepare("SELECT inventory.*, products.id as prod_id
+                                        FROM inventory, products
+                                        WHERE products.id = inventory.product_id
+                                        AND inventory.id = :inv_id  
+                                        ");
+        $sql->bindParam(":inv_id", $inventory_id);
+        $sql->execute();
+        return $sql->fetch();
+    }
     public function save_receivedItems($formData)
     {
         $tbl_data = json_decode($formData['tbl_data'], true);
@@ -615,13 +669,36 @@ class InventoryFacade extends DBConnection
 
                     if($qty_received > 0) {$qty_received = "+".$qty_received;}
                    
-                    $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
-                                                        VALUES (?, ?, ?)");
-                    $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                    $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
-                    $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
-                    $stmt->execute();
+                    // $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
+                    //                                     VALUES (?, ?, ?)");
+                    // $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                    // $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
+                    // $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+                    // $stmt->execute();
 
+                    
+                    $product_id = $this->get_productInfoByInventoryId($inventory_id)['prod_id'];
+                    $stmt = $this->connect()->prepare("UPDATE products SET product_stock = product_stock + :new_stock WHERE id = :id");
+                    $stmt->bindParam(":new_stock", $qty_received); 
+                    $stmt->bindParam(":id", $product_id); 
+                    $stmt->execute();
+        
+                    $currentStock = $this->get_productInfo($product_id)['product_stock'];
+                    $currentDate = date('Y-m-d H:i:s');
+                    $stock_customer = $formData['user_name'];
+                    $document_number = $po_number;
+                    $transaction_type = "Received";
+                    $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                                        VALUES (?, ?, ?, ?, ?, ?, ?)");
+        
+                    $stmt->bindParam(1, $product_id, PDO::PARAM_INT);
+                    $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+                    $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
+                    $stmt->bindParam(4, $qty_received, PDO::PARAM_STR); 
+                    $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+                    $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+                    $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
+                    $stmt->execute();
 
                     // if ($isSerialized) 
                     // {
@@ -646,12 +723,33 @@ class InventoryFacade extends DBConnection
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
-                    $qty_received = "+".$qty_received;
-                    $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
-                                                        VALUES (?, ?, ?)");
+                    // $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
+                    //                                     VALUES (?, ?, ?)");
+                    // $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                    // $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
+                    // $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+                    // $stmt->execute();
+                    $product_id = get_productInfoByInventoryId($inventory_id)['prod_id'];
+                    $stmt = $this->connect()->prepare("UPDATE products SET product_stock = product_stock + :new_stock WHERE id = :id");
+                    $stmt->bindParam(":new_stock", $qty_received); 
+                    $stmt->bindParam(":id", $product_id); 
+                    $stmt->execute();
+        
+                    $currentStock = $this->get_productInfo($product_id)['product_stock'];
+                    $currentDate = date('Y-m-d H:i:s');
+                    $stock_customer = $formData['user_name'];
+                    $document_number = $po_number;
+                    $transaction_type = "Received";
+                    $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                                        VALUES (?, ?, ?, ?, ?, ?, ?)");
+        
                     $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                    $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
-                    $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+                    $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+                    $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
+                    $stmt->bindParam(4, $qty_received, PDO::PARAM_STR); 
+                    $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+                    $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+                    $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
                     $stmt->execute();
     
                     // if ($isSerialized) 
@@ -711,6 +809,7 @@ class InventoryFacade extends DBConnection
     }
     public function save_purchaseOrder($formData)
     {
+        $order_data = $this->get_orderData($this->save_order($formData));
         if ($this->validateData($formData)) {
             $tbldata = json_decode($formData['data'], true);
             $order_id = $this->save_order($formData);
@@ -741,56 +840,58 @@ class InventoryFacade extends DBConnection
                         $amount_afterTax = $price - $tax;
                     }
 
+                    $isPriceNotChange = $this->get_productInfo($product_id)['cost'] === $price;
                     $is_taxInclusive = $this->get_productInfo($product_id)['is_taxIncluded'] === 1;
                     $new_selling_price = $this->get_productInfo($product_id)['prod_price'];
                     $new_cost_price = $price;
-                    if($is_taxInclusive)
-                    {
-                        $mark_up = $this->get_productInfo($product_id)['markup']; 
-                        $interest = $price * ($mark_up/100);
-                        $new_selling_price = $new_cost_price + $interest;
-                        $new_selling_price = number_format($new_selling_price, 2, '.', '');
-                    }
-                    else
-                    {
-                        $mark_up = $this->get_productInfo($product_id)['markup']; 
-                        $interest = $price * ($mark_up/100);
-                        $selling_price = $new_cost_price + $interest;
-        
-                        $withTax = ($new_selling_price/1.12) * 0.12;
-                        $new_selling_price = $withTax;
-                        $new_selling_price = number_format($new_selling_price, 2, '.', '');
-                    }
 
-                    if ($inventory_id === 0) {
-
-                        if(!$this->check_ifInventoryExist($product_id))
+                    if($isPriceNotChange)
+                    {
+                        if($is_taxInclusive)
                         {
-                            $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
-                                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    
-                            $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
-                            $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
-                            $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
-                            $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
-                            $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
-                            $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
-                            $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
-                            $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
-                            $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
-                            $sqlStatement->execute();
-
-                            $product_sql = $this->connect()->prepare("UPDATE products SET cost = :cost, prod_price = :prod_price WHERE id = :id");
-                            $product_sql->bindParam(":cost", $new_cost_price);
-                            $product_sql->bindParam(":prod_price", $new_selling_price);
-                            $product_sql->bindParam(":id", $product_id);
-                            $product_sql->execute();
+                            $mark_up = $this->get_productInfo($product_id)['markup']; 
+                            $interest = $price * ($mark_up/100);
+                            $new_selling_price = $new_cost_price + $interest;
+                            $new_selling_price = number_format($new_selling_price, 2, '.', '');
                         }
                         else
                         {
-                            $existed_product[] = [$product_id];
+                            $mark_up = $this->get_productInfo($product_id)['markup']; 
+                            $interest = $price * ($mark_up/100);
+                            $selling_price = $new_cost_price + $interest;
+            
+                            $withTax = ($new_selling_price/1.12) * 0.12;
+                            $new_selling_price = $withTax;
+                            $new_selling_price = number_format($new_selling_price, 2, '.', '');
                         }
-                    } else {
+                    } 
+
+                    if ($inventory_id === 0) 
+                    {
+
+                        $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
+                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+                        $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
+                        $sqlStatement->execute();
+
+                        $product_sql = $this->connect()->prepare("UPDATE products SET cost = :cost, prod_price = :prod_price WHERE id = :id");
+                        $product_sql->bindParam(":cost", $new_cost_price);
+                        $product_sql->bindParam(":prod_price", $new_selling_price);
+                        $product_sql->bindParam(":id", $product_id);
+                        $product_sql->execute();
+                      
+                    }
+                     else 
+                    {
                         $sql = "UPDATE inventory SET qty_purchased = :v1, amount_beforeTax = :v2, amount_afterTax = :v3, status = :v4, total = :v5, tax = :v6, order_id = :v7, product_id = :v8 WHERE id = :id";
                         $sqlStatement = $this->connect()->prepare($sql);
 
@@ -835,61 +936,61 @@ class InventoryFacade extends DBConnection
                     }
 
 
+                    $isPriceNotChange = $this->get_productInfo($product_id)['cost'] === $price;
                     $is_taxInclusive = $this->get_productInfo($product_id)['is_taxIncluded'] === 1;
                     $new_selling_price = $this->get_productInfo($product_id)['prod_price'];
                     $new_cost_price = $price;
-                    if($is_taxInclusive)
+                    
+                    if($isPriceNotChange)
                     {
-                        $mark_up = $this->get_productInfo($product_id)['markup']; //percent
-                        $interest = $price * ($mark_up/100);
-                        $new_selling_price = $new_cost_price + $interest;
-                        $new_selling_price = number_format($new_selling_price, 2, '.', '');
-                    }
-                    else
-                    {
-                        $mark_up = $this->get_productInfo($product_id)['markup']; //percent
-                        $interest = $price * ($mark_up/100);
-                        $selling_price = $new_cost_price + $interest;
-        
-                        $withTax = ($new_selling_price/1.12) * 0.12;
-                        $new_selling_price = $withTax;
-                        $new_selling_price = number_format($new_selling_price, 2, '.', '');
-                    }
+                        if($is_taxInclusive)
+                        {
+                            $mark_up = $this->get_productInfo($product_id)['markup']; 
+                            $interest = $price * ($mark_up/100);
+                            $new_selling_price = $new_cost_price + $interest;
+                            $new_selling_price = number_format($new_selling_price, 2, '.', '');
+                        }
+                        else
+                        {
+                            $mark_up = $this->get_productInfo($product_id)['markup']; 
+                            $interest = $price * ($mark_up/100);
+                            $selling_price = $new_cost_price + $interest;
+            
+                            $withTax = ($new_selling_price/1.12) * 0.12;
+                            $new_selling_price = $withTax;
+                            $new_selling_price = number_format($new_selling_price, 2, '.', '');
+                        }
+                    } 
 
-                    if(!$this->check_ifInventoryExist($product_id))
-                    {
-                        $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
-                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-                        $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
-                        $sqlStatement->execute();
-                        
-                        $product_sql = $this->connect()->prepare("UPDATE products SET cost = :cost, prod_price = :prod_price WHERE id = :id");
-                        $product_sql->bindParam(":cost", $new_cost_price);
-                        $product_sql->bindParam(":prod_price", $new_selling_price);
-                        $product_sql->bindParam(":id", $product_id);
-                        $product_sql->execute();
+                    $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);
+                    $sqlStatement->bindParam(9, $tax, PDO::PARAM_STR);
+                    $sqlStatement->execute();
+                    
+                    $product_sql = $this->connect()->prepare("UPDATE products SET cost = :cost, prod_price = :prod_price WHERE id = :id");
+                    $product_sql->bindParam(":cost", $new_cost_price);
+                    $product_sql->bindParam(":prod_price", $new_selling_price);
+                    $product_sql->bindParam(":id", $product_id);
+                    $product_sql->execute();
 
-                    }
-                    else{
-                        $existed_product[] = [$this->get_productInfo($product_id)['prod_desc']];
-                    }
+                  
                 }
             }
             return [
                 'status' => true,
                 'message' => 'Purchase Orders has been successfully saved!',
-                // 'order_id' => ,
-                // 'po_number' => ,
-                'existed_product'=>$existed_product,
+                'order_id' => $this->save_order($formData),
+                'po_number' => $order_data['po_number'],
+                'existed_product'=>"->no",
             ];
         } else {
             return [
@@ -898,39 +999,15 @@ class InventoryFacade extends DBConnection
             ];
         }
     }
-    public function get_orderDataByPurchaseNumber($po_number)
+    public function get_orderData($order_id)
     {
-        $sql = "SELECT orders.*, products.*, supplier.*, inventory.*, inventory.id as inventory_id
+        $sql = "SELECT id, po_number
                 FROM orders
-                INNER JOIN inventory ON orders.id = inventory.order_id 
-                INNER JOIN supplier ON supplier.id = orders.supplier_id
-                INNER JOIN products ON products.id = inventory.product_id
-                WHERE orders.po_number = :po_number";
+                WHERE orders.id = :order_id";
 
         $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(':po_number', $po_number, PDO::PARAM_STR);
+        $stmt->bindParam(':order_id', $order_id, PDO::PARAM_STR);
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $tbl_data = [];
-        foreach ($data as $row) {
-            $tbl_data[] = [
-                'inventory_id' => $row['inventory_id'],
-                'po_number' => $row['po_number'],
-                'date_purchased' => $row['date_purchased'],
-                'supplier' => $row['supplier'],
-                'isSelected' => $row['isSelected'],
-                'isSerialized' => $row['isSerialized'],
-                'qty_received' => $row['qty_received'],
-                'qty_purchased' => $row['qty_purchased'],
-                'prod_desc' => $row['prod_desc'],
-                'date_expired' => $row['date_expired'],
-                'stock'=>$row['stock'],
-                'isReceived'=>$row['isReceived'],
-                'is_received'=>$row['is_received'],
-                'isPaid'=>$row['isPaid'],
-                'sub_row'=>$this->get_allTheSerialized($row['inventory_id']),
-            ];
-        }
-        return $tbl_data;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

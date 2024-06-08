@@ -192,7 +192,7 @@
 <script>
     $(document).ready(function () {
         show_reference_no();
-        show_allProducts();
+        get_allProductInventory();
         $('#date_damage').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -214,7 +214,7 @@
         function isDataExistInTable(data) {
             var isExist = false;
             $('#tbl_lossand_damages tbody').each(function () {
-                var rowData = $(this).find('td:first').data('id');
+                var rowData = $(this).find('td:first').text();
                 if (rowData === data) {
                     isExist = true;
                     return false;
@@ -222,77 +222,74 @@
             });
             return isExist;
         }
-        var productsCache = [];
-        function show_allProducts() 
-        {
-            $.ajax({
-            type: 'GET',
-            url: 'api.php?action=get_allProducts',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) 
-                {
-                    var row = 
-                    {
-                        product_id: data[i].id,
-                        product: data[i].prod_desc,
-                        barcode: data[i].barcode,
-                        brand: data[i].brand,
-                    };
-                    productsCache.push(row);
-                }
-            }
-            });
-        }
-        function filterProducts(term) {
-            return productsCache.filter(function (row) {
-            return row.product.toLowerCase().includes(term) ||
-                row.barcode.includes(term) ||
-                (row.brand && row.brand.toLowerCase().includes(term)) ||
-                (!row.brand && term === "");
-            }).map(function (row) {
-            var brand = row.brand === null ? " " : row.brand;
-            return {
-                label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
-                value: row.barcode ?? row.product,
-                id: row.product_id
-            };
-            });
-        }
-        function append_to_table()
-        {
-            var product_id = $("#loss_and_damage_input_inventory_id").val();
-            $.ajax({
-                type: 'get',
-                url: 'api.php?action=get_productInfo',
-                data: { data: product_id },
-                success: function (data) {
-                    var row = "";
-                    row += "<tr data-id = " + data['id'] + ">";
-                    row += "<td>" + data['prod_desc'] + "</td>";
-                    row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' ></input></td>";
-                    row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
-                    row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
-                    row += "</tr>";
-                    // if (data["isSerialized"] === 1) {
-                    //     var sub_row = data["sub_row"];
-                    //     var html_sub_row = "";
-                    //     for (var j = 0; j < sub_row.length; j++) {
-                    //         html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
-                    //         html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
-                    //         html_sub_row += "</tr>";
-                    //     }
-                    //     row += html_sub_row;
-                    // }
-                    $("#tbl_lossand_damages").append(row);
-                }
+        $("#loss_and_damage_input").on("blur", function(e){
+            e.preventDefault();
+            var search_value = $(this).val();
+            if (!isDataExistInTable(search_value)) {
+                var inventory_id = $("#loss_and_damage_input_inventory_id").val();
+                $.ajax({
+                    type: 'get',
+                    url: 'api.php?action=get_inventoryDataById',
+                    data: { inventory_id: inventory_id },
+                    success: function (data) {
+                        var row = "";
+                        row += "<tr data-id = " + data['inventory_id'] + ">";
+                        row += "<td>" + data['prod_desc'] + "</td>";
+                        row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' ></input></td>";
+                        row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
+                        row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
+                        row += "</tr>";
+                        // if (data["isSerialized"] === 1) {
+                        //     var sub_row = data["sub_row"];
+                        //     var html_sub_row = "";
+                        //     for (var j = 0; j < sub_row.length; j++) {
+                        //         html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
+                        //         html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
+                        //         html_sub_row += "</tr>";
+                        //     }
+                        //     row += html_sub_row;
+                        // }
+                        $("#tbl_lossand_damages").append(row);
+                    }
                 })
                 $("#loss_and_damage_input_inventory_id").val("");
-        }
+            }
+            else {
+                alert("Product is already listed in the table.");
+            }
+            updateTotal();
+        })
         $("#btn_searchLDProduct").on("click", function (e) {
             e.preventDefault();
-            var product_id = $("#loss_and_damage_input_inventory_id").val();
-            if (!isDataExistInTable(product_id)) {
-                append_to_table();
+            var search_value = $("#loss_and_damage_input").val();
+            if (!isDataExistInTable(search_value)) {
+                var inventory_id = $("#loss_and_damage_input_inventory_id").val();
+                $.ajax({
+                    type: 'get',
+                    url: 'api.php?action=get_inventoryDataById',
+                    data: { inventory_id: inventory_id },
+                    success: function (data) {
+                        var row = "";
+                        row += "<tr data-id = " + data['inventory_id'] + ">";
+                        row += "<td>" + data['prod_desc'] + "</td>";
+                        row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' ></input></td>";
+                        row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
+                        row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
+                        row += "</tr>";
+                        // if (data["isSerialized"] === 1) {
+                        //     var sub_row = data["sub_row"];
+                        //     var html_sub_row = "";
+                        //     for (var j = 0; j < sub_row.length; j++) {
+                        //         html_sub_row += "<tr class ='sub-row' data-id = " + data["inventory_id"] + ">";
+                        //         html_sub_row += "<td data-id=" + sub_row[j].serial_id + "><input  id= 'serial_number' style = 'width: 130px; height: 20px; font-size: 10px;' placeholder='Serial Number' class='italic-placeholder' value = " + sub_row[j].serial_number + " readonly></input><input type = 'checkbox'  id = 'serial_ischeck' style = 'height: 20px'></input></td>";
+                        //         html_sub_row += "</tr>";
+                        //     }
+                        //     row += html_sub_row;
+                        // }
+                        $("#tbl_lossand_damages").append(row);
+                    }
+                })
+                $("#loss_and_damage_input_inventory_id").val("");
             }
             else {
                 alert("Product is already listed in the table.");
@@ -379,89 +376,47 @@
                 this.value = this.value.replace(/\.+$/, '');
             }
         });
-     
-        $("#loss_and_damage_input").autocomplete({
-            minLength: 2,
-            source: function (request, response) {
-            var term = request.term;
-            var filteredProducts = filterProducts(term);
-            var slicedProducts = filteredProducts.slice(0, 5);
-            response(slicedProducts);
-            if (slicedProducts.length > 0) {
-                $('#filters').show();
-            } else {
-                $('#filters').hide();
-            }
-            
-            var slicedProductsLength = slicedProducts.length - 1;
-            var selectedProductId = slicedProducts[slicedProductsLength].id;
-                $("#loss_and_damage_input_inventory_id").val(selectedProductId);
-            },
-            select: function (event, ui) {
-                
-                var selectedProductId = ui.item.id;
-                $("#loss_and_damage_input_inventory_id").val(selectedProductId);
-                return false;
-            },
-        });
-      $("#loss_and_damage_input").on("input", function(e) {
-        e.preventDefault();
-          var term = $(this).val();
-          $(this).autocomplete('search', term);
-      });
-      $("#loss_and_damage_input").on("keypress", function(event){
-        if(event.which === 13){
-            var product_id = $("#loss_and_damage_input_inventory_id").val();
-          if (!isDataExistInTable(product_id)) {
-            append_to_table();
-          }
-          else
-          {
-            show_errorResponse("Product already in the table")
-          }
-          $("#loss_and_damage_input").val('');
+        function get_allProductInventory() {
+            $.ajax({
+                type: 'GET',
+                url: 'api.php?action=get_allInventories',
+                success: function (data) {
+                    var products = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var row = {
+                            inventory_id: data[i].inventory_id,
+                            product: data[i].prod_desc,
+                            barcode: data[i].barcode,
+                            brand: data[i].brand,
+                        };
+                        products.push(row);
+                    }
+                    $("#loss_and_damage_input").autocomplete({
+                        source: function (request, response) {
+                            var term = request.term.toLowerCase();
+                            var filteredProducts = products.filter(function (row) {
+                                return row.product.toLowerCase().includes(term) || row.barcode.includes(term) || (row.brand && row.brand.toLowerCase().includes(term)) || // Check if row.brand is not null or undefined
+                                    (!row.brand && term === "");
+                            });
+                            response(filteredProducts.map(function (row) {
+                                return {
+                                    label: row.product + " (" + row.barcode + ")" + " (" + row.brand + ")",
+                                    value: row.product,
+                                    id: row.inventory_id
+                                };
+                            }));
+                        },
+                        select: function (event, ui) {
+                            var selectedProductId = ui.item.id;
+                            $("#loss_and_damage_input_inventory_id").val(selectedProductId);
+                            return false;
+                        }
+                    });
+                }
+            })
         }
-      
-      })
 
-      $("#loss_and_damage_input").on("autocompletechange", function(event, ui) {
-        var product_id = $("#loss_and_damage_input_inventory_id").val();
-        
-        if (!isDataExistInTable(product_id)) {
-            append_to_table();
-        }
-        else
-        {
-          show_errorResponse("Product already in the table");
-        }
-          $(this).val('');
-      });
-      function show_errorResponse(message) {
-        toastr.options = {
-          "onShown": function () {
-            $('.custom-toast').css({
-              "opacity": 1,
-              "width": "600px",
-              "text-align": "center",
-              "border": "2px solid #1E1C11",
-            });
-          },
-          "closeButton": true,
-          "positionClass": "toast-top-right",
-          "timeOut": "5000",
-          "extendedTimeOut": "1000",
-          "progressBar": true,
-          "showEasing": "swing",
-          "hideEasing": "linear",
-          "showMethod": "fadeIn",
-          "hideMethod": "fadeOut",
-          "tapToDismiss": false,
-          "toastClass": "custom-toast",
-          "onclick": function () { alert('Clicked'); }
-
-        };
-        toastr.error(message);
-      }
+    
         function show_reference_no() {
             $.ajax({
                 type: 'get',

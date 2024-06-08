@@ -326,9 +326,15 @@ include ('./layout/admin/table-pagination-css.php');
     });
 
     // Event handler for the calendar button
-    $('#calendar-btn').on('click', function () {
+    $('#calendar-btn').off().on('click', function () {
 
-        if (!$("#date_purchased").hasClass("flatpickr-open")) {
+      if (!$("#date_purchased").hasClass("flatpickr-open")) {
+            // Ensure flatpickr is only initialized once
+            if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
+                $("#date_purchased").flatpickr();
+                $("#date_purchased").addClass("flatpickr-initialized");
+            }
+            // Open the date picker
             $("#date_purchased").flatpickr().open();
         }
     });
@@ -639,13 +645,10 @@ include ('./layout/admin/table-pagination-css.php');
         $(this).addClass('active');
         show_allInventories();
       })
+  
       $(".inventoryCard").on("click", "#btn_openStockHistory", function () {
         var id = $(this).data('id');
         $("#stockhistory_modal #inventory_id").val(id);
-        $("#stockhistory_modal").slideDown({
-          backdrop: 'static',
-          keyboard: false,
-        });
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_allStocksData',
@@ -656,13 +659,36 @@ include ('./layout/admin/table-pagination-css.php');
             var info = data.inventoryInfo;
             var stocks = data.stocks;
             var tbl_rows = [];
+            $("#stockhistory_modal").slideDown({
+              backdrop: 'static',
+              keyboard: false,
+            });
             $("#stockhistory_modal").find(".modal-title").text(info.prod_desc + " - STOCK HISTORY")
             var tbl_rows = [];
-            tbl_rows.push(
-              `<tr>
-                <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan = '7'>No available data.</td>
-              </tr>`);
+            for (var i = 0, len = stocks.length; i < len; i++) {
+              var stockItem = stocks[i];
+              var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
+              var stockTimestamp = stockItem.stock_date;
+              var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+              tbl_rows.push(
+                `<tr>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.document_number}</td>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_customer}</td>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockDate}</td>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockTimestamp}</td>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
+                  <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
+              </tr>`
+              );
+            }
+            var tfoot = `<tr>
+                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
+                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${info.product_stock}</td>
+              </tr>`;
+
             $("#tbl_stocks_history tbody").html(tbl_rows);
+            $("#tbl_stocks_history tfoot").html(tfoot);
           }
         })
       })
@@ -679,7 +705,7 @@ include ('./layout/admin/table-pagination-css.php');
             if (data.length > 0) {
               for (var i = 0, len = data.length; i < len; i++) {
                 var currentItem = data[i];
-                var stock = currentItem.stock;
+                var stock = currentItem.product_stock;
                 if (stock > 10) stock = "<span style = 'color: yellowgreen'>" + stock + "</span>";
                 if (stock <= 10 && stock > 0) stock = "<span style = 'color: red'>" + stock + "</span>";
                 tblRows.push(
@@ -689,12 +715,10 @@ include ('./layout/admin/table-pagination-css.php');
                       <td>${currentItem.barcode}</td>
                       <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
                       <td class="text-center" style = 'text-align: center'>${stock === -1 ? 0 : stock} </td>
-                      <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;" data-id = '${currentItem.inventory_id}' id = "btn_openStockHistory">History</button></td>
+                      <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;" data-id = '${currentItem.product_id}' id = "btn_openStockHistory">History</button></td>
                   </tr>`
                 );
               }
-            } else {
-              tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
             }
 
             var tblData = `
@@ -744,25 +768,18 @@ include ('./layout/admin/table-pagination-css.php');
           url: 'api.php?action=get_all_lostanddamageinfo',
           success: function (data) {
             var rows;
-            if (data.length === 0) {
-              var rows = "<tr>" +
-                "<td class='autofit' colspan = '8'>There are no more losses or damages available.</td>" +
+            rows = data.map(function (item) {
+              return "<tr>" +
+                "<td class='autofit'>" + item.reference_no + "</td>" +
+                "<td class='autofit' style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
+                "<td class='autofit' style='text-align: center'>" + item.reason + "</td>" +
+                "<td class='autofit' style='text-align: center'>" + item.total_qty + "</td>" +
+                "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
+                "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
+                "<td class='autofit' style='text-align: center'>" + item.note + "</td>" +
+                "<td style='text-align: center' class='autofit'><button data-id = " + item.id + " id='btn_view_lossanddamage'><i class='bi bi-eye'></i></button></td>" +
                 "</tr>";
-            }
-            else {
-              rows = data.map(function (item) {
-                return "<tr>" +
-                  "<td class='autofit'>" + item.reference_no + "</td>" +
-                  "<td class='autofit' style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
-                  "<td class='autofit' style='text-align: center'>" + item.reason + "</td>" +
-                  "<td class='autofit' style='text-align: center'>" + item.total_qty + "</td>" +
-                  "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
-                  "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
-                  "<td class='autofit' style='text-align: center'>" + item.note + "</td>" +
-                  "<td style='text-align: center' class='autofit'><button data-id = " + item.id + " id='btn_view_lossanddamage'><i class='bi bi-eye'></i></button></td>" +
-                  "</tr>";
-              }).join('');
-            }
+            }).join('');
 
             var tbl = "<table id='tbl_all_lostanddamages' class='text-color table-border' style='font-size: 12px;'>" +
               "<thead>" +
@@ -898,11 +915,6 @@ include ('./layout/admin/table-pagination-css.php');
                   "<td style='text-align: center' class='autofit'><button data-id = " + item.id + " id='btn_view_inventoryCount'><i class='bi bi-eye'></i></button></td>" +
                   "</tr>";
               }).join('');
-            }
-            else {
-              inv_count_rows = "<tr>" +
-                "<td class='autofit' colspan = '3'>No inventory counts available.</td>" +
-                "</tr>";
             }
 
             var inv_count_tbl = "<table id='tbl_all_inventoryCounts' class='text-color table-border' style='font-size: 12px;'>" +
@@ -1158,7 +1170,12 @@ include ('./layout/admin/table-pagination-css.php');
             dataType: 'json',
             success: function (response) {
               isSavingPO = false;
-              if (response.status) {
+              console.log(response)
+              if (response.status) 
+              {
+             
+                var order_id = response.order_id;
+                var po_number = response.po_number;
                 resetPurchaseOrderForm();
                 $("#paid_purchase_modal").hide();
                 $("#unpaid_form")[0].reset();
@@ -1188,8 +1205,8 @@ include ('./layout/admin/table-pagination-css.php');
                             responseType: 'blob'
                         },
                         data: {
-                            order_id: $("#_order_id").val(),
-                            po_number: $("#pcs_no").val(),
+                            order_id: order_id,
+                            po_number: po_number,
                         },
                         success: function(response) {
                         loadingImage.setAttribute("hidden",true);
@@ -1315,7 +1332,7 @@ include ('./layout/admin/table-pagination-css.php');
 
       function validate_loss_and_damage_form() {
         var isValid = true;
-        $('#lossanddamage_form input[type=text], input[type=date]').each(function () {
+        $('#lossanddamage_form  input[type=date]').each(function () {
           if ($(this).val() === '') {
             isValid = false;
             $(this).addClass('has-error');
@@ -1535,6 +1552,7 @@ include ('./layout/admin/table-pagination-css.php');
                     reference_no: $("#ic_reference").val(),
                     date_counted: $("#date_counted").val(),
                     refer_id: $("#inventory_count_info_id").val(),
+                    user_name: $("#first_name").val()+" "+$("#last_name").val(),
                   },
                   success: function (response) {
                     if (response.status) {
@@ -1599,6 +1617,7 @@ include ('./layout/admin/table-pagination-css.php');
                     total_cost: total_cost,
                     over_all_total_cost: overall_total_cost,
                     loss_and_damage_form: loss_and_damage_form,
+                    user_name: $("#first_name").val()+" "+$("#last_name").val(),
                   },
                   success: function (response) {
                     if (response.status) {
@@ -1667,6 +1686,7 @@ include ('./layout/admin/table-pagination-css.php');
                     subRowData: JSON.stringify(subRowData),
                     po_number: $("#r_po_number").text(),
                     is_received: $("#is_received").val(),
+                    user_name: $("#first_name").val()+" "+$("#last_name").val(),
                   },
                   success: function (response) {
 
@@ -2089,6 +2109,7 @@ include ('./layout/admin/table-pagination-css.php');
 
       $("#product").on("autocompletechange", function(event, ui) {
         var product_id = $("#selected_product_id").val();
+        hidePopups();
         if (!isDataExistInTable(product_id)) {
           var qty = 0;
           var price = 0;
@@ -2130,6 +2151,8 @@ include ('./layout/admin/table-pagination-css.php');
       }
       function hidePopups() {
         $('#date_purchased').removeAttr('autofocus');
+        $("#p_qty").focus();
+        $("#date_purchased").flatpickr().destroy();
         $("#date_purchased").blur();
         $("#date_purchased").flatpickr().close();
       }
@@ -2191,7 +2214,7 @@ include ('./layout/admin/table-pagination-css.php');
               for (var i = 0, len = data.length; i < len; i++) 
               {
                 var currentItem = data[i];
-                var stock = currentItem.stock !== null ? currentItem.stock : 0;
+                var stock = currentItem.product_stock !== null ? currentItem.product_stock : 0;
                 tblRows.push(
                     `<tr>
                           <td class="text-center">${i + 1}</td>
@@ -2211,8 +2234,6 @@ include ('./layout/admin/table-pagination-css.php');
                       </tr>`
                   );
               }
-            } else {
-              tblRows.push("<tr><td colspan='10'>No more available data.</td></tr>");
             }
 
             var tblData = `
@@ -2303,11 +2324,6 @@ include ('./layout/admin/table-pagination-css.php');
                 }
               }
             }
-            else {
-              tblRows.push(`<tr>
-                          <td colspan='7'>No purchased order yet.</td>
-                      </tr>`);
-            }
 
 
             var tblData = `
@@ -2355,7 +2371,21 @@ include ('./layout/admin/table-pagination-css.php');
           $("#selected_product_id").val(productId);
           show_purchaseQtyModal(productId, qty_purchased, price);
       });
-      
+      function maskPONumber(poNumber) 
+      {
+          if (poNumber.length > 10) 
+          {
+              var firstPart = poNumber.substring(0, 2);
+              var middlePart = "XXXXXXX"; 
+              var lastPart = poNumber.substring(poNumber.length - 3); 
+
+              var maskedPO = firstPart + "-" + middlePart + lastPart; 
+              return maskedPO; 
+          } else {
+              return poNumber; 
+          }
+      }
+
       $(".inventoryCard").on('click', '.btn_editOrder', function (e) {
         e.preventDefault();
         var order_id = $(this).data('id');
@@ -2501,6 +2531,7 @@ include ('./layout/admin/table-pagination-css.php');
       })
       $("#btn_openOption").click(function (e) {
         e.preventDefault();
+        
         $(".purchase-grid-container button").removeClass('active');
         $("#btn_createPO").addClass('active');
         $("#expiration_div").hide();
@@ -2510,9 +2541,10 @@ include ('./layout/admin/table-pagination-css.php');
         $("#lossanddamage_div").hide();
         $("#inventorycount_div").hide();
         $("#purchaseItems_div").show();
+        $("#po_form #product").focus();
         openOptionModal();
         $("#open_po_report").hide();
-        $("#po_form #product").focus();
+       
       })
       $("#btn_createPO").click(function (e) {
         e.preventDefault();
@@ -2584,6 +2616,7 @@ include ('./layout/admin/table-pagination-css.php');
       })
       $("#btn_lossDamage").click(function (e) {
         e.preventDefault();
+        $("#loss_and_damage_input").focus();
         $("#loss_and_damage_input").attr('disabled', false);
         $("#btn_searchLDProduct").attr('disabled', false);
         $("#lossanddamage_form")[0].reset();
@@ -2596,6 +2629,7 @@ include ('./layout/admin/table-pagination-css.php');
         $("#btn_savePO").attr("disabled", false);
         $("#btn_omCancel").attr("disabled", false);
         $(".purchase-grid-container button").removeClass('active');
+        $("#loss_and_damage_input").focus();
         $(this).addClass("active");
         $("#purchaseItems_div").hide();
         $("#received_div").hide();
@@ -2645,6 +2679,8 @@ include ('./layout/admin/table-pagination-css.php');
           $("#optionModal").show();
           $(".optionmodal-content").show();
         }, 100);
+        hidePopups();
+        $("#po_form #product").focus();
       }
     })
   </script>
