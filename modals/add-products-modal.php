@@ -1812,14 +1812,14 @@ function closeAddProductsModal(){
   $('.product-modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighteds').removeClass('highlighteds');
   $('.highlightedss').removeClass('highlightedss');
-
   $('#add_products_modal').one('animationend', function() {
     $(this).hide();
     $(this).css('animation', '');
     $('.product-modal').css('animation', '');
      clearProductsInputs()
      clearFileInput() 
-   
+     window.location.reload()
+  
   });
   
 }

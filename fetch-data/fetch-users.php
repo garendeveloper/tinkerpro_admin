@@ -23,7 +23,7 @@ $fetchUser = $userFacade->fetchUsers($value,$searchQuery,$selectedUser,$singleDa
 $counter = 1;
 
 ob_start();
-
+if ($fetchUser->rowCount() > 0) {
 while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
     ?>
     <tr>
@@ -52,6 +52,16 @@ while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
     </tr>
     <?php
     $counter++;
+}
+} else {
+    ?>
+    <tr>
+        <td colspan="100%" style="text-align: center; padding: 20px;">
+            <img src="./assets/img/tinkerpro-logo-light.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+            No Data Found!
+        </td>
+    </tr>
+    <?php
 }
 
 

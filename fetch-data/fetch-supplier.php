@@ -14,7 +14,7 @@ $fetchSupplier = $supplierFacade->getSupplierAndSuppliedData($searchQuery);
 $counter = 1;
 
 ob_start();
-
+if ($fetchSupplier->rowCount() > 0) {
 while ($row = $fetchSupplier->fetch(PDO::FETCH_ASSOC)) {
 //   var_dump( $row)
     ?>
@@ -35,6 +35,16 @@ while ($row = $fetchSupplier->fetch(PDO::FETCH_ASSOC)) {
         </td>
     <?php
     $counter++;
+}
+} else {
+    ?>
+    <tr>
+        <td colspan="100%" style="text-align: center; padding: 20px;">
+            <img src="./assets/img/tinkerpro-logo-light.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+            No Data Found!
+        </td>
+    </tr>
+    <?php
 }
 
 

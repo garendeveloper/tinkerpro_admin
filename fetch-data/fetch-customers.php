@@ -12,7 +12,7 @@ $customer = $customerFacade->getCustomersData($searchQuery);
 $counter = 1;
 
 ob_start();
-
+if ($customer->rowCount() > 0) {
 while ($row = $customer->fetch(PDO::FETCH_ASSOC)) {
 //   var_dump( $row)
     ?>
@@ -40,8 +40,19 @@ while ($row = $customer->fetch(PDO::FETCH_ASSOC)) {
     <?php
     $counter++;
 }
+} else {
+    ?>
+    <tr>
+        <td colspan="100%" style="text-align: center; padding: 20px;">
+            <img src="./assets/img/tinkerpro-logo-light.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+            No Data Found!
+        </td>
+    </tr>
+    <?php
+}
 $html = ob_get_clean();
 echo $html;
+
 
 ?>
 <style>
