@@ -5,6 +5,14 @@ include(__DIR__ . '/../utils/models/other-reports-facade.php');
 include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
+$pdfFolder = __DIR__ . '/../assets/pdf/tax/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
 
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 8) {
     $pdf->SetFont('', '', $initialFontSize);
@@ -169,11 +177,13 @@ $pdf->Cell($headerWidths[4] , $maxCellHeight,   $totalTax, 1, 0, 'R');
 // $pdf->Ln(); 
 
 $pdf->Output('tax-rates.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/tax/tax-rates.pdf';
+// $pdfPath = __DIR__ . '/../assets/pdf/tax/tax-rates.pdf';
 
-if (file_exists($pdfPath)) {
+// if (file_exists($pdfPath)) {
  
-    unlink($pdfPath);
-}
+//     unlink($pdfPath);
+// }
+
+$pdfPath = $pdfFolder . 'tax-rates.pdf';
 $pdf->Output($pdfPath, 'F');
 ?>

@@ -237,7 +237,7 @@ $(document).ready(function() {
       axios.post('api.php?action=addProduct', formData).then(function (response) {
         console.log(response)
         refreshProductsTable()
-        show_allProducts();
+        // show_allProducts();
         closeAddProductsModal()
       }).catch(function (error) {
         console.log(error)
@@ -253,12 +253,15 @@ $(document).ready(function() {
   function toUpdateProducts(productId, productName, productSKU, productCode, productBarcode, productOUM, productuomid, productBrand, productCost, productMakup, productPrice,
     productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable) {
     $('#add_products_modal').show();
+
     productId ? document.getElementById('productid').value = productId : null;
     productName ? document.getElementById("productname").value = productName : null;
 
     var p_id = document.getElementById('productid').value
     if (p_id) {
-      const limitedName = productName.split(' ').slice(0, 2).join(' ');
+      const limitedName = productName.split(' ').slice(0, 8
+        
+      ).join(' ');
       productName ? (document.getElementById("modalHeaderTxt").value = productName, $('.modalHeaderTxt').text(limitedName)) : null;
     } else {
       $('.modalHeaderTxt').text("Add New Product")
@@ -272,7 +275,7 @@ $(document).ready(function() {
     productCost ? document.getElementById("cost").value = productCost : null
     productMakup ? document.getElementById("markup").value = productMakup : null
     productPrice ? document.getElementById("selling_price").value = productPrice : null
-    image ? displayImage('./assets/products/' + image) : null;
+    image ? displayImage('./assets/products/' + image) : displayImage('./assets/img/noImage.png' ) ;
     desc ? document.getElementById("description").value = desc : null
     var checkbox = document.getElementById('bomToggle');
     checkbox.checked = isBOM == 1;
@@ -465,6 +468,8 @@ $(document).ready(function() {
       "varLbl": var_lbl
     }];
     var jsonString = JSON.stringify(jsonData);
+
+   
     var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
     // console.log(existingData,'checking');
     var formData = new FormData();
@@ -520,7 +525,7 @@ $(document).ready(function() {
         console.log(response)
         refreshProductsTable()
         closeAddProductsModal()
-        show_allProducts()
+        // show_allProducts()
       }).catch(function (error) {
         console.log(error)
       })

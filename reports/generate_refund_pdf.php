@@ -6,6 +6,15 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
+$pdfFolder = __DIR__ . '/../assets/pdf/refund/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
+
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -251,11 +260,13 @@ $pdf->Ln();
 
 
 $pdf->Output('refundList.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/refund/refundList.pdf';
+// $pdfPath = __DIR__ . '/../assets/pdf/refund/refundList.pdf';
 
-if (file_exists($pdfPath)) {
+// if (file_exists($pdfPath)) {
 
-    unlink($pdfPath);
-}
+//     unlink($pdfPath);
+// }
+
+$pdfPath = $pdfFolder . 'refundList.pdf';
 $pdf->Output($pdfPath, 'F');
 ?>
