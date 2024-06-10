@@ -151,7 +151,7 @@
 }
 .imageButtonDiv{
   position:absolute;
-  top: 730px;
+  top: 755px;
   left: 20px
 }
 .removeImage{
@@ -165,7 +165,7 @@
   font-family: Century Gothic;
   font-weight: bold;
   position: absolute;
-  top: 760px
+  top: 780px
 }
 
 .switch {
@@ -1219,6 +1219,74 @@ input:checked + .stockeableSpan:before {
 .stockeableSpan.active {
   background-color: #FF6900;
 }
+/* new */
+
+.stockWarning {
+  position: relative;
+  display: inline-block;
+  width: 40px; 
+  height: 20px; 
+  outline: none; 
+}
+
+.stockWarning input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.warningSpan {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #262626;
+  -webkit-transition: .4s;
+  transition: .4s;
+  outline: none;
+  border-radius: 10px; 
+}
+
+.warningSpan:before {
+  position: absolute;
+  content: "";
+  height: 16px; 
+  width: 16px;
+  left: 2px; 
+  bottom: 2px;
+  background-color: #888888;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%; 
+}
+
+input:checked + .warningSpan {
+  background-color: #FF6900;
+}
+
+input:focus + .warningSpan {
+  box-shadow: 0 0 1px #262626;
+}
+
+input:checked + .warningSpan:before {
+  -webkit-transform: translateX(20px); 
+  -ms-transform: translateX(20px);
+  transform: translateX(20px); 
+}
+
+.warningSpan.round {
+  border-radius: 10px; 
+}
+
+.warningSpan.round:before {
+  border-radius: 50%; 
+}
+
+.warningSpan.active {
+  background-color: #FF6900;
+}
 
 
 </style>
@@ -1438,6 +1506,21 @@ input:checked + .stockeableSpan:before {
                           </label>
                       </td>
                   </tr>
+                   <tr>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Low-stock Warning
+                      </td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px; font-style:italic; color: #B2B2B2">
+                        <?php
+                          $taxVat = "yes"; 
+                          $other_Charge = ($taxVat== "yes") ? "no" : "yes";
+                          ?>
+                          <label class="stockWarning" style="margin-left: 5px">
+                              <input type="checkbox" id="stockToggle"<?php if($taxVat == "yes") ?>>
+                              <span class="warningSpan round"></span>
+                          </label>
+                          <input type="text" hidden class="quantity" id="quantity" style="width: 100px" placeholder="Stock Quantity" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); if(this.value.includes('-')) this.value = this.value.replace('-', ''); if(this.value.includes('.')) { let parts = this.value.split('.'); this.value = parts[0] + '.' + parts.slice(1).join('').slice(0, 2); }" maxlength="10"/>
+                        </td>
+                    </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" id="statusActive" style="font-size: 12px; height: 10px">Status (Active)</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px">
@@ -1472,7 +1555,7 @@ input:checked + .stockeableSpan:before {
                          </div>
                       </div>
                       <h6 class="enablingTxt">By enabling BOM, you are <br>activating the ingredients module.</h6>
-                      <div  style="width: 100%; display: flex; align-items: right; justify-content: right; margin-top: -10px">
+                      <div  style="width: 100%; display: flex; align-items: right; justify-content: right;">
                           <button class="btns-bom" id="addIngredients" onclick="openBomModal()" style="margin-right: 5px; width: 70px">+ Add</button>
                           <button class="btns-bom" id="delIngredients" style="margin-right: 20px; width: 70px">- Del</button>
                       </div>
@@ -1515,7 +1598,15 @@ input:checked + .stockeableSpan:before {
   </div>
 <!-- </div> -->
 <script>
-
+  document.getElementById('stockToggle').addEventListener('change', function() {
+        var quantityInput = document.querySelector('.quantity');
+        if (this.checked) {
+            quantityInput.removeAttribute('hidden');
+        } else {
+            quantityInput.setAttribute('hidden', 'true');
+            quantityInput.value = "";
+        }
+    });
 
 
 
