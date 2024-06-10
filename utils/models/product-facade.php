@@ -33,7 +33,9 @@
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty,
-        products.is_stockable as is_stockable
+        products.is_stockable as is_stockable,
+        products.stock_status as stock_status,
+        products.stock_count as stock_count
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.prod_desc LIKE :searchQuery OR 
@@ -80,7 +82,9 @@
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty,
-        products.is_stockable as is_stockable
+        products.is_stockable as is_stockable,
+        products.stock_status as stock_status,
+        products.stock_count as stock_count
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id = :selectedProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -119,7 +123,9 @@
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty,
-        products.is_stockable as is_stockable
+        products.is_stockable as is_stockable,
+        products.stock_status as stock_status,
+        products.stock_count as stock_count
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.category_id= :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -157,7 +163,9 @@
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty,
-        products.is_stockable as is_stockable
+        products.is_stockable as is_stockable,
+        products.stock_status as stock_status,
+        products.stock_count as stock_count
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.variant_id= :selectedVariantroduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -195,7 +203,9 @@
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty,
-        products.is_stockable as is_stockable
+        products.is_stockable as is_stockable,
+        products.stock_status as stock_status,
+        products.stock_count as stock_count
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -234,7 +244,9 @@
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty,
-        products.is_stockable as is_stockable
+        products.is_stockable as is_stockable,
+        products.stock_status as stock_status,
+        products.stock_count as stock_count
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -273,8 +285,10 @@
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty,
-        products.is_stockable as is_stockable
-    FROM products 
+        products.is_stockable as is_stockable,
+        products.stock_status as stock_status,
+        products.stock_count as stock_count
+    FROM products
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
@@ -313,7 +327,9 @@
         products.variant_id as variant_id,
         products.is_BOM as is_BOM,
         products.is_warranty as is_warranty,
-        products.is_stockable as is_stockable
+        products.is_stockable as is_stockable,
+        products.stock_status as stock_status,
+        products.stock_count as stock_count
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
@@ -352,7 +368,9 @@
     $bomStat = $formData['bomStat'] ?? null;
     $warranty = $formData['warranty'] ?? null;
     $stockable = $formData['stockable'] ?? null;
-    // Handle file upload
+    $warning = $formData['warning'] ?? null;
+    $stockQuantity = $formData['stockQuantity'] ?? null;
+    
     $fileName = null;
     if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
         $tempPath = $uploadedFile['tmp_name'];
@@ -363,10 +381,10 @@
     }
 
     // Insert product information into the database
-    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty,is_stockable) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)';
+    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty,is_stockable,stock_status,stock_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)';
     $pdo = $this->connect();
     $stmt = $pdo->prepare($sql); 
-    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty,$stockable]);
+    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty,$stockable,$warning,$stockQuantity]);
     $lastInsertId = $pdo->lastInsertId();
 
   
@@ -441,6 +459,8 @@ public function updateProduct($formData) {
   $bomStat = $formData['bomStat'] ?? null;
   $warranty = $formData['warranty'] ?? null;
   $stockable = $formData['stockable'] ?? null;
+  $warning = $formData['warning'] ?? null;
+  $stockQuantity = $formData['stockQuantity'] ?? null;
 
   if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
       $tempPath = $uploadedFile['tmp_name'];
@@ -487,12 +507,14 @@ public function updateProduct($formData) {
           is_BOM = ?,
           is_warranty = ?,
           is_multiple = ?,
-          is_stockable = ?
+          is_stockable = ?,
+          stock_status = ?,
+          stock_count = ?
           WHERE id = ?';
 
   $stmt = $this->connect()->prepare($sql);
   $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
-  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty,0,$stockable, $id]);
+  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty,0,$stockable,$warning,$stockQuantity, $id]);
   
   $bomData = $formData['productBOM'] ?? [];
   $updateData = [];

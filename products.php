@@ -371,11 +371,15 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
       discountedCheckbox.checked = false;
       var warrantyToggle = document.getElementById('warrantyToggle');
       warrantyToggle.checked = false;
+      var warningNum = document.getElementById('quantity');
+      warningNum.setAttribute('hidden',true)
       if(warrantyToggle.checked){
         toggleShowText(warrantyToggle)
       }else{
         toggleShowText(warrantyToggle)
       }
+      var stockWarning= document.getElementById('stockToggle');
+      stockWarning.checked = false
      if( $('#add_products_modal').is(':visible')){
       var toggle = document.getElementById('statusValue');
       toggle.checked = true;
@@ -655,7 +659,8 @@ $('#exportProducts').click(function() {
         var isBOM = $(this).closest('tr').find('.isBOM').text();
         var isWarranty = $(this).closest('tr').find('.isWarranty').text();
         var is_stockable = $(this).closest('tr').find('.is_stockable').text();
-       
+        var stock_status = $(this).closest('tr').find('.stock_status').text();
+        var stock_count = $(this).closest('tr').find('.stock_count').text();
        
         $('.highlighteds').removeClass('highlighteds');
         $('.highlightedss').removeClass('highlightedss')
@@ -670,7 +675,8 @@ $('#exportProducts').click(function() {
         var variantid = $(this).closest('tr').find('.variantid').text();
 
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
-        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable)
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
+        stock_status,stock_count)
     });
     $(document.body).on('click', '.deleteProducts', function() {
         var productId = $(this).closest('tr').find('.productsId').text();
@@ -738,6 +744,8 @@ $('#exportProducts').click(function() {
     var categoryid  = row.querySelector('.categoryid').innerText;
     var variantid = row.querySelector('.variantid').innerText;
     var is_stockable = row.querySelector('.is_stockable').innerText;
+    var stock_status = row.querySelector('.stock_status').innerText;
+    var stock_count = row.querySelector('.stock_count').innerText;
   
     $('.highlighteds').removeClass('highlighteds');
     $('.highlightedss').removeClass('highlightedss');
@@ -745,7 +753,8 @@ $('#exportProducts').click(function() {
     $(row).addClass('highlighteds');
 
     toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
-        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable)
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
+        stock_status,stock_count)
     }
 
 </script>

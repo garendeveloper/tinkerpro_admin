@@ -191,6 +191,10 @@ $(document).ready(function() {
     var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
     var checkbox = document.getElementById('bomToggle');
 
+    //stockwarning
+    var stockWarning= document.getElementById('stockToggle');
+    var stocksWarning = stockWarning.checked ? 1 : 0;
+    var stockQuantity = document.getElementById('quantity').value;
 
     var formData = new FormData();
     formData.append("uploadedImage", file);
@@ -217,6 +221,8 @@ $(document).ready(function() {
     formData.append("category_details", jsonString);
     formData.append("warranty", warrant);
     formData.append("stockable", stckble);
+    formData.append("warning", stocksWarning);
+    formData.append("stockQuantity", stockQuantity);
     if (checkbox.checked) {
       var bomValue = 1;
       formData.append('bomStat', bomValue);
@@ -251,7 +257,8 @@ $(document).ready(function() {
 
 
   function toUpdateProducts(productId, productName, productSKU, productCode, productBarcode, productOUM, productuomid, productBrand, productCost, productMakup, productPrice,
-    productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable) {
+    productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable,
+    stock_status,stock_count) {
     $('#add_products_modal').show();
 
     productId ? document.getElementById('productid').value = productId : null;
@@ -379,6 +386,17 @@ $(document).ready(function() {
       statusLabel.style.color = '';
     }
 
+    var stockWarning = document.getElementById('stockToggle');
+    stockWarning.checked = (stock_status == 1) ? true : false;
+    if(stockWarning.checked){
+      var value = document.getElementById('quantity')
+      value.removeAttribute('hidden')
+    }else{
+      var value = document.getElementById('quantity')
+      value.setAttribute('hidden',true)
+    }
+    stock_count ? document.getElementById('quantity').value = stock_count : null;
+
     var uptBtn = document.querySelector('.updateProductsBtn');
     var saveBtn = document.querySelector('.saveProductsBtn');
     productId ? (uptBtn.removeAttribute('hidden'), saveBtn.setAttribute('hidden', true)) : (uptBtn.setAttribute('hidden', true), saveBtn.removeAttribute('hidden'));
@@ -441,7 +459,13 @@ $(document).ready(function() {
     //stockable
     var stockable = document.getElementById('stockeableToggle');
     var stckble = stockable.checked ? 1 : 0;
-   
+
+
+    //stockwarning
+    var stockWarning= document.getElementById('stockToggle');
+    var stocksWarning = stockWarning.checked ? 1 : 0;
+    var stockQuantity = document.getElementById('quantity').value;
+
     //productImage
     var file = document.getElementById("fileInputs").files[0];
     var description = document.getElementById('description').value
@@ -498,6 +522,8 @@ $(document).ready(function() {
     formData.append("category_details", jsonString);
     formData.append("warranty", warrant);
     formData.append("stockable", stckble);
+    formData.append("warning", stocksWarning);
+    formData.append("stockQuantity", stockQuantity);
     var checkbox = document.getElementById('bomToggle');
     if (checkbox.checked) {
       var bomValue = 1;
