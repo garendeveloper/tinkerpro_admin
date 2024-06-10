@@ -232,7 +232,7 @@ if (isset($_SESSION['user_id'])) {
               <div class="card"  style="height:700px; width: 100%">
                 <div class="card-body">
                   <?php include('errors.php'); ?>
-                  <div class="table-responsive productTable">
+                  <div class="table-responsive">
                     <table id="recentusers" class="text-color table-border">
                       <thead>
                         <tr>
