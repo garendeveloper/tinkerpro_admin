@@ -1033,13 +1033,12 @@ include ('./layout/admin/table-pagination-css.php');
               rows.push(row);
             }
             tbody.html(rows.join(''));
-            $("#btn_open_print_count_modal").show();
             $("#stocktransfer_div").hide();
             $("#received_div").hide()
             $("#quickinventory_div").hide()
             $("#expiration_div").hide()
             $("#lossanddamage_div").hide();
-                 $(".purchase-grid-container button").removeClass('active');
+            $(".purchase-grid-container button").removeClass('active');
             $("#btn_inventoryCount").addClass('active');
             $("#purchaseItems_div").hide();
             $("#inventorycount_div").show();
@@ -2428,14 +2427,8 @@ include ('./layout/admin/table-pagination-css.php');
               $('#paidSwitch').prop('checked', false).prop('disabled', true);
             }
           
-            for (var i = 0; i < data.length; i++) {
-              // var rowId = data[i].product_id;
-              // table = $("<tr data-rowid = "+rowId+">").append(
-              //     $("<td>", { "data-rowid": rowId , "data-id": data[i].product_id, "data-inv_id": '0', "data-qty": data[i].qty_purchased, "data-price":data[i].amount_beforeTax }).text(data[i].prod_desc + " : " + data[i].barcode),
-              //     $("<td>", { "data-qty": data[i].qty_purchased, "data-price": data[i].amount_beforeTax, style: "text-align: center" }).text(data[i].qty_purchased),
-              //     $("<td>", { style: "text-align: right" }).html("&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax)),
-              //     $("<td>", { style: "text-align: right" }).html("&#x20B1;&nbsp;" + addCommasToNumber(data[i].total))
-              // );
+            for (var i = 0; i < data.length; i++) 
+            {
               table += "<tr data-rowid = "+data[i].product_id+" id = 'show_pqtymodal'>";
               table += "<td data-rowid = "+data[i].product_id+" data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " </td>";
               table += "<td style = 'text-align: center' class ='editable' data-qty = "+data[i].qty_purchased+" data-price= "+data[i].amount_beforeTax+">" + data[i].qty_purchased + "</td>";
@@ -2646,7 +2639,6 @@ include ('./layout/admin/table-pagination-css.php');
       })
       $("#btn_inventoryCount").click(function (e) {
         e.preventDefault();
-        $("#btn_open_print_count_modal").hide();
         $("#btn_savePO").attr("disabled", false);
         $("#btn_omCancel").attr("disabled", false);
         $("#inventorycount_form")[0].reset();
