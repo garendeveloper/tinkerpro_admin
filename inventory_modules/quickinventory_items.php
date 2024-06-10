@@ -122,7 +122,6 @@
                     $("select[name='inventory_type']").css('border', '1px solid #ffff');
                     if (!isDataExistInTable(inventory_id)) 
                     {
-                    
                         display_productBy(inventory_id);
                     }
                     else
@@ -272,7 +271,7 @@
             $.ajax({
                 type: 'get',
                 url: 'api.php?action=get_productInfo',
-                data: { data: product_id },
+                data: { data: inventory_id },
                 success: function (data) {
                     var row = "";
                     row += "<tr data-id = " + data['id'] + ">";

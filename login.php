@@ -183,7 +183,7 @@
 					</span>
 
 					<div class="wrap-input100 validate-input" data-validate="Enter password">
-						<input class="input100" type="password" name="password" placeholder="Password" autofocus="autofocus">
+						<input class="input100" type="password" name="password" placeholder="Password" autofocus="autofocus" autocomplete="off">
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
 
@@ -199,19 +199,6 @@
 		</div>
 	</div>
 	
-
-	<div id="dropDownSelect1"></div>
-	<div class="login_sys_info">
-  <div class="d-flex" style="justify-content: flex-end">
-    <img src="./assets/img/tinkerpro-logo-light.png" class="img-fluid " alt="logo">
-  </div>
-  <label for="">Store: <span style="font-style: italic">TinkerPro Retail Store</spans></label>
-  <label for="">Date & Time: <span style="font-style: italic">April 08, 2024 04:22:21</spans></label>
-  <label for="">Machine Name: <span style="font-style: italic">POS 1 (Local)</spans></label>
-  <label for="">Connection Status: <span style="font-style: italic">Offline</spans></label>
-  <label for="">Device ID: <span style="font-style: italic">21113242344545445</spans></label>
-  <label for="">Software Version: <span style="font-style: italic">1.05</spans></label>
-</div>
 	<script src="assets/login/vendor/jquery/jquery-3.2.1.min.js"></script>
 	<script src="assets/login/vendor/animsition/js/animsition.min.js"></script>
 	<script src="assets/login/vendor/bootstrap/js/popper.js"></script>

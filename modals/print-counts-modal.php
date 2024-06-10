@@ -15,7 +15,7 @@
         background-color: #1E1C11;
         margin: 10% auto;
         max-width: 500px;
-        height: 30%;
+        height: 20%;
         max-height: 100%;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
@@ -160,6 +160,7 @@
             var inventory_id = $("#inv_id").val();
             var type = $("#active_print").val();
             $('#show_purchasePrintModal').show()
+            $("#show_purchasePrintModal .warning-title").text("SHOW INVENTORY COUNT REPORT");
             if($('#show_purchasePrintModal').is(":visible"))
             {
                 var loadingImage = document.getElementById("loadingImage");
@@ -177,41 +178,45 @@
                         type: type,
                         inv_id: inventory_id,
                     },
-                    success: function (response) {
+                    success: function (response) 
+                    {
                         if(type === "1")
                         {
-                            // var newBlob = new Blob([response], { type: 'application/pdf' });
-                            // var blobURL = URL.createObjectURL(newBlob);
+                            loadingImage.setAttribute("hidden",true);
+                            var pdfFile = document.getElementById("pdfFile");
+                            pdfFile.removeAttribute('hidden')
+                            if( loadingImage.hasAttribute('hidden')) 
+                            {
+                                var newBlob = new Blob([response], { type: 'application/pdf' });
+                                var blobURL = URL.createObjectURL(newBlob);
+                                $('#pdfViewer').attr('src', blobURL);
+                            }
+                        }
+                        else
+                        {
+                            console.log(response)
+                         
+                            // loadingImage.setAttribute("hidden", true);
+                            // var pdfFile = document.getElementById("pdfFile");
+                            // pdfFile.removeAttribute('hidden');
 
-                            // var newWindow = window.open(blobURL, '_blank');
-                            // if (newWindow) {
-                            //     newWindow.onload = function() {
-                            //         newWindow.print();
-                            //         newWindow.focus();
-                            //     };
+                            // if (response instanceof Blob) {
+                            //     var newBlob = new Blob([response], { type: 'application/pdf' });
+                            //     var blobURL = URL.createObjectURL(newBlob);
+                            //     $('#pdfViewer').attr('src', blobURL);
                             // } else {
-                            //     alert('Please allow popups for this website');
+                            //     console.error('Invalid response data');
                             // }
                             loadingImage.setAttribute("hidden",true);
                             var pdfFile = document.getElementById("pdfFile");
                             pdfFile.removeAttribute('hidden')
-                            if( loadingImage.hasAttribute('hidden')) {
+                            if( loadingImage.hasAttribute('hidden')) 
+                            {
                                 var newBlob = new Blob([response], { type: 'application/pdf' });
                                 var blobURL = URL.createObjectURL(newBlob);
-                                
                                 $('#pdfViewer').attr('src', blobURL);
                             }
                         }
-                    else
-                    { 
-                        var previewWin = window.open('', 'Print-Window');
-                        previewWin.document.open();
-                        previewWin.document.write('<html><body>' + response + '</body></html>');
-                        previewWin.document.close();
-                        previewWin.focus();
-                        previewWin.print();
-                        previewWin.close();
-                    }
                     },
                     error: function (xhr, status, error) {
                         alert("Printing failed: " + xhr.responseText);
