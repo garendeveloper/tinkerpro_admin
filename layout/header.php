@@ -7,12 +7,24 @@
   $success = array();
   $info = array();
 
+  $session_timeout = 120; 
+
+  if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $session_timeout)) {
+      session_unset();     
+      session_destroy();   
+      header("Location: login.php"); 
+      exit();
+  }
+
+  $_SESSION['last_activity'] = time();
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="refresh" content="900;url=logout.php" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>POS Management | Admin</title>
   <link rel="icon" href="assets/img/tinkerpro-logo-dark.png" type="image/png">

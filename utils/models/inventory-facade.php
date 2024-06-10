@@ -91,13 +91,10 @@ class InventoryFacade extends DBConnection
         }
         if($type === "2")
         {
-            $sql = "SELECT supplier.*, products.*, inventory.*, uom.*, orders.*, inventory.id as inventory_id
-                    FROM inventory
-                    JOIN products ON products.id = inventory.product_id
+            $sql = "SELECT products.*, uom.*, products.id as product_id
+                    FROM products
                     JOIN uom ON uom.id = products.uom_id
-                    JOIN orders ON orders.id = inventory.order_id
-                    JOIN supplier ON supplier.id = orders.supplier_id
-                    ORDER BY inventory.id DESC;";
+                    ORDER BY products.id DESC;";
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->execute();

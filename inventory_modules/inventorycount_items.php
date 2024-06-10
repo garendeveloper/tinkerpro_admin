@@ -175,17 +175,19 @@
             e.preventDefault();
             var search_value = $("#qi_inventory_type").val();
             $("#inventory_count_info_id").val("");
+            $('#modalCashPrint').show();
             $.ajax({
                 type: 'get',
                 url: 'api.php?action=get_allProductByInventoryType&type='+search_value,
                 success: function (data) {
+                    $('#modalCashPrint').hide();
                     var row = "";
                     for(var i =0 ;i<data.length; i++)
                     {
-                        row += "<tr data-id = "+data[i].inventory_id+">";
+                        row += "<tr data-id = "+data[i].product_id+">";
                         row += "<td>" + data[i].prod_desc + "</td>";
-                        row += "<td style = 'text-align:center'>"+data[i].stock+"</td>";
-                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted' ></input></td>";
+                        row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
+                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted' value = ''></input></td>";
                         row += "<td style = 'text-align: right'></td>";
                         row += "</tr>";
                     }
