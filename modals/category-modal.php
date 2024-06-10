@@ -203,6 +203,9 @@
     <div class="modal-content categoryAdd">
       <div class="modal-title">
         <div class="warning-container">
+         <div>
+                <button onclick="closeModalCategory()"class="closeBom">x</button>
+            </div>
             <div id="categoryData"  style="margin-top: 60px; margin-left: 10px">
               <h6 class="text-custom" style="color:#FF6900;">Category</h6>
             </div>
@@ -231,6 +234,10 @@
 
 
 <script>
+
+function closeModalCategory(){
+    closeModal()
+}
 function getCategories() {
     $.ajax({
             url: './fetch-data/fetch-categories.php', 
@@ -291,7 +298,7 @@ $(document).on("click", ".customAnchor", function() {
             var newValue = document.getElementById('cat_Lbl').value;
             var p_value =  document.getElementById('productLbl').value
             var catValue =  p_value + newValue
-            $('.doneBtn').on('click', function(){
+            $('.doneBtn').off('click').on('click', function(){
                 categoriesInput.value = catValue 
                 id_cat.value = categoryId 
                 closeModal()
@@ -500,7 +507,7 @@ function handleClick(link, event) {
             });
             varLbl.value = "/" + variantName;
             var c_value = productInputLbl.value + newValue + varLbl.value;
-            $('.doneBtn').on('click', function () {
+            $('.doneBtn').off('click').on('click', function () {
                 categoriesInput.value = c_value;
                 idVar.value = id;
                 closeModal();

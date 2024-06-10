@@ -6145,14 +6145,17 @@ function showReports(id){
                 endDate: endDate
             },
           success: function(response) {
-            loadingImage.setAttribute("hidden",true);
-              var pdfFile= document.getElementById("pdfFile");
-              pdfFile.removeAttribute('hidden')
-              if( loadingImage.hasAttribute('hidden')) {
-                var timestamp = new Date().getTime(); 
-                var pdfUrl = './assets/pdf/refund/refundList.pdf?t=' + timestamp; 
-                  $('#pdfViewer').attr('src', pdfUrl);
-              }
+           
+            if (response) {
+            loadingImage.setAttribute("hidden", true);
+            var pdfFile = document.getElementById("pdfFile");
+            pdfFile.removeAttribute('hidden');
+            
+            var timestamp = new Date().getTime();
+            var pdfUrl = './assets/pdf/refund/refundList.pdf?t=' + timestamp;
+            
+            $('#pdfViewer').attr('src', pdfUrl);
+          } 
           },
           error: function(xhr, status, error) {
               console.error(xhr.responseText);
@@ -7148,6 +7151,7 @@ function showReports(id){
                 endDate: endDate
             },
           success: function(response) {
+            if(response){
             loadingImage.setAttribute("hidden",true);
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
@@ -7156,6 +7160,7 @@ function showReports(id){
                   var pdfUrl = './assets/pdf/zread/zReadReportList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
+            }
           },
           error: function(xhr, status, error) {
               console.error(xhr.responseText);
@@ -7215,6 +7220,7 @@ function showReports(id){
                 endDate: endDate
             },
           success: function(response) {
+            if(response){
             loadingImage.setAttribute("hidden",true);
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
@@ -7223,6 +7229,7 @@ function showReports(id){
                   var pdfUrl = './assets/pdf/salesReport/salesReport.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
+            }
           },
           error: function(xhr, status, error) {
               console.error(xhr.responseText);
@@ -7282,6 +7289,7 @@ function showReports(id){
                 endDate: endDate
             },
           success: function(response) {
+           
             loadingImage.setAttribute("hidden",true);
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
@@ -7361,6 +7369,7 @@ function showReports(id){
                 endDate: endDate
             },
           success: function(response) {
+            console.log(response)
             loadingImage.setAttribute("hidden",true);
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')

@@ -200,7 +200,6 @@ $pdf->Output('profit.pdf', 'I');
 $pdfPath = __DIR__ . '/../assets/pdf/profit/profit.pdf';
 
 if (file_exists($pdfPath)) {
- 
     unlink($pdfPath);
 }
 $pdf->Output($pdfPath, 'F');

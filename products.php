@@ -371,11 +371,15 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
       discountedCheckbox.checked = false;
       var warrantyToggle = document.getElementById('warrantyToggle');
       warrantyToggle.checked = false;
+      var warningNum = document.getElementById('quantity');
+      warningNum.setAttribute('hidden',true)
       if(warrantyToggle.checked){
         toggleShowText(warrantyToggle)
       }else{
         toggleShowText(warrantyToggle)
       }
+      var stockWarning= document.getElementById('stockToggle');
+      stockWarning.checked = false
      if( $('#add_products_modal').is(':visible')){
       var toggle = document.getElementById('statusValue');
       toggle.checked = true;
@@ -424,11 +428,7 @@ function refreshProductsTable(page) {
   $('.paginationTag').eq(page - 1).addClass('active');
   $('.searchProducts').focus();
   $('#modalCashPrint').show();
-  var cachedData = localStorage.getItem('productsPage' + page);
-  if (cachedData) {
-    $('#productTable').html(cachedData);
-    $('#modalCashPrint').hide();
-  } else {
+
     $.ajax({
       url: './fetch-data/fetch-products.php',
       type: 'GET',
@@ -436,19 +436,16 @@ function refreshProductsTable(page) {
       success: function (response) {
         $('#productTable').html(response);
         $('#modalCashPrint').hide();
-        localStorage.setItem('productsPage' + page, response);
+       
       },
       error: function (xhr, status, error) {
         console.error(xhr.responseText);
       }
     });
-  }
 }
-refreshProductsTable()
+refreshProductsTable(1)
 
 function searchProducts(){
-  $('.paginationTag').removeClass('active'); 
-  $('.paginationTag').eq(page - 1).addClass('active');
   var searchData = $('.searchProducts').val();
     $.ajax({
         url: './fetch-data/fetch-products.php', 
@@ -471,7 +468,7 @@ function searchProducts(){
     $('#generateProductPDFBtn').click(function() {
       $('#modalCashPrint').show()
       var searchData = $('.searchProducts').val();
-    // var statusValue = $("#filterStatus").val(); 
+    
    
     $.ajax({
         url: './reports/generate_products_pdf.php',
@@ -503,7 +500,7 @@ function searchProducts(){
 });
 $('#printProduct').click(function() {
     var searchData = $('.searchProducts').val();
-    // var statusValue = $("#filterStatus").val(); 
+ 
     $('#modalCashPrint').show()
     $.ajax({
         url: './reports/generate_products_pdf.php',
@@ -662,7 +659,8 @@ $('#exportProducts').click(function() {
         var isBOM = $(this).closest('tr').find('.isBOM').text();
         var isWarranty = $(this).closest('tr').find('.isWarranty').text();
         var is_stockable = $(this).closest('tr').find('.is_stockable').text();
-       
+        var stock_status = $(this).closest('tr').find('.stock_status').text();
+        var stock_count = $(this).closest('tr').find('.stock_count').text();
        
         $('.highlighteds').removeClass('highlighteds');
         $('.highlightedss').removeClass('highlightedss')
@@ -677,7 +675,8 @@ $('#exportProducts').click(function() {
         var variantid = $(this).closest('tr').find('.variantid').text();
 
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
-        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable)
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
+        stock_status,stock_count)
     });
     $(document.body).on('click', '.deleteProducts', function() {
         var productId = $(this).closest('tr').find('.productsId').text();
@@ -745,6 +744,8 @@ $('#exportProducts').click(function() {
     var categoryid  = row.querySelector('.categoryid').innerText;
     var variantid = row.querySelector('.variantid').innerText;
     var is_stockable = row.querySelector('.is_stockable').innerText;
+    var stock_status = row.querySelector('.stock_status').innerText;
+    var stock_count = row.querySelector('.stock_count').innerText;
   
     $('.highlighteds').removeClass('highlighteds');
     $('.highlightedss').removeClass('highlightedss');
@@ -752,7 +753,8 @@ $('#exportProducts').click(function() {
     $(row).addClass('highlighteds');
 
     toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
-        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable)
+        isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
+        stock_status,stock_count)
     }
 
 </script>
