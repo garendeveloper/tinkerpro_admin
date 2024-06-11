@@ -283,6 +283,11 @@ $(document).ready(function() {
     productMakup ? document.getElementById("markup").value = productMakup : null
     productPrice ? document.getElementById("selling_price").value = productPrice : null
     image ? displayImage('./assets/products/' + image) : displayImage('./assets/img/noImage.png' ) ;
+  
+    var imageUrl = image ? './assets/products/' + image : './assets/img/noImage.png';
+    var fileInput = document.getElementById("fileInputs");
+fileInput.value = imageUrl;
+
     desc ? document.getElementById("description").value = desc : null
     var checkbox = document.getElementById('bomToggle');
     checkbox.checked = isBOM == 1;
@@ -416,6 +421,7 @@ $(document).ready(function() {
     }
 
   }
+
 
   function updateProducts() {
     var p_id = document.getElementById('productid').value
