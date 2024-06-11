@@ -1819,13 +1819,13 @@ document.querySelectorAll("#uomDropDown a").forEach(item => {
 });
 
 document.getElementById("generate").addEventListener("click", function() {
-    const minDigits = 9;
+    const minDigits = 12;
     const randomNumber = generateRandomNumber(minDigits);
     document.getElementById('barcode').value = randomNumber
     
 })
 function generateRandomNumber(minDigits) {
-    const numberOfDigits = Math.floor(Math.random() * (9 - minDigits + 1)) + minDigits; 
+    const numberOfDigits = Math.floor(Math.random() * (12 - minDigits + 1)) + minDigits; 
     let randomNumber = '';
 
     for (let i = 0; i < numberOfDigits; i++) {

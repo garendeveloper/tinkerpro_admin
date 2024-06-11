@@ -375,9 +375,27 @@
     if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
         $tempPath = $uploadedFile['tmp_name'];
         $fileName = $uploadedFile['name'];
-
+    
         $destination = './assets/products/' . $fileName;
-        move_uploaded_file($tempPath, $destination);
+    
+       
+        $imageInfo = getimagesize($tempPath);
+        $imageType = $imageInfo[2];
+    
+        if ($imageType == IMAGETYPE_JPEG) {
+            $image = imagecreatefromjpeg($tempPath);
+            imagejpeg($image, $destination, 75); 
+        } elseif ($imageType == IMAGETYPE_PNG) {
+            $image = imagecreatefrompng($tempPath);
+            imagepng($image, $destination, 6); 
+        } elseif ($imageType == IMAGETYPE_GIF) {
+            move_uploaded_file($tempPath, $destination); 
+        } else {
+    
+            throw new Exception('Unsupported image format.');
+        }
+    
+        imagedestroy($image); 
     }
 
     // Insert product information into the database
@@ -462,22 +480,64 @@ public function updateProduct($formData) {
   $warning = $formData['warning'] ?? null;
   $stockQuantity = $formData['stockQuantity'] ?? null;
 
+
   if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
       $tempPath = $uploadedFile['tmp_name'];
       $fileName = $uploadedFile['name'];
-
+  
       $destination = './assets/products/' . $fileName;
-      move_uploaded_file($tempPath, $destination);
+  
+      $imageInfo = getimagesize($tempPath);
+      $imageType = $imageInfo[2];
+  
+      $targetWidth = 230;
+      $targetHeight = 230;
+  
+      if ($imageType == IMAGETYPE_JPEG) {
+          $image = imagecreatefromjpeg($tempPath);
+          $newImage = imagecreatetruecolor($targetWidth, $targetHeight);
+          imagecopyresampled($newImage, $image, 0, 0, 0, 0, $targetWidth, $targetHeight, imagesx($image), imagesy($image));
+          imagejpeg($newImage, $destination, 75); 
+          imagedestroy($newImage);
+      } elseif ($imageType == IMAGETYPE_PNG) {
+          $image = imagecreatefrompng($tempPath);
+          $newImage = imagecreatetruecolor($targetWidth, $targetHeight);
+          imagealphablending($newImage, false);
+          imagesavealpha($newImage, true);
+          $transparent = imagecolorallocatealpha($newImage, 0, 0, 0, 127);
+          imagefilledrectangle($newImage, 0, 0, $targetWidth, $targetHeight, $transparent);
+          imagecopyresampled($newImage, $image, 0, 0, 0, 0, $targetWidth, $targetHeight, imagesx($image), imagesy($image));
+          imagepng($newImage, $destination, 6); 
+          imagedestroy($newImage);
+      } elseif ($imageType == IMAGETYPE_GIF) {
+       
+          $image = imagecreatefromgif($tempPath);
+          $newImage = imagecreatetruecolor($targetWidth, $targetHeight);
+          $transparent = imagecolortransparent($image);
+          imagepalettecopy($image, $newImage);
+          imagefill($newImage, 0, 0, $transparent);
+          imagecolortransparent($newImage, $transparent);
+          imagetruecolortopalette($newImage, true, imagecolorstotal($image));
+          imagecopyresampled($newImage, $image, 0, 0, 0, 0, $targetWidth, $targetHeight, imagesx($image), imagesy($image));
+          imagegif($newImage, $destination);
+          imagedestroy($newImage);
+      } else {
+          throw new Exception('Unsupported image format.');
+      }
+  
+      imagedestroy($image); 
   } else {
-    $query = "SELECT productImage FROM products WHERE id = ?";
-    $statement = $this->connect()->prepare($query);
-    $statement->execute([$id]);
-    $result = $statement->fetch(PDO::FETCH_ASSOC);
-    if ($result) {
-        $fileName = $result['productImage'];
-    } else {
-        $fileName = null;
-    }
+    // $query = "SELECT productImage FROM products WHERE id = ?";
+    // $statement = $this->connect()->prepare($query);
+    // $statement->execute([$id]);
+    // $result = $statement->fetch(PDO::FETCH_ASSOC);
+    // if ($result) {
+    //     $fileName = $result['productImage'];
+    // } else {
+    //     $fileName = null;
+    // }
+
+    $fileName = null;
     
   }
 
