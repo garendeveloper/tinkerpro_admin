@@ -118,6 +118,15 @@ $(document).ready(function() {
   //       }
   //   });
   // }
+let deleteValidation = "false";
+  function clearImageProduct() {
+    deleteValidation = "true"
+    var fileInput = document.getElementById('fileInputs');
+    fileInput.value = '';
+    if(fileInput.value == ''){
+        displayImage(defaultImageUrl);
+    }
+}
   function addProduct() {
     //products
     var productname = document.getElementById('productname').value;
@@ -283,10 +292,6 @@ $(document).ready(function() {
     productMakup ? document.getElementById("markup").value = productMakup : null
     productPrice ? document.getElementById("selling_price").value = productPrice : null
     image ? displayImage('./assets/products/' + image) : displayImage('./assets/img/noImage.png' ) ;
-  
-    var imageUrl = image ? './assets/products/' + image : './assets/img/noImage.png';
-    var fileInput = document.getElementById("fileInputs");
-fileInput.value = imageUrl;
 
     desc ? document.getElementById("description").value = desc : null
     var checkbox = document.getElementById('bomToggle');
@@ -422,7 +427,7 @@ fileInput.value = imageUrl;
 
   }
 
-
+ 
   function updateProducts() {
     var p_id = document.getElementById('productid').value
     var productname = document.getElementById('productname').value;
@@ -503,6 +508,7 @@ fileInput.value = imageUrl;
     var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
     // console.log(existingData,'checking');
     var formData = new FormData();
+  
     formData.append("uploadedImage", file);
     formData.append("productname", productname);
     formData.append("sku", sku);
@@ -530,6 +536,7 @@ fileInput.value = imageUrl;
     formData.append("stockable", stckble);
     formData.append("warning", stocksWarning);
     formData.append("stockQuantity", stockQuantity);
+    formData.append("deleteValidation", deleteValidation);
     var checkbox = document.getElementById('bomToggle');
     if (checkbox.checked) {
       var bomValue = 1;
@@ -551,10 +558,10 @@ fileInput.value = imageUrl;
       formData.append('bomStat', bomValue);
     }
 
-
     if (productname && barcode && cost && markup) {
       axios.post('api.php?action=updateProduct', formData).then(function (response) {
         console.log(response)
+        deleteValidation = "false";
         refreshProductsTable()
         closeAddProductsModal()
         // show_allProducts()

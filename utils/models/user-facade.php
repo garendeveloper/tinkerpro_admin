@@ -280,7 +280,8 @@ class UserFacade extends DBConnection {
         $lastUserInserted =  $pdo->lastInsertId();
         $sqls = "INSERT INTO `series`(`cashier_id`, `series`) VALUES (?,?)";
         $stmt = $pdo->prepare($sqls);
-        $stmt->execute([$lastUserInserted, $lastUserInserted]);
+        $stmt->execute([$lastUserInserted, $lastUserInserted
+    ]);
     
         $userId = null;
         if ($stmt) {

@@ -1866,13 +1866,7 @@ document.getElementById("fileInputs").addEventListener("change", function(event)
     var file = event.target.files[0];
   
 });
-function clearImageProduct() {
-    var fileInput = document.getElementById('fileInputs');
-    fileInput.value = '';
-    if(fileInput.value == ''){
-        displayImage(defaultImageUrl);
-    }
-}
+
 
 function openCategoryModal(){
    $('#add_category_modal').show()

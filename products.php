@@ -191,6 +191,40 @@ if (isset($_SESSION['user_id'])) {
     color: white;
     outline: none;
 }
+#responsive-data{
+  overflow: scroll !important;
+  max-height: 700px;
+  position: absolute; 
+  left: 2px;
+  right:2px;
+  top:2px;
+ 
+}
+
+/* #responsive-data {
+  max-height: 700px;
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  top: 2px;
+ 
+}
+
+
+#responsive-data thead {
+  display: block;
+}
+
+#responsive-data tbody {
+  display: block;
+  max-height: 600px;
+  overflow-y: auto; 
+  max-width: fit-content;
+}
+ */
+
+
+
 </style>
 
 <?php include "layout/admin/css.php"?> 
@@ -234,11 +268,11 @@ if (isset($_SESSION['user_id'])) {
               <div class="card"  style="height:700px; width: 100%">
                 <div class="card-body">
                   <?php include('errors.php'); ?>
-                  <div class="table-responsive productTable">
-                    <table id="recentusers" class="text-color table-border">
-                      <thead>
+                  <div id="responsive-data">
+                  <table id="recentusers" class="text-color table-border">
+                  <thead>
                         <tr>
-                          <th class="text-center" style="width: 20px">No.</th>
+                          <th class="text-center" style="width: 2%">No.</th>
                           <th class="text-center"  style="width: 350px">Name</th>
                           <th class="text-center" style="width: 100px" >Barcode</th>
                           <th class="text-center"   style="width: 100px" >SKU</th>
@@ -253,12 +287,15 @@ if (isset($_SESSION['user_id'])) {
                           <th class="text-center" style="width: 100px" >Status</th>
                           <th class="text-center"  style="width: 200px" >Action</th>
                         </tr>
-                      </thead>
+                      </thead> 
+        
                       <tbody id="productTable">
-                        
-                      </tbody>
+
+                      </tbody> 
+                     
                     </table>
-                  </div>
+                    </div>
+
                 </div>
               </div>
               <div id="paginationDiv">
