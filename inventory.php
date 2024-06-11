@@ -162,7 +162,7 @@ include ('./layout/admin/table-pagination-css.php');
   justify-content: center;
   align-items: center;
 }
-#paginationDiv #dt-paging{
+#paginationDiv{
   text-decoration: none; 
   border: 1px solid #fefefe;
   margin-right: 1px; 
@@ -173,6 +173,22 @@ include ('./layout/admin/table-pagination-css.php');
   align-items: center; 
   background-color: #888888;
   color: #fefefe;
+}
+.pagination-wrapper {
+
+  text-decoration: none; 
+  border: 1px solid #fefefe;
+  margin-right: 1px; 
+  width: 40px;
+  height: 40px;
+  display: inline-flex; 
+  justify-content: center;
+  align-items: center; 
+  background-color: #888888;
+  color: #fefefe;
+}
+
+.dataTables_paginate {
 }
 </style>
 
@@ -249,7 +265,7 @@ include ('./layout/admin/table-pagination-css.php');
 
           </div>
           <div id="paginationDiv" class = "pagination-container">
-
+            
           </div>
           <div style="display: flex; margin-top: 20px">
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg
@@ -319,6 +335,7 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("./modals/stockhistory.php") ?>
   <?php include ("layout/footer.php") ?>
   <?php include ("layout/admin/keyboardfunction.php") ?>
+  <?php include ("./modals/purchaseOrder_response.php") ?>
   <?php include('./modals/loading-modal.php'); ?>
 
   
@@ -365,7 +382,7 @@ include ('./layout/admin/table-pagination-css.php');
         dateFormat: "M d y",
         onClose: function(selectedDates) {
         }
-    });
+      });
 
     // Event handler for the calendar button
     $('#calendar-btn').off().on('click', function () {
@@ -687,10 +704,14 @@ include ('./layout/admin/table-pagination-css.php');
         $(this).addClass('active');
         show_allInventories();
       })
-  
-      $(".inventoryCard").on("click", "#btn_openStockHistory", function () {
-        var id = $(this).data('id');
-        $("#stockhistory_modal #inventory_id").val(id);
+      $("#btn_refreshStockHistory").on("click", function(e){
+        e.preventDefault();
+        var id = $("#stockhistory_modal #inventory_id").val();
+        display_allStocksData(id);
+      })
+      function display_allStocksData(id)
+      {
+        $('#modalCashPrint').show();
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_allStocksData',
@@ -698,6 +719,7 @@ include ('./layout/admin/table-pagination-css.php');
             inventory_id: id
           },
           success: function (data) {
+            $('#modalCashPrint').hide();
             var info = data.inventoryInfo;
             var stocks = data.stocks;
             var tbl_rows = [];
@@ -705,13 +727,13 @@ include ('./layout/admin/table-pagination-css.php');
               backdrop: 'static',
               keyboard: false,
             });
-            $("#stockhistory_modal").find(".modal-title").text(info.prod_desc + " - STOCK HISTORY")
+            $("#stockhistory_modal").find(".modal-title").html("<span style = 'color: #FF6700; font-weight: bold'> "+info.prod_desc + "</span>&nbsp; - STOCK HISTORY")
             var tbl_rows = [];
             for (var i = 0, len = stocks.length; i < len; i++) {
               var stockItem = stocks[i];
               var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
               var stockTimestamp = stockItem.stock_date;
-              var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+              var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
               tbl_rows.push(
                 `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
@@ -733,6 +755,108 @@ include ('./layout/admin/table-pagination-css.php');
             $("#tbl_stocks_history tfoot").html(tfoot);
           }
         })
+      }
+      $(".inventoryCard").on("click", "#btn_openStockHistory", function () {
+        var id = $(this).data('id');
+        $("#start_date").val("");
+        $("#end_date").val("");
+        $("#stockhistory_modal #inventory_id").val(id);
+        display_allStocksData(id);
+      })
+      $(".inventoryCard").on("dblclick", "tr", function(){
+        var id = $(this).data('id');
+        var active_tbl_id = $(".inventoryCard table").attr('id');
+        switch(active_tbl_id)
+        {
+          case 'tbl_all_stocks':
+            $("#start_date").val("");
+            $("#end_date").val("");
+            $("#stockhistory_modal #inventory_id").val(id);
+            display_allStocksData(id);
+            break;
+          case 'tbl_orders':
+            var order_id = $(this).data('id');
+            $("#stocktransfer_div").hide();
+            $("#received_div").hide()
+            $("#quickinventory_div").hide()
+            $("#expiration_div").hide()
+            $("#lossanddamage_div").hide()
+            $("#inventorycount_div").hide();
+            $(".purchase-grid-container button").removeClass('active');
+            $("#btn_createPO").addClass('active');
+            $("#purchaseItems_div").show()
+            openOptionModal();
+            $("#open_po_report").show();
+            $.ajax({
+              type: 'GET',
+              url: 'api.php?action=get_orderData&order_id=' + order_id,
+              dataType: 'json',
+              success: function (data) {
+                var table = "";
+                var tbl_report = "";
+                $("#supplier").val(data[0].supplier);
+                $("#date_purchased").val(date_format(data[0].date_purchased));
+                $("#_order_id").val(data[0].order_id);
+                $("#_inventory_id").val(data[0].inventory_id);
+                $("#pcs_no").val(data[0].po_number);
+
+                $("#rep_po").html(data[0].po_number);
+                $("#rep_supplier").html(data[0].supplier);
+                $("#rep_datePurchased").html(date_format(data[0].date_purchased));
+                var isPaid = data[0].isPaid === 1 ? "Yes" : "No";
+                $("#rep_isPaid").html(isPaid);
+
+                if (isPaid === "Yes") {
+                  $("#paidSwitch").css('background-color', 'green');
+                  $('#paidSwitch').prop('checked', true).prop('disabled', true);
+                }
+                else {
+                  $("#paidSwitch").css('background-color', '#ffff');
+                  $('#paidSwitch').prop('checked', false).prop('disabled', true);
+                }
+              
+                for (var i = 0; i < data.length; i++) 
+                {
+                  table += "<tr data-rowid = "+data[i].product_id+" id = 'show_pqtymodal'>";
+                  table += "<td data-rowid = "+data[i].product_id+" data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " </td>";
+                  table += "<td style = 'text-align: center' class ='editable' data-qty = "+data[i].qty_purchased+" data-price= "+data[i].amount_beforeTax+">" + data[i].qty_purchased + "</td>";
+                  table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
+                  table += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].total) + "</td>";
+                  table += "</tr>";
+                }
+                var counter = 1;
+                for (var i = 0; i < data.length; i++) {
+                  tbl_report += "<tr>";
+                  tbl_report += "<td >" + counter + "</td>";
+                  tbl_report += "<td >" + data[i].prod_desc + "</td>";
+                  tbl_report += "<td style = 'text-align: center' >" + data[i].qty_purchased + "</td>";
+                  tbl_report += "<td style = 'text-align: right' >&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
+                  tbl_report += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + data[i].tax + "</td>";
+                  tbl_report += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + data[i].total + "</td>";
+                  tbl_report += "</tr>";
+                  counter++;
+                }
+                $("#tbl_purchaseOrders tbody").html(table);
+                $("#tbl_purchaseOrdersReport tbody").html(tbl_report);
+                $("#rep_qty").html(data[0].totalQty);
+                $("#rep_price").html("&#x20B1;&nbsp;" + addCommasToNumber(roundToTwoDecimalPlaces(data[0].totalPrice)));
+                $("#rep_tax").html("Tax: " + roundToTwoDecimalPlaces(data[0].totalTax));
+                $("#rep_total").html("&#x20B1;&nbsp;" + addCommasToNumber(roundToTwoDecimalPlaces(data[0].price)));
+
+                $("#totalTax").html("Tax: " + roundToTwoDecimalPlaces(data[0].totalTax));
+                $("#totalQty").html(data[0].totalQty);
+                $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(roundToTwoDecimalPlaces(data[0].totalPrice)));
+                $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(data[0].price));
+              },
+              error: function (data) {
+                alert("No response")
+              }
+            })
+            break;
+          default:
+            break;
+        }
+       
       })
       function show_allStocks() {
         $("#searchInput").focus();
@@ -751,13 +875,13 @@ include ('./layout/admin/table-pagination-css.php');
                 if (stock > 10) stock = "<span style = 'color: yellowgreen'>" + stock + "</span>";
                 if (stock <= 10 && stock > 0) stock = "<span style = 'color: red'>" + stock + "</span>";
                 tblRows.push(
-                  `<tr>
-                      <td class="text-center">${i + 1}</td>
+                  `<tr data-id = '${currentItem.product_id}'>
+                      <td class="text-center" >${i + 1}</td>
                       <td>${currentItem.prod_desc}</td>
                       <td>${currentItem.barcode}</td>
                       <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
                       <td class="text-center" style = 'text-align: center'>${stock === -1 ? 0 : stock} </td>
-                      <td style = 'text-align: center'><button style ="border-radius: 5px; height: 30px;" data-id = '${currentItem.product_id}' id = "btn_openStockHistory">History</button></td>
+                      <td style = 'text-align: center'><button style ="border-radius: 5px; height: 25px; margin: 0;" data-id = '${currentItem.product_id}' id = "btn_openStockHistory">History</button></td>
                   </tr>`
                 );
               }
@@ -2305,8 +2429,6 @@ include ('./layout/admin/table-pagination-css.php');
                 ordering: true,
                 order: [[0, 'asc']], 
                 pageLength: 300,
-                // sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-                // dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"<"#paginationControls.pull-center"ip>>>',
                 dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"<"#paginationDiv"p>>>',
                 language: {
                     paginate: {
@@ -2315,11 +2437,15 @@ include ('./layout/admin/table-pagination-css.php');
                     }
                 },
                 drawCallback: function () {
-                    var pagination = $('#paginationDiv').find('.dataTables_paginate');
-                    pagination.wrap('<div class="pagination-wrapper">');
+                    var pagination = $('#paginationDiv');
+                    pagination.wrap('<div class="pagination-wrapper"></div>');
+                    pagination.find('a').each(function() { 
+                        $(this).addClass('paginationTag');
+                    });
                 },
-                keys: true,
+                keys: true
             });
+
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_products').DataTable().search($(this).val()).draw();
               if (event.keyCode === 13 || event.keyCode === 27) { // Clear input on Enter or Escape key press
@@ -2339,6 +2465,56 @@ include ('./layout/admin/table-pagination-css.php');
         var formattedDate = $.datepicker.formatDate("M dd yy", date);
         return formattedDate;
       }
+      $(".inventoryCard").on("click", "#btn_removeOrder", function(e){
+        e.preventDefault();
+        var is_received = $(this).data('isreceived');
+        var order_id = $(this).data("id");
+        if(is_received === 1)
+        {
+          var po_title = '<h6 style = "color: #FF9999; font-weight: bold">Sorry, the <i style = "color: red">PURCHASE ORDER</i> cannot be removed as it has already been received.</h6>';
+          $("#purchaseOrder_response .po_title").html(po_title);
+          $("#purchaseOrder_response").slideDown({
+            backdrop: 'static',
+            keyboard: false,
+          });
+          $("#response_order_id").val("0");
+          $("#po_btn_continue").hide();
+        }
+        else
+        {
+          var po_title = '<h6>Are you sure you want to delete the <i style="color: #FF6700">PURCHASE ORDER</i>?</h6>';
+          po_title += '<h6>This action cannot be undone!</h6>';
+          $("#purchaseOrder_response .po_title").html(po_title);
+          $("#purchaseOrder_response").slideDown({
+            backdrop: 'static',
+            keyboard: false,
+          });
+          $("#response_order_id").val(order_id);
+          $("#po_btn_continue").show();
+        }
+      })
+      $("#po_btn_continue").on("click", function(){
+        $.ajax({
+            type: 'get',
+            url: 'api.php?action=delete_purchaseOrder',
+            data: {
+                id: $("#response_order_id").val(),
+            },
+            success: function(response){
+                if(response.status)
+                {
+                  $("#purchaseOrder_response").hide();
+                  $("#response_order_id").val("");
+                  show_sweetReponse(response.message);
+                  show_allOrders(1, 300);
+                }
+            },
+            error: function(response)
+            {
+                console.log("Server Error:")
+            }
+        })
+      })
       function show_allOrders(currentPage, perPage) {
         $("#tbl_orders").show();
         $.ajax({
@@ -2349,13 +2525,12 @@ include ('./layout/admin/table-pagination-css.php');
             if (data.length > 0) {
               for (var i = 0, len = data.length; i < len; i++) {
                 var currentItem = data[i];
-
                 if (currentItem.order_type === 1) {
                   var dueDateCell = currentItem.due_date === null ? "Not Available" : date_format(currentItem.due_date);
                   var isPaidCell = currentItem.isPaid === 1 ? "<td class='text-center badge-success'>Paid</td>" : "<td class='text-center badge-danger'>Unpaid</td>";
 
                   tblRows.push(
-                    `<tr>
+                    `<tr data-id='${currentItem.order_id}'>
                           <td style='text-align: center'>${currentItem.po_number}</td>
                           <td>${currentItem.supplier}</td>
                           <td class='text-center'>${date_format(currentItem.date_purchased)}</td>
@@ -2365,6 +2540,7 @@ include ('./layout/admin/table-pagination-css.php');
                           <td style='text-align: center'>
                               <button data-id='${currentItem.order_id}' class='grid-item button btn_openPayment' id = "btn_openPayment" ${currentItem.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
                               <button data-id='${currentItem.order_id}' class='grid-item button btn_editOrder' id = "btn_editOrder"><i class='bi bi-pencil-fill bi-md'></i></button>
+                              <button data-id='${currentItem.order_id}' data-isReceived='${currentItem.is_received}' class='grid-item button btn_removeOrder' id = "btn_removeOrder"><i class='bi bi-trash bi-md'></i></button>
                           </td>
                       </tr>`
                   );

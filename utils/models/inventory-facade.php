@@ -183,17 +183,19 @@ class InventoryFacade extends DBConnection
         $stocks = [];
         if($start_date !== "" AND $end_date !== "")
         {
-            $start_date =  date("Y-m-d", strtotime($start_date));
-            $end_date =  date("Y-m-d", strtotime($end_date));
+            $formatted_start_date = date("Y-m-d", strtotime($start_date));
+            $formatted_end_date = date("Y-m-d", strtotime($end_date));
+          
             $sql = "SELECT products.*, stocks.*, stocks.date as stock_date
                     FROM products
                     INNER JOIN stocks ON stocks.inventory_id = products.id
                     WHERE products.id = :inventory_id
-                    AND FROM_UNIXTIME(stocks.date) BETWEEN :st_date AND :end_date";
+                    AND (DATE(stocks.date) BETWEEN :st_date AND :end_date)";
+
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(":inventory_id", $inventory_id);
-            $stmt->bindParam(":st_date", $start_date); 
-            $stmt->bindParam(":end_date", $end_date);    
+            $stmt->bindParam(":st_date", $formatted_start_date);
+            $stmt->bindParam(":end_date", $formatted_end_date);
             $stmt->execute();
             $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -210,7 +212,7 @@ class InventoryFacade extends DBConnection
         }
      
         return [
-            'inventoryInfo' => $this->get_inventoryDataById($inventory_id),
+            'inventoryInfo' => $this->get_productDataById($inventory_id),
             'stocks' => $stocks,
         ];
     }

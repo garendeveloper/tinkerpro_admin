@@ -156,12 +156,25 @@ if (isset($_SESSION['user_id'])) {
         left: 50px;
         width: calc(100% - 50px);
     }
+    #top-right-end 
+    {
+        position: absolute;
+        top: 10px; 
+        right: 20px; 
+        color: white;
+        font-family: "Century Gothic";
+    }
 </style>
 <header class="site-header">
     <div class="header-container">
         <h6 class="logo">Management&nbsp; <i class="bi bi-globe" style="font-size: 0.75rem;"></i> <span
                 id="pointer"></span> </h6>
+
+        <div class = "justify-content-end" id = "top-right-end">
+            <span id = "ct7" style = "color: white; font-family: Century Gothic; font-weight: bold"></span>
+        </div>
     </div>
+   
 </header>
 <div class="sidebar" id="sidebar">
     <nav>

@@ -106,7 +106,7 @@
                     class="search-input italic-placeholder" placeholder="Search Product [barcode,name,brand]"
                     name="invc_product" onkeyup="$(this).removeClass('has-error')" id="invc_product" autocomplete="off">
             </div>
-            <button style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;"
+            <button type = "button" style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;"
                 id="btn_invcSearch">
                 Search</button>
         </div>
@@ -212,6 +212,7 @@
         //     })
            
         // })
+        
         $("#btn_invcSearch").on("click",function (e) {
             e.preventDefault();
             var inventory_id = $("#invc_product_id").val();
@@ -392,7 +393,7 @@
             var counted = $(this).val();
             counted = parseFloat(counted);
             var stock = $(this).closest("tr").find("td:nth-child(2)").text();
-            stock =parseFloat(stock);
+            stock = parseFloat(stock);
 
             if(stock < 0)
             {

@@ -1182,6 +1182,7 @@ input[type="text"] {
 </div>
 <?php include("./modals/print_orders-modal.php")?>
 <?php include('./modals/show_purchasePrintModal.php'); ?>
+<?php include('./modals/show_stockhistoryPrintModal.php'); ?>
 
 <script>
   $(document).ready(function(){

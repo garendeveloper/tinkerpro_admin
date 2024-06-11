@@ -139,7 +139,7 @@ table, .stockhistory_form{
 
 </style>
 
-<div class="modal" id="stockhistory_modal"  tabindex="0" style="background-color: rgba(0, 0, 0, 0.7); overflow: hidden; z-index: 2000;">
+<div class="modal" id="stockhistory_modal"  tabindex="0" style="background-color: rgba(0, 0, 0, 0.7); overflow: hidden; z-index:999;">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <button id="close-modal"  name="close-modal" class="close-button" style="font-size: larger;">&times;</button>
@@ -162,7 +162,7 @@ table, .stockhistory_form{
           <h3 style="color: #FF6900"><b></b>LOADING PLEASE WAIT</b></h3><br>
           <img src="assets/img/globe.png" alt="Globe Image" style="width:75px; height: 75px; animation: rotate 2s linear infinite;" />
       </div>
-     <div class="modal-body">
+     <div class="modal-body" style="overflow-y: auto; max-height: calc(100vh - 150px);">
         <div class="stockhistory_form">
           <input type="hidden" id = "inventory_id">
           <div class="input-group">
@@ -176,6 +176,7 @@ table, .stockhistory_form{
             <div class="input-group">
                 <button id="btn_refreshStock" class="btn btn-secondary"><i class="bi bi-arrow-right" ></i></button>
                 <button id="btn_printStockHistory" class="btn btn-secondary"><i class="bi bi-printer"></i></button>
+                <button id="btn_refreshStockHistory" class="btn btn-secondary"><i class="bi bi-arrow-clockwise"></i></button>
             </div>
         </div>
         <table id = "tbl_stocks_history">
@@ -224,6 +225,7 @@ $(document).ready(function() {
       var start_date = $("#stockhistory_modal #start_date").val();
       var end_date = $("#stockhistory_modal #end_date").val();
       var id = $("#stockhistory_modal #inventory_id").val();
+      
       if(start_date !== "" && end_date !== "" )
       {
         $("#stockhistory_modal #start_date").removeClass('has-error');
@@ -237,34 +239,44 @@ $(document).ready(function() {
             end_date: end_date
           },
           success: function (data) {
-            var info = data.inventoryInfo;
             var stocks = data.stocks;
             var tbl_rows = [];
-            $("#stockhistory_modal").find(".modal-title").text(info.prod_desc + " - STOCK HISTORY")
-            for (var i = 0, len = stocks.length; i < len; i++) {
-              var stockItem = stocks[i];
-              var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
-              var stockTimestamp = stockItem.stock_date;
-              var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
-              tbl_rows.push(
-                `<tr>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.document_number}</td>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_customer}</td>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockDate}</td>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockTimestamp}</td>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
-              </tr>`
-              );
-            }
-            var tfoot = `<tr>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${info.stock}</td>
-              </tr>`;
+            if(stocks.length > 0)
+            {
+              for (var i = 0, len = stocks.length; i < len; i++) 
+              {
+                var stockItem = stocks[i];
+                var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
+                var stockTimestamp = stockItem.stock_date;
+                var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+                tbl_rows.push(
+                  `<tr>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.document_number}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_customer}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockDate}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockTimestamp}</td>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
+                    <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
+                </tr>`
+                );
+              }
+              var tfoot = `<tr>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
+                    <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${info.stock}</td>
+                </tr>`;
 
-            $("#tbl_stocks_history tbody").html(tbl_rows);
-            $("#tbl_stocks_history tfoot").html(tfoot);
+              $("#tbl_stocks_history tbody").html(tbl_rows);
+              $("#tbl_stocks_history tfoot").html(tfoot);
+            }
+            else
+            {
+              var tfoot = `<tr>
+                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='7'>No available data found.</td>
+                </tr>`;
+                $("#tbl_stocks_history tbody").html(tfoot);
+                $("#tbl_stocks_history tfoot").html("");
+            }
           }
         })
       }
@@ -273,6 +285,47 @@ $(document).ready(function() {
         $("#stockhistory_modal #start_date").addClass('has-error');
         $("#stockhistory_modal #end_date").addClass('has-error');
       }
+    })
+    $("#btn_printStockHistory").click(function(){
+
+        $('#show_stockhistoryPrintModal').show()
+        var start_date = $("#stockhistory_modal #start_date").val();
+        var end_date = $("#stockhistory_modal #end_date").val();
+        var id = $("#stockhistory_modal #inventory_id").val();
+        if($('#show_stockhistoryPrintModal').is(":visible"))
+        {
+          var loadingImage = document.getElementById("loadingImage1");
+          loadingImage.removeAttribute("hidden");
+          var pdfFile= document.getElementById("pdfFile1");
+          pdfFile.setAttribute('hidden',true);
+          $.ajax({
+              url: './toprint/stockhistory.php',
+              type: 'GET',
+              xhrFields: {
+                  responseType: 'blob'
+              },
+              data: {
+                  start_date: start_date,
+                  end_date: end_date,
+                  product_id: id
+              },
+              success: function(response) 
+              {
+                loadingImage.setAttribute("hidden",true);
+                var pdfFile = document.getElementById("pdfFile1");
+                pdfFile.removeAttribute('hidden')
+                if( loadingImage.hasAttribute('hidden')) 
+                {
+                    var newBlob = new Blob([response], { type: 'application/pdf' });
+                    var blobURL = URL.createObjectURL(newBlob);
+                    $('#pdfViewer1').attr('src', blobURL);
+                }
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText);
+              }
+          });
+        }
     })
 });
  
