@@ -47,7 +47,7 @@ $pdf->SetCellHeightRatio(1.5);
 $imageFile = '../assets/img/tinkerpro-logo-dark.png';
 $imageWidth = 45;
 $imageHeight = 15;
-$imageX = 10; // Adjust this value to your desired left margin
+$imageX = 10; 
 $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
 $pdf->SetFont('', 'I', 8);
 
@@ -99,10 +99,10 @@ switch($active_id)
         $formatted_tax = 0;
         foreach ($items as $item) {
 
-            if($item['stock'] !== -1)
+            if($item['product_stock'] !== -1)
             {
-                $amountBeforeTaxFormatted = '₱' . number_format($item['amount_beforeTax'], 2);
-                $amountAfterTaxFormatted = '₱' . number_format($item['amount_afterTax'], 2);
+                $amountBeforeTaxFormatted = '₱' . number_format($item['cost'], 2);
+                $amountAfterTaxFormatted = '₱' . number_format($item['prod_price'], 2);
     
                 $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
                 $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[1]));
@@ -112,8 +112,8 @@ switch($active_id)
                 $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['barcode'], $headerWidths[3]));
                 $pdf->Cell($headerWidths[3], $maxCellHeight, $item['uom_name'], 1, 0, 'L');
                 $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['uom_name'], $headerWidths[4]));
-                $pdf->Cell($headerWidths[4], $maxCellHeight, $item['stock'], 1, 0, 'C');
-                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['stock'], $headerWidths[5]));
+                $pdf->Cell($headerWidths[4], $maxCellHeight, $item['product_stock'], 1, 0, 'C');
+                $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['product_stock'], $headerWidths[5]));
                 $pdf->Cell($headerWidths[5], $maxCellHeight, $amountBeforeTaxFormatted, 1, 0, 'R');
                 $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[6]));
                 $pdf->Cell($headerWidths[6], $maxCellHeight, $amountAfterTaxFormatted, 1, 0, 'R');

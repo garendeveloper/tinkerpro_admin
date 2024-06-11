@@ -68,6 +68,9 @@
             $result = $categories->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'categories' => $result]);
             break;
+        case 'delete_purchaseOrder':
+            echo json_encode($order->delete_purchaseOrder($_GET["id"]));
+            break;
         case 'get_allInventories':
             // $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
             // $perPage = isset($_GET['page']) ? $_GET['page'] : 10;

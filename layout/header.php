@@ -67,3 +67,40 @@
   <script src="assets/table-sortable/dataTables.min.js"></script>
 </head>
 <body>
+
+<script>
+ function display_ct7() 
+ {
+    var x = new Date();
+    var ampm = x.getHours() >= 12 ? ' PM' : ' AM';
+    var hours = x.getHours() % 12;
+    hours = hours ? hours : 12; 
+    hours = hours.toString().length == 1 ? '0' + hours : hours;
+
+    var minutes = x.getMinutes().toString();
+    minutes = minutes.length == 1 ? '0' + minutes : minutes;
+
+    var seconds = x.getSeconds().toString();
+    seconds = seconds.length == 1 ? '0' + seconds : seconds;
+
+    var monthNames = ["January", "February", "March", "April", "May", "June", 
+                      "July", "August", "September", "October", "November", "December"];
+    var month = monthNames[x.getMonth()];
+
+    var dt = x.getDate().toString();
+    dt = dt.length == 1 ? '0' + dt : dt;
+
+    var year = x.getFullYear();
+
+    var x1 = month + " " + dt + ", " + year;
+    x1 = x1 + " - " + hours + ":" + minutes + ":" + seconds + ampm;
+    document.getElementById('ct7').innerHTML = x1;
+    display_c7();
+  }
+
+  function display_c7(){
+    var refresh=1000; 
+    mytime=setTimeout('display_ct7()',refresh)
+  }
+  display_c7()
+</script>

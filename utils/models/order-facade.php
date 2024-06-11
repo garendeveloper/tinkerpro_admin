@@ -47,6 +47,23 @@ class OrderFacade extends DBConnection
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
+    public function delete_purchaseOrder($order_id)
+    {
+        $sql = "DELETE FROM orders WHERE id = :id";
+        $stmt1 = $this->connect()->prepare($sql);
+        $stmt1->bindParam(":id", $order_id);
+        $stmt1->execute();
+
+        $inventory = "DELETE FROM inventory WHERE order_id = :order_id";
+        $stmt2 = $this->connect()->prepare($inventory);
+        $stmt2->bindParam(":order_id", $order_id);
+        $stmt2->execute();
+
+        return [
+            'status' => true,
+            'message' => "Purchase order has been successfully removed!"  
+        ];
+    }
     public function get_orderDataByPurchaseNumber($po_number)
     {
         $sql = "SELECT orders.*, products.*, supplier.*, inventory.*, inventory.id as inventory_id
