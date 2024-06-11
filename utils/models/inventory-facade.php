@@ -17,7 +17,8 @@ class InventoryFacade extends DBConnection
                                         JOIN 
                                             uom ON uom.id = products.uom_id
                                         GROUP BY 
-                                            products.id, products.prod_desc");
+                                            products.id, products.prod_desc 
+                                        ORDER BY products.prod_desc asc");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 

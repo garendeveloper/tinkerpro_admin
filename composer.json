@@ -10,6 +10,7 @@
         "guzzlehttp/guzzle": "*",
         "intervention/image": "*",
         "mike42/escpos-php": "*",
+        "mpdf/mpdf": "*",
         "paymongo/paymongo-php": "*",
         "tecnickcom/tcpdf": "*",
         "xendit/xendit-php": "*"

@@ -56,6 +56,12 @@
         align-items: center;
         justify-content: center
     }
+    #btn_open_print_count_modal{
+        background-color: #00b050
+    }
+    #btn_open_print_count_modal:hover{
+        background-color: #046c04;
+    }
 </style>
 <div class="fcontainer" id="inventorycount_div" style="display: none">
     <form id="inventorycount_form">
@@ -84,13 +90,25 @@
                     <i class="bi bi-chevron-double-down"></i>
                 </div>
                 <button style="font-size: 12px; height: 30px; border-radius: 4px;" id="btn_go_inventory">
-                    GO</button>
+                    DISPLAY ALL</button>
             </div>
             <div class="group right-aligned" style="display: flex; align-items: center;">
                 <button style="font-size: 12px; height: 30px; border-radius: 4px; width: 200px; " id="btn_open_print_count_modal" type = "button">
                    <i class = "bi bi-printer"></i>&nbsp;&nbsp; Print Count Sheet</button>
             </div>
             
+        </div>
+        <div class="fieldContainer" style="margin-top: -3px;">
+            <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
+            <div class="search-container">
+                <input type="hidden" id="invc_product_id" value="0">
+                <input type="text" style="width: 280px; height: 30px; font-size: 14px;"
+                    class="search-input italic-placeholder" placeholder="Search Product [barcode,name,brand]"
+                    name="invc_product" onkeyup="$(this).removeClass('has-error')" id="invc_product" autocomplete="off">
+            </div>
+            <button style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;"
+                id="btn_invcSearch">
+                Search</button>
         </div>
     </form>
     <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh">
@@ -119,6 +137,7 @@
 
     $(document).ready(function () {
         show_reference_no();
+        show_allProducts();
         function show_reference_no() {
             $.ajax({
                 type: 'get',
@@ -129,7 +148,15 @@
             })
         }
         $("#btn_open_print_count_modal").on("click", function() {
-            $("#printcount_modal").show();
+            var type = $("#qi_inventory_type").val();
+            if(type !== "")
+            {
+                $("#qi_inventory_type").removeClass('has-error');
+                $("#printcount_modal").show();
+            }
+            {
+                $("#qi_inventory_type").addClass('has-error');
+            }
         });
 
         $(".close").click(function() {
@@ -159,43 +186,206 @@
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-        function isDataExistInTable(data) {
-            var isExist = false;
-            $('#tbl_inventory_count tbody').each(function () {
-                var rowData = $(this).find('td:first').text();
-                if (rowData === data) {
-                    isExist = true;
-                    return false;
-                }
-            });
-            return isExist;
-        }
 
-        $("#btn_go_inventory").on("click", function (e) {
+        // $("#btn_go_inventory").off().on("click", function (e) {
+        //     e.preventDefault();
+        //     var search_value = $("#qi_inventory_type").val();
+        //     $("#inventory_count_info_id").val("");
+        //     $('#modalCashPrint').show();
+        //     $.ajax({
+        //         type: 'get',
+        //         url: 'api.php?action=get_allProductByInventoryType&type='+search_value,
+        //         success: function (data) {
+        //             $('#modalCashPrint').hide();
+        //             var row = "";
+        //             for(var i =0 ;i<data.length; i++)
+        //             {
+        //                 row += "<tr data-id = "+data[i].product_id+">";
+        //                 row += "<td>" + data[i].prod_desc + "</td>";
+        //                 row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
+        //                 row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted' value = ''></input></td>";
+        //                 row += "<td style = 'text-align: right'></td>";
+        //                 row += "</tr>";
+        //             }
+        //             $("#tbl_inventory_count tbody").html(row);
+        //         }
+        //     })
+           
+        // })
+        $("#btn_invcSearch").on("click",function (e) {
             e.preventDefault();
-            var search_value = $("#qi_inventory_type").val();
-            $("#inventory_count_info_id").val("");
-            $('#modalCashPrint').show();
+            var inventory_id = $("#invc_product_id").val();
+            if(inventory_id !== 0)
+            {
+                if ($("select[name='inventory_type']").val() === "") {
+                    $("select[name='inventory_type']").css('border', '1px solid red');
+                }
+                else {
+                    $("select[name='inventory_type']").css('border', '1px solid #ffff');
+                    if (!isDataExistInTable(inventory_id)) 
+                    {
+                        display_productBy(inventory_id);
+                    }
+                    else
+                    {
+                        alert("Product is already in the table.")
+                    }
+                }
+            }
+        })
+        var productsCache = [];
+        function show_allProducts() 
+        {
+            $.ajax({
+            type: 'GET',
+            url: 'api.php?action=get_allProducts',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) 
+                {
+                    var row = 
+                    {
+                        product_id: data[i].id,
+                        product: data[i].prod_desc,
+                        barcode: data[i].barcode,
+                        brand: data[i].brand,
+                    };
+                    productsCache.push(row);
+                }
+            }
+            });
+        }
+        function filterProducts(term) {
+            return productsCache.filter(function (row) {
+            return row.product.toLowerCase().includes(term) ||
+                row.barcode.includes(term) ||
+                (row.brand && row.brand.toLowerCase().includes(term)) ||
+                (!row.brand && term === "");
+            }).map(function (row) {
+            var brand = row.brand === null ? " " : row.brand;
+            return {
+                label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
+                value: row.barcode ?? row.product,
+                id: row.product_id
+            };
+            });
+        }
+        function show_errorResponse(message) {
+            toastr.options = {
+            "onShown": function () {
+                $('.custom-toast').css({
+                "opacity": 1,
+                "width": "600px",
+                "text-align": "center",
+                "border": "2px solid #1E1C11",
+                });
+            },
+            "closeButton": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "progressBar": true,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "tapToDismiss": false,
+            "toastClass": "custom-toast",
+            "onclick": function () { alert('Clicked'); }
+
+            };
+            toastr.error(message);
+        }
+        $("#invc_product").on("input", function(e) {
+            var term = $(this).val();
+            $(this).autocomplete('search', term);
+
+        });
+
+        $("#invc_product").autocomplete({
+            minLength: 2,
+            source: function (request, response) {
+            var term = request.term;
+            var filteredProducts = filterProducts(term);
+            var slicedProducts = filteredProducts.slice(0, 5);
+            response(slicedProducts);
+            if (slicedProducts.length > 0) {
+                $('#filters').show();
+            } else {
+                $('#filters').hide();
+            }
+            
+            var slicedProductsLength = slicedProducts.length - 1;
+            var selectedProductId = slicedProducts[slicedProductsLength].id;
+                $("#invc_product_id").val(selectedProductId);
+            },
+            select: function (event, ui) {
+                
+                var selectedProductId = ui.item.id;
+                $("#invc_product_id").val(selectedProductId);
+                return false;
+            },
+        });
+      $("#invc_product").on("input", function(e) {
+        e.preventDefault();
+          var term = $(this).val();
+          $(this).autocomplete('search', term);
+      });
+      $("#invc_product").on("keypress", function(event){
+        if(event.which === 13){
+            var product_id = $("#invc_product_id").val();
+      
+          if (!isDataExistInTable(product_id)) {
+            append_to_table(product_id);
+          }
+          else
+          {
+            show_errorResponse("Product already in the table")
+          }
+          $("#invc_product").val('');
+        }
+      
+      })
+
+      $("#invc_product").on("autocompletechange", function(event, ui) {
+        var product_id = $("#invc_product_id").val();
+        
+        if (!isDataExistInTable(product_id)) {
+            append_to_table();
+        }
+        else
+        {
+          show_errorResponse("Product already in the table");
+        }
+          $(this).val('');
+      });
+        function isDataExistInTable(data) {
+            var $matchingRow = $('#tbl_inventory_count tbody td:first[data-id="' + data + '"]').closest('tr');
+            
+            if ($matchingRow.length > 0) {
+                return true;
+            }
+            
+            return false;
+        }
+       
+        function append_to_table(product_id) 
+        {
             $.ajax({
                 type: 'get',
-                url: 'api.php?action=get_allProductByInventoryType&type='+search_value,
+                url: 'api.php?action=get_productInfo',
+                data: { data: product_id },
                 success: function (data) {
-                    $('#modalCashPrint').hide();
                     var row = "";
-                    for(var i =0 ;i<data.length; i++)
-                    {
-                        row += "<tr data-id = "+data[i].product_id+">";
-                        row += "<td>" + data[i].prod_desc + "</td>";
-                        row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
-                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted' value = ''></input></td>";
-                        row += "<td style = 'text-align: right'></td>";
-                        row += "</tr>";
-                    }
-                    $("#tbl_inventory_count tbody").html(row);
+                    row += "<tr data-id = " + data['id'] + ">";
+                    row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
+                    row += "<td style = 'text-align:center'>" + data['product_stock'] + "</td>";
+                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                    row += "</tr>";
+                    $("#tbl_inventory_count tbody").append(row);
                 }
             })
-           
-        })
+        }
+
         $("#tbl_inventory_count").on("input", "#counted", function (e) {
             e.preventDefault();
             $(this).removeClass('has-error');
