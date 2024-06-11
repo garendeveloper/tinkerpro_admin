@@ -139,14 +139,16 @@ if (isset($_SESSION['user_id'])) {
     width: 100px;
     border-collapse: collapse;
 }
-.card{
-    background-color:#151515;
-    border-color: #242424;
-    height: 200px; 
-    overflow: auto; 
-    border-radius: 8px;
-    padding: 16px; 
-  }
+.card {
+  background-color: #151515;
+  border-color: #242424;
+  height: 200px;
+  overflow-x: auto; 
+  overflow-y: hidden;
+  border-radius: 8px;
+  padding: 16px;
+}
+
   .highlighteds{
      border: 2px solid #00B050 !important; 
   }
