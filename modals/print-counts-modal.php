@@ -15,7 +15,7 @@
         background-color: #1E1C11;
         margin: 10% auto;
         max-width: 500px;
-        height: 20%;
+        height: 25%;
         max-height: 100%;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }

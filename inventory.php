@@ -137,6 +137,43 @@ include ('./layout/admin/table-pagination-css.php');
   .highlighteds{
      border: 2px solid #00B050; 
   }
+
+  .paginationTag {
+    text-decoration: none; 
+    border: 1px solid #fefefe;
+    margin-right: 1px; 
+    width: 40px;
+    height: 40px;
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center; 
+    background-color: #888888;
+    color: #fefefe;
+}
+
+.paginationTag:hover{
+  color: #FF6900;
+}
+
+#paginationDiv{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#paginationDiv #dt-paging{
+  text-decoration: none; 
+  border: 1px solid #fefefe;
+  margin-right: 1px; 
+  width: 40px;
+  height: 40px;
+  display: inline-flex; 
+  justify-content: center;
+  align-items: center; 
+  background-color: #888888;
+  color: #fefefe;
+}
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -188,7 +225,9 @@ include ('./layout/admin/table-pagination-css.php');
                         <button id="reorder-point" class="grid-item text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button> -->
               </div>
             </div>
+          
             <div class="division">
+   
               <div class="grid-container">
                 <!-- <button id="loss-damage" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button> -->
                 <!-- <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button> -->
@@ -207,6 +246,9 @@ include ('./layout/admin/table-pagination-css.php');
         </div>
         <div class="row" style="margin-top: -20px;">
           <div class="card inventoryCard" style="width: 100%; height: 70vh; overflow:auto;">
+
+          </div>
+          <div id="paginationDiv" class = "pagination-container">
 
           </div>
           <div style="display: flex; margin-top: 20px">
@@ -2262,13 +2304,19 @@ include ('./layout/admin/table-pagination-css.php');
             $('.inventoryCard #tbl_products').DataTable({
                 ordering: true,
                 order: [[0, 'asc']], 
-                pageLength: 50,
-                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                pageLength: 300,
+                // sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                // dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"<"#paginationControls.pull-center"ip>>>',
+                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"<"#paginationDiv"p>>>',
                 language: {
                     paginate: {
                         previous: '<i class="fa fa-angle-left"></i>',
                         next: '<i class="fa fa-angle-right"></i>'
                     }
+                },
+                drawCallback: function () {
+                    var pagination = $('#paginationDiv').find('.dataTables_paginate');
+                    pagination.wrap('<div class="pagination-wrapper">');
                 },
                 keys: true,
             });
