@@ -3,7 +3,6 @@
 #add_products_modal {
   display: none;
   position: fixed; 
-  z-index: 9999;
   top: 0;
   top: 0;
   bottom: 0;
@@ -11,7 +10,6 @@
   width: 500px;
    background-color: transparent;
   overflow: hidden;
-  height: 100%; 
   animation: slideInRight 0.5s; 
 }
 
@@ -62,7 +60,7 @@
     border-radius: 0;
     width: 100%;
     max-width: 500px;  
-    height: fit-content;
+    height: 100%;
     margin-top: 15px;
     margin-bottom: 15px;
     
@@ -136,9 +134,6 @@
     box-sizing: border-box; 
     border-radius: 20px;
     height: 200px;
-    position: absolute;
-    right: 0;
-    left: 190px;
     margin-right: 20px;
     border-color: #595959;
     background-color: #404040;
@@ -149,11 +144,7 @@
   color:#FF6900;
   border-radius: 5px;
 }
-.imageButtonDiv{
-  position:absolute;
-  top: 755px;
-  left: 20px
-}
+
 .removeImage{
   width:60px
 }
@@ -164,8 +155,7 @@
   margin-left: 20px;
   font-family: Century Gothic;
   font-weight: bold;
-  position: absolute;
-  top: 780px
+
 }
 
 .switch {
@@ -863,9 +853,10 @@ font-weight: bold;
   color: #fefefe;
          
 }.button-container {
+  display:flex;
   padding-top: 5px;
   margin: 0;
-  bottom: 20px;
+  bottom: 0;
   right:0;
   margin-bottom: 20px;
 
@@ -986,33 +977,32 @@ input:checked + .sliderbom:before {
 #myTable tr {
   margin: 0;
 }
-.table-container {
+.table-containers {
+  display: flex;
   max-height: 80px; 
   overflow-y: scroll;
   background-color: transparent;
-  top: 85px;
   max-width: 500px;
   padding-right: 20px;
-  margin-top: 13px;
   margin-bottom: 5px;
 }
 
 
-.table-container::-webkit-scrollbar {
+.table-containers::-webkit-scrollbar {
   width: 6px;
  
 }
 
-.table-container::-webkit-scrollbar-track {
+.table-containers::-webkit-scrollbar-track {
   background: #262626;
 }
 
-.table-container::-webkit-scrollbar-thumb {
+.table-containers::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 3px;
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
+.table-containers::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
@@ -1288,6 +1278,18 @@ input:checked + .warningSpan:before {
   background-color: #FF6900;
 }
 
+.imageButtonDiv{
+  display: flex;
+  margin-top: -50px;
+
+}
+#scrollable-div {
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  min-height: 25vh;
+  max-height: 38vh;
+}
+
 
 </style>
 
@@ -1537,18 +1539,19 @@ input:checked + .warningSpan:before {
               </tbody>
             </table>
           </div>
+          <div id="scrollable-div">
           <div class="imageCard">
-                 <div  style="width:32%" class="imageProduct" id="imageProduct">
+                  <div  style="width:32%" class="imageProduct" id="imageProduct">
                    </div> 
-                    <div  class="bomCard">
-                      <div style="width: 100%; display: flex;">
-                         <h6 class="bomHeader" style="margin-left: 20px"><span class="disAbled">Disabled</span>&nbsp;<span id="bomText">Bill-0f-Material (BOM)</span></h6>
+                     <div  class="bomCard">
+                       <div style="width: 100%; display: flex;">
+                          <h6 class="bomHeader" style="margin-left: 20px"><span class="disAbled">Disabled</span>&nbsp;<span id="bomText">Bill-0f-Material (BOM)</span></h6>
                          <div>
                          <?php
                             $otherChanges = "no"; 
                             $other_changes = ($otherChanges == "no") ? "yes" : "no";
                             ?>
-                            <label class="bomLbl" style="margin-left: 15px; margin-top: 5px">
+                            <label class="bomLbl" style="margin-left: 15px; margin-top: 5px;  margin-right: 5px">
                                 <input type="checkbox" id="bomToggle"<?php if($otherChanges == "no")  ?> >
                                 <span class="sliderbom round"></span>
                             </label>  
@@ -1559,7 +1562,7 @@ input:checked + .warningSpan:before {
                           <button class="btns-bom" id="addIngredients" onclick="openBomModal()" style="margin-right: 5px; width: 70px">+ Add</button>
                           <button class="btns-bom" id="delIngredients" style="margin-right: 20px; width: 70px">- Del</button>
                       </div>
-                      <div class="table-container">
+                      <div class="table-containers">
                   <table id="myTable" class="text-color">
                     <tbody>
                       <tr>
@@ -1573,16 +1576,14 @@ input:checked + .warningSpan:before {
                   </table>
                 </div>
                    </div>        
-               </div>     
-          </div>
-          <div class="imageButtonDiv">
-            <input hidden type="file" id="fileInputs" style="display: none;" accept="image/jpeg, image/jpg, image/png">
-            <button onclick="clearImageProduct()" class="btnCustom removeImage">-Del</button>
-            <button class="btnCustom addImage" id="addImage">+ Add Image</button>
-          </div>
-          <div style="margin-bottom: 20px">
-            <h4 class="descripTion"  style="color:#FF6900;">Description</h4>
-          </div>
+               </div> 
+               <div class="imageButtonDiv" style="margin-left: 20px;">
+                 <input hidden type="file" id="fileInputs" style="display: none;" accept="image/jpeg, image/jpg, image/png">
+                 <button onclick="clearImageProduct()" style="margin-right: 2px;" class="btnCustom removeImage">-Del</button>
+                 <button class="btnCustom addImage" id="addImage">+ Add Image</button>
+                
+          </div> 
+          <h4 class="descripTion"  style="color:#FF6900;">Description</h4> 
           <div style="margin-left: 20px;width: 100%; margin-right: 20px">
             <textarea  id="description" style="width: 92%; height: 120px; background-color: transparent; color:#fefefe" name="description"  class="description"></textarea>
           </div>
@@ -1591,13 +1592,19 @@ input:checked + .warningSpan:before {
                 <button hidden onclick="updateProducts()" class="btn-success-custom updateProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
                 <button onclick="closeAddProductsModal()" class="cancelAddProducts btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
             </div>
+          </div>
+          </div>
         </div>
       </div>
     </div>
+ 
     </div>
   </div>
 <!-- </div> -->
 <script>
+
+    
+  
   document.getElementById('stockToggle').addEventListener('change', function() {
         var quantityInput = document.querySelector('.quantity');
         if (this.checked) {
@@ -1948,9 +1955,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     var barcodeInput =  document.getElementById('barcode');
+
+    barcodeInput.addEventListener('click', function() {
+        this.select();
+    });
+        
     var barcodeLabel = document.querySelector('.barcodeTd');
     barcodeInput.addEventListener('input', function() {
-        var barcode = barcodeInput.value.trim(); 
+  var barcode = barcodeInput.value.trim(); 
         if (barcode) {
             axios.get(`api.php?action=checkSKU&barcode=${barcode}`)
                 .then(function(response) {
@@ -1974,6 +1986,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var codeInput =  document.getElementById('code');
     var codeLabel = document.querySelector('.codeTd');
     codeInput.addEventListener('input', function() {
+     
         var code = codeInput.value.trim(); 
         if (code) {
             axios.get(`api.php?action=checkSKU&code=${code}`)
