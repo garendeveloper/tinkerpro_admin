@@ -6,6 +6,16 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
+$pdfFolder = __DIR__ . '/../assets/pdf/return/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
+
+
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -188,14 +198,11 @@ $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum] ?? 0, 2), 1, 0, 'R');
 $pdf->Ln();
 
-
-
+$pdfPath = $pdfFolder . 'returnAndExchangeList.pdf';
+$pdf->Output($pdfPath, 'F');
 
 $pdf->Output('returnAndExchangeList.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/return/returnAndExchangeList.pdf';
-if (file_exists($pdfPath)) {
 
-    unlink($pdfPath);
-}
-$pdf->Output($pdfPath, 'F');
+
+
 ?>

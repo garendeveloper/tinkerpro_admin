@@ -7,7 +7,7 @@
       if($selectedProduct && !$singleDateData && !$startDate && !$endDate){
         $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -27,7 +27,7 @@
       }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate){
         $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -47,7 +47,7 @@
       }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate){
         $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -67,7 +67,7 @@
       }else if($selectedProduct && $singleDateData && !$startDate && !$endDate){
         $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
             r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-            r.date AS date, r.refunded_method_id AS method, t.receipt_id
+            r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -88,7 +88,7 @@
       }else if($selectedProduct && !$singleDateData && $startDate && $endDate){
         $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -109,7 +109,7 @@
       }else{
         $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id 
     INNER JOIN (

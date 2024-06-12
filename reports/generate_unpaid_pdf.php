@@ -6,6 +6,14 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
+$pdfFolder = __DIR__ . '/../assets/pdf/unpaid/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -130,7 +138,18 @@ $pdf->SetFont('', 'B', 10);
 $totalPaidAmount = 0;
 $totalCreditAmount = 0; 
 $totalBalance = 0;
+$pdf->SetFont('', 'B', 10);
+for ($i = 0; $i < count($header); $i++) {
+    if ($header[$i] === 'No.') {
+        $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
+    } else {
+        $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
+    }
+   
+}
+$pdf->Ln();
 $pdf->SetFont('', '', 10); 
+
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $totalBalance += $row['balance'];
 
@@ -138,16 +157,6 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
         $header[2] = 'Employee ID';
     }
 
-    $pdf->SetFont('', 'B', 10);
-for ($i = 0; $i < count($header); $i++) {
-    if ($header[$i] === 'No.') {
-        $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
-    } else {
-        $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
-    }
-}
-$pdf->Ln();
-   
     $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['first_name'] . ' ' . $row['last_name'], $headerWidths[1]));
     $pdf->Cell($headerWidths[1], $maxCellHeight, $row['first_name'] . ' ' . $row['last_name'], 1, 0, 'L');
@@ -166,14 +175,11 @@ $pdf->Cell($headerWidths[2]+ $headerWidths[3], $maxCellHeight, number_format($to
 $pdf->Ln(); 
 
 
-
+$pdfPath = $pdfFolder . 'unpaidSalesList.pdf';
+$pdf->Output($pdfPath, 'F');
 
 $pdf->Output('unpaidSalesList.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/unpaid/unpaidSalesList.pdf';
 
-if (file_exists($pdfPath)) {
- 
-    unlink($pdfPath);
-}
-$pdf->Output($pdfPath, 'F');
+
+
 ?>

@@ -6,6 +6,16 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
+
+$pdfFolder = __DIR__ . '/../assets/pdf/product/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
+
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -227,15 +237,12 @@ $pdf->Output('product_report.pdf', 'I');
     $pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
     $pdf->Cell( $headerWidths[7], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
     
-    $pdf->Output('product_report.pdf', 'I');
-    $pdfPath = __DIR__ . '/../assets/pdf/product/product_report.pdf';
-    if (file_exists($pdfPath)) {
-        unlink($pdfPath);
-    }
-    
+
+    $pdfPath = $pdfFolder . 'product_report.pdf';
+
     $pdf->Output($pdfPath, 'F');
     $pdf->Output('product_report.pdf', 'I');
-
+ 
 }
 
 

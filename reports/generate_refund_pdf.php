@@ -144,6 +144,7 @@ $previousRefNum = null;
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $referenceNum = $row['reference_num'] ?? null;
     $method = $row['method'] ?? null;
+    $receipt = str_pad($receipt = $row['receipt_id'], 9, '0', STR_PAD_LEFT);
 
 
     if ($referenceNum !== $previousRefNum) {
@@ -157,7 +158,9 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
             $pdf->Ln();
         }
         $pdf->SetFont('', 'B', 10);
-        $pdf->Cell(0, 10, "Refund No.: {$referenceNum}", 0, 'L');
+        $pdf->Cell(0, 10, "Refund Slip No.: {$referenceNum}", 0, 'L');
+        $pdf->Ln(-6);
+        $pdf->Cell(0, 10, "Document No.: 60-{$receipt}", 0, 'L');
         $pdf->Ln(-1);
 
         if( $method   == 7){
@@ -257,16 +260,11 @@ $pdf->Ln();
 
 
 
-
-
-$pdf->Output('refundList.pdf', 'I');
-// $pdfPath = __DIR__ . '/../assets/pdf/refund/refundList.pdf';
-
-// if (file_exists($pdfPath)) {
-
-//     unlink($pdfPath);
-// }
-
 $pdfPath = $pdfFolder . 'refundList.pdf';
 $pdf->Output($pdfPath, 'F');
+
+$pdf->Output('refundList.pdf', 'I');
+
+
+
 ?>
