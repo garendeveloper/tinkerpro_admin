@@ -53,6 +53,8 @@
             $this->MultiCell(0, 10, "STOCK HISTORY OF : {$items['prod_desc']}", 0, 'R');
             $this->Ln(-9);
 
+            
+
         // $pdf->Ln(-3);
         // $pdf->SetFont('', 'I', 10); // Bold, size 10
         // $pdf->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'R');
@@ -68,7 +70,7 @@
     }
 
     function autoAdjustFontSize($pdf, $text, $width) {
-        $maxFontSize = 9; 
+        $maxFontSize = 7; 
         $minFontSize = 6; 
         $pdf->SetFont('dejavusans', '', $width);
         while ($maxFontSize >= $minFontSize) {
@@ -101,6 +103,8 @@
 
     $pdf->SetFont('helvetica', '', 10);
     $pdf->Ln(22);
+    $pdf->setDrawColor(192,192,192);
+    $pdf->SetLineWidth(0.3); 
 
     $items = $inventoryfacade->get_allStocksData($product_id)['stocks'];
     if($start_date != 0 && $end_date != 0)
@@ -115,18 +119,17 @@
         $headerWidths[] = $cellWidth;
     }
 
-    $hexColor = '#D3D3D3';
+    $hexColor = '#F5F5F5';
     list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
     $pdf->SetFillColor($r, $g, $b);
 
-    $pdf->SetFont('', 'B', 9);
+    $pdf->SetFont('', '', 8);
     foreach ($header as $i => $title) {
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $title, 1, 0, 'L', true);
     }
     $pdf->Ln();
 
-    $pdf->SetFont('', '', 8);
 
     foreach ($items as $item) 
     {

@@ -36,11 +36,9 @@
 
     textarea {
         resize: none;
-        /* Prevent resizing of textarea */
         width: 300px;
         height: 100px;
         overflow: auto;
-        /* Enable scrolling if content exceeds textarea size */
     }
 
     textarea::placeholder {
@@ -193,6 +191,7 @@
     $(document).ready(function () {
         show_reference_no();
         show_allProducts();
+        var toastDisplayed = false;
         $('#date_damage').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -211,16 +210,21 @@
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-        function isDataExistInTable(data) {
-            var isExist = false;
-            $('#tbl_lossand_damages tbody').each(function () {
-                var rowData = $(this).find('td:first').data('id');
-                if (rowData === data) {
-                    isExist = true;
-                    return false;
-                }
-            });
-            return isExist;
+        // function isDataExistInTable(data) {
+        //     var isExist = false;
+        //     $('#tbl_lossand_damages tbody').each(function () {
+        //         var rowData = $(this).find('td:first').data('id');
+        //         if (rowData === data) {
+        //             isExist = true;
+        //             return false;
+        //         }
+        //     });
+        //     return isExist;
+        // }
+        function isDataExistInTable(data) 
+        {
+            var $matchingRow = $('#tbl_lossand_damages tbody td[data-id="' + data + '"]').closest('tr');
+            return $matchingRow.length > 0;
         }
         var productsCache = [];
         function show_allProducts() 
@@ -242,6 +246,45 @@
                 }
             }
             });
+        }
+        function show_errorResponse(message) 
+        {
+            if (toastDisplayed) {
+                return; 
+            }
+
+            toastDisplayed = true; 
+
+            toastr.options = {
+                "onShown": function () {
+                    $('.custom-toast').css({
+                        "opacity": 1,
+                        "width": "600px",
+                        "text-align": "center",
+                        "border": "2px solid #1E1C11",
+                    });
+                },
+                "onHidden": function () {
+                    toastDisplayed = false; 
+                },
+                "closeButton": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "progressBar": true,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false,
+                "toastClass": "custom-toast",
+                "onclick": function () { 
+                    toastr.clear();
+                    toastDisplayed = false;
+                 }
+            };
+
+            toastr.error(message);
         }
         function filterProducts(term) {
             return productsCache.filter(function (row) {
@@ -268,7 +311,7 @@
                 success: function (data) {
                     var row = "";
                     row += "<tr data-id = " + data['id'] + ">";
-                    row += "<td>" + data['prod_desc'] + "</td>";
+                    row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
                     row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' ></input></td>";
                     row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
                     row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
@@ -288,14 +331,14 @@
                 })
                 $("#loss_and_damage_input_inventory_id").val("");
         }
-        $("#btn_searchLDProduct").on("click", function (e) {
+        $("#btn_searchLDProduct").click(function (e) {
             e.preventDefault();
             var product_id = $("#loss_and_damage_input_inventory_id").val();
             if (!isDataExistInTable(product_id)) {
                 append_to_table();
             }
             else {
-                alert("Product is already listed in the table.");
+                show_errorResponse("Product is already listed in the table")
             }
             updateTotal();
         })
@@ -312,7 +355,19 @@
             cost = parseFloat(cost);
 
             var total_cost = qty_damage * cost;
+            total_cost = total_cost.toFixed(2);
             $(this).closest("tr").find("#total_row_cost").text("₱ " + numberWithCommas(total_cost))
+
+            // var cursorPosition = getCursorPosition($cell[0]);
+            // newCost = acceptsOnlyTwoDecimal(newCost);
+            // $cell.text(newCost);
+            // cursorPosition = Math.min(cursorPosition, newCost.length);
+            // setCursorPosition($cell[0], cursorPosition);
+            // newCost = parseFloat(clean_number(newCost));
+            // var qty_damage = $cell.closest("tr").find("#qty_damage").val();
+            // qty_damage = parseFloat(qty_damage);
+            // var newTotal = qty_damage * newCost;
+            // $cell.closest('tr').find('td:nth-child(4)').html("&#x20B1;&nbsp;" + newTotal);
             updateTotal();
         })
         function acceptsOnlyTwoDecimal(value) {
@@ -379,6 +434,30 @@
                 this.value = this.value.replace(/\.+$/, '');
             }
         });
+
+        $('#tbl_inventory_count tbody').on('keypress', '#qty_damage', function (event) {
+            var charCode = event.which ? event.which : event.keyCode;
+            var inputVal = $(this).val();
+
+            if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                event.preventDefault();
+                return;
+            }
+
+            if (inputVal.indexOf('.') !== -1) {
+                if (charCode === 46) {
+                    event.preventDefault();
+                    return;
+                }
+
+                var decimalPos = inputVal.indexOf('.');
+                var decimalPart = inputVal.substring(decimalPos + 1);
+                if (decimalPart.length >= 2) {
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
      
         $("#loss_and_damage_input").autocomplete({
             minLength: 2,
@@ -417,51 +496,25 @@
           }
           else
           {
-            show_errorResponse("Product already in the table")
+            show_errorResponse("Product is already listed in the table")
           }
           $("#loss_and_damage_input").val('');
         }
       
       })
 
-      $("#loss_and_damage_input").on("autocompletechange", function(event, ui) {
-        var product_id = $("#loss_and_damage_input_inventory_id").val();
+    //   $("#loss_and_damage_input").on("autocompletechange", function(event, ui) {
+    //     var product_id = $("#loss_and_damage_input_inventory_id").val();
         
-        if (!isDataExistInTable(product_id)) {
-            append_to_table();
-        }
-        else
-        {
-          show_errorResponse("Product already in the table");
-        }
-          $(this).val('');
-      });
-      function show_errorResponse(message) {
-        toastr.options = {
-          "onShown": function () {
-            $('.custom-toast').css({
-              "opacity": 1,
-              "width": "600px",
-              "text-align": "center",
-              "border": "2px solid #1E1C11",
-            });
-          },
-          "closeButton": true,
-          "positionClass": "toast-top-right",
-          "timeOut": "5000",
-          "extendedTimeOut": "1000",
-          "progressBar": true,
-          "showEasing": "swing",
-          "hideEasing": "linear",
-          "showMethod": "fadeIn",
-          "hideMethod": "fadeOut",
-          "tapToDismiss": false,
-          "toastClass": "custom-toast",
-          "onclick": function () { alert('Clicked'); }
-
-        };
-        toastr.error(message);
-      }
+    //     if (!isDataExistInTable(product_id)) {
+    //         append_to_table();
+    //     }
+    //     else
+    //     {
+    //       show_errorResponse("Product already in the table");
+    //     }
+    //       $(this).val('');
+    //   });
         function show_reference_no() {
             $.ajax({
                 type: 'get',

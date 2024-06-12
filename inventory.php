@@ -138,7 +138,7 @@ include ('./layout/admin/table-pagination-css.php');
      border: 2px solid #00B050; 
   }
 
-  .paginationTag {
+  .dt-paging .dt-paging-button{
     text-decoration: none; 
     border: 1px solid #fefefe;
     margin-right: 1px; 
@@ -151,18 +151,18 @@ include ('./layout/admin/table-pagination-css.php');
     color: #fefefe;
 }
 
-.paginationTag:hover{
+/* .dt-paging-button:hover{
   color: #FF6900;
 }
 
-#paginationDiv{
+.dt-paging{
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#paginationDiv{
+.view-pager{
   text-decoration: none; 
   border: 1px solid #fefefe;
   margin-right: 1px; 
@@ -173,23 +173,43 @@ include ('./layout/admin/table-pagination-css.php');
   align-items: center; 
   background-color: #888888;
   color: #fefefe;
-}
-.pagination-wrapper {
+} */
 
-  text-decoration: none; 
-  border: 1px solid #fefefe;
-  margin-right: 1px; 
-  width: 40px;
-  height: 40px;
-  display: inline-flex; 
-  justify-content: center;
-  align-items: center; 
-  background-color: #888888;
-  color: #fefefe;
-}
+/* .pagination-wrapper {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+    z-index: 1000;
+} */
 
-.dataTables_paginate {
+/* .dataTables_paginate {
 }
+#header-fixed {
+  position: fixed;
+  top: 0px;
+  display: none;
+  background-color: white;
+}
+.pagination-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #ddd;
+} */
+#main-content {
+    overflow: hidden;
+}
+.inventoryCard{
+    width: 100%;
+    max-height: 650px; 
+    overflow-y: auto; 
+    overflow-x: auto; 
+  }
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -243,7 +263,6 @@ include ('./layout/admin/table-pagination-css.php');
             </div>
           
             <div class="division">
-   
               <div class="grid-container">
                 <!-- <button id="loss-damage" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button> -->
                 <!-- <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button> -->
@@ -261,12 +280,10 @@ include ('./layout/admin/table-pagination-css.php');
           </div>
         </div>
         <div class="row" style="margin-top: -20px;">
-          <div class="card inventoryCard" style="width: 100%; height: 70vh; overflow:auto;">
+          <div class="card inventoryCard" style="width: 100%; height: 70vh;">
 
           </div>
-          <div id="paginationDiv" class = "pagination-container">
-            
-          </div>
+          <div id="paginationDiv2"></div>
           <div style="display: flex; margin-top: 20px">
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg
                 version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg"
@@ -339,10 +356,24 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include('./modals/loading-modal.php'); ?>
 
   <script>
+
+    // var tableOffset = $(".inventoryCard table").offset().top;
+    // var $header = $(".inventoryCard table > thead").clone();
+    // var $fixedHeader = $("#header-fixed").append($header);
+
+    // $(window).bind("scroll", function() {
+    //   var offset = $(this).scrollTop();
+    //   if (offset >= tableOffset && $fixedHeader.is(":hidden")) {
+    //     $fixedHeader.show();
+    //   } else if (offset < tableOffset) {
+    //     $fixedHeader.hide();
+    //   }
+    // });
+    
     hidePopups();
         document.addEventListener('DOMContentLoaded', function() {
             var dateInput = document.getElementById('date_purchased');
-            dateInput.removeAttribute('autofocus'); // Remove the autofocus attribute
+            dateInput.removeAttribute('autofocus'); 
         });
         function hidePopups() {
         $('#date_purchased').removeAttr('autofocus');
@@ -2413,8 +2444,8 @@ include ('./layout/admin/table-pagination-css.php');
                           <td>${currentItem.barcode}</td>
                           <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
                           <td class="text-center" style = 'text-align: center'>${currentItem.qty_purchased}</td>
+                                   <td class="text-center" style = 'text-align: center'>${currentItem.qty_received}</td>
                           <td class="text-center" style = 'text-align: center'>${stock}</td>
-                          <td class="text-center" style = 'text-align: center'>${currentItem.isReceived}</td>
                           <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.cost)}</td>
                           <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.prod_price)}</td>
                           <td style='text-align: center'>
@@ -2428,7 +2459,7 @@ include ('./layout/admin/table-pagination-css.php');
             }
 
             var tblData = `
-            <table tabindex = '0' id='tbl_products' class='text-color table-border' style='font-size: 12px;'>
+            <table tabindex = '0' id='tbl_products' class='text-color table-border display' style='font-size: 12px;'>
                 <thead>
                     <tr>
                         <th class='text-center auto-fit'>No.</th>
@@ -2436,8 +2467,8 @@ include ('./layout/admin/table-pagination-css.php');
                         <th class='auto-fit'>Barcode</th>
                         <th class='auto-fit' style = 'text-align: center'>Unit</th>
                         <th class='auto-fit' style = 'text-align: center'>Qty Purchased</th>
+                          <th class='auto-fit' style = 'text-align: center'>Qty Received</th>
                         <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
-                        <th class='auto-fit' style = 'text-align: center'>Qty Received</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount Before Tax</th>
                         <th class='auto-fit' style = 'text-align: center'>Amount After Tax</th>
                         <th class='auto-fit' style = 'text-align: center'>Document Type</th>
@@ -2463,18 +2494,44 @@ include ('./layout/admin/table-pagination-css.php');
                     }
                 },
                 drawCallback: function () {
-                    var pagination = $('#paginationDiv');
-                    pagination.wrap('<div class="pagination-wrapper"></div>');
-                    pagination.find('a').each(function() { 
-                        $(this).addClass('paginationTag');
-                    });
+                  var pagination = $('#tbl_products_paginate');
+                  $('#paginationDiv2').html(pagination.html());
+                  $('#paginationDiv2').find('a').each(function() {
+                      $(this).addClass('paginationTag');
+                  });
                 },
                 keys: true
             });
+            // $('.inventoryCard #tbl_products').DataTable({
+            //   ordering: true,
+            //   order: [[0, 'asc']],
+            //   pageLength: 300,
+            //   dom: 't<"row"<"col-sm-12"<"d-none"p>>>',
+            //   language: {
+            //     paginate: {
+            //       previous: '<i class="fa fa-angle-left"></i>',
+            //       next: '<i class="fa fa-angle-right"></i>'
+            //     }
+            //   },
+            //   drawCallback: function () {
+            //     var pagination = $('#tbl_products_wrapper.dataTables_paginate');
+            //     $('#paginationDiv').html(pagination.html());
+            //     $('#paginationDiv').find('a').each(function() {
+            //       $(this).addClass('paginationTag');
+            //     });
+            //     // $('#tbl_products_wrapper.dataTables_paginate').empty();
+            //   },
+            //   keys: true
+            // });
+
+            // Adjust width of the fixed header to match the table header
+            $(window).on("resize", function() {
+                $fixedHeader.width($("#tbl_products").width());
+            }).trigger("resize");
 
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_products').DataTable().search($(this).val()).draw();
-              if (event.keyCode === 13 || event.keyCode === 27) { // Clear input on Enter or Escape key press
+              if (event.keyCode === 13 || event.keyCode === 27) { 
                   $(this).val('');
               }
             });
@@ -2482,7 +2539,7 @@ include ('./layout/admin/table-pagination-css.php');
         });
       }
       $('#product').on('keypress', function(event) {
-        if (event.keyCode === 13 || event.keyCode === 27) { // Clear input on Enter or Escape key press
+        if (event.keyCode === 13 || event.keyCode === 27) { 
            hidePopups();
         }
       });

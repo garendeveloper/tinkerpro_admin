@@ -44,16 +44,13 @@
         public function get_lostanddamage_data($id)
         {
             $sql = "SELECT
-                        inventory.*,
                         products.*,
                         loss_and_damages.*,
                         loss_and_damages.id AS loss_and_damage_id
                     FROM
-                        inventory
+                        products
                     JOIN
-                        products ON products.id = inventory.product_id
-                    JOIN
-                        loss_and_damages ON inventory.id = loss_and_damages.inventory_id
+                        loss_and_damages ON products.id = loss_and_damages.inventory_id
                     WHERE
                         loss_and_damages.loss_and_damage_info_id = :ref_id";
             $stmt = $this->connect()->prepare($sql);
@@ -142,12 +139,14 @@
 
                 $loss_and_damage_id = $this->get_last_lossanddamages_id();
 
-                $stmt = $this->connect()->prepare("UPDATE products SET product_stock = product_stock - :quantity WHERE id = :id");
-                $stmt->bindParam(":quantity", $qty_damage); 
+                $currentStock = $this->get_productInfo($inventory_id)['product_stock'];
+                $new_stock = $currentStock - $qty_damage;
+                $stmt = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
+                $stmt->bindParam(":new_stock", $new_stock); 
                 $stmt->bindParam(":id", $inventory_id); 
                 $stmt->execute();
     
-                $currentStock = $this->get_productInfo($inventory_id)['product_stock'];
+               
                 $currentDate = date('Y-m-d H:i:s');
                 $qty_damage = $this->makeNegative($qty_damage);
                 $stock_customer = $formData['user_name'];
@@ -158,8 +157,8 @@
     
                 $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
                 $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-                $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
-                $stmt->bindParam(4, $qty_damage, PDO::PARAM_STR); 
+                $stmt->bindParam(3, $qty_damage, PDO::PARAM_STR); 
+                $stmt->bindParam(4, $new_stock, PDO::PARAM_STR); 
                 $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
                 $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
                 $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
@@ -199,7 +198,7 @@
         }
         public function get_productInfo($product)
         {
-            $sql = "SELECT *, isVat FROM products WHERE id = :id";
+            $sql = "SELECT *, isVat, product_stock FROM products WHERE id = :id";
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':id', $product, PDO::PARAM_STR);
             $stmt->execute();
