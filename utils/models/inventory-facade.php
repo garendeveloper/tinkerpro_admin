@@ -303,7 +303,7 @@ class InventoryFacade extends DBConnection
         {
             $inventory_id = $row['inventory_id'];
             $qty_onhand = (int)$row['col_2'];
-            $newqty = (int)$row['newqty'];
+            $newqty = (float)$row['newqty'];
             $currentDate = date('Y-m-d H:i:s');
 
             $stmt = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");

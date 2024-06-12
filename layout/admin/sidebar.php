@@ -172,6 +172,7 @@ if (isset($_SESSION['user_id'])) {
 
         <div class = "justify-content-end" id = "top-right-end">
             <span id = "ct7" style = "color: white; font-family: Century Gothic; font-weight: bold"></span>
+            <span style = "color: white; font-family: Century Gothic; font-weight: bold"><i style = "color: lightblue; font-weight: normal">You are logged in as:</i> <span style = "color: green">[<?= $_SESSION['first_name']." ".$_SESSION['last_name']?>]</span></span>
         </div>
     </div>
    

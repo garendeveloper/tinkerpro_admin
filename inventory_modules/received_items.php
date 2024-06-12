@@ -263,6 +263,7 @@
 <script>
     $(document).ready(function () {
         show_allPurchaseOrders();
+        var toastDisplayed = false;
         var po_numbers = [];
        
         function show_allPurchaseOrders() {
@@ -296,16 +297,25 @@
                 }
             });
         }
-        function show_errorResponse(message)
+        function show_errorResponse(message) 
         {
+            if (toastDisplayed) {
+                return; 
+            }
+
+            toastDisplayed = true; 
+
             toastr.options = {
                 "onShown": function () {
                     $('.custom-toast').css({
-                    "opacity": 1,
-                    "width": "600px",
-                    "text-align": "center",
-                    "border": "2px solid #1E1C11",
+                        "opacity": 1,
+                        "width": "600px",
+                        "text-align": "center",
+                        "border": "2px solid #1E1C11",
                     });
+                },
+                "onHidden": function () {
+                    toastDisplayed = false; 
                 },
                 "closeButton": true,
                 "positionClass": "toast-top-right",
@@ -318,9 +328,12 @@
                 "hideMethod": "fadeOut",
                 "tapToDismiss": false,
                 "toastClass": "custom-toast",
-                "onclick": function () { alert('Clicked'); }
+                "onclick": function () { 
+                    toastr.clear();
+                    toastDisplayed = false;
+                 }
+            };
 
-                };
             toastr.error(message);
         }
         var is_purchasefound = false;
@@ -391,7 +404,9 @@
                             $("#r_isPaid").html(isPaid);
                             
                             for (var i = 0; i < data.length; i++) {
+                               
                                 var item = data[i];
+                                var expired_date = item.date_expired !== "0000-00-00"? date_format(item.date_expired) : "";
                                 table += "<tr data-id = " + data[i].inventory_id + ">";
                                 if(item.qty_purchased === 0)
                                 {
@@ -419,7 +434,7 @@
                                     }
                                     else {
                                         table +=
-                                            "<td style = 'text-align: center; background-color: #262626; '>" + date_format(data[i].date_expired) + "</td>";
+                                            "<td style = 'text-align: center; background-color: #262626; '>" + expired_date + "</td>";
                                     }
                                     // if (data[i].isSerialized === 1) {
                                     //     table +=
@@ -464,16 +479,47 @@
         }
         $('#tbl_receivedItems tbody').on('keypress', '#qty_received', function (event) {
             var charCode = event.which ? event.which : event.keyCode;
-            if ((charCode < 48 || charCode > 57)) {
+            var inputVal = $(this).val();
+
+            if ((charCode < 48 || charCode > 57) && charCode !== 46) {
                 event.preventDefault();
+                return;
             }
-            
+
+            if (inputVal.indexOf('.') !== -1) {
+                if (charCode === 46) {
+                    event.preventDefault();
+                    return;
+                }
+
+                var decimalPos = inputVal.indexOf('.');
+                var decimalPart = inputVal.substring(decimalPos + 1);
+                if (decimalPart.length >= 2) {
+                    event.preventDefault();
+                    return;
+                }
+            }
         });
+        // function acceptsOnlyTwoDecimal(value) 
+        // {
+        //     value = value.replace(/[^0-9.]/g, '');
+        //     let parts = value.split('.');
+        //     if(parts[1] && parts[1].length > 2) 
+        //     {
+        //         parts[1] = parts[1].slice(0, 2); 
+        //         value = parts.join('.'); 
+        //     }
+        //     if(parts.length > 2) 
+        //     {
+        //         value = parts[0] + '.' + parts.slice(1).join('');
+        //     }
+        //     return value; 
+        // }
         $('#tbl_receivedItems tbody').on('input', '#qty_received', function () {
             var closestTr = $(this).closest('tr');
             var qtyPurchasedTd = closestTr.find('td:nth-child(3)');
-            var qty_purchased = parseInt(qtyPurchasedTd.text());
-            var currentValue = parseInt($(this).val());
+            var qty_purchased = parseFloat(qtyPurchasedTd.text());
+            var currentValue = parseFloat($(this).val());
             if (!isNaN(currentValue) && currentValue > qty_purchased) {
                 $(this).val(qty_purchased);
                 // $(this).closest('tr').nextUntil(':not(.sub-row)').remove();
@@ -554,76 +600,6 @@
             return formattedDate;
         }
 
-        // function autocomplete(inp, arr) {
-        //     var currentFocus;
-        //     inp.addEventListener("input", function (e) {
-        //         var a, b, i, val = this.value;
-        //         closeAllLists();
-        //         if (!val) {
-        //             return false;
-        //         }
-        //         currentFocus = -1;
-        //         a = document.createElement("DIV");
-        //         a.setAttribute("id", this.id + "autocomplete-list");
-        //         a.setAttribute("class", "autocomplete-items");
-        //         this.parentNode.appendChild(a);
-        //         for (i = 0; i < arr.length; i++) {
-        //             if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-        //                 b = document.createElement("DIV");
-        //                 b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-        //                 b.innerHTML += arr[i].substr(val.length);
-        //                 b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-        //                 b.addEventListener("click", function (e) {
-        //                     inp.value = this.getElementsByTagName("input")[0].value;
-        //                     closeAllLists();
-        //                 });
-        //                 a.appendChild(b);
-        //             }
-        //         }
-        //     });
-        //     inp.addEventListener("keydown", function (e) {
-        //         var x = document.getElementById(this.id + "autocomplete-list");
-        //         if (x) x = x.getElementsByTagName("div");
-        //         if (e.keyCode == 40) {
-        //             currentFocus++;
-        //             addActive(x);
-        //         } else if (e.keyCode == 38) {
-        //             currentFocus--;
-        //             addActive(x);
-        //         } else if (e.keyCode == 13) {
-        //             e.preventDefault();
-        //             if (currentFocus > -1) {
-        //                 if (x) x[currentFocus].click();
-        //             }
-        //         }
-        //     });
-
-        //     function addActive(x) {
-        //         if (!x) return false;
-        //         removeActive(x);
-        //         if (currentFocus >= x.length) currentFocus = 0;
-        //         if (currentFocus < 0) currentFocus = (x.length - 1);
-        //         x[currentFocus].classList.add("autocomplete-active");
-        //     }
-
-        //     function removeActive(x) {
-        //         for (var i = 0; i < x.length; i++) {
-        //             x[i].classList.remove("autocomplete-active");
-        //         }
-        //     }
-
-        //     function closeAllLists(elmnt) {
-        //         var x = document.getElementsByClassName("autocomplete-items");
-        //         for (var i = 0; i < x.length; i++) {
-        //             if (elmnt != x[i] && elmnt != inp) {
-        //                 x[i].parentNode.removeChild(x[i]);
-        //             }
-        //         }
-        //     }
-        //     document.addEventListener("click", function (e) {
-        //         closeAllLists(e.target);
-        //     });
-        // }
         $('#print_received_items').on('click', function () {
             $('#print_received_items').show()
             if ($('#print_received_items').is(":visible")) {

@@ -55,9 +55,9 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer" style = ' display: flex;  justify-content: space-between; border: none'>
-          <button class = "grid-item text-color button-cancel" style = "border-radius: 0;" id = "btn_paidCancel" data-dismiss="modal"><i class = "bi bi-x"></i>&nbsp; Cancel</button>
-          <button  class = "grid-item text-color button" style = "border-radius: 0;" type = "button" id = "btn_confirmPayment"><i class = "bi bi-arrow-right-circle"></i>&nbsp; Continue</button>
+        <div class="modal-footer" style = ' border: none'>
+          <button class = "text-color button-cancel" style = "border-radius: 0;" id = "btn_paidCancel" data-dismiss="modal"><i class = "bi bi-x"></i>&nbsp; Cancel</button>
+          <button  class = "text-color button" style = "border-radius: 0;" type = "button" id = "btn_confirmPayment"><i class = "bi bi-arrow-right-circle"></i>&nbsp; Continue</button>
         </div>
       </form>
     </div>

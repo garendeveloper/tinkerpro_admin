@@ -1,5 +1,5 @@
 <?php
-    require_once '../vendor/autoload.php';
+    require_once '../reports/vendor/autoload.php';
     include('../utils/db/connector.php');
     include('../utils/models/user-facade.php');
     include('../utils/models/product-facade.php');
