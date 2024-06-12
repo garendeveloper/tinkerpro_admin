@@ -175,6 +175,10 @@
   .flatpickr-next-year {
     color: white !important;
   }
+  .center-container{
+    justify-content: "align-center";
+    text-align:"center";
+  }
 </style>
 
 <div class="modal period_reports" id="period_reports" tabindex="0">
@@ -202,6 +206,9 @@
             </g>
           </svg>
           <p class="warning-title"><b>SELECT DATES</b></p>&nbsp;
+        </div>
+        <div class="center-container">
+          <span id = "date_selected">asdfasdf</span>
         </div>
       </div>
 
@@ -266,7 +273,6 @@
     onChange: function (selectedDates, dateStr, instance) {
       const datepickerDiv = document.getElementById("datepickerDiv");
       const datepickerDiv2 = document.getElementById("datepickerDiv2");
-
 
       if (datepickerDiv.value) {
         const selectedDateDiv = new Date(datepickerDiv.value);

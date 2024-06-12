@@ -121,7 +121,7 @@
   flex: 1;
   height: 100%; 
   width: 100%; 
-  margin-right: 30px;
+  margin-right: 20px;
   background-color: #404040;
   border: 1px solid #ccc;
   color: #ffffff;
@@ -135,6 +135,14 @@
 
 table, .stockhistory_form{
   font-family: Century Gothic;
+}
+#start_date::placeholder{
+  color: white; 
+  opacity: 1; 
+}
+#end_date::placeholder{
+  color: white; 
+  opacity: 1; 
 }
 
 </style>
@@ -166,12 +174,12 @@ table, .stockhistory_form{
         <div class="stockhistory_form">
           <input type="hidden" id = "inventory_id">
           <div class="input-group">
-            <label for="start_date" class="col-form-label">From:</label>
-              <input type="text" id="start_date" oninput="$(this).removeClass('has-error')" class="form-control date-picker" readonly>
+            <!-- <label for="start_date" class="col-form-label">From:</label> -->
+              <input type="text" id="start_date" oninput="$(this).removeClass('has-error')" class="form-control date-picker" placeholder="From: " readonly>
             </div>
             <div class="input-group">
-              <label for="end_date" class="col-form-label">To:</label>
-              <input type="text" id="end_date" oninput="$(this).removeClass('has-error')" class="form-control date-picker" readonly>
+              <!-- <label for="end_date" class="col-form-label">To:</label> -->
+              <input type="text" id="end_date" oninput="$(this).removeClass('has-error')" class="form-control date-picker" placeholder = "To: " readonly>
             </div>
             <div class="input-group">
                 <button id="btn_refreshStock" class="btn btn-secondary"><i class="bi bi-arrow-right" ></i></button>

@@ -1222,7 +1222,7 @@ input[type="text"] {
       var total = 0;
       var totalTax = 0;
       $('#tbl_purchaseOrders tbody tr').each(function() {
-        var quantity = parseInt($(this).find('td:nth-child(2)').text().trim(), 10);
+        var quantity = parseFloat($(this).find('td:nth-child(2)').text().trim(), 10);
         var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
         var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
         var tax = (price/1.12);
@@ -1269,7 +1269,8 @@ input[type="text"] {
         var $cell = $(this);
         var newQty = $cell.text().trim();
         var cursorPosition = getCursorPosition($cell[0]);
-        newQty = newQty.replace(/\D/g, '');
+        // newQty = newQty.replace(/\D/g, '');
+        newQty = acceptsOnlyTwoDecimal(newQty);
         $cell.text(newQty);
         cursorPosition = Math.min(cursorPosition, newQty.length);
         setCursorPosition($cell[0], cursorPosition);

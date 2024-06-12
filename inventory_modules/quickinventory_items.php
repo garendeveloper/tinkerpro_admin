@@ -98,8 +98,9 @@
 
 <script>
     $(document).ready(function () {
-        show_allProducts();
+        
         var products_forquickInventory = [];
+        var toastDisplayed = false;
         var products = [];
         $("select[name='inventory_type']").on("change", function (e) {
             e.preventDefault();
@@ -107,7 +108,7 @@
             $("#quickinventory_input_inventory_id").val("");
             $("#q_product").val("");
             $(this).css("border", '1px solid #ffff')
-            get_allProductInventory();
+            show_allProducts();
             $("#quickinventory_form #q_product").focus();
         })
         $("#btn_searchQProduct").click(function (e) {
@@ -126,7 +127,7 @@
                     }
                     else
                     {
-                        alert("Product is already in the table.")
+                        show_errorResponse("Product is already in the table.");
                     }
                 }
             }
@@ -167,30 +168,43 @@
             };
             });
         }
-        function show_errorResponse(message) {
-            toastr.options = {
-            "onShown": function () {
-                $('.custom-toast').css({
-                "opacity": 1,
-                "width": "600px",
-                "text-align": "center",
-                "border": "2px solid #1E1C11",
-                });
-            },
-            "closeButton": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "progressBar": true,
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut",
-            "tapToDismiss": false,
-            "toastClass": "custom-toast",
-            "onclick": function () { alert('Clicked'); }
+        function show_errorResponse(message) 
+        {
+            if (toastDisplayed) {
+                return; 
+            }
 
+            toastDisplayed = true; 
+
+            toastr.options = {
+                "onShown": function () {
+                    $('.custom-toast').css({
+                        "opacity": 1,
+                        "width": "600px",
+                        "text-align": "center",
+                        "border": "2px solid #1E1C11",
+                    });
+                },
+                "onHidden": function () {
+                    toastDisplayed = false; 
+                },
+                "closeButton": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "progressBar": true,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false,
+                "toastClass": "custom-toast",
+                "onclick": function () { 
+                    toastr.clear();
+                    toastDisplayed = false;
+                 }
             };
+
             toastr.error(message);
         }
         $("#q_product").on("input", function(e) {
@@ -228,44 +242,41 @@
           var term = $(this).val();
           $(this).autocomplete('search', term);
       });
-      $("#q_product").on("keypress", function(event){
-        if(event.which === 13){
-            var product_id = $("#quickinventory_input_inventory_id").val();
+    //   $("#q_product").on("keypress", function(event){
+    //     if(event.which === 13){
+    //         var product_id = $("#quickinventory_input_inventory_id").val();
       
-          if (!isDataExistInTable(product_id)) {
-            display_productBy(product_id);
-          }
-          else
-          {
-            show_errorResponse("Product already in the table")
-          }
-          $("#q_product").val('');
-        }
+    //       if (!isDataExistInTable(product_id)) {
+    //         display_productBy(product_id);
+    //       }
+    //       else
+    //       {
+    //         show_errorResponse("Product already in the table")
+    //       }
+    //       $("#q_product").val('');
+    //     }
       
-      })
+    //   })
 
-      $("#q_product").on("autocompletechange", function(event, ui) {
-        var product_id = $("#quickinventory_input_inventory_id").val();
+    //   $("#q_product").on("autocompletechange", function(event, ui) {
+    //     var product_id = $("#quickinventory_input_inventory_id").val();
         
-        if (!isDataExistInTable(product_id)) {
-            append_to_table();
-        }
-        else
-        {
-          show_errorResponse("Product already in the table");
-        }
-          $(this).val('');
-      });
-        function isDataExistInTable(data) {
-            var $matchingRow = $('#tbl_quickInventories tbody td:first[data-id="' + data + '"]').closest('tr');
-            
-            if ($matchingRow.length > 0) {
-                return true;
-            }
-            
-            return false;
-        }
-       
+    //     if (!isDataExistInTable(product_id)) {
+    //         display_productBy(product_id)
+    //     }
+    //     else
+    //     {
+    //       show_errorResponse("Product already in the table");
+    //     }
+    //       $(this).val('');
+    //   });
+    function isDataExistInTable(data) {
+    // Find the first table cell in each row with the matching data-id attribute
+    var $matchingRow = $('#tbl_quickInventories tbody td[data-id="' + data + '"]').closest('tr');
+
+    // Return true if a matching row is found, otherwise false
+    return $matchingRow.length > 0;
+}
         function display_productBy(inventory_id) 
         {
             $.ajax({

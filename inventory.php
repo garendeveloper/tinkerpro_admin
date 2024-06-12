@@ -338,6 +338,19 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("./modals/purchaseOrder_response.php") ?>
   <?php include('./modals/loading-modal.php'); ?>
 
+  <script>
+    hidePopups();
+        document.addEventListener('DOMContentLoaded', function() {
+            var dateInput = document.getElementById('date_purchased');
+            dateInput.removeAttribute('autofocus'); // Remove the autofocus attribute
+        });
+        function hidePopups() {
+        $('#date_purchased').removeAttr('autofocus');
+        $("#p_qty").focus();
+        $("#date_purchased").flatpickr().destroy();
+        $("#date_purchased").flatpickr().close();
+      }
+    </script>
   
   <script>
   
@@ -385,7 +398,7 @@ include ('./layout/admin/table-pagination-css.php');
       });
 
     // Event handler for the calendar button
-    $('#calendar-btn').off().on('click', function () {
+    $('#calendar-btn').off('click').on('click', function () {
 
       if (!$("#date_purchased").hasClass("flatpickr-open")) {
             // Ensure flatpickr is only initialized once
@@ -461,7 +474,7 @@ include ('./layout/admin/table-pagination-css.php');
   </script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var price_ids = ['price', 's_price', 'p_qty', 'u_pay', 'loan_amount', 'interest_rate', 'loan_term'];
+      var price_ids = ['price', 's_price', 'p_qty', 'u_qty', 'u_pay', 'loan_amount', 'interest_rate', 'loan_term'];
       price_ids.forEach(function (id) {
         var element = document.getElementById(id);
         if (element) {
@@ -1817,7 +1830,7 @@ include ('./layout/admin/table-pagination-css.php');
               });
               $("#received_payment_confirmation #paid_title").html("Before proceeding, would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>");
               $("#received_payment_confirmation #total_paid").html($("#overallTotal").text());
-              $("#received_payment_confirmation #paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color: #ffff;'>ATTENTION REQUIRED!</strong> ");
+              $("#received_payment_confirmation #paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color: #FF6700;'>ATTENTION REQUIRED!</strong> ");
               $("#received_payment_confirmation #btn_confirmPayment").on("click", function (e) {
 
                 e.preventDefault();
@@ -2040,25 +2053,29 @@ include ('./layout/admin/table-pagination-css.php');
         perPage = $(this).val();
         show_allInventories();
       })
-      var i_quantities = ['#p_qty', '#u_qty'];
+      // var i_quantities = ['#p_qty', '#u_qty'];
 
-      i_quantities.forEach(function (id) {
-        $(id).on('input', function (e) {
-          var inputValue = $(this).val();
-          inputValue = inputValue.replace(/\D/g, '');
-          $(this).val(inputValue);
-        });
-      });
+      // i_quantities.forEach(function (id) {
+      //   $(id).on('input', function (e) {
+      //     var inputValue = $(this).val();
+      //     inputValue = inputValue.replace(/\D/g, '');
+      //     $(this).val(inputValue);
+      //   });
+      // });
       $('#prod_form input').on('keypress', function(event) {
           if (event.keyCode === 13) {
-              $('#prod_form').submit();
+            $(this).submit();
           }
       });
+      $('#date_purchased').on('focus click', function(event) {
+                event.preventDefault();
+              hidePopups();
+            });
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
         
         if (validateProductForm()) {
-          var p_qty = parseInt($("#p_qty").val());
+          var p_qty = parseFloat($("#p_qty").val());
           var price = parseFloat($("#price").val());
           var product_id = $("#selected_product_id").val();
           var total = (price * p_qty);
@@ -2256,6 +2273,8 @@ include ('./layout/admin/table-pagination-css.php');
       });
       $("#product").on("keypress", function(event){
         if(event.which === 13){
+          $('#date_purchased').attr('readonly', true);
+          $('#calendar-btn').attr('readonly', true);
           hidePopups();
           var product_id = $("#selected_product_id").val();
           if (!isDataExistInTable(product_id)) {
@@ -2316,6 +2335,7 @@ include ('./layout/admin/table-pagination-css.php');
       }
       function hidePopups() {
         $('#date_purchased').removeAttr('autofocus');
+        $('#calendar-btn').removeAttr('autofocus');
         $("#p_qty").focus();
         $("#date_purchased").flatpickr().destroy();
         $("#date_purchased").blur();
