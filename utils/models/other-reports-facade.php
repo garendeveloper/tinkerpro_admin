@@ -600,8 +600,6 @@
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
-        c.first_name AS c_firstname,
-        c.last_name AS c_lastname,
         t.user_id,
         cust.code as code,
         cust.type as type,
@@ -635,7 +633,7 @@
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId
     GROUP BY
-        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+        u.first_name, u.last_name,t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':customerId', $selectedCustomers);
@@ -654,8 +652,6 @@
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
-        c.first_name AS c_firstname,
-        c.last_name AS c_lastname,
         t.user_id,
         cust.code as code,
         cust.type as type,
@@ -689,7 +685,7 @@
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY
-         u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+         u.first_name, u.last_name,  t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':singleDateData', $singleDateData);
@@ -708,8 +704,6 @@
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
-        c.first_name AS c_firstname,
-        c.last_name AS c_lastname,
         t.user_id,
         cust.code as code,
         cust.type as type,
@@ -743,7 +737,7 @@
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
     GROUP BY
-        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+        u.first_name, u.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':startDate', $startDate);
@@ -763,8 +757,6 @@
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
-        c.first_name AS c_firstname,
-        c.last_name AS c_lastname,
         t.user_id,
         cust.code as code,
         cust.type as type,
@@ -798,7 +790,7 @@
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY
-        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+        u.first_name, u.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':customerId', $selectedCustomers);
@@ -818,8 +810,6 @@
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
-        c.first_name AS c_firstname,
-        c.last_name AS c_lastname,
         t.user_id,
         cust.code as code,
         cust.type as type,
@@ -853,7 +843,7 @@
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.user_id = :customerId  AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
      GROUP BY
-        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+        u.first_name, u.last_name,  t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':startDate', $startDate);
@@ -874,8 +864,6 @@
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
-        c.first_name AS c_firstname,
-        c.last_name AS c_lastname,
         t.user_id,
         cust.code as code,
         cust.type as type,
@@ -909,7 +897,7 @@
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId
     GROUP BY
-         u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+         u.first_name, u.last_name,t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':userId',  $userId);
@@ -928,8 +916,6 @@
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
-        c.first_name AS c_firstname,
-        c.last_name AS c_lastname,
         t.user_id,
         cust.code as code,
         cust.type as type,
@@ -963,7 +949,7 @@
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY
-        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+        u.first_name, u.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':userId',  $userId);
@@ -983,8 +969,6 @@
     SELECT 
         u.first_name AS first_name,
         u.last_name AS last_name,
-        c.first_name AS c_firstname,
-        c.last_name AS c_lastname,
         t.user_id,
         cust.code as code,
         cust.type as type,
@@ -1018,7 +1002,7 @@
         COALESCE(p.creditTotal, 0) != 0
         AND (COALESCE(p.creditTotal, 0) - IFNULL(tp.total_paid_amount, 0) ) != 0 AND t.cashier_id = :userId AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
     GROUP BY
-        u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+        u.first_name, u.last_name,t.user_id,cust.type ORDER BY u.first_name ASC';
 
       $sql = $this->connect()->prepare($sql);
       $sql->bindParam(':startDate', $startDate);
@@ -1040,8 +1024,6 @@
         SELECT 
             u.first_name AS first_name,
             u.last_name AS last_name,
-            c.first_name AS c_firstname,
-            c.last_name AS c_lastname,
             t.user_id,
             cust.code as code,
             cust.type as type,
@@ -1074,7 +1056,7 @@
         WHERE 
             COALESCE(p.creditTotal, 0) != 0
         GROUP BY
-            u.first_name, u.last_name, c.first_name, c.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
+            u.first_name, u.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
         $stmt = $this->connect()->query($sql);
         return $stmt;
       }
