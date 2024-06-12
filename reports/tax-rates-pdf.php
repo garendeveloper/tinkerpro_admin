@@ -175,15 +175,11 @@ $pdf->Cell($headerWidths[3] , $maxCellHeight,  $totalVatableSales, 1, 0, 'R');
 $pdf->Cell($headerWidths[4] , $maxCellHeight,   $totalTax, 1, 0, 'R'); 
 // $pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
 // $pdf->Ln(); 
-
-$pdf->Output('tax-rates.pdf', 'I');
-// $pdfPath = __DIR__ . '/../assets/pdf/tax/tax-rates.pdf';
-
-// if (file_exists($pdfPath)) {
- 
-//     unlink($pdfPath);
-// }
-
 $pdfPath = $pdfFolder . 'tax-rates.pdf';
 $pdf->Output($pdfPath, 'F');
+
+$pdf->Output('tax-rates.pdf', 'I');
+
+
+
 ?>

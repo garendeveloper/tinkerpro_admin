@@ -222,7 +222,9 @@ if (isset($_SESSION['user_id'])) {
   max-width: fit-content;
 }
  */
-
+.font-size{
+  font-size: 12px !important;
+}
 
 
 </style>
@@ -272,20 +274,20 @@ if (isset($_SESSION['user_id'])) {
                   <table id="recentusers" class="text-color table-border">
                   <thead>
                         <tr>
-                          <th class="text-center" style="width: 2%">No.</th>
-                          <th class="text-center"  style="width: 350px">Name</th>
-                          <th class="text-center" style="width: 100px" >Barcode</th>
-                          <th class="text-center"   style="width: 100px" >SKU</th>
-                          <th class="text-center" style="width: 100px" >Code</th>
-                          <th class="text-center" style="width: 100px"  >Unit</th>
-                          <th class="text-center"  style="width: 100px" >Brand</th>
-                          <th class="text-center"  style="width: 100px" >Price (Php)</th>
-                          <th class="text-center"  style="width: 100px" >Mark-up (%)</th>
-                          <th class="text-center" style="width: 100px"  >Cost (Php)</th>
+                          <th class="text-center font-size" style="width: 2%">No.</th>
+                          <th class="text-center font-size"  style="width: 350px">Name</th>
+                          <th class="text-center font-size" style="width: 100px" >Barcode</th>
+                          <th class="text-center font-size"   style="width: 100px" >SKU</th>
+                          <th class="text-center font-size" style="width: 100px" >Code</th>
+                          <th class="text-center font-size" style="width: 100px"  >Unit</th>
+                          <th class="text-center font-size"  style="width: 100px" >Brand</th>
+                          <th class="text-center font-size"  style="width: 100px" >Price (Php)</th>
+                          <th class="text-center font-size"  style="width: 100px" >Mark-up (%)</th>
+                          <th class="text-center font-size" style="width: 100px"  >Cost (Php)</th>
                           <!-- <th class="text-center" style="width: 7%;">Serial No.</th> -->
-                          <th class="text-center"  style="width: 300px" >Category</th>
-                          <th class="text-center" style="width: 100px" >Status</th>
-                          <th class="text-center"  style="width: 200px" >Action</th>
+                          <th class="text-center font-size"  style="width: 300px" >Category</th>
+                          <th class="text-center font-size" style="width: 100px" >Status</th>
+                          <th class="text-center font-size"  style="width: 200px" >Action</th>
                         </tr>
                       </thead> 
         

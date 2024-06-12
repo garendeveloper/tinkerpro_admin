@@ -5,6 +5,14 @@ include(__DIR__ . '/../utils/models/other-reports-facade.php');
 include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
+$pdfFolder = __DIR__ . '/../assets/pdf/profit/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
 
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 8) {
     $pdf->SetFont('', '', $initialFontSize);
@@ -145,7 +153,7 @@ $totalProfit = 0;
 $pdf->SetFont('', '', 8); 
 if($selectedOption == "sold"){
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalCost += $row['sold']?? 0;
+    $totalCost += $row['cost']?? 0;
     $totalT += $row['total']?? 0;
     $totalProfit  += $row['profit']?? 0;
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
@@ -166,7 +174,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
 }
 }else{
     while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalCost += $row['stock']?? 0;
+    $totalCost += $row['cost']?? 0;
     $totalT += $row['total']?? 0;
     $totalProfit  += $row['profit']?? 0;
 
@@ -196,11 +204,8 @@ $pdf->Cell($headerWidths[5] , $maxCellHeight,  number_format($totalT,2), 1, 0, '
 $pdf->Cell($headerWidths[6] , $maxCellHeight,  number_format($totalProfit,2), 1, 0, 'R'); 
 $pdf->Ln(); 
 
-$pdf->Output('profit.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/profit/profit.pdf';
-
-if (file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
+$pdfPath = $pdfFolder . 'profit.pdf';
 $pdf->Output($pdfPath, 'F');
+$pdf->Output('profit.pdf', 'I');
+
 ?>
