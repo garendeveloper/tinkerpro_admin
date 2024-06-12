@@ -1559,7 +1559,7 @@ input:checked + .warningSpan:before {
                       </div>
                       <h6 class="enablingTxt">By enabling BOM, you are <br>activating the ingredients module.</h6>
                       <div  style="width: 100%; display: flex; align-items: right; justify-content: right;">
-                          <button class="btns-bom" id="addIngredients" onclick="openBomModal()" style="margin-right: 5px; width: 70px">+ Add</button>
+                          <button class="btns-bom" id="addIngredients"  style="margin-right: 5px; width: 70px">+ Add</button>
                           <button class="btns-bom" id="delIngredients" style="margin-right: 20px; width: 70px">- Del</button>
                       </div>
                       <div class="table-containers">
@@ -1646,7 +1646,7 @@ document.addEventListener('DOMContentLoaded', function() {
  
    
 });
-function openBomModal(){
+$('#addIngredients').off('click').on('click',function(){
   if( $('#add_category_modal').is(":visible")){
     closeModal()
   }
@@ -1654,7 +1654,9 @@ function openBomModal(){
   if (checkbox.checked) {
     $('#add_bom_modal').css('display', 'block');
   }
-}
+
+})
+
 
 document.addEventListener('DOMContentLoaded', function() {
     var checkbox = document.getElementById('bomToggle');
@@ -1825,7 +1827,8 @@ document.querySelectorAll("#uomDropDown a").forEach(item => {
   });
 });
 
-document.getElementById("generate").addEventListener("click", function() {
+
+$('#generate').off('click').on("click", function() {
     const minDigits = 12;
     const randomNumber = generateRandomNumber(minDigits);
     document.getElementById('barcode').value = randomNumber
@@ -1897,7 +1900,8 @@ function closeAddProductsModal(){
      closeModal()
      clearStorage()
     if($('#add_bom_modal').is(':visible')){
-      closeModalBom()
+      // closeModalBom()
+      $('.closeBom').click()
     }
     
   $('#add_products_modal').css('animation', 'slideOutRight 0.5s forwards');
@@ -1910,10 +1914,9 @@ function closeAddProductsModal(){
     $('.product-modal').css('animation', '');
      clearProductsInputs()
      clearFileInput() 
-     window.location.reload()
+    //  window.location.reload()
   
   });
-  
 }
 
   

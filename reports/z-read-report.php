@@ -337,15 +337,11 @@ foreach ($dataRows as $row) {
 } 
    
 }
-
+$pdfPath = $pdfFolder . 'zReadReportList.pdf';
+$pdf->Output($pdfPath, 'F');
 
 
 $pdf->Output('zReadReportList.pdf', 'I');
-// $pdfPath = __DIR__ . '/../assets/pdf/zread/zReadReportList.pdf';
-// if (file_exists($pdfPath)) {
-//     unlink($pdfPath);
-// }
-// $pdf->Output($pdfPath, 'F');
-$pdfPath = $pdfFolder . 'zReadReportList.pdf';
-$pdf->Output($pdfPath, 'F');
+
+
  ?>

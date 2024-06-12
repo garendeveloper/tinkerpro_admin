@@ -632,7 +632,7 @@ $('.predefinedDates').val("")
         instance2.clear();
         
         const nextDay = new Date(selectedDate);
-        nextDay.setDate(selectedDate.getDate() + 1);
+        nextDay.setDate(selectedDate.getDate());
         instance2.set("minDate", nextDay);
     }
 });
@@ -660,7 +660,7 @@ flatpickr("#datepickerDiv2", {
             if (selectedDateDiv && selectedDateDiv2) {
                 if (selectedDateDiv.getTime() <= selectedDateDiv2.getTime()) {
                     const nextDay = new Date(selectedDateDiv);
-                    nextDay.setDate(selectedDateDiv.getDate() + 1);
+                    nextDay.setDate(selectedDateDiv.getDate());
                     instance.set("minDate", nextDay);
                 } else {
                     instance.set("minDate", null);

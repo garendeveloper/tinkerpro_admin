@@ -272,6 +272,53 @@ input:not(:checked) + .sliderStatusExcludes {
   background-color: white; 
 }
 
+/* new */
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.selected-option {
+    background-color: #575757;
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    color: #fefefe
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    color: #fefefe;
+    background-color: #262626;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    width: 100%;
+}
+
+.dropdown-content input {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+.dropdown-options {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-option {
+    padding: 0px;
+    cursor: pointer;
+}
+
+.dropdown-option:hover {
+    background-color: #ddd;
+}
+
+
 </style>
 
  <?php include "layout/admin/css.php"?> 
@@ -436,22 +483,29 @@ input:not(:checked) + .sliderStatusExcludes {
                 </div>
             </div>
             <div hidden class="custom-select" id="productsDIV">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Products</label>
-                <div class="select-container">
-                        <input type="text" id = "selectProducts">
-                    <!-- <select id="selectProducts" >
-                    <option value="" selected >All Products</option>
-                    <?php
-                        // $productFacade = new ProductFacade;
-                        // $products =  $productFacade->getProductsData();
-                        // while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
-                        //     echo '<option value="' . $row['id'] . '">' . $row['prod_desc'] .' </option>';
-                        // }
-                        // ?>
-                    </select>
-                    <div class="select-arrow"></div> -->
-                </div>
-            </div>
+              <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Products</label>
+              <div class="select-container">
+                  <div class="custom-dropdown">
+                  <div class="select-arrow"></div>
+                      <div class="selected-option" id="selectProducts">All Products</div>
+                      <div class="dropdown-content" id="dropdownContent">
+                          <input type="text" placeholder="Search products..." id="searchInput" onkeyup="filterOptions()">
+                          <div class="dropdown-options" id="dropdownOptions">
+                              <div class="dropdown-option" data-value="">All Products</div>
+                              <?php
+                                  $productFacade = new ProductFacade;
+                                  $products =  $productFacade->getProductsData();
+                                  while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
+                                      echo '<div class="dropdown-option" data-value="' . $row['id'] . '">' . $row['prod_desc'] . '</div>';
+                                  }
+                              ?>
+                          </div>
+                         
+                      </div>
+                  </div>
+              </div>
+          </div>
+
             <div hidden class="custom-select" id="categoriesDiv">
                 <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Product Categories</label>
                 <div class="select-container" >
@@ -465,7 +519,7 @@ input:not(:checked) + .sliderStatusExcludes {
                         }
                         ?>
                     </select>
-                    </select>
+                   
                     <div class="select-arrow"></div>
                 </div>
             </div>
@@ -611,63 +665,92 @@ input:not(:checked) + .sliderStatusExcludes {
     </div>
 </div>
 <?php include("layout/footer.php") ?>
+
 <script>
-  $(document).ready(function(e){
-    var productsCache = [];
-    show_allProducts();
-    $("#selectProducts").autocomplete({
-      minLength: 2,
-      source: function (request, response) {
-        var term = request.term;
-        var filteredProducts = filterProducts(term);
-        var slicedProducts = filteredProducts.slice(0, 5);
-        response(slicedProducts);
-        if (slicedProducts.length > 0) {
-          $('#filters').show();
-        } else {
-            $('#filters').hide();
-        }
-        },
-        select: function (event, ui) {
-          var selectedProductId = ui.item.id;
-          $("#selectProducts").val(selectedProductId);
-          return false;
-        },
+
+
+
+
+
+document.getElementById('selectProducts').addEventListener('click', function() {
+    document.getElementById('dropdownContent').style.display = 'block';
+    $('#searchInput').focus()
+});
+
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.custom-dropdown')) {
+        document.getElementById('dropdownContent').style.display = 'none';
+    }
+});
+
+
+// document.addEventListener('keydown', function(e) {
+//     var searchInput = document.getElementById('searchInput');
+//     var isFilterInputActive = searchInput === document.activeElement && searchInput.value.trim() !== '';
+
+//     if (isFilterInputActive && (e.keyCode === 40 || e.keyCode === 38)) {
+//         var visibleOptions = document.querySelectorAll('.dropdown-option:not([style*="none"])');
+//         var selectedIndex = -1;
+        
+//         for (var i = 0; i < visibleOptions.length; i++) {
+//             if (visibleOptions[i].classList.contains('selected')) {
+//                 selectedIndex = i;
+//                 visibleOptions[i].classList.remove('selected');
+//                 break;
+//             }
+//         }
+
+//         if (e.keyCode === 40) {
+//             selectedIndex = (selectedIndex + 1) % visibleOptions.length;
+//         } else if (e.keyCode === 38) { 
+//             selectedIndex = (selectedIndex - 1 + visibleOptions.length) % visibleOptions.length;
+//         }
+
+//         if (selectedIndex >= 0) {
+//             visibleOptions[selectedIndex].classList.add('selected');
+//         }
+//     } else if (e.keyCode === 13) {
+//         var selectedOption = document.querySelector('.dropdown-option.selected');
+//         if (selectedOption) {
+//           document.getElementById('selectProducts').textContent = selectedOption.textContent;
+//           document.getElementById('searchInput').value = "";
+//           document.getElementById('dropdownContent').style.display = 'none';
+//         }
+//     }
+// });
+
+
+
+
+
+document.querySelectorAll('.dropdown-option').forEach(option => {
+    option.addEventListener('click', function() {
+        document.getElementById('selectProducts').textContent = this.textContent;
+        document.getElementById('selectProducts').setAttribute('data-value', this.getAttribute('data-value'));
+        document.getElementById('searchInput').value = "";
+
+        document.getElementById('dropdownContent').style.display = 'none';
     });
-    function show_allProducts() {
-      $.ajax({
-        type: 'GET',
-        url: 'api.php?action=get_allProducts',
-        success: function (data) {
-          for (var i = 0; i < data.length; i++) {
-            var row = {
-              product_id: data[i].id,
-              product: data[i].prod_desc,
-              barcode: data[i].barcode,
-              brand: data[i].brand,
-            };
-            productsCache.push(row);
-          }
+});
+
+function filterOptions() {
+    var input, filter, options, i;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    options = document.querySelectorAll('.dropdown-option');
+    for (i = 0; i < options.length; i++) {
+        if (options[i].textContent.toUpperCase().indexOf(filter) > -1) {
+            options[i].style.display = "";
+        } else {
+            options[i].style.display = "none";
         }
-      });
     }
-    function filterProducts(term) {
-      return productsCache.filter(function (row) {
-        return row.product.toLowerCase().includes(term) ||
-          row.barcode.includes(term) ||
-          (row.brand && row.brand.toLowerCase().includes(term)) ||
-          (!row.brand && term === "");
-      }).map(function (row) {
-        return {
-          label: row.product ,
-          value: row.product,
-          id: row.product_id
-        };
-      });
-    }
-  })
-</script>
-<script>
+}
+function getSelectedProductValue() {
+    var selectedProduct = document.getElementById('selectProducts').getAttribute('data-value');
+    return selectedProduct;
+}
+
 $("#reporting").addClass('active');
   $("#pointer").html("Reporting");
 function highlightDiv(id) {
@@ -1944,8 +2027,8 @@ function generatePdf(id){
     $('#PDFBtn').off('click').on('click',function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
+    
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
       var subCategoreisSelect = document.getElementById('subCategoreisSelect')
@@ -2048,8 +2131,7 @@ function generatePdf(id){
     });
   }else if(id == 5){
     $('#PDFBtn').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -2181,8 +2263,7 @@ function generatePdf(id){
     });
   }else if(id == 29){
     $('#PDFBtn').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -2311,8 +2392,7 @@ function generatePdf(id){
     });
   }else if(id == 31){
     $('#PDFBtn').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var ingredientsSelect = document.getElementById('ingredientsSelect')
       var selectedIngredients = ingredientsSelect.value;
       $.ajax({
@@ -2645,8 +2725,7 @@ function generatePdf(id){
     });
   }else if(id == 16){
     $('#PDFBtn').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -2909,8 +2988,7 @@ function generatePdf(id){
     });
   }else if(id == 14){//pdf14
     $('#PDFBtn').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -3165,8 +3243,7 @@ function generatePdf(id){
     $('#PDFBtn').off('click').on('click',function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
       var subCategoreisSelect = document.getElementById('subCategoreisSelect')
@@ -3310,8 +3387,7 @@ function generateExcel(id){
     $('#EXCELBtn').click(function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
       var subCategoreisSelect = document.getElementById('subCategoreisSelect')
@@ -3410,8 +3486,7 @@ function generateExcel(id){
 });
 }else if(id == 5){
   $('#EXCELBtn').click(function() {
-    var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -3539,9 +3614,8 @@ function generateExcel(id){
 });
 }else if(id == 29){
   $('#EXCELBtn').click(function() {
-    var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
-      var datepicker = document.getElementById('datepicker').value
+      var selectedProduct =  getSelectedProductValue()
+       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
       var endDate;
@@ -3665,8 +3739,7 @@ function generateExcel(id){
 });
 }else if(id==31){
   $('#EXCELBtn').click(function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var ingredientsSelect = document.getElementById('ingredientsSelect')
       var selectedIngredients = ingredientsSelect.value;
       $.ajax({
@@ -3987,8 +4060,7 @@ function generateExcel(id){
 });
 }else if(id == 16){
   $('#EXCELBtn').click(function() {
-        var productSelect = document.getElementById('selectProducts')
-        var selectedProduct = productSelect.value;
+        var selectedProduct =  getSelectedProductValue()
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -4242,8 +4314,7 @@ function generateExcel(id){
 });
 }else if(id == 14){//excel14
   $('#EXCELBtn').click(function() {
-       var productSelect = document.getElementById('selectProducts')
-       var selectedProduct = productSelect.value;
+       var selectedProduct =  getSelectedProductValue()
        var usersSelect = document.getElementById("usersSelect");
        var selectedUser = usersSelect.value;
         var datepicker = document.getElementById('datepicker').value
@@ -4562,8 +4633,7 @@ function printDocuments(id){
       $('#printDocu').off('click').on('click',function() {
         var soldSelect = document.getElementById('soldSelect')
         var selectedOption = soldSelect.value;
-        var productSelect = document.getElementById('selectProducts')
-        var selectedProduct = productSelect.value;
+        var selectedProduct =  getSelectedProductValue()
         var categoriesSelect = document.getElementById('categoreisSelect')
         var selectedCategories = categoriesSelect.value
         var subCategoreisSelect = document.getElementById('subCategoreisSelect')
@@ -4671,8 +4741,7 @@ function printDocuments(id){
   });
   }else if(id == 5){
     $('#printDocu').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -4808,8 +4877,7 @@ function printDocuments(id){
   });
   }else if(id == 29){
     $('#printDocu').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -4942,8 +5010,7 @@ function printDocuments(id){
   });
   }else if(id==31){
     $('#printDocu').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var ingredientsSelect = document.getElementById('ingredientsSelect')
       var selectedIngredients = ingredientsSelect.value;
       $.ajax({
@@ -5288,8 +5355,7 @@ function printDocuments(id){
   });
   }else if(id == 16){
     $('#printDocu').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -5562,8 +5628,7 @@ function printDocuments(id){
   });
   }else if(id == 14){
     $('#printDocu').off('click').on('click',function() {
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -5826,8 +5891,7 @@ function printDocuments(id){
     $('#printDocu').off('click').on('click',function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
       var subCategoreisSelect = document.getElementById('subCategoreisSelect')
@@ -5984,8 +6048,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var productSelect = document.getElementById('selectProducts')
-        var selectedProduct = productSelect.value;
+        var selectedProduct =  getSelectedProductValue()
         var categoriesSelect = document.getElementById('categoreisSelect')
         var selectedCategories = categoriesSelect.value
         var subCategoreisSelect = document.getElementById('subCategoreisSelect')
@@ -6099,8 +6162,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+        var selectedProduct =  getSelectedProductValue()
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -6245,8 +6307,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var productSelect = document.getElementById('selectProducts')
-        var selectedProduct = productSelect.value;
+        var selectedProduct =  getSelectedProductValue()
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -6385,8 +6446,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var productSelect = document.getElementById('selectProducts')
-        var selectedProduct = productSelect.value;
+        var selectedProduct =  getSelectedProductValue()
         var ingredientsSelect = document.getElementById('ingredientsSelect')
         var selectedIngredients = ingredientsSelect.value;
       $.ajax({
@@ -6749,8 +6809,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var productSelect = document.getElementById('selectProducts')
-        var selectedProduct = productSelect.value;
+        var selectedProduct =  getSelectedProductValue()
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -7035,8 +7094,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var productSelect = document.getElementById('selectProducts')
-        var selectedProduct = productSelect.value;
+        var selectedProduct =  getSelectedProductValue()
         var usersSelect = document.getElementById("usersSelect");
         var selectedUser = usersSelect.value;
         var datepicker = document.getElementById('datepicker').value
@@ -7316,8 +7374,7 @@ function showReports(id){
         pdfFile.setAttribute('hidden',true)
         var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var productSelect = document.getElementById('selectProducts')
-      var selectedProduct = productSelect.value;
+      var selectedProduct =  getSelectedProductValue()
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
       var subCategoreisSelect = document.getElementById('subCategoreisSelect')
