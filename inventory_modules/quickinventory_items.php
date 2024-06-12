@@ -153,6 +153,29 @@
             }
             });
         }
+        $('#tbl_quickInventories tbody').on('keypress', '#qty', function (event) {
+            var charCode = event.which ? event.which : event.keyCode;
+            var inputVal = $(this).val();
+
+            if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                event.preventDefault();
+                return;
+            }
+
+            if (inputVal.indexOf('.') !== -1) {
+                if (charCode === 46) {
+                    event.preventDefault();
+                    return;
+                }
+
+                var decimalPos = inputVal.indexOf('.');
+                var decimalPart = inputVal.substring(decimalPos + 1);
+                if (decimalPart.length >= 2) {
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
         function filterProducts(term) {
             return productsCache.filter(function (row) {
             return row.product.toLowerCase().includes(term) ||
@@ -270,13 +293,11 @@
     //     }
     //       $(this).val('');
     //   });
-    function isDataExistInTable(data) {
-    // Find the first table cell in each row with the matching data-id attribute
-    var $matchingRow = $('#tbl_quickInventories tbody td[data-id="' + data + '"]').closest('tr');
-
-    // Return true if a matching row is found, otherwise false
-    return $matchingRow.length > 0;
-}
+        function isDataExistInTable(data) 
+        {
+            var $matchingRow = $('#tbl_quickInventories tbody td[data-id="' + data + '"]').closest('tr');
+            return $matchingRow.length > 0;
+        }
         function display_productBy(inventory_id) 
         {
             $.ajax({

@@ -89,27 +89,27 @@
                 // $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
                 // $stmt->execute();
             
-                $stmt = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
-                $stmt->bindParam(":counted", $counted); 
-                $stmt->bindParam(":id", $inventory_id); 
-                $stmt->execute();
+                $stmt2 = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
+                $stmt2->bindParam(":new_stock", $counted); 
+                $stmt2->bindParam(":id", $inventory_id); 
+                $stmt2->execute();
     
                 $currentStock = $this->get_productDataById($inventory_id)['product_stock'];
                 $currentDate = date('Y-m-d H:i:s');
                 $stock_customer = $formData['user_name'];
                 $document_number = $reference_no;
                 $transaction_type = "Inventory Count";
-                $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                $stmt1 = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
                                                     VALUES (?, ?, ?, ?, ?, ?, ?)");
     
-                $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-                $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
-                $stmt->bindParam(4, $counted, PDO::PARAM_STR); 
-                $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
-                $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
-                $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
-                $stmt->execute();
+                $stmt1->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                $stmt1->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+                $stmt1->bindParam(3, $currentStock, PDO::PARAM_STR); 
+                $stmt1->bindParam(4, $counted, PDO::PARAM_STR); 
+                $stmt1->bindParam(5, $document_number, PDO::PARAM_STR); 
+                $stmt1->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+                $stmt1->bindParam(7, $currentDate, PDO::PARAM_STR); 
+                $stmt1->execute();
             }
            
             return [
@@ -120,13 +120,12 @@
         
         public function get_productDataById($product_id)
         {
-            $sql = "SELECT products.*, uom.*
+            $sql = "SELECT products.*
                     FROM products
-                    INNER JOIN uom ON uom.id = products.uom_id
-                    WHERE products.id = :product_id";
+                    WHERE id = :product_id";
     
             $stmt = $this->connect()->prepare($sql);
-            $stmt->bindParam(":product_id", $inventory_id);
+            $stmt->bindParam(":product_id", $product_id);
             $stmt->execute();
             $data =  $stmt->fetch(PDO::FETCH_ASSOC);
             return $data;
@@ -136,10 +135,9 @@
         public function get_inventoryCountDataById($id)
         {
             $info = $this->get_data($id);
-            $sql = $this->connect()->prepare('SELECT inventory.*, products.*, inventory_count_items.*, inventory_count_items.qty as counted_qty, inventory_count_items.id as inventory_count_item_id
-                                            FROM inventory
-                                            JOIN products ON products.id = inventory.product_id
-                                            JOIN inventory_count_items ON inventory.id = inventory_count_items.inventory_id
+            $sql = $this->connect()->prepare('SELECT products.*, inventory_count_items.*, inventory_count_items.qty as counted_qty, inventory_count_items.id as inventory_count_item_id
+                                            FROM products
+                                            JOIN inventory_count_items ON products.id = inventory_count_items.inventory_id
                                             WHERE inventory_count_items.inventory_count_info_id = '.$id.';
                                             ');
             $sql->execute();

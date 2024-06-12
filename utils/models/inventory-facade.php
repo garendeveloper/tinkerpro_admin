@@ -302,7 +302,7 @@ class InventoryFacade extends DBConnection
         foreach($tbl_data as $row)
         {
             $inventory_id = $row['inventory_id'];
-            $qty_onhand = (int)$row['col_2'];
+            $qty_onhand = (float)$row['col_2'];
             $newqty = (float)$row['newqty'];
             $currentDate = date('Y-m-d H:i:s');
 
@@ -339,7 +339,7 @@ class InventoryFacade extends DBConnection
         //                                 FROM products A
         //                                 LEFT JOIN  inventory B ON A.ID = B.product_id
         //                                 WHERE B.product_id IS NULL");
-        $sql = $this->connect()->prepare("SELECT * FROM PRODUCTS");
+        $sql = $this->connect()->prepare("SELECT * FROM PRODUCTS order by prod_desc asc");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 

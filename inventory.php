@@ -1707,46 +1707,52 @@ include ('./layout/admin/table-pagination-css.php');
           })
         }
         if (activeModuleId === "btn_inventoryCount") {
-          if (validate_inventorycount_form()) {
-            var inventory_type = $("#qi_inventory_type").val();
-            if (inventory_type !== "") {
-              if (validateTableInputs("tbl_inventory_count")) {
-                var tbl_data = [];
-                $("#tbl_inventory_count tbody tr").each(function () {
-                  var rowData = {};
-                  rowData['inventory_id'] = $(this).data('id');
-                  rowData['inventory_count_item_id'] = $(this).data('ic_id');
-                  rowData['qty'] = $(this).find("td:nth-child(2)").text();
-                  rowData['counted'] = $(this).find("#counted").val();
-                  rowData['difference'] = $(this).find("td:nth-child(4)").text();
+          var rowCount = $("#tbl_inventory_count tbody tr").length;
+          if(rowCount > 0)
+          {
+            var tbl_data = [];
+            $("#tbl_inventory_count tbody tr").each(function () {
+              var rowData = {};
+              rowData['inventory_id'] = $(this).data('id');
+              rowData['inventory_count_item_id'] = $(this).data('ic_id');
+              rowData['qty'] = $(this).find("td:nth-child(2)").text();
+              rowData['counted'] = $(this).find("#counted").val();
+              rowData['difference'] = $(this).find("td:nth-child(4)").text();
 
-                  tbl_data.push(rowData);
-                });
-                $.ajax({
-                  type: 'post',
-                  url: 'api.php?action=save_inventory_count',
-                  data: {
-                    tbl_data: JSON.stringify(tbl_data),
-                    reference_no: $("#ic_reference").val(),
-                    date_counted: $("#date_counted").val(),
-                    refer_id: $("#inventory_count_info_id").val(),
-                    user_name: $("#first_name").val()+" "+$("#last_name").val(),
-                  },
-                  success: function (response) {
-                    if (response.status) {
-                      show_sweetReponse(response.msg);
-                      $("#tbl_inventory_count tbody").empty();
-                      $("#inventorycount_form")[0].reset();
-                      show_inventory_count_reference_no();
-                      show_allInventories();
-                      hideModals();
-                    }
-                  }
-                })
+              tbl_data.push(rowData);
+            });
+            $.ajax({
+              type: 'post',
+              url: 'api.php?action=save_inventory_count',
+              data: {
+                tbl_data: JSON.stringify(tbl_data),
+                reference_no: $("#ic_reference").val(),
+                date_counted: $("#date_counted").val(),
+                refer_id: $("#inventory_count_info_id").val(),
+                user_name: $("#first_name").val()+" "+$("#last_name").val(),
+              },
+              success: function (response) {
+                if (response.status) {
+                  show_sweetReponse(response.msg);
+                  $("#tbl_inventory_count tbody").empty();
+                  $("#inventorycount_form")[0].reset();
+                  show_inventory_count_reference_no();
+                  show_allInventories();
+                  hideModals();
+                }
               }
-            }
-            else {
-              $("#qi_inventory_type").css('border', '1px solid red');
+            })
+          }
+          else
+          {
+            if (validate_inventorycount_form()) {
+              var inventory_type = $("#qi_inventory_type").val();
+              if (inventory_type !== "") {
+                validateTableInputs("tbl_inventory_count")
+              }
+              else {
+                $("#qi_inventory_type").css('border', '1px solid red');
+              }
             }
           }
         }
@@ -2548,6 +2554,7 @@ include ('./layout/admin/table-pagination-css.php');
                 if (currentItem.order_type === 1) {
                   var dueDateCell = currentItem.due_date === null ? "Not Available" : date_format(currentItem.due_date);
                   var isPaidCell = currentItem.isPaid === 1 ? "<td class='text-center badge-success'>Paid</td>" : "<td class='text-center badge-danger'>Unpaid</td>";
+                  var status = currentItem.is_received === 1 ? "<td class='text-center badge-success'>Received</td>" : "<td class='text-center badge-warning' style = 'color: yellow;'>To Receive</td>";
 
                   tblRows.push(
                     `<tr data-id='${currentItem.order_id}'>
@@ -2557,6 +2564,7 @@ include ('./layout/admin/table-pagination-css.php');
                           <td class='text-center'>${dueDateCell}</td>
                           <td style='text-align: right'>&#x20B1;&nbsp;${addCommasToNumber(currentItem.price)}</td>
                           ${isPaidCell}
+                          ${status}
                           <td style='text-align: center'>
                               <button data-id='${currentItem.order_id}' class='grid-item button btn_openPayment' id = "btn_openPayment" ${currentItem.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
                               <button data-id='${currentItem.order_id}' class='grid-item button btn_editOrder' id = "btn_editOrder"><i class='bi bi-pencil-fill bi-md'></i></button>
@@ -2579,6 +2587,7 @@ include ('./layout/admin/table-pagination-css.php');
                           <th style='width: 2%;'>Due Date</th>
                           <th style='width: 2%;'>Total</th>
                           <th style='width: 2%;'>Is Paid</th>
+                          <th style='width: 2%;'>Status</th>
                           <th style='width: 1%;'>Action</th>
                       </tr>
                   </thead>

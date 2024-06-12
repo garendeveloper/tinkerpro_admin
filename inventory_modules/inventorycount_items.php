@@ -89,8 +89,17 @@
                     </select>
                     <i class="bi bi-chevron-double-down"></i>
                 </div>
-                <button style="font-size: 12px; height: 30px; border-radius: 4px;" id="btn_go_inventory">
+                <button type = "button" style="font-size: 12px; height: 30px; border-radius: 4px;" id="btn_go_inventory">
                     DISPLAY ALL</button>
+                <!-- <div class="custom-select">
+                    <select name="select_category" id = "select_category"
+                        style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
+                        <option value="0">Select inventory type</option>
+                        <option value="1">Custom Select</option>
+                        <option value="2">Display All</option>
+                    </select>
+                    <i class="bi bi-chevron-double-down"></i>
+                </div> -->
             </div>
             <div class="group right-aligned" style="display: flex; align-items: center;">
                 <button style="font-size: 12px; height: 30px; border-radius: 4px; width: 200px; " id="btn_open_print_count_modal" type = "button">
@@ -134,10 +143,10 @@
         dateFormat: 'M dd y',
         minDate: 0,
     });
+    var toastDisplayed = false;
 
     $(document).ready(function () {
         show_reference_no();
-        show_allProducts();
         function show_reference_no() {
             $.ajax({
                 type: 'get',
@@ -147,21 +156,7 @@
                 }
             })
         }
-        $("#btn_open_print_count_modal").on("click", function() {
-            var type = $("#qi_inventory_type").val();
-            if(type !== "")
-            {
-                $("#qi_inventory_type").removeClass('has-error');
-                $("#printcount_modal").show();
-            }
-            {
-                $("#qi_inventory_type").addClass('has-error');
-            }
-        });
-
-        $(".close").click(function() {
-            $("#printcount_modal").hide();
-        });
+   
 
         $(window).resize(function() {
             if ($(window).width() < 768) {
@@ -170,11 +165,12 @@
             $("#printcount_modal.modal-content").css("margin", "15% auto");
             }
         });
-  
-       
         
         $("#qi_inventory_type").on("change", function(){
-            $(this).css("border", "1px solid #ffff")
+            $(this).css("border", "1px solid #ffff");
+            $("#invc_product").focus();
+            $("#invc_product_id").val("");
+            show_allProducts();
         })
         function clean_number(number) {
             return number.replace(/[₱\s]/g, '');
@@ -187,49 +183,51 @@
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // $("#btn_go_inventory").off().on("click", function (e) {
-        //     e.preventDefault();
-        //     var search_value = $("#qi_inventory_type").val();
-        //     $("#inventory_count_info_id").val("");
-        //     $('#modalCashPrint').show();
-        //     $.ajax({
-        //         type: 'get',
-        //         url: 'api.php?action=get_allProductByInventoryType&type='+search_value,
-        //         success: function (data) {
-        //             $('#modalCashPrint').hide();
-        //             var row = "";
-        //             for(var i =0 ;i<data.length; i++)
-        //             {
-        //                 row += "<tr data-id = "+data[i].product_id+">";
-        //                 row += "<td>" + data[i].prod_desc + "</td>";
-        //                 row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
-        //                 row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted' value = ''></input></td>";
-        //                 row += "<td style = 'text-align: right'></td>";
-        //                 row += "</tr>";
-        //             }
-        //             $("#tbl_inventory_count tbody").html(row);
-        //         }
-        //     })
+        $("#btn_go_inventory").off().on("click", function (e) {
+            e.preventDefault();
+            var search_value = $("#qi_inventory_type").val();
+            $("#inventory_count_info_id").val("");
+            $('#modalCashPrint').show();
+            $.ajax({
+                type: 'get',
+                url: 'api.php?action=get_allProductByInventoryType&type='+search_value,
+                success: function (data) {
+                    $('#modalCashPrint').hide();
+                    var row = "";
+                    for(var i =0 ;i<data.length; i++)
+                    {
+                        row += "<tr data-id = "+data[i].product_id+">";
+                        row += "<td>" + data[i].prod_desc + "</td>";
+                        row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
+                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted' value = ''></input></td>";
+                        row += "<td style = 'text-align: right'></td>";
+                        row += "</tr>";
+                    }
+                    $("#tbl_inventory_count tbody").html(row);
+                }
+            })
            
-        // })
+        })
         
-        $("#btn_invcSearch").on("click",function (e) {
+        $("#btn_invcSearch").click(function (e) {
             e.preventDefault();
             var inventory_id = $("#invc_product_id").val();
             if(inventory_id !== 0)
             {
-                if ($("select[name='inventory_type']").val() === "") {
-                    $("select[name='inventory_type']").css('border', '1px solid red');
+          
+                if ($("select[name='qi_inventory_type']").val() === "") {
+                    $("select[name='qi_inventory_type']").css('border', '1px solid red');
                 }
                 else {
-                    $("select[name='inventory_type']").css('border', '1px solid #ffff');
+                
+                    $("select[name='qi_inventory_type']").css('border', '1px solid #ffff');
                     if (!isDataExistInTable(inventory_id)) 
                     {
-                        display_productBy(inventory_id);
+                        append_to_table1(inventory_id);
                     }
                     else
                     {
-                        alert("Product is already in the table.")
+                        show_errorResponse("Product is already in the table.");
                     }
                 }
             }
@@ -238,21 +236,21 @@
         function show_allProducts() 
         {
             $.ajax({
-            type: 'GET',
-            url: 'api.php?action=get_allProducts',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) 
-                {
-                    var row = 
+                type: 'GET',
+                url: 'api.php?action=get_allProducts',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) 
                     {
-                        product_id: data[i].id,
-                        product: data[i].prod_desc,
-                        barcode: data[i].barcode,
-                        brand: data[i].brand,
-                    };
-                    productsCache.push(row);
+                        var row = 
+                        {
+                            product_id: data[i].id,
+                            product: data[i].prod_desc,
+                            barcode: data[i].barcode,
+                            brand: data[i].brand,
+                        };
+                        productsCache.push(row);
+                    }
                 }
-            }
             });
         }
         function filterProducts(term) {
@@ -262,46 +260,53 @@
                 (row.brand && row.brand.toLowerCase().includes(term)) ||
                 (!row.brand && term === "");
             }).map(function (row) {
-            var brand = row.brand === null ? " " : row.brand;
-            return {
-                label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
-                value: row.barcode ?? row.product,
-                id: row.product_id
-            };
+                var brand = row.brand === null ? " " : row.brand;
+                return {
+                    label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
+                    value: row.barcode ?? row.product,
+                    id: row.product_id
+                };
             });
         }
-        function show_errorResponse(message) {
-            toastr.options = {
-            "onShown": function () {
-                $('.custom-toast').css({
-                "opacity": 1,
-                "width": "600px",
-                "text-align": "center",
-                "border": "2px solid #1E1C11",
-                });
-            },
-            "closeButton": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "progressBar": true,
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut",
-            "tapToDismiss": false,
-            "toastClass": "custom-toast",
-            "onclick": function () { alert('Clicked'); }
+        function show_errorResponse(message) 
+        {
+            if (toastDisplayed) {
+                return; 
+            }
 
+            toastDisplayed = true; 
+
+            toastr.options = {
+                "onShown": function () {
+                    $('.custom-toast').css({
+                        "opacity": 1,
+                        "width": "600px",
+                        "text-align": "center",
+                        "border": "2px solid #1E1C11",
+                    });
+                },
+                "onHidden": function () {
+                    toastDisplayed = false; 
+                },
+                "closeButton": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "progressBar": true,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false,
+                "toastClass": "custom-toast",
+                "onclick": function () { 
+                    toastr.clear();
+                    toastDisplayed = false;
+                 }
             };
+
             toastr.error(message);
         }
-        $("#invc_product").on("input", function(e) {
-            var term = $(this).val();
-            $(this).autocomplete('search', term);
-
-        });
-
         $("#invc_product").autocomplete({
             minLength: 2,
             source: function (request, response) {
@@ -320,23 +325,24 @@
                 $("#invc_product_id").val(selectedProductId);
             },
             select: function (event, ui) {
-                
                 var selectedProductId = ui.item.id;
                 $("#invc_product_id").val(selectedProductId);
                 return false;
             },
         });
-      $("#invc_product").on("input", function(e) {
-        e.preventDefault();
-          var term = $(this).val();
-          $(this).autocomplete('search', term);
-      });
+        $("#invc_product").on("input", function(e) {
+            var term = $(this).val();
+            $(this).autocomplete('search', term);
+
+        });
+
+      
       $("#invc_product").on("keypress", function(event){
         if(event.which === 13){
             var product_id = $("#invc_product_id").val();
       
           if (!isDataExistInTable(product_id)) {
-            append_to_table(product_id);
+            append_to_table1(product_id);
           }
           else
           {
@@ -347,29 +353,34 @@
       
       })
 
-      $("#invc_product").on("autocompletechange", function(event, ui) {
-        var product_id = $("#invc_product_id").val();
+    //   $("#invc_product").on("autocompletechange", function(event, ui) {
+    //     var product_id = $("#invc_product_id").val();
         
-        if (!isDataExistInTable(product_id)) {
-            append_to_table();
-        }
-        else
+    //     if (!isDataExistInTable(product_id)) {
+    //         append_to_table();
+    //     }
+    //     else
+    //     {
+    //       show_errorResponse("Product already in the table");
+    //     }
+    //       $(this).val('');
+    //   });
+        // function isDataExistInTable(data) {
+        //     var $matchingRow = $('#tbl_inventory_count tbody td:first[data-id="' + data + '"]').closest('tr');
+            
+        //     if ($matchingRow.length > 0) {
+        //         return true;
+        //     }
+            
+        //     return false;
+        // }
+        function isDataExistInTable(data) 
         {
-          show_errorResponse("Product already in the table");
-        }
-          $(this).val('');
-      });
-        function isDataExistInTable(data) {
-            var $matchingRow = $('#tbl_inventory_count tbody td:first[data-id="' + data + '"]').closest('tr');
-            
-            if ($matchingRow.length > 0) {
-                return true;
-            }
-            
-            return false;
+            var $matchingRow = $('#tbl_inventory_count tbody td[data-id="' + data + '"]').closest('tr');
+            return $matchingRow.length > 0;
         }
        
-        function append_to_table(product_id) 
+        function append_to_table1(product_id) 
         {
             $.ajax({
                 type: 'get',
@@ -377,37 +388,70 @@
                 data: { data: product_id },
                 success: function (data) {
                     var row = "";
-                    row += "<tr data-id = " + data['id'] + ">";
+                    row += "<tr data-id = " + data['id'] + " data-ic_id = '0'>";
                     row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
                     row += "<td style = 'text-align:center'>" + data['product_stock'] + "</td>";
-                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'counted' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                    row += "<td style = 'text-align: right'></td>";
                     row += "</tr>";
                     $("#tbl_inventory_count tbody").append(row);
                 }
             })
         }
+        $('#tbl_inventory_count tbody').on('keypress', '#counted', function (event) {
+            var charCode = event.which ? event.which : event.keyCode;
+            var inputVal = $(this).val();
 
-        $("#tbl_inventory_count").on("input", "#counted", function (e) {
+            if ((charCode < 48 || charCode > 57) && charCode !== 46) {
+                event.preventDefault();
+                return;
+            }
+
+            if (inputVal.indexOf('.') !== -1) {
+                if (charCode === 46) {
+                    event.preventDefault();
+                    return;
+                }
+
+                var decimalPos = inputVal.indexOf('.');
+                var decimalPart = inputVal.substring(decimalPos + 1);
+                if (decimalPart.length >= 2) {
+                    event.preventDefault();
+                    return;
+                }
+            }
+        });
+        $("#tbl_inventory_count tbody").on("input", "#counted", function (e) {
             e.preventDefault();
             $(this).removeClass('has-error');
             var counted = $(this).val();
             counted = parseFloat(counted);
             var stock = $(this).closest("tr").find("td:nth-child(2)").text();
             stock = parseFloat(stock);
-
-            if(stock < 0)
-            {
-                var difference = stock + counted
-                if(difference > 0) difference = "+"+difference;
-                $(this).closest("tr").find("td:nth-child(4)").text(difference);
+            var difference;
+            if(stock < 0) {
+                difference = stock + counted;
+            } else {
+                difference = counted - stock;
             }
-            else
-            {
-                var difference = counted - stock;
-                if(difference > 0) difference = "+"+difference;
-                $(this).closest("tr").find("td:nth-child(4)").text(difference);
-            }
+            if(difference > 0) difference = "+" + difference;
+            $(this).closest("tr").find("td:nth-child(4)").html(difference);
         })
       
+        $("#btn_open_print_count_modal").on("click", function() {
+            var type = $("#qi_inventory_type").val();
+            if(type !== "")
+            {
+                $("#qi_inventory_type").removeClass('has-error');
+                $("#printcount_modal").show();
+            }
+            {
+                $("#qi_inventory_type").addClass('has-error');
+            }
+        });
+
+        $("#printcount_modal .close").click(function() {
+            $("#printcount_modal").hide();
+        });
     })
 </script>
