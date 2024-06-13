@@ -164,10 +164,10 @@ include ('./layout/admin/table-pagination-css.php');
 .dt-paging-button:hover{
   color: #FF6900;
 }
-.previous{
+.first{
   display: none;
 }
-.next{
+.last{
   display: none;
 }
 .dt-paging-button {
@@ -365,6 +365,7 @@ include ('./layout/admin/table-pagination-css.php');
         $("#date_purchased").flatpickr().destroy();
         $("#date_purchased").flatpickr().close();
       }
+     
     </script>
   
   <script>
@@ -887,6 +888,11 @@ include ('./layout/admin/table-pagination-css.php');
        
       })
       function show_allStocks() {
+        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_stocks")) {
+            $(".inventoryCard #tbl_all_stocks").DataTable().destroy();
+        }
+        $("#paginationDiv").empty().hide();
+
         $("#searchInput").focus();
         $('#modalCashPrint').show();
         $.ajax({
@@ -933,30 +939,52 @@ include ('./layout/admin/table-pagination-css.php');
             </table>`;
 
             $(".inventoryCard").html(tblData);
+            // $('.inventoryCard #tbl_all_stocks').DataTable({
+            //     ordering: true,
+            //     order: [[0, 'asc']], 
+            //     pageLength: 50,
+            //     sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+            //     language: {
+            //         paginate: {
+            //             previous: '<i class="fa fa-angle-left"></i>',
+            //             next: '<i class="fa fa-angle-right"></i>'
+            //         }
+            //     },
+            // });
             $('.inventoryCard #tbl_all_stocks').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 50,
-                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-                language: {
-                    paginate: {
-                        previous: '<i class="fa fa-angle-left"></i>',
-                        next: '<i class="fa fa-angle-right"></i>'
-                    }
-                },
-            });
+              ordering: true,
+              order: [[0, 'asc']], 
+              pageLength: 300,
+              pagingType: 'full_numbers',
+              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+              fnDrawCallback: function(oSettings) {
+                if (oSettings.aoData.length === 0) {
+                  $("#paginationDiv").hide();
+                } else {
+                  $("#paginationDiv").show();
+                }
+              }
+            })
+            $("#paginationDiv").html($(".dt-paging")).show();
+
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_all_stocks').DataTable().search($(this).val()).draw();
               // if (event.keyCode === 13 || $(this).val().length >= 12)
               // {
                
-              //   $(this).val(''); 
+              //   $(this).val(''); 8996001603444
+
               // }
             });
           }
         });
       }
       function show_allLossAndDamagesInfo() {
+        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_lostanddamages")) {
+            $(".inventoryCard #tbl_all_lostanddamages").DataTable().destroy();
+        }
+        $("#paginationDiv").empty().hide();
+
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_all_lostanddamageinfo',
@@ -995,18 +1023,34 @@ include ('./layout/admin/table-pagination-css.php');
 
             $(".inventoryCard").html(tbl);
 
+            // $('.inventoryCard #tbl_all_lostanddamages').DataTable({
+            //     ordering: true,
+            //     order: [[0, 'asc']], 
+            //     pageLength: 50,
+            //     sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+            //     language: {
+            //         paginate: {
+            //             previous: '<i class="fa fa-angle-left"></i>',
+            //             next: '<i class="fa fa-angle-right"></i>'
+            //         }
+            //     },
+            // });
             $('.inventoryCard #tbl_all_lostanddamages').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 50,
-                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-                language: {
-                    paginate: {
-                        previous: '<i class="fa fa-angle-left"></i>',
-                        next: '<i class="fa fa-angle-right"></i>'
-                    }
-                },
-            });
+              ordering: true,
+              order: [[0, 'asc']], 
+              pageLength: 300,
+              pagingType: 'full_numbers',
+              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+              fnDrawCallback: function(oSettings) {
+                if (oSettings.aoData.length === 0) {
+                  $("#paginationDiv").hide();
+                } else {
+                  $("#paginationDiv").show();
+                }
+              }
+            })
+            $("#paginationDiv").html($(".dt-paging")).show();
+
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_all_lostanddamages').DataTable().search($(this).val()).draw();
             });
@@ -1014,6 +1058,11 @@ include ('./layout/admin/table-pagination-css.php');
         })
       }
       function show_expiredProducts() {
+        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
+            $(".inventoryCard #tbl_products").DataTable().destroy();
+        }
+        $("#paginationDiv").empty().hide();
+
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_realtime_notifications',
@@ -1076,31 +1125,51 @@ include ('./layout/admin/table-pagination-css.php');
 
             $(".inventoryCard").html(tbl_expiry);
 
+            // $('.inventoryCard #tbl_expiredProducts').DataTable({
+            //     ordering: true,
+            //     order: [[0, 'asc']], 
+            //     pageLength: 50,
+            //     sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+            //     language: {
+            //         paginate: {
+            //             previous: '<i class="fa fa-angle-left"></i>',
+            //             next: '<i class="fa fa-angle-right"></i>'
+            //         }
+            //     },
+            // });
             $('.inventoryCard #tbl_expiredProducts').DataTable({
                 ordering: true,
                 order: [[0, 'asc']], 
-                pageLength: 50,
-                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-                language: {
-                    paginate: {
-                        previous: '<i class="fa fa-angle-left"></i>',
-                        next: '<i class="fa fa-angle-right"></i>'
-                    }
-                },
-            });
-            $('#searchInput').on('keyup', function(event) {
-              $('.inventoryCard #tbl_expiredProducts').DataTable().search($(this).val()).draw();
-            });
+                pageLength: 300,
+                pagingType: 'full_numbers',
+                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+                fnDrawCallback: function(oSettings) {
+                  if (oSettings.aoData.length === 0) {
+                    $("#paginationDiv").hide();
+                  } else {
+                    $("#paginationDiv").show();
+                  }
+                }
+              })
+              $("#paginationDiv").html($(".dt-paging")).show();
+
+              $('#searchInput').on('keyup', function(event) {
+                $('.inventoryCard #tbl_expiredProducts').DataTable().search($(this).val()).draw();
+              });
           }
         })
       }
       function show_allInventoryCounts() {
+        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_inventoryCounts")) {
+            $(".inventoryCard #tbl_all_inventoryCounts").DataTable().destroy();
+        }
+        $("#paginationDiv").empty().hide();
+  
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_allInventoryCounts',
           success: function (data) {
             var inv_count_rows;
-            console.log(data);
             if (data.length > 0) {
               inv_count_rows = data.map(function (item) {
                 return "<tr>" +
@@ -1126,18 +1195,34 @@ include ('./layout/admin/table-pagination-css.php');
 
             $(".inventoryCard").html(inv_count_tbl);
 
+            // $('.inventoryCard #tbl_all_inventoryCounts').DataTable({
+            //     ordering: true,
+            //     order: [[0, 'asc']], 
+            //     pageLength: 50,
+            //     sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+            //     language: {
+            //         paginate: {
+            //             previous: '<i class="fa fa-angle-left"></i>',
+            //             next: '<i class="fa fa-angle-right"></i>'
+            //         }
+            //     },
+            // });
             $('.inventoryCard #tbl_all_inventoryCounts').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 50,
-                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-                language: {
-                    paginate: {
-                        previous: '<i class="fa fa-angle-left"></i>',
-                        next: '<i class="fa fa-angle-right"></i>'
-                    }
-                },
-            });
+              ordering: true,
+              order: [[0, 'asc']], 
+              pageLength: 300,
+              pagingType: 'full_numbers',
+              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+              fnDrawCallback: function(oSettings) {
+                if (oSettings.aoData.length === 0) {
+                  $("#paginationDiv").hide();
+                } else {
+                  $("#paginationDiv").show();
+                }
+              }
+            })
+            $("#paginationDiv").html($(".dt-paging")).show();
+
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_all_inventoryCounts').DataTable().search($(this).val()).draw();
             });
@@ -2409,13 +2494,17 @@ include ('./layout/admin/table-pagination-css.php');
       }
      
       function show_allInventories() {
+        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
+            $(".inventoryCard #tbl_products").DataTable().destroy();
+        }
+        $("#paginationDiv").empty().hide();
+
         $('#modalCashPrint').show();
         $.ajax({
           type: 'GET',
           url: 'api.php?action=get_allInventories',
           success: function (data) {
             var tblRows = [];
-
             if (data.length > 0) {
               for (var i = 0, len = data.length; i < len; i++) 
               {
@@ -2466,33 +2555,38 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard").html(tblData);
             $('#modalCashPrint').hide();
 
-            $(document).ready(function() {
-              var table = $('.inventoryCard #tbl_products').DataTable({
-                  ordering: true,
-                  order: [[0, 'asc']],
-                  pageLength: 300,
-                  dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-                  language: {
-                      paginate: {
-                          previous: '<i class="fa fa-angle-left"></i>',
-                          next: '<i class="fa fa-angle-right"></i>'
-                      }
-                  },
-                  keys: true
+              // var table = $('.inventoryCard #tbl_products').DataTable({
+              //     ordering: true,
+              //     order: [[0, 'asc']],
+              //     pageLength: 300,
+              //     dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+              //     language: {
+              //         paginate: {
+              //             previous: '<i class="fa fa-angle-left"></i>',
+              //             next: '<i class="fa fa-angle-right"></i>'
+              //         }
+              //     },
+              //     keys: true
+              // });
+              $('.inventoryCard #tbl_products').DataTable({
+                ordering: true,
+                order: [[0, 'asc']], 
+                pageLength: 300,
+                pagingType: 'full_numbers',
+                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+                fnDrawCallback: function(oSettings) {
+                  if (oSettings.aoData.length === 0) {
+                    $("#paginationDiv").hide();
+                  } else {
+                    $("#paginationDiv").show();
+                  }
+                }
+              })
+              $("#paginationDiv").html($(".dt-paging")).show();
+
+              $('#searchInput').on('input', function(event) {
+                $('.inventoryCard #tbl_products').DataTable().search($(this).val()).draw();
               });
-              $("#paginationDiv").append($(".dt-paging"));
-            });
-
-            $(window).on("resize", function() {
-                $fixedHeader.width($("#tbl_products").width());
-            }).trigger("resize");
-
-            $('#searchInput').on('keyup', function(event) {
-              $('.inventoryCard #tbl_products').DataTable().search($(this).val()).draw();
-              if (event.keyCode === 13 || event.keyCode === 27) { 
-                  $(this).val('');
-              }
-            });
           }
         });
       }
@@ -2557,6 +2651,11 @@ include ('./layout/admin/table-pagination-css.php');
         })
       })
       function show_allOrders(currentPage, perPage) {
+        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
+            $(".inventoryCard #tbl_products").DataTable().destroy();
+        }
+        $("#paginationDiv").empty().hide();
+
         $("#tbl_orders").show();
         $.ajax({
           type: 'GET',
@@ -2615,15 +2714,20 @@ include ('./layout/admin/table-pagination-css.php');
             $('.inventoryCard #tbl_orders').DataTable({
                 ordering: true,
                 order: [[0, 'asc']], 
-                pageLength: 50,
-                sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-                language: {
-                    paginate: {
-                        previous: '<i class="fa fa-angle-left"></i>',
-                        next: '<i class="fa fa-angle-right"></i>'
-                    }
-                },
+                pageLength: 300,
+                // sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
+                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+                // fnDrawCallback: function(oSettings) {
+                //   if (oSettings.aoData.length === 0) {
+                //     $("#tbl_products_wrapper").html('<div style="text-align: center; padding: 20px;">No data available in table <img src="./assets/img/tinkerpro-logo-light.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"></div>');
+                //     $("#paginationDiv").empty().hide();
+                //   } else {
+                //     $("#paginationDiv").show();
+                //   }
+                // }
             });
+            $("#paginationDiv").html($(".dt-paging")).show();
+
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_orders').DataTable().search($(this).val()).draw();
             });

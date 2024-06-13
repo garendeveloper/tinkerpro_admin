@@ -12,12 +12,12 @@ class InventoryFacade extends DBConnection
                                             SUM(products.product_stock) AS total_stock
                                         FROM 
                                             inventory
-                                        JOIN 
+                                        INNER JOIN 
                                             products ON products.id = inventory.product_id
-                                        JOIN 
+                                        left JOIN 
                                             uom ON uom.id = products.uom_id
                                         GROUP BY 
-                                            products.id, products.prod_desc 
+                                            products.id
                                         ORDER BY products.prod_desc asc");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
