@@ -137,8 +137,7 @@ include ('./layout/admin/table-pagination-css.php');
   .highlighteds{
      border: 2px solid #00B050; 
   }
-
-  .dt-paging .dt-paging-button{
+  .dt-paging-button {
     text-decoration: none; 
     border: 1px solid #fefefe;
     margin-right: 1px; 
@@ -151,62 +150,47 @@ include ('./layout/admin/table-pagination-css.php');
     color: #fefefe;
 }
 
-/* .dt-paging-button:hover{
+.dt-paging:hover{
   color: #FF6900;
 }
+  .dt-paging{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.dt-paging{
-  margin-top: 20px;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.dt-paging-button:hover{
+  color: #FF6900;
 }
-.view-pager{
-  text-decoration: none; 
-  border: 1px solid #fefefe;
-  margin-right: 1px; 
-  width: 40px;
-  height: 40px;
-  display: inline-flex; 
-  justify-content: center;
-  align-items: center; 
-  background-color: #888888;
-  color: #fefefe;
-} */
-
-/* .pagination-wrapper {
-    position: fixed;
-    bottom: 10px;
-    width: 100%;
-    text-align: center;
-    background-color: #fff;
-    z-index: 1000;
-} */
-
-/* .dataTables_paginate {
-}
-#header-fixed {
-  position: fixed;
-  top: 0px;
+.previous{
   display: none;
-  background-color: white;
 }
-.pagination-container {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ddd;
-} */
+.next{
+  display: none;
+}
+.dt-paging-button {
+    text-decoration: none;
+    padding: 5px 10px;
+    margin: 2px;
+    border: 1px solid #ddd;
+    color: #000;
+}
+.dt-paging-button:hover {
+    background-color: #f0f0f0;
+}
+.dt-paging-button.active {
+    background-color: #00B050;
+    color: white;
+    outline: none;
+}
 #main-content {
     overflow: hidden;
 }
 .inventoryCard{
     width: 100%;
-    max-height: 650px; 
+    max-height: 700px; 
     overflow-y: auto; 
     overflow-x: auto; 
   }
@@ -283,7 +267,7 @@ include ('./layout/admin/table-pagination-css.php');
           <div class="card inventoryCard" style="width: 100%; height: 70vh;">
 
           </div>
-          <div id="paginationDiv2"></div>
+          <div id="paginationDiv"></div>
           <div style="display: flex; margin-top: 20px">
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg
                 version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg"
@@ -2482,49 +2466,23 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard").html(tblData);
             $('#modalCashPrint').hide();
 
-            $('.inventoryCard #tbl_products').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 300,
-                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"<"#paginationDiv"p>>>',
-                language: {
-                    paginate: {
-                        previous: '<i class="fa fa-angle-left"></i>',
-                        next: '<i class="fa fa-angle-right"></i>'
-                    }
-                },
-                drawCallback: function () {
-                  var pagination = $('#tbl_products_paginate');
-                  $('#paginationDiv2').html(pagination.html());
-                  $('#paginationDiv2').find('a').each(function() {
-                      $(this).addClass('paginationTag');
-                  });
-                },
-                keys: true
+            $(document).ready(function() {
+              var table = $('.inventoryCard #tbl_products').DataTable({
+                  ordering: true,
+                  order: [[0, 'asc']],
+                  pageLength: 300,
+                  dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+                  language: {
+                      paginate: {
+                          previous: '<i class="fa fa-angle-left"></i>',
+                          next: '<i class="fa fa-angle-right"></i>'
+                      }
+                  },
+                  keys: true
+              });
+              $("#paginationDiv").append($(".dt-paging"));
             });
-            // $('.inventoryCard #tbl_products').DataTable({
-            //   ordering: true,
-            //   order: [[0, 'asc']],
-            //   pageLength: 300,
-            //   dom: 't<"row"<"col-sm-12"<"d-none"p>>>',
-            //   language: {
-            //     paginate: {
-            //       previous: '<i class="fa fa-angle-left"></i>',
-            //       next: '<i class="fa fa-angle-right"></i>'
-            //     }
-            //   },
-            //   drawCallback: function () {
-            //     var pagination = $('#tbl_products_wrapper.dataTables_paginate');
-            //     $('#paginationDiv').html(pagination.html());
-            //     $('#paginationDiv').find('a').each(function() {
-            //       $(this).addClass('paginationTag');
-            //     });
-            //     // $('#tbl_products_wrapper.dataTables_paginate').empty();
-            //   },
-            //   keys: true
-            // });
 
-            // Adjust width of the fixed header to match the table header
             $(window).on("resize", function() {
                 $fixedHeader.width($("#tbl_products").width());
             }).trigger("resize");
