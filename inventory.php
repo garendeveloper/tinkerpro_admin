@@ -194,6 +194,11 @@ include ('./layout/admin/table-pagination-css.php');
     overflow-y: auto; 
     overflow-x: auto; 
   }
+  table thead{ 
+      table-layout: fixed; 
+      border-collapse: collapse; 
+    } 
+
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -414,17 +419,30 @@ include ('./layout/admin/table-pagination-css.php');
       });
 
     // Event handler for the calendar button
-    $('#calendar-btn').off('click').on('click', function () {
+    // $('#calendar-btn').off('click').on('click', function () {
 
+    //   if (!$("#date_purchased").hasClass("flatpickr-open")) {
+    //       if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
+    //           $("#date_purchased").flatpickr();
+    //           $("#date_purchased").addClass("flatpickr-initialized");
+    //       }
+    //       $("#date_purchased").flatpickr().open();
+    //     }
+    // });
+    $('#calendar-btn').off('click').on('click', function () {
       if (!$("#date_purchased").hasClass("flatpickr-open")) {
-            // Ensure flatpickr is only initialized once
-            if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
-                $("#date_purchased").flatpickr();
-                $("#date_purchased").addClass("flatpickr-initialized");
-            }
-            // Open the date picker
+        if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
+            $("#date_purchased").flatpickr({
+                dateFormat: "M d y",
+                onClose: function(selectedDates) {
+                }
+            });
+            $("#date_purchased").addClass("flatpickr-initialized");
+        }
+        if ($("#date_purchased").flatpickr()) {
             $("#date_purchased").flatpickr().open();
         }
+      }
     });
       // $('#calendar-btn').on('click',function () {
       //   $('#date_purchased').datepicker('show');

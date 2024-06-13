@@ -203,6 +203,60 @@ if ($decProductSales == NULL) {
         max-width: 2400px;
     }
 }
+.custom-select {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 25px;
+  text-indent: 0.5em;
+}
+
+.custom-select i {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+}
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.header-container h5 {
+  margin: 0;
+}
+
+.header-container select {
+  background-color: #1E1C11;
+  color: #fff;
+  width: 120px;
+  border: 1px solid #fff;
+  font-size: 14px;
+  height: 30px;
+}
+#top_products option{
+  text-align:center;
+}
+#tbl_top_products {
+  width: 100%;
+  top: -20px;
+  border-collapse: collapse; 
+}
+#tbl_top_products tr {
+  border-bottom: 1px solid #ccc; 
+}
+#tbl_top_products td, table th {
+  border: none;
+  padding: 8px; 
+  text-align: center; 
+}
 </style>
 <?php include "layout/admin/css.php" ?>
 <div class="container-scroller">
@@ -252,18 +306,28 @@ if ($decProductSales == NULL) {
           <div class="row">
             <div class="col-12 col-md-4 ">
               <div class="border p-3 col1">
-                <h5>Top Products</h5>
-                <div class="center-total">
-                  <?php
-                  $productCount = $dashboard->get_product_total_count();
-                  echo $productCount > 0 ? "<h1>$productCount</h1>" : "<p>No data to display.</p>";
-                  ?>
+                <div class="header-container">
+                  <h5>Top Products</h5>
+                  <select name="top_products" id="top_products" class = "trigger_reports" style=" color: #ffff; width: 50px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                    <option>5</option>
+                    <option>10</option>
+                    <option>20</option>
+                  </select>
+                </div>
+                <div class="center-total" id = "top_products_data">
+                <p>No data to display</p>
                 </div>
               </div>
             </div>
             <div class="col-12 col-md-4">
               <div class="border p-3 col1">
-                <h5>Hourly Sales</h5>
+                <div class="header-container">
+                  <h5>Hourly Sales</h5>
+                  <select name="hourly_sales" id="hourly_sales" class = "trigger_reports" style=" color: #ffff; width: 50px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                    <option>Amount</option>
+                    <option>Count</option>
+                  </select>
+                </div>
                 <div class="center-total">
                   <p>No data to display</p>
                 </div>
@@ -271,8 +335,8 @@ if ($decProductSales == NULL) {
             </div>
             <div class="col-12 col-md-4 ">
               <div class="border p-3 col1">
-                <h5>Total Sales (Amount)</h5>
-                <div class="center-total">
+                <h5>Total Sales <span id = "identifier" class = "trigger_reports"></span></h5>
+                <div class="center-total" id = "total_sales_data">
                   <p>No data to display</p>
                 </div>
               </div>
@@ -308,6 +372,105 @@ if ($decProductSales == NULL) {
 <?php include ("layout/footer.php") ?>
 <script>
   $(document).ready(function () {
+    var totalSales = 0;
+    var totalCount = 0;
+
+    $(".trigger_reports").hide();
+    $("#top_products").on("change", function(){
+      var item = $(this).val();
+      show_allTopProducts(item);
+    })
+    function formatAmount(amount) 
+    {
+      if (amount >= 1e9) {
+          return (amount / 1e9).toFixed(2) + 'B';
+      } else if (amount >= 1e6) {
+          return (amount / 1e6).toFixed(2) + 'M';
+      } else if (amount >= 1e3) {
+          return (amount / 1e3).toFixed(2) + 'K';
+      } else {
+          return amount.toFixed(2);
+      }
+    }
+   
+    function show_allTopProducts(item)
+    {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_allTopProducts',
+        data: {item: item},
+        success: function(data)
+        {
+          var tblRows = [];
+          for (var i = 0, len = data.length; i < len; i++) 
+          {
+            var currentItem = data[i];
+            var stock = currentItem.product_stock !== null ? currentItem.product_stock : 0;
+            tblRows.push(
+                `<tr>
+                      <td style = 'text-align: left'>${currentItem.product}</td>
+                      <td style = 'text-align: center'>${currentItem.total_paid_amount}</td>
+                    </td>
+                  </tr>`
+              );
+              totalSales += currentItem.total_paid_amount;
+              totalCount = i+1;
+          }
+
+            var tblData = `
+            <table  id = "tbl_top_products" class='' style='font-size: 10px;'>
+                <thead style = 'background-color: none'>
+                    <tr >
+                        <th style = 'text-align: left'>Product.</th>
+                        <th style = 'text-align: center'>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tblRows.join('')}
+                </tbody>
+            </table>`;
+            $("#top_products_data").html(tblData);
+        }
+      })
+  }
+  function show_allTotalSales(identifier)
+    {
+     
+      if(identifier === "Count")
+      {
+        $("#total_sales_data").html("<h1>"+totalCount+"</h1>");
+      }
+      if(identifier === "Amount")
+      {
+        $("#total_sales_data").html("<h1>"+formatAmount(totalSales)+"</h1>");
+      }
+      $("#identifier").html("("+identifier+")");
+    
+    }
+    $("#hourly_sales").on("change", function(){
+      var identifier = $(this).val();
+      show_allTotalSales(identifier);
+    })
+    $("#btn_datePeriodSelected").on('click',function(){
+      var date_period_selected = $("#date_selected").text();
+      $("#period_date").html(date_period_selected);
+      $("#period_reports").hide();
+      $(".trigger_reports").show();
+      var period_date = $("#period_date").html().trim();
+      if(period_date !== "")
+      {
+        show_allTopProducts(5);
+        show_allTotalSales("Amount");
+      }
+      
+    })
+    $("#cancelDateTime").on('click',function(){
+      $("#period_date").html("");
+      $("#period_reports").hide();
+      $(".trigger_reports").hide();
+    })
+
+
     $("#index").addClass('active');
     $("#pointer").html("Dashboard");
     let year = new Date().getFullYear();

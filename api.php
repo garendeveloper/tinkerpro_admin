@@ -9,6 +9,7 @@
     include( __DIR__ . '/utils/models/inventorycount-facade.php');
     include( __DIR__ . '/utils/models/ability-facade.php');
     include( __DIR__ . '/utils/models/customer-facade.php');
+    include( __DIR__ . '/utils/models/dashboard-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
@@ -25,6 +26,7 @@
     $supplier = new SupplierFacade();
     $abilitties = new AbilityFacade();
     $customer = new CustomerFacade();
+    $dashboard = new DashboardFacade();
 
     header("Content-Type: application/json");
     $json = file_get_contents('php://input');
@@ -33,6 +35,10 @@
     $response = array("message" => "Hello from API");
     $action = isset($_GET['action']) ? $_GET['action'] : null;
     switch ($action) {
+        case 'get_allTopProducts':
+            echo json_encode($dashboard->get_allTopProducts($_GET['item']));
+            break;
+
         case 'user_role':
            $roleId = isset($_GET['roleId']) ? $_GET['roleId'] : null;
            $role = $userFacade->checkUsersIdentificationNumber($roleId);

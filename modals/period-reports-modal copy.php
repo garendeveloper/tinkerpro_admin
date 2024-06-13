@@ -175,12 +175,9 @@
   .flatpickr-next-year {
     color: white !important;
   }
-
-  .date_range_period {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .center-container{
+    justify-content: "align-center";
+    text-align:"center";
   }
 </style>
 
@@ -210,8 +207,8 @@
           </svg>
           <p class="warning-title"><b>SELECT DATES</b></p>&nbsp;
         </div>
-        <div class="date_range_period">
-          <span id = "date_selected" style = "font-family: Century Gothic; "></span>
+        <div class="center-container">
+          <span id = "date_selected">asdfasdf</span>
         </div>
       </div>
 
@@ -246,107 +243,52 @@
       </div>
       <div class="btnsContainer">
         <button id="cancelDateTime" class="custom_btns" style="margin-right:10px">Cancel</button>
-        <button class="custom_btns" id = "btn_datePeriodSelected">Ok</button>
+        <button class="custom_btns">Ok</button>
       </div>
     </div>
   </div>
 </div>
 <script>
-  function formatDate(date) 
-  {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-}
-function setPredefinedPeriod(period) {
-    const today = new Date();
-    let startDate, endDate;
+  $('#datePickerClose').on('click', function () {
+    $('#period_reports').hide()
+  })
+  $('#cancelDateTime').on('click', function () {
+    $('#period_reports').hide()
+  })
 
-    switch (period) {
-        case 'Today':
-            startDate = endDate = today;
-            break;
-        case 'Yesterday':
-            startDate = endDate = new Date(today.setDate(today.getDate() - 1));
-            break;
-        case 'This week':
-            startDate = new Date(today.setDate(today.getDate() - today.getDay()));
-            endDate = new Date(today.setDate(today.getDate() + (6 - today.getDay())));
-            break;
-        case 'Last week':
-            startDate = new Date(today.setDate(today.getDate() - today.getDay() - 7));
-            endDate = new Date(today.setDate(today.getDate() + 6));
-            break;
-        case 'This month':
-            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-            endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            break;
-        case 'Last Month':
-            startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-            endDate = new Date(today.getFullYear(), today.getMonth(), 0);
-            break;
-        case 'This year':
-            startDate = new Date(today.getFullYear(), 0, 1);
-            endDate = new Date(today.getFullYear(), 11, 31);
-            break;
-        case 'Last Year':
-            startDate = new Date(today.getFullYear() - 1, 0, 1);
-            endDate = new Date(today.getFullYear() - 1, 11, 31);
-            break;
-        default:
-            return;
-    }
-
-    const instance1 = document.getElementById("datepickerDiv")._flatpickr;
-    const instance2 = document.getElementById("datepickerDiv2")._flatpickr;
-    instance1.setDate(startDate);
-    instance2.setDate(endDate);
-
-    document.getElementById('date_selected').innerText = `${formatDate(startDate)} - ${formatDate(endDate)}`;
-}
-
-$('#datePickerClose').on('click', function () {
-    $('#period_reports').hide();
-});
-
-$('#cancelDateTime').on('click', function () {
-    $('#period_reports').hide();
-});
-
-flatpickr("#datepickerDiv", {
+  flatpickr("#datepickerDiv", {
     inline: true,
     static: true,
     position: 'top',
     onChange: function (selectedDates, dateStr, instance) {
-        const datepickerDiv2 = document.getElementById("datepickerDiv2");
-        const instance2 = datepickerDiv2._flatpickr;
-        instance2.set("minDate", selectedDates[0]);
-
-        const startDate = selectedDates[0];
-        const endDate = instance2.selectedDates[0] || startDate;
-        document.getElementById('date_selected').innerText = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+      const datepickerDiv2 = document.getElementById("datepickerDiv2");
+      const instance2 = datepickerDiv2._flatpickr;
+      instance2.set("minDate", null);
     }
-});
-
-flatpickr("#datepickerDiv2", {
+  });
+  flatpickr("#datepickerDiv2", {
     inline: true,
     static: true,
     position: 'top',
     onChange: function (selectedDates, dateStr, instance) {
-        const datepickerDiv = document.getElementById("datepickerDiv");
-        const instance1 = datepickerDiv._flatpickr;
-        instance1.set("maxDate", selectedDates[0]);
+      const datepickerDiv = document.getElementById("datepickerDiv");
+      const datepickerDiv2 = document.getElementById("datepickerDiv2");
 
-        const endDate = selectedDates[0];
-        const startDate = instance1.selectedDates[0] || endDate;
-        document.getElementById('date_selected').innerText = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+      if (datepickerDiv.value) {
+        const selectedDateDiv = new Date(datepickerDiv.value);
+        const selectedDateDiv2 = datepickerDiv2.value ? new Date(datepickerDiv2.value) : null;
+
+
+        if (selectedDateDiv && selectedDateDiv2) {
+          if (selectedDateDiv.getTime() <= selectedDateDiv2.getTime()) {
+            instance.set("minDate", selectedDateDiv);
+          } else {
+            instance.set("minDate", null);
+          }
+        }
+      } else {
+        instance.set("minDate", new Date('9999-12-31'));
+      }
     }
-});
-
-$('.custom_btns').on('click', function () {
-  var buttonText = $(this).text();
-  setPredefinedPeriod(buttonText);  
-});
-
+  });
 </script>
