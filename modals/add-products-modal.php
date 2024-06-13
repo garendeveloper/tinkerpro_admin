@@ -1914,7 +1914,7 @@ function closeAddProductsModal(){
     $('.product-modal').css('animation', '');
      clearProductsInputs()
      clearFileInput() 
-    //  window.location.reload()
+     window.location.reload()
   
   });
 }
