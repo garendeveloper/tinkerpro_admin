@@ -885,8 +885,8 @@ public function importProducts($fileData) {
   $csvData = array_map('str_getcsv', file($file));
   $headers = array_shift($csvData);
 
-  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable) 
-              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable)";
+  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable,uom_id) 
+              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable,:uom_id)";
   
   $conn = $this->connect();
   $conn->beginTransaction(); 
@@ -912,6 +912,7 @@ public function importProducts($fileData) {
           $stmt->bindParam(':status', $product['IsEnabled']);
           $stmt->bindParam(':isDiscounted', $product['isDiscounted']);
           $stmt->bindParam(':is_stockable', $product['Stockable']);
+          $stmt->bindParam(':uom_id', $product['UOM']);
 
           $stmt->execute();
           $lastInsertIds[] = $conn->lastInsertId();
