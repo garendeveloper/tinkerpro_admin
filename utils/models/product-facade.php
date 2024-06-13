@@ -926,7 +926,7 @@ public function importProducts($fileData) {
         $stmtInventory = $conn->prepare($sqlInventory);
         $stmtInventory->bindParam(':product_id', $productId);
         $stmtInventory->execute();
-    }
+      }
       return true;
   } catch (PDOException $e) {
       $conn->rollBack(); 
