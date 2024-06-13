@@ -2449,7 +2449,7 @@ function generatePdf(id){
           }
           });
     });
-  }else if(id == 1){
+  }else if(id == 1){//customers
     $('#PDFBtn').off('click').on('click',function() {
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
@@ -2467,7 +2467,7 @@ function generatePdf(id){
               var url = window.URL.createObjectURL(blob);
               var a = document.createElement('a');
               a.href = url;
-              a.download = 'customerList.pdf';
+              a.download = 'customerSales.pdf';
               document.body.appendChild(a);
               a.click();
 

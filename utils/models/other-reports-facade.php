@@ -7957,4 +7957,12 @@ public function getProfit($selectedProduct,$selectedCategories,$selectedSubCateg
     }
   
 }
+
+public function customerSales(){
+    $sql="SELECT DISTINCT u.first_name as first_name, u.last_name as last_name, SUM(p.payment_amount) as amount_paid, p.date_time_of_payment as date, p.cart_discount as cart_discount FROM payments as p INNER JOIN transactions as t ON p.id = t.payment_id INNER JOIN users AS u ON u.id = t.user_id
+    GROUP BY u.id;";
+ 
+    $stmt = $this->connect()->query($sql);
+    return $stmt; 
+}
 }
