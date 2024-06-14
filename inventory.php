@@ -376,7 +376,8 @@ include ('./layout/admin/table-pagination-css.php');
   <script>
   
     $(document).ready(function () {
-      
+    
+
       $("#inventory").addClass('active');
       $("#inventories").addClass('active');
       $("#pointer").html("Inventory");
@@ -528,6 +529,9 @@ include ('./layout/admin/table-pagination-css.php');
   <script>
     var perPage = 25;
     $(document).ready(function () {
+      let inventoryCurrentPage = 1;
+      const inventoryPageSize = 300;
+
       var totalTax = 0;
       var totalQty = 0;
       var totalPrice = 0;
@@ -649,7 +653,7 @@ include ('./layout/admin/table-pagination-css.php');
       $("#purchase-order").on('click', function () {
         $(".grid-container button").removeClass('active');
         $(this).addClass('active');
-        show_allOrders(1, perPage);
+        show_allOrders();
         $("#tbl_products").hide();
       })
       $(".inventoryCard").on('click', '.btn_openPayment', function () {
@@ -905,96 +909,79 @@ include ('./layout/admin/table-pagination-css.php');
         }
        
       })
-      function show_allStocks() {
+    
+      function show_allStocks() 
+      {
+        $('#modalCashPrint').show();
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_stocks")) {
             $(".inventoryCard #tbl_all_stocks").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
 
         $("#searchInput").focus();
-        $('#modalCashPrint').show();
-        $.ajax({
-          type: 'GET',
-          url: 'api.php?action=get_allInventories',
-          success: function (data) {
-            $('#modalCashPrint').hide();
-            var tblRows = [];
-            var counter = 0;
-            if (data.length > 0) {
-              for (var i = 0, len = data.length; i < len; i++) {
-                var currentItem = data[i];
-                var stock = currentItem.product_stock;
-                if (stock > 10) stock = "<span style = 'color: yellowgreen'>" + stock + "</span>";
-                if (stock <= 10 && stock > 0) stock = "<span style = 'color: red'>" + stock + "</span>";
-                tblRows.push(
-                  `<tr data-id = '${currentItem.product_id}'>
-                      <td class="text-center" >${i + 1}</td>
-                      <td>${currentItem.prod_desc}</td>
-                      <td>${currentItem.barcode}</td>
-                      <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                      <td class="text-center" style = 'text-align: center'>${stock === -1 ? 0 : stock} </td>
-                      <td style = 'text-align: center'><button style ="border-radius: 5px; height: 25px; margin: 0;" data-id = '${currentItem.product_id}' id = "btn_openStockHistory">History</button></td>
-                  </tr>`
-                );
-              }
-            }
 
-            var tblData = `
-            <table id='tbl_all_stocks' class='text-color table-border' style='font-size: 12px;'>
+        var tblData = `
+            <table id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
                 <thead>
                     <tr>
                         <th class='text-center auto-fit'>No.</th>
-                        <th class = 'auto-fit'>Product</th>
+                        <th class='auto-fit'>Product</th>
                         <th class='auto-fit'>Barcode</th>
-                        <th class='auto-fit' style = 'text-align: center'>Unit</th>
-                        <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
-                        <th class='auto-fit' style = 'text-align: center'>Action</th>
+                        <th class='auto-fit' style='text-align: center'>Unit</th>
+                        <th class='auto-fit' style='text-align: center'>Qty in Store</th>
+                        <th class='auto-fit' style='text-align: center'>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${tblRows.join('')}
-                </tbody>
+                <tbody></tbody>
             </table>`;
 
-            $(".inventoryCard").html(tblData);
-            // $('.inventoryCard #tbl_all_stocks').DataTable({
-            //     ordering: true,
-            //     order: [[0, 'asc']], 
-            //     pageLength: 50,
-            //     sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-            //     language: {
-            //         paginate: {
-            //             previous: '<i class="fa fa-angle-left"></i>',
-            //             next: '<i class="fa fa-angle-right"></i>'
-            //         }
-            //     },
-            // });
-            $('.inventoryCard #tbl_all_stocks').DataTable({
-              ordering: true,
-              order: [[0, 'asc']], 
-              pageLength: 300,
-              pagingType: 'full_numbers',
-              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-              fnDrawCallback: function(oSettings) {
+        $(".inventoryCard").html(tblData);
+        $('#modalCashPrint').hide();
+
+        var table = $('.inventoryCard #tbl_all_stocks').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: 'api.php?action=get_allInventories',
+                type: 'POST'
+            },
+            columns: [
+                { data: null, render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }},
+                { data: 'prod_desc' },
+                { data: 'barcode' },
+                { data: 'uom_name', className: 'text-center' },
+                { data: 'product_stock', className: 'text-center', render: function (data) {
+                    if (data > 10) return "<span style='color: yellowgreen'>" + data + "</span>";
+                    if (data <= 10 && data > 0) return "<span style='color: red'>" + data + "</span>";
+                    return data === -1 ? 0 : data;
+                }, className: 'text-center' },
+                { data: null, render: function (data) {
+                    return `<button style='border-radius: 5px; height: 25px; margin: 0;' data-id='${data.product_id}' id='btn_openStockHistory'>History</button>`;
+                }, className: 'text-center' }
+            ],
+            ordering: true,
+            order: [[1, 'asc']],
+            pageLength: 100,
+            pagingType: 'full_numbers',
+            dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+            fnDrawCallback: function (oSettings) {
                 if (oSettings.aoData.length === 0) {
-                  $("#paginationDiv").hide();
+                    $("#paginationDiv").hide();
                 } else {
-                  $("#paginationDiv").show();
+                    $("#paginationDiv").show();
                 }
-              }
-            })
-            $("#paginationDiv").html($(".dt-paging")).show();
-
-            $('#searchInput').on('keyup', function(event) {
-              $('.inventoryCard #tbl_all_stocks').DataTable().search($(this).val()).draw();
-              // if (event.keyCode === 13 || $(this).val().length >= 12)
-              // {
-               
-              //   $(this).val(''); 8996001603444
-
-              // }
-            });
-          }
+            }
+        });
+        table;
+        $("#paginationDiv").html($(".dt-paging")).show();
+        var debounceTimeout;
+        $('#searchInput').on('keyup', function (event) {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(function () {
+                table.search($('#searchInput').val()).draw();
+            }, 100); 
         });
       }
       function show_allLossAndDamagesInfo() {
@@ -2510,207 +2497,162 @@ include ('./layout/admin/table-pagination-css.php');
           }
         });
       }
-     
-      function show_allInventories() {
+      function show_allInventories() 
+      {
+        $('#modalCashPrint').show();
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
             $(".inventoryCard #tbl_products").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
 
+        $("#searchInput").focus();
         $('#modalCashPrint').show();
-        $.ajax({
-          type: 'GET',
-          url: 'api.php?action=get_allInventories',
-          success: function (data) {
-            var tblRows = [];
-            if (data.length > 0) {
-              for (var i = 0, len = data.length; i < len; i++) 
-              {
-                var currentItem = data[i];
-                var stock = currentItem.product_stock !== null ? currentItem.product_stock : 0;
-                tblRows.push(
-                    `<tr>
-                          <td class="text-center">${i + 1}</td>
-                          <td>${currentItem.prod_desc}</td>
-                          <td>${currentItem.barcode}</td>
-                          <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                          <td class="text-center" style = 'text-align: center'>${currentItem.qty_purchased}</td>
-                                   <td class="text-center" style = 'text-align: center'>${currentItem.qty_received}</td>
-                          <td class="text-center" style = 'text-align: center'>${stock}</td>
-                          <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.cost)}</td>
-                          <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.prod_price)}</td>
-                          <td style='text-align: center'>
-                          ${stock <= 10 && currentItem.isReceived == 0 ? "<span style='color: violet'><i>TO PURCHASE</i></span>" :
-                            (stock > 0 && currentItem.isReceived == 2 ? "<span style='color: yellow'>PURCHASED</span>" :
-                              "<span style='color: lightgreen'>RECEIVED</span>")}
-                        </td>
-                      </tr>`
-                  );
-              }
-            }
 
-            var tblData = `
-            <table tabindex = '0' id='tbl_products' class='text-color table-border display' style='font-size: 12px;'>
+        var tblData = `
+            <table tabindex='0' id='tbl_products' class='text-color table-border display' style='font-size: 12px;'>
                 <thead>
                     <tr>
                         <th class='text-center auto-fit'>No.</th>
-                        <th class = 'auto-fit'>Product</th>
+                        <th class='auto-fit'>Product</th>
                         <th class='auto-fit'>Barcode</th>
-                        <th class='auto-fit' style = 'text-align: center'>Unit</th>
-                        <th class='auto-fit' style = 'text-align: center'>Qty Purchased</th>
-                          <th class='auto-fit' style = 'text-align: center'>Qty Received</th>
-                        <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
-                        <th class='auto-fit' style = 'text-align: center'>Amount Before Tax</th>
-                        <th class='auto-fit' style = 'text-align: center'>Amount After Tax</th>
-                        <th class='auto-fit' style = 'text-align: center'>Document Type</th>
+                        <th class='auto-fit' style='text-align: center'>Unit</th>
+                        <th class='auto-fit' style='text-align: center'>Qty Purchased</th>
+                        <th class='auto-fit' style='text-align: center'>Qty Received</th>
+                        <th class='auto-fit' style='text-align: center'>Qty in Store</th>
+                        <th class='auto-fit' style='text-align: center'>Amount Before Tax</th>
+                        <th class='auto-fit' style='text-align: center'>Amount After Tax</th>
+                        <th class='auto-fit' style='text-align: center'>Document Type</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${tblRows.join('')}
-                </tbody>
+                <tbody></tbody>
             </table>`;
 
-            $(".inventoryCard").html(tblData);
-            $('#modalCashPrint').hide();
+        $(".inventoryCard").html(tblData);
+        $('#modalCashPrint').hide();
 
-              // var table = $('.inventoryCard #tbl_products').DataTable({
-              //     ordering: true,
-              //     order: [[0, 'asc']],
-              //     pageLength: 300,
-              //     dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-              //     language: {
-              //         paginate: {
-              //             previous: '<i class="fa fa-angle-left"></i>',
-              //             next: '<i class="fa fa-angle-right"></i>'
-              //         }
-              //     },
-              //     keys: true
-              // });
-              $('.inventoryCard #tbl_products').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 300,
-                pagingType: 'full_numbers',
-                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-                fnDrawCallback: function(oSettings) {
-                  if (oSettings.aoData.length === 0) {
-                    $("#paginationDiv").hide();
+        var table = $('.inventoryCard #tbl_products').DataTable({
+          serverSide: true,
+          processing: true,
+          ajax: {
+            url: 'api.php?action=get_allInventories',
+            type: 'POST'
+          },
+          columns: [
+              { data: null, render: function (data, type, row, meta) {
+                  return meta.row + meta.settings._iDisplayStart + 1;
+              }},
+              { data: 'prod_desc' },
+              { data: 'barcode' },
+              { data: 'uom_name', className: 'text-center' },
+              { data: 'qty_purchased', className: 'text-center' },
+              { data: 'qty_received', className: 'text-center' },
+              { data: 'product_stock', className: 'text-center' },
+              { data: 'cost', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
+              { data: 'prod_price', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
+              { data: null, render: function (data) {
+                  var stock = data.product_stock !== null ? data.product_stock : 0;
+                  if (stock <= 10 && data.isReceived == 0) {
+                      return "<span style='color: violet'><i>TO PURCHASE</i></span>";
+                  } else if (stock > 0 && data.isReceived == 2) {
+                      return "<span style='color: yellow'>PURCHASED</span>";
                   } else {
-                    $("#paginationDiv").show();
+                      return "<span style='color: lightgreen'>RECEIVED</span>";
                   }
-                }
-              })
-              $("#paginationDiv").html($(".dt-paging")).show();
-
-              $('#searchInput').on('input', function(event) {
-                $('.inventoryCard #tbl_products').DataTable().search($(this).val()).draw();
-              });
+              }, className: 'text-center' }
+          ],
+          ordering: true,
+          order: [[1, 'asc']],
+          pageLength: 100,
+          pagingType: 'full_numbers',
+          dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+          fnDrawCallback: function (oSettings) {
+              if (oSettings.aoData.length === 0) {
+                  $("#paginationDiv").hide();
+              } else {
+                  $("#paginationDiv").show();
+              }
+              }
+          });
+          table;
+          $("#paginationDiv").html($(".dt-paging")).show();
+          var debounceTimeout;
+          $('#searchInput').on('keyup', function (event) {
+              clearTimeout(debounceTimeout);
+              debounceTimeout = setTimeout(function () {
+                  table.search($('#searchInput').val()).draw();
+              }, 100); 
+          });
+        }
+        $('#product').on('keypress', function(event) {
+          if (event.keyCode === 13 || event.keyCode === 27) { 
+            hidePopups();
           }
         });
-      }
-      $('#product').on('keypress', function(event) {
-        if (event.keyCode === 13 || event.keyCode === 27) { 
-           hidePopups();
+        function date_format(date) {
+          var date = new Date(date);
+          var formattedDate = $.datepicker.formatDate("M dd yy", date);
+          return formattedDate;
         }
-      });
-      function date_format(date) {
-        var date = new Date(date);
-        var formattedDate = $.datepicker.formatDate("M dd yy", date);
-        return formattedDate;
-      }
-      $(".inventoryCard").on("click", "#btn_removeOrder", function(e){
-        e.preventDefault();
-        var is_received = $(this).data('isreceived');
-        var order_id = $(this).data("id");
-        if(is_received === 1)
-        {
-          var po_title = '<h6 style = "color: #FF9999; font-weight: bold">Sorry, the <i style = "color: red">PURCHASE ORDER</i> cannot be removed as it has already been received.</h6>';
-          $("#purchaseOrder_response .po_title").html(po_title);
-          $("#purchaseOrder_response").slideDown({
-            backdrop: 'static',
-            keyboard: false,
-          });
-          $("#response_order_id").val("0");
-          $("#po_btn_continue").hide();
-        }
-        else
-        {
-          var po_title = '<h6>Are you sure you want to delete the <i style="color: #FF6700">PURCHASE ORDER</i>?</h6>';
-          po_title += '<h6>This action cannot be undone!</h6>';
-          $("#purchaseOrder_response .po_title").html(po_title);
-          $("#purchaseOrder_response").slideDown({
-            backdrop: 'static',
-            keyboard: false,
-          });
-          $("#response_order_id").val(order_id);
-          $("#po_btn_continue").show();
-        }
-      })
-      $("#po_btn_continue").on("click", function(){
-        $.ajax({
-            type: 'get',
-            url: 'api.php?action=delete_purchaseOrder',
-            data: {
-                id: $("#response_order_id").val(),
-            },
-            success: function(response){
-                if(response.status)
-                {
-                  $("#purchaseOrder_response").hide();
-                  $("#response_order_id").val("");
-                  show_sweetReponse(response.message);
-                  show_allOrders(1, 300);
-                }
-            },
-            error: function(response)
-            {
-                console.log("Server Error:")
-            }
+        $(".inventoryCard").on("click", "#btn_removeOrder", function(e){
+          e.preventDefault();
+          var is_received = $(this).data('isreceived');
+          var order_id = $(this).data("id");
+          if(is_received === 1)
+          {
+            var po_title = '<h6 style = "color: #FF9999; font-weight: bold">Sorry, the <i style = "color: red">PURCHASE ORDER</i> cannot be removed as it has already been received.</h6>';
+            $("#purchaseOrder_response .po_title").html(po_title);
+            $("#purchaseOrder_response").slideDown({
+              backdrop: 'static',
+              keyboard: false,
+            });
+            $("#response_order_id").val("0");
+            $("#po_btn_continue").hide();
+          }
+          else
+          {
+            var po_title = '<h6>Are you sure you want to delete the <i style="color: #FF6700">PURCHASE ORDER</i>?</h6>';
+            po_title += '<h6>This action cannot be undone!</h6>';
+            $("#purchaseOrder_response .po_title").html(po_title);
+            $("#purchaseOrder_response").slideDown({
+              backdrop: 'static',
+              keyboard: false,
+            });
+            $("#response_order_id").val(order_id);
+            $("#po_btn_continue").show();
+          }
         })
-      })
-      function show_allOrders(currentPage, perPage) {
-        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
-            $(".inventoryCard #tbl_products").DataTable().destroy();
-        }
-        $("#paginationDiv").empty().hide();
-
-        $("#tbl_orders").show();
-        $.ajax({
-          type: 'GET',
-          url: 'api.php?action=get_allOrders&currentPage=' + currentPage + '&perPage=' + perPage,
-          success: function (data) {
-            var tblRows = [];
-            if (data.length > 0) {
-              for (var i = 0, len = data.length; i < len; i++) {
-                var currentItem = data[i];
-                if (currentItem.order_type === 1) {
-                  var dueDateCell = currentItem.due_date === null ? "Not Available" : date_format(currentItem.due_date);
-                  var isPaidCell = currentItem.isPaid === 1 ? "<td class='text-center badge-success'>Paid</td>" : "<td class='text-center badge-danger'>Unpaid</td>";
-                  var status = currentItem.is_received === 1 ? "<td class='text-center badge-success'>Received</td>" : "<td class='text-center badge-warning' style = 'color: yellow;'>To Receive</td>";
-
-                  tblRows.push(
-                    `<tr data-id='${currentItem.order_id}'>
-                          <td style='text-align: center'>${currentItem.po_number}</td>
-                          <td>${currentItem.supplier}</td>
-                          <td class='text-center'>${date_format(currentItem.date_purchased)}</td>
-                          <td class='text-center'>${dueDateCell}</td>
-                          <td style='text-align: right'>&#x20B1;&nbsp;${addCommasToNumber(currentItem.price)}</td>
-                          ${isPaidCell}
-                          ${status}
-                          <td style='text-align: center'>
-                              <button data-id='${currentItem.order_id}' class='grid-item button btn_openPayment' id = "btn_openPayment" ${currentItem.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
-                              <button data-id='${currentItem.order_id}' class='grid-item button btn_editOrder' id = "btn_editOrder"><i class='bi bi-pencil-fill bi-md'></i></button>
-                              <button data-id='${currentItem.order_id}' data-isReceived='${currentItem.is_received}' class='grid-item button btn_removeOrder' id = "btn_removeOrder"><i class='bi bi-trash bi-md'></i></button>
-                          </td>
-                      </tr>`
-                  );
-                }
+        $("#po_btn_continue").on("click", function(){
+          $.ajax({
+              type: 'get',
+              url: 'api.php?action=delete_purchaseOrder',
+              data: {
+                  id: $("#response_order_id").val(),
+              },
+              success: function(response){
+                  if(response.status)
+                  {
+                    $("#purchaseOrder_response").hide();
+                    $("#response_order_id").val("");
+                    show_sweetReponse(response.message);
+                    show_allOrders();
+                  }
+              },
+              error: function(response)
+              {
+                  console.log("Server Error:")
               }
-            }
+          })
+        })
+        function show_allOrders() {
+          if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_orders")) {
+              $(".inventoryCard #tbl_orders").DataTable().destroy();
+          }
+          $("#paginationDiv").empty().hide();
 
+          $('#modalCashPrint').show();
 
-            var tblData = `
-              <table id='tbl_orders' class='text-color table-border' style='font-size: 12px;'>
+          var tblData = `
+              <table id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>
                   <thead>
                       <tr>
                           <th style='width: 2%;'>PO#</th>
@@ -2723,35 +2665,87 @@ include ('./layout/admin/table-pagination-css.php');
                           <th style='width: 1%;'>Action</th>
                       </tr>
                   </thead>
-                  <tbody>
-                      ${tblRows.join('')}
-                  </tbody>
+                  <tbody></tbody>
               </table>`;
 
-            $(".inventoryCard").html(tblData);
-            $('.inventoryCard #tbl_orders').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 300,
-                // sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-                // fnDrawCallback: function(oSettings) {
-                //   if (oSettings.aoData.length === 0) {
-                //     $("#tbl_products_wrapper").html('<div style="text-align: center; padding: 20px;">No data available in table <img src="./assets/img/tinkerpro-logo-light.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"></div>');
-                //     $("#paginationDiv").empty().hide();
-                //   } else {
-                //     $("#paginationDiv").show();
-                //   }
-                // }
-            });
-            $("#paginationDiv").html($(".dt-paging")).show();
+          $(".inventoryCard").html(tblData);
+          $('#modalCashPrint').hide();
 
-            $('#searchInput').on('keyup', function(event) {
-              $('.inventoryCard #tbl_orders').DataTable().search($(this).val()).draw();
-            });
-          }
-        });
+          var table = $('.inventoryCard #tbl_orders').DataTable({
+              serverSide: true,
+              processing: true,
+              ajax: {
+                  url: 'api.php?action=get_allOrders',
+                  type: 'GET'
+              },
+              columns: [
+                  { data: 'po_number', className: 'text-center' },
+                  { data: 'supplier' },
+                  { data: 'date_purchased', className: 'text-center' },
+                  {
+                      data: 'due_date',
+                      className: 'text-center',
+                      render: function (data) {
+                          return data ? date_format(data) : 'Not Available';
+                      }
+                  },
+                  {
+                      data: 'price',
+                      className: 'text-right',
+                      render: function (data) {
+                          return '&#x20B1;&nbsp;' + addCommasToNumber(data);
+                      }
+                  },
+                  {
+                      data: 'isPaid',
+                      className: 'text-center',
+                      render: function (data) {
+                          return data === 1 ? "<td class='text-center badge-success'>Paid</td>" : "<td class='text-center badge-danger'>Unpaid</td>";
+                      }
+                  },
+                  {
+                      data: 'is_received',
+                      className: 'text-center',
+                      render: function (data) {
+                          return data === 1 ? "<td class='text-center badge-success'>Received</td>" : "<td class='text-center badge-warning' style = 'color: yellow;'>To Receive</td>";
+                      }
+                  },
+                  {
+                      data: null,
+                      className: 'text-center',
+                      render: function (data) {
+                          return `
+                              <button data-id='${data.order_id}' class='grid-item button btn_openPayment' id='btn_openPayment' ${data.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
+                              <button data-id='${data.order_id}' class='grid-item button btn_editOrder' id='btn_editOrder'><i class='bi bi-pencil-fill bi-md'></i></button>
+                              <button data-id='${data.order_id}' data-isReceived='${data.is_received}' class='grid-item button btn_removeOrder' id='btn_removeOrder'><i class='bi bi-trash bi-md'></i></button>
+                          `;
+                      }
+                  }
+              ],
+              ordering: true,
+              order: [[0, 'asc']],
+              pageLength: 300,
+              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+              fnDrawCallback: function (oSettings) {
+                  if (oSettings.aoData.length === 0) {
+                      $("#paginationDiv").hide();
+                  } else {
+                      $("#paginationDiv").show();
+                  }
+              }
+          });
+
+          table;
+          $("#paginationDiv").html($(".dt-paging")).show();
+          var debounceTimeout;
+          $('#searchInput').on('keyup', function (event) {
+              clearTimeout(debounceTimeout);
+              debounceTimeout = setTimeout(function () {
+                  table.search($('#searchInput').val()).draw();
+              }, 100); 
+          });
       }
+      
       $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
           var productId = $(this).find("td[data-id]").data("id");
           var qty_purchased = $(this).find("td:nth-child(2)").text();

@@ -1,22 +1,71 @@
 <?php
 class InventoryFacade extends DBConnection
 {
-    public function get_allInventories()
+    public function get_allInventoriesDatatable($requestData)
     {
-        $sql = $this->connect()->prepare("SELECT 
-                                            inventory.*, products.*, uom.*,
-                                            SUM(products.product_stock) AS total_stock
-                                        FROM inventory
-                                        INNER JOIN products ON products.id = inventory.product_id
-                                        LEFT JOIN uom ON uom.id = products.uom_id
-                                        GROUP BY products.id
-                                        ORDER BY products.prod_desc ASC");
-        $sql->execute();
-        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
-
+        $columns = array(
+            0 => 'products.id',
+            1 => 'products.prod_desc',
+            2 => 'products.barcode',
+            3 => 'uom.uom_name',
+            4 => 'inventory.qty_purchased',
+            5 => 'inventory.qty_received',
+            6 => 'products.product_stock',
+            7 => 'products.cost',
+            8 => 'products.prod_price'
+        );
+    
+        $sql = "SELECT 
+                    inventory.*, products.*, uom.*, 
+                    SUM(products.product_stock) AS total_stock,
+                    COUNT(*) OVER() as total_count 
+                FROM inventory 
+                INNER JOIN products ON products.id = inventory.product_id 
+                LEFT JOIN uom ON uom.id = products.uom_id";
+    
+        if (!empty($requestData['search']['value'])) {
+            $sql .= " WHERE products.prod_desc LIKE '%" . $requestData['search']['value'] . "%'
+                    OR products.barcode LIKE '%" . $requestData['search']['value'] . "%'
+                    OR uom.uom_name LIKE '%" . $requestData['search']['value'] . "%' ";
+        }
+    
+        $sql .= " GROUP BY products.id";
+    
+        if (!empty($requestData['order'])) {
+            $sql .= " ORDER BY " . $columns[$requestData['order'][0]['column']] . " " . $requestData['order'][0]['dir'];
+        } else {
+            $sql .= " ORDER BY products.prod_desc ASC";
+        }
+    
+        $sql .= " LIMIT :limit OFFSET :offset";
+    
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(':limit', $requestData['length'], PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $requestData['start'], PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
         return $data;
     }
+    public function get_allInventories()
+    {
+        $requestData = $_REQUEST;
+        $data = $this->get_allInventoriesDatatable($requestData);
 
+        $totalData = $totalFiltered = 0;
+        if (count($data) > 0) {
+            $totalData = $totalFiltered = $data[0]['total_count'];
+        }
+
+        $json_data = array(
+            "draw" => intval($requestData['draw']),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data
+        );
+
+        return $json_data;
+    }
     public function get_allProductByInventoryType($type)
     {
         $data = "";

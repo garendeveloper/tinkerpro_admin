@@ -78,9 +78,9 @@
             echo json_encode($order->delete_purchaseOrder($_GET["id"]));
             break;
         case 'get_allInventories':
-            // $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
-            // $perPage = isset($_GET['page']) ? $_GET['page'] : 10;
-            echo json_encode($inventory->get_allInventories());
+            $currentPage = isset($_GET['pageSize']) ? $_GET['pageSize'] : 1;
+            $page = isset($_GET['page']) ? $_GET['page'] : 300;
+            echo json_encode($inventory->get_allInventories($page, $currentPage));
             break;
         case 'get_allStocksData':
             echo json_encode($inventory->get_allStocksData($_GET['inventory_id']));
@@ -167,9 +167,7 @@
             echo json_encode($order->get_allPurchaseOrders());
             break;
         case 'get_allOrders':
-            $currentPage = isset($_GET['currentPage']) ? $_GET['currentPage'] : 1;
-            $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 10;
-            echo json_encode($order->get_allOrders($currentPage, $perPage));
+            echo json_encode($order->get_allOrders());
             break;
         case 'get_orderData':
             $order_id = $_GET['order_id'];
