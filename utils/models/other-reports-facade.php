@@ -7958,9 +7958,85 @@ public function getProfit($selectedProduct,$selectedCategories,$selectedSubCateg
   
 }
 
-public function customerSales(){
-    $sql="SELECT DISTINCT u.first_name as first_name, u.last_name as last_name, SUM(p.payment_amount) as amount_paid, p.date_time_of_payment as date, p.cart_discount as cart_discount FROM payments as p INNER JOIN transactions as t ON p.id = t.payment_id INNER JOIN users AS u ON u.id = t.user_id
-    GROUP BY u.id;";
+public function customerSales($customerId,$singleDateData,$startDate,$endDate){
+    $sql="WITH RefundSums AS (
+    SELECT 
+        r.payment_id,
+        COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            ) as credits,
+        COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                0
+            ) as discountsTender,
+      SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+        SUM(
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                0
+            )
+        ) AS total_item_discounts
+    FROM 
+        refunded r
+    GROUP BY 
+        r.reference_num
+),
+ReturnExchangeSums AS (
+    SELECT 
+        rc.payment_id,
+     COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            ) as rc_credits,
+        COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                0
+            ) as discountsReturnTender,
+      SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+        SUM(
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                0
+            )
+        ) AS total_return_item_discounts
+    FROM 
+        return_exchange  rc
+    GROUP BY 
+        rc.payment_id
+)
+SELECT
+DISTINCT
+    u.first_name AS first_name,
+    u.last_name AS last_name, 
+    ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+    ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+    p.date_time_of_payment AS date,
+    p.cart_discount AS cart_discount,
+    d.discount_amount AS discountsRate,
+    COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+    IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+    COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+    COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+    
+    COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+    IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+    COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+    COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender
+    
+FROM 
+    payments AS p 
+    INNER JOIN transactions AS t ON p.id = t.payment_id 
+    INNER JOIN users AS u ON u.id = t.user_id
+    INNER JOIN discounts AS d ON d.id = u.discount_id
+    INNER JOIN products AS ps ON ps.id = t.prod_id
+    LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+    LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 
+GROUP BY 
+    u.id;";
  
     $stmt = $this->connect()->query($sql);
     return $stmt; 
