@@ -260,6 +260,26 @@ if ($decProductSales == NULL) {
 body, div, h1, h2, h3, h4, h5, p{
   font-family: Century Gothic;
 }
+
+  #hourlySalesChart {
+    width: 100% !important;
+    height: 200px !important;
+  }
+  #top_products_data {
+    max-height: 200px;
+    overflow-y: auto; 
+}
+
+#top_products_data table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#top_products_data th, #top_products_data td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
 </style>
 <?php include "layout/admin/css.php" ?>
 <div class="container-scroller">
@@ -269,7 +289,7 @@ body, div, h1, h2, h3, h4, h5, p{
       <div class="content-wrapper">
         <div class="container">
           <div class="row">
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-md-9">
               <div class="border p-3 col">
                 <div class="sales-chart-header">
                   <h4>Monthly Sales - <span id="d_year" style="color: #FF6700"></span></h4>
@@ -288,7 +308,7 @@ body, div, h1, h2, h3, h4, h5, p{
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-3">
               <div class="border p-3 col1" style = "height: 300px;">
                 <h5>Total Sales</h5>
                 <div class="center-total annual_total_sales" style = 'text-align: left;'>
@@ -302,7 +322,10 @@ body, div, h1, h2, h3, h4, h5, p{
           </div>
           <div class="row">
             <div class="col-12 col-md-12">
-              <h5 style="color: #ffff">Periodic Reports &nbsp;&nbsp; <span id="period_date" style="color: #FF6700; font-weight: bold"></span>
+              <h5 style="color: #ffff">Periodic Reports &nbsp;&nbsp; <span id="period_date" style="color: #FF6700; font-weight: bold">
+              </span>
+              <input type = "hidden" id = "per_start_date" ></input>
+              <input type = "hidden" id = "per_end_date" ></input>
                 <button id="btn_period" class="button">
                   <i class="bi bi-calendar" aria-hidden="true"></i>
                 </button>
@@ -329,12 +352,12 @@ body, div, h1, h2, h3, h4, h5, p{
               <div class="border p-3 col1">
                 <div class="header-container">
                   <h5>Hourly Sales</h5>
-                  <select name="hourly_sales" id="hourly_sales" class = "trigger_reports" style=" color: #ffff; width: 50px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                  <select name="hourly_sales" id="hourly_sales" class = "trigger_reports" style=" color: #ffff; width: 100px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
                     <option>Amount</option>
                     <option>Count</option>
                   </select>
                 </div>
-                <div class="center-total">
+                <div class="center-total" id = "hourly_sales_data">
                   <p>No data to display</p>
                 </div>
               </div>
@@ -342,7 +365,7 @@ body, div, h1, h2, h3, h4, h5, p{
             <div class="col-12 col-md-4 ">
               <div class="border p-3 col1">
                 <h5>Total Sales <span id = "identifier" class = "trigger_reports"></span></h5>
-                <div class="center-total" id = "total_sales_data">
+                <div class="center-total" id = "total_sales_data" >
                   <p>No data to display</p>
                 </div>
               </div>
@@ -377,11 +400,114 @@ body, div, h1, h2, h3, h4, h5, p{
 <?php include "modals/period-reports-modal.php" ?>
 <?php include ("layout/footer.php") ?>
 <script>
+  function formatDate(date) 
+  {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+function setPredefinedPeriod(period) {
+    const today = new Date();
+    let startDate, endDate;
+
+    switch (period) {
+        case 'Today':
+            startDate = endDate = today;
+            break;
+        case 'Yesterday':
+            startDate = endDate = new Date(today.setDate(today.getDate() - 1));
+            break;
+        case 'This week':
+            startDate = new Date(today.setDate(today.getDate() - today.getDay()));
+            endDate = new Date(today.setDate(today.getDate() + (6 - today.getDay())));
+            break;
+        case 'Last week':
+            startDate = new Date(today.setDate(today.getDate() - today.getDay() - 7));
+            endDate = new Date(today.setDate(today.getDate() + 6));
+            break;
+        case 'This month':
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            break;
+        case 'Last Month':
+            startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            endDate = new Date(today.getFullYear(), today.getMonth(), 0);
+            break;
+        case 'This year':
+            startDate = new Date(today.getFullYear(), 0, 1);
+            endDate = new Date(today.getFullYear(), 11, 31);
+            break;
+        case 'Last Year':
+            startDate = new Date(today.getFullYear() - 1, 0, 1);
+            endDate = new Date(today.getFullYear() - 1, 11, 31);
+            break;
+        default:
+            return;
+    }
+
+    const instance1 = document.getElementById("datepickerDiv")._flatpickr;
+    const instance2 = document.getElementById("datepickerDiv2")._flatpickr;
+    instance1.setDate(startDate);
+    instance2.setDate(endDate);
+
+    document.getElementById('date_selected').innerText = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+    $("#per_start_date").val(formatDate(startDate));
+    $("#per_end_date").val(formatDate(endDate));
+}
+
+$('#datePickerClose').on('click', function () {
+    $('#period_reports').hide();
+});
+
+$('#cancelDateTime').on('click', function () {
+    $('#period_reports').hide();
+});
+
+flatpickr("#datepickerDiv", {
+    inline: true,
+    static: true,
+    position: 'top',
+    onChange: function (selectedDates, dateStr, instance) {
+        const datepickerDiv2 = document.getElementById("datepickerDiv2");
+        const instance2 = datepickerDiv2._flatpickr;
+        instance2.set("minDate", selectedDates[0]);
+
+        const startDate = selectedDates[0];
+        const endDate = instance2.selectedDates[0] || startDate;
+        document.getElementById('date_selected').innerText = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+    }
+});
+
+flatpickr("#datepickerDiv2", {
+    inline: true,
+    static: true,
+    position: 'top',
+    onChange: function (selectedDates, dateStr, instance) {
+        const datepickerDiv = document.getElementById("datepickerDiv");
+        const instance1 = datepickerDiv._flatpickr;
+        instance1.set("maxDate", selectedDates[0]);
+
+        const endDate = selectedDates[0];
+        const startDate = instance1.selectedDates[0] || endDate;
+        document.getElementById('date_selected').innerText = `${formatDate(startDate)} - ${formatDate(endDate)}`;
+    }
+});
+
+$('.custom_btns').on('click', function () {
+  var buttonText = $(this).text();
+  setPredefinedPeriod(buttonText);  
+});
+
+</script>
+<script>
   $(document).ready(function () {
     var totalSales = 0;
     var totalCount = 0;
 
     $(".trigger_reports").hide();
+
+
     $("#top_products").on("change", function(){
       var item = $(this).val();
       show_allTopProducts(item);
@@ -401,32 +527,40 @@ body, div, h1, h2, h3, h4, h5, p{
    
     function show_allTopProducts(item)
     {
+      var start_date = $("#per_start_date").val();
+      var end_date = $("#per_end_date").val();
+
       totalSales = 0;
       totalCount = 0;
       $.ajax({
         type: 'get',
         url: 'api.php?action=get_allTopProducts',
-        data: {item: item},
+        data: {
+          item: item,
+          start_date: start_date,
+          end_date: end_date,
+        },
         success: function(data)
         {
-          var tblRows = [];
-          for (var i = 0, len = data.length; i < len; i++) 
+          if(data['data'].length > 0)
           {
-            var currentItem = data[i];
-            var stock = currentItem.product_stock !== null ? currentItem.product_stock : 0;
-            tblRows.push(
-                `<tr>
-                      <td style = 'text-align: left'>${currentItem.product}</td>
-                      <td style = 'text-align: center'>${currentItem.total_paid_amount}</td>
-                    </td>
-                  </tr>`
-              );
-              totalSales += currentItem.total_paid_amount;
-              totalCount = i+1;
-          }
+              var tblRows = [];
+            for (var i = 0, len = data['data'].length; i < len; i++) 
+            {
+              var currentItem = data['data'][i];
+              tblRows.push(
+                  `<tr>
+                        <td style = 'text-align: left'>${currentItem.product}</td>
+                        <td style = 'text-align: right'>${formatNumberWithCommasAndDecimals(currentItem.total_paid_amount)}</td>
+                      </td>
+                    </tr>`
+                );
+                totalSales += currentItem.total_paid_amount;
+                totalCount = i+1;
+            }
 
             var tblData = `
-            <table  id = "tbl_top_products" class='' style='font-size: 10px;            top: -20px'>
+            <table  id = "tbl_top_products" class='' style='font-size: 10px; top: -20px'>
                 <thead>
                     <tr>
                         <th style = 'text-align: left; background-color: #656260'>Product.</th>
@@ -438,25 +572,99 @@ body, div, h1, h2, h3, h4, h5, p{
                 </tbody>
             </table>`;
             $("#top_products_data").html(tblData);
+          }
+          else
+          {
+            $("#top_products_data").html('<p>No data to display</p>');
+          }
         }
       })
   }
   function show_allTotalSales(identifier)
+  {
+    if(identifier == "Count")
     {
+      $("#total_sales_data").html("<h1>"+totalCount+"</h1>");
+    }
+    if(identifier == "Amount")
+    {
+      $("#total_sales_data").html("<h1>"+formatAmount(totalSales)+"</h1>");
+    }
+    $("#identifier").html("("+identifier+")");
+  }
+    function show_hourlySalesChart()
+    {
+      var start_date = $("#per_start_date").val();
+      var end_date = $("#per_end_date").val();
+
      
-      if(identifier === "Count")
-      {
-        $("#total_sales_data").html("<h1>"+totalCount+"</h1>");
-      }
-      if(identifier === "Amount")
-      {
-        $("#total_sales_data").html("<h1>"+formatAmount(totalSales)+"</h1>");
-      }
-      $("#identifier").html("("+identifier+")");
-    
+      axios.get('api.php?action=get_salesDataByHour&start_date=' + start_date + '&end_date='+end_date)
+          .then(function (response) {
+              const salesData = response.data.salesData;
+              if(salesData !== 0)
+              {
+                show_allTotalSales($("#hourly_sales").val());
+                $("#hourly_sales_data").html('<canvas id="hourlySalesChart"  style="height: 50px; width: 50px;" class="chartjs-render-monitor"></canvas>');
+                const labels = response.data.labels;
+                const ctx = document.getElementById('hourlySalesChart').getContext('2d');
+
+                const colors = [
+                    'rgba(255, 99, 132, 0.6)',  
+                    'rgba(54, 162, 235, 0.6)',  
+                    'rgba(255, 206, 86, 0.6)',  
+                    'rgba(75, 192, 192, 0.6)',  
+                    'rgba(153, 102, 255, 0.6)', 
+                    'rgba(255, 159, 64, 0.6)',  
+                    'rgba(199, 199, 199, 0.6)', 
+                    'rgba(83, 102, 255, 0.6)',  
+                    'rgba(99, 255, 132, 0.6)',  
+                    'rgba(235, 54, 162, 0.6)',  
+                    'rgba(206, 255, 86, 0.6)',  
+                    'rgba(192, 192, 75, 0.6)'   
+                ];
+
+                const chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Sales (₱)',
+                            data: salesData,
+                            backgroundColor: colors, 
+                            borderColor: colors.map(color => color.replace('0.6', '1')), 
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: 'blue',
+                                }
+                            }
+                        }
+                    }
+                });
+              }
+              else
+              {
+                $("#hourly_sales_data").html('<p>No data to display</p>');
+                $("#total_sales_data").html('<p>No data to display</p>');
+              }
+              
+          })
+          .catch(function (error) {
+              console.error('Error fetching sales data:', error);
+          });
     }
     $("#hourly_sales").on("change", function(){
       var identifier = $(this).val();
+      show_hourlySalesChart();
       show_allTotalSales(identifier);
     })
     $("#btn_datePeriodSelected").on('click',function(){
@@ -468,7 +676,7 @@ body, div, h1, h2, h3, h4, h5, p{
       if(period_date !== "")
       {
         show_allTopProducts(5);
-        show_allTotalSales("Amount");
+        show_hourlySalesChart();
       }
       
     })

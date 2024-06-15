@@ -36,7 +36,10 @@
     $action = isset($_GET['action']) ? $_GET['action'] : null;
     switch ($action) {
         case 'get_allTopProducts':
-            echo json_encode($dashboard->get_allTopProducts($_GET['item']));
+            echo json_encode($dashboard->get_allTopProducts($_GET['item'], $_GET['start_date'], $_GET['end_date']));
+            break;
+        case 'get_salesDataByHour':
+            echo json_encode($dashboard->get_salesDataByHour($_GET['start_date'], $_GET['end_date']));
             break;
         case 'get_salesData':
             echo json_encode($dashboard->get_salesDataByYear($_GET['year']));
