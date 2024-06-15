@@ -257,6 +257,9 @@ if ($decProductSales == NULL) {
   padding: 8px; 
   text-align: center; 
 }
+body, div, h1, h2, h3, h4, h5, p{
+  font-family: Century Gothic;
+}
 </style>
 <?php include "layout/admin/css.php" ?>
 <div class="container-scroller">
@@ -288,7 +291,10 @@ if ($decProductSales == NULL) {
             <div class="col-12 col-md-4">
               <div class="border p-3 col1" style = "height: 300px;">
                 <h5>Total Sales</h5>
-                <div class="center-total">
+                <div class="center-total annual_total_sales" style = 'text-align: left;'>
+         
+                </div>
+                <div class="center-total top_performing_month" style = 'text-align: left;'>
                   <p>No data to display</p>
                 </div>
               </div>
@@ -420,11 +426,11 @@ if ($decProductSales == NULL) {
           }
 
             var tblData = `
-            <table  id = "tbl_top_products" class='' style='font-size: 10px;'>
-                <thead style = 'background-color: none'>
-                    <tr >
-                        <th style = 'text-align: left'>Product.</th>
-                        <th style = 'text-align: center'>Total</th>
+            <table  id = "tbl_top_products" class='' style='font-size: 10px;            top: -20px'>
+                <thead>
+                    <tr>
+                        <th style = 'text-align: left; background-color: #656260'>Product.</th>
+                        <th style = 'text-align: center; background-color: #656260'>Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -486,45 +492,73 @@ if ($decProductSales == NULL) {
       year--;
       updateChart(year);
     });
-    function updateChart(year) {
+    function formatNumberWithCommasAndDecimals(number) {
+        return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+    function updateChart(year) 
+    {
       $("#d_year").html(year);
       axios.get('api.php?action=get_salesData&year=' + year)
-        .then(function (response) {
-            const salesData = response.data.salesData;
-            const months = response.data.months;
+          .then(function (response) {
+              const salesData = response.data.salesData;
+              const months = response.data.months;
+              const annual_sales = response.data.annual_sales;
+              const top_month = annual_sales === 0 ? "---" : response.data.top_month;
+              const top_month_value = response.data.top_month_value;
 
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            const chart = new Chart(ctx, {
-                type: 'bar', 
-                data: {
-                    labels: months,
-                    datasets: [{
-                        label: 'Sales (₱)',
-                        data: salesData,
-                        backgroundColor: 'rgba(54, 162, 235, 0.6)', 
-                        borderColor: 'rgba(54, 162, 235, 1)', 
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        },
-                        y: {
-                            grid: {
-                                color: 'blue',
-                            }
-                        }
-                    }
-                }
-            });
-        })
-        .catch(function (error) {
-            console.error('Error fetching sales data:', error);
-        });
+              $(".annual_total_sales").html("<h3 style='font-size: 5rem; font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
+              $(".top_performing_month").html("<h4 style='color: #ccc; font-size: 1rem'>Top Performing Month</h4>" +
+                  "<h4>" + top_month + "</h4>" +
+                  "<h4>" + formatNumberWithCommasAndDecimals(top_month_value) + "</h4>");
+
+              const ctx = document.getElementById('salesChart').getContext('2d');
+
+              const colors = [
+                  'rgba(255, 99, 132, 0.6)',  
+                  'rgba(54, 162, 235, 0.6)',  
+                  'rgba(255, 206, 86, 0.6)',  
+                  'rgba(75, 192, 192, 0.6)',  
+                  'rgba(153, 102, 255, 0.6)', 
+                  'rgba(255, 159, 64, 0.6)',  
+                  'rgba(199, 199, 199, 0.6)', 
+                  'rgba(83, 102, 255, 0.6)',  
+                  'rgba(99, 255, 132, 0.6)',  
+                  'rgba(235, 54, 162, 0.6)',  
+                  'rgba(206, 255, 86, 0.6)',  
+                  'rgba(192, 192, 75, 0.6)'   
+              ];
+
+              const chart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                      labels: months,
+                      datasets: [{
+                          label: 'Sales (₱)',
+                          data: salesData,
+                          backgroundColor: colors, 
+                          borderColor: colors.map(color => color.replace('0.6', '1')), 
+                          borderWidth: 1
+                      }]
+                  },
+                  options: {
+                      scales: {
+                          x: {
+                              grid: {
+                                  display: false
+                              }
+                          },
+                          y: {
+                              grid: {
+                                  color: 'blue',
+                              }
+                          }
+                      }
+                  }
+              });
+          })
+          .catch(function (error) {
+              console.error('Error fetching sales data:', error);
+          });
     }
     $("#btn_period").click(function (e) {
       e.preventDefault();

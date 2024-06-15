@@ -30,16 +30,11 @@ class DashboardFacade extends DBConnection
     {
         $salesData = [];
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        
+
+        $annual_sales = 0;
         for ($i = 1; $i <= count($months) - 1; $i++) 
         {
             $month = $i;
-            // $payment_sql = $this->connect()->prepare("SELECT payments.id as payment_id, transactions.discount_amount, transactions.is_paid, transactions.is_void, (payments.payment_amount - transactions.discount_amount) as gross_sale
-            // FROM payments
-            // INNER JOIN transactions on payments.id = transactions.payment_id
-            // AND MONTH(payments.date_time_of_payment) = :currentMonth
-            // AND YEAR(payments.date_time_of_payment) = :currentYear
-            // GROUP BY payments.id;");
             $payment_sql = $this->connect()->prepare("WITH RefundSums AS (
                                                     SELECT 
                                                         r.payment_id,
@@ -116,67 +111,58 @@ class DashboardFacade extends DBConnection
                                                 WHERE 
                                                     t.is_paid = 1 
                                                     AND t.is_void = 0 
-                                                    AND MONTH(payments.date_time_of_payment) = :currentMonth
-                                                    AND YEAR(payments.date_time_of_payment) = :currentYear
+                                                    AND MONTH(p.date_time_of_payment) = :currentMonth
+                                                    AND YEAR(p.date_time_of_payment) = :currentYear
                                                 GROUP BY 
-                                                    p.id;");
+                                                       p.id");
 
-            $payment_sql->bindParam(":currentMonth", $month);
-            $payment_sql->bindParam(":currentYear", $year);
-            $payment_sql->execute();
+            $payment_sql->execute([':currentMonth' => $month, ':currentYear' => $year]);
             $payments = $payment_sql->fetchAll(PDO::FETCH_ASSOC);
-    
+
             $monthly_gross_sale = 0;
     
-            foreach ($payments as $payment) 
+            foreach ($payments as $row) 
             {
-                $payment_id = $payment['payment_id'];
-                $gross_sale = $gross_sale - $total_item_discounts - $total_refund;
-                $monthly_gross_sale += $payment['paid_amount'] ;
-                // $refundedSql = $this->connect()->prepare("SELECT * FROM REFUNDED WHERE payment_id = :payment_id");
-                // $refundedSql->bindParam(":payment_id", $payment_id, PDO::PARAM_STR);
-                // $refundedSql->execute();
-                // $refunded = $refundedSql->fetchAll(PDO::FETCH_ASSOC);
-                // $total_refund = 0;
-                // - $payment['discountsRate'] - $payment['refunded_amt'] - $payment['total_item_discounts'] - $payment['totalCredits'];
-                // foreach ($refunded as $refund) 
-                // {
-                //     $other_details_json = file_get_contents($refund['other_details']);
-                //     $discount_category = json_decode($other_details_json, false);
-                //     $credits = $discount_category->credits ?? 0;
-                //     $discount = $discount_category->discount ?? 0;
-                //     $itemDiscount = $discount_category->itemDiscountsData ?? 0;
-                //     $total_refund += $refund['refunded_amt'] - $itemDiscount - $credits - $discount;
-                // }
-    
-                // $returnAndExchange_sql = $this->connect()->prepare("SELECT * FROM `return_exchange` WHERE payment_id = :payment_id");
-                // $returnAndExchange_sql->bindParam(":payment_id", $payment['id']);
-                // $returnAndExchange_sql->execute();
-                // $return_exchange = $returnAndExchange_sql->fetchAll(PDO::FETCH_ASSOC);
-    
-                // $total_return_exhange = 0;
-                // foreach ($return_exchange as $ret_ex) 
-                // {
-                //     $other_details_json = file_get_contents($ret_ex['other_details']);
-                //     $discount_category = json_decode($other_details_json, false);
-                //     $credits = $discount_category->credits ?? 0;
-                //     $discount = $discount_category->discount ?? 0;
-                //     $itemDiscount = $discount_category->itemDiscountsData ?? 0;
-                //     $total_return_exhange += $ret_ex['refunded_amt'] - $itemDiscount - $credits - $discount;
-                // }
-    
-                // $gross_sale = $gross_sale - $total_item_discounts - $total_refund - $total_return_exhange;
-                // $gross_sale = $gross_sale - $total_item_discounts - $total_refund;
-              
+
+                $paid_amount = $row['paid_amount'];
+                $totalChange = $row['totalChange'];
+            
+                $sales = $paid_amount - $totalChange;
+            
+                $refunded_amt = $row['refunded_amt'];
+                $refudned_item_discount = $row['total_item_discounts'];
+                $refund_credits = $row['totalCredits'];
+                $totalRefundDiscountsTendered = $row['totalDiscountsTender'];
+            
+                $totalRefundedAmt =  $refunded_amt-$refudned_item_discount- $totalRefundDiscountsTendered;
+            
+                //return
+                $return_amount = $row['return_amt'];
+                $return_item_discounts = $row['total_return_item_discounts'];
+                $return_credits = $row['totalReturnCredits'];
+                $totalReturnDiscountsTender = $row['totalDiscountsReturnTender'];
+            
+                $totalReturnAmt = $return_amount-$return_item_discounts-$return_credits-$totalReturnDiscountsTender;
+            
+                $totalGrossSales = $sales-$totalRefundedAmt-$totalReturnAmt;
+                $monthly_gross_sale += $totalGrossSales;
+            
             }
     
             $salesData[] = $monthly_gross_sale;
+            $annual_sales += $monthly_gross_sale;
         }
-        
-      
+
+        $maxValue = max($salesData);
+        $maxIndex = array_search($maxValue, $salesData);
+        $monthName = $months[$maxIndex];
+
         $response = [
             'salesData' => $salesData,
-            'months' => $months
+            'months' => $months,
+            'annual_sales' => $annual_sales,
+            'top_month' => $monthName,
+            'top_month_value' => $maxValue,
         ];
         return $response;
     }
