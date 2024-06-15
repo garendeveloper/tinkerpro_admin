@@ -6,7 +6,7 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
-$pdfFolder = __DIR__ . '/../assets/pdf/customer/';
+$pdfFolder = __DIR__ . '/../assets/pdf/users/';
 
 $files = glob($pdfFolder . '*'); 
 foreach ($files as $file) {
@@ -28,12 +28,12 @@ $products = new ProductFacade();
 
 $counter = 1;
 
-$customerId = $_GET['customerId'] ?? null;
+$selectedUser = $_GET['selectedUser'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->customerSales($customerId,$singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade->userSales($selectedUser,$singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -41,9 +41,9 @@ $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 $pdf = new TCPDF();
 $pdf->SetCreator('TinkerPro Inc.');
 $pdf->SetAuthor('TinkerPro Inc.');
-$pdf->SetTitle('Customer Sales Table PDF');
-$pdf->SetSubject('Customer Sales Table PDF Document');
-$pdf->SetKeywords('TCPDF, PDF, Customer Sales, table');
+$pdf->SetTitle('User Sales Table PDF');
+$pdf->SetSubject('User Sales Table PDF Document');
+$pdf->SetKeywords('TCPDF, PDF, User Sales, table');
 
 $pdf->AddPage();
 
@@ -58,7 +58,7 @@ $pdf->SetFont('', 'I', 8);
 
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell(0, 10, 'CUSTOMER', 0, 1, 'R', 0); 
+$pdf->Cell(0, 10, 'Users', 0, 1, 'R', 0); 
 $pdf->Ln(-5);
 $pdf->SetFont('',  10);
 $pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
@@ -124,7 +124,7 @@ $pdf->SetLineWidth(0.3);
 
 $pdf->SetFont('', '', 10); 
 
-$header = array('No.', 'Customer', 'Total');
+$header = array('No.', 'Users', 'Total');
 $headerWidths = array(10,110,70);
 $maxCellHeight = 5;
 
@@ -203,10 +203,10 @@ $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($totalSales, 2), 1, 0
 $pdf->Ln(); 
 
 
-$pdfPath = $pdfFolder . 'customerSales.pdf';
+$pdfPath = $pdfFolder . 'usersSales.pdf';
 $pdf->Output($pdfPath, 'F');
 
-$pdf->Output('customerSales.pdf', 'I');
+$pdf->Output('usersSales.pdf', 'I');
 
 
 
