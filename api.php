@@ -38,6 +38,9 @@
         case 'get_allTopProducts':
             echo json_encode($dashboard->get_allTopProducts($_GET['item']));
             break;
+        case 'get_salesData':
+            echo json_encode($dashboard->get_salesDataByYear($_GET['year']));
+            break;
 
         case 'user_role':
            $roleId = isset($_GET['roleId']) ? $_GET['roleId'] : null;

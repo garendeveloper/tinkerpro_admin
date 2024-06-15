@@ -912,13 +912,11 @@ include ('./layout/admin/table-pagination-css.php');
     
       function show_allStocks() 
       {
-        $('#modalCashPrint').show();
+        $("#searchInput").focus();
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_stocks")) {
             $(".inventoryCard #tbl_all_stocks").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-
-        $("#searchInput").focus();
 
         var tblData = `
             <table id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
@@ -936,7 +934,6 @@ include ('./layout/admin/table-pagination-css.php');
             </table>`;
 
         $(".inventoryCard").html(tblData);
-        $('#modalCashPrint').hide();
 
         var table = $('.inventoryCard #tbl_all_stocks').DataTable({
             serverSide: true,
@@ -972,6 +969,9 @@ include ('./layout/admin/table-pagination-css.php');
                 } else {
                     $("#paginationDiv").show();
                 }
+            },
+            createdRow: function (row, data, dataIndex) {
+              $(row).attr('data-id', data.product_id);
             }
         });
         table;
@@ -2499,14 +2499,11 @@ include ('./layout/admin/table-pagination-css.php');
       }
       function show_allInventories() 
       {
-        $('#modalCashPrint').show();
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
             $(".inventoryCard #tbl_products").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-
         $("#searchInput").focus();
-        $('#modalCashPrint').show();
 
         var tblData = `
             <table tabindex='0' id='tbl_products' class='text-color table-border display' style='font-size: 12px;'>
@@ -2528,7 +2525,7 @@ include ('./layout/admin/table-pagination-css.php');
             </table>`;
 
         $(".inventoryCard").html(tblData);
-        $('#modalCashPrint').hide();
+   
 
         var table = $('.inventoryCard #tbl_products').DataTable({
           serverSide: true,
@@ -2648,11 +2645,10 @@ include ('./layout/admin/table-pagination-css.php');
               $(".inventoryCard #tbl_orders").DataTable().destroy();
           }
           $("#paginationDiv").empty().hide();
-
-          $('#modalCashPrint').show();
+          $("#searchInput").focus();
 
           var tblData = `
-              <table id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>
+              <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>
                   <thead>
                       <tr>
                           <th style='width: 2%;'>PO#</th>
@@ -2669,7 +2665,6 @@ include ('./layout/admin/table-pagination-css.php');
               </table>`;
 
           $(".inventoryCard").html(tblData);
-          $('#modalCashPrint').hide();
 
           var table = $('.inventoryCard #tbl_orders').DataTable({
               serverSide: true,
@@ -2724,7 +2719,7 @@ include ('./layout/admin/table-pagination-css.php');
               ],
               ordering: true,
               order: [[0, 'asc']],
-              pageLength: 300,
+              pageLength: 100,
               dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
               fnDrawCallback: function (oSettings) {
                   if (oSettings.aoData.length === 0) {
@@ -2732,6 +2727,9 @@ include ('./layout/admin/table-pagination-css.php');
                   } else {
                       $("#paginationDiv").show();
                   }
+              },
+              createdRow: function (row, data, dataIndex) {
+                $(row).attr('data-id', data.order_id);
               }
           });
 

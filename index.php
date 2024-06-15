@@ -281,7 +281,7 @@ if ($decProductSales == NULL) {
                 </div>
                 <p>Sales data grouped by month</p>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                <canvas id="salesChart" width="1081" height="107" style="display: block; height: 240px; width: 1200px;" class="chartjs-render-monitor"></canvas>
+                <canvas id="salesChart"  style="display: block; height: 200px; width: 1200px;" class="chartjs-render-monitor"></canvas>
                 </div>
               </div>
             </div>
@@ -296,7 +296,7 @@ if ($decProductSales == NULL) {
           </div>
           <div class="row">
             <div class="col-12 col-md-12">
-              <h5 style="color: #ffff">Periodic Reports <span id="period_date"></span>
+              <h5 style="color: #ffff">Periodic Reports &nbsp;&nbsp; <span id="period_date" style="color: #FF6700; font-weight: bold"></span>
                 <button id="btn_period" class="button">
                   <i class="bi bi-calendar" aria-hidden="true"></i>
                 </button>
@@ -395,6 +395,8 @@ if ($decProductSales == NULL) {
    
     function show_allTopProducts(item)
     {
+      totalSales = 0;
+      totalCount = 0;
       $.ajax({
         type: 'get',
         url: 'api.php?action=get_allTopProducts',
@@ -486,36 +488,43 @@ if ($decProductSales == NULL) {
     });
     function updateChart(year) {
       $("#d_year").html(year);
-      const salesData = [100, 200, 150, 300, 250, 400, 350, 500, 450, 600, 550, 700];
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const ctx = document.getElementById('salesChart').getContext('2d');
-      const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: months,
-          datasets: [{
-            label: 'Sales ($)',
-            data: salesData,
-            fill: false,
-            borderColor: '#fff',
-            tension: 0.2
-          }]
-        },
-        options: {
-          scales: {
-            x: {
-              grid: {
-                color: 'red',
-              }
-            },
-            y: {
-              grid: {
-                color: 'blue',
-              }
-            }
-          }
-        }
-      });
+      axios.get('api.php?action=get_salesData&year=' + year)
+        .then(function (response) {
+            const salesData = response.data.salesData;
+            const months = response.data.months;
+
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar', 
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Sales (₱)',
+                        data: salesData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)', 
+                        borderColor: 'rgba(54, 162, 235, 1)', 
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'blue',
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(function (error) {
+            console.error('Error fetching sales data:', error);
+        });
     }
     $("#btn_period").click(function (e) {
       e.preventDefault();

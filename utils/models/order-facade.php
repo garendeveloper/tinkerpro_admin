@@ -18,7 +18,7 @@ class OrderFacade extends DBConnection
     {
         $columns = [
             0 => 'orders.po_number',
-            1 => 'supplier.name',
+            1 => 'supplier.supplier',
             2 => 'orders.date_purchased',
             3 => 'orders.due_date',
             4 => 'orders.price',
@@ -32,7 +32,7 @@ class OrderFacade extends DBConnection
 
         if (!empty($requestData['search']['value'])) {
             $sql .= " WHERE orders.po_number LIKE '%" . $requestData['search']['value'] . "%'
-                    OR supplier.name LIKE '%" . $requestData['search']['value'] . "%' ";
+                    OR supplier.supplier LIKE '%" . $requestData['search']['value'] . "%' ";
         }
     
         if (!empty($requestData['order'])) {
