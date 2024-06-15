@@ -1,11 +1,11 @@
 <?php
 
-  class OtherReportsFacade extends DBConnection {
+class OtherReportsFacade extends DBConnection {
 
-   public function getRefundData($selectedProduct,$singleDateData,$startDate,$endDate ){
+    public function getRefundData( $selectedProduct, $singleDateData, $startDate, $endDate ) {
 
-      if($selectedProduct && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        if ( $selectedProduct && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
         r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
@@ -19,13 +19,13 @@
         INNER JOIN products ON r.prod_id = products.id 
         WHERE r.prod_id = :selectedProduct';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct', $selectedProduct);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->execute();
+            return $sql;
 
-      }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        } else if ( !$selectedProduct && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
         r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
@@ -39,13 +39,13 @@
         INNER JOIN products ON r.prod_id = products.id
         WHERE DATE(r.date) = :singleDateData';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData', $singleDateData);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
 
-      }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        } else if ( !$selectedProduct && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
         r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
@@ -59,13 +59,13 @@
         INNER JOIN products ON r.prod_id = products.id
         WHERE DATE(r.date) BETWEEN :startDate AND :endDate ';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-      }else if($selectedProduct && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedProduct && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
             r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
             r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
@@ -79,14 +79,14 @@
         INNER JOIN products ON r.prod_id = products.id
         WHERE r.prod_id = :selectedProduct AND DATE(r.date) = :singleDateData';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct', $selectedProduct);
-        $sql->bindParam(':singleDateData', $singleDateData);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
 
-      }else if($selectedProduct && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        } else if ( $selectedProduct && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
         r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
         FROM refunded AS r
@@ -100,14 +100,14 @@
         INNER JOIN products ON r.prod_id = products.id 
         WHERE r.prod_id = :selectedProduct AND DATE(r.date) BETWEEN :startDate AND :endDate';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct', $selectedProduct);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-      }else{
-        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
         r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
     FROM refunded AS r
@@ -119,168 +119,157 @@
     INNER JOIN receipt AS rt ON rt.id = t.receipt_id
     LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
     INNER JOIN products ON r.prod_id = products.id;';
-        $stmt = $this->connect()->query($sql);
-        return $stmt;
-      }
-   } 
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
+    }
 
-   public function getRefundByCustomers($selectedCustomers,$singleDateData,$startDate,$endDate,$selectedRefundTypes){
-    if($selectedCustomers && !$singleDateData && !$startDate && !$endDate && !$selectedRefundTypes){
-          $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id, r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+    public function getRefundByCustomers( $selectedCustomers, $singleDateData, $startDate, $endDate, $selectedRefundTypes ) {
+        if ( $selectedCustomers && !$singleDateData && !$startDate && !$endDate && !$selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id, r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
           INNER JOIN payments AS p ON r.payment_id = p.id 
           INNER JOIN products ON r.prod_id = products.id 
           INNER JOIN transactions AS t ON t.payment_id = p.id 
           INNER JOIN users AS u ON t.user_id = u.id WHERE t.user_id = :selectedCustomers';
 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->execute();
+            return $sql;
 
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':selectedCustomers', $selectedCustomers);
-          $sql->execute();
-          return $sql;
-
-      }else if(!$selectedCustomers && $singleDateData && !$startDate && !$endDate  && !$selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id, r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+        } else if ( !$selectedCustomers && $singleDateData && !$startDate && !$endDate  && !$selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id, r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE DATE(r.date) = :singleDateData';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData', $singleDateData);
-        $sql->execute();
-        return $sql;
-      }else if(!$selectedCustomers && !$singleDateData && $startDate && $endDate  && !$selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id, r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedCustomers && !$singleDateData && $startDate && $endDate  && !$selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id, r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE DATE(r.date) BETWEEN :startDate AND :endDate';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-      }else if($selectedCustomers && $singleDateData && !$startDate && !$endDate  && !$selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedCustomers && $singleDateData && !$startDate && !$endDate  && !$selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE t.user_id = :selectedCustomers AND DATE(r.date) = :singleDateData';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData', $singleDateData);
-        $sql->bindParam(':selectedCustomers', $selectedCustomers);
-        $sql->execute();
-        return $sql;
-      }else if($selectedCustomers && !$singleDateData && $startDate && $endDate  && !$selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedCustomers && !$singleDateData && $startDate && $endDate  && !$selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE t.user_id = :selectedCustomers AND DATE(r.date) BETWEEN :startDate AND :endDate';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedCustomers', $selectedCustomers);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-      }else if(!$selectedCustomers && !$singleDateData && !$startDate && !$endDate  && $selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedCustomers && !$singleDateData && !$startDate && !$endDate  && $selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE r.refunded_method_id = :selectedRefundTypes';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedRefundTypes',  $selectedRefundTypes);
-        $sql->execute();
-        return $sql;
-      }else if($selectedCustomers && !$singleDateData && !$startDate && !$endDate  && $selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedRefundTypes',  $selectedRefundTypes );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedCustomers && !$singleDateData && !$startDate && !$endDate  && $selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE t.user_id = :selectedCustomers AND r.refunded_method_id = :selectedRefundTypes';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedRefundTypes',  $selectedRefundTypes);
-        $sql->bindParam(':selectedCustomers', $selectedCustomers);
-        $sql->execute();
-        return $sql;
-      }else if (!$selectedCustomers && $singleDateData && !$startDate && !$endDate  && $selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedRefundTypes',  $selectedRefundTypes );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedCustomers && $singleDateData && !$startDate && !$endDate  && $selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE DATE(r.date) = :singleDateData AND r.refunded_method_id = :selectedRefundTypes';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedRefundTypes',  $selectedRefundTypes);
-        $sql->bindParam(':singleDateData', $singleDateData);
-        $sql->execute();
-        return $sql;
-      }else if(!$selectedCustomers && !$singleDateData && $startDate && $endDate  && $selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedRefundTypes',  $selectedRefundTypes );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedCustomers && !$singleDateData && $startDate && $endDate  && $selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE DATE(r.date) BETWEEN :startDate AND :endDate AND r.refunded_method_id = :selectedRefundTypes';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedRefundTypes',  $selectedRefundTypes);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-      }else if($selectedCustomers && $singleDateData && !$startDate && !$endDate  && $selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedRefundTypes',  $selectedRefundTypes );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedCustomers && $singleDateData && !$startDate && !$endDate  && $selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE t.user_id = :selectedCustomers AND DATE(r.date) = :singleDateData AND r.refunded_method_id = :selectedRefundTypes';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedRefundTypes',  $selectedRefundTypes);
-        $sql->bindParam(':selectedCustomers', $selectedCustomers);
-        $sql->bindParam(':singleDateData', $singleDateData);
-        $sql->execute();
-        return $sql;
-      }else if($selectedCustomers && !$singleDateData && $startDate && $endDate  && $selectedRefundTypes){
-        $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedRefundTypes',  $selectedRefundTypes );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedCustomers && !$singleDateData && $startDate && $endDate  && $selectedRefundTypes ) {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r 
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.prod_id = products.id 
         INNER JOIN transactions AS t ON t.payment_id = p.id 
         INNER JOIN users AS u ON t.user_id = u.id WHERE t.user_id = :selectedCustomers AND DATE(r.date) BETWEEN :startDate AND :endDate AND r.refunded_method_id = :selectedRefundTypes';
 
-
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedRefundTypes',  $selectedRefundTypes);
-        $sql->bindParam(':selectedCustomers', $selectedCustomers);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-      }
-      else{
-      $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r INNER JOIN payments AS p ON r.payment_id = p.id INNER JOIN products ON r.prod_id = products.id INNER JOIN transactions AS t ON t.payment_id = p.id INNER JOIN users AS u ON t.user_id = u.id';
-      $stmt = $this->connect()->query($sql);
-      return $stmt;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedRefundTypes',  $selectedRefundTypes );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = 'SELECT DISTINCT r.id AS refunded_id, p.id AS payment_id,  r.refunded_method_id as refundType, r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, r.date AS date, r.refunded_method_id AS method, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM refunded AS r INNER JOIN payments AS p ON r.payment_id = p.id INNER JOIN products ON r.prod_id = products.id INNER JOIN transactions AS t ON t.payment_id = p.id INNER JOIN users AS u ON t.user_id = u.id';
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
     }
-   }
-   public function getReturnAndEx($selectedProduct,$singleDateData,$startDate,$endDate ){
-    if($selectedProduct && !$singleDateData&& !$startDate && !$endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+
+    public function getReturnAndEx( $selectedProduct, $singleDateData, $startDate, $endDate ) {
+        if ( $selectedProduct && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price, SUM(r.return_amount) AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
@@ -290,13 +279,13 @@
             WHERE r.product_id = :selectedProduct
             GROUP BY p.id, products.id';
 
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':selectedProduct', $selectedProduct);
-          $sql->execute();
-          return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->execute();
+            return $sql;
 
-    }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+        } else if ( !$selectedProduct && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price,SUM(r.return_amount) AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
@@ -306,12 +295,12 @@
             WHERE DATE(r.date) = :singleDateData
             GROUP BY p.id, products.id';
 
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedProduct && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price, SUM(r.return_amount) AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
@@ -321,13 +310,13 @@
             WHERE DATE(r.date) BETWEEN :startDate AND :endDate 
             GROUP BY p.id, products.id';
 
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }else if($selectedProduct && $singleDateData && !$startDate && !$endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedProduct && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price,SUM(r.return_amount) AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
@@ -337,13 +326,13 @@
             WHERE r.product_id = :selectedProduct AND DATE(r.date) = :singleDateData 
             GROUP BY p.id, products.id';
 
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':selectedProduct', $selectedProduct);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if($selectedProduct && !$singleDateData && $startDate && $endDate ){
-          $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedProduct && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price, SUM(r.return_amount) AS amount,
           (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
@@ -352,16 +341,15 @@
             INNER JOIN products ON r.product_id = products.id
             WHERE  r.product_id = :selectedProduct AND DATE(r.date) BETWEEN :startDate AND :endDate
             GROUP BY P.id, products.id';
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':selectedProduct', $selectedProduct);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }
-    else{
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
 
-        $sql= "SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
+            $sql = "SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
         SUM(r.return_qty) AS qty, r.date AS date,
         products.prod_price AS prod_price,  SUM(r.return_amount) AS amount,
         (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
@@ -370,225 +358,230 @@
         INNER JOIN products ON r.product_id = products.id
         GROUP BY p.id, products.id";
 
-      $stmt = $this->connect()->query($sql);
-      return $stmt;
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
     }
-   }
 
-   public function getReturnExchangeCustomers($selectedCustomers,$singleDateData,$startDate,$endDate){
-    if($selectedCustomers && !$singleDateData && !$startDate && !$endDate){
-      $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
+    public function getReturnExchangeCustomers( $selectedCustomers, $singleDateData, $startDate, $endDate ) {
+        if ( $selectedCustomers && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
       INNER JOIN payments AS p ON r.payment_id = p.id 
       INNER JOIN products ON r.product_id = products.id 
       INNER JOIN transactions AS t ON t.payment_id = p.id 
       INNER JOIN users AS u ON t.user_id = u.id  WHERE t.user_id = :selectedCustomers';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':selectedCustomers', $selectedCustomers);
-      $sql->execute();
-      return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->execute();
+            return $sql;
 
-    }else if(!$selectedCustomers && $singleDateData && !$startDate && !$endDate){
-      $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
+        } else if ( !$selectedCustomers && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
       INNER JOIN payments AS p ON r.payment_id = p.id 
       INNER JOIN products ON r.product_id = products.id 
       INNER JOIN transactions AS t ON t.payment_id = p.id 
       INNER JOIN users AS u ON t.user_id = u.id WHERE DATE(r.date) = :singleDateData';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':singleDateData', $singleDateData);
-      $sql->execute();
-      return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
 
-    }else if(!$selectedCustomers && !$singleDateData && $startDate && $endDate){
-      $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
+        } else if ( !$selectedCustomers && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
       INNER JOIN payments AS p ON r.payment_id = p.id 
       INNER JOIN products ON r.product_id = products.id 
       INNER JOIN transactions AS t ON t.payment_id = p.id 
       INNER JOIN users AS u ON t.user_id = u.id  WHERE DATE(r.date) BETWEEN :startDate AND :endDate';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':startDate', $startDate);
-      $sql->bindParam(':endDate', $endDate);
-      $sql->execute();
-      return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
 
-    }else if($selectedCustomers && $singleDateData && !$startDate && !$endDate){
-      $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
+        } else if ( $selectedCustomers && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
       INNER JOIN payments AS p ON r.payment_id = p.id 
       INNER JOIN products ON r.product_id = products.id 
       INNER JOIN transactions AS t ON t.payment_id = p.id 
       INNER JOIN users AS u ON t.user_id = u.id WHERE t.user_id = :selectedCustomers AND DATE(r.date) = :singleDateData';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':singleDateData', $singleDateData);
-      $sql->bindParam(':selectedCustomers', $selectedCustomers);
-      $sql->execute();
-      return $sql;
-    }else if($selectedCustomers && !$singleDateData && $startDate && $endDate){
-      $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedCustomers && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r 
       INNER JOIN payments AS p ON r.payment_id = p.id 
       INNER JOIN products ON r.product_id = products.id 
       INNER JOIN transactions AS t ON t.payment_id = p.id 
       INNER JOIN users AS u ON t.user_id = u.id  WHERE t.user_id = :selectedCustomers AND DATE(r.date) BETWEEN :startDate AND :endDate';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':selectedCustomers', $selectedCustomers);
-      $sql->bindParam(':startDate', $startDate);
-      $sql->bindParam(':endDate', $endDate);
-      $sql->execute();
-      return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedCustomers', $selectedCustomers );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r INNER JOIN payments AS p ON r.payment_id = p.id INNER JOIN products ON r.product_id = products.id INNER JOIN transactions AS t ON t.payment_id = p.id INNER JOIN users AS u ON t.user_id = u.id';
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+
+        }
     }
-    else{
-      $sql = 'SELECT DISTINCT r.id AS return_id, p.id AS payment_id, r.return_qty AS qty,products.prod_price as prod_price, (r.return_qty* products.prod_price) as return_amount, r.date AS date, u.last_name AS user_last_name, u.first_name AS user_first_name, (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id FROM return_exchange AS r INNER JOIN payments AS p ON r.payment_id = p.id INNER JOIN products ON r.product_id = products.id INNER JOIN transactions AS t ON t.payment_id = p.id INNER JOIN users AS u ON t.user_id = u.id';
-      $stmt = $this->connect()->query($sql);
-      return $stmt;
 
-   }
-  }
-
-  public function getBOMData($selectedProduct,$selectedIngredients){
-    if($selectedProduct && !$selectedIngredients){
-      $sql = 'SELECT bom.id as id, p.prod_desc as prod_desc, i.name as name, u.uom_name as uom_name, bom.qty as qty
+    public function getBOMData( $selectedProduct, $selectedIngredients ) {
+        if ( $selectedProduct && !$selectedIngredients ) {
+            $sql = 'SELECT bom.id as id, p.prod_desc as prod_desc, i.name as name, u.uom_name as uom_name, bom.qty as qty
       FROM `bill_of_materials` as bom 
       INNER JOIN products as p ON p.id = bom.prod_id 
       INNER JOIN ingredients AS i ON i.id = bom.ingredients_id
       LEFT JOIN uom as u ON u.id = i.uom_id WHERE bom.prod_id = :selectedProduct';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':selectedProduct', $selectedProduct);
-      $sql->execute();
-      return $sql;
-    }else if(!$selectedProduct && $selectedIngredients){
-      $sql = 'SELECT bom.id as id, p.prod_desc as prod_desc, i.name as name, u.uom_name as uom_name, bom.qty as qty
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedProduct && $selectedIngredients ) {
+            $sql = 'SELECT bom.id as id, p.prod_desc as prod_desc, i.name as name, u.uom_name as uom_name, bom.qty as qty
       FROM `bill_of_materials` as bom 
       INNER JOIN products as p ON p.id = bom.prod_id 
       INNER JOIN ingredients AS i ON i.id = bom.ingredients_id
       LEFT JOIN uom as u ON u.id = i.uom_id WHERE bom.ingredients_id = :selectedIngredients';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':selectedIngredients', $selectedIngredients);
-      $sql->execute();
-      return $sql; 
-    }else if($selectedProduct && $selectedIngredients){
-      $sql = 'SELECT bom.id as id, p.prod_desc as prod_desc, i.name as name, u.uom_name as uom_name, bom.qty as qty
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedIngredients', $selectedIngredients );
+            $sql->execute();
+            return $sql;
+
+        } else if ( $selectedProduct && $selectedIngredients ) {
+            $sql = 'SELECT bom.id as id, p.prod_desc as prod_desc, i.name as name, u.uom_name as uom_name, bom.qty as qty
       FROM `bill_of_materials` as bom 
       INNER JOIN products as p ON p.id = bom.prod_id 
       INNER JOIN ingredients AS i ON i.id = bom.ingredients_id
       LEFT JOIN uom as u ON u.id = i.uom_id WHERE bom.prod_id = :selectedProduct AND bom.ingredients_id = :selectedIngredients';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':selectedIngredients', $selectedIngredients);
-      $sql->bindParam(':selectedProduct', $selectedProduct);
-      $sql->execute();
-      return $sql; 
-    }
-    else{
-    $sql = 'SELECT bom.id as id, p.prod_desc as prod_desc, i.name as name, u.uom_name as uom_name, bom.qty as qty
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedIngredients', $selectedIngredients );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->execute();
+            return $sql;
+
+        } else {
+            $sql = 'SELECT bom.id as id, p.prod_desc as prod_desc, i.name as name, u.uom_name as uom_name, bom.qty as qty
     FROM `bill_of_materials` as bom 
     INNER JOIN products as p ON p.id = bom.prod_id 
     INNER JOIN ingredients AS i ON i.id = bom.ingredients_id
     LEFT JOIN uom as u ON u.id = i.uom_id';
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
     }
-  }
 
-  public function getCustomersData($customerId){
- 
-     if($customerId){
-      $sql = 'SELECT u.first_name as first_name, u.last_name as last_name, c.contact as contact, c.email as email, d.name as name, d.discount_amount as rate 
+    public function getCustomersData( $customerId ) {
+
+        if ( $customerId ) {
+            $sql = 'SELECT u.first_name as first_name, u.last_name as last_name, c.contact as contact, c.email as email, d.name as name, d.discount_amount as rate 
       FROM `customer` as c 
       RIGHT JOIN users as u on u.id = c.user_id 
       LEFT JOIN discounts AS d ON d.id = u.discount_id WHERE u.role_id = 4 AND u.id = :customerId ';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':customerId', $customerId);
-      $sql->execute();
-      return $sql; 
-     }else{
-        
-      $sql = 'SELECT u.first_name as first_name, u.last_name as last_name, c.contact as contact, c.email as email, d.name as name, d.discount_amount as rate 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId', $customerId );
+            $sql->execute();
+            return $sql;
+
+        } else {
+
+            $sql = 'SELECT u.first_name as first_name, u.last_name as last_name, c.contact as contact, c.email as email, d.name as name, d.discount_amount as rate 
       FROM `customer` as c 
       RIGHT JOIN users as u on u.id = c.user_id 
       LEFT JOIN discounts AS d ON d.id = u.discount_id WHERE u.role_id = 4;';
-      $stmt = $this->connect()->query($sql);
-      return $stmt;
-     }
-  }
-  // public function voidedItemsData(){
-  //   $sql = 'SELECT p.prod_desc as prod_desc, us.first_name as c_first_name, us.last_name as c_last_name, u.first_name as u_first_name, u.last_name as u_last_name, t.prod_qty as prod_qty,t.prod_price as prod_price, t.subtotal as totalAmount, t.is_void as paidStatus, py.date_time_of_payment as paymentDate FROM `transactions` as t LEFT JOIN products as p ON t.prod_id = p.id RIGHT JOIN payments as py ON py.id = t.payment_id INNER JOIN users as u ON u.id = t.user_id INNER JOIN users as us ON t.cashier_id = us.id WHERE t.is_void = 2;';
-  //   $stmt = $this->connect()->query($sql);
-  //   return $stmt;
-  // }
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
+    }
+    // public function voidedItemsData() {
+    //   $sql = 'SELECT p.prod_desc as prod_desc, us.first_name as c_first_name, us.last_name as c_last_name, u.first_name as u_first_name, u.last_name as u_last_name, t.prod_qty as prod_qty,t.prod_price as prod_price, t.subtotal as totalAmount, t.is_void as paidStatus, py.date_time_of_payment as paymentDate FROM `transactions` as t LEFT JOIN products as p ON t.prod_id = p.id RIGHT JOIN payments as py ON py.id = t.payment_id INNER JOIN users as u ON u.id = t.user_id INNER JOIN users as us ON t.cashier_id = us.id WHERE t.is_void = 2;';
+    //   $stmt = $this->connect()->query( $sql );
+    //   return $stmt;
+    // }
 
-  public function cashInAmountsData($userId,$singleDateData ,$startDate,$endDate){
-    if($userId && !$singleDateData && !$startDate && !$endDate){
-      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+    public function cashInAmountsData( $userId, $singleDateData, $startDate, $endDate ) {
+        if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
       FROM cash_in_out as c 
       INNER JOIN users as u ON u.id = c.user_id 
       WHERE cashType = 0 AND u.id = :userId';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':userId', $userId);
-      $sql->execute();
-      return $sql; 
-    }
-    else if(!$userId && $singleDateData && !$startDate && !$endDate){
-      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':userId', $userId );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
       FROM cash_in_out as c 
       INNER JOIN users as u ON u.id = c.user_id 
       WHERE cashType = 0  AND DATE(c.date) = :singleDateData';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':singleDateData', $singleDateData);
-      $sql->execute();
-      return $sql; 
-    }else if(!$userId && !$singleDateData && $startDate && $endDate){
-      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
       FROM cash_in_out as c 
       INNER JOIN users as u ON u.id = c.user_id 
       WHERE cashType = 0  AND DATE(c.date) BETWEEN :startDate AND :endDate';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':startDate', $startDate);
-      $sql->bindParam(':endDate', $endDate);
-      $sql->execute();
-      return $sql; 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
 
-    }else if($userId && $singleDateData && !$startDate && !$endDate){
-      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+        } else if ( $userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
       FROM cash_in_out as c 
       INNER JOIN users as u ON u.id = c.user_id 
       WHERE cashType = 0 AND u.id = :userId AND DATE(c.date) = :singleDateData';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':userId', $userId);
-      $sql->bindParam(':singleDateData', $singleDateData);
-      $sql->execute();
-      return $sql; 
-    }else if($userId && !$singleDateData && $startDate && $endDate){
-      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':userId', $userId );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+
+        } else if ( $userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
       FROM cash_in_out as c 
       INNER JOIN users as u ON u.id = c.user_id 
       WHERE cashType = 0 AND u.id = :userId AND DATE(c.date) BETWEEN :startDate AND :endDate';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':userId', $userId);     
-      $sql->bindParam(':startDate', $startDate);
-      $sql->bindParam(':endDate', $endDate);
-      $sql->execute();
-      return $sql; 
-    }else{
-      $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 0';
-      $stmt = $this->connect()->query($sql);
-      return $stmt;
-    }
-  }
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':userId', $userId );
 
-  public function getUnpaidSales($selectedCustomers,$userId,$singleDateData,$startDate,$endDate){
-    if($selectedCustomers && !$userId && !$singleDateData && !$startDate && !$endDate){
-      $sql = 'WITH TotalPaid AS (
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+
+        } else {
+            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 0';
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
+    }
+
+    public function getUnpaidSales( $selectedCustomers, $userId, $singleDateData, $startDate, $endDate ) {
+        if ( $selectedCustomers && !$userId && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'WITH TotalPaid AS (
         SELECT 
             receipt_id,
             COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -635,12 +628,13 @@
     GROUP BY
         u.first_name, u.last_name,t.user_id,cust.type ORDER BY u.first_name ASC';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':customerId', $selectedCustomers);
-      $sql->execute();
-      return $sql; 
-    }else if(!$selectedCustomers && !$userId && $singleDateData && !$startDate && !$endDate){
-      $sql = 'WITH TotalPaid AS (
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId', $selectedCustomers );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$selectedCustomers && !$userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'WITH TotalPaid AS (
         SELECT 
             receipt_id,
             COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -687,12 +681,12 @@
     GROUP BY
          u.first_name, u.last_name,  t.user_id,cust.type ORDER BY u.first_name ASC';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':singleDateData', $singleDateData);
-      $sql->execute();
-      return $sql;
-    }else if(!$selectedCustomers && !$userId && !$singleDateData && $startDate && $endDate){
-      $sql = 'WITH TotalPaid AS (
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedCustomers && !$userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'WITH TotalPaid AS (
         SELECT 
             receipt_id,
             COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -739,13 +733,13 @@
     GROUP BY
         u.first_name, u.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':startDate', $startDate);
-      $sql->bindParam(':endDate', $endDate);
-      $sql->execute();
-      return $sql;
-    }else if($selectedCustomers && !$userId && $singleDateData && !$startDate && !$endDate){
-      $sql = 'WITH TotalPaid AS (
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedCustomers && !$userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'WITH TotalPaid AS (
         SELECT 
             receipt_id,
             COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -792,13 +786,14 @@
     GROUP BY
         u.first_name, u.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':customerId', $selectedCustomers);
-      $sql->bindParam(':singleDateData', $singleDateData);
-      $sql->execute();
-      return $sql; 
-    }else if($selectedCustomers && !$userId && !$singleDateData && $startDate && $endDate){
-      $sql = 'WITH TotalPaid AS (
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId', $selectedCustomers );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+
+        } else if ( $selectedCustomers && !$userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'WITH TotalPaid AS (
         SELECT 
             receipt_id,
             COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -845,14 +840,14 @@
      GROUP BY
         u.first_name, u.last_name,  t.user_id,cust.type ORDER BY u.first_name ASC';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':startDate', $startDate);
-      $sql->bindParam(':endDate', $endDate);
-      $sql->bindParam(':customerId', $selectedCustomers);
-      $sql->execute();
-      return $sql;
-    }else if(!$selectedCustomers && $userId && !$singleDateData && !$startDate && !$endDate){
-      $sql = 'WITH TotalPaid AS (
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':customerId', $selectedCustomers );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedCustomers && $userId && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'WITH TotalPaid AS (
         SELECT 
             receipt_id,
             COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -899,12 +894,13 @@
     GROUP BY
          u.first_name, u.last_name,t.user_id,cust.type ORDER BY u.first_name ASC';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':userId',  $userId);
-      $sql->execute();
-      return $sql; 
-    }else if(!$selectedCustomers && $userId && $singleDateData && !$startDate && !$endDate){
-      $sql = 'WITH TotalPaid AS (
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':userId',  $userId );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$selectedCustomers && $userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'WITH TotalPaid AS (
         SELECT 
             receipt_id,
             COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -951,13 +947,14 @@
     GROUP BY
         u.first_name, u.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':userId',  $userId);
-      $sql->bindParam(':singleDateData', $singleDateData);
-      $sql->execute();
-      return $sql; 
-    }else if(!$selectedCustomers && $userId && !$singleDateData && $startDate && $endDate){
-      $sql = 'WITH TotalPaid AS (
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':userId',  $userId );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$selectedCustomers && $userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'WITH TotalPaid AS (
         SELECT 
             receipt_id,
             COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -1004,15 +1001,14 @@
     GROUP BY
         u.first_name, u.last_name,t.user_id,cust.type ORDER BY u.first_name ASC';
 
-      $sql = $this->connect()->prepare($sql);
-      $sql->bindParam(':startDate', $startDate);
-      $sql->bindParam(':endDate', $endDate);
-      $sql->bindParam(':userId',  $userId);
-      $sql->execute();
-      return $sql;
-    }
-    else{
-        $sql = 'WITH TotalPaid AS (
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':userId',  $userId );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = 'WITH TotalPaid AS (
             SELECT 
                 receipt_id,
                 COALESCE(SUM(paid_amount), 0) AS total_paid_amount
@@ -1057,18 +1053,20 @@
             COALESCE(p.creditTotal, 0) != 0
         GROUP BY
             u.first_name, u.last_name, t.user_id,cust.type ORDER BY u.first_name ASC';
-        $stmt = $this->connect()->query($sql);
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
+    }
+
+    public function getDiscountType() {
+        $sql = 'SELECT * FROM discounts WHERE id NOT IN (5)';
+        $stmt = $this->connect()->query( $sql );
         return $stmt;
-      }
-  }
-  public function getDiscountType(){
-    $sql = 'SELECT * FROM discounts WHERE id NOT IN (5)';
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
-  }
-  public function getDiscountDataReceipt($customerId,$discountType,$singleDateData,$startDate,$endDate){
-    if($customerId && !$discountType && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
+    }
+
+    public function getDiscountDataReceipt( $customerId, $discountType, $singleDateData, $startDate, $endDate ) {
+        if ( $customerId && !$discountType && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -1202,14 +1200,14 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->execute();
-          return $sql;
 
-    }else if(!$customerId && $discountType && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId',  $customerId );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$customerId && $discountType && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -1343,13 +1341,13 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->execute();
-          return $sql;
-    }else if(!$customerId && !$discountType && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':discountType', $discountType );
+            $sql->execute();
+            return $sql;
+        } else if ( !$customerId && !$discountType && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -1483,13 +1481,13 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if(!$customerId && !$discountType && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$customerId && !$discountType && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -1623,14 +1621,14 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }else if($customerId && $discountType && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $customerId && $discountType && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -1765,14 +1763,14 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->execute();
-          return $sql;
-    }else if($customerId && !$discountType && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId',  $customerId );
+            $sql->bindParam( ':discountType', $discountType );
+            $sql->execute();
+            return $sql;
+        } else if ( $customerId && !$discountType && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT 
         t.receipt_id as receipt_id,
         u.first_name as first_name, 
         u.last_name as last_name, 
@@ -1799,14 +1797,14 @@
         AND DATE(p.date_time_of_payment) = :singleDateData
     GROUP BY 
         t.receipt_id, u.first_name, u.last_name, d.name, d.discount_amount;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if($customerId && !$discountType && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId',  $customerId );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( $customerId && !$discountType && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -1941,15 +1939,15 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }else if(!$customerId && $discountType && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId',  $customerId );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( !$customerId && $discountType && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -2084,14 +2082,14 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if(!$customerId && $discountType && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':discountType', $discountType );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$customerId && $discountType && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -2226,15 +2224,15 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }else if($customerId && $discountType && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':discountType', $discountType );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $customerId && $discountType && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -2370,15 +2368,15 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->bindParam(':singleDateData', $singleDateData);
-          $sql->execute();
-          return $sql;
-    }else if($customerId && $discountType && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId',  $customerId );
+            $sql->bindParam( ':discountType', $discountType );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( $customerId && $discountType && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -2514,17 +2512,16 @@
         p.id
         HAVING 
     discountAmount != 0;';
-    
-          $sql = $this->connect()->prepare($sql);
-          $sql->bindParam(':customerId',  $customerId);
-          $sql->bindParam(':discountType', $discountType);
-          $sql->bindParam(':startDate', $startDate);
-          $sql->bindParam(':endDate', $endDate);
-          $sql->execute();
-          return $sql;
-    }
-    else{
-        $sql = 'SELECT 
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':customerId',  $customerId );
+            $sql->bindParam( ':discountType', $discountType );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = 'SELECT 
         p.id AS payment_id,
         t.receipt_id AS receipt_id,
         u.first_name AS first_name, 
@@ -2658,13 +2655,14 @@
         HAVING 
     discountAmount != 0;';
 
-        $stmt = $this->connect()->query($sql);
-        return $stmt;
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
     }
-  }
-  public function getDiscountPerItem($selectedProduct,$singleDateData,$startDate,$endDate){
-    if($selectedProduct && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
+
+    public function getDiscountPerItem( $selectedProduct, $singleDateData, $startDate, $endDate ) {
+        if ( $selectedProduct && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
         t.receipt_id AS receipt_id, p.date_time_of_payment AS date, (SUM(t.prod_qty)) AS qty, t.subtotal AS subtotal,
         (SUM(t.prod_qty) - ((COALESCE(refunded.refunded_qty, 0) + COALESCE(return_exchange.return_qty, 0)))) AS remaining_qty, COALESCE(refunded.refunded_qty, 0) AS refunded_qty,COALESCE(return_exchange.return_qty, 0) AS  return_qty,
         ROUND((((t.discount_amount) / (SUM(t.prod_qty) * products.prod_price)) * 100), 2) AS rate,
@@ -2691,13 +2689,13 @@
         remaining_qty > 0;
     
       ';
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct',  $selectedProduct);
-        $sql->execute();
-        return $sql;
-    }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct',  $selectedProduct );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedProduct && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
         t.receipt_id AS receipt_id, p.date_time_of_payment AS date, (SUM(t.prod_qty)) AS qty, t.subtotal AS subtotal,
         (SUM(t.prod_qty) - ((COALESCE(refunded.refunded_qty, 0) + COALESCE(return_exchange.return_qty, 0)))) AS remaining_qty, COALESCE(refunded.refunded_qty, 0) AS refunded_qty,COALESCE(return_exchange.return_qty, 0) AS  return_qty,
         ROUND((((t.discount_amount) / (SUM(t.prod_qty) * products.prod_price)) * 100), 2) AS rate,
@@ -2724,13 +2722,13 @@
         remaining_qty > 0;
     
       ';
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData', $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedProduct && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
         t.receipt_id AS receipt_id, p.date_time_of_payment AS date, (SUM(t.prod_qty)) AS qty, t.subtotal AS subtotal,
         (SUM(t.prod_qty) - ((COALESCE(refunded.refunded_qty, 0) + COALESCE(return_exchange.return_qty, 0)))) AS remaining_qty, COALESCE(refunded.refunded_qty, 0) AS refunded_qty,COALESCE(return_exchange.return_qty, 0) AS  return_qty,
         ROUND((((t.discount_amount) / (SUM(t.prod_qty) * products.prod_price)) * 100), 2) AS rate,
@@ -2757,14 +2755,14 @@
         remaining_qty > 0;
     
       ';
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-    }else if($selectedProduct && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedProduct && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
         t.receipt_id AS receipt_id, p.date_time_of_payment AS date, (SUM(t.prod_qty)) AS qty, t.subtotal AS subtotal,
         (SUM(t.prod_qty) - ((COALESCE(refunded.refunded_qty, 0) + COALESCE(return_exchange.return_qty, 0)))) AS remaining_qty, COALESCE(refunded.refunded_qty, 0) AS refunded_qty,COALESCE(return_exchange.return_qty, 0) AS  return_qty,
         ROUND((((t.discount_amount) / (SUM(t.prod_qty) * products.prod_price)) * 100), 2) AS rate,
@@ -2790,14 +2788,14 @@
         t.payment_id,t.discount_amount
         HAVING
         remaining_qty > 0;';
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct',  $selectedProduct);
-        $sql->bindParam(':singleDateData', $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if($selectedProduct && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct',  $selectedProduct );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedProduct && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
         t.receipt_id AS receipt_id, p.date_time_of_payment AS date, (SUM(t.prod_qty)) AS qty, t.subtotal AS subtotal,
         (SUM(t.prod_qty) - ((COALESCE(refunded.refunded_qty, 0) + COALESCE(return_exchange.return_qty, 0)))) AS remaining_qty, COALESCE(refunded.refunded_qty, 0) AS refunded_qty,COALESCE(return_exchange.return_qty, 0) AS  return_qty,
         ROUND((((t.discount_amount) / (SUM(t.prod_qty) * products.prod_price)) * 100), 2) AS rate,
@@ -2823,15 +2821,15 @@
         t.payment_id,t.discount_amount
         HAVING
         remaining_qty > 0';
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct',  $selectedProduct);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-    }else{
-    $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct',  $selectedProduct );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = 'SELECT t.id AS id, t.prod_desc AS prod_desc, t.prod_price AS prod_price, t.discount_amount AS discount_amount,
     t.receipt_id AS receipt_id, p.date_time_of_payment AS date, (SUM(t.prod_qty)) AS qty, t.subtotal AS subtotal,
     (SUM(t.prod_qty) - ((COALESCE(refunded.refunded_qty, 0) + COALESCE(return_exchange.return_qty, 0)))) AS remaining_qty, COALESCE(refunded.refunded_qty, 0) AS refunded_qty,COALESCE(return_exchange.return_qty, 0) AS  return_qty,
     ROUND((((t.discount_amount) / (SUM(t.prod_qty) * products.prod_price)) * 100), 2) AS rate,
@@ -2856,15 +2854,16 @@
     HAVING
     remaining_qty > 0;';
 
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
     }
-}
-public function getPaymentMethod($singleDateData,$startDate,$endDate,$exclude){
-    if($exclude == 1){
 
-        if($singleDateData && !$startDate && !$endDate){
-            $sql = "SELECT 
+    public function getPaymentMethod( $singleDateData, $startDate, $endDate, $exclude ) {
+        if ( $exclude == 1 ) {
+
+            if ( $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
             payments.id AS id,
             transactions.payment_id,
             transactions.is_paid,
@@ -3102,14 +3101,14 @@ public function getPaymentMethod($singleDateData,$startDate,$endDate,$exclude){
            DATE(payment_date)
         ORDER BY 
             payment_date ASC;";
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':singleDateData',  $singleDateData);
-            $sql->execute();
-            return $sql;
 
-        }else if(!$singleDateData && $startDate && $endDate){
-            $sql = "SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+
+            } else if ( !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
             payments.id AS id,
             transactions.payment_id,
             transactions.is_paid,
@@ -3347,15 +3346,15 @@ public function getPaymentMethod($singleDateData,$startDate,$endDate,$exclude){
            DATE(payment_date)
         ORDER BY 
             payment_date ASC;";
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':startDate', $startDate);
-            $sql->bindParam(':endDate', $endDate);
-            $sql->execute();
-            return $sql;
 
-        }else{
-        $sql="SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+
+            } else {
+                $sql = "SELECT 
         payments.id AS id,
         transactions.payment_id,
         transactions.is_paid,
@@ -3609,13 +3608,14 @@ LEFT JOIN (
     GROUP BY 
        DATE(payment_date)
     ORDER BY 
-        payment_date ASC;"; 
-  $stmt = $this->connect()->query($sql);
-  return $stmt;
-   }
-    }else{
-    if($singleDateData && !$startDate && !$endDate){
-        $sql = "SELECT 
+        payment_date ASC;";
+
+                $stmt = $this->connect()->query( $sql );
+                return $stmt;
+            }
+        } else {
+            if ( $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         DATE(payments.date_time_of_payment) AS payment_date,
         SUM(DISTINCT payments.change_amount) as change_amount,
         SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
@@ -3641,13 +3641,13 @@ LEFT JOIN (
         DATE(payments.date_time_of_payment)
         ORDER BY 
         payment_date ASC;";
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if(!$singleDateData && $startDate && $endDate){
-        $sql = "SELECT 
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+            } else if ( !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
         DATE(payments.date_time_of_payment) AS payment_date,
         SUM(DISTINCT payments.change_amount) as change_amount,
         SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
@@ -3673,14 +3673,14 @@ LEFT JOIN (
         DATE(payments.date_time_of_payment)
         ORDER BY 
         payment_date ASC;";
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-    }else{
-        $sql="SELECT 
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+            } else {
+                $sql = "SELECT 
         DATE(payments.date_time_of_payment) AS payment_date,
         SUM(DISTINCT payments.change_amount) as change_amount,
         SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
@@ -3705,18 +3705,18 @@ LEFT JOIN (
         GROUP BY 
         DATE(payments.date_time_of_payment)
         ORDER BY 
-        payment_date ASC;"; 
+        payment_date ASC;";
 
-            $stmt = $this->connect()->query($sql);
-            return $stmt;
-}
-}
-}
+                $stmt = $this->connect()->query( $sql );
+                return $stmt;
+            }
+        }
+    }
 
-public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endDate,$exclude){
-    if($exclude == 1){
-        if($userId && !$singleDateData && !$startDate && !$endDate){
-            $sql = "SELECT 
+    public function getPaymentMethodByUsers( $userId, $singleDateData, $startDate, $endDate, $exclude ) {
+        if ( $exclude == 1 ) {
+            if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
             payments.id AS id,
             u.id as id,
             u.first_name as firstname,
@@ -3959,15 +3959,15 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
      GROUP BY 
         u.id
      ORDER BY 
-        u.id ASC"; 
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':userId', $userId);
-            $sql->execute();
-            return $sql;
-        
-        }else if(!$userId && $singleDateData && !$startDate && !$endDate){
-            $sql = "SELECT 
+        u.id ASC";
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':userId', $userId );
+                $sql->execute();
+                return $sql;
+
+            } else if ( !$userId && $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
             payments.id AS id,
             u.id as id,
             u.first_name as firstname,
@@ -4210,14 +4210,14 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
      GROUP BY 
         u.id
      ORDER BY 
-        u.id ASC"; 
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':singleDateData',  $singleDateData);
-            $sql->execute();
-            return $sql;
-        }else if(!$userId && !$singleDateData && $startDate && $endDate){
-            $sql = "SELECT 
+        u.id ASC";
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+            } else if ( !$userId && !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
             payments.id AS id,
             u.id as id,
             u.first_name as firstname,
@@ -4460,15 +4460,15 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
     GROUP BY 
         u.id
      ORDER BY 
-        u.id ASC"; 
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':startDate', $startDate);
-            $sql->bindParam(':endDate', $endDate);
-            $sql->execute();
-            return $sql;
-        }else if($userId && $singleDateData && !$startDate && !$endDate){
-            $sql = "SELECT 
+        u.id ASC";
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+            } else if ( $userId && $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
             payments.id AS id,
             u.id as id,
             u.first_name as firstname,
@@ -4711,15 +4711,15 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
     GROUP BY 
         u.id
      ORDER BY 
-        u.id ASC"; 
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':userId', $userId);
-            $sql->bindParam(':singleDateData',  $singleDateData);
-            $sql->execute();
-            return $sql;
-        }else if($userId && !$singleDateData && $startDate && $endDate){
-            $sql = "SELECT 
+        u.id ASC";
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':userId', $userId );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+            } else if ( $userId && !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
             payments.id AS id,
             u.id as id,
             u.first_name as firstname,
@@ -4962,17 +4962,16 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
      GROUP BY 
         u.id
      ORDER BY 
-        u.id ASC"; 
-        
-            $sql = $this->connect()->prepare($sql);
-            $sql->bindParam(':userId', $userId);
-            $sql->bindParam(':startDate', $startDate);
-            $sql->bindParam(':endDate', $endDate);
-            $sql->execute();
-            return $sql;
-        }
-        else{
-            $sql="SELECT 
+        u.id ASC";
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':userId', $userId );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+            } else {
+                $sql = "SELECT 
             payments.id AS id,
             u.id as id,
             u.first_name as firstname,
@@ -5214,14 +5213,15 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         GROUP BY 
         u.id
      ORDER BY 
-        u.id ASC"; 
-        $stmt = $this->connect()->query($sql);
-        return $stmt;
-        }
-        
-    }else{
-    if($userId && !$singleDateData && !$startDate && !$endDate){
-        $sql = "SELECT 
+        u.id ASC";
+
+                $stmt = $this->connect()->query( $sql );
+                return $stmt;
+            }
+
+        } else {
+            if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -5250,13 +5250,13 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         u.id
     ORDER BY 
         u.id ASC";
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':userId', $userId);
-        $sql->execute();
-        return $sql;
-    }else if(!$userId && $singleDateData && !$startDate && !$endDate){
-        $sql = "SELECT 
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':userId', $userId );
+                $sql->execute();
+                return $sql;
+            } else if ( !$userId && $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -5285,13 +5285,13 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         u.id
     ORDER BY 
         u.id ASC";
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if(!$userId && !$singleDateData && $startDate && $endDate){
-        $sql = "SELECT 
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+            } else if ( !$userId && !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -5320,13 +5320,13 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         u.id
     ORDER BY 
         u.id ASC";
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-    }else if($userId && $singleDateData && !$startDate && !$endDate){
-        $sql = "SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+            } else if ( $userId && $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -5355,14 +5355,14 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         u.id
     ORDER BY 
         u.id ASC";
-    
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':userId', $userId);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if($userId && !$singleDateData && $startDate && $endDate){
-        $sql = "SELECT 
+
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':userId', $userId );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+            } else if ( $userId && !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -5391,15 +5391,14 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         u.id
     ORDER BY 
         u.id ASC";
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':userId', $userId);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-    }
-    else{
-    $sql="SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':userId', $userId );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+            } else {
+                $sql = "SELECT 
             u.id as id,
             u.first_name as firstname,
             u.last_name as lastname,
@@ -5427,16 +5426,18 @@ public function getPaymentMethodByUsers($userId,$singleDateData,$startDate,$endD
         GROUP BY 
             u.id
         ORDER BY 
-            u.id ASC"; 
-        $stmt = $this->connect()->query($sql);
-        return $stmt;
+            u.id ASC";
+
+                $stmt = $this->connect()->query( $sql );
+                return $stmt;
+            }
+        }
     }
-}
-}
-public function getPaymentMethodByCustomer($customerId,$singleDateData,$startDate,$endDate,$exclude){
-    if($exclude == 1){
-      if($customerId && !$singleDateData && !$startDate && !$endDate){
-        $sql="SELECT 
+
+    public function getPaymentMethodByCustomer( $customerId, $singleDateData, $startDate, $endDate, $exclude ) {
+        if ( $exclude == 1 ) {
+            if ( $customerId && !$singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -5475,15 +5476,15 @@ public function getPaymentMethodByCustomer($customerId,$singleDateData,$startDat
     GROUP BY 
     u.id
     ORDER BY 
-        payment_date ASC;"; 
+        payment_date ASC;";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':customerId', $customerId);
-        $sql->execute();
-        return $sql;
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':customerId', $customerId );
+                $sql->execute();
+                return $sql;
 
-      }else if(!$customerId && $singleDateData && !$startDate && !$endDate){
-        $sql="SELECT 
+            } else if ( !$customerId && $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         payments.id AS id,
         u.id as id,
         u.first_name as firstname,
@@ -5725,15 +5726,15 @@ END AS tobe_deducted_credits
         AND DATE(payments.date_time_of_payment) = :singleDateData
        u.id
     ORDER BY 
-       u.first_name ASC;"; 
+       u.first_name ASC;";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
 
-      }else if(!$customerId && !$singleDateData && $startDate && $endDate){
-        $sql="SELECT 
+            } else if ( !$customerId && !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
         payments.id AS id,
         u.id as id,
         u.first_name as firstname,
@@ -5976,16 +5977,16 @@ END AS tobe_deducted_credits
     GROUP BY 
        u.id
     ORDER BY 
-       u.first_name ASC;"; 
+       u.first_name ASC;";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
 
-      }else if($customerId && $singleDateData && !$startDate && !$endDate){
-        $sql="SELECT 
+            } else if ( $customerId && $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         payments.id AS id,
         u.id as id,
         u.first_name as firstname,
@@ -6228,15 +6229,15 @@ END AS tobe_deducted_credits
     GROUP BY 
        u.id
     ORDER BY 
-       u.first_name ASC;"; 
+       u.first_name ASC;";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':customerId', $customerId);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
-      }else if($customerId && !$singleDateData && $startDate && $endDate){
-        $sql="SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':customerId', $customerId );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+            } else if ( $customerId && !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
         payments.id AS id,
         u.id as id,
         u.first_name as firstname,
@@ -6479,17 +6480,16 @@ END AS tobe_deducted_credits
     GROUP BY 
        u.id
     ORDER BY 
-       u.first_name ASC;"; 
+       u.first_name ASC;";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':customerId', $customerId);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-      }
-      else{
-        $sql="SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':customerId', $customerId );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+            } else {
+                $sql = "SELECT 
         payments.id AS id,
         u.id as id,
         u.first_name as firstname,
@@ -6731,13 +6731,14 @@ END AS tobe_deducted_credits
     GROUP BY 
        u.id
     ORDER BY 
-       u.first_name ASC;"; 
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
-    }
-    }else{
-    if($customerId && !$singleDateData && !$startDate && !$endDate){
-        $sql="SELECT 
+       u.first_name ASC;";
+
+                $stmt = $this->connect()->query( $sql );
+                return $stmt;
+            }
+        } else {
+            if ( $customerId && !$singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -6765,15 +6766,15 @@ END AS tobe_deducted_credits
         GROUP BY 
             u.id
         ORDER BY 
-            u.id ASC"; 
+            u.id ASC";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':customerId', $customerId);
-        $sql->execute();
-        return $sql;
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':customerId', $customerId );
+                $sql->execute();
+                return $sql;
 
-    }else if(!$customerId && $singleDateData && !$startDate && !$endDate){
-        $sql="SELECT 
+            } else if ( !$customerId && $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -6801,14 +6802,14 @@ END AS tobe_deducted_credits
         GROUP BY 
             u.id
         ORDER BY 
-            u.id ASC"; 
+            u.id ASC";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if(!$customerId && !$singleDateData && $startDate && $endDate){
-        $sql="SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+            } else if ( !$customerId && !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -6836,15 +6837,15 @@ END AS tobe_deducted_credits
         GROUP BY 
             u.id
         ORDER BY 
-            u.id ASC"; 
+            u.id ASC";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-    }else if($customerId && $singleDateData && !$startDate && !$endDate){
-        $sql="SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+            } else if ( $customerId && $singleDateData && !$startDate && !$endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -6872,15 +6873,15 @@ END AS tobe_deducted_credits
         GROUP BY 
             u.id
         ORDER BY 
-            u.id ASC"; 
+            u.id ASC";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':customerId', $customerId);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if($customerId && !$singleDateData && $startDate && $endDate){
-        $sql="SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':customerId', $customerId );
+                $sql->bindParam( ':singleDateData',  $singleDateData );
+                $sql->execute();
+                return $sql;
+            } else if ( $customerId && !$singleDateData && $startDate && $endDate ) {
+                $sql = "SELECT 
         u.id as id,
         u.first_name as firstname,
         u.last_name as lastname,
@@ -6908,17 +6909,16 @@ END AS tobe_deducted_credits
         GROUP BY 
             u.id
         ORDER BY 
-            u.id ASC"; 
+            u.id ASC";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':customerId', $customerId);
-        $sql->bindParam(':startDate', $startDate);
-        $sql->bindParam(':endDate', $endDate);
-        $sql->execute();
-        return $sql;
-    }
-    else{
-        $sql="SELECT 
+                $sql = $this->connect()->prepare( $sql );
+                $sql->bindParam( ':customerId', $customerId );
+                $sql->bindParam( ':startDate', $startDate );
+                $sql->bindParam( ':endDate', $endDate );
+                $sql->execute();
+                return $sql;
+            } else {
+                $sql = "SELECT 
             u.id as id,
             u.first_name as firstname,
             u.last_name as lastname,
@@ -6946,16 +6946,17 @@ END AS tobe_deducted_credits
             GROUP BY 
                 u.id
             ORDER BY 
-                u.id ASC"; 
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
+                u.id ASC";
+
+                $stmt = $this->connect()->query( $sql );
+                return $stmt;
+            }
         }
     }
-}
 
-public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDate,$endDate){
-    if($selectedProduct && !$userId && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+    public function getVoidedSales( $selectedProduct, $userId, $singleDateData, $startDate, $endDate ) {
+        if ( $selectedProduct && !$userId && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -6964,12 +6965,12 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.prod_id = :selectedProduct
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct', $selectedProduct);
-        $sql->execute();
-        return $sql;
-    }else if(!$selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -6978,13 +6979,13 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.cashier_id = :cashier_id
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':cashier_id',  $userId);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':cashier_id',  $userId );
+            $sql->execute();
+            return $sql;
 
-    }else if(!$selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        } else if ( !$selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -6993,12 +6994,12 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if(!$selectedProduct && !$userId && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData',  $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedProduct && !$userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -7007,13 +7008,13 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':stratDate',  $startDate);
-        $sql->bindParam(':endDate',  $endDate);
-        $sql->execute();
-        return $sql;
-    }else if($selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':stratDate',  $startDate );
+            $sql->bindParam( ':endDate',  $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -7022,13 +7023,13 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.cashier_id = :cashier_id AND t.prod_id = :selectedProduct
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct', $selectedProduct);
-        $sql->bindParam(':cashier_id',  $userId);
-        $sql->execute();
-        return $sql;
-    }else if($selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->bindParam( ':cashier_id',  $userId );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -7037,14 +7038,14 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData AND t.prod_id = :selectedProduct
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct', $selectedProduct);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->bindParam( ':singleDateData',  $singleDateData );
+            $sql->execute();
+            return $sql;
 
-    }else if(!$selectedProduct && $userId && $singleDateData && !$startDate && !$endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        } else if ( !$selectedProduct && $userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -7053,14 +7054,14 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData AND t.cashier_id = :cashier_id
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':cashier_id',  $userId);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':cashier_id',  $userId );
+            $sql->bindParam( ':singleDateData',  $singleDateData );
+            $sql->execute();
+            return $sql;
 
-    }else if($selectedProduct && !$userId && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        } else if ( $selectedProduct && !$userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -7069,15 +7070,15 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate AND t.prod_id = :selectedProduct
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':selectedProduct', $selectedProduct);
-        $sql->bindParam(':stratDate',  $startDate);
-        $sql->bindParam(':endDate',  $endDate);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->bindParam( ':stratDate',  $startDate );
+            $sql->bindParam( ':endDate',  $endDate );
+            $sql->execute();
+            return $sql;
 
-    }else if(!$selectedProduct && $userId && !$singleDateData && $startDate && $endDate){
-        $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+        } else if ( !$selectedProduct && $userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
         FROM transactions as t
         INNER JOIN products as p
@@ -7086,36 +7087,38 @@ public function getVoidedSales($selectedProduct,$userId,$singleDateData,$startDa
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate AND t.cashier_id = :cashier_id
         ORDER BY  t.prod_desc ASC';
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':cashier_id',  $userId);
-        $sql->bindParam(':stratDate',  $startDate);
-        $sql->bindParam(':endDate',  $endDate);
-        $sql->execute();
-        return $sql;
-    }else{
-        $sql="SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':cashier_id',  $userId );
+            $sql->bindParam( ':stratDate',  $startDate );
+            $sql->bindParam( ':endDate',  $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = "SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
         u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
         INNER JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
-        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) ORDER BY  t.prod_desc ASC;"; 
+        WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) ORDER BY  t.prod_desc ASC;";
 
-        $stmt = $this->connect()->query($sql);
-        return $stmt; 
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+
+        }
+
     }
 
-}
-public function getDatePayments(){
-    $sql = 'SELECT DATE(date_time_of_payment) as date FROM payments GROUP BY date ORDER BY date ASC';
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
-}
+    public function getDatePayments() {
+        $sql = 'SELECT DATE(date_time_of_payment) as date FROM payments GROUP BY date ORDER BY date ASC';
+        $stmt = $this->connect()->query( $sql );
+        return $stmt;
+    }
 
-public function zReadingReport($singleDateData,$startDate,$endDate){
-    if($singleDateData && !$startDate && !$endDate ){
-        $sql = "SELECT 
+    public function zReadingReport( $singleDateData, $startDate, $endDate ) {
+        if ( $singleDateData && !$startDate && !$endDate ) {
+            $sql = "SELECT 
         JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
         JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
         JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
@@ -7197,12 +7200,12 @@ public function zReadingReport($singleDateData,$startDate,$endDate){
          date_time as date_time
       FROM z_read WHERE DATE(date_time) = :singleDateData";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
-    }else if(!$singleDateData && $startDate && $endDate){
-        $sql = "SELECT 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData',  $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$singleDateData && $startDate && $endDate ) {
+            $sql = "SELECT 
         JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
         JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
         JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
@@ -7283,13 +7286,13 @@ public function zReadingReport($singleDateData,$startDate,$endDate){
         SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
          date_time as date_time
       FROM z_read WHERE DATE(date_time) BETWEEN :stratDate AND :endDate";
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':stratDate',  $startDate);
-        $sql->bindParam(':endDate',  $endDate);
-        $sql->execute();
-        return $sql;
-    }else{
-    $sql = "SELECT 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':stratDate',  $startDate );
+            $sql->bindParam( ':endDate',  $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = "SELECT 
     JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
     JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
     JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
@@ -7370,15 +7373,15 @@ public function zReadingReport($singleDateData,$startDate,$endDate){
     SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
      date_time as date_time
   FROM z_read;";
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
+
     }
 
-}
-
-public function birSalesReport($singleDateData,$startDate,$endDate){
-    if($singleDateData && !$startDate && !$endDate){
-        $sql = "SELECT z.id AS id,
+    public function birSalesReport( $singleDateData, $startDate, $endDate ) {
+        if ( $singleDateData && !$startDate && !$endDate ) {
+            $sql = "SELECT z.id AS id,
         s.shop_tin AS tin,
         s.branch_code AS branch,
         s.min,
@@ -7408,13 +7411,13 @@ public function birSalesReport($singleDateData,$startDate,$endDate){
         max_end_si_table.max_end_si;
    ";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':singleDateData',  $singleDateData);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData',  $singleDateData );
+            $sql->execute();
+            return $sql;
 
-    }else if(!$singleDateData && $startDate && $endDate){
-        $sql = "SELECT z.id AS id,
+        } else if ( !$singleDateData && $startDate && $endDate ) {
+            $sql = "SELECT z.id AS id,
         s.shop_tin AS tin,
         s.branch_code AS branch,
         s.min,
@@ -7443,14 +7446,14 @@ public function birSalesReport($singleDateData,$startDate,$endDate){
         YEAR(z.date_time),
         max_end_si_table.max_end_si;";
 
-        $sql = $this->connect()->prepare($sql);
-        $sql->bindParam(':stratDate',  $startDate);
-        $sql->bindParam(':endDate',  $endDate);
-        $sql->execute();
-        return $sql;
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':stratDate',  $startDate );
+            $sql->bindParam( ':endDate',  $endDate );
+            $sql->execute();
+            return $sql;
 
-    }else{
-    $sql="SELECT z.id AS id,
+        } else {
+            $sql = "SELECT z.id AS id,
     s.shop_tin AS tin,
     s.branch_code AS branch,
     s.min,
@@ -7477,330 +7480,136 @@ GROUP BY
     s.branch_code,
     MONTH(z.date_time), 
     YEAR(z.date_time),
-    max_end_si_table.max_end_si;"; 
-$stmt = $this->connect()->query($sql);
-return $stmt;
-}
-}
+    max_end_si_table.max_end_si;";
 
-public function zReadDate(){
-    $sql="SELECT date_time AS date FROM z_read"; 
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
-}
-
-public function geProductSalesData($selectedProduct,$selectedCategories,$selectedSubCategories,$singleDateData,$startDate,$endDate,$selectedOption){
-    if($selectedOption == "sold"){
-        if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.sold * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.id = :selectedProduct
-            HAVING i.sold > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedProduct', $selectedProduct);
-            $sql->execute();
-            return $sql;
-
-        }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.sold * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.category_id = :selectedCategoryProduct
-            HAVING i.sold > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
-            $sql->execute();
-            return $sql;
-        }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.sold * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.variant_id = :selectedVariantroduct
-            HAVING i.sold > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
-            $sql->execute();
-            return $sql;
-        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.sold * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.category_id = :selectedCategoryProduct AND p.id = :selectedProduct
-            HAVING i.sold > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedProduct', $selectedProduct);
-            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
-            $sql->execute();
-            return $sql;
-        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.sold * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.variant_id = :selectedVariantroduct AND p.id = :selectedProduct
-            HAVING i.sold > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedProduct', $selectedProduct);
-            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
-            $sql->execute();
-            return $sql;
-        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && $selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.sold * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.variant_id = :selectedVariantroduct AND p.id = :selectedProduct AND p.category_id = :selectedCategoryProduct
-            HAVING i.sold > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedProduct', $selectedProduct);
-            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
-            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
-            $sql->execute();
-            return $sql;
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
         }
-        else{
-        $sql="SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.sold as sold,p.prod_price as prod_price,u.uom_name as measurement,(i.sold * p.prod_price) as totalAmount,
-        CASE
+    }
+
+    public function zReadDate() {
+        $sql = 'SELECT date_time AS date FROM z_read';
+
+        $stmt = $this->connect()->query( $sql );
+        return $stmt;
+    }
+
+    public function geProductSalesData( $selectedProduct, $selectedCategories, $selectedSubCategories, $singleDateData, $startDate, $endDate ) {
+
+        if ( $selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
+
+            $sql = "SELECT 
+    p.id as id,
+    p.prod_desc as prod_desc,
+    p.sku as sku,
+    p.cost as cost,
+    SUM(t.prod_qty) as sold,
+    c.category_name as category_name,
+    v.variant_name as variant_name,
+    p.prod_price as prod_price,
+    DATE(py.date_time_of_payment) as date,
+    COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+    COALESCE(returns.total_return_qty,0) AS product_returns,
+    COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+            CASE
                 WHEN p.isVAT = 1 THEN 
                     ROUND(
-                        ((i.sold * p.prod_price) / 1.12) * 0.12,
+                        ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
                         2
                     )
                 ELSE 0
-            END AS totalVat
-        FROM inventory as i 
-        INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-        LEFT JOIN category as c ON c.id = p.category_id
-        LEFT JOIN variants as v ON v.id = p.variant_id
-        HAVING i.sold > 0;";
-     
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
-    }
-    }else{
-        if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.stock * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.id = :selectedProduct
-            HAVING i.stock > 0;";
+            END AS totalVat,
+   (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+FROM 
+    products as p 
+INNER JOIN transactions as t ON t.prod_id = p.id 
+INNER JOIN payments as py ON t.payment_id = py.id
+LEFT JOIN (
+    SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+    FROM refunded
+    GROUP BY prod_id
+) as refunds ON t.prod_id = refunds.prod_id
+LEFT JOIN (
+    SELECT product_id, SUM(return_qty) as total_return_qty
+    FROM return_exchange
+    GROUP BY product_id
+) as returns ON t.prod_id = returns.product_id
+LEFT JOIN category as c ON c.id = p.category_id
+LEFT JOIN variants as v ON v.id = p.variant_id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 
+    AND p.id = :selectedProduct
+GROUP BY 
+    t.prod_id
+HAVING
+net_sold > 0
+   ";
 
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedProduct', $selectedProduct);
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedProduct',  $selectedProduct );
             $sql->execute();
             return $sql;
 
-        }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
+        } 
+       
+        
+        else {
+            $sql = "SELECT 
+    p.id as id,
+    p.prod_desc as prod_desc,
+    p.sku as sku,
+    p.cost as cost,
+    SUM(t.prod_qty) as sold,
+    c.category_name as category_name,
+    v.variant_name as variant_name,
+    p.prod_price as prod_price,
+    DATE(py.date_time_of_payment) as date,
+    COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+    COALESCE(returns.total_return_qty,0) AS product_returns,
+    COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
             CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.stock * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.category_id = :selectedCategoryProduct
-            HAVING i.stock > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
-            $sql->execute();
-            return $sql;
-        }else if(!$selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.stock * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.variant_id = :selectedVariantroduct
-            HAVING i.stock > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
-            $sql->execute();
-            return $sql;
-        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && !$selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.stock * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.category_id = :selectedCategoryProduct AND p.id = :selectedProduct
-            HAVING i.stock > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedProduct', $selectedProduct);
-            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
-            $sql->execute();
-            return $sql;
-        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && !$selectedCategories && $selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.stock * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.variant_id = :selectedVariantroduct AND p.id = :selectedProduct
-            HAVING i.stock > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedProduct', $selectedProduct);
-            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
-            $sql->execute();
-            return $sql;
-        }else if($selectedProduct && !$singleDateData && !$startDate && !$endDate && $selectedCategories && $selectedSubCategories){
-            $sqlQuery = "SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
-            CASE
-                    WHEN p.isVAT = 1 THEN 
-                        ROUND(
-                            ((i.stock * p.prod_price) / 1.12) * 0.12,
-                            2
-                        )
-                    ELSE 0
-                END AS totalVat
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-            LEFT JOIN category as c ON c.id = p.category_id
-            LEFT JOIN variants as v ON v.id = p.variant_id
-            WHERE p.variant_id = :selectedVariantroduct AND p.id = :selectedProduct AND p.category_id = :selectedCategoryProduct
-            HAVING i.stock > 0;";
-
-            $sql = $this->connect()->prepare($sqlQuery);
-            $sql->bindParam(':selectedProduct', $selectedProduct);
-            $sql->bindParam(':selectedVariantroduct', $selectedSubCategories);
-            $sql->bindParam(':selectedCategoryProduct', $selectedCategories);
-            $sql->execute();
-            return $sql;
-        }
-        else{
-        $sql="SELECT c.category_name as category_name, v.variant_name as variant_name, p.sku as sku, p.prod_desc as prod_desc,p.cost as cost, i.stock as stock,p.prod_price as prod_price,u.uom_name as measurement,(i.stock * p.prod_price) as totalAmount,
-        CASE
                 WHEN p.isVAT = 1 THEN 
                     ROUND(
-                        ((i.stock * p.prod_price) / 1.12) * 0.12,
+                        ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
                         2
                     )
                 ELSE 0
-            END AS totalVat
-        FROM inventory as i 
-        INNER JOIN products as p ON p.id = i.product_id LEFT JOIN uom as u ON p.uom_id = u.id
-        LEFT JOIN category as c ON c.id = p.category_id
-        LEFT JOIN variants as v ON v.id = p.variant_id
-        HAVING i.stock > 0;";
-     
-    $stmt = $this->connect()->query($sql);
-    return $stmt;
+            END AS totalVat,
+   (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+FROM 
+    products as p 
+INNER JOIN transactions as t ON t.prod_id = p.id 
+INNER JOIN payments as py ON t.payment_id = py.id
+LEFT JOIN (
+    SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+    FROM refunded
+    GROUP BY prod_id
+) as refunds ON t.prod_id = refunds.prod_id
+LEFT JOIN (
+    SELECT product_id, SUM(return_qty) as total_return_qty
+    FROM return_exchange
+    GROUP BY product_id
+) as returns ON t.prod_id = returns.product_id
+LEFT JOIN category as c ON c.id = p.category_id
+LEFT JOIN variants as v ON v.id = p.variant_id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0
+GROUP BY 
+    t.prod_id
+HAVING
+net_sold > 0";
+
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+
+        }
     }
 
-    }
-
-}
-public function taxRates($singleDateData,$startDate,$endDate){
- if($singleDateData && !$startDate && !$endDate){
-    $sqlQuery = "SELECT  SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount, SUM(JSON_VALUE(all_data, '$.vatable_sales'))
+    public function taxRates( $singleDateData, $startDate, $endDate ) {
+        if ( $singleDateData && !$startDate && !$endDate ) {
+            $sqlQuery = "SELECT  SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount, SUM(JSON_VALUE(all_data, '$.vatable_sales'))
      AS total_vatable_sales,date_time,
      SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
     SUM(JSON_VALUE(all_data, '$.otherCustomerVat')) AS total_other
@@ -7809,14 +7618,14 @@ public function taxRates($singleDateData,$startDate,$endDate){
     WHERE DATE(date_time) = :singleDateData
     ";
 
-    $sql = $this->connect()->prepare($sqlQuery);
+            $sql = $this->connect()->prepare( $sqlQuery );
 
-    $sql->bindParam(':singleDateData',$singleDateData);
-    $sql->execute();
-    return $sql;
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
 
- }else if(!$singleDateData && $startDate && $endDate){
-    $sqlQuery = "SELECT  SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount, SUM(JSON_VALUE(all_data, '$.vatable_sales'))
+        } else if ( !$singleDateData && $startDate && $endDate ) {
+            $sqlQuery = "SELECT  SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount, SUM(JSON_VALUE(all_data, '$.vatable_sales'))
     AS total_vatable_sales,date_time,
     SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
     SUM(JSON_VALUE(all_data, '$.otherCustomerVat')) AS total_other
@@ -7824,27 +7633,27 @@ public function taxRates($singleDateData,$startDate,$endDate){
    WHERE DATE(date_time) BETWEEN :startDate AND :endDate
    ";
 
-   $sql = $this->connect()->prepare($sqlQuery);
-   $sql->bindParam(':startDate',$startDate);
-   $sql->bindParam(':endDate',$endDate);
-   $sql->execute();
-   return $sql;
- }
- else{
-    $sql="SELECT  SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount,
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = "SELECT  SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount,
      SUM(JSON_VALUE(all_data, '$.vatable_sales')) AS total_vatable_sales,date_time,
      SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
     SUM(JSON_VALUE(all_data, '$.otherCustomerVat')) AS total_other
       FROM z_read;";
- 
-$stmt = $this->connect()->query($sql);
-return $stmt;
- }
-}
-public function getProfit($selectedProduct,$selectedCategories,$selectedSubCategories,$singleDateData,$startDate,$endDate,$selectedOption){
-    if($selectedOption == "sold"){
-        if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
+
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
+    }
+
+    public function getProfit( $selectedProduct, $selectedCategories, $selectedSubCategories, $singleDateData, $startDate, $endDate, $selectedOption ) {
+        if ( $selectedOption == 'sold' ) {
+            if ( $selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
+                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
             ROUND(((i.sold * p.prod_price)-(i.sold * p.cost)),2) AS profit,ROUND((i.sold * p.prod_price),2)  as total
             FROM inventory as i 
             INNER JOIN products as p ON p.id = i.product_id
@@ -7852,14 +7661,14 @@ public function getProfit($selectedProduct,$selectedCategories,$selectedSubCateg
             HAVING
             sold > 0;
            ";
-        
-           $sql = $this->connect()->prepare($sqlQuery);
-           $sql->bindParam(':selectedProduct',$selectedProduct);
-           $sql->execute();
-           return $sql;
 
-        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
+                $sql = $this->connect()->prepare( $sqlQuery );
+                $sql->bindParam( ':selectedProduct', $selectedProduct );
+                $sql->execute();
+                return $sql;
+
+            } else if ( !$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
+                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
             ROUND(((i.sold * p.prod_price)-(i.sold * p.cost)),2) AS profit,ROUND((i.sold * p.prod_price),2)  as total
             FROM inventory as i 
             INNER JOIN products as p ON p.id = i.product_id
@@ -7867,13 +7676,13 @@ public function getProfit($selectedProduct,$selectedCategories,$selectedSubCateg
             HAVING
             sold > 0;
            ";
-        
-           $sql = $this->connect()->prepare($sqlQuery);
-           $sql->bindParam(':selectedCategories',$selectedCategories);
-           $sql->execute();
-           return $sql;
-        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
+
+                $sql = $this->connect()->prepare( $sqlQuery );
+                $sql->bindParam( ':selectedCategories', $selectedCategories );
+                $sql->execute();
+                return $sql;
+            } else if ( !$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
+                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
             ROUND(((i.sold * p.prod_price)-(i.sold * p.cost)),2) AS profit,ROUND((i.sold * p.prod_price),2)  as total
             FROM inventory as i 
             INNER JOIN products as p ON p.id = i.product_id
@@ -7881,29 +7690,29 @@ public function getProfit($selectedProduct,$selectedCategories,$selectedSubCateg
             HAVING
             sold > 0;
            ";
-        
-           $sql = $this->connect()->prepare($sqlQuery);
-           $sql->bindParam(':selectedSubCategories',$selectedSubCategories);
-           $sql->execute();
-           return $sql;
-        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
 
-        }
-        else{
-            $sql="SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
+                $sql = $this->connect()->prepare( $sqlQuery );
+                $sql->bindParam( ':selectedSubCategories', $selectedSubCategories );
+                $sql->execute();
+                return $sql;
+            } else if ( !$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
+
+            } else {
+                $sql = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
             ROUND(((i.sold * p.prod_price)-(i.sold * p.cost)),2) AS profit,ROUND((i.sold * p.prod_price),2)  as total
             FROM inventory as i 
             INNER JOIN products as p ON p.id = i.product_id
             HAVING
             sold > 0";
-         
-            $stmt = $this->connect()->query($sql);
-            return $stmt; 
-        }
 
-    }else{
-        if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
+                $stmt = $this->connect()->query( $sql );
+                return $stmt;
+
+            }
+
+        } else {
+            if ( $selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
+                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
             ROUND(((i.stock * p.prod_price)-(i.stock * p.cost)),2) AS profit,ROUND((i.stock * p.prod_price),2)  as total
             FROM inventory as i 
             INNER JOIN products as p ON p.id = i.product_id
@@ -7911,13 +7720,13 @@ public function getProfit($selectedProduct,$selectedCategories,$selectedSubCateg
             HAVING
             stock > 0
            ";
-        
-           $sql = $this->connect()->prepare($sqlQuery);
-           $sql->bindParam(':selectedProduct',$selectedProduct);
-           $sql->execute();
-           return $sql;
-        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
+
+                $sql = $this->connect()->prepare( $sqlQuery );
+                $sql->bindParam( ':selectedProduct', $selectedProduct );
+                $sql->execute();
+                return $sql;
+            } else if ( !$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
+                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
             ROUND(((i.stock * p.prod_price)-(i.stock * p.cost)),2) AS profit,ROUND((i.stock * p.prod_price),2)  as total
             FROM inventory as i 
             INNER JOIN products as p ON p.id = i.product_id
@@ -7925,13 +7734,13 @@ public function getProfit($selectedProduct,$selectedCategories,$selectedSubCateg
             HAVING
             stock > 0
            ";
-        
-           $sql = $this->connect()->prepare($sqlQuery);
-           $sql->bindParam(':selectedCategories',$selectedCategories);
-           $sql->execute();
-           return $sql;
-        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
+
+                $sql = $this->connect()->prepare( $sqlQuery );
+                $sql->bindParam( ':selectedCategories', $selectedCategories );
+                $sql->execute();
+                return $sql;
+            } else if ( !$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
+                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
             ROUND(((i.stock * p.prod_price)-(i.stock * p.cost)),2) AS profit,ROUND((i.stock * p.prod_price),2)  as total
             FROM inventory as i 
             INNER JOIN products as p ON p.id = i.product_id
@@ -7939,33 +7748,39 @@ public function getProfit($selectedProduct,$selectedCategories,$selectedSubCateg
             HAVING
             stock > 0
            ";
-        
-           $sql = $this->connect()->prepare($sqlQuery);
-           $sql->bindParam(':selectedSubCategories',$selectedSubCategories);
-           $sql->execute();
-           return $sql;
-        }
-        else{
-            $sql="SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
+
+                $sql = $this->connect()->prepare( $sqlQuery );
+                $sql->bindParam( ':selectedSubCategories', $selectedSubCategories );
+                $sql->execute();
+                return $sql;
+            } else {
+                $sql = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
             ROUND(((i.stock * p.prod_price)-(i.stock * p.cost)),2) AS profit,ROUND((i.stock * p.prod_price),2)  as total
             FROM inventory as i 
             INNER JOIN products as p ON p.id = i.product_id";
-         
-            $stmt = $this->connect()->query($sql);
-            return $stmt; 
-        } 
-    }
-  
-}
 
-public function customerSales($customerId,$singleDateData,$startDate,$endDate){
-    $sql="WITH RefundSums AS (
+                $stmt = $this->connect()->query( $sql );
+                return $stmt;
+
+            }
+
+        }
+
+    }
+
+    public function customerSales( $customerId, $singleDateData, $startDate, $endDate ) {
+        if ( $customerId && !$singleDateData && !$startDate && !$endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
     SELECT 
         r.payment_id,
         COALESCE(
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
                 0
             ) as credits,
+     COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                0
+            ) as cartRateRefund,
         COALESCE(
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
                 0
@@ -7976,7 +7791,23 @@ public function customerSales($customerId,$singleDateData,$startDate,$endDate){
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
                 0
             )
-        ) AS total_item_discounts
+        ) AS total_item_discounts,
+ ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+    0
+)),2) AS refundCart,
+ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+    0
+)-  COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                0
+            ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+    0
+)),2),2) AS otherPayments
+
     FROM 
         refunded r
     GROUP BY 
@@ -7989,6 +7820,10 @@ ReturnExchangeSums AS (
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
                 0
             ) as rc_credits,
+         COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                0
+            ) as cartRateReturn,
         COALESCE(
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
                 0
@@ -7999,7 +7834,23 @@ ReturnExchangeSums AS (
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
                 0
             )
-        ) AS total_return_item_discounts
+        ) AS total_return_item_discounts,
+     ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+    0
+)),2) AS returnCart,
+   ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+    0
+)-  COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                0
+            ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+    0
+)),2),2) AS otherReturnPayments 
+  
     FROM 
         return_exchange  rc
     GROUP BY 
@@ -8018,11 +7869,677 @@ DISTINCT
     IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
     COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
     COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+    COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+    COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+    COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
     
     COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
     IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
     COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-    COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender
+    COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+    COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+    COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+    COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+   
+    
+FROM 
+    payments AS p 
+    INNER JOIN transactions AS t ON p.id = t.payment_id 
+    INNER JOIN users AS u ON u.id = t.user_id
+    INNER JOIN discounts AS d ON d.id = u.discount_id
+    INNER JOIN products AS ps ON ps.id = t.prod_id
+    LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+    LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 AND u.id = :customerId
+GROUP BY 
+    u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':customerId', $customerId );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$customerId && $singleDateData && !$startDate && !$endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+                SELECT 
+                    r.payment_id,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as credits,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateRefund,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsTender,
+                  SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_item_discounts,
+             ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS refundCart,
+            ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherPayments
+            
+                FROM 
+                    refunded r
+                GROUP BY 
+                    r.reference_num
+            ),
+            ReturnExchangeSums AS (
+                SELECT 
+                    rc.payment_id,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as rc_credits,
+                     COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateReturn,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsReturnTender,
+                  SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_return_item_discounts,
+                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS returnCart,
+               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherReturnPayments 
+              
+                FROM 
+                    return_exchange  rc
+                GROUP BY 
+                    rc.payment_id
+            )
+            SELECT
+            DISTINCT
+                u.first_name AS first_name,
+                u.last_name AS last_name, 
+                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                p.date_time_of_payment AS date,
+                p.cart_discount AS cart_discount,
+                d.discount_amount AS discountsRate,
+                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                
+                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+               
+                
+            FROM 
+                payments AS p 
+                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN users AS u ON u.id = t.user_id
+                INNER JOIN discounts AS d ON d.id = u.discount_id
+                INNER JOIN products AS ps ON ps.id = t.prod_id
+                LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            WHERE 
+                t.is_paid = 1 
+                AND t.is_void = 0 AND DATE(p.date_time_of_payment) = :singleDateData
+            GROUP BY 
+                u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$customerId && !$singleDateData && $startDate && $endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+                SELECT 
+                    r.payment_id,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as credits,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateRefund,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsTender,
+                  SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_item_discounts,
+             ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS refundCart,
+            ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherPayments
+            
+                FROM 
+                    refunded r
+                GROUP BY 
+                    r.reference_num
+            ),
+            ReturnExchangeSums AS (
+                SELECT 
+                    rc.payment_id,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as rc_credits,
+                     COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateReturn,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsReturnTender,
+                  SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_return_item_discounts,
+                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS returnCart,
+               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherReturnPayments 
+              
+                FROM 
+                    return_exchange  rc
+                GROUP BY 
+                    rc.payment_id
+            )
+            SELECT
+            DISTINCT
+                u.first_name AS first_name,
+                u.last_name AS last_name, 
+                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                p.date_time_of_payment AS date,
+                p.cart_discount AS cart_discount,
+                d.discount_amount AS discountsRate,
+                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                
+                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+               
+                
+            FROM 
+                payments AS p 
+                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN users AS u ON u.id = t.user_id
+                INNER JOIN discounts AS d ON d.id = u.discount_id
+                INNER JOIN products AS ps ON ps.id = t.prod_id
+                LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            WHERE 
+                t.is_paid = 1 
+                AND t.is_void = 0 AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+            GROUP BY 
+                u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $customerId && $singleDateData && !$startDate && !$endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+                SELECT 
+                    r.payment_id,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as credits,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateRefund,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsTender,
+                  SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_item_discounts,
+             ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS refundCart,
+            ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherPayments
+            
+                FROM 
+                    refunded r
+                GROUP BY 
+                    r.reference_num
+            ),
+            ReturnExchangeSums AS (
+                SELECT 
+                    rc.payment_id,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as rc_credits,
+                     COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateReturn,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsReturnTender,
+                  SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_return_item_discounts,
+                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS returnCart,
+               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherReturnPayments 
+              
+                FROM 
+                    return_exchange  rc
+                GROUP BY 
+                    rc.payment_id
+            )
+            SELECT
+            DISTINCT
+                u.first_name AS first_name,
+                u.last_name AS last_name, 
+                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                p.date_time_of_payment AS date,
+                p.cart_discount AS cart_discount,
+                d.discount_amount AS discountsRate,
+                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                
+                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+               
+                
+            FROM 
+                payments AS p 
+                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN users AS u ON u.id = t.user_id
+                INNER JOIN discounts AS d ON d.id = u.discount_id
+                INNER JOIN products AS ps ON ps.id = t.prod_id
+                LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            WHERE 
+                t.is_paid = 1 
+                AND t.is_void = 0 AND DATE(p.date_time_of_payment) = :singleDateData AND u.id = :customerId
+            GROUP BY 
+                u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->bindParam( ':customerId', $customerId );
+            $sql->execute();
+            return $sql;
+        } else if ( $customerId && !$singleDateData && $startDate && $endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+                SELECT 
+                    r.payment_id,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as credits,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateRefund,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsTender,
+                  SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_item_discounts,
+             ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS refundCart,
+            ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherPayments
+            
+                FROM 
+                    refunded r
+                GROUP BY 
+                    r.reference_num
+            ),
+            ReturnExchangeSums AS (
+                SELECT 
+                    rc.payment_id,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as rc_credits,
+                     COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateReturn,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsReturnTender,
+                  SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_return_item_discounts,
+                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS returnCart,
+               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherReturnPayments 
+              
+                FROM 
+                    return_exchange  rc
+                GROUP BY 
+                    rc.payment_id
+            )
+            SELECT
+            DISTINCT
+                u.first_name AS first_name,
+                u.last_name AS last_name, 
+                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                p.date_time_of_payment AS date,
+                p.cart_discount AS cart_discount,
+                d.discount_amount AS discountsRate,
+                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                
+                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+               
+                
+            FROM 
+                payments AS p 
+                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN users AS u ON u.id = t.user_id
+                INNER JOIN discounts AS d ON d.id = u.discount_id
+                INNER JOIN products AS ps ON ps.id = t.prod_id
+                LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            WHERE 
+                t.is_paid = 1 
+                AND t.is_void = 0 AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND u.id = :customerId
+            GROUP BY 
+                u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':customerId', $customerId );
+            $sql->execute();
+            return $sql;
+        } else {
+            $sql = "WITH RefundSums AS (
+    SELECT 
+        r.payment_id,
+        COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            ) as credits,
+     COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                0
+            ) as cartRateRefund,
+        COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                0
+            ) as discountsTender,
+      SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+        SUM(
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                0
+            )
+        ) AS total_item_discounts,
+ ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+    0
+)),2) AS refundCart,
+ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+    0
+)-  COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                0
+            ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+    0
+)),2),2) AS otherPayments
+    FROM 
+        refunded r
+    GROUP BY 
+        r.reference_num
+),
+ReturnExchangeSums AS (
+    SELECT 
+        rc.payment_id,
+     COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            ) as rc_credits,
+         COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                0
+            ) as cartRateReturn,
+        COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                0
+            ) as discountsReturnTender,
+      SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+        SUM(
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                0
+            )
+        ) AS total_return_item_discounts,
+     ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+    0
+)),2) AS returnCart,
+   ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+    0
+)-  COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                0
+            ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+    0
+)),2),2) AS otherReturnPayments 
+  
+    FROM 
+        return_exchange  rc
+    GROUP BY 
+        rc.payment_id
+)
+SELECT
+DISTINCT
+    u.first_name AS first_name,
+    u.last_name AS last_name, 
+    ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+    ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+    p.date_time_of_payment AS date,
+    p.cart_discount AS cart_discount,
+    d.discount_amount AS discountsRate,
+    COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+    IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+    COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+    COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+    COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+    COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+    COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+    
+    COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+    IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+    COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+    COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+    COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+    COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+    COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+   
     
 FROM 
     payments AS p 
@@ -8037,8 +8554,789 @@ WHERE
     AND t.is_void = 0 
 GROUP BY 
     u.id;";
- 
-    $stmt = $this->connect()->query($sql);
-    return $stmt; 
-}
+
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+
+        }
+    }
+
+    public function userSales( $selectedUser, $singleDateData, $startDate, $endDate ) {
+        if ( $selectedUser && !$singleDateData && !$startDate && !$endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+            SELECT 
+                r.payment_id,
+                COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                        0
+                    ) as credits,
+             COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                        0
+                    ) as cartRateRefund,
+                COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                        0
+                    ) as discountsTender,
+              SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                SUM(
+                    COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                        0
+                    )
+                ) AS total_item_discounts,
+         ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            0
+        )),2) AS refundCart,
+        ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+        COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+            0
+        )-  COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                        0
+                    ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            0
+        )),2),2) AS otherPayments
+            FROM 
+                refunded r
+            GROUP BY 
+                r.reference_num
+        ),
+        ReturnExchangeSums AS (
+            SELECT 
+                rc.payment_id,
+             COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                        0
+                    ) as rc_credits,
+                 COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                        0
+                    ) as cartRateReturn,
+                COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                        0
+                    ) as discountsReturnTender,
+              SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                SUM(
+                    COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                        0
+                    )
+                ) AS total_return_item_discounts,
+             ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            0
+        )),2) AS returnCart,
+           ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+        COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+            0
+        )-  COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                        0
+                    ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            0
+        )),2),2) AS otherReturnPayments 
+          
+            FROM 
+                return_exchange  rc
+            GROUP BY 
+                rc.payment_id
+        )
+        SELECT
+        DISTINCT
+            u.first_name AS first_name,
+            u.last_name AS last_name, 
+            ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+            ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+            p.date_time_of_payment AS date,
+            p.cart_discount AS cart_discount,
+            COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+            IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+            COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+            COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+            COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+            COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+            COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+            
+            COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+            IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+            COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+            COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+            COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+            COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+            COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+           
+            
+        FROM 
+            payments AS p 
+            INNER JOIN transactions AS t ON p.id = t.payment_id 
+            INNER JOIN users AS u ON u.id = t.cashier_id
+            INNER JOIN products AS ps ON ps.id = t.prod_id
+            LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+            LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0  AND u.id = :selectedUser
+        GROUP BY 
+            u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':selectedUser', $selectedUser );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedUser && $singleDateData && !$startDate && !$endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+                SELECT 
+                    r.payment_id,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as credits,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateRefund,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsTender,
+                  SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_item_discounts,
+             ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS refundCart,
+            ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherPayments
+            
+                FROM 
+                    refunded r
+                GROUP BY 
+                    r.reference_num
+            ),
+            ReturnExchangeSums AS (
+                SELECT 
+                    rc.payment_id,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as rc_credits,
+                     COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateReturn,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsReturnTender,
+                  SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_return_item_discounts,
+                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS returnCart,
+               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherReturnPayments 
+              
+                FROM 
+                    return_exchange  rc
+                GROUP BY 
+                    rc.payment_id
+            )
+            SELECT
+            DISTINCT
+                u.first_name AS first_name,
+                u.last_name AS last_name, 
+                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                p.date_time_of_payment AS date,
+                p.cart_discount AS cart_discount,
+                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                
+                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+               
+                
+            FROM 
+                payments AS p 
+                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN users AS u ON u.id = t.cashier_id
+                INNER JOIN products AS ps ON ps.id = t.prod_id
+                LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            WHERE 
+                t.is_paid = 1 
+                AND t.is_void = 0 AND DATE(p.date_time_of_payment) = :singleDateData
+            GROUP BY 
+                u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+        } else if ( !$selectedUser && !$singleDateData && $startDate && $endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+                SELECT 
+                    r.payment_id,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as credits,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateRefund,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsTender,
+                  SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_item_discounts,
+             ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS refundCart,
+            ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherPayments
+            
+                FROM 
+                    refunded r
+                GROUP BY 
+                    r.reference_num
+            ),
+            ReturnExchangeSums AS (
+                SELECT 
+                    rc.payment_id,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as rc_credits,
+                     COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateReturn,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsReturnTender,
+                  SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_return_item_discounts,
+                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS returnCart,
+               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherReturnPayments 
+              
+                FROM 
+                    return_exchange  rc
+                GROUP BY 
+                    rc.payment_id
+            )
+            SELECT
+            DISTINCT
+                u.first_name AS first_name,
+                u.last_name AS last_name, 
+                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                p.date_time_of_payment AS date,
+                p.cart_discount AS cart_discount,
+                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                
+                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+               
+                
+            FROM 
+                payments AS p 
+                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN users AS u ON u.id = t.cashier_id
+                INNER JOIN products AS ps ON ps.id = t.prod_id
+                LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            WHERE 
+                t.is_paid = 1 
+                AND t.is_void = 0 AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+            GROUP BY 
+                u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedUser && $singleDateData && !$startDate && !$endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+                SELECT 
+                    r.payment_id,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as credits,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateRefund,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsTender,
+                  SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_item_discounts,
+             ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS refundCart,
+            ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherPayments
+            
+                FROM 
+                    refunded r
+                GROUP BY 
+                    r.reference_num
+            ),
+            ReturnExchangeSums AS (
+                SELECT 
+                    rc.payment_id,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as rc_credits,
+                     COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateReturn,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsReturnTender,
+                  SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_return_item_discounts,
+                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS returnCart,
+               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherReturnPayments 
+              
+                FROM 
+                    return_exchange  rc
+                GROUP BY 
+                    rc.payment_id
+            )
+            SELECT
+            DISTINCT
+                u.first_name AS first_name,
+                u.last_name AS last_name, 
+                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                p.date_time_of_payment AS date,
+                p.cart_discount AS cart_discount,
+                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                
+                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+               
+                
+            FROM 
+                payments AS p 
+                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN users AS u ON u.id = t.cashier_id
+                INNER JOIN products AS ps ON ps.id = t.prod_id
+                LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            WHERE 
+                t.is_paid = 1 
+                AND t.is_void = 0 AND DATE(p.date_time_of_payment) = :singleDateData AND u.id = :selectedUser
+            GROUP BY 
+                u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->bindParam( ':selectedUser', $selectedUser );
+            $sql->execute();
+            return $sql;
+        } else if ( $selectedUser  && !$singleDateData && $startDate && $endDate ) {
+            $sqlQuery = "WITH RefundSums AS (
+                SELECT 
+                    r.payment_id,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as credits,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateRefund,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsTender,
+                  SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_item_discounts,
+             ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS refundCart,
+            ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherPayments
+            
+                FROM 
+                    refunded r
+                GROUP BY 
+                    r.reference_num
+            ),
+            ReturnExchangeSums AS (
+                SELECT 
+                    rc.payment_id,
+                 COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                            0
+                        ) as rc_credits,
+                     COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                            0
+                        ) as cartRateReturn,
+                    COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) as discountsReturnTender,
+                  SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                    SUM(
+                        COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                            0
+                        )
+                    ) AS total_return_item_discounts,
+                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2) AS returnCart,
+               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                0
+            )-  COALESCE(
+                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                            0
+                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            )),2),2) AS otherReturnPayments 
+              
+                FROM 
+                    return_exchange  rc
+                GROUP BY 
+                    rc.payment_id
+            )
+            SELECT
+            DISTINCT
+                u.first_name AS first_name,
+                u.last_name AS last_name, 
+                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                p.date_time_of_payment AS date,
+                p.cart_discount AS cart_discount,
+                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                
+                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+               
+                
+            FROM 
+                payments AS p 
+                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN users AS u ON u.id = t.cashier_id
+                INNER JOIN products AS ps ON ps.id = t.prod_id
+                LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            WHERE 
+                t.is_paid = 1 
+                AND t.is_void = 0 AND DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND u.id = :selectedUser
+            GROUP BY 
+                u.id;";
+
+            $sql = $this->connect()->prepare( $sqlQuery );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':selectedUser', $selectedUser );
+            $sql->execute();
+            return $sql;
+
+        } else {
+            $sql = "WITH RefundSums AS (
+            SELECT 
+                r.payment_id,
+                COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                        0
+                    ) as credits,
+             COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                        0
+                    ) as cartRateRefund,
+                COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                        0
+                    ) as discountsTender,
+              SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                SUM(
+                    COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                        0
+                    )
+                ) AS total_item_discounts,
+         ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            0
+        )),2) AS refundCart,
+        ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+        COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+            0
+        )-  COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                        0
+                    ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            0
+        )),2),2) AS otherPayments
+            FROM 
+                refunded r
+            GROUP BY 
+                r.reference_num
+        ),
+        ReturnExchangeSums AS (
+            SELECT 
+                rc.payment_id,
+             COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                        0
+                    ) as rc_credits,
+                 COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                        0
+                    ) as cartRateReturn,
+                COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                        0
+                    ) as discountsReturnTender,
+              SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                SUM(
+                    COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                        0
+                    )
+                ) AS total_return_item_discounts,
+             ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            0
+        )),2) AS returnCart,
+           ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+        COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+            0
+        )-  COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                        0
+                    ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            0
+        )),2),2) AS otherReturnPayments 
+          
+            FROM 
+                return_exchange  rc
+            GROUP BY 
+                rc.payment_id
+        )
+        SELECT
+        DISTINCT
+            u.first_name AS first_name,
+            u.last_name AS last_name, 
+            ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+            ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+            p.date_time_of_payment AS date,
+            p.cart_discount AS cart_discount,
+            COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+            IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+            COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+            COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+            COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+            COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+            COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+            
+            COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+            IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+            COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+            COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+            COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+            COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+            COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+           
+            
+        FROM 
+            payments AS p 
+            INNER JOIN transactions AS t ON p.id = t.payment_id 
+            INNER JOIN users AS u ON u.id = t.cashier_id
+            INNER JOIN products AS ps ON ps.id = t.prod_id
+            LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+            LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+        GROUP BY 
+            u.id;";
+
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        }
+    }
 }

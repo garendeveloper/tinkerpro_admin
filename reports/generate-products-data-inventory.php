@@ -35,9 +35,9 @@ $selectedSubCategories = $_GET['selectedSubCategories'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
-$selectedOption = $_GET['selectedOption'] ?? null;
 
-$fetchSales= $productSales->geProductSalesData($selectedProduct,$selectedCategories,$selectedSubCategories,$singleDateData,$startDate,$endDate,$selectedOption);
+
+$fetchSales= $productSales->geProductSalesData($selectedProduct,$selectedCategories,$selectedSubCategories,$singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -129,16 +129,12 @@ if ($singleDateData && !$startDate && !$endDate) {
 
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
-if($selectedOption == "sold"){
-$header = array('Product','SKU','Sold','UOM', 'Cost', 'Tax','Selling Price','Total(Php)');
-}else{
-    $header = array('Product','SKU','Stock','UOM', 'Cost', 'Tax','Selling Price','Total(Php)');
-}
+$header = array('Product','SKU','Sold', 'Cost', 'Tax','Selling Price','Total');
 $pageWidth = $pdf->getPageWidth();
 $pageHeight = $pdf->getPageHeight();
 
 $headerWidths = array();
-    $headerWidths = array(50, 30, 30, 35, 35, 35, 30, 30);
+    $headerWidths = array(50, 30, 30, 35, 50, 30, 50);
 $maxCellHeight = 5; 
 
 $hexColor = '#F5F5F5';
@@ -160,90 +156,52 @@ $totalTax = 0;
 $totalPrice = 0;
 $totalAmount = 0;
 $pdf->SetFont('', '', 10); 
-if($selectedOption == "sold"){
+
 while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
     $totalCost += $row['cost'];
     $totalTax += $row['totalVat'];
     $totalPrice += $row['prod_price'];
-    $totalAmount += $row['totalAmount'];
+    $totalAmount += $row['totalSoldAmount'];
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
      $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sku'], $headerWidths[1]));   
      $pdf->Cell($headerWidths[1], $maxCellHeight, $row['sku'], 1, 0, 'C');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sold'], $headerWidths[2]));   
-     $pdf->Cell($headerWidths[2], $maxCellHeight, $row['sold'], 1, 0, 'C');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['measurement'], $headerWidths[3]));   
-     $pdf->Cell($headerWidths[3], $maxCellHeight, $row['measurement'], 1, 0, 'C');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['cost'],2), $headerWidths[4]));   
-     $pdf->Cell($headerWidths[4], $maxCellHeight, $row['cost'], 1, 0, 'R');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalVat'],2), $headerWidths[5]));   
-     $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['totalVat'],2), 1, 0, 'R');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['prod_price'],2), $headerWidths[6]));   
-     $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['prod_price'],2), 1, 0, 'R');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalAmount'],2), $headerWidths[7]));   
-     $pdf->Cell($headerWidths[7], $maxCellHeight, number_format($row['totalAmount'],2), 1, 0, 'R');
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['net_sold'], $headerWidths[2]));   
+     $pdf->Cell($headerWidths[2], $maxCellHeight, $row['net_sold'], 1, 0, 'C');
+    //  $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['measurement'], $headerWidths[3]));   
+    //  $pdf->Cell($headerWidths[3], $maxCellHeight, $row['measurement'], 1, 0, 'C');
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['cost'],2), $headerWidths[3]));   
+     $pdf->Cell($headerWidths[3], $maxCellHeight, $row['cost'], 1, 0, 'R');
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalVat'],2), $headerWidths[4]));   
+     $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['totalVat'],2), 1, 0, 'R');
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['prod_price'],2), $headerWidths[5]));   
+     $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['prod_price'],2), 1, 0, 'R');
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalSoldAmount'],2), $headerWidths[6]));   
+     $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['totalSoldAmount'],2), 1, 0, 'R');
 
      $pdf->Ln(); 
      
 }
 
 $pdf->SetFont('', 'B', 10); 
-$pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2] + $headerWidths[3], $maxCellHeight, 'Total(Php)', 1, 0, 'L'); 
-$pdf->Cell( $headerWidths[4], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
-$pdf->Cell( $headerWidths[5], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
-$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
-$pdf->Cell( $headerWidths[7], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight, 'Total', 1, 0, 'L'); 
+$pdf->Cell( $headerWidths[3], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[4], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[5], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
 
-$pdf->Output('product_report.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/product/product_report.pdf';
-if (file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
-
+$pdfPath = $pdfFolder . 'product_report.pdf';
 $pdf->Output($pdfPath, 'F');
+
+
+
 $pdf->Output('product_report.pdf', 'I');
-}else{
-  
-    while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
-        $totalCost += $row['cost'];
-        $totalTax += $row['totalVat'];
-        $totalPrice += $row['prod_price'];
-        $totalAmount += $row['totalAmount'];
-         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
-         $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
-         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sku'], $headerWidths[1]));   
-         $pdf->Cell($headerWidths[1], $maxCellHeight, $row['sku'], 1, 0, 'C');
-         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['stock'], $headerWidths[2]));   
-         $pdf->Cell($headerWidths[2], $maxCellHeight, $row['stock'], 1, 0, 'C');
-         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['measurement'], $headerWidths[3]));   
-         $pdf->Cell($headerWidths[3], $maxCellHeight, $row['measurement'], 1, 0, 'C');
-         $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['cost'],2), $headerWidths[4]));   
-         $pdf->Cell($headerWidths[4], $maxCellHeight, $row['cost'], 1, 0, 'R');
-         $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalVat'],2), $headerWidths[5]));   
-         $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['totalVat'],2), 1, 0, 'R');
-         $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['prod_price'],2), $headerWidths[6]));   
-         $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['prod_price'],2), 1, 0, 'R');
-         $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalAmount'],2), $headerWidths[7]));   
-         $pdf->Cell($headerWidths[7], $maxCellHeight, number_format($row['totalAmount'],2), 1, 0, 'R');
-    
-         $pdf->Ln(); 
-         
-    }
-    
-    $pdf->SetFont('', 'B', 10); 
-    $pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2] + $headerWidths[3], $maxCellHeight, 'Total(Php)', 1, 0, 'L'); 
-    $pdf->Cell( $headerWidths[4], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
-    $pdf->Cell( $headerWidths[5], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
-    $pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
-    $pdf->Cell( $headerWidths[7], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
-    
 
-    $pdfPath = $pdfFolder . 'product_report.pdf';
 
-    $pdf->Output($pdfPath, 'F');
-    $pdf->Output('product_report.pdf', 'I');
+
+
  
-}
+
 
 
  ?>
