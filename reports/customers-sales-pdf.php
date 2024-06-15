@@ -27,13 +27,13 @@ $refundFacade = new OtherReportsFacade();
 $products = new ProductFacade();
 
 $counter = 1;
-$selectedCustomers= $_GET['selectedCustomers'] ?? null;
-$userId = $_GET['userId'] ?? null;
+
+$customerId = $_GET['customerId'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getUnpaidSales($selectedCustomers,$userId,$singleDateData,$startDate,$endDate);
+$fetchRefund= $refundFacade->customerSales($customerId,$singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -124,8 +124,8 @@ $pdf->SetLineWidth(0.3);
 
 $pdf->SetFont('', '', 10); 
 
-$header = array('No.', 'Customer', 'Customer Code', 'Balance Due(Php)');
-$headerWidths = array(10,70, 50, 60);
+$header = array('No.', 'Customer', 'Total');
+$headerWidths = array(10,110,70);
 $maxCellHeight = 5;
 
 $hexColor = '#F5F5F5';
@@ -150,25 +150,47 @@ for ($i = 0; $i < count($header); $i++) {
 $pdf->Ln();
 $pdf->SetFont('', '', 10); 
 
+$totalSales = 0;
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-  
+    $paid_amount = $row['paid_amount'];
+    $totalChange = $row['totalChange'];
 
-    // $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-    // $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['first_name'] . ' ' . $row['last_name'], $headerWidths[1]));
-    // $pdf->Cell($headerWidths[1], $maxCellHeight, $row['first_name'] . ' ' . $row['last_name'], 1, 0, 'L');
-    // $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['code'], $headerWidths[2]));
-    // $pdf->Cell($headerWidths[2], $maxCellHeight, $row['code'], 1, 0, 'L');
-    // $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['balance'], $headerWidths[3]));
-    // $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['balance'], 2), 1, 0, 'R'); 
-    
+    $sales = $paid_amount - $totalChange;
+
+    //refund data
+    $refunded_amt = $row['refunded_amt'];
+    $refudned_item_discount = $row['total_item_discounts'];
+    $refund_credits = $row['totalCredits'];
+    $totalRefundDiscountsTendered = $row['totalDiscountsTender'];
+
+    $totalRefundedAmt =  $refunded_amt-$refudned_item_discount- $totalRefundDiscountsTendered;
+
+    //return
+    $return_amount = $row['return_amt'];
+    $return_item_discounts = $row['total_return_item_discounts'];
+    $return_credits = $row['totalReturnCredits'];
+    $totalReturnDiscountsTender = $row['totalDiscountsReturnTender'];
+
+    $totalReturnAmt = $return_amount-$return_item_discounts-$return_credits-$totalReturnDiscountsTender;
+
+    $totalGrossSales = $sales-$totalRefundedAmt-$totalReturnAmt;
+    $totalSales += $totalGrossSales;
+
+
+    $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['first_name'] . ' ' . $row['last_name'], $headerWidths[1]));
+    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['first_name'] . ' ' . $row['last_name'], 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $totalGrossSales  , $headerWidths[2]));
+    $pdf->Cell($headerWidths[2], $maxCellHeight,  number_format($totalGrossSales,2), 1, 0, 'R');
+
     $pdf->Ln(); 
     $counter++;
 }
 
-// $pdf->SetFont('', 'B', 10); 
-// $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total(Php)', 1, 0, 'L'); 
-// $pdf->Cell($headerWidths[2]+ $headerWidths[3], $maxCellHeight, number_format($totalBalance, 2), 1, 0, 'R'); 
-// $pdf->Ln(); 
+$pdf->SetFont('', 'B', 10); 
+$pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, 'L'); 
+$pdf->Cell($headerWidths[2], $maxCellHeight, number_format($totalSales, 2), 1, 0, 'R'); 
+$pdf->Ln(); 
 
 
 $pdfPath = $pdfFolder . 'customerSales.pdf';
