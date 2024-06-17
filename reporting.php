@@ -370,7 +370,7 @@ input:not(:checked) + .sliderStatusExcludes {
                   <div hidden id="highlightDiv32" style="width: 100%"><a href="#" onclick=" highlightDiv(32)" class="text-color unpaidSalesByCashierAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Unpaid Sales by Cashier</span></a></div>
                   <div id="highlightDiv13" style="width: 100%"><a href="#" onclick=" highlightDiv(13)" class="text-color startingCashEntriesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Starting Cash Entries</span></a></div>
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Cash In and Cash Out Entries</span></a></div>
                   <div id="highlightDiv14" style="width: 100%"><a href="#" onclick=" highlightDiv(14)" class="text-color voidedItemssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Voided Items</span></a></div>
                   <div id="highlightDiv15" style="width: 100%"><a href="#" onclick=" highlightDiv(15)" class="text-color discountsGrantedAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
@@ -649,6 +649,16 @@ input:not(:checked) + .sliderStatusExcludes {
                     <div class="select-arrow"></div>
                 </div>
             </div>
+            <div hidden class="custom-select" id="entries">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Options</label>
+                <div class="select-container">
+                    <select id="entriesSelect">
+                    <option value="in" selected >Cash In Entries</option>
+                    <option value="out">Cash Out Entries</option>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+            </div>
                 <div class="divider"></div>
                 <div style="display:flex;justify-content:center" class="topDiv">
                  <button id="showReport" class="custom_btn" style="margin-right: 10px;"><svg height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#fefefe" d="M20.921,31.898c2.758,0,5.367-0.956,7.458-2.704l1.077,1.077l-0.358,0.358 c-0.188,0.188-0.293,0.442-0.293,0.707s0.105,0.52,0.293,0.707l8.257,8.256c0.195,0.195,0.451,0.293,0.707,0.293 s0.512-0.098,0.707-0.293l2.208-2.208c0.188-0.188,0.293-0.442,0.293-0.707s-0.105-0.52-0.293-0.707l-8.257-8.256 c-0.391-0.391-1.023-0.391-1.414,0l-0.436,0.436l-1.073-1.073c1.793-2.104,2.777-4.743,2.777-7.537c0-3.112-1.212-6.038-3.413-8.239 s-5.127-3.413-8.239-3.413s-6.038,1.212-8.238,3.413c-2.201,2.201-3.413,5.126-3.413,8.239c0,3.112,1.212,6.038,3.413,8.238 C14.883,30.687,17.809,31.898,20.921,31.898z M38.855,37.385l-0.794,0.793l-6.843-6.842l0.794-0.793L38.855,37.385z M14.097,13.423 c1.823-1.823,4.246-2.827,6.824-2.827s5.002,1.004,6.825,2.827c1.823,1.823,2.827,4.247,2.827,6.825 c0,2.578-1.004,5.001-2.827,6.824c-1.823,1.823-4.247,2.827-6.825,2.827s-5.001-1.004-6.824-2.827 c-1.823-1.823-2.827-4.247-2.827-6.824C11.27,17.669,12.273,15.246,14.097,13.423z"></path> </g></svg>&nbsp;Show Report</button>
@@ -659,7 +669,7 @@ input:not(:checked) + .sliderStatusExcludes {
                  <button id="PDFBtn" class="custom_btn"><svg width="25px" height="25px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2.5 6.5V6H2V6.5H2.5ZM6.5 6.5V6H6V6.5H6.5ZM6.5 10.5H6V11H6.5V10.5ZM13.5 3.5H14V3.29289L13.8536 3.14645L13.5 3.5ZM10.5 0.5L10.8536 0.146447L10.7071 0H10.5V0.5ZM2.5 7H3.5V6H2.5V7ZM3 11V8.5H2V11H3ZM3 8.5V6.5H2V8.5H3ZM3.5 8H2.5V9H3.5V8ZM4 7.5C4 7.77614 3.77614 8 3.5 8V9C4.32843 9 5 8.32843 5 7.5H4ZM3.5 7C3.77614 7 4 7.22386 4 7.5H5C5 6.67157 4.32843 6 3.5 6V7ZM6 6.5V10.5H7V6.5H6ZM6.5 11H7.5V10H6.5V11ZM9 9.5V7.5H8V9.5H9ZM7.5 6H6.5V7H7.5V6ZM9 7.5C9 6.67157 8.32843 6 7.5 6V7C7.77614 7 8 7.22386 8 7.5H9ZM7.5 11C8.32843 11 9 10.3284 9 9.5H8C8 9.77614 7.77614 10 7.5 10V11ZM10 6V11H11V6H10ZM10.5 7H13V6H10.5V7ZM10.5 9H12V8H10.5V9ZM2 5V1.5H1V5H2ZM13 3.5V5H14V3.5H13ZM2.5 1H10.5V0H2.5V1ZM10.1464 0.853553L13.1464 3.85355L13.8536 3.14645L10.8536 0.146447L10.1464 0.853553ZM2 1.5C2 1.22386 2.22386 1 2.5 1V0C1.67157 0 1 0.671573 1 1.5H2ZM1 12V13.5H2V12H1ZM2.5 15H12.5V14H2.5V15ZM14 13.5V12H13V13.5H14ZM12.5 15C13.3284 15 14 14.3284 14 13.5H13C13 13.7761 12.7761 14 12.5 14V15ZM1 13.5C1 14.3284 1.67157 15 2.5 15V14C2.22386 14 2 13.7761 2 13.5H1Z" fill="#ffff"></path> </g></svg>&nbsp;Pdf</button>
                </div>
                <div tyle="display:flex;justify-content:center">
-               <button class="custom_btn" style="margin-top: 12px; width: 100%">B.I.R E-SALES PORTAL</button>
+               <button hidden class="custom_btn" id="e-portal" style="margin-top: 12px; width: 100%">B.I.R E-SALES PORTAL</button>
                </div>
             </div>
           </div>
@@ -795,6 +805,11 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
 
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
@@ -848,6 +863,12 @@ function highlightDiv(id) {
           printDocuments(id)
           showReports(id)
 
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.removeAttribute('hidden');
 
@@ -897,6 +918,12 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
 
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
@@ -950,6 +977,12 @@ function highlightDiv(id) {
           printDocuments(id)
           showReports(id)
 
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1000,6 +1033,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1052,6 +1092,12 @@ function highlightDiv(id) {
           printDocuments(id)
           showReports(id)
 
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1102,6 +1148,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1151,6 +1204,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1200,6 +1260,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1249,6 +1316,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1298,6 +1372,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1347,6 +1428,12 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.removeAttribute('hidden');
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1396,6 +1483,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1448,6 +1542,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1500,6 +1601,14 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1552,6 +1661,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1604,6 +1720,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1657,6 +1780,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1710,6 +1840,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1763,6 +1900,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1815,6 +1959,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1867,6 +2018,13 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
+
+          var eportal = document.getElementById('e-portal');
+          eportal.removeAttribute('hidden');
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1916,6 +2074,12 @@ function highlightDiv(id) {
           toggleDivExcludes.checked = false
         }
         else{
+
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
 
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
@@ -1990,17 +2154,17 @@ function generatePdf(id){
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
-      var startDate;
+      var startDates;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
+        var startDate = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
 
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDate = formattedStartDate;
+        startDates = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -2014,7 +2178,7 @@ function generatePdf(id){
         singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDate = ""
+        startDates = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
@@ -2028,7 +2192,7 @@ function generatePdf(id){
             data: {
                 selectedUser: selectedUser,
                 singleDateData: singleDateData,
-                startDate: startDate,
+                startDate: startDates,
                 endDate: endDate
             },
             success: function(response) {
@@ -3385,7 +3549,7 @@ function generateExcel(id){
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDate;
+      var startDates;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
@@ -3395,7 +3559,7 @@ function generateExcel(id){
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        singleDate = formattedStartDate;
+        startDates = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -3410,7 +3574,7 @@ function generateExcel(id){
       singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDate = ""
+        startDates = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
@@ -3424,7 +3588,7 @@ function generateExcel(id){
             data: {
                 selectedUser: selectedUser,
                 singleDateData: singleDateData,
-                startDate: startDate,
+                startDate: startDates,
                 endDate: endDate
             },
             success: function(response) {
@@ -4664,7 +4828,7 @@ function printDocuments(id){
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDate;
+      var startDates;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
@@ -4674,7 +4838,7 @@ function printDocuments(id){
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        singleDate = formattedStartDate;
+        startDates = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -4689,7 +4853,7 @@ function printDocuments(id){
       singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDate = ""
+        startDates = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
@@ -4704,7 +4868,7 @@ function printDocuments(id){
             data: {
                 selectedUser: selectedUser,
                 singleDateData: singleDateData,
-                startDate: startDate,
+                startDate: startDates,
                 endDate: endDate
             },
             success: function(response) {
@@ -4738,7 +4902,7 @@ function printDocuments(id){
         var selectedSubCategories = subCategoreisSelect.value 
         var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDate;
+      var startDates;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
@@ -4748,7 +4912,7 @@ function printDocuments(id){
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        singleDate = formattedStartDate;
+        startDates = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -4763,7 +4927,7 @@ function printDocuments(id){
       singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDate = ""
+        startDates = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
@@ -4780,7 +4944,7 @@ function printDocuments(id){
             selectedCategories: selectedCategories,
             selectedSubCategories:  selectedSubCategories,
             singleDateData: singleDateData,
-            startDate: startDate,
+            startDate: startDates,
             endDate: endDate
             },
        
@@ -6113,7 +6277,7 @@ function showReports(id){
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDate;
+      var startDates;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
@@ -6123,7 +6287,7 @@ function showReports(id){
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        singleDate = formattedStartDate;
+        startDates = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -6153,7 +6317,7 @@ function showReports(id){
             data: {
                 selectedUser: selectedUser,
                 singleDateData: singleDateData,
-                startDate: startDate,
+                startDate: startDates,
                 endDate: endDate
             },
             success: function(response) {
@@ -6192,17 +6356,18 @@ function showReports(id){
         var selectedSubCategories = subCategoreisSelect.value 
         var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDate;
+      var startDates;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
         var startDate = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
 
+
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        singleDate = formattedStartDate;
+        startDates = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -6217,11 +6382,12 @@ function showReports(id){
       singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDate = ""
+        startDates = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
       }
+   
         $.ajax({
             url: './reports/generate-products-data-inventory.php',
             type: 'GET',
@@ -6233,7 +6399,7 @@ function showReports(id){
               selectedCategories: selectedCategories,
               selectedSubCategories:  selectedSubCategories,
               singleDateData: singleDateData,
-              startDate: startDate,
+              startDate: startDates,
               endDate: endDate
             },
             success: function(response) {
@@ -6696,6 +6862,10 @@ function showReports(id){
         pdfFile.setAttribute('hidden',true)
         var usersSelect = document.getElementById("usersSelect");
         var selectedUser = usersSelect.value;
+  
+        var entriesSelect = document.getElementById("entriesSelect");
+        var entries = entriesSelect.value
+
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -6737,7 +6907,8 @@ function showReports(id){
                 userId: selectedUser,
                 singleDateData: singleDateData,
                 startDate: startDate,
-                endDate: endDate
+                endDate: endDate,
+                entries:entries
             },
           success: function(response) {
             loadingImage.setAttribute("hidden",true);

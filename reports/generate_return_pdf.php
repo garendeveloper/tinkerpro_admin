@@ -92,7 +92,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
     $pdf->Cell(0, 10, "Period: $formattedDate", 0, 'L');
-} elseif (!$singleDateData && $startDate && $endDate) {
+} else if (!$singleDateData && $startDate && $endDate) {
     $formattedStartDate = date('M j, Y', strtotime($startDate));
     $formattedEndDate = date('M j, Y', strtotime($endDate));
     $pdf->SetFont('', '', 11); 
@@ -125,7 +125,7 @@ $pdf->SetLineWidth(0.3);
 
 $pdf->SetFont('', '', 10); 
 
-$header = array('Product', 'Barcode', 'SKU', 'Total Qty.', 'Amount(Php)');
+$header = array('Product', 'Barcode', 'SKU', 'Total Qty.', 'Amount');
 $headerWidths = array(70, 40, 20, 20, 40);
 $maxCellHeight = 5;
 
@@ -137,23 +137,81 @@ $pdf->SetFont('', 'B', 10);
 
 
 
-
-
-
 $amountPerRef = array();
 $previousRefNum = null;
+$discountsData = array();
+$itemDiscounts = array();
+$cartDiscounts = array();
 
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     if($row){
     $referenceNum = $row['receipt_id'];
+    $otherDetails = $row['otherDetails'];
+    $otherDetailsArray = json_decode($otherDetails, true);
+
+    
+ 
+    $itemDiscount = 0;
+    $cartDiscount = 0;
+    $discount = 0;
+       if (json_last_error() === JSON_ERROR_NONE && isset($otherDetailsArray[0]['discount'])) {
+        $discount = $otherDetailsArray[0]['discount'];
+    }
+
+    if (json_last_error() === JSON_ERROR_NONE && isset($otherDetailsArray[0]['itemDiscountsData'])) {
+        $itemDiscount = $otherDetailsArray[0]['itemDiscountsData'];
+    }
+    if (json_last_error() === JSON_ERROR_NONE && isset($otherDetailsArray[0]['cartRate'])) {
+        $cartDiscount = $otherDetailsArray[0]['cartRate'];
+    }
+
+    if (!isset($amountPerRef[$referenceNum])) {
+        $amountPerRef[$referenceNum] = 0;
+    }
+    if (!isset($discountsData[$referenceNum])) {
+        $discountsData[$referenceNum] = 0;
+    }
+    if (!isset($itemDiscounts[$referenceNum])) {
+        $itemDiscounts[$referenceNum] = 0;
+    }
+    if (!isset($cartDiscounts[$referenceNum])) {
+        $cartDiscounts[$referenceNum] = 0;
+    }
+   
+  
     if ($referenceNum !== $previousRefNum) {
         if (!is_null($previousRefNum)) {
             $pdf->SetFont('', 'B', 10);
-            $pdf->Cell($headerWidths[0], $maxCellHeight, 'Total(Php)', 1, 0, 'L');
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell($headerWidths[0], $maxCellHeight, 'Discounts', 1, 0, 'L');
             $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
             $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
             $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
-            $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum], 2), 1, 0, 'R');
+            $pdf->SetTextColor(255, 0, 0);
+            $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($discountsData[$previousRefNum], 2), 1, 0, 'R');
+            $pdf->SetTextColor(0);
+            $pdf->Ln();
+            $pdf->Cell($headerWidths[0], $maxCellHeight, 'Item Discounts', 1, 0, 'L');
+            $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->SetTextColor(255, 0, 0);
+            $pdf->Cell($headerWidths[4], $maxCellHeight, number_format( $itemDiscounts[$previousRefNum]?? 0, 2), 1, 0, 'R');
+            $pdf->SetTextColor(0);
+            $pdf->Ln();
+            $pdf->Cell($headerWidths[0], $maxCellHeight, 'Cart Discounts', 1, 0, 'L');
+            $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->SetTextColor(255, 0, 0);
+            $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($cartRemove ?? 0, 2), 1, 0, 'R');
+            $pdf->SetTextColor(0);
+            $pdf->Ln();
+            $pdf->Cell($headerWidths[0], $maxCellHeight, 'Total', 1, 0, 'L');
+            $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
+            $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum]-$discountsData[$previousRefNum]-$itemDiscounts[$previousRefNum]-$cartRemove, 2), 1, 0, 'R');
             $pdf->Ln();
         }
         $pdf->SetFont('', 'B', 10);
@@ -186,16 +244,44 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $pdf->Ln();
 
     $amountPerRef[$referenceNum] += $row['amount'] ?? null;
+    $discountsData[$referenceNum] =   $discount;
+    $itemDiscounts[$referenceNum] += $itemDiscount;
+    $cartDiscounts[$referenceNum] =   $cartDiscount;
+    $cartRemove = $amountPerRef[$referenceNum] * $cartDiscounts[$referenceNum];
 }
 }
 
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell($headerWidths[0], $maxCellHeight, 'Total(Php)', 1, 0, 'L');
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Discounts', 1, 0, 'L');
 $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
-$pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum] ?? 0, 2), 1, 0, 'R');
+$pdf->SetTextColor(255, 0, 0);
+$pdf->Cell($headerWidths[4], $maxCellHeight, number_format( $discountsData[$previousRefNum] ?? 0, 2), 1, 0, 'R');
+$pdf->SetTextColor(0); 
+$pdf->Ln();
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Item Discounts', 1, 0, 'L');
+$pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
+$pdf->SetTextColor(255, 0, 0);
+$pdf->Cell($headerWidths[4], $maxCellHeight, number_format( $itemDiscounts[$previousRefNum]?? 0, 2), 1, 0, 'R');
+$pdf->SetTextColor(0); 
+$pdf->Ln();
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Cart Discounts', 1, 0, 'L');
+$pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
+$pdf->SetTextColor(255, 0, 0);
+$pdf->Cell($headerWidths[4], $maxCellHeight, number_format($cartRemove ?? 0, 2), 1, 0, 'R'); 
+$pdf->SetTextColor(0); 
+$pdf->Ln();
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Total', 1, 0, 'L');
+$pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum]-$discountsData[$previousRefNum]-$itemDiscounts[$previousRefNum]-$cartRemove, 2), 1, 0, 'R');
 $pdf->Ln();
 
 $pdfPath = $pdfFolder . 'returnAndExchangeList.pdf';

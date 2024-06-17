@@ -75,6 +75,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $sheet->setCellValue('B52', number_format($row['total_totalCashIn'] ?? 0,2));
     $sheet->setCellValue('B53', number_format($row['total_totalCashOut'] ?? 0,2));
     $sheet->setCellValue('B54', number_format($row['total_payment_receive'] ?? 0,2));
+    
 }
 
 $lastRow = $sheet->getHighestRow();

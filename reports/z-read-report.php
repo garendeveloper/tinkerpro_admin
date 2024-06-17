@@ -106,7 +106,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
     $pdf->Cell(0, 10, "Period: $formattedDate", 0, 'L');
-} elseif (!$singleDateData && $startDate && $endDate) {
+} else if (!$singleDateData && $startDate && $endDate) {
     $formattedStartDate = date('M j, Y', strtotime($startDate));
     $formattedEndDate = date('M j, Y', strtotime($endDate));
     $pdf->SetFont('', '', 11); 
@@ -150,8 +150,9 @@ $pdf->SetFont('', 'B', 11);
 $pdf->Cell(0, 10, "REPORT DETAILS", 0, 'L');
 $pdf->SetFont('', '', 10);
 $pdf->Cell(0, 10, "ZRead Counter: {$data['zReadCounter']}", 0, 'L');
+$pdf->Ln(-5);
+$pdf->Cell(0, 10, "Reset Counter: {$data['resetCount']}", 0, 'L');
 $pdf->Ln(-3);
-
 $pdf->SetFont('', '', 10); 
 
 

@@ -5,7 +5,14 @@ include(__DIR__ . '/../utils/models/other-reports-facade.php');
 include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
+$pdfFolder = __DIR__ . '/../assets/pdf/salesReport/';
 
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -89,7 +96,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
     $pdf->Cell(0, 10, "Period: $formattedDate", 0, 'L');
-} elseif (!$singleDateData && $startDate && $endDate) {
+} else if (!$singleDateData && $startDate && $endDate) {
     $formattedStartDate = date('M j, Y', strtotime($startDate));
     $formattedEndDate = date('M j, Y', strtotime($endDate));
     $pdf->SetFont('', '', 11); 
@@ -198,11 +205,9 @@ $pdf->Cell($headerWidths[9], $maxCellHeight, number_format(0, 2), 1, 0, 'R');
 $pdf->Ln(); 
  
 
-$pdf->Output('salesReport.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/salesReport/salesReport.pdf';
-if (file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
-
+$pdfPath = $pdfFolder . 'salesReport.pdf';
 $pdf->Output($pdfPath, 'F');
+
+$pdf->Output('salesReport.pdf', 'I');
+
  ?>

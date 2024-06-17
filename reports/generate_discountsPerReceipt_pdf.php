@@ -5,6 +5,14 @@ include(__DIR__ . '/../utils/models/other-reports-facade.php');
 include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
+$pdfFolder = __DIR__ . '/../assets/pdf/discounts_granted/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
 
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
@@ -84,7 +92,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
     $pdf->Cell(0, 10, "Period: $formattedDate", 0, 'L');
-} elseif (!$singleDateData && $startDate && $endDate) {
+} else if (!$singleDateData && $startDate && $endDate) {
     $formattedStartDate = date('M j, Y', strtotime($startDate));
     $formattedEndDate = date('M j, Y', strtotime($endDate));
     $pdf->SetFont('', '', 11); 
@@ -134,7 +142,7 @@ foreach ($groupedData as $lastName => $customerData) {
     $pdf->Ln(-2); 
     $pdf->SetDrawColor(192, 192, 192); 
     $pdf->SetLineWidth(0.3); 
-    $header = array('No.', 'User', 'Receipt No', 'Date', 'Discount(Php)');
+    $header = array('No.', 'User', 'Receipt No', 'Date', 'Discount');
     $headerWidths = array(10, 60, 40, 40, 40);
     $maxCellHeight = 5; 
 
@@ -151,6 +159,7 @@ foreach ($groupedData as $lastName => $customerData) {
 
     $counter = 1;
     foreach ($customerData as $row) {
+        $pdf->SetFont('', '', 10);
         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
         $pdf->Cell($headerWidths[1], $maxCellHeight, $row['c_first_name'] .' '. $row['c_last_name'], 1, 0, 'C');
         $pdf->Cell($headerWidths[2], $maxCellHeight, str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), 1, 0, 'C');
@@ -169,12 +178,9 @@ foreach ($groupedData as $lastName => $customerData) {
     $pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
     $pdf->Ln(); 
 }
+$pdfPath = $pdfFolder . 'discountsGranted.pdf';
+$pdf->Output($pdfPath, 'F');
 
 $pdf->Output('discountsGranted.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/discounts_granted/discountsGranted.pdf';
 
-if (file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
-$pdf->Output($pdfPath, 'F');
 ?>

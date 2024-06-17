@@ -7,7 +7,7 @@ class OtherReportsFacade extends DBConnection {
         if ( $selectedProduct && !$singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -27,7 +27,7 @@ class OtherReportsFacade extends DBConnection {
         } else if ( !$selectedProduct && $singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -47,7 +47,7 @@ class OtherReportsFacade extends DBConnection {
         } else if ( !$selectedProduct && !$singleDateData && $startDate && $endDate ) {
             $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -67,7 +67,7 @@ class OtherReportsFacade extends DBConnection {
         } else if ( $selectedProduct && $singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
             r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-            r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
+            r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -88,7 +88,7 @@ class OtherReportsFacade extends DBConnection {
         } else if ( $selectedProduct && !$singleDateData && $startDate && $endDate ) {
             $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
         FROM refunded AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN (
@@ -109,7 +109,7 @@ class OtherReportsFacade extends DBConnection {
         } else {
             $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id
+        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id 
     INNER JOIN (
@@ -272,7 +272,7 @@ class OtherReportsFacade extends DBConnection {
             $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price, SUM(r.return_amount) AS amount,
-          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id,r.otherDetails as otherDetails
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
             INNER JOIN products ON r.product_id = products.id
@@ -288,7 +288,7 @@ class OtherReportsFacade extends DBConnection {
             $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price,SUM(r.return_amount) AS amount,
-          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id,r.otherDetails as otherDetails
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
             INNER JOIN products ON r.product_id = products.id
@@ -303,7 +303,7 @@ class OtherReportsFacade extends DBConnection {
             $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price, SUM(r.return_amount) AS amount,
-          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id,r.otherDetails as otherDetails
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
             INNER JOIN products ON r.product_id = products.id
@@ -319,7 +319,7 @@ class OtherReportsFacade extends DBConnection {
             $sql = 'SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
           SUM(r.return_qty) AS qty, r.date AS date,
           products.prod_price AS prod_price,SUM(r.return_amount) AS amount,
-          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+          (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id,r.otherDetails as otherDetails
             FROM return_exchange AS r
             INNER JOIN payments AS p ON r.payment_id = p.id 
             INNER JOIN products ON r.product_id = products.id
@@ -352,7 +352,7 @@ class OtherReportsFacade extends DBConnection {
             $sql = "SELECT r.id AS return_id, p.id AS payment_id, products.prod_desc AS prod_desc, products.barcode as barcode, products.sku as sku,
         SUM(r.return_qty) AS qty, r.date AS date,
         products.prod_price AS prod_price,  SUM(r.return_amount) AS amount,
-        (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id
+        (SELECT t.receipt_id FROM transactions AS t WHERE t.payment_id = p.id LIMIT 1) AS receipt_id,r.otherDetails as otherDetails
         FROM return_exchange AS r
         INNER JOIN payments AS p ON r.payment_id = p.id 
         INNER JOIN products ON r.product_id = products.id
@@ -511,7 +511,8 @@ class OtherReportsFacade extends DBConnection {
     //   return $stmt;
     // }
 
-    public function cashInAmountsData( $userId, $singleDateData, $startDate, $endDate ) {
+    public function cashInAmountsData( $userId, $singleDateData, $startDate, $endDate,$entries ) {
+        if($entries == "in"){
         if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
       FROM cash_in_out as c 
@@ -577,8 +578,75 @@ class OtherReportsFacade extends DBConnection {
             $stmt = $this->connect()->query( $sql );
             return $stmt;
         }
-    }
+    }else{
+        if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 1 AND u.id = :userId';
 
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':userId', $userId );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 1  AND DATE(c.date) = :singleDateData';
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+
+        } else if ( !$userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 1  AND DATE(c.date) BETWEEN :startDate AND :endDate';
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+
+        } else if ( $userId && $singleDateData && !$startDate && !$endDate ) {
+            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 1 AND u.id = :userId AND DATE(c.date) = :singleDateData';
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':userId', $userId );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+
+        } else if ( $userId && !$singleDateData && $startDate && $endDate ) {
+            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
+      FROM cash_in_out as c 
+      INNER JOIN users as u ON u.id = c.user_id 
+      WHERE cashType = 1 AND u.id = :userId AND DATE(c.date) BETWEEN :startDate AND :endDate';
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':userId', $userId );
+
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+
+        } else {
+            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 1';
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
+        } 
+        
+    }
+    }
     public function getUnpaidSales( $selectedCustomers, $userId, $singleDateData, $startDate, $endDate ) {
         if ( $selectedCustomers && !$userId && !$singleDateData && !$startDate && !$endDate ) {
             $sql = 'WITH TotalPaid AS (
@@ -6957,10 +7025,11 @@ END AS tobe_deducted_credits
     public function getVoidedSales( $selectedProduct, $userId, $singleDateData, $startDate, $endDate ) {
         if ( $selectedProduct && !$userId && !$singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.prod_id = :selectedProduct
         ORDER BY  t.prod_desc ASC';
@@ -6971,10 +7040,11 @@ END AS tobe_deducted_credits
             return $sql;
         } else if ( !$selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.cashier_id = :cashier_id
         ORDER BY  t.prod_desc ASC';
@@ -6986,10 +7056,11 @@ END AS tobe_deducted_credits
 
         } else if ( !$selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData
         ORDER BY  t.prod_desc ASC';
@@ -7000,10 +7071,11 @@ END AS tobe_deducted_credits
             return $sql;
         } else if ( !$selectedProduct && !$userId && !$singleDateData && $startDate && $endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate
         ORDER BY  t.prod_desc ASC';
@@ -7015,10 +7087,11 @@ END AS tobe_deducted_credits
             return $sql;
         } else if ( $selectedProduct && $userId && !$singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND t.cashier_id = :cashier_id AND t.prod_id = :selectedProduct
         ORDER BY  t.prod_desc ASC';
@@ -7030,10 +7103,11 @@ END AS tobe_deducted_credits
             return $sql;
         } else if ( $selectedProduct && !$userId && $singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData AND t.prod_id = :selectedProduct
         ORDER BY  t.prod_desc ASC';
@@ -7046,11 +7120,12 @@ END AS tobe_deducted_credits
 
         } else if ( !$selectedProduct && $userId && $singleDateData && !$startDate && !$endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) = :singleDateData AND t.cashier_id = :cashier_id
         ORDER BY  t.prod_desc ASC';
 
@@ -7062,10 +7137,11 @@ END AS tobe_deducted_credits
 
         } else if ( $selectedProduct && !$userId && !$singleDateData && $startDate && $endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate AND t.prod_id = :selectedProduct
         ORDER BY  t.prod_desc ASC';
@@ -7079,10 +7155,11 @@ END AS tobe_deducted_credits
 
         } else if ( !$selectedProduct && $userId && !$singleDateData && $startDate && $endDate ) {
             $sql = 'SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) AND DATE(vr.date_void) BETWEEN :stratDate AND :endDate AND t.cashier_id = :cashier_id
         ORDER BY  t.prod_desc ASC';
@@ -7095,11 +7172,11 @@ END AS tobe_deducted_credits
             return $sql;
         } else {
             $sql = "SELECT DISTINCT  t.prod_desc as prod_desc, t.prod_price, t.prod_qty as qty, t.prod_price as price, t.discount_amount as discount,t.date as dateCreated, t.subtotal as subtotal,
-        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode
+        u.first_name as first_name, u.last_name as last_name, vr.date_void as voided, vr.reason as note,r.barcode as barcode
         FROM transactions as t
         INNER JOIN products as p
         INNER JOIN users as u ON u.id = t.cashier_id
-        INNER JOIN receipt as r ON r.id = t.receipt_id
+        LEFT JOIN receipt as r ON r.id = t.receipt_id
         LEFT JOIN void_reason AS vr ON vr.id = t.void_id
         WHERE t.is_paid IN (0,1) AND t.is_void IN (1,2) ORDER BY  t.prod_desc ASC;";
 
@@ -7551,9 +7628,710 @@ net_sold > 0
             $sql->execute();
             return $sql;
 
-        } 
-       
+        } else if( !$selectedProduct && !$selectedCategories && !$selectedSubCategories && $singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND DATE(py.date_time_of_payment) = :singleDateData
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
         
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->execute();
+            return $sql;
+
+        }else if(!$selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && $startDate && $endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+        
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->execute();
+            return $sql;
+        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.category_id = :selectedCategories
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedCategories',  $selectedCategories );
+            $sql->execute();
+            return $sql;
+        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.variant_id = :selectedSubCategories
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedSubCategories',  $selectedSubCategories);
+            $sql->execute();
+            return $sql;
+        }else if($selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.category_id = :selectedCategories
+            AND p.id = :selectedProduct
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedCategories',  $selectedCategories);
+            $sql->bindParam( ':selectedProduct',  $selectedProduct);
+            $sql->execute();
+            return $sql;
+        }else if($selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.variant_id = :selectedSubCategories
+            AND p.id = :selectedProduct
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedSubCategories',   $selectedSubCategories);
+            $sql->bindParam( ':selectedProduct',  $selectedProduct);
+            $sql->execute();
+            return $sql;  
+        }else if ($selectedProduct && !$selectedCategories && !$selectedSubCategories && $singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND  DATE(py.date_time_of_payment) = :singleDateData
+            AND p.id = :selectedProduct
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData',  $singleDateData);
+            $sql->bindParam( ':selectedProduct',  $selectedProduct);
+            $sql->execute();
+            return $sql;  
+        }else if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && $startDate && $endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND  DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate
+            AND p.id = :selectedProduct
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':selectedProduct',  $selectedProduct);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && $selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.category_id = :selectedCategories
+            AND p.variant_id = :selectedSubCategories
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedSubCategories', $selectedSubCategories );
+            $sql->bindParam( ':selectedCategories',  $selectedCategories);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && $singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.category_id = :selectedCategories
+            AND  DATE(py.date_time_of_payment) = :singleDateData
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData);
+            $sql->bindParam( ':selectedCategories',  $selectedCategories);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && $startDate && $endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.category_id = :selectedCategories
+            AND  DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':selectedCategories',  $selectedCategories);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && $singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.variant_id = :selectedSubCategories
+            AND  DATE(py.date_time_of_payment) = :singleDateData
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->bindParam( ':selectedSubCategories',  $selectedSubCategories);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && $startDate && $endDate){
+            $sql = "SELECT 
+            p.id as id,
+            p.prod_desc as prod_desc,
+            p.sku as sku,
+            p.cost as cost,
+            SUM(t.prod_qty) as sold,
+            c.category_name as category_name,
+            v.variant_name as variant_name,
+            p.prod_price as prod_price,
+            DATE(py.date_time_of_payment) as date,
+            COALESCE(refunds.total_refund_qty,0) AS product_refunded,
+            COALESCE(returns.total_return_qty,0) AS product_returns,
+            COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
+                    CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat,
+           (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+        FROM 
+            products as p 
+        INNER JOIN transactions as t ON t.prod_id = p.id 
+        INNER JOIN payments as py ON t.payment_id = py.id
+        LEFT JOIN (
+            SELECT prod_id, SUM(refunded_qty) as total_refund_qty
+            FROM refunded
+            GROUP BY prod_id
+        ) as refunds ON t.prod_id = refunds.prod_id
+        LEFT JOIN (
+            SELECT product_id, SUM(return_qty) as total_return_qty
+            FROM return_exchange
+            GROUP BY product_id
+        ) as returns ON t.prod_id = returns.product_id
+        LEFT JOIN category as c ON c.id = p.category_id
+        LEFT JOIN variants as v ON v.id = p.variant_id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 
+            AND p.variant_id = :selectedSubCategories
+            AND  DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate
+        GROUP BY 
+            t.prod_id
+        HAVING
+        net_sold > 0
+           ";
+            $sql = $this->connect()->prepare( $sql);  
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':selectedSubCategories',  $selectedSubCategories);
+            $sql->execute();
+            return $sql; 
+        }
+       
         else {
             $sql = "SELECT 
     p.id as id,
