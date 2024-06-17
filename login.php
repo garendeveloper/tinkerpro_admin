@@ -161,6 +161,9 @@
 .container-login100::before {
   background-color: none;
 }
+.container-login100-form-btn {
+    opacity: 1 !important; 
+}
 </style>
 </head>
 <body>
