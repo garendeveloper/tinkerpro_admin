@@ -90,7 +90,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
     $pdf->Cell(0, 10, "Period: $formattedDate", 0, 'L');
-} elseif (!$singleDateData && $startDate && $endDate) {
+} else if (!$singleDateData && $startDate && $endDate) {
     $formattedStartDate = date('M j, Y', strtotime($startDate));
     $formattedEndDate = date('M j, Y', strtotime($endDate));
     $pdf->SetFont('', '', 11); 
@@ -146,7 +146,7 @@ $pdf->SetFont('', '', 8);
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $totalVatableSales += $row['total_vatable_sales'] ??  0;
     $totalTax += $row['total_vat_amount'] ?? 0;
-    $totalOther +=  $row['total_other'] ?? 0;
+    $totalOther +=   0;
     $totalZeroRated  += $row['total_zero_rated'] ?? 0;
     $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'L');
     // $formatted_date = date("M j, Y", strtotime($row['date_time']));

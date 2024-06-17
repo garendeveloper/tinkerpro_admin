@@ -6,6 +6,15 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
+$pdfFolder = __DIR__ . '/../assets/pdf/voided/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
+
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -90,7 +99,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
     $pdf->Cell(0, 10, "Period: $formattedDate", 0, 'L');
-} elseif (!$singleDateData && $startDate && $endDate) {
+} else if (!$singleDateData && $startDate && $endDate) {
     $formattedStartDate = date('M j, Y', strtotime($startDate));
     $formattedEndDate = date('M j, Y', strtotime($endDate));
     $pdf->SetFont('', '', 11); 
@@ -117,7 +126,7 @@ if ($singleDateData && !$startDate && !$endDate) {
 
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
-$header = array('Product','Cashier/User','Receipt No.','Discount', 'Price', 'Qty.', 'Created', 'Voided', 'Reasons', 'Total(Php)');
+$header = array('Product','Cashier/User','Receipt No.','Discount', 'Price', 'Qty.', 'Created', 'Voided', 'Reasons', 'Total');
 $pageWidth = $pdf->getPageWidth();
 $pageHeight = $pdf->getPageHeight();
 
@@ -160,8 +169,8 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
      $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['first_name'] . ' ' .$row['last_name']  , $headerWidths[1]));
      $pdf->Cell($headerWidths[1], $maxCellHeight, $row['first_name'] . ' ' .$row['last_name'] , 1, 0, 'L');   
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['barcode']  , $headerWidths[2]));
-     $pdf->Cell($headerWidths[2], $maxCellHeight, $row['barcode'], 1, 0, 'L');  
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['barcode']?? null , $headerWidths[2]));
+     $pdf->Cell($headerWidths[2], $maxCellHeight, $row['barcode'] ?? null, 1, 0, 'L');  
      if ($row['discount']) {
         $discountValue = $row['discount']; 
         $discountPercentage = ($discountValue / ($row['price'] * $row['qty'])) * 100; 
@@ -196,17 +205,13 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
 }
 
 $pdf->SetFont('', 'B', 10); 
-$pdf->Cell($headerWidths[0], $maxCellHeight, 'Total(Php)', 1, 0, 'L'); 
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Total', 1, 0, 'L'); 
 
 $pdf->Cell($headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5] + $headerWidths[6] + $headerWidths[7]+ $headerWidths[8]+ $headerWidths[9], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
- 
+
+$pdfPath = $pdfFolder . 'voidedList.pdf';
+$pdf->Output($pdfPath, 'F');
 
 $pdf->Output('voidedList.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/voided/voidedList.pdf';
-if (file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
 
-$pdf->Output($pdfPath, 'F');
- ?>

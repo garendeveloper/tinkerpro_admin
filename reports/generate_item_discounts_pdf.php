@@ -6,6 +6,15 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
+$pdfFolder = __DIR__ . '/../assets/pdf/discounts_items/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
+
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 8) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -82,7 +91,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
     $pdf->Cell(0, 10, "Period: $formattedDate", 0, 'L');
-} elseif (!$singleDateData && $startDate && $endDate) {
+} else if (!$singleDateData && $startDate && $endDate) {
     $formattedStartDate = date('M j, Y', strtotime($startDate));
     $formattedEndDate = date('M j, Y', strtotime($endDate));
     $pdf->SetFont('', '', 11); 
@@ -162,12 +171,11 @@ $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, '
 $pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
 
-$pdf->Output('itemsDiscounts.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/discounts_items/itemsDiscounts.pdf';
-
-if (file_exists($pdfPath)) {
- 
-    unlink($pdfPath);
-}
+$pdfPath = $pdfFolder . 'itemsDiscounts.pdf';
 $pdf->Output($pdfPath, 'F');
+
+$pdf->Output('itemsDiscounts.pdf', 'I');
+
+
+
 ?>
