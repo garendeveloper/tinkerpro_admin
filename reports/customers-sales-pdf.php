@@ -91,7 +91,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
     $pdf->Cell(0, 10, "Period: $formattedDate", 0, 'L');
-} elseif (!$singleDateData && $startDate && $endDate) {
+} else if (!$singleDateData && $startDate && $endDate) {
     $formattedStartDate = date('M j, Y', strtotime($startDate));
     $formattedEndDate = date('M j, Y', strtotime($endDate));
     $pdf->SetFont('', '', 11); 

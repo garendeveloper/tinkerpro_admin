@@ -49,7 +49,7 @@ try {
         $data = [
             $counter,
             $row['total_zero_rated'] ?? 0,
-            $row['total_other'] ?? 0,
+            0,
             $row['total_vatable_sales'] ?? 0,
             $row['total_vat_amount'] ?? 0
         ];
