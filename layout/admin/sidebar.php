@@ -191,7 +191,9 @@ if (isset($_SESSION['user_id'])) {
                             class="text">Products</span></a>
                 </li>
             <?php endif ?>
-        
+            <li><a href="expenses" id="expenses"><i class="bi bi-wallet"></i>&nbsp;&nbsp; <span
+            class="text">Expenses</span></a></li>
+
             <li><a href="suppliers" id="suppliers"><i class="bi bi-building"></i>&nbsp;&nbsp; <span
                         class="text">Suppliers</span></a></li>
             <li><a href="customer" id="customers"><i class="bi bi-people"></i>&nbsp;&nbsp; <span

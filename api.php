@@ -10,6 +10,7 @@
     include( __DIR__ . '/utils/models/ability-facade.php');
     include( __DIR__ . '/utils/models/customer-facade.php');
     include( __DIR__ . '/utils/models/dashboard-facade.php');
+    include( __DIR__ . '/utils/models/expense-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
@@ -17,6 +18,7 @@
     $order = new OrderFacade();
     $inventory_count = new InventoryCountFacade();
     $loss_and_damage = new Loss_and_damage_facade();
+    $expense_facade = new ExpenseFacade();
 
     include( __DIR__ . '/utils/models/ingredients-facade.php');
    
@@ -45,6 +47,15 @@
             echo json_encode($dashboard->get_salesDataByYear($_GET['year']));
             break;
 
+
+        //Expenses
+        case 'save_expense':
+            echo json_encode($expense_facade->save_expense($_POST));
+            break;
+        case 'get_allExpenses':
+            echo json_encode($expense_facade->get_allExpenses());
+            break;
+        //
         case 'user_role':
            $roleId = isset($_GET['roleId']) ? $_GET['roleId'] : null;
            $role = $userFacade->checkUsersIdentificationNumber($roleId);
