@@ -155,7 +155,7 @@ class DashboardFacade extends DBConnection
                                             AND t.is_void = 0 
                                             AND (DATE(p.date_time_of_payment) BETWEEN :st_date AND :end_date)
                                         GROUP BY 
-                                            ps.id");
+                                            p.id");
 
         $sql->execute([':st_date' => $start_date, ':end_date' => $end_date]);
         $top_products = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -337,7 +337,7 @@ class DashboardFacade extends DBConnection
                                                     AND MONTH(p.date_time_of_payment) = :currentMonth
                                                     AND YEAR(p.date_time_of_payment) = :currentYear
                                                 GROUP BY 
-                                                       ps.id");
+                                                       p.id");
 
             $payment_sql->execute([':currentMonth' => $month, ':currentYear' => $year]);
             $payments = $payment_sql->fetchAll(PDO::FETCH_ASSOC);
@@ -538,7 +538,7 @@ class DashboardFacade extends DBConnection
                     AND (DATE(p.date_time_of_payment) BETWEEN :st_date AND :end_date)
                     AND (TIME(p.date_time_of_payment) BETWEEN :start_time AND :end_time)
                 GROUP BY 
-                    ps.id
+                    p.id
             ");
         
             $payment_sql->execute([

@@ -49,6 +49,13 @@
         right: 5px;
         transform: translateY(-50%);
     }
+    #date_purchased {
+        outline: none; /* Remove default focus outline (optional) */
+    }
+
+    #date_purchased:focus {
+        outline: none; /* Remove focus outline when element is focused (optional) */
+    }
 </style>
 <div class="fcontainer" id = "purchaseItems_div" style = "display: none">
     <form id="po_form">
@@ -73,11 +80,6 @@
         </div>
         <div class="fieldContainer" style = "margin-top: 2px;">
             <label>Supplier</label>
-            <!-- <div class="search-container">
-                <input type="text" class="search-input" autocomplete="off" type="text" 
-                    onkeyup="$(this).removeClass('has-error')" name="supplier" id="supplier" value=""
-                    style="width: 390px;  height: 30px;" autocomplete="off">
-            </div>  -->
             <div class="custom-select" style="margin-right: 0px; ">
                 <select name="supplier" id = "supplier"
                     style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 14px; height: 30px;">

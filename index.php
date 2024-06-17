@@ -234,7 +234,7 @@ if ($decProductSales == NULL) {
 }
 
 .header-container select {
-  background-color: #1E1C11;
+  background-color: #262626;
   color: #fff;
   width: 120px;
   border: 1px solid #fff;
@@ -279,6 +279,42 @@ body, div, h1, h2, h3, h4, h5, p{
     border: 1px solid #ccc;
     padding: 8px;
     text-align: left;
+}
+.annual_total_sales h3, #total_sales_data h1{
+  font-family: Century Gothic;
+  font-size: 5rem; 
+}
+
+#total_sales_data h1{
+  font-family: Century Gothic;
+  font-size: 7rem; 
+}
+
+@media (max-width: 1200px) {
+  .annual_total_sales h3, #total_sales_data h1{
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .annual_total_sales h3, #total_sales_data h1{
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .annual_total_sales h3, #total_sales_data h1{
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .annual_total_sales h3, #total_sales_data h1{
+    font-size: 0.5rem;
+  }
+}
+#tbl_top_products td{
+  height: 10px;
 }
 </style>
 <?php include "layout/admin/css.php" ?>
@@ -560,11 +596,11 @@ $('.custom_btns').on('click', function () {
             }
 
             var tblData = `
-            <table  id = "tbl_top_products" class='' style='font-size: 10px; top: -20px'>
+            <table  id = "tbl_top_products" class='' style='font-size: 10px;'>
                 <thead>
                     <tr>
-                        <th style = 'text-align: left; background-color: #656260'>Product.</th>
-                        <th style = 'text-align: center; background-color: #656260'>Total</th>
+                        <th style = 'text-align: left; background-color: #8f3900'>Product.</th>
+                        <th style = 'text-align: center; background-color: #7f160b'>Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -714,8 +750,8 @@ $('.custom_btns').on('click', function () {
               const top_month = annual_sales === 0 ? "---" : response.data.top_month;
               const top_month_value = response.data.top_month_value;
 
-              $(".annual_total_sales").html("<h3 style='font-size: 5rem; font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
-              $(".top_performing_month").html("<h4 style='color: #ccc; font-size: 1rem'>Top Performing Month</h4>" +
+              $(".annual_total_sales").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
+              $(".top_performing_month").html("<h4 style='color: #d9f500; font-size: 1rem'>Top Performing Month</h4>" +
                   "<h4>" + top_month + "</h4>" +
                   "<h4>" + formatNumberWithCommasAndDecimals(top_month_value) + "</h4>");
 
