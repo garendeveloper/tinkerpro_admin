@@ -919,7 +919,7 @@ include ('./layout/admin/table-pagination-css.php');
         $("#paginationDiv").empty().hide();
 
         var tblData = `
-            <table id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
+            <table tabindex='0' id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
                 <thead>
                     <tr>
                         <th class='text-center auto-fit'>No.</th>
@@ -945,9 +945,9 @@ include ('./layout/admin/table-pagination-css.php');
             columns: [
                 { data: null, render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
-                }},
-                { data: 'prod_desc' },
-                { data: 'barcode' },
+                }, className: 'text-center'},
+                { data: 'prod_desc'},
+                { data: 'barcode', className: 'text-center' },
                 { data: 'uom_name', className: 'text-center' },
                 { data: 'product_stock', className: 'text-center', render: function (data) {
                     if (data > 10) return "<span style='color: yellowgreen'>" + data + "</span>";
@@ -962,6 +962,9 @@ include ('./layout/admin/table-pagination-css.php');
             order: [[1, 'asc']],
             pageLength: 100,
             pagingType: 'full_numbers',
+            columnDefs: [
+                { targets: '_all', className: 'autofit' } 
+            ],
             dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
             fnDrawCallback: function (oSettings) {
                 if (oSettings.aoData.length === 0) {
@@ -970,6 +973,7 @@ include ('./layout/admin/table-pagination-css.php');
                     $("#paginationDiv").show();
                 }
             },
+        
             createdRow: function (row, data, dataIndex) {
               $(row).attr('data-id', data.product_id);
             }
