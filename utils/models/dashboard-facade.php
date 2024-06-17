@@ -33,83 +33,129 @@ class DashboardFacade extends DBConnection
         $end_date = $this->convertDateFormat($end_date);
 
         $sql = $this->connect()->prepare("WITH RefundSums AS (
-                    SELECT 
-                        r.payment_id,
-                        COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
-                                0
-                            ) as credits,
-                        COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
-                                0
-                            ) as discountsTender,
-                    SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
-                        SUM(
-                            COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
-                                0
-                            )
-                        ) AS total_item_discounts
-                    FROM 
-                        refunded r
-                    GROUP BY 
-                        r.reference_num
-                ),
-                ReturnExchangeSums AS (
-                    SELECT 
-                        rc.payment_id,
-                    COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
-                                0
-                            ) as rc_credits,
-                        COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
-                                0
-                            ) as discountsReturnTender,
-                    SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
-                        SUM(
-                            COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
-                                0
-                            )
-                        ) AS total_return_item_discounts
-                    FROM 
-                        return_exchange  rc
-                    GROUP BY 
-                        rc.payment_id
-                )
-                SELECT
-                DISTINCT
-                    ps.prod_desc as product,
-                    ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
-                    ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
-                    p.date_time_of_payment AS date,
-                    p.cart_discount AS cart_discount,
-                    d.discount_amount AS discountsRate,
-                    COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
-                    IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
-                    COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                    COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                    
-                    COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
-                    IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
-                    COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                    COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender
-                    
-                FROM 
-                    payments AS p 
-                    INNER JOIN transactions AS t ON p.id = t.payment_id 
-                    INNER JOIN users AS u ON u.id = t.user_id
-                    INNER JOIN discounts AS d ON d.id = u.discount_id
-                    INNER JOIN products AS ps ON ps.id = t.prod_id
-                    LEFT JOIN RefundSums rs ON rs.payment_id = p.id
-                    LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
-                WHERE 
-                    t.is_paid = 1 
-                    AND t.is_void = 0 
-                    AND (DATE(p.date_time_of_payment) BETWEEN :st_date AND :end_date)
-                GROUP BY 
-                    ps.id");
+                                            SELECT 
+                                                r.payment_id,
+                                                COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as credits,
+                                            COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as cartRateRefund,
+                                                COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as discountsTender,
+                                            SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                                                SUM(
+                                                    COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    )
+                                                ) AS total_item_discounts,
+                                        ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                            0
+                                        )),2) AS refundCart,
+                                        ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+                                        COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                            0
+                                        )-  COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                            0
+                                        )),2),2) AS otherPayments
+                                            FROM 
+                                                refunded r
+                                            GROUP BY 
+                                                r.reference_num
+                                        ),
+                                        ReturnExchangeSums AS (
+                                            SELECT 
+                                                rc.payment_id,
+                                            COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as rc_credits,
+                                                COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as cartRateReturn,
+                                                COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as discountsReturnTender,
+                                            SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                                                SUM(
+                                                    COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    )
+                                                ) AS total_return_item_discounts,
+                                            ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                            0
+                                        )),2) AS returnCart,
+                                        ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+                                        COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                            0
+                                        )-  COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                            0
+                                        )),2),2) AS otherReturnPayments 
+                                        
+                                            FROM 
+                                                return_exchange  rc
+                                            GROUP BY 
+                                                rc.payment_id
+                                        )
+                                        SELECT
+                                        DISTINCT
+                                              ps.prod_desc as product,
+                                            ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                                            ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                                            p.date_time_of_payment AS date,
+                                            p.cart_discount AS cart_discount,
+                                            d.discount_amount AS discountsRate,
+                                            COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                                            IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                                            COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                                            COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                                            COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                                            COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                                            COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                                            
+                                            COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                                            IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                                            COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                                            COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                                            COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                                            COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                                            COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+                                        
+                                            
+                                        FROM 
+                                            payments AS p
+                                            INNER JOIN transactions AS t ON p.id = t.payment_id 
+                                            INNER JOIN users AS u ON u.id = t.user_id
+                                            INNER JOIN discounts AS d ON d.id = u.discount_id
+                                            INNER JOIN products AS ps ON ps.id = t.prod_id
+                                            LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                                            LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+                                        WHERE 
+                                            t.is_paid = 1 
+                                            AND t.is_void = 0 
+                                            AND (DATE(p.date_time_of_payment) BETWEEN :st_date AND :end_date)
+                                        GROUP BY 
+                                            ps.id");
 
         $sql->execute([':st_date' => $start_date, ':end_date' => $end_date]);
         $top_products = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -168,79 +214,124 @@ class DashboardFacade extends DBConnection
         {
             $month = $i;
             $payment_sql = $this->connect()->prepare("WITH RefundSums AS (
-                                                    SELECT 
-                                                        r.payment_id,
-                                                        COALESCE(
-                                                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
-                                                                0
-                                                            ) as credits,
-                                                        COALESCE(
-                                                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
-                                                                0
-                                                            ) as discountsTender,
-                                                    SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
-                                                        SUM(
+                                                        SELECT 
+                                                            r.payment_id,
                                                             COALESCE(
-                                                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
-                                                                0
-                                                            )
-                                                        ) AS total_item_discounts
-                                                    FROM 
-                                                        refunded r
-                                                    GROUP BY 
-                                                        r.reference_num
-                                                ),
-                                                ReturnExchangeSums AS (
-                                                    SELECT 
-                                                        rc.payment_id,
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                ) as credits,
+                                                        COALESCE(
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                ) as cartRateRefund,
+                                                            COALESCE(
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                ) as discountsTender,
+                                                        SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                                                            SUM(
+                                                                COALESCE(
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                )
+                                                            ) AS total_item_discounts,
+                                                    ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                                        0
+                                                    )),2) AS refundCart,
+                                                    ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
                                                     COALESCE(
-                                                                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
-                                                                0
-                                                            ) as rc_credits,
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    )-  COALESCE(
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                                        0
+                                                    )),2),2) AS otherPayments
+                                                        FROM 
+                                                            refunded r
+                                                        GROUP BY 
+                                                            r.reference_num
+                                                    ),
+                                                    ReturnExchangeSums AS (
+                                                        SELECT 
+                                                            rc.payment_id,
                                                         COALESCE(
-                                                                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
-                                                                0
-                                                            ) as discountsReturnTender,
-                                                    SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
-                                                        SUM(
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                ) as rc_credits,
                                                             COALESCE(
-                                                                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
-                                                                0
-                                                            )
-                                                        ) AS total_return_item_discounts
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                ) as cartRateReturn,
+                                                            COALESCE(
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                ) as discountsReturnTender,
+                                                        SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                                                            SUM(
+                                                                COALESCE(
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                )
+                                                            ) AS total_return_item_discounts,
+                                                        ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                                        0
+                                                    )),2) AS returnCart,
+                                                    ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+                                                    COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    )-  COALESCE(
+                                                                    CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                                    0
+                                                                ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                                        0
+                                                    )),2),2) AS otherReturnPayments 
+                                                    
+                                                        FROM 
+                                                            return_exchange  rc
+                                                        GROUP BY 
+                                                            rc.payment_id
+                                                    )
+                                                    SELECT
+                                                    DISTINCT
+                                                        ps.prod_desc as product,
+                                                        ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                                                        ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                                                        p.date_time_of_payment AS date,
+                                                        p.cart_discount AS cart_discount,
+                                                        d.discount_amount AS discountsRate,
+                                                        COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                                                        IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                                                        COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                                                        COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                                                        COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                                                        COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                                                        COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                                                        
+                                                        COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                                                        IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                                                        COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                                                        COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                                                        COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                                                        COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                                                        COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+                                                    
+                                                        
                                                     FROM 
-                                                        return_exchange  rc
-                                                    GROUP BY 
-                                                        rc.payment_id
-                                                )
-                                                SELECT
-                                                DISTINCT
-                                                    u.first_name AS first_name,
-                                                    u.last_name AS last_name, 
-                                                    ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
-                                                    ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
-                                                    p.date_time_of_payment AS date,
-                                                    p.cart_discount AS cart_discount,
-                                                    d.discount_amount AS discountsRate,
-                                                    COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
-                                                    IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
-                                                    COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                                                    COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                                                    
-                                                    COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
-                                                    IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
-                                                    COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                                                    COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender
-                                                    
-                                                FROM 
-                                                    payments AS p 
-                                                    INNER JOIN transactions AS t ON p.id = t.payment_id 
-                                                    INNER JOIN users AS u ON u.id = t.user_id
-                                                    INNER JOIN discounts AS d ON d.id = u.discount_id
-                                                    INNER JOIN products AS ps ON ps.id = t.prod_id
-                                                    LEFT JOIN RefundSums rs ON rs.payment_id = p.id
-                                                    LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
-                                                WHERE 
+                                                        payments AS p
+                                                        INNER JOIN transactions AS t ON p.id = t.payment_id 
+                                                        INNER JOIN users AS u ON u.id = t.user_id
+                                                        INNER JOIN discounts AS d ON d.id = u.discount_id
+                                                        INNER JOIN products AS ps ON ps.id = t.prod_id
+                                                        LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                                                        LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+                                                    WHERE
                                                     t.is_paid = 1 
                                                     AND t.is_void = 0 
                                                     AND MONTH(p.date_time_of_payment) = :currentMonth
@@ -323,78 +414,125 @@ class DashboardFacade extends DBConnection
             $start_time = $timeRange[0];
             $end_time = $timeRange[1];
         
-            $payment_sql = $this->connect()->prepare("
-                WITH RefundSums AS (
-                    SELECT 
-                        r.payment_id,
-                        COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
-                            0
-                        ) as credits,
-                        COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
-                            0
-                        ) as discountsTender,
-                        SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
-                        SUM(
-                            COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
-                                0
-                            )
-                        ) AS total_item_discounts
-                    FROM 
-                        refunded r
-                    GROUP BY 
-                        r.reference_num
-                ),
-                ReturnExchangeSums AS (
-                    SELECT 
-                        rc.payment_id,
-                        COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
-                            0
-                        ) as rc_credits,
-                        COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
-                            0
-                        ) as discountsReturnTender,
-                        SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
-                        SUM(
-                            COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
-                                0
-                            )
-                        ) AS total_return_item_discounts
-                    FROM 
-                        return_exchange rc
-                    GROUP BY 
-                        rc.payment_id
-                )
-                SELECT DISTINCT
-                    u.first_name AS first_name,
-                    u.last_name AS last_name, 
-                    ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0), 2) AS paid_amount,
-                    ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0), 2) AS totalChange,
-                    p.date_time_of_payment AS date,
-                    p.cart_discount AS cart_discount,
-                    d.discount_amount AS discountsRate,
-                    COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
-                    IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
-                    COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                    COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                    COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
-                    IFNULL(res.total_return_item_discounts, 0) AS total_return_item_discounts,
-                    COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                    COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender
-                FROM 
-                    payments AS p 
-                    INNER JOIN transactions AS t ON p.id = t.payment_id 
-                    INNER JOIN users AS u ON u.id = t.user_id
-                    INNER JOIN discounts AS d ON d.id = u.discount_id
-                    INNER JOIN products AS ps ON ps.id = t.prod_id
-                    LEFT JOIN RefundSums rs ON rs.payment_id = p.id
-                    LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
-                WHERE 
+            $payment_sql = $this->connect()->prepare("WITH RefundSums AS (
+                                            SELECT 
+                                                r.payment_id,
+                                                COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as credits,
+                                            COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as cartRateRefund,
+                                                COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as discountsTender,
+                                            SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
+                                                SUM(
+                                                    COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    )
+                                                ) AS total_item_discounts,
+                                        ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                            0
+                                        )),2) AS refundCart,
+                                        ROUND(SUM(COALESCE(r.refunded_amt, 0)) - 
+                                        COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                            0
+                                        )-  COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) - ROUND(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                            0
+                                        )),2),2) AS otherPayments
+                                            FROM 
+                                                refunded r
+                                            GROUP BY 
+                                                r.reference_num
+                                        ),
+                                        ReturnExchangeSums AS (
+                                            SELECT 
+                                                rc.payment_id,
+                                            COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as rc_credits,
+                                                COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as cartRateReturn,
+                                                COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) as discountsReturnTender,
+                                            SUM(COALESCE(rc.return_amount, 0)) AS return_amt,
+                                                SUM(
+                                                    COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    )
+                                                ) AS total_return_item_discounts,
+                                            ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                            0
+                                        )),2) AS returnCart,
+                                        ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+                                        COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
+                                            0
+                                        )-  COALESCE(
+                                                        CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
+                                                        0
+                                                    ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                                            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                                            0
+                                        )),2),2) AS otherReturnPayments 
+                                        
+                                            FROM 
+                                                return_exchange  rc
+                                            GROUP BY 
+                                                rc.payment_id
+                                        )
+                                        SELECT
+                                        DISTINCT
+                                              ps.prod_desc as product,
+                                            ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
+                                            ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                                            p.date_time_of_payment AS date,
+                                            p.cart_discount AS cart_discount,
+                                            d.discount_amount AS discountsRate,
+                                            COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                                            IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+                                            COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
+                                            COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
+                                            COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                                            COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                                            COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                                            
+                                            COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                                            IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+                                            COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
+                                            COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                                            COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
+                                            COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
+                                            COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+                                        
+                                            
+                                        FROM 
+                                            payments AS p
+                                            INNER JOIN transactions AS t ON p.id = t.payment_id 
+                                            INNER JOIN users AS u ON u.id = t.user_id
+                                            INNER JOIN discounts AS d ON d.id = u.discount_id
+                                            INNER JOIN products AS ps ON ps.id = t.prod_id
+                                            LEFT JOIN RefundSums rs ON rs.payment_id = p.id
+                                            LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+                                        WHERE
                     t.is_paid = 1 
                     AND t.is_void = 0 
                     AND (DATE(p.date_time_of_payment) BETWEEN :st_date AND :end_date)

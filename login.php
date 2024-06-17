@@ -162,7 +162,7 @@
   background-color: none;
 }
 .container-login100-form-btn {
-    opacity: 1 !important; 
+    opacity: 2 !important; 
 }
 </style>
 </head>
