@@ -870,13 +870,13 @@ function highlightDiv(id) {
           entriesDiv.setAttribute('hidden',true);
 
           var soldDiv = document.getElementById('soldDiv');
-          soldDiv.removeAttribute('hidden');
+          soldDiv.setAttribute('hidden',true);
 
           var usersSelect = document.getElementById('usersDIV');
           usersSelect.setAttribute('hidden',true);
 
           var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-          dateTimeAnchor.setAttribute('hidden',true);
+          dateTimeAnchor.removeAttribute('hidden');
 
           var customerDIV = document.getElementById('customerDIV');
           customerDIV.setAttribute('hidden',true);
@@ -891,10 +891,10 @@ function highlightDiv(id) {
           productsDIV.removeAttribute('hidden');
 
           var subCategoriesDIV = document.getElementById('subCategoriesDIV');
-          subCategoriesDIV.removeAttribute('hidden',true);
+          subCategoriesDIV.setAttribute('hidden',true);
 
           var categoriesDiv = document.getElementById('categoriesDiv');
-          categoriesDiv.removeAttribute('hidden');
+          categoriesDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -3471,10 +3471,6 @@ function generatePdf(id){
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
       var selectedProduct =  getSelectedProductValue()
-      var categoriesSelect = document.getElementById('categoreisSelect')
-      var selectedCategories = categoriesSelect.value
-      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
-      var selectedSubCategories = subCategoreisSelect.value
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -3513,10 +3509,7 @@ function generatePdf(id){
                 responseType: 'blob'
             },
             data: {
-                selectedOption: selectedOption,
                 selectedProduct: selectedProduct,
-                selectedCategories: selectedCategories,
-                selectedSubCategories:  selectedSubCategories,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -6188,13 +6181,7 @@ function printDocuments(id){
   });
   }else if(id==10){//printprofit
     $('#printDocu').off('click').on('click',function() {
-      var soldSelect = document.getElementById('soldSelect')
-      var selectedOption = soldSelect.value;
       var selectedProduct =  getSelectedProductValue()
-      var categoriesSelect = document.getElementById('categoreisSelect')
-      var selectedCategories = categoriesSelect.value
-      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
-      var selectedSubCategories = subCategoreisSelect.value
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -6233,10 +6220,7 @@ function printDocuments(id){
               responseType: 'blob'
           },
            data: {
-                selectedOption: selectedOption,
                 selectedProduct: selectedProduct,
-                selectedCategories: selectedCategories,
-                selectedSubCategories:  selectedSubCategories,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -7717,13 +7701,7 @@ function showReports(id){
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var soldSelect = document.getElementById('soldSelect')
-      var selectedOption = soldSelect.value;
       var selectedProduct =  getSelectedProductValue()
-      var categoriesSelect = document.getElementById('categoreisSelect')
-      var selectedCategories = categoriesSelect.value
-      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
-      var selectedSubCategories = subCategoreisSelect.value
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -7762,10 +7740,7 @@ function showReports(id){
               responseType: 'blob'
           },
           data: {
-                selectedOption: selectedOption,
                 selectedProduct: selectedProduct,
-                selectedCategories: selectedCategories,
-                selectedSubCategories:  selectedSubCategories,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
