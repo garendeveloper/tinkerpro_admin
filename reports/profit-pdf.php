@@ -29,14 +29,12 @@ $products = new ProductFacade();
 $counter = 1;
 
 $selectedProduct = $_GET['selectedProduct'] ?? null;
-$selectedCategories = $_GET['selectedCategories'] ?? null;
-$selectedSubCategories = $_GET['selectedSubCategories'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
-$selectedOption = $_GET['selectedOption'] ?? null;
 
-$fetchRefund= $refundFacade->getProfit($selectedProduct,$selectedCategories,$selectedSubCategories,$singleDateData,$startDate,$endDate,$selectedOption);
+
+$fetchRefund= $refundFacade->getProfit($selectedProduct,$singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -122,11 +120,8 @@ if ($singleDateData && !$startDate && !$endDate) {
 
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
-if($selectedOption == "sold"){
-    $header = array('Product','SKU','Sold','Cost','Margin(%)','Total','Profit');
-}else{
-    $header = array('Product','SKU','Stock','Cost','Margin(%)','Total','Profit');
-}
+$header = array('Product','SKU','Sold','Cost','Margin(%)','Total','Profit');
+
 
 $headerWidths = array(50,18,25,25,18, 25,25);
 $maxCellHeight = 5; 
@@ -151,54 +146,34 @@ $totalCost = 0;
 $totalT = 0 ;
 $totalProfit = 0;
 $pdf->SetFont('', '', 8); 
-if($selectedOption == "sold"){
+
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalCost += $row['cost']?? 0;
-    $totalT += $row['total']?? 0;
-    $totalProfit  += $row['profit']?? 0;
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sku'], $headerWidths[1]));   
-    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['sku'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sold'], $headerWidths[2]));   
-    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['sold'],2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['cost'], $headerWidths[3]));   
-    $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['cost'],2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['markup'], $headerWidths[4]));   
-    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['markup'],2).'%', 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total'], $headerWidths[5]));   
-    $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['total'],2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['profit'], $headerWidths[6]));   
-    $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['profit'],2), 1, 0, 'R');
-   $pdf->Ln(); 
-}
-}else{
-    while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalCost += $row['cost']?? 0;
-    $totalT += $row['total']?? 0;
-    $totalProfit  += $row['profit']?? 0;
+   
+    $totalT += $row['amount']?? 0;
+    $totalCost = $row['net_sold'] * $row['cost'];
+    $profit = $row['amount']- $totalCost;
+    $totalProfit  +=  $profit;
 
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
     $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sku'], $headerWidths[1]));   
     $pdf->Cell($headerWidths[1], $maxCellHeight, $row['sku'], 1, 0, 'L');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['stock'], $headerWidths[2]));   
-    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['stock'],2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['net_sold'], $headerWidths[2]));   
+    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['net_sold'],2), 1, 0, 'R');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['cost'], $headerWidths[3]));   
     $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['cost'],2), 1, 0, 'R');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['markup'], $headerWidths[4]));   
     $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['markup'],2).'%', 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total'], $headerWidths[5]));   
-    $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['total'],2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['profit'], $headerWidths[6]));   
-    $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['profit'],2), 1, 0, 'R');
-   $pdf->Ln(); 
-    }
-
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['amount'], $headerWidths[5]));   
+    $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['amount'],2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf,   $profit, $headerWidths[6]));   
+    $pdf->Cell($headerWidths[6], $maxCellHeight, number_format(  $profit,2), 1, 0, 'R');
+    $pdf->Ln(); 
 }
+
 $pdf->SetFont('', 'B', 8); 
 $pdf->Cell($headerWidths[0] + $headerWidths[1]  + $headerWidths[2] , $maxCellHeight, 'Total', 1, 0, 'L'); 
-$pdf->Cell($headerWidths[3] , $maxCellHeight,   number_format($totalCost,2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[3] , $maxCellHeight,  '', 1, 0, 'R'); 
 $pdf->Cell($headerWidths[4] , $maxCellHeight,  '', 1, 0, 'R'); 
 $pdf->Cell($headerWidths[5] , $maxCellHeight,  number_format($totalT,2), 1, 0, 'R'); 
 $pdf->Cell($headerWidths[6] , $maxCellHeight,  number_format($totalProfit,2), 1, 0, 'R'); 

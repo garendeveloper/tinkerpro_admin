@@ -167,7 +167,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $otherRefundPayments = $row['totalOtherPayments'];
     $cartDiscountAmount = $row['cartRefundTotal'];
 
-    $totalRefundedAmt =  $refunded_amt-$refudned_item_discount- $totalRefundDiscountsTendered-$cartDiscountAmount;
+    $totalRefundedAmt =  $refunded_amt-$refudned_item_discount-$totalRefundDiscountsTendered-$cartDiscountAmount;
    
     
 
