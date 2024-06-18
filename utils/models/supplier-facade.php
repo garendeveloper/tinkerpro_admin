@@ -54,6 +54,12 @@
         
 
     }
+    public function get_allSuppliers()
+    {
+        $stmt = $this->connect()->prepare("SELECT supplier, id FROM supplier");
+        $stmt->execute();
+        return $stmt;
+    }
     public function getSupplierAndSuppliedData($searchQuery){
         if ($searchQuery !== null && $searchQuery !== '') {
             $sql = 'SELECT s.id as id, s.supplier as name,s.contact as contact, s.email as email, s.company as company, s.is_active as status FROM `supplier` as s';

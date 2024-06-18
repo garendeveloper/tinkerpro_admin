@@ -181,7 +181,7 @@ class DashboardFacade extends DBConnection
             $return_credits = $row['totalReturnCredits'];
             $totalReturnDiscountsTender = $row['totalDiscountsReturnTender'];
         
-            $totalReturnAmt = $return_amount-$return_item_discounts-$return_credits-$totalReturnDiscountsTender;
+            $totalReturnAmt = $return_amount-$return_item_discounts-$totalReturnDiscountsTender;
         
             $totalGrossSales = $sales-$totalRefundedAmt-$totalReturnAmt;
             $total_sales_by_period += $totalGrossSales;

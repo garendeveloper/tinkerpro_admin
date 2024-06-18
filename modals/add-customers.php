@@ -392,10 +392,10 @@ input:checked + .sliderTax:before {
             <textarea id="address" class="address"></textarea>
           </div>
            <div class="button-container" style="display:flex;justify-content: right;">
-                <button onclick="addCustomer()" class="btn-success-custom saveCustomerBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
-                <button hidden onclick="updateCustomer()" class="btn-success-custom updateCustomerBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
-                <button onclick="closeAddingModal()" class="cancelAddCustomer btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
-            </div>
+              <button onclick="addCustomer()" class="btn-success-custom saveCustomerBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
+              <button hidden onclick="updateCustomer()" class="btn-success-custom updateCustomerBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
+              <button onclick="closeAddingModal()" class="cancelAddCustomer btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
+          </div>
         </div>
       </div>
     </div>
