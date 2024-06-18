@@ -14,7 +14,7 @@
 }
 
 
-.product-modal {
+.expense_content {
   background-color: #fefefe;
   margin: 0 auto; 
   border: none;
@@ -771,6 +771,7 @@ input:checked + .discountSpan:before {
     min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 5;
+    overflow-y: auto;
   }
 
  
@@ -1309,39 +1310,52 @@ input:checked + .warningSpan:before {
 }
 
 .show {display: block;}
+.form-error{
+  border: 1px solid red;
+}
+.slideOutRight {
+    animation: slideOutRightss 0.5s forwards;
+  }
+  #uomType::placeholder {
+    color: #FF6700;
+    font-family: Century Gothic;
+    font-weight: bold;
+    font-style: italic;
+}
+
 </style>
 
 <div class="modal" id="add_expense_modal" tabindex="0">
   <div class="modal-dialog ">
-    <div class="modal-content product-modal">
+    <div class="modal-content expense_content">
       <!-- <div id="scrollable-data"> -->
       <div class="modal-title">
         <div style="margin-top: 30px; margin-left: 20px">
            <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">EXPENSES</h5>
         </div>
-        <form action="" id = "expense_form">
+        <form id = "expense_form" enctype="multipart/form-data">
         <div class="warning-container">
           <div class="tableCard">
           <div style="margin-left: 20px;margin-right: 20px">
             <table id="tbl_createExpense" class="text-color table-border"> 
-              
+              <input type="hidden" name = "expense_id" id = "expense_id" value = "">
                 <tbody>
                     <tr>
                         <td class="nameTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Item Name<sup>*</sup></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="productname" id="item_name" name="item_name"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="productname" id="item_name" oninput = "$(this).closest('td').removeClass('form-error')" name="item_name" autocomplete="off" autofocus/></td>
                     </tr>
                     <tr>
                         <td  class="skuTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Date(MM-DD-YYYY)</td>
-                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input id="date_of_transaction" name="date_of_transaction" /></td>
+                        <td class="td-height text-custom"style="font-size: 12px; height: 10px:"><input id="date_of_transaction" type = "date" name="date_of_transaction" oninput = "$(this).closest('td').removeClass('form-error')" autocomplete="off"/></td>
                     </tr>
                     <tr>
                         <td class="codeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Billable (Receipt No.)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="billable_receipt_no" name="billable_receipt_no"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="billable_receipt_no" name="billable_receipt_no" oninput = "$(this).closest('td').removeClass('form-error')" autocomplete="off"/></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Type</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input">
-                            <input class="custom-input" readonly name="expense_type" id="expense_type"  style="width: 259px"/>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input" >
+                            <input class="custom-input" readonly name="expense_type" id="expense_type"  style="width: 259px" autocomplete="off"/>
                             <button type = "button"  id="btn_expense_type" class="custom-btn dropdown_btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1352,7 +1366,7 @@ input:checked + .warningSpan:before {
                                 </g>
                             </svg>
                             </button>
-                            <div class="dropdown-content" id="expense_type_dropdown">
+                            <div class="dropdown-content" id="expense_type_dropdown" style = "overflow-auto: y">
                                 <a href="#" data-value="inventory">Inventory</a>
                                 <a href="#" data-value="rent">Rent</a>
                                 <a href="#" data-value="utilities">Utilities</a>
@@ -1376,9 +1390,9 @@ input:checked + .warningSpan:before {
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Quantity</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input">
-                            <input class="custom-input" name="qty" id="qty" style="width: 125px"/>
+                            <input class="custom-input" name="qty" id="qty" style="width: 125px" oninput = "$(this).removeClass('form-error')" autocomplete="off"/>
                             <input class="custom-input" readonly hidden name="uomID" id="uomID" style="width: 125px"/>
-                            <input class="custom-input" readonly name="uomType" id="uomType" placeholder = "Unit of Measure" style="width: 126px"/>
+                            <input class="custom-input" readonly name="uomType" id="uomType" placeholder = "Unit of Measure" style="width: 126px" autocomplete="off"/>
                             <button type  ="button" name="uomBtn" id="uomBtn" class="custom-btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1403,8 +1417,8 @@ input:checked + .warningSpan:before {
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Supplier</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input">
-                            <input class="custom-input" hidden readonly name="supplier_id" id="supplier_id" style="width: 259px"/>
-                            <input class="custom-input" readonly name="supplier" id="supplier" style="width: 259px"/>
+                            <input class="custom-input" hidden readonly name="supplier_id" id="supplier_id" style="width: 259px" />
+                            <input class="custom-input" readonly name="supplier" id="supplier" style="width: 259px " autocomplete="off"/>
                             <button type = "button" name="btn_supplier" id="btn_supplier" class="custom-btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1428,19 +1442,19 @@ input:checked + .warningSpan:before {
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Invoice Number</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="invoice_number" id="invoice_number"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="invoice_number" id="invoice_number" autocomplete="off"/></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Price (Php)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="price" id="price"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="price" id="price" autocomplete="off"/></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Discount</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="brand" name="discount" id="discount"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="brand" name="discount" id="discount" autocomplete="off"/></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Total Amount (Php)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="brand" name="total_amount" id="total_amount" readonly/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="brand" name="total_amount" id="total_amount" readonly autocomplete="off"/></td>
                     </tr>
               
               </tbody>
@@ -1448,14 +1462,14 @@ input:checked + .warningSpan:before {
           </div>
           <div style="margin-top: 10px; margin-left: 20px">
             <label class="text-custom"  style="color:#FF6900;">Description</label><br>
-            <textarea id="description" class="item_description"></textarea>
+            <textarea id="description" name = "description" class="item_description"></textarea>
           </div>
           <div id="scrollable-div">
               <div class="imageCard">
                   <div  style="width:180px" class="imageExpense" id="imageExpense">
                         <img src="./assets/img/invoice.png" id= "imagePreview" alt="Image Preview" style = "width: 175px; height: 195px"></img>
                    </div>   
-                   <input type="file" hidden id = "image-input" accept="image/*">
+                   <input type="file" hidden id = "image-input" accept="image/*" name = "image_url">
                </div> 
                <div class="button-container">
                   <button class="cancelAddProducts " type = "button" id = "open_image" style="margin-right: 10px; width: 200px; height: 40px">Browse Picture</button>
@@ -1464,7 +1478,7 @@ input:checked + .warningSpan:before {
               </div> 
             <div class="button-container" style="display:flex;justify-content: right;">
               <button type = "button" class="cancelAddProducts btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">DELETE</button>
-              <button  type = "button" class="btn-success-custom updateProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">CANCEL</button>
+              <button  type = "button" class="btn-success-custom updateProductsBtn" id = "btn_cancelExpense" style="margin-right: 10px; width: 100px; height: 40px">CANCEL</button>
               <button  class="btn-success-custom saveProductsBtn" type = "submit" style="margin-right: 10px; width: 100px; height: 40px">SAVE</button>
             </div>
           </div>
@@ -1507,6 +1521,7 @@ $(document).ready(function(){
 
   $("#expense_type_dropdown a").on("click", function(event) {
     event.preventDefault();
+    $(this).closest('td').removeClass('form-error');
     var value = $(this).data("value");
     var roleName = $(this).text();
     $("#expense_type").val(roleName);
@@ -1604,55 +1619,28 @@ $(document).ready(function(){
       $("#imagePreview").hide();
     }
   });
-
-  $("#expense_form").on("submit", function(e){
-    e.preventDefault();
-    var formData = $(this).serialize();
-    console.log(formData);
-    $.ajax({
-      type: 'POST',
-      url: 'api.php?action=save_expense',
-      data: formData,
-      success: function(response)
-      {
-        console.log(response)
-        if(response.status){
-          // show_sweetReponse(response.message);
-        }
-      },
-      error: function(e){
-        console.log("server error.")
-      }
-    })
+  $("#remove_image").on("click", function() {
+    $("#imagePreview").attr("src", "./assets/img/invoice.png").show(); 
+    $("#image-input").val(''); 
+  });
+  $("#btn_cancelExpense").on("click", function(){
+    $("#expense_form")[0].reset();
+    $("#expense_id").val("");
+    hide_modal();
   })
-
-  function show_sweetReponse(message) 
+  function hide_modal()
   {
-    toastr.options = {
-      "onShown": function () {
-        $('.custom-toast').css({
-          "opacity": 1,
-          "width": "600px",
-          "text-align": "center",
-          "border": "2px solid #1E1C11",
-        });
-      },
-      "closeButton": true,
-      "positionClass": "toast-top-right",
-      "timeOut": "5000",
-      "extendedTimeOut": "1000",
-      "progressBar": true,
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut",
-      "tapToDismiss": false,
-      "toastClass": "custom-toast",
-      "onclick": function () { alert('Clicked'); }
-
-    };
-    toastr.success(message);
+    $("#add_expense_modal").addClass('slideOutRight');
+    $(".expense_content").addClass('slideOutRight');
+    setTimeout(function () {
+      $("#add_expense_modal").removeClass('slideOutRight');
+      $("#add_expense_modal").hide();
+      $(".expense_content").removeClass('slideOutRight');
+      $(".expense_content").hide();
+    }, 100);
+    $("#searchInput").focus();
   }
+ 
 })
 
 

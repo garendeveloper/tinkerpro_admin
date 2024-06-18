@@ -47,8 +47,14 @@
             echo json_encode($dashboard->get_salesDataByYear($_GET['year']));
             break;
 
-
+     
         //Expenses
+        case 'get_expenseDataById':
+            echo json_encode($expense_facade->get_expenseDataById($_GET['expense_id']));
+            break;
+        case 'delete_expenseById':
+            echo json_encode($expense_facade->delete_expense($_GET['expense_id']));
+            break;
         case 'save_expense':
             echo json_encode($expense_facade->save_expense($_POST));
             break;

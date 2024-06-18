@@ -227,7 +227,57 @@ if (isset($_SESSION['user_id'])) {
   font-size: 12px !important;
 }
 
+.dt-paging-button {
+    text-decoration: none; 
+    border: 1px solid #fefefe;
+    margin-right: 1px; 
+    width: 40px;
+    height: 40px;
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center; 
+    background-color: #888888;
+    color: #fefefe;
+}
 
+.dt-paging:hover{
+  color: #FF6900;
+}
+  .dt-paging{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.dt-paging-button:hover{
+  color: #FF6900;
+}
+.first{
+  display: none;
+}
+.last{
+  display: none;
+}
+.dt-paging-button {
+    text-decoration: none;
+    padding: 5px 10px;
+    margin: 2px;
+    border: 1px solid #ddd;
+    color: #000;
+}
+.dt-paging-button:hover {
+    background-color: #f0f0f0;
+}
+.dt-paging-button.active {
+    background-color: #00B050;
+    color: white;
+    outline: none;
+}
+.highlighted-row {
+    border: 3px solid green;
+}
 </style>
 
 <?php include "layout/admin/css.php"?> 
@@ -238,8 +288,8 @@ if (isset($_SESSION['user_id'])) {
       <div class="main-panel">
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
-           <input  class="text-color searchProducts" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Product,[code, barcode, name, brand]"/>
-           <button onclick="searchProducts()" id="searchBtn" name="productSearch" class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+           <input  class="text-color searchProducts" id = "searchInput" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Expenses,[ Item name, Billable, Type, UOM, Supplier, Invoice Number ]" autocomplete = "off" autofocus = "autofocus"/>
+           <button  id="searchBtn" name="productSearch" class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
               viewBox="0 0 491.52 491.52" xml:space="preserve">
             <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
             <path style="opacity:0.5;fill:#FFFFFF;enable-background:new    ;" d="M98.081,234.62c-43.316-43.315-43.882-112.979-1.264-155.595
@@ -256,7 +306,7 @@ if (isset($_SESSION['user_id'])) {
             <rect x="260.671" y="293.889" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 725.9606 300.6683)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
                 </g>
                 </svg>&nbsp;Search</button>
-            <button onclick="createExpense()"  class="btn-control createExpense" style="margin-right:10px;width:150px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
+            <button id = "btn_createExpense"  class="btn-control createExpense" style="margin-right:10px;width:150px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
               .cls-1 {
                 fill: #699f4c;
                 fill-rule: evenodd;
@@ -270,32 +320,8 @@ if (isset($_SESSION['user_id'])) {
             <div>
               <div class="card"  style="height:700px; width: 100%">
                 <div class="card-body">
-                  <?php include('errors.php'); ?>
                   <div id="responsive-data">
-                  <table id="tbl_expenses" class="text-color table-border">
-                  <thead>
-                        <tr>
-                          <th class="text-center font-size" style="width: 2%">No.</th>
-                          <th class="text-center font-size"  style="width: 350px">Item Name</th>
-                          <th class="text-center font-size" style="width: 100px" >Date</th>
-                          <th class="text-center font-size"   style="width: 100px" >Billable</th>
-                          <th class="text-center font-size" style="width: 100px" >Type</th>
-                          <th class="text-center font-size" style="width: 100px"  >Quantity</th>
-                          <th class="text-center font-size"  style="width: 100px" >UOM</th>
-                          <th class="text-center font-size"  style="width: 100px" >Supplier</th>
-                          <th class="text-center font-size"  style="width: 100px" >Invoice Number</th>
-                          <th class="text-center font-size" style="width: 100px"  >Price (Php)</th>
-                          <th class="text-center font-size"  style="width: 300px" >Discount</th>
-                          <th class="text-center font-size" style="width: 100px" >Total Amount (Php)</th>
-                          <th class="text-center font-size"  style="width: 200px" >Action</th>
-                        </tr>
-                      </thead> 
-        
-                      <tbody id="">
-
-                      </tbody> 
-                     
-                    </table>
+                  
                     </div>
 
                 </div>
@@ -319,98 +345,293 @@ if (isset($_SESSION['user_id'])) {
   </div>
   <!-- container-scroller -->
 
-<?php include("layout/footer.php") ?>
+<?php 
+  include("layout/footer.php");
+  include("./modals/delete_expense_confirmation.php");
+?>
+
 <script>
-  function createExpense(){
-     $('#add_expense_modal').show()
-     var p_id = document.getElementById('productid').value;
-     $('.modalHeaderTxt').text(!p_id ? "Add New Product" : $('.modalHeaderTxt').text());
-     var checkbox = document.getElementById('showIncludesTaxVatToggle');
-     var taxCheckbox = document.getElementById('taxVatToggle');
-      checkbox.checked = true
-      taxCheckbox.checked = true
-      if(checkbox.checked){
-        toggleChangeColor(checkbox);
-      }else{
-        toggleChangeColor(checkbox);
-      }
+  $(document).ready(function()
+  {
+    $("#expenses").addClass('active');
+    $("#pointer").html("Expenses");
 
-      var multiple = document.getElementById('multipleToggle');
-      var multiLbl = document.getElementById('multiLbl');
-      multiple.checked = false
-      if(multiple.checked){
-        ultiLbl.style.color = "#FF6900";
-        toggleMultiple(multiple)
-      }else{
-        toggleMultiple(multiple)
-        multiLbl.style.color = "";
-      }
+    show_allExpenses();
+    $("#btn_createExpense").off("click").on("click", function(){
+      $("#expense_form")[0].reset();
+      $('#imagePreview').attr('src', "./assets/img/invoice.png");
+      $("#expense_id").val("");
+      $("#item_name").focus();
+      $("#add_expense_modal").find(".modalHeaderTxt").html("Add New Expense");
+      createExpense();
+    })
+    function createExpense()
+    {
+      $("#add_expense_modal").addClass('slideInRight');
+      $(".expense_content").addClass('slideInRight');
+      setTimeout(function () {
+        $("#add_expense_modal").show();
+        $(".expense_content").show();
+      }, 100);
+    }
+    function setFormattedDate(date) {
+      return moment(date).format('MM-DD-YYYY');
+    }
+    function show_allExpenses() 
+    {
+      if ($.fn.DataTable.isDataTable("#responsive-data #tbl_expenses")) {
+            $("#responsive-data #tbl_expenses").DataTable().destroy();
+        }
+        $("#paginationDiv").empty().hide();
+        $("#searchInput").focus();
 
-    
-      var service = document.getElementById('serviceChargesToggle');
-      service.checked = false
-      var taxLabel = document.getElementById('taxtVatLbl');
-      if(!service.checked){
-        taxLabel.style.color = ''
-      }else{
-        taxLabel.style.color = '#FF6900'
-      }
-      var other =  document.getElementById('otherChargesToggle');
-      other.checked =false
-      var serviceLabel = document.getElementById('serviceChargeLbl');
-      if(!other.checked){
-        serviceLabel.style.color = ''
-      }else{
-        serviceLabel.style.color = '#FF6900'
-      }
-      var displayServices = document.getElementById('displayServiceChargeReceipt');
-      var serviceLabel = document.getElementById('serviceChargeLbl');
-        displayServices.checked = false;
-      if(!displayServices.checked){
-        toggleDisplayServiceCharge(displayServices)
-      }
+        var tblData = `
+            <table id='tbl_expenses' class='text-color table-border display' style='font-size: 12px;'>
+                <thead>
+                    <tr>
+                        <th class='text-center auto-fit'>No.</th>
+                        <th class='auto-fit'>Item Name</th>
+                        <th class='auto-fit'>Date</th>
+                        <th class='auto-fit text-center'>Billable</th>
+                        <th class='auto-fit text-center'>Type</th>
+                        <th class='auto-fit text-center'>Quantity</th>
+                        <th class='auto-fit text-center'>UOM</th>
+                        <th class='auto-fit text-center'>Supplier</th>
+                        <th class='auto-fit'>Invoice Number</th>
+                        <th class='auto-fit text-center'>Price (Php)</th>
+                        <th class='auto-fit text-center'>Discount</th>
+                        <th class='auto-fit text-center'>Total Amount(Php)</th>
+                        <th class='auto-fit text-center'>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>`;
 
-      var displayOtherCharge = document.getElementById('displayReceipt');
-      displayOtherCharge.checked =false
-      if(!displayOtherCharge.checked){
-        toggleOtherCharges(displayOtherCharge)
-      }
+        $("#responsive-data").html(tblData);
 
-      var bom = document.getElementById('bomToggle');
-      bom.checked = false
-      if(!bom.checked){
-        updateTextColor()
-      }else{
-        updateTextColor()
-      }
-      var discountedCheckbox = document.getElementById('discountToggle');
-      discountedCheckbox.checked = false;
-      var warrantyToggle = document.getElementById('warrantyToggle');
-      warrantyToggle.checked = false;
-      var warningNum = document.getElementById('quantity');
-      warningNum.setAttribute('hidden',true)
-      if(warrantyToggle.checked){
-        toggleShowText(warrantyToggle)
-      }else{
-        toggleShowText(warrantyToggle)
-      }
-      var stockWarning= document.getElementById('stockToggle');
-      stockWarning.checked = false
-     if( $('#add_products_modal').is(':visible')){
-      var toggle = document.getElementById('statusValue');
-      toggle.checked = true;
-      var statusLabel = document.getElementById('statusActive');
-          if(toggle.checked){
-            toggleStatus(toggle)
-            statusLabel.style.color = '#00CC00'; 
-          }else{
-            toggleStatus(toggle)
-            statusLabel.style.color = ''; 
+        var table = $('#responsive-data #tbl_expenses').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: 'api.php?action=get_allExpenses',
+                type: 'POST'
+            },
+            columns: [
+                { data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
+                { data: 'item_name' },
+                { data: 'date_of_transaction', className: 'text-center', render: data => setFormattedDate(data) },
+                { data: 'billable_receipt_no', className: 'text-center' },
+                { data: 'expense_type' },
+                { data: 'quantity', className: 'text-center' },
+                { data: 'uom_name', className: 'text-center' },
+                { data: 'supplier', className: 'text-center' },
+                { data: 'invoice_number', className: 'text-center' },
+                { data: 'price', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
+                { data: 'discount', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
+                { data: 'total_amount', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
+                { data: null, render: data => `<button style='border-radius: 5px; height: 25px; margin: 0;' data-id='${data.id}' id='btn_removeExpense'><i class='bi bi-trash'></i></button>`, className: 'text-center' }
+            ],
+            ordering: true,
+            order: [[0, 'DESC']],
+            pageLength: 100,
+            pagingType: 'full_numbers',
+            dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+            fnDrawCallback: function (oSettings) {
+              if (oSettings.aoData.length === 0) {
+                  $("#paginationDiv").hide();
+              } else {
+                  $("#paginationDiv").show();
+              }
+            },
+            createdRow: function (row, data, dataIndex) {
+              $(row).attr('data-id', data.id);
+            }
+        });
+        table;
+
+        $("#paginationDiv").html($(".dt-paging")).show();
+
+        var debounceTimeout;
+        $('#searchInput').on('keyup', function () {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(() => {
+                table.search($('#searchInput').val()).draw();
+            }, 100);
+        });
+    }
+    $("#responsive-data").on("click", "#btn_removeExpense", function(){
+      var id = $(this).data('id');
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_expenseDataById',
+        data: {
+          expense_id: id
+        },
+        success: function(response)
+        {
+          $("#remove_expense_id").val(id);
+          $("#expense_name").html("Item name: <span style ='color: #FF6700'>"+response['item_name'].toUpperCase() + "</span> Invoice number: <span style = 'color: #FF6700'>"+response['invoice_number'] + "</span>");
+          $("#expense_msg").html("<span style ='color: red; font-weight: bold'>Deleting an item might be crucial as it can affect other transactions</span>");
+          if (response['invoice_photo_url']) {
+                $("#item_image").attr("src", response['invoice_photo_url']).show();
+            } else {
+                $('#item_image').attr('src', "./assets/img/tinkerpro-logo-light.png").show();
+            }
+          $("#delete_expenseConfirmation").slideDown({
+            backdrop: 'static',
+            keyboard: false
+          });
+        }
+      })
+    })
+    $("#responsive-data").on("dblclick", "tr", function() {
+        var expense_id = $(this).data("id");
+        $("#tbl_expenses tbody").find("tr").removeClass('highlighted-row')
+        $(this).toggleClass('highlighted-row');
+        $("#add_expense_modal").find(".modalHeaderTxt").html("Edit Expense");
+        $.ajax({
+          type: 'get',
+          url: 'api.php?action=get_expenseDataById',
+          data: {
+            expense_id: expense_id
+          },
+          success: function(response)
+          {
+            $("#expense_id").val(expense_id);
+            $("#item_name").val(response['item_name']);
+            var formattedDate = moment(response['date_of_transaction']).format('MM-DD-YYYY');
+            $("#date_of_transaction").val(formattedDate);
+            $("#billable_receipt_no").val(response['billable_receipt_no']);
+            $("#expense_type").val(response['expense_type']);
+            $("#qty").val(response['quantity']);
+            $("#supplier").val(response['supplier']);
+            $("#supplier_id").val(response['supplier_id']);
+            $("#uomType").val(response['uom_name']);
+            $("#uomID").val(response['uom_id']);
+            $("#invoice_number").val(response['invoice_number']);
+            $("#price").val(response['price']);
+            $("#discount").val(response['discount']);
+            $("#total_amount").val(response['total_amount']);
+            $("#description").val(response['description']);
+
+            if (response['invoice_photo_url']) {
+                $("#imagePreview").attr("src", response['invoice_photo_url']).show();
+            } else {
+                $('#imagePreview').attr('src', "./assets/img/invoice.png").show();
+            }
+            createExpense();
           }
-           
-     }
-  }
-  $(document).ready(function(){
+        })
+ 
+    });
+    function addCommasToNumber(number) 
+    {
+      var roundedNumber = Number(number).toFixed(2);
+      var parts = roundedNumber.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
+    }
+    function hide_modal()
+    {
+      $("#add_expense_modal").addClass('slideOutRight');
+      $(".expense_content").addClass('slideOutRight');
+      setTimeout(function () {
+        $("#add_expense_modal").removeClass('slideOutRight');
+        $("#add_expense_modal").hide();
+        $(".expense_content").removeClass('slideOutRight');
+        $(".expense_content").hide();
+      }, 100);
+      $("#searchInput").focus();
+    }
+    $("#expense_form").on("submit", function(e){
+      e.preventDefault();
+      var formData = new FormData(this);
+      $.ajax({
+        type: 'POST',
+        url: 'api.php?action=save_expense',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function(response)
+        {
+          $('table td').removeClass('form-error'); 
 
+          if (!response.success) {
+              $.each(response.errors, function(key, error) {
+                if(key === "qty")
+                {
+                  $('#' + key + '').addClass("form-error");
+                }
+                else if(key === "image_url")
+                {
+                  $('#' + key + '').addClass("form-error");
+                }
+                else{
+                  $('#' + key + '').closest("td").addClass("form-error");
+                } 
+              });
+          } else {
+            $("#expense_form")[0].reset();
+            $("table td").removeClass('form-error');
+            show_sweetReponse(response.message);
+            hide_modal();
+            show_allExpenses();
+          }
+        },
+        error: function(e){
+          console.log("server error.")
+        }
+      })
+    })
+    $(".continue_deleteExpense").off("click").on("click", function(){
+      $.ajax({
+        type: 'get',
+        url: "api.php?action=delete_expenseById",
+        data: {
+          expense_id: $("#remove_expense_id").val(),
+        },
+        success: function(response)
+        {
+          if(response.success)
+          {
+            $("#remove_expense_id").val("");
+            $('#delete_expenseConfirmation').hide();
+            show_sweetReponse(response.message);
+            show_allExpenses();
+          }
+        },
+        error: function(response){
+          console.log("Error");
+        }
+      })
+    })
+    function show_sweetReponse(message) 
+    {
+      toastr.options = {
+        "onShown": function () {
+          $('.custom-toast').css({
+            "opacity": 1,
+            "width": "600px",
+            "text-align": "center",
+            "border": "2px solid #1E1C11",
+          });
+        },
+        "closeButton": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "progressBar": true,
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "tapToDismiss": false,
+        "toastClass": "custom-toast",
+        "onclick": function () {  }
+
+      };
+      toastr.success(message);
+    }
   })
 </script>

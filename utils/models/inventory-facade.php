@@ -23,11 +23,11 @@ class InventoryFacade extends DBConnection
                 INNER JOIN products ON products.id = inventory.product_id 
                 LEFT JOIN uom ON uom.id = products.uom_id";
     
-        if (!empty($requestData['search']['value'])) {
-            $sql .= " WHERE products.prod_desc LIKE '%" . $requestData['search']['value'] . "%'
-                    OR products.barcode LIKE '%" . $requestData['search']['value'] . "%'
-                    OR uom.uom_name LIKE '%" . $requestData['search']['value'] . "%' ";
-        }
+            if (!empty($requestData['search']['value'])) {
+                $sql .= " WHERE products.prod_desc LIKE '%" . $requestData['search']['value'] . "%'
+                        OR products.barcode LIKE '%" . $requestData['search']['value'] . "%'
+                        OR uom.uom_name LIKE '%" . $requestData['search']['value'] . "%' ";
+            }
     
         $sql .= " GROUP BY products.id";
     

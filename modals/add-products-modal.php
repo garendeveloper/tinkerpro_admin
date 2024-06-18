@@ -1290,7 +1290,6 @@ input:checked + .warningSpan:before {
   max-height: 38vh;
 }
 
-
 </style>
 
 <div class="modal" id="add_products_modal" tabindex="0">
