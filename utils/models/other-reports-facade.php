@@ -8333,51 +8333,67 @@ net_sold > 0
         }
        
         else {
-            $sql = "SELECT 
-    p.id as id,
-    p.prod_desc as prod_desc,
-    p.sku as sku,
-    p.cost as cost,
-    SUM(t.prod_qty) as sold,
-    c.category_name as category_name,
-    v.variant_name as variant_name,
-    p.prod_price as prod_price,
-    DATE(py.date_time_of_payment) as date,
-    COALESCE(refunds.total_refund_qty,0) AS product_refunded,
-    COALESCE(returns.total_return_qty,0) AS product_returns,
-    COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) as net_sold,
-            CASE
-                WHEN p.isVAT = 1 THEN 
-                    ROUND(
-                        ((( COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0)) * p.prod_price) / 1.12) * 0.12,
-                        2
-                    )
-                ELSE 0
-            END AS totalVat,
-   (COALESCE((SUM(t.prod_qty) - COALESCE(refunds.total_refund_qty, 0) -COALESCE(returns.total_return_qty, 0)), 0) * p.prod_price) AS totalSoldAmount
+            $sql = "SELECT DISTINCT 
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty) AS qty,
+    ROUND(SUM(t.discount_amount), 2) as itemDiscount,
+    ROUND(SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (t.prod_qty * p.prod_price) * (d.discount_amount / 100)
+            ELSE 0 
+        END), 2) AS overallDiscounts,
+ (SUM(t.prod_qty) *p.prod_price ) AS grossAmount,
+ ((SUM(t.prod_qty) *p.prod_price ) - ROUND(SUM(t.discount_amount), 2)) as lessItemDiscount,
+    ROUND((SUM(t.prod_qty) * p.prod_price) - ROUND(SUM(t.discount_amount), 2) - 
+        ROUND(SUM(
+            CASE 
+                WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                    THEN ((t.prod_qty * p.prod_price) / 1.12) * (d.discount_amount / 100)
+                WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                    THEN (t.prod_qty * p.prod_price) * (d.discount_amount / 100)
+                ELSE 0 
+            END), 2), 2) as lessDiscounts,
+     ROUND((SUM(t.prod_qty) * p.prod_price) - ROUND(SUM(t.discount_amount), 2) - 
+        ROUND(SUM(
+            CASE 
+                WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                    THEN ((t.prod_qty * p.prod_price) / 1.12) * (d.discount_amount / 100)
+                WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                    THEN (t.prod_qty * p.prod_price) * (d.discount_amount / 100)
+                ELSE 0 
+            END), 2), 2) as netTotal,
+                            CASE
+                        WHEN p.isVAT = 1 THEN 
+                            ROUND(
+                                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12,
+                                2
+                            )
+                        ELSE 0
+                    END AS totalVat
 FROM 
-    products as p 
-INNER JOIN transactions as t ON t.prod_id = p.id 
-INNER JOIN payments as py ON t.payment_id = py.id
-LEFT JOIN (
-    SELECT prod_id, SUM(refunded_qty) as total_refund_qty
-    FROM refunded
-    GROUP BY prod_id
-) as refunds ON t.prod_id = refunds.prod_id
-LEFT JOIN (
-    SELECT product_id, SUM(return_qty) as total_return_qty
-    FROM return_exchange
-    GROUP BY product_id
-) as returns ON t.prod_id = returns.product_id
-LEFT JOIN category as c ON c.id = p.category_id
-LEFT JOIN variants as v ON v.id = p.variant_id
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
 WHERE 
     t.is_paid = 1 
     AND t.is_void = 0
-GROUP BY 
-    t.prod_id
-HAVING
-net_sold > 0";
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price;";
 
             $stmt = $this->connect()->query( $sql );
             return $stmt;
@@ -10049,9 +10065,9 @@ GROUP BY
                         0
                     ) as discountsTender,
               SUM(COALESCE(r.refunded_amt, 0)) AS refunded_amt,
-                SUM(
+                SUM( DISTINCT
                     COALESCE(
-                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT( r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
                         0
                     )
                 ) AS total_item_discounts,
@@ -10074,6 +10090,7 @@ GROUP BY
                 refunded r
             GROUP BY 
                 r.reference_num
+  
         ),
         ReturnExchangeSums AS (
             SELECT 
@@ -10117,9 +10134,35 @@ GROUP BY
                 return_exchange  rc
             GROUP BY 
                 rc.payment_id
+               
+        ), RefundItemData AS (
+            SELECT 
+                rd.payment_id,
+                SUM( 
+                    COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT( rd.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                        0
+                    )
+                ) AS total_item_discounts
+   
+            FROM 
+                refunded rd
+        ),
+         ReturnItemData AS (
+            SELECT 
+                re.payment_id,
+                SUM( 
+                    COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT( re.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)),
+                        0
+                    )
+                ) AS total_return_item_discounts
+   
+            FROM 
+                return_exchange re
         )
         SELECT
-        DISTINCT
+      
             u.first_name AS first_name,
             u.last_name AS last_name, 
             ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
@@ -10127,7 +10170,7 @@ GROUP BY
             p.date_time_of_payment AS date,
             p.cart_discount AS cart_discount,
             COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
-            IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
+            COALESCE(rd.total_item_discounts, 0) AS total_item_discounts,
             COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
             COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
             COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
@@ -10135,7 +10178,7 @@ GROUP BY
             COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
             
             COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
-            IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
+            COALESCE(SUM(DISTINCT re.total_return_item_discounts), 0) AS total_return_item_discounts,
             COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
             COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
             COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
@@ -10150,8 +10193,11 @@ GROUP BY
             INNER JOIN products AS ps ON ps.id = t.prod_id
             LEFT JOIN RefundSums rs ON rs.payment_id = p.id
             LEFT JOIN ReturnExchangeSums res ON res.payment_id = p.id
+            LEFT JOIN RefundItemData rd ON rd.payment_id = p.id
+            LEFT JOIN ReturnItemData re ON re.payment_id = p.id
         WHERE 
             t.is_paid = 1 
+            
             AND t.is_void = 0 
         GROUP BY 
             u.id;";
@@ -10160,4 +10206,10 @@ GROUP BY
             return $stmt;
         }
     }
+public function getTotalCart(){
+    $sql = "SELECT SUM(cart_discount) AS totalCartDiscount FROM payments";
+
+        $stmt = $this->connect()->query( $sql );
+        return $stmt;
+}
 }
