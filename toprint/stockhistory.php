@@ -111,7 +111,7 @@
     {
         $items = $inventoryfacade->get_allStocksDataByDate($product_id, $start_date, $end_date)['stocks'];
     }
-    $header = array('No.', 'Document Type', 'Document', 'Customer', 'Date', 'Stock Date', 'Quantity', 'In Stock');
+    $header = array('No.', 'Document Type', 'Document', 'User', 'Date', 'Stock Date', 'Quantity', 'In Stock');
     $headerWidths = [];
     $maxCellHeight = 5;
     foreach ($header as $title) {
@@ -129,8 +129,6 @@
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $title, 1, 0, 'L', true);
     }
     $pdf->Ln();
-
-
     foreach ($items as $item) 
     {
         $stockDateTime = strtotime($item['stock_date']);
@@ -158,8 +156,8 @@
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['stock_qty'], $headerWidths[6]));
         $pdf->Cell($headerWidths[6], $maxCellHeight, $item['stock_qty'], 1, 0, 'R');
     
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['product_stock'], $headerWidths[7]));
-        $pdf->Cell($headerWidths[7], $maxCellHeight, $item['product_stock'], 1, 0, 'R');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['stock'], $headerWidths[7]));
+        $pdf->Cell($headerWidths[7], $maxCellHeight, $item['stock'], 1, 0, 'R');
     
         $pdf->Ln(); 
         $counter++;
