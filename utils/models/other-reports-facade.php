@@ -1145,9 +1145,9 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
-            WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
+            WHEN products.isVat = 0  AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
             0
@@ -1177,7 +1177,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1185,7 +1185,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1220,7 +1220,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1228,7 +1228,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1  AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1286,9 +1286,9 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
-            WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
+            WHEN products.isVat = 0  AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
             0
@@ -1318,7 +1318,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1326,7 +1326,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1361,7 +1361,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1369,7 +1369,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1426,9 +1426,9 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
-            WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
+            WHEN products.isVat = 0  AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
             0
@@ -1458,7 +1458,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1466,7 +1466,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1501,7 +1501,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1509,7 +1509,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1566,9 +1566,9 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
-            WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
+            WHEN products.isVat = 0   AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
             0
@@ -1598,7 +1598,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1606,7 +1606,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1641,7 +1641,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1649,7 +1649,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1707,9 +1707,9 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
-            WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
+            WHEN products.isVat = 0  AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
             0
@@ -1739,7 +1739,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1747,7 +1747,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1782,7 +1782,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1790,7 +1790,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1883,7 +1883,7 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
@@ -1915,7 +1915,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1923,7 +1923,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -1958,7 +1958,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -1966,7 +1966,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2026,7 +2026,7 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
@@ -2058,7 +2058,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2066,7 +2066,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2101,7 +2101,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2109,7 +2109,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2168,7 +2168,7 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat =  1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
@@ -2200,7 +2200,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2208,7 +2208,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2243,7 +2243,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2251,7 +2251,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2311,7 +2311,7 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
@@ -2343,7 +2343,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2351,7 +2351,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2386,7 +2386,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1  AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2394,7 +2394,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2455,7 +2455,7 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1 AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
@@ -2487,7 +2487,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1 AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2495,7 +2495,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0 AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2530,7 +2530,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1 AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2538,7 +2538,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0 AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2600,7 +2600,7 @@ class OtherReportsFacade extends DBConnection {
         ROUND(
         LEAST(
         CASE
-            WHEN products.isVat = 1 THEN
+            WHEN products.isVat = 1 AND products.is_discounted = 1 THEN
             ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
@@ -2632,7 +2632,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1 AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2640,7 +2640,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0 AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
@@ -2675,7 +2675,7 @@ class OtherReportsFacade extends DBConnection {
          payments.id as payment_id,
      SUM(
         CASE
-            WHEN products.isVAT = 1 THEN 
+            WHEN products.isVAT = 1 AND products.is_discounted = 1 THEN 
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -2683,7 +2683,7 @@ class OtherReportsFacade extends DBConnection {
                     ) / 1.12) * discounts.discount_amount / 100,
                     2
                 )
-            WHEN products.isVAT = 0 AND discounts.discount_amount > 0 THEN
+            WHEN products.isVAT = 0 AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
                 ROUND(
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
@@ -8428,121 +8428,164 @@ net_sold > 0";
         }
     }
 
-    public function getProfit( $selectedProduct, $selectedCategories, $selectedSubCategories, $singleDateData, $startDate, $endDate, $selectedOption ) {
-        if ( $selectedOption == 'sold' ) {
-            if ( $selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
-                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
-            ROUND(((i.sold * p.prod_price)-(i.sold * p.cost)),2) AS profit,ROUND((i.sold * p.prod_price),2)  as total
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id
-            WHERE p.id = :selectedProduct
-            HAVING
-            sold > 0;
-           ";
-
+    public function getProfit( $selectedProduct,$singleDateData, $startDate, $endDate ) {
+      
+            if ( $selectedProduct && !$singleDateData && !$startDate && !$endDate ) {
+                $sqlQuery = 'SELECT 
+                    p.prod_desc AS prod_desc,
+                    p.prod_price AS prod_price,
+                    p.sku as sku,
+                    p.cost as cost,
+                    p.markup as markup,
+                    -1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END) AS sold,
+                    SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END) AS refund,
+                    SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END) AS returned,
+                    SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END) AS retAndEX,
+                    SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) AS voided,
+                    ((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) ) AS net_sold,
+                ((((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) )) * p.prod_price) AS amount,
+                    s.date AS date
+                FROM 
+                    stocks AS s
+                LEFT JOIN 
+                    products AS p 
+                ON 
+                    p.id = s.inventory_id 
+                WHERE p.id = :selectedProduct
+                GROUP BY 
+                    s.inventory_id
+                HAVING
+                amount > 0';
                 $sql = $this->connect()->prepare( $sqlQuery );
                 $sql->bindParam( ':selectedProduct', $selectedProduct );
                 $sql->execute();
                 return $sql;
 
-            } else if ( !$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
-                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
-            ROUND(((i.sold * p.prod_price)-(i.sold * p.cost)),2) AS profit,ROUND((i.sold * p.prod_price),2)  as total
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id
-            WHERE p.category_id = :selectedCategories
-            HAVING
-            sold > 0;
-           ";
-
+            }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate){
+                $sqlQuery = 'SELECT 
+                    p.prod_desc AS prod_desc,
+                    p.prod_price AS prod_price,
+                    p.sku as sku,
+                    p.cost as cost,
+                    p.markup as markup,
+                    -1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END) AS sold,
+                    SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END) AS refund,
+                    SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END) AS returned,
+                    SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END) AS retAndEX,
+                    SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) AS voided,
+                    ((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) ) AS net_sold,
+                ((((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) )) * p.prod_price) AS amount,
+                    s.date AS date
+                FROM 
+                    stocks AS s
+                LEFT JOIN 
+                    products AS p 
+                ON 
+                    p.id = s.inventory_id 
+                WHERE DATE(s.date) = :singleDateData
+                GROUP BY 
+                    s.inventory_id
+                HAVING
+                amount > 0';
                 $sql = $this->connect()->prepare( $sqlQuery );
-                $sql->bindParam( ':selectedCategories', $selectedCategories );
+                $sql->bindParam( ':singleDateData', $singleDateData );
                 $sql->execute();
                 return $sql;
-            } else if ( !$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
-                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
-            ROUND(((i.sold * p.prod_price)-(i.sold * p.cost)),2) AS profit,ROUND((i.sold * p.prod_price),2)  as total
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id
-            WHERE p.category_id = :selectedSubCategories
+            }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate){
+                $sqlQuery = 'SELECT 
+                p.prod_desc AS prod_desc,
+                p.prod_price AS prod_price,
+                p.sku as sku,
+                p.cost as cost,
+                p.markup as markup,
+                -1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END) AS sold,
+                SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END) AS refund,
+                SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END) AS returned,
+                SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END) AS retAndEX,
+                SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) AS voided,
+                ((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) ) AS net_sold,
+            ((((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) )) * p.prod_price) AS amount,
+                s.date AS date
+            FROM 
+                stocks AS s
+            LEFT JOIN 
+                products AS p 
+            ON 
+                p.id = s.inventory_id 
+            WHERE DATE(s.date) BETWEEN :startDate AND :endDate
+            GROUP BY 
+                s.inventory_id
             HAVING
-            sold > 0;
-           ";
+            amount > 0';
 
-                $sql = $this->connect()->prepare( $sqlQuery );
-                $sql->bindParam( ':selectedSubCategories', $selectedSubCategories );
-                $sql->execute();
-                return $sql;
-            } else if ( !$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
-
-            } else {
-                $sql = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.sold as sold,ROUND((i.sold * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
-            ROUND(((i.sold * p.prod_price)-(i.sold * p.cost)),2) AS profit,ROUND((i.sold * p.prod_price),2)  as total
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id
+            $sql = $this->connect()->prepare( $sqlQuery);
+            $sql->bindParam( ':startDate',$startDate);
+            $sql->bindParam( ':endDate',$endDate);
+            $sql->execute();
+            return $sql;
+            }else if($selectedProduct && $singleDateData && !$startDate && !$endDate){
+                $sqlQuery = 'SELECT 
+                p.prod_desc AS prod_desc,
+                p.prod_price AS prod_price,
+                p.sku as sku,
+                p.cost as cost,
+                p.markup as markup,
+                -1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END) AS sold,
+                SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END) AS refund,
+                SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END) AS returned,
+                SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END) AS retAndEX,
+                SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) AS voided,
+                ((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) ) AS net_sold,
+            ((((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) )) * p.prod_price) AS amount,
+                s.date AS date
+            FROM 
+                stocks AS s
+            LEFT JOIN 
+                products AS p 
+            ON 
+                p.id = s.inventory_id 
+            WHERE DATE(s.date) = :singleDateData AND p.id = :selectedProduct
+            GROUP BY 
+                s.inventory_id
             HAVING
-            sold > 0";
+            amount > 0';
+            $sql = $this->connect()->prepare( $sqlQuery);
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->bindParam( ':selectedProduct', $selectedProduct);
+            $sql->execute();
+            return $sql;
+            }
+            else {
+                $sql = 'SELECT 
+                    p.prod_desc AS prod_desc,
+                    p.prod_price AS prod_price,
+                    p.sku as sku,
+                    p.cost as cost,
+                    p.markup as markup,
+                    -1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END) AS sold,
+                    SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END) AS refund,
+                    SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END) AS returned,
+                    SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END) AS retAndEX,
+                    SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) AS voided,
+                    ((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) ) AS net_sold,
+                ((((-1 * SUM(CASE WHEN s.transaction_type = "Sold" THEN s.stock_qty ELSE 0 END))-SUM(CASE WHEN s.transaction_type = "Refund" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Return" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Ret & Ex" THEN s.stock_qty ELSE 0 END)-SUM(CASE WHEN s.transaction_type = "Void" THEN s.stock_qty ELSE 0 END) )) * p.prod_price) AS amount,
+                    s.date AS date
+                FROM 
+                    stocks AS s
+                LEFT JOIN 
+                    products AS p 
+                ON 
+                    p.id = s.inventory_id 
+                GROUP BY 
+                    s.inventory_id
+                HAVING
+                amount > 0;';
 
-                $stmt = $this->connect()->query( $sql );
-                return $stmt;
+            $stmt = $this->connect()->query( $sql );
+            return $stmt;
 
             }
 
-        } else {
-            if ( $selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
-                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
-            ROUND(((i.stock * p.prod_price)-(i.stock * p.cost)),2) AS profit,ROUND((i.stock * p.prod_price),2)  as total
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id
-            WHERE p.id = :selectedProduct
-            HAVING
-            stock > 0
-           ";
-
-                $sql = $this->connect()->prepare( $sqlQuery );
-                $sql->bindParam( ':selectedProduct', $selectedProduct );
-                $sql->execute();
-                return $sql;
-            } else if ( !$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
-                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
-            ROUND(((i.stock * p.prod_price)-(i.stock * p.cost)),2) AS profit,ROUND((i.stock * p.prod_price),2)  as total
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id
-            WHERE p.category_id = :selectedCategories
-            HAVING
-            stock > 0
-           ";
-
-                $sql = $this->connect()->prepare( $sqlQuery );
-                $sql->bindParam( ':selectedCategories', $selectedCategories );
-                $sql->execute();
-                return $sql;
-            } else if ( !$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
-                $sqlQuery = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
-            ROUND(((i.stock * p.prod_price)-(i.stock * p.cost)),2) AS profit,ROUND((i.stock * p.prod_price),2)  as total
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id
-            WHERE p.category_id = :selectedSubCategories
-            HAVING
-            stock > 0
-           ";
-
-                $sql = $this->connect()->prepare( $sqlQuery );
-                $sql->bindParam( ':selectedSubCategories', $selectedSubCategories );
-                $sql->execute();
-                return $sql;
-            } else {
-                $sql = "SELECT p.prod_desc as prod_desc,p.sku as sku,i.stock as stock, ROUND((i.stock * p.cost),2) as cost,p.prod_price as prod_price,p.markup as markup,
-            ROUND(((i.stock * p.prod_price)-(i.stock * p.cost)),2) AS profit,ROUND((i.stock * p.prod_price),2)  as total
-            FROM inventory as i 
-            INNER JOIN products as p ON p.id = i.product_id";
-
-                $stmt = $this->connect()->query( $sql );
-                return $stmt;
-
-            }
-
-        }
 
     }
 
