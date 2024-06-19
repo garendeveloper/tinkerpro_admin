@@ -59,7 +59,7 @@
             echo json_encode($expense_facade->save_expense($_POST));
             break;
         case 'get_allExpenses':
-            echo json_encode($expense_facade->get_allExpenses());
+            echo json_encode($expense_facade->get_allExpenses($_POST['start_date'], $_POST['end_date']));
             break;
         //
         case 'user_role':

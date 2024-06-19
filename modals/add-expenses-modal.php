@@ -64,6 +64,7 @@
     margin-top: 15px;
     margin-bottom: 15px;
     
+    
 }
 
 
@@ -1319,10 +1320,28 @@ input:checked + .warningSpan:before {
   #uomType::placeholder {
     color: #FF6700;
     font-family: Century Gothic;
-    font-weight: bold;
+    font-weight: normal;
     font-style: italic;
 }
+.picture-button-container {
+    display: flex;
+    flex-direction: column;
+}
 
+.cancelAddProducts {
+    width: 200px;
+    height: 40px;
+    margin-bottom: 10px; /* Adjust the spacing between buttons */
+}
+label{
+  font-family: Century Gothic;
+}
+.text-custom{
+  font-family: Century Gothic;
+}
+#remove_image:hover{
+  background-color: red;
+}
 </style>
 
 <div class="modal" id="add_expense_modal" tabindex="0">
@@ -1355,7 +1374,7 @@ input:checked + .warningSpan:before {
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Type</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input" >
-                            <input class="custom-input" readonly name="expense_type" id="expense_type"  style="width: 259px" autocomplete="off"/>
+                            <input class="custom-input"  name="expense_type" id="expense_type"  style="width: 259px" autocomplete="off"/>
                             <button type = "button"  id="btn_expense_type" class="custom-btn dropdown_btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1382,9 +1401,6 @@ input:checked + .warningSpan:before {
                                 <a href="#" data-value="bank fees">Bank Fees</a>
                                 <a href="#" data-value="miscellaneous">Miscellaneous</a>
                             </div>
-                            <div id="variants" style="display: none;">
-   
-                            </div>
                         </div></td>
                     </tr>
                     <tr>
@@ -1392,7 +1408,7 @@ input:checked + .warningSpan:before {
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input">
                             <input class="custom-input" name="qty" id="qty" style="width: 125px" oninput = "$(this).removeClass('form-error')" autocomplete="off"/>
                             <input class="custom-input" readonly hidden name="uomID" id="uomID" style="width: 125px"/>
-                            <input class="custom-input" readonly name="uomType" id="uomType" placeholder = "Unit of Measure" style="width: 126px" autocomplete="off"/>
+                            <input class="custom-input"  name="uomType" id="uomType" placeholder = "Unit of Measure" style="width: 126px" autocomplete="off"/>
                             <button type  ="button" name="uomBtn" id="uomBtn" class="custom-btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1418,7 +1434,7 @@ input:checked + .warningSpan:before {
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Supplier</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input">
                             <input class="custom-input" hidden readonly name="supplier_id" id="supplier_id" style="width: 259px" />
-                            <input class="custom-input" readonly name="supplier" id="supplier" style="width: 259px " autocomplete="off"/>
+                            <input class="custom-input" name="supplier" id="supplier" style="width: 259px " autocomplete="off"/>
                             <button type = "button" name="btn_supplier" id="btn_supplier" class="custom-btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1446,7 +1462,7 @@ input:checked + .warningSpan:before {
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Price (Php)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="price" id="price" autocomplete="off"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="price" id="price" oninput = "$(this).closest('td').removeClass('form-error')" autocomplete="off"/></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Discount</td>
@@ -1456,7 +1472,6 @@ input:checked + .warningSpan:before {
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Total Amount (Php)</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="brand" name="total_amount" id="total_amount" readonly autocomplete="off"/></td>
                     </tr>
-              
               </tbody>
             </table>
           </div>
@@ -1467,22 +1482,23 @@ input:checked + .warningSpan:before {
           <div id="scrollable-div">
               <div class="imageCard">
                   <div  style="width:180px" class="imageExpense" id="imageExpense">
-                        <img src="./assets/img/invoice.png" id= "imagePreview" alt="Image Preview" style = "width: 175px; height: 195px"></img>
+                      <img src="./assets/img/invoice.png" id= "imagePreview" alt="Image Preview" style = "width: 175px; height: 195px"></img>
                    </div>   
                    <input type="file" hidden id = "image-input" accept="image/*" name = "image_url">
-               </div> 
-               <div class="button-container">
-                  <button class="cancelAddProducts " type = "button" id = "open_image" style="margin-right: 10px; width: 200px; height: 40px">Browse Picture</button>
-                  <button class="cancelAddProducts " type = "button" id = "remove_image" style="margin-right: 20px;width: 200px; height: 40px">Remove Picture</button>
-                </div>
-              </div> 
-            <div class="button-container" style="display:flex;justify-content: right;">
-              <button type = "button" class="cancelAddProducts btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">DELETE</button>
-              <button  type = "button" class="btn-success-custom updateProductsBtn" id = "btn_cancelExpense" style="margin-right: 10px; width: 100px; height: 40px">CANCEL</button>
+                   <div class="picture-button-container">
+                      <button class="cancelAddProducts " type = "button" id = "open_image" style="margin-right: 10px; width: 200px; height: 40px"><i class = 'bi bi-images'></i>&nbsp; Browse Picture</button>
+                      <button class="cancelAddProducts " type = "button" id = "remove_image" style="margin-right: 20px;width: 200px; height: 40px"><i class = 'bi bi-trash'></i>&nbsp; Remove Picture</button>
+                    </div>
+               </div>
+              </div>
+              <!-- <div style = "margin-left: 20px">
+                  <img src="./assets/img/expenses2.webp" alt="Image Preview" style = "width: 300px; height: 200px"></img> 
+               </div> -->
+            <div class="button-container" style="display:flex;justify-content: space-between; position:absolute; ">
+              <button  type = "button" class="btn-success-custom btn-error-custom" id = "btn_cancelExpense" style="margin-right: 10px; width: 100px; height: 40px">CANCEL</button>
               <button  class="btn-success-custom saveProductsBtn" type = "submit" style="margin-right: 10px; width: 100px; height: 40px">SAVE</button>
             </div>
           </div>
-        
           </div>
           </form>
         </div>
@@ -1504,6 +1520,7 @@ $(document).ready(function(){
       });
     }
   });
+
   function hide_dropdown()
   {
     $(".dropdown-content").each(function() {
@@ -1527,6 +1544,26 @@ $(document).ready(function(){
     $("#expense_type").val(roleName);
     $("#expense_type_dropdown").removeClass("show")
   });
+  $('#expense_type').on('keyup', function() {
+      var searchText = $(this).val().toLowerCase();
+      $('#expense_type_dropdown a').each(function() {
+          var linkText = $(this).text().toLowerCase();
+          if (linkText.includes(searchText)) {
+            $("#expense_type_dropdown").toggleClass("show");
+            $(this).show();
+            $(this).closest("td").removeClass('form-error');
+          } else {
+              $(this).hide();
+              $(this).closest("td").addClass('form-error');
+          }
+      });
+  });
+  $('#expense_type').on('input', function() {
+      if ($(this).val().trim() === '') {
+          $('#expense_type_dropdown a').show();
+      }
+  });
+
 
   $("#uomBtn").on("click", function(event) {
     event.stopPropagation();
@@ -1541,6 +1578,33 @@ $(document).ready(function(){
     $("#uomID").val(value); 
     $("#uomType").val(roleName);
     $(".uom_dropdown").removeClass("show")
+  });
+  $('#uomType').on('keyup', function() {
+    var inputField = $("#uomType");
+    var searchText = inputField.val().toLowerCase();
+    var foundMatch = false; 
+
+    $('.uom_dropdown a').each(function() {
+        var linkText = $(this).text().toLowerCase();
+        
+        if (linkText.includes(searchText)) {
+            $(".uom_dropdown").addClass("show");
+            $(this).show();
+            foundMatch = true;
+        } else {
+            $(this).hide();
+        }
+    });
+    if (foundMatch) {
+      $(this).closest("td").removeClass('form-error');
+    } else {
+      $(this).closest("td").addClass('form-error');
+    }
+  });
+  $('#uomType').on('input', function() {
+      if ($(this).val().trim() === '') {
+          $('.uom_dropdown a').show();
+      }
   });
 
   $("#btn_supplier").on("click", function(event) {
@@ -1557,6 +1621,31 @@ $(document).ready(function(){
     $("#supplier").val(roleName);
     $("#supplier_dropdown").removeClass("show")
   });
+  $('#supplier').on('keyup', function() {
+      var searchText = $(this).val().toLowerCase();
+      var foundMatch = false;
+      $('#supplier_dropdown a').each(function() {
+          var linkText = $(this).text().toLowerCase();
+          if (linkText.includes(searchText)) {
+            $("#supplier_dropdown").toggleClass("show");
+            $(this).show();
+            foundMatch = true;
+          } else {
+              $(this).hide();
+          }
+      });
+      if (foundMatch) {
+        $(this).closest("td").removeClass('form-error');
+      } else {
+        $(this).closest("td").addClass('form-error');
+      }
+  });
+  $('#supplier').on('input', function() {
+      if ($(this).val().trim() === '') {
+          $('#supplier_dropdown a').show();
+      }
+  });
+
 
   $("#date_of_transaction").prop("readonly", true).flatpickr({
     dateFormat: "m-d-Y",
@@ -1606,19 +1695,20 @@ $(document).ready(function(){
 
   $("#open_image").on("click", function() {
     $("#image-input").click();
-  });
-  $("#image-input").on("change", function() {
+});
+
+$("#image-input").on("change", function() {
     var file = this.files[0];
     if (file) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        $("#imagePreview").attr("src", e.target.result).show();
-      }
-      reader.readAsDataURL(file);
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $("#imagePreview").attr("src", e.target.result).show();
+        };
+        reader.readAsDataURL(file);
     } else {
-      $("#imagePreview").hide();
+        $("#imagePreview").hide();
     }
-  });
+});
   $("#remove_image").on("click", function() {
     $("#imagePreview").attr("src", "./assets/img/invoice.png").show(); 
     $("#image-input").val(''); 
