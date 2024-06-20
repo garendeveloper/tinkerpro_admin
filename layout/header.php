@@ -66,6 +66,7 @@
   <script src="assets/js/toastr.min.js"></script>
   <script src="assets/table-sortable/dataTables.min.js"></script>
   <script src="layout/admin/moment.min.js"></script>
+  <script src="assets/js/html2canvas.min.js"></script>
 </head>
 <body>
 

@@ -198,6 +198,7 @@ class DashboardFacade extends DBConnection
             'data'=> $data,
             'total_sales_by_period' => $total_sales_by_period,
             'total_gross_sales_by_period' => $total_sales_by_period,
+            'total_expense_by_period' => $this->get_expenseValueFromDatePeriod($start_date, $end_date)['total_expense_of_the_month']
         ];
     }
     function formatNumber($number) 
@@ -210,6 +211,8 @@ class DashboardFacade extends DBConnection
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
         $annual_sales = 0;
+        $expensesData = [];
+        $annual_expenses = 0;
         for ($i = 1; $i <= count($months) - 1; $i++) 
         {
             $month = $i;
@@ -371,7 +374,10 @@ class DashboardFacade extends DBConnection
                 $monthly_gross_sale += $totalGrossSales;
             
             }
-    
+            $month_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_expense_of_the_month'];
+            $expensesData[] = $month_expense !== null ? $month_expense : 0;
+            $annual_expenses += $month_expense;
+            
             $salesData[] = $monthly_gross_sale;
             $annual_sales += $monthly_gross_sale;
         }
@@ -380,14 +386,43 @@ class DashboardFacade extends DBConnection
         $maxIndex = array_search($maxValue, $salesData);
         $monthName = $months[$maxIndex];
 
+        $maxExpenseValue = max($expensesData);
+        $maxExpenseIndex = array_search($maxExpenseValue, $expensesData);
+        $expenseMonthName = $months[$maxExpenseIndex];
+
         $response = [
             'salesData' => $salesData,
+            'expensesData' => $expensesData,
             'months' => $months,
             'annual_sales' => $annual_sales,
             'top_month' => $monthName,
             'top_month_value' => $maxValue,
+            'top_expensiveMonth' => $expenseMonthName,
+            'top_expensiveMonth_value' => $maxExpenseValue,
+            'annual_expenses' => $annual_expenses,
         ];
         return $response;
+    }
+    public function get_expenseValueFromDatePeriod($start_date, $end_date)
+    {
+        $stmt = $this->connect()->prepare("SELECT SUM(expenses.total_amount) AS total_expense_of_the_month
+                                            FROM expenses
+                                            INNER JOIN supplier ON supplier.id = expenses.supplier
+                                            LEFT JOIN uom ON uom.id = expenses.uom_id
+                                            WHERE (expenses.date_of_transaction BETWEEN :st_date AND :end_date)");
+        $stmt->execute([':st_date'=>$start_date, ':end_date'=>$end_date]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function get_totalExpenseOfTheMonth($month, $year)
+    {
+        $stmt = $this->connect()->prepare("SELECT SUM(expenses.total_amount) AS total_expense_of_the_month
+                                        FROM expenses
+                                        INNER JOIN supplier ON supplier.id = expenses.supplier
+                                        LEFT JOIN uom ON uom.id = expenses.uom_id
+                                        WHERE MONTH(expenses.date_of_transaction) = :currentMonth
+                                        AND YEAR(expenses.date_of_transaction) = :currentYear");
+        $stmt->execute([':currentMonth'=>$month, ':currentYear'=>$year]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function get_salesDataByHour($start_date, $end_date)
     {

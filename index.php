@@ -266,7 +266,7 @@ body, div, h1, h2, h3, h4, h5, p{
     height: 200px !important;
   }
   #top_products_data {
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: auto; 
 }
 
@@ -280,41 +280,65 @@ body, div, h1, h2, h3, h4, h5, p{
     padding: 8px;
     text-align: left;
 }
-.annual_total_sales h3, #total_sales_data h1{
+.annual_total_sales h3, .annual_total_expenses h3, #total_sales_data h1{
   font-family: Century Gothic;
-  font-size: 5rem; 
+  font-size: 3rem; 
 }
 
 #total_sales_data h1{
   font-family: Century Gothic;
-  font-size: 7rem; 
+  font-size: 6rem; 
 }
-
+#net_income h1{
+  font-family: Century Gothic;
+  font-size: 4.5rem; 
+}
+.topValue{
+  font-size: 1rem;
+}
 @media (max-width: 1200px) {
-  .annual_total_sales h3, #total_sales_data h1{
-    font-size: 3rem;
+  .annual_total_sales h3, .annual_total_expenses h3, #total_sales_data h1{
+    font-size: 2.5rem;
+  }
+  .topValue{
+    font-size: 0.7rem;
   }
 }
 
 @media (max-width: 992px) {
-  .annual_total_sales h3, #total_sales_data h1{
+  .annual_total_sales h3, .annual_total_expenses h3, #total_sales_data h1{
     font-size: 2rem;
+  }
+  .topValue{
+    font-size: 0.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .annual_total_sales h3, #total_sales_data h1{
+  .annual_total_sales h3, .annual_total_expenses h3, #total_sales_data h1{
     font-size: 1.5rem;
+  }
+  .topValue{
+    font-size: 0.3rem;
   }
 }
 
 @media (max-width: 576px) {
-  .annual_total_sales h3, #total_sales_data h1{
+  .annual_total_sales h3, .annual_total_expenses h3, #total_sales_data h1{
     font-size: 0.5rem;
+  }
+  .topValue{
+    font-size: 0.1rem;
   }
 }
 #tbl_top_products td{
   height: 10px;
+}
+.dashboard-button:hover{
+  color: #FF6700;
+}
+.table-responsive{
+  overflow: auto;
 }
 </style>
 <?php include "layout/admin/css.php" ?>
@@ -322,42 +346,54 @@ body, div, h1, h2, h3, h4, h5, p{
   <div class="main">
     <?php include "layout/admin/sidebar.php" ?>
     <div class="main-panel">
-      <div class="content-wrapper">
+      <div class="content-wrapper" id = "dashboard_content">
         <div class="container">
           <div class="row">
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-md-8">
               <div class="border p-3 col">
                 <div class="sales-chart-header">
-                  <h4>Monthly Sales - <span id="d_year" style="color: #FF6700"></span></h4>
+                  <h4>Monthly Sales | Expenses - <span id="d_year" style="color: #FF6700"></span></h4>
                   <div class="button-container">
-                    <i class="bi bi-arrow-clockwise"></i>
-                    <button id="toggle-theme">
+                    <i class="bi bi-arrow-clockwise dashboard-button" id = "btn_refresh_dashboard"></i>
+
+                    <!-- <button id="toggle-theme">
                       <i class="bi bi-toggle-on"></i>
-                    </button>
-                    <i class="bi bi-chevron-left" id="prevYear"></i>
-                    <i class="bi bi-chevron-right" id="nextYear"></i>
+                    </button> -->
+                    <i class="bi bi-chevron-left dashboard-button" id="prevYear"></i>
+                    <i class="bi bi-chevron-right dashboard-button" id="nextYear"></i>
                   </div>
                 </div>
-                <p>Sales data grouped by month</p>
+                <p>Sales & Expenses data grouped by month</p>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                 <canvas id="salesChart"  style="display: block; height: 200px; width: 1200px;" class="chartjs-render-monitor"></canvas>
                 </div>
               </div>
             </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <div class="border p-3 col1" style = "height: 300px;">
-                <h5>Total Sales</h5>
-                <div class="center-total annual_total_sales" style = 'text-align: left;'>
-         
+                <h5>Total Annual (Sales & Expenses )</h5>
+                <div class = "d-flex mb-4 align-items-center" style = "justify-content: space-between;">
+                  <div class="center-total annual_total_sales" style = 'text-align: left;'>
+          
+                  </div>
+                  <div class="center-total annual_total_expenses" style = 'text-align: right;'>
+            
+                  </div>
                 </div>
-                <div class="center-total top_performing_month" style = 'text-align: left;'>
-                  <p>No data to display</p>
+                <div class = "d-flex justify-content-between" style = "margin-top: 70px">
+                  <div class="center-total top_performing_month" style = "text-align: left">
+                    <p>No data to display</p>
+                  </div>
+                  <div class="center-total top_expensive_month" style = "text-align: right" >
+                    <p>No data to display</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12 col-md-12">
+          <div class="row exclude">
+
+            <div class="col-12 col-md-8 ">
               <h5 style="color: #ffff">Periodic Reports &nbsp;&nbsp; <span id="period_date" style="color: #FF6700; font-weight: bold">
               </span>
               <input type = "hidden" id = "per_start_date" ></input>
@@ -366,6 +402,12 @@ body, div, h1, h2, h3, h4, h5, p{
                   <i class="bi bi-calendar" aria-hidden="true"></i>
                 </button>
               </h5>
+            </div>
+            <div class="col-12 col-md-4 ">
+            <!-- <button id="print_screenshot" style="display:none;">Print Screenshot</button> -->
+              <button id="btn_period" class="button " onclick = "printDiv()">
+                  <i class="bi bi-camera" aria-hidden="true"></i> Print Screenshot
+              </button>
             </div>
           </div>
           <div class="row">
@@ -380,7 +422,7 @@ body, div, h1, h2, h3, h4, h5, p{
                   </select>
                 </div>
                 <div class="center-total" id = "top_products_data">
-                <p>No data to display</p>
+                  <p>No data to display</p>
                 </div>
               </div>
             </div>
@@ -410,18 +452,31 @@ body, div, h1, h2, h3, h4, h5, p{
           <div class="row">
             <div class="col-12 col-md-4">
               <div class="border p-3 col1">
-                <h5>Top Product Groups</h5>
-                <p class="sub-title">Top selling product groups in selected period</p>
-                <div class="center-total">
+                <h5>Net Income</h5>
+                <p class="sub-title">Income from sales and expenses in selected period</p>
+                <div class="center-total" id = "net_income">
                   <p>No data to display</p>
                 </div>
               </div>
             </div>
             <div class="col-12 col-md-8 ">
               <div class="border p-3 col1">
-                <h5>Top Customers</h5>
-                <p class="sub-title">Lead customers in selected period (top 5)</p>
-                <div class="center-total">
+                <h5>Top Products </h5>
+                <p class="sub-title">Lead products in selected period (top 5)</p>
+                <div class = "table-responsive" id = "tbl_dashboard" style = "display: none">
+                  <table id = "tbl_top_products"  class = "text-color table-border" style = "width: 50%">
+                    <thead>
+                      <tr>
+                        <th style = "background-color: #343a40; text-align: left">Product</th>
+                        <th style = "background-color: #343a40">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="center-total" id = "top_products_in_table">
                   <p>No data to display</p>
                 </div>
               </div>
@@ -434,8 +489,56 @@ body, div, h1, h2, h3, h4, h5, p{
 </div>
 
 <?php include "modals/period-reports-modal.php" ?>
+<?php include "modals/dashboard_modal.php" ?>
 <?php include ("layout/footer.php") ?>
 <script>
+  function printDiv() 
+  {  
+    html2canvas(document.querySelector("#dashboard_content"), {
+      ignoreElements: function(element) {
+        return element.classList.contains('exclude');
+      }
+    }).then(canvas => {
+      const dataURL = canvas.toDataURL();
+      $("#dashboard_modal").slideDown({
+        backdrop: 'static',
+        keyboard: false
+      });
+      const iframe = document.createElement('iframe');
+      iframe.style.width = '100%';
+      iframe.style.height = '700px';
+      iframe.style.border = 'none';
+
+      const blob = dataURLToBlob(dataURL);
+      const blobURL = URL.createObjectURL(blob);
+
+      iframe.src = blobURL;
+      $('#dashboard_preview').html(iframe);
+
+
+      const printButton = $('<button/>', {
+          type: 'button',
+          class: 'footerButton',
+          id: 'print_screenshot',
+          text: 'Print Dashboard Report'
+      });
+      $('#dashboard_preview').append(printButton);
+      $('#print_screenshot').off('click').on('click', function() {
+          iframe.contentWindow.print();
+      });
+    });
+  } 
+  function dataURLToBlob(dataURL) 
+    {
+        const byteString = atob(dataURL.split(',')[1]);
+        const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], { type: mimeString });
+    }
   function formatDate(date) 
   {
     const day = String(date.getDate()).padStart(2, '0');
@@ -576,45 +679,71 @@ $('.custom_btns').on('click', function () {
           start_date: start_date,
           end_date: end_date,
         },
-        success: function(data)
+        success: function(responseData)
         {
-          if(data['data'].length > 0)
+          if(responseData['data'].length > 0)
           {
-              var tblRows = [];
-            for (var i = 0, len = data['data'].length; i < len; i++) 
+            var tblRows = [];
+            const productsName = [];
+            const productsAmount = [];
+            var total_expenses = 0;
+            var html = "";
+            for (var i = 0, len = responseData['data'].length; i < len; i++) 
             {
-              var currentItem = data['data'][i];
-              tblRows.push(
-                  `<tr>
-                        <td style = 'text-align: left'>${currentItem.product}</td>
-                        <td style = 'text-align: right'>${formatNumberWithCommasAndDecimals(currentItem.total_paid_amount)}</td>
-                      </td>
-                    </tr>`
-                );
-                totalSales += currentItem.total_paid_amount;
-                totalCount = i+1;
-            }
+              var currentItem = responseData['data'][i];
 
-            var tblData = `
-            <table  id = "tbl_top_products" class='' style='font-size: 10px;'>
-                <thead>
-                    <tr>
-                        <th style = 'text-align: left; background-color: #8f3900'>Product.</th>
-                        <th style = 'text-align: center; background-color: #7f160b'>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${tblRows.join('')}
-                </tbody>
-            </table>`;
-            $("#top_products_data").html(tblData);
+              html += "<tr>";
+              html += "<td style = 'text-align: left'>"+currentItem.product+"</td>";
+              html += "<td style = 'text-align: right'>"+formatNumberWithCommasAndDecimals(currentItem.total_paid_amount)+"</td>"
+
+
+              productsName.push(currentItem.product);
+              productsAmount.push(currentItem.total_paid_amount);
+              totalSales += currentItem.total_paid_amount;
+              totalCount = i+1;
+              
+            }
+            var total_net_income = totalSales - responseData['total_expense_by_period'];
+            $("#net_income").html("<h1>"+formatAmount(total_net_income)+"</h1>");
+            $("#tbl_top_products tbody").html(html);
+            $("#tbl_dashboard").show();
+            $("#top_products_in_table").hide();
+            $("#top_products_data").html('<canvas id="myDoughnutChart"></canvas>');
+            const backgroundColors = productsAmount.map(() => getRandomColor());
+
+            const data = {
+                labels: productsName,
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: productsAmount,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4
+                }]
+            };
+
+            const config = {
+                type: 'doughnut',
+                data: data,
+            };
+
+            const ctx = document.getElementById('myDoughnutChart').getContext('2d');
+            new Chart(ctx, config);
           }
           else
           {
+            $("#top_products_in_table").show();
             $("#top_products_data").html('<p>No data to display</p>');
+            $("#net_income").html('<p>No data to display</p>');
+            $("#tbl_top_products").hide();
           }
         }
       })
+  }
+  function getRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
   }
   function show_allTotalSales(identifier)
   {
@@ -736,73 +865,163 @@ $('.custom_btns').on('click', function () {
       year--;
       updateChart(year);
     });
-    function formatNumberWithCommasAndDecimals(number) {
-        return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    function formatNumberWithCommas(number) {
+        return number !==0 ? number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0;
     }
-    function updateChart(year) 
-    {
-      $("#d_year").html(year);
-      axios.get('api.php?action=get_salesData&year=' + year)
-          .then(function (response) {
-              const salesData = response.data.salesData;
-              const months = response.data.months;
-              const annual_sales = response.data.annual_sales;
-              const top_month = annual_sales === 0 ? "---" : response.data.top_month;
-              const top_month_value = response.data.top_month_value;
+    // function updateChart(year) 
+    // {
+    //   $("#d_year").html(year);
+    //   axios.get('api.php?action=get_salesData&year=' + year)
+    //       .then(function (response) {
+    //           const salesData = response.data.salesData;
+    //           const months = response.data.months;
+    //           const annual_sales = response.data.annual_sales;
+    //           const top_month = annual_sales === 0 ? "---" : response.data.top_month;
+    //           const top_month_value = response.data.top_month_value;
 
-              $(".annual_total_sales").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
-              $(".top_performing_month").html("<h4 style='color: #d9f500; font-size: 1rem'>Top Performing Month</h4>" +
-                  "<h4>" + top_month + "</h4>" +
-                  "<h4>" + formatNumberWithCommasAndDecimals(top_month_value) + "</h4>");
+    //           $(".annual_total_sales").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
+    //           $(".top_performing_month").html("<h4 style='color: #d9f500; font-size: 1rem'>Top Performing Month</h4>" +
+    //               "<h4>" + top_month + "</h4>" +
+    //               "<h4>" + formatNumberWithCommas(top_month_value) + "</h4>");
 
-              const ctx = document.getElementById('salesChart').getContext('2d');
+    //           const ctx = document.getElementById('salesChart').getContext('2d');
 
-              const colors = [
-                  'rgba(255, 99, 132, 0.6)',  
-                  'rgba(54, 162, 235, 0.6)',  
-                  'rgba(255, 206, 86, 0.6)',  
-                  'rgba(75, 192, 192, 0.6)',  
-                  'rgba(153, 102, 255, 0.6)', 
-                  'rgba(255, 159, 64, 0.6)',  
-                  'rgba(199, 199, 199, 0.6)', 
-                  'rgba(83, 102, 255, 0.6)',  
-                  'rgba(99, 255, 132, 0.6)',  
-                  'rgba(235, 54, 162, 0.6)',  
-                  'rgba(206, 255, 86, 0.6)',  
-                  'rgba(192, 192, 75, 0.6)'   
-              ];
+    //           const colors = [
+    //               'rgba(255, 99, 132, 0.6)',  
+    //               'rgba(54, 162, 235, 0.6)',  
+    //               'rgba(255, 206, 86, 0.6)',  
+    //               'rgba(75, 192, 192, 0.6)',  
+    //               'rgba(153, 102, 255, 0.6)', 
+    //               'rgba(255, 159, 64, 0.6)',  
+    //               'rgba(199, 199, 199, 0.6)', 
+    //               'rgba(83, 102, 255, 0.6)',  
+    //               'rgba(99, 255, 132, 0.6)',  
+    //               'rgba(235, 54, 162, 0.6)',  
+    //               'rgba(206, 255, 86, 0.6)',  
+    //               'rgba(192, 192, 75, 0.6)'   
+    //           ];
 
-              const chart = new Chart(ctx, {
-                  type: 'bar',
-                  data: {
-                      labels: months,
-                      datasets: [{
-                          label: 'Sales (₱)',
-                          data: salesData,
-                          backgroundColor: colors, 
-                          borderColor: colors.map(color => color.replace('0.6', '1')), 
-                          borderWidth: 1
-                      }]
-                  },
-                  options: {
-                      scales: {
-                          x: {
-                              grid: {
-                                  display: false
-                              }
-                          },
-                          y: {
-                              grid: {
-                                  color: 'blue',
-                              }
-                          }
-                      }
-                  }
-              });
-          })
-          .catch(function (error) {
-              console.error('Error fetching sales data:', error);
-          });
+    //           const chart = new Chart(ctx, {
+    //               type: 'bar',
+    //               data: {
+    //                   labels: months,
+    //                   datasets: [{
+    //                       label: 'Sales (₱)',
+    //                       data: salesData,
+    //                       backgroundColor: colors, 
+    //                       borderColor: colors.map(color => color.replace('0.6', '1')), 
+    //                       borderWidth: 1
+    //                   }]
+    //               },
+    //               options: {
+    //                   scales: {
+    //                       x: {
+    //                           grid: {
+    //                               display: false
+    //                           }
+    //                       },
+    //                       y: {
+    //                           grid: {
+    //                               color: 'blue',
+    //                           }
+    //                       }
+    //                   }
+    //               }
+    //           });
+    //       })
+    //       .catch(function (error) {
+    //           console.error('Error fetching sales data:', error);
+    //       });
+    // }
+
+    function formatNumberWithCommasAndDecimals(number) {
+      return number !== 0 ? number.toFixed(2).replace(/\d(?=(\d{3})+.)/g, '$&,') : 0;
+    }
+    $("#btn_refresh_dashboard").off("click").on("click", function(){
+      updateChart(year);
+    })
+
+ 
+    function updateChart(year) {
+    $("#d_year").html(year);
+    axios.get('api.php?action=get_salesData&year=' + year)
+        .then(function (response) {
+            const salesData = response.data.salesData;
+            const months = response.data.months;
+            const annual_sales = response.data.annual_sales;
+            const top_month = annual_sales === 0 ? "---" : response.data.top_month;
+            const top_month_value = response.data.top_month_value;
+
+            const expensesData = response.data.expensesData; 
+            const annual_expenses= response.data.annual_expenses;
+            const top_expensiveMonth =  annual_expenses === 0 ? "---" : response.data.top_expensiveMonth;
+            const top_expensiveMonth_value = response.data.top_expensiveMonth_value;
+
+            $(".annual_total_sales").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
+            $(".top_performing_month").html("<h4 style='color: #d9f500; font-size: 1rem'>Top Performing Month</h4>" +
+                "<h4>" + top_month + "</h4>" +
+                "<h4 class = 'topValue'>" +  formatNumberWithCommasAndDecimals(top_month_value) + "</h4>");
+
+            $(".annual_total_expenses").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_expenses) + "</h3>");
+            $(".top_expensive_month").html("<h4 style='color: #ff8792; font-size: 1rem'>Top Expensive Month</h4>" +
+            "<h4>" + top_expensiveMonth + "</h4>" +
+            "<h4 class = 'topValue'>" + formatNumberWithCommas(top_expensiveMonth_value) + "</h4>");
+
+            const ctx = document.getElementById('salesChart').getContext('2d');
+
+            const colorsSales = 'rgba(54, 162, 235, 0.6)'; 
+            const colorsExpenses = 'rgba(255, 99, 132, 0.6)'; 
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Sales (₱)',
+                            data: salesData,
+                            backgroundColor: colorsSales,
+                            borderColor: colorsSales.replace('0.6', '1'),
+                            borderWidth: 1
+                        }, 
+                        {
+                            label: 'Expenses (₱)',
+                            data: expensesData,
+                            backgroundColor: colorsExpenses, 
+                            borderColor: colorsExpenses.replace('0.6', '1'),
+                            borderWidth: 1
+                        },
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            stacked: true
+                        },
+                        y: {
+                            grid: {
+                                color: 'blue'
+                            },
+                            stacked: true
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        })
+        .catch(function (error) {
+            console.error('Error fetching sales data:', error);
+        });
     }
     $("#btn_period").click(function (e) {
       e.preventDefault();
