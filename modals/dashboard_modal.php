@@ -133,15 +133,15 @@
 </div>
 <script>
 $(document).ready(function() {
-
   $('#dashboard_modal #reportsClose').on('click', function() {
-      $('#dashboard_modal').hide();
+      window.location.href = "http://localhost/tinkerpro_admin/index";
       $('#pdfViewer1').attr('src', '');
       var loadingImage = document.getElementById("loadingImage1");
         loadingImage.setAttribute("hidden",true);
       var pdfFile= document.getElementById("pdfFile1");
         pdfFile.setAttribute('hidden',true)
   });
+
 });
  
 </script>

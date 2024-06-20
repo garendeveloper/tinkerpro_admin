@@ -492,12 +492,28 @@ body, div, h1, h2, h3, h4, h5, p{
 <?php include "modals/dashboard_modal.php" ?>
 <?php include ("layout/footer.php") ?>
 <script>
+  var originalColors = [];
+
+
+
   function printDiv() 
   {  
+    $("#dashboard_content").css('background-color', 'white');
+    $('#dashboard_content *').each(function() {
+        var $this = $(this);
+       
+        if ($this.css('color') === 'rgb(255, 255, 255)' || $this.css('color') === '#ffffff') {
+            $this.css('color', 'black');
+            $this.css('background-color', 'white');
+        }
+        if ($this.css('color') === 'rgb(38, 38, 38)' || $this.css('color') === '#262626') {
+          $this.css('background-color', 'white');
+        }
+    });
     html2canvas(document.querySelector("#dashboard_content"), {
       ignoreElements: function(element) {
         return element.classList.contains('exclude');
-      }
+      },
     }).then(canvas => {
       const dataURL = canvas.toDataURL();
       $("#dashboard_modal").slideDown({
@@ -515,6 +531,14 @@ body, div, h1, h2, h3, h4, h5, p{
       iframe.src = blobURL;
       $('#dashboard_preview').html(iframe);
 
+      $("#dashboard_content").css('background-color', '#262626');
+      $('#dashboard_content *').each(function() {
+        var $this = $(this);
+        if ($this.css('background-color') === 'rgb(255, 255, 255)' || $this.css('color') === '#ffffff') {
+            $this.css('color', 'white');
+            $this.css('background-color', '#262626');
+        }
+      });
 
       const printButton = $('<button/>', {
           type: 'button',
@@ -703,11 +727,12 @@ $('.custom_btns').on('click', function () {
               totalCount = i+1;
               
             }
+            $("#top_products_in_table").hide();
+            $("#tbl_dashboard").show();
             var total_net_income = totalSales - responseData['total_expense_by_period'];
             $("#net_income").html("<h1>"+formatAmount(total_net_income)+"</h1>");
             $("#tbl_top_products tbody").html(html);
-            $("#tbl_dashboard").show();
-            $("#top_products_in_table").hide();
+          
             $("#top_products_data").html('<canvas id="myDoughnutChart"></canvas>');
             const backgroundColors = productsAmount.map(() => getRandomColor());
 
@@ -732,9 +757,9 @@ $('.custom_btns').on('click', function () {
           else
           {
             $("#top_products_in_table").show();
+            $("#tbl_dashboard").hide();
             $("#top_products_data").html('<p>No data to display</p>');
             $("#net_income").html('<p>No data to display</p>');
-            $("#tbl_top_products").hide();
           }
         }
       })
