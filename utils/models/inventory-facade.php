@@ -869,8 +869,8 @@ class InventoryFacade extends DBConnection
                         $sqlStatement->bindParam(1, $order_id, PDO::PARAM_STR);
                         $sqlStatement->bindParam(2, $product_id, PDO::PARAM_STR);
                         $sqlStatement->bindParam(3, $quantity, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(4, $amount_beforeTax, PDO::PARAM_STR);
-                        $sqlStatement->bindParam(5, $amount_afterTax, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(4, $price, PDO::PARAM_STR);
+                        $sqlStatement->bindParam(5, $new_cost_price, PDO::PARAM_STR);
                         $sqlStatement->bindParam(6, $status, PDO::PARAM_STR);
                         $sqlStatement->bindParam(7, $isSelected, PDO::PARAM_STR);
                         $sqlStatement->bindParam(8, $total, PDO::PARAM_STR);

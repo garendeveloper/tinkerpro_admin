@@ -182,7 +182,6 @@ button:hover {
     flex-wrap: wrap;
   }
 
-
 /* .fContainer_bottom {
     position: absolute;
     bottom: 0;
@@ -333,5 +332,61 @@ button:hover {
         }
         .inventoryCard table tr:hover {
     border: 1px solid green;
+}
+.highlighteds{
+     border: 2px solid #00B050 !important; 
+  }
+  .highlighted-row {
+    border: 2px solid green !important;
+}
+.card {
+  background-color: #151515;
+  border-color: #242424;
+  height: 200px;
+  /* overflow-x: auto; 
+  overflow-y: auto; */
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+}
+.icon-button{
+
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  gap: -50px;
+}
+.icon-button:hover{
+  color: #FF6700;
+
+}
+.text-right{
+  text-align: right;  
+}
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 1px 1px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    height: 35px;
+    margin-right: 5px;
+}
+.badge-danger{
+  color: red;
+}
+.bi-trash:hover{
+  color: red;
+}
+.badge-success{
+  color: lightgreen;
 }
   </style>

@@ -180,6 +180,7 @@
                     },
                     success: function (response) 
                     {
+                  
                         if(type === "1")
                         {
                             loadingImage.setAttribute("hidden",true);
@@ -194,28 +195,30 @@
                         }
                         else
                         {
-                            console.log(response)
-                         
-                            // loadingImage.setAttribute("hidden", true);
+                            // var response = response.pdfContent;
+                            // loadingImage.setAttribute("hidden",true);
                             // var pdfFile = document.getElementById("pdfFile");
-                            // pdfFile.removeAttribute('hidden');
-
-                            // if (response instanceof Blob) {
+                            // pdfFile.removeAttribute('hidden')
+                            // if( loadingImage.hasAttribute('hidden')) 
+                            // {
+                            //     console.log(response)
                             //     var newBlob = new Blob([response], { type: 'application/pdf' });
                             //     var blobURL = URL.createObjectURL(newBlob);
-                            //     $('#pdfViewer').attr('src', blobURL);
-                            // } else {
-                            //     console.error('Invalid response data');
+                            //     $('#pdfViewer').attr('src', newBlob);
                             // }
-                            loadingImage.setAttribute("hidden",true);
-                            var pdfFile = document.getElementById("pdfFile");
-                            pdfFile.removeAttribute('hidden')
-                            if( loadingImage.hasAttribute('hidden')) 
-                            {
-                                var newBlob = new Blob([response], { type: 'application/pdf' });
-                                var blobURL = URL.createObjectURL(newBlob);
-                                $('#pdfViewer').attr('src', blobURL);
-                            }
+                            // if(response.success)
+                            // {
+                            //     var pdfContent = response.pdfContent;
+                            //     var pdfData = 'data:application/pdf;base64,' + pdfContent;
+                            //     $('#pdfViewer').attr('src', pdfData);
+                            //     $('#pdfFile').removeAttr('hidden');
+                            //     $('#loadingImage').attr('hidden', true);
+                            // }
+                            var pdfContent = atob(response.pdfContent);
+
+// Load PDF content into iframe for preview
+var iframe = document.getElementById('pdfViewer');
+iframe.src = 'data:application/pdf;base64,' + response.pdfContent;
                         }
                     },
                     error: function (xhr, status, error) {
