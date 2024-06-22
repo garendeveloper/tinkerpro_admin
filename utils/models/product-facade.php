@@ -916,8 +916,6 @@ public function importProducts($fileData) {
 
           $stmt->execute();
           $lastInsertIds[] = $conn->lastInsertId();
-
-        
       }
 
       $conn->commit(); 

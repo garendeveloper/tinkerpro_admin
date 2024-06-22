@@ -1,5 +1,5 @@
 <?php
-require_once '../reports/vendor/autoload.php';
+require_once '../vendor/autoload.php';
 include ('../utils/db/connector.php');
 include ('../utils/models/user-facade.php');
 include ('../utils/models/product-facade.php');
@@ -10,6 +10,7 @@ include ('../utils/models/supplier-facade.php');
 include ('../utils/models/inventorycount-facade.php');
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mpdf\Mpdf;
 try {
     $type = $_GET['type'];
@@ -93,48 +94,67 @@ try {
         }
         $pdf->Output($pdfPath, 'F');
     } else {
-        $inventory_count = new InventoryCountFacade();
-        $items = $inventory_count->get_activeProducts();
-        $currentTimestamp = date('F j, Y H:i:s');
+        try {
+            $inventory_count = new InventoryCountFacade();
+            $items = $inventory_count->get_activeProducts();
+            $currentTimestamp = date('F j, Y H:i:s');
+            
+            $printerName = "XP-80C"; 
+            $connector = new WindowsPrintConnector($printerName);
 
-        $connector = new WindowsPrintConnector("XP_80C");
-        $printer = new Printer($connector);
+            $printer = new Printer($connector);
 
-        $printer->setEmphasis(false);
-        $printer->setDoubleStrike(false);
-        $printer->setFont(Printer::FONT_A);
+            $printer->setEmphasis(false);
+            $printer->setDoubleStrike(false);
+            $printer->setFont(Printer::FONT_A);
+            
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("INVENTORY COUNT REPORT\n");
+            $printer->text("Date & Time: " . date('F j, Y H:i:s') . "\n");
+            $printer->text("REF#: ______________________\n");
+            $printer->feed();
+            
+            // $printer->setJustification(Printer::JUSTIFY_LEFT);
+            // $printer->setEmphasis(true);
+            $header = str_pad("No.", 10) . "\t" . 
+            str_pad("SKU", 15) . "\t" . 
+            str_pad("PRODUCT", 40) . "\t" . 
+            str_pad("QTY", 15) . "\t" . 
+            str_pad("COUNTED", 15) . "\n";
+            $colWidths = array(10, 15, 40, 15, 15); // Adjust as needed
+            $colAligns = array(Printer::JUSTIFY_RIGHT, Printer::JUSTIFY_LEFT, Printer::JUSTIFY_LEFT, Printer::JUSTIFY_RIGHT, Printer::JUSTIFY_RIGHT);
         
-        $printer->setJustification(Printer::JUSTIFY_CENTER);
-        $printer->text("INVENTORY COUNT REPORT\n");
-        $printer->feed();
-        $printer->text("Date & Time: " . date('F j, Y H:i:s') . "\n");
-        $printer->feed();
-        $printer->text("REF#: ______________________\n");
-        $printer->feed();
+            // Print table header
+            $header = "";
+            foreach ($colWidths as $index => $width) {
+                $header .= str_pad(substr("No. SKU PRODUCT QTY COUNTED", array_sum(array_slice($colWidths, 0, $index)), $width), $width, ' ', STR_PAD_RIGHT);
+            }
+            $header .= "\n";
+            $printer->text($header);
+            $printer->setEmphasis(false);
         
-        $printer->setJustification(Printer::JUSTIFY_LEFT);
-        $printer->setEmphasis(true);
-        $printer->text("No.\tSKU\tPRODUCT\tQTY\tCOUNTED\n");
-        $printer->setEmphasis(false);
+            // Print item details
+            foreach ($items as $item) {
+                $line = "";
+                foreach ($colWidths as $index => $width) {
+                    $line .= str_pad(substr($item['sku'] . ' ' . $item['prod_desc'] . ' ' . $item['product_stock'], array_sum(array_slice($colWidths, 0, $index)), $width), $width, ' ', STR_PAD_RIGHT);
+                }
+                $line .= "\n";
+                $printer->text($line);
+            }
         
-        $counter = 1;
-        foreach ($items as $item) {
-            $printer->text($counter . "\t" . $item['sku'] . "\t" . $item['prod_desc'] . "\t" . $item['product_stock'] . "\t\n");
-            $counter++;
+            // Close printer connection
+            $printer->close();
+        
+            echo json_encode(['success' => true, 'message' => 'Print successful']);
+            $printer->cut();
+            $printer->close();
+            
+            echo json_encode(['success' => true, 'message' => 'Print successful']);
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Print failed: ' . $e->getMessage()]);
+
         }
-        
-        $printer->close();
-        
-        $mpdf = new Mpdf();
-        $mpdf->WriteHTML($printer->output);
-        $mpdf->Output('inventory_list.pdf', 'I');
-        $pdfPath = __DIR__ . '/assets/pdf/inventory/inventory_list.pdf';
-
-        if (file_exists($pdfPath)) {
-
-            unlink($pdfPath);
-        }
-        $mpdf->Output($pdfPath, 'F');
     }
 
 } catch (Exception $e) {

@@ -817,6 +817,8 @@ include ('./layout/admin/table-pagination-css.php');
       $(".inventoryCard").on("dblclick", "tr", function(){
         var id = $(this).data('id');
         var active_tbl_id = $(".inventoryCard table").attr('id');
+        $("#"+active_tbl_id+" tbody").find("tr").removeClass('highlighted-row')
+        $(this).toggleClass('highlighted-row');
         switch(active_tbl_id)
         {
           case 'tbl_all_stocks':
@@ -900,7 +902,7 @@ include ('./layout/admin/table-pagination-css.php');
                 $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(data[0].price));
               },
               error: function (data) {
-                alert("No response")
+                console.log("Server Error")
               }
             })
             break;
@@ -922,12 +924,12 @@ include ('./layout/admin/table-pagination-css.php');
             <table tabindex='0' id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
                 <thead>
                     <tr>
-                        <th class='text-center auto-fit'>No.</th>
-                        <th class='auto-fit'>Product</th>
-                        <th class='auto-fit'>Barcode</th>
-                        <th class='auto-fit' style='text-align: center'>Unit</th>
-                        <th class='auto-fit' style='text-align: center'>Qty in Store</th>
-                        <th class='auto-fit' style='text-align: center'>Action</th>
+                        <th class='autofit text-center'>No.</th>
+                        <th class=''>Product</th>
+                        <th >Barcode</th>
+                        <th style='text-align: center'>Unit</th>
+                        <th  style='text-align: center'>Qty in Store</th>
+                        <th class='autofit' style='text-align: center'>Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -955,16 +957,16 @@ include ('./layout/admin/table-pagination-css.php');
                     return data === -1 ? 0 : data;
                 }, className: 'text-center' },
                 { data: null, render: function (data) {
-                    return `<button style='border-radius: 5px; height: 25px; margin: 0;' data-id='${data.product_id}' id='btn_openStockHistory'>History</button>`;
+                    return `<i data-id='${data.product_id}' id='btn_openStockHistory' class="bi bi-graph-up icon-button"></i>`;
                 }, className: 'text-center' }
             ],
             ordering: true,
             order: [[1, 'asc']],
             pageLength: 100,
-            pagingType: 'full_numbers',
-            columnDefs: [
-                { targets: '_all', className: 'autofit' } 
-            ],
+            // pagingType: 'full_numbers',
+            // columnDefs: [
+            //     { targets: '_all', className: 'auto-fit' } 
+            // ],
             dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
             fnDrawCallback: function (oSettings) {
                 if (oSettings.aoData.length === 0) {
@@ -2699,25 +2701,31 @@ include ('./layout/admin/table-pagination-css.php');
                       data: 'isPaid',
                       className: 'text-center',
                       render: function (data) {
-                          return data === 1 ? "<td class='text-center badge-success'>Paid</td>" : "<td class='text-center badge-danger'>Unpaid</td>";
+                          return data === 1 ? "<span class='text-center badge-success'>Paid</span>" : "<span class='text-center badge-danger'>Unpaid</span>";
                       }
                   },
                   {
                       data: 'is_received',
                       className: 'text-center',
                       render: function (data) {
-                          return data === 1 ? "<td class='text-center badge-success'>Received</td>" : "<td class='text-center badge-warning' style = 'color: yellow;'>To Receive</td>";
+                          return data === 1 ? "<span class='text-center badge-success' >Received</span>" : "<span class='text-center badge-warning' style = 'color: yellow;'>To Receive</span>";
                       }
                   },
                   {
                       data: null,
                       className: 'text-center',
                       render: function (data) {
-                          return `
-                              <button data-id='${data.order_id}' class='grid-item button btn_openPayment' id='btn_openPayment' ${data.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
-                              <button data-id='${data.order_id}' class='grid-item button btn_editOrder' id='btn_editOrder'><i class='bi bi-pencil-fill bi-md'></i></button>
-                              <button data-id='${data.order_id}' data-isReceived='${data.is_received}' class='grid-item button btn_removeOrder' id='btn_removeOrder'><i class='bi bi-trash bi-md'></i></button>
-                          `;
+                        return `
+                            <div class = 'icon-container'>
+                              <i data-id='${data.order_id}' id='btn_openPayment' ${data.isPaid === 1 ? "disabled" : ""} class='bi bi-cash bi-md icon-button'></i>
+                              <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
+                              <i data-id='${data.order_id}' data-isReceived='${data.is_received}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
+                            </div>`;
+                          // return `
+                          //     <button data-id='${data.order_id}' class='grid-item button btn_openPayment' id='btn_openPayment' ${data.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
+                          //     <button data-id='${data.order_id}' class='grid-item button btn_editOrder' id='btn_editOrder'><i class='bi bi-pencil-fill bi-md'></i></button>
+                          //     <button data-id='${data.order_id}' data-isReceived='${data.is_received}' class='grid-item button btn_removeOrder' id='btn_removeOrder'><i class='bi bi-trash bi-md'></i></button>
+                          // `;
                       }
                   }
               ],
