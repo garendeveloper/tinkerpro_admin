@@ -8864,31 +8864,32 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                CAST(COALESCE(SUM(DISTINCT p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
-                CAST(COALESCE(SUM(DISTINCT p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 d.discount_amount AS discountsRate,
-                CAST(COALESCE(SUM(DISTINCT rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
-                COALESCE(SUM(DISTINCT rs.total_item_discounts), 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                CAST(COALESCE(SUM(rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
+                COALESCE(SUM(rs.total_item_discounts), 0) AS total_item_discounts,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
            
                 
-                CAST(COALESCE(SUM(DISTINCT res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
-                COALESCE(SUM(DISTINCT res. total_return_item_discounts), 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal
+                CAST(COALESCE(SUM(res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
+                COALESCE(SUM(res. total_return_item_discounts), 0) AS total_return_item_discounts,
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal
               
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -8972,31 +8973,32 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                CAST(COALESCE(SUM(DISTINCT p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
-                CAST(COALESCE(SUM(DISTINCT p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 d.discount_amount AS discountsRate,
-                CAST(COALESCE(SUM(DISTINCT rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
-                COALESCE(SUM(DISTINCT rs.total_item_discounts), 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                CAST(COALESCE(SUM(rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
+                COALESCE(SUM(rs.total_item_discounts), 0) AS total_item_discounts,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
            
                 
-                CAST(COALESCE(SUM(DISTINCT res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
-                COALESCE(SUM(DISTINCT res. total_return_item_discounts), 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal
+                CAST(COALESCE(SUM(res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
+                COALESCE(SUM(res. total_return_item_discounts), 0) AS total_return_item_discounts,
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal
               
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                    GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9079,31 +9081,32 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                CAST(COALESCE(SUM(DISTINCT p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
-                CAST(COALESCE(SUM(DISTINCT p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 d.discount_amount AS discountsRate,
-                CAST(COALESCE(SUM(DISTINCT rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
-                COALESCE(SUM(DISTINCT rs.total_item_discounts), 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                CAST(COALESCE(SUM(rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
+                COALESCE(SUM(rs.total_item_discounts), 0) AS total_item_discounts,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
            
                 
-                CAST(COALESCE(SUM(DISTINCT res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
-                COALESCE(SUM(DISTINCT res. total_return_item_discounts), 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal
+                CAST(COALESCE(SUM(res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
+                COALESCE(SUM(res. total_return_item_discounts), 0) AS total_return_item_discounts,
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal
               
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9187,31 +9190,32 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                CAST(COALESCE(SUM(DISTINCT p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
-                CAST(COALESCE(SUM(DISTINCT p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 d.discount_amount AS discountsRate,
-                CAST(COALESCE(SUM(DISTINCT rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
-                COALESCE(SUM(DISTINCT rs.total_item_discounts), 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                CAST(COALESCE(SUM(rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
+                COALESCE(SUM(rs.total_item_discounts), 0) AS total_item_discounts,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
            
                 
-                CAST(COALESCE(SUM(DISTINCT res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
-                COALESCE(SUM(DISTINCT res. total_return_item_discounts), 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal
+                CAST(COALESCE(SUM(res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
+                COALESCE(SUM(res. total_return_item_discounts), 0) AS total_return_item_discounts,
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal
               
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9295,31 +9299,32 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                CAST(COALESCE(SUM(DISTINCT p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
-                CAST(COALESCE(SUM(DISTINCT p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 d.discount_amount AS discountsRate,
-                CAST(COALESCE(SUM(DISTINCT rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
-                COALESCE(SUM(DISTINCT rs.total_item_discounts), 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                CAST(COALESCE(SUM(rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
+                COALESCE(SUM(rs.total_item_discounts), 0) AS total_item_discounts,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
            
                 
-                CAST(COALESCE(SUM(DISTINCT res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
-                COALESCE(SUM(DISTINCT res. total_return_item_discounts), 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal
+                CAST(COALESCE(SUM(res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
+                COALESCE(SUM(res. total_return_item_discounts), 0) AS total_return_item_discounts,
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal
               
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9404,31 +9409,32 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                CAST(COALESCE(SUM(DISTINCT p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
-                CAST(COALESCE(SUM(DISTINCT p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 d.discount_amount AS discountsRate,
-                CAST(COALESCE(SUM(DISTINCT rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
-                COALESCE(SUM(DISTINCT rs.total_item_discounts), 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
+                CAST(COALESCE(SUM(rs.refunded_amt), 0)AS DECIMAL(10,2)) AS refunded_amt,
+                COALESCE(SUM(rs.total_item_discounts), 0) AS total_item_discounts,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
            
                 
-                CAST(COALESCE(SUM(DISTINCT res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
-                COALESCE(SUM(DISTINCT res. total_return_item_discounts), 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal
+                CAST(COALESCE(SUM(res.return_amt), 0)AS DECIMAL(10,2)) AS return_amt,
+                COALESCE(SUM(res. total_return_item_discounts), 0) AS total_return_item_discounts,
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal
               
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9537,30 +9543,31 @@ newQty > 0;";
         DISTINCT
             u.first_name AS first_name,
             u.last_name AS last_name, 
-            ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
-            ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+            ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
+            ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
             p.date_time_of_payment AS date,
             p.cart_discount AS cart_discount,
-            COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+            COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
             IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
-            COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-            COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-            COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-            COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
-            COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+            COALESCE(SUM(rs.credits), 0) AS totalCredits,
+            COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+            COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+            COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
+            COALESCE(SUM(rs.otherPayments), 0) AS totalOtherPayments,
             
-            COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+            COALESCE(SUM(res.return_amt), 0) AS return_amt,
             IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
-            COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-            COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-            COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-            COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
-            COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+            COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+            COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+            COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+            COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal,
+            COALESCE(SUM(res.otherReturnPayments ), 0) AS totalOtherReturnPayments
            
             
         FROM 
             payments AS p 
-            INNER JOIN transactions AS t ON p.id = t.payment_id 
+            INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                 GROUP BY payment_id) as t ON t.payment_id = p.id
             INNER JOIN users AS u ON u.id = t.cashier_id
             INNER JOIN products AS ps ON ps.id = t.prod_id
             LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -9666,30 +9673,31 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
-                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
-                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
                 IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
-                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(rs.otherPayments), 0) AS totalOtherPayments,
                 
-                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                COALESCE(SUM(res.return_amt), 0) AS return_amt,
                 IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
-                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(res.otherReturnPayments ), 0) AS totalOtherReturnPayments
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
                 LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -9795,30 +9803,31 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
-                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
-                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
                 IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
-                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(rs.otherPayments), 0) AS totalOtherPayments,
                 
-                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                COALESCE(SUM(res.return_amt), 0) AS return_amt,
                 IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
-                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(res.otherReturnPayments ), 0) AS totalOtherReturnPayments
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
                 LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -9925,30 +9934,31 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
-                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
-                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
                 IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
-                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(rs.otherPayments), 0) AS totalOtherPayments,
                 
-                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                COALESCE(SUM(res.return_amt), 0) AS return_amt,
                 IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
-                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(res.otherReturnPayments ), 0) AS totalOtherReturnPayments
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                    GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
                 LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -10055,30 +10065,31 @@ newQty > 0;";
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
-                ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+                ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
+                ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
-                COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+                COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
                 IFNULL(rs.total_item_discounts, 0) AS total_item_discounts,
-                COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-                COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-                COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-                COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
-                COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+                COALESCE(SUM(rs.credits), 0) AS totalCredits,
+                COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+                COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+                COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
+                COALESCE(SUM(rs.otherPayments), 0) AS totalOtherPayments,
                 
-                COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
+                COALESCE(SUM(res.return_amt), 0) AS return_amt,
                 IFNULL(res. total_return_item_discounts, 0) AS total_return_item_discounts,
-                COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-                COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-                COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-                COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
-                COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+                COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+                COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+                COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+                COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal,
+                COALESCE(SUM(res.otherReturnPayments ), 0) AS totalOtherReturnPayments
                
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                    GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
                 LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -10210,33 +10221,34 @@ newQty > 0;";
                 return_exchange re
         )
         SELECT
-      
+        DISTINCT
             u.first_name AS first_name,
             u.last_name AS last_name, 
-            ROUND(COALESCE(SUM(DISTINCT p.payment_amount), 0),2) AS paid_amount,
-            ROUND(COALESCE(SUM(DISTINCT p.change_amount), 0),2) AS totalChange,
+            ROUND(COALESCE(SUM( p.payment_amount), 0),2) AS paid_amount,
+            ROUND(COALESCE(SUM( p.change_amount), 0),2) AS totalChange,
             p.date_time_of_payment AS date,
             p.cart_discount AS cart_discount,
-            COALESCE(SUM(DISTINCT rs.refunded_amt), 0) AS refunded_amt,
+            COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
             COALESCE(rd.total_item_discounts, 0) AS total_item_discounts,
-            COALESCE(SUM(DISTINCT rs.credits), 0) AS totalCredits,
-            COALESCE(SUM(DISTINCT rs.discountsTender), 0) AS totalDiscountsTender,
-            COALESCE(SUM(DISTINCT rs.cartRateRefund), 0) AS cartRateRefundTotal,
-            COALESCE(SUM(DISTINCT rs.refundCart), 0) AS cartRefundTotal,
-            COALESCE(SUM(DISTINCT rs.otherPayments), 0) AS totalOtherPayments,
+            COALESCE(SUM(rs.credits), 0) AS totalCredits,
+            COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
+            COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
+            COALESCE(SUM(rs.refundCart), 0) AS cartRefundTotal,
+            COALESCE(SUM(rs.otherPayments), 0) AS totalOtherPayments,
             
-            COALESCE(SUM(DISTINCT res.return_amt), 0) AS return_amt,
-            COALESCE(SUM(DISTINCT re.total_return_item_discounts), 0) AS total_return_item_discounts,
-            COALESCE(SUM(DISTINCT res.rc_credits), 0) AS totalReturnCredits,
-            COALESCE(SUM(DISTINCT res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
-            COALESCE(SUM(DISTINCT res.cartRateReturn), 0) AS cartRateReturnTotal,
-            COALESCE(SUM(DISTINCT res.returnCart), 0) AS cartReturnTotal,
-            COALESCE(SUM(DISTINCT res.otherReturnPayments ), 0) AS totalOtherReturnPayments
+            COALESCE(SUM(res.return_amt), 0) AS return_amt,
+            COALESCE(SUM(re.total_return_item_discounts), 0) AS total_return_item_discounts,
+            COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
+            COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
+            COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
+            COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal,
+            COALESCE(SUM(res.otherReturnPayments ), 0) AS totalOtherReturnPayments
            
             
         FROM 
             payments AS p 
-            INNER JOIN transactions AS t ON p.id = t.payment_id 
+            INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                    GROUP BY payment_id) as t ON t.payment_id = p.id
             INNER JOIN users AS u ON u.id = t.cashier_id
             INNER JOIN products AS ps ON ps.id = t.prod_id
             LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -10245,7 +10257,6 @@ newQty > 0;";
             LEFT JOIN ReturnItemData re ON re.payment_id = p.id
         WHERE 
             t.is_paid = 1 
-            
             AND t.is_void = 0 
         GROUP BY 
             u.id;";
