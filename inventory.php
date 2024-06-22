@@ -1980,6 +1980,7 @@ include ('./layout/admin/table-pagination-css.php');
                     receive_form: receive_form,
                     subRowData: JSON.stringify(subRowData),
                     po_number: $("#r_po_number").text(),
+                    supplier: $("#r_supplier").text(),
                     is_received: $("#is_received").val(),
                     user_name: $("#first_name").val()+" "+$("#last_name").val(),
                   },

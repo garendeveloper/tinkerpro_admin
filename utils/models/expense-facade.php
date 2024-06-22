@@ -31,16 +31,18 @@ class ExpenseFacade extends DBConnection
     
         if(empty($start_date) && empty($end_date))
         {
-            $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier,
-            COUNT(*) OVER() as total_count 
-            FROM expenses
-            INNER JOIN supplier ON supplier.id = expenses.supplier
-            LEFT JOIN uom ON uom.id = expenses.uom_id";
+            $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, products.prod_desc as product,
+                    COUNT(*) OVER() as total_count 
+                    FROM expenses
+                    INNER JOIN supplier ON supplier.id = expenses.supplier
+                    LEFT JOIN products ON products.id = expenses.product_id
+                    LEFT JOIN uom ON uom.id = expenses.uom_id";
     
             if (!empty($requestData['search']['value'])) 
             {
                 $sql .= " WHERE 
                         expenses.item_name LIKE :search_value
+                        OR products.prod_desc LIKE :search_value
                         OR supplier.supplier LIKE :search_value
                         OR uom.uom_name LIKE :search_value
                         OR expenses.billable_receipt_no LIKE :search_value
@@ -74,16 +76,17 @@ class ExpenseFacade extends DBConnection
         }
         else
         {
-            $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier,
+            $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, products.prod_desc as product,
                     COUNT(*) OVER() as total_count 
                     FROM expenses
                     INNER JOIN supplier ON supplier.id = expenses.supplier
-                    LEFT JOIN uom ON uom.id = expenses.uom_id
+                    LEFT JOIN products ON products.id = expenses.product_id
                     WHERE expenses.date_of_transaction BETWEEN :start_date AND :end_date";
 
             if (!empty($requestData['search']['value'])) {
             $sql .= " AND (
                         expenses.item_name LIKE :search_value
+                        OR products.prod_desc LIKE :search_value
                         OR supplier.supplier LIKE :search_value
                         OR uom.uom_name LIKE :search_value
                         OR expenses.billable_receipt_no LIKE :search_value
@@ -137,11 +140,12 @@ class ExpenseFacade extends DBConnection
     }
     public function get_expenseDataById($expense_id)
     {
-        $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, supplier.id as supplier_id, uom.id as uom_id,
+        $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, supplier.id as supplier_id, uom.id as uom_id, products.prod_desc as product,
                 COUNT(*) OVER() as total_count 
                 FROM expenses
                 INNER JOIN supplier ON supplier.id = expenses.supplier
                 LEFT JOIN uom ON uom.id = expenses.uom_id
+                LEFT JOIN products ON products.id = expenses.product_id
                 WHERE expenses.id = '".$expense_id."'";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();

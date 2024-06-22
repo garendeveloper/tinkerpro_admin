@@ -1,5 +1,5 @@
 <?php
-require_once '../vendor/autoload.php';
+require_once '../reports/vendor/autoload.php';
 include ('../utils/db/connector.php');
 include ('../utils/models/user-facade.php');
 include ('../utils/models/product-facade.php');
@@ -114,17 +114,14 @@ try {
             $printer->text("REF#: ______________________\n");
             $printer->feed();
             
-            // $printer->setJustification(Printer::JUSTIFY_LEFT);
-            // $printer->setEmphasis(true);
             $header = str_pad("No.", 10) . "\t" . 
             str_pad("SKU", 15) . "\t" . 
             str_pad("PRODUCT", 40) . "\t" . 
             str_pad("QTY", 15) . "\t" . 
             str_pad("COUNTED", 15) . "\n";
-            $colWidths = array(10, 15, 40, 15, 15); // Adjust as needed
+            $colWidths = array(10, 15, 40, 15, 15);
             $colAligns = array(Printer::JUSTIFY_RIGHT, Printer::JUSTIFY_LEFT, Printer::JUSTIFY_LEFT, Printer::JUSTIFY_RIGHT, Printer::JUSTIFY_RIGHT);
-        
-            // Print table header
+
             $header = "";
             foreach ($colWidths as $index => $width) {
                 $header .= str_pad(substr("No. SKU PRODUCT QTY COUNTED", array_sum(array_slice($colWidths, 0, $index)), $width), $width, ' ', STR_PAD_RIGHT);
@@ -133,8 +130,8 @@ try {
             $printer->text($header);
             $printer->setEmphasis(false);
         
-            // Print item details
-            foreach ($items as $item) {
+            foreach ($items as $item) 
+            {
                 $line = "";
                 foreach ($colWidths as $index => $width) {
                     $line .= str_pad(substr($item['sku'] . ' ' . $item['prod_desc'] . ' ' . $item['product_stock'], array_sum(array_slice($colWidths, 0, $index)), $width), $width, ' ', STR_PAD_RIGHT);
@@ -142,14 +139,9 @@ try {
                 $line .= "\n";
                 $printer->text($line);
             }
-        
-            // Close printer connection
+
             $printer->close();
-        
-            echo json_encode(['success' => true, 'message' => 'Print successful']);
             $printer->cut();
-            $printer->close();
-            
             echo json_encode(['success' => true, 'message' => 'Print successful']);
         } catch (\Exception $e) {
             echo json_encode(['success' => false, 'message' => 'Print failed: ' . $e->getMessage()]);
