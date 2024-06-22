@@ -8888,7 +8888,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -8996,7 +8997,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                    GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9103,7 +9105,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9211,7 +9214,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9319,7 +9323,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9428,7 +9433,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9560,7 +9566,8 @@ newQty > 0;";
             
         FROM 
             payments AS p 
-            INNER JOIN transactions AS t ON p.id = t.payment_id 
+            INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                 GROUP BY payment_id) as t ON t.payment_id = p.id
             INNER JOIN users AS u ON u.id = t.cashier_id
             INNER JOIN products AS ps ON ps.id = t.prod_id
             LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -9689,7 +9696,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
                 LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -9818,7 +9826,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
                 LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -9948,7 +9957,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                    GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
                 LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -10078,7 +10088,8 @@ newQty > 0;";
                 
             FROM 
                 payments AS p 
-                INNER JOIN transactions AS t ON p.id = t.payment_id 
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                    GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
                 LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -10236,7 +10247,8 @@ newQty > 0;";
             
         FROM 
             payments AS p 
-            INNER JOIN transactions AS t ON p.id = t.payment_id 
+            INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                    GROUP BY payment_id) as t ON t.payment_id = p.id
             INNER JOIN users AS u ON u.id = t.cashier_id
             INNER JOIN products AS ps ON ps.id = t.prod_id
             LEFT JOIN RefundSums rs ON rs.payment_id = p.id
@@ -10245,7 +10257,6 @@ newQty > 0;";
             LEFT JOIN ReturnItemData re ON re.payment_id = p.id
         WHERE 
             t.is_paid = 1 
-            
             AND t.is_void = 0 
         GROUP BY 
             u.id;";
