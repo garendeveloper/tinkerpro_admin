@@ -156,35 +156,36 @@ $totalCost = 0;
 $totalTax = 0;
 $totalPrice = 0;
 $totalAmount = 0;
+$totalCart = 0;
 $pdf->SetFont('', '', 10); 
 
 while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
     $totalCost += $row['cost'];
     $totalTax += $row['totalVat'];
     $totalPrice += $row['prod_price'];
-    $totalAmount += $row['netTotal'];
+    $grossAmount = $row['grossAmount'] - $row['itemDiscount'] - $row['overallDiscounts']-$row['totalCartDiscountPerItem'];
+
+    $totalAmount += $grossAmount ;
+  
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
      $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sku'], $headerWidths[1]));   
      $pdf->Cell($headerWidths[1], $maxCellHeight, $row['sku'], 1, 0, 'C');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['qty'], $headerWidths[2]));   
-     $pdf->Cell($headerWidths[2], $maxCellHeight, $row['qty'], 1, 0, 'C');
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $row['newQty'], $headerWidths[2]));   
+     $pdf->Cell($headerWidths[2], $maxCellHeight,  $row['newQty'], 1, 0, 'C');
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['cost'],2), $headerWidths[3]));   
      $pdf->Cell($headerWidths[3], $maxCellHeight, $row['cost'], 1, 0, 'R');
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalVat'],2), $headerWidths[4]));   
      $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['totalVat'],2), 1, 0, 'R');
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['prod_price'],2), $headerWidths[5]));   
      $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['prod_price'],2), 1, 0, 'R');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['netTotal'],2), $headerWidths[6]));   
-     $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['netTotal'],2), 1, 0, 'R');
-
+     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $grossAmount,2), $headerWidths[6]));   
+     $pdf->Cell($headerWidths[6], $maxCellHeight, number_format( $grossAmount,2), 1, 0, 'R');
      $pdf->Ln(); 
      
 }
-$totalCart = 0;
-while ($row = $fetchCart->fetch(PDO::FETCH_ASSOC)) {
-    $totalCart=$row['totalCartDiscoun'] ?? 0;
-}
+
+
 $pdf->SetFont('', 'B', 10); 
 $pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight, 'Total', 1, 0, 'L'); 
 $pdf->Cell( $headerWidths[3], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
