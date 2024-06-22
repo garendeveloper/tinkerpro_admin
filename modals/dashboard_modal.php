@@ -134,7 +134,7 @@
 <script>
 $(document).ready(function() {
   $('#dashboard_modal #reportsClose').on('click', function() {
-      window.location.href = "http://localhost/tinkerpro_admin/index";
+    location.reload();
       $('#pdfViewer1').attr('src', '');
       var loadingImage = document.getElementById("loadingImage1");
         loadingImage.setAttribute("hidden",true);

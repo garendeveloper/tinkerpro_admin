@@ -494,8 +494,6 @@ body, div, h1, h2, h3, h4, h5, p{
 <script>
   var originalColors = [];
 
-
-
   function printDiv() 
   {  
     $("#dashboard_content").css('background-color', 'white');
@@ -657,17 +655,22 @@ flatpickr("#datepickerDiv2", {
     }
 });
 
+
+
 $('.custom_btns').on('click', function () {
   var buttonText = $(this).text();
   setPredefinedPeriod(buttonText);  
 });
 
-</script>
-<script>
   $(document).ready(function () {
     var totalSales = 0;
     var totalCount = 0;
-
+    setPredefinedPeriod("Today");  
+    show_allTopProducts(5);
+    show_hourlySalesChart();
+    var date_period_selected = $("#date_selected").text();
+    $("#period_date").html(date_period_selected);
+    
     $(".trigger_reports").hide();
 
 
@@ -730,7 +733,8 @@ $('.custom_btns').on('click', function () {
             $("#top_products_in_table").hide();
             $("#tbl_dashboard").show();
             var total_net_income = totalSales - responseData['total_expense_by_period'];
-            $("#net_income").html("<h1>"+formatAmount(total_net_income)+"</h1>");
+            total_net_income = total_net_income < 0 ? formatNegativeWithCommas(total_net_income) : formatAmount(total_net_income);
+            $("#net_income").html("<h1>"+total_net_income+"</h1>");
             $("#tbl_top_products tbody").html(html);
           
             $("#top_products_data").html('<canvas id="myDoughnutChart"></canvas>');
@@ -764,6 +768,18 @@ $('.custom_btns').on('click', function () {
         }
       })
   }
+  function formatNegativeWithCommas(number) 
+  {
+    let strNumber = number.toString();
+
+    if (strNumber.startsWith('-')) {
+        let numWithoutSign = strNumber.substring(1);
+        let formattedNum = '-' + parseFloat(numWithoutSign).toLocaleString();
+        return formattedNum;
+    } else {
+        return parseFloat(strNumber).toLocaleString();
+    }
+}
   function getRandomColor() {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
@@ -985,7 +1001,7 @@ $('.custom_btns').on('click', function () {
             $(".annual_total_sales").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
             $(".top_performing_month").html("<h4 style='color: #d9f500; font-size: 1rem'>Top Performing Month</h4>" +
                 "<h4>" + top_month + "</h4>" +
-                "<h4 class = 'topValue'>" +  formatNumberWithCommasAndDecimals(top_month_value) + "</h4>");
+                "<h4 class = 'topValue'>" +  formatNumberWithCommas(top_month_value) + "</h4>");
 
             $(".annual_total_expenses").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_expenses) + "</h3>");
             $(".top_expensive_month").html("<h4 style='color: #ff8792; font-size: 1rem'>Top Expensive Month</h4>" +
