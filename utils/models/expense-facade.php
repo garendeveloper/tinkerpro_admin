@@ -34,8 +34,8 @@ class ExpenseFacade extends DBConnection
             $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, products.prod_desc as product,
                     COUNT(*) OVER() as total_count 
                     FROM expenses
-                    INNER JOIN supplier ON supplier.id = expenses.supplier
-                    LEFT JOIN products ON products.id = expenses.product_id
+                    LEFT JOIN supplier ON supplier.id = expenses.supplier
+                   	LEFT JOIN products ON products.id = expenses.product_id
                     LEFT JOIN uom ON uom.id = expenses.uom_id";
     
             if (!empty($requestData['search']['value'])) 
@@ -79,8 +79,9 @@ class ExpenseFacade extends DBConnection
             $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, products.prod_desc as product,
                     COUNT(*) OVER() as total_count 
                     FROM expenses
-                    INNER JOIN supplier ON supplier.id = expenses.supplier
-                    LEFT JOIN products ON products.id = expenses.product_id
+                    LEFT JOIN supplier ON supplier.id = expenses.supplier
+                   	LEFT JOIN products ON products.id = expenses.product_id
+                    LEFT JOIN uom ON uom.id = expenses.uom_id
                     WHERE expenses.date_of_transaction BETWEEN :start_date AND :end_date";
 
             if (!empty($requestData['search']['value'])) {

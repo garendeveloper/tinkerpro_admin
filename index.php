@@ -670,10 +670,9 @@ $('.custom_btns').on('click', function () {
     show_hourlySalesChart();
     var date_period_selected = $("#date_selected").text();
     $("#period_date").html(date_period_selected);
+  
+    $(".trigger_reports").show();
     
-    $(".trigger_reports").hide();
-
-
     $("#top_products").on("change", function(){
       var item = $(this).val();
       show_allTopProducts(item);
