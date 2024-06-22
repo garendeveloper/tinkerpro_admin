@@ -164,7 +164,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $totalRefundDiscountsTendered = $row['totalDiscountsTender'];
 
     //calcualtion for other payments
-    $otherRefundPayments = $row['totalOtherPayments'];
+    // $otherRefundPayments = $row['totalOtherPayments'];
     $cartDiscountAmount = $row['cartRefundTotal'];
 
     $totalRefundedAmt =  $refunded_amt-$refudned_item_discount-$totalRefundDiscountsTendered-$cartDiscountAmount;
@@ -178,7 +178,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $totalReturnDiscountsTender = $row['totalDiscountsReturnTender'];
 
         //calcualtion for other payments
-        $otherReturnPayments = $row['totalOtherReturnPayments'];
+        // $otherReturnPayments = $row['totalOtherReturnPayments'];
         $cartDiscountReturnAmount = $row['cartReturnTotal'];
 
     $totalReturnAmt = $return_amount-$return_item_discounts-$totalReturnDiscountsTender-$cartDiscountReturnAmount;

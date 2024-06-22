@@ -163,7 +163,7 @@ while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
     $totalCost += $row['cost'];
     $totalTax += $row['totalVat'];
     $totalPrice += $row['prod_price'];
-    $grossAmount = $row['grossAmount'] - $row['itemDiscount'] - $row['overallDiscounts']-$row['totalCartDiscountPerItem'];
+    $grossAmount = $row['grossAmount'] - $row['itemDiscount'] - $row['overallDiscounts'];
 
     $totalAmount += $grossAmount ;
   
