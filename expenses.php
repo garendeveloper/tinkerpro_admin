@@ -562,7 +562,16 @@ h1, label, textarea, input, table,h5{
             },
             columns: [
                 { data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
-                { data: 'item_name' },
+                { 
+                    data: 'item_name',
+                    render: (data, type, row) => {
+                        if (data === null || data === '') {
+                            return row.product ;
+                        } else {
+                            return data;
+                        }
+                    }
+                },
                 { data: 'date_of_transaction', className: 'text-center', render: data => setFormattedDate(data) },
                 { data: 'billable_receipt_no', className: 'text-center' },
                 { data: 'expense_type' },
@@ -662,7 +671,8 @@ h1, label, textarea, input, table,h5{
           success: function(response)
           {
             $("#expense_id").val(expense_id);
-            $("#item_name").val(response['item_name']);
+            var item_name = response['item_name'] === "" ? response['product'] : response['item_name'];
+            $("#item_name").val(item_name);
             var formattedDate = moment(response['date_of_transaction']).format('MM-DD-YYYY');
             $("#date_of_transaction").val(formattedDate);
             $("#billable_receipt_no").val(response['billable_receipt_no']);
@@ -742,7 +752,7 @@ h1, label, textarea, input, table,h5{
               $("table td").removeClass('form-error');
               show_sweetReponse(response.message);
               hide_modal();
-              show_allExpenses(start_date, end_date);
+              show_allExpenses("", "");
             }
           },
           error: function(e){
@@ -765,7 +775,7 @@ h1, label, textarea, input, table,h5{
             $("#remove_expense_id").val("");
             $('#delete_expenseConfirmation').hide();
             show_sweetReponse(response.message);
-            show_allExpenses(start_date, end_date);
+            show_allExpenses("", "");
           }
         },
         error: function(response){
