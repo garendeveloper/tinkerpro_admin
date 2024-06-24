@@ -98,12 +98,13 @@ $pdf->SetLineWidth(0.3);
 
     $expenses_data = $expenses->get_data();
     $totalAmount = 0; 
-    $pdf->SetFont('', '', 10); 
+    $pdf->SetFont('', '', 8); 
     $total_expenses = 0;
     foreach($expenses_data as $row) {
+        $item_name = $row['item_name'] == "" ? $row['product'] : $row['item_name'];
         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['item_name'] . ' ' . $row['item_name'], $headerWidths[1]));
-        $pdf->Cell($headerWidths[1], $maxCellHeight, $row['item_name'] . ' ' . $row['item_name'], 1, 0, 'L');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item_name, $headerWidths[1]));
+        $pdf->Cell($headerWidths[1], $maxCellHeight, $item_name, 1, 0, 'L');
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['dot'], $headerWidths[2]));
         $pdf->Cell($headerWidths[2], $maxCellHeight, $row['dot'], 1, 0, 'C');
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['billable_receipt_no'], $headerWidths[3]));

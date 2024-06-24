@@ -3,11 +3,12 @@ class ExpenseFacade extends DBConnection
 {
     public function get_data()
     {
-        $stmt = $this->connect()->prepare("SELECT expenses.*, uom.uom_name, supplier.supplier, DATE_FORMAT(expenses.date_of_transaction, '%b %e, %Y') AS dot,
+        $stmt = $this->connect()->prepare("SELECT expenses.*, uom.uom_name, supplier.supplier, DATE_FORMAT(expenses.date_of_transaction, '%b %e, %Y') AS dot, products.prod_desc as product,
                                         COUNT(*) OVER() as total_count 
                                         FROM expenses
-                                        INNER JOIN supplier ON supplier.id = expenses.supplier
+                                        LEFT JOIN supplier ON supplier.id = expenses.supplier
                                         LEFT JOIN uom ON uom.id = expenses.uom_id
+                                        LEFT JOIN products ON products.id = expenses.product_id
                                         ORDER BY expenses.id ASC"); 
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);

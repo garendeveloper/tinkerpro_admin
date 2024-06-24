@@ -41,9 +41,9 @@ $total_expenses = 0;
 
 foreach ($expenses_data as $row_data) {
     $rowIndex = $counter + 1; 
-
+    $item_name = $row_data['item_name'] === "" ? $row_data['product'] : $row_data['item_name'];
     $sheet->setCellValue('A' . $rowIndex, $counter); 
-    $sheet->setCellValue('B' . $rowIndex, $row_data['item_name']);
+    $sheet->setCellValue('B' . $rowIndex, $item_name);
     $sheet->setCellValue('C' . $rowIndex, $row_data['dot']); 
     $sheet->setCellValue('D' . $rowIndex, $row_data['billable_receipt_no']); 
     $sheet->setCellValue('E' . $rowIndex, $row_data['expense_type']);
