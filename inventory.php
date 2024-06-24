@@ -389,18 +389,6 @@ include ('./layout/admin/table-pagination-css.php');
     //     $fixedHeader.hide();
     //   }
     // });
-    
-    hidePopups();
-        document.addEventListener('DOMContentLoaded', function() {
-            var dateInput = document.getElementById('date_purchased');
-            dateInput.removeAttribute('autofocus'); 
-        });
-        function hidePopups() {
-        $('#date_purchased').removeAttr('autofocus');
-        $("#p_qty").focus();
-        $("#date_purchased").flatpickr().destroy();
-        $("#date_purchased").flatpickr().close();
-      }
      
     </script>
   
@@ -444,11 +432,11 @@ include ('./layout/admin/table-pagination-css.php');
       //   maxDate: 0,
       //   onSelect: function (dateText, inst) { }
       // });
-      $("#date_purchased").prop("readonly", true).flatpickr({
-        dateFormat: "M d y",
-        onClose: function(selectedDates) {
-        }
-      });
+      // $("#date_purchased").prop("readonly", true).flatpickr({
+      //   dateFormat: "M d y",
+      //   onClose: function(selectedDates) {
+      //   }
+      // });
 
     // Event handler for the calendar button
     // $('#calendar-btn').off('click').on('click', function () {
@@ -850,6 +838,76 @@ include ('./layout/admin/table-pagination-css.php');
         $("#stockhistory_modal #inventory_id").val(id);
         display_allStocksData(id);
       })
+      // function show_purchased_order(id) {
+      //           $.ajax({
+      //               type: 'GET',
+      //               url: 'api.php?action=get_orderDataById&id=' + id,
+      //               dataType: 'json',
+      //               success: function (data) {
+      //                   var length = data.length;
+      //                   if(length > 0 )
+      //                   {
+      //                       var table = "";
+      //                       if (data[0].isReceived === 1) $("#received_status").html("RECEIVED");
+      //                       else $("#received_status").html("PENDING");
+      //                       $("#r_supplier").html(data[0].supplier);
+      //                       $("#is_received").val(data[0].isReceived);
+      //                       $("#r_datePurchased").html(date_format(data[0].date_purchased));
+      //                       $("#r_po_number").html(data[0].po_number);
+      //                       var isPaid = data[0].isPaid === 1 ?
+      //                           "<span style = 'color: lightgreen'>PAID</span>" :
+      //                           "<span style = 'color: red'>UNPAID</span>"
+      //                       $("#r_isPaid").html(isPaid);
+                            
+      //                       for (var i = 0; i < data.length; i++) {
+                               
+      //                           var item = data[i];
+      //                           var expired_date = item.date_expired !== "0000-00-00"? date_format(item.date_expired) : "";
+      //                           table += "<tr data-id = " + data[i].inventory_id + ">";
+      //                           if(item.qty_purchased === 0)
+      //                           {
+      //                               table += "<td data-id = " + data[i].inventory_id + " colspan = '2'>" + data[i].prod_desc + "</td>";
+      //                           }
+      //                           else
+      //                           {
+      //                               table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
+      //                               table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
+      //                           }
+
+      //                           table += "<td style = 'text-align: center; '>" + data[i].qty_purchased + "</td>";
+
+      //                           if(item.qty_purchased === 0)
+      //                           {
+      //                               table += "<td style = 'text-align: center; background-color: #262626; font-style: italic; color: green' colspan = '2'><b>Fully Received</b></td>";
+      //                           }
+      //                           else
+      //                           {
+      //                               table += "<td style = 'text-align: center; background-color: #262626; '  ><input id = 'qty_received'  placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
+
+      //                               if (data[i].date_expired === null) {
+      //                                   table +=
+      //                                       "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
+      //                               }
+      //                               else {
+      //                                   table +=
+      //                                       "<td style = 'text-align: center; background-color: #262626; '>" + expired_date + "</td>";
+      //                               }
+      //                           }
+      //                       }
+      //                       $("#tbl_receivedItems tbody").html(table);
+      //                       $("#po_data_div").show();
+      //                   }
+      //                   else
+      //                   {
+      //                       show_errorResponse("No purchase order found!");
+      //                   }
+      //                   is_purchasefound = false;
+      //               },
+      //               error: function (data) {
+      //                   alert("No response")
+      //               }
+      //           })
+      //   }
       $(".inventoryCard").on("dblclick", "tr", function(){
         var id = $(this).data('id');
         var active_tbl_id = $(".inventoryCard table").attr('id');
@@ -979,6 +1037,9 @@ include ('./layout/admin/table-pagination-css.php');
             ajax: {
                 url: 'api.php?action=get_allInventories',
                 type: 'POST'
+            },
+            language: {
+              emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
             },
             columns: [
                 { data: null, render: function (data, type, row, meta) {
@@ -1216,7 +1277,7 @@ include ('./layout/admin/table-pagination-css.php');
           type: 'get',
           url: 'api.php?action=get_allInventoryCounts',
           success: function (data) {
-            var inv_count_rows;
+            var inv_count_rows = "";
             if (data.length > 0) {
               inv_count_rows = data.map(function (item) {
                 return "<tr>" +
@@ -2211,12 +2272,14 @@ include ('./layout/admin/table-pagination-css.php');
       $('#prod_form input').on('keypress', function(event) {
           if (event.keyCode === 13) {
             $(this).submit();
+            $("#product").focus();
+            $('#calendar-btn').prop('disabled', false);
           }
       });
-      $('#date_purchased').on('focus click', function(event) {
-                event.preventDefault();
-              hidePopups();
-            });
+      // $('#date_purchased').on('focus click', function(event) {
+      //           event.preventDefault();
+      //         hidePopups();
+      //       });
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
         
@@ -2497,12 +2560,8 @@ include ('./layout/admin/table-pagination-css.php');
         return searchDataExists;
       }
       function hidePopups() {
-        $('#date_purchased').removeAttr('autofocus');
-        $('#calendar-btn').removeAttr('autofocus');
+        $('#calendar-btn').prop('disabled', true);
         $("#p_qty").focus();
-        $("#date_purchased").flatpickr().destroy();
-        $("#date_purchased").blur();
-        $("#date_purchased").flatpickr().close();
       }
       function show_purchaseQtyModal(product_id, qty, price )
       {
@@ -2586,6 +2645,9 @@ include ('./layout/admin/table-pagination-css.php');
             url: 'api.php?action=get_allInventories',
             type: 'POST'
           },
+          language: {
+              emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
+          },
           columns: [
               { data: null, render: function (data, type, row, meta) {
                   return meta.row + meta.settings._iDisplayStart + 1;
@@ -2631,6 +2693,22 @@ include ('./layout/admin/table-pagination-css.php');
                   table.search($('#searchInput').val()).draw();
               }, 100); 
           });
+          // $('#searchInput').on({
+          //   keypress: function() { typed_into = true; },
+          //   change: function() {
+          //       if (typed_into) {
+          //           typed_into = false; 
+          //       } else {
+          //       }
+          //   }
+          // });
+          // $('#searchInput').on('keyup', function (event) {
+          //     clearTimeout(debounceTimeout);
+          //     debounceTimeout = setTimeout(function () {
+          //         table.search($('#searchInput').val()).draw();
+          //     }, 100); 
+          // });
+   
         }
         $('#product').on('keypress', function(event) {
           if (event.keyCode === 13 || event.keyCode === 27) { 
@@ -2714,7 +2792,7 @@ include ('./layout/admin/table-pagination-css.php');
                       </tr>
                   </thead>
                   <tbody></tbody>
-              </table>`;
+              </table> `;
 
           $(".inventoryCard").html(tblData);
 
@@ -2724,6 +2802,9 @@ include ('./layout/admin/table-pagination-css.php');
               ajax: {
                   url: 'api.php?action=get_allOrders',
                   type: 'GET'
+              },
+              language: {
+                emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
               },
               columns: [
                   { data: 'po_number', className: 'text-center' },
@@ -2778,6 +2859,7 @@ include ('./layout/admin/table-pagination-css.php');
               ordering: true,
               order: [[0, 'asc']],
               pageLength: 100,
+              pagingType: 'full_numbers',
               dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
               fnDrawCallback: function (oSettings) {
                   if (oSettings.aoData.length === 0) {
@@ -3111,7 +3193,6 @@ include ('./layout/admin/table-pagination-css.php');
           $("#optionModal").show();
           $(".optionmodal-content").show();
         }, 100);
-        hidePopups();
         $("#po_form #product").focus();
       }
     })
