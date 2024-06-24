@@ -39,7 +39,6 @@ $endDate = $_GET['endDate'] ?? null;
 
 $fetchSales= $productSales->geProductSalesData($selectedProduct,$selectedCategories,$selectedSubCategories,$singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
-$fetchCart= $productSales->getTotalCart();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
 
@@ -192,18 +191,14 @@ $pdf->Cell( $headerWidths[3], $maxCellHeight, number_format($totalCost, 2), 1, 0
 $pdf->Cell( $headerWidths[4], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
 $pdf->Cell( $headerWidths[5], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
 $pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
+$pdf->SetFont('', 'I', 12); 
+$pdf->Ln(); 
+$pdf->Cell(0, 12, "NOTE: The total amount in this report has deductions applied for all discounts, including cart, item, and other discounts.***", 0, 'L');
 
 $pdfPath = $pdfFolder . 'product_report.pdf';
 $pdf->Output($pdfPath, 'F');
 
-
-
 $pdf->Output('product_report.pdf', 'I');
-
-
-
-
- 
 
 
 

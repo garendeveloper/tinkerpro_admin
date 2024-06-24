@@ -99,7 +99,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $pdf->Cell(0, 10, "Period: $formattedStartDate - $formattedEndDate", 0, 'L');
 } else {
     $otherFacade = new OtherReportsFacade;
-    $others =    $otherFacade->getDatePayments();
+    $others =    $otherFacade->getDateRefunded();
     $dates = [];
     while ($row = $others->fetch(PDO::FETCH_ASSOC)) {
         $dates[] = $row['date'];
@@ -143,6 +143,10 @@ $previousRefNum = null;
 $discountsData = array();
 $itemDiscounts = array();
 $cartDiscounts = array();
+$overAllRefunded = 0;
+$overAlldisCounts = 0;
+$overAllItem = 0;
+$overAllCart  = 0;
 
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $otherDetails = $row['otherDetails'];
@@ -163,7 +167,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     if (json_last_error() === JSON_ERROR_NONE && isset($otherDetailsArray[0]['cartRate'])) {
         $cartDiscount = $otherDetailsArray[0]['cartRate'];
     }
-  
+
   
     $referenceNum = $row['reference_num'] ?? null;
     $method = $row['method'] ?? null;
@@ -314,8 +318,10 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $cartDiscounts[$referenceNum] =   $cartDiscount;
     $cartRemove = $amountPerRef[$referenceNum] * $cartDiscounts[$referenceNum];
 
-}
+    $overAllCart += $row['amount']-$itemDiscount-$discount-($row['amount']*$cartDiscount);
 
+
+}
 
 $pdf->SetFont('', 'B', 10);
 $pdf->Cell($headerWidths[0], $maxCellHeight, 'Discounts', 1, 0, 'L');
@@ -347,7 +353,11 @@ $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum]-$discountsData[$previousRefNum]-$itemDiscounts[$previousRefNum]-$cartRemove, 2), 1, 0, 'R');
-$pdf->Ln();
+$pdf->Ln(20);
+$pdf->SetFont('', 'B', 12);
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Total Refunded Amount', 1, 0, 'L');
+$pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[2]+$headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format($overAllCart,2), 1, 0, 'R');
 
 
 
