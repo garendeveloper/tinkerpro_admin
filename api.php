@@ -199,6 +199,10 @@
             $po_number = $_GET['po_number'];
             echo json_encode($order->get_orderDataByPurchaseNumber($po_number));
             break;
+        case 'get_orderDataById':
+            $id = $_GET['id'];
+            echo json_encode($order->get_orderDataById($id));
+            break;
         case 'get_loss_and_damage_latest_reference_no':
             echo json_encode($loss_and_damage->get_latest_reference_no());
             break;

@@ -19,6 +19,18 @@ try {
     $products = new ProductFacade();
     date_default_timezone_set('Asia/Manila');
     $currentTimestamp = date('F j, Y g:i A');
+
+    function addFooter($pdf, $preparedBy) {
+        $pageWidth = $pdf->getPageWidth();
+        $pageHeight = $pdf->getPageHeight();
+
+        $footerXLeft = 1; 
+        $footerY = $pageHeight - 31; 
+        $pdf->SetXY($footerXLeft, $footerY);
+        $pdf->SetFont('', 'B', 8);
+        $pdf->Cell(0, 8, 'PREPARED BY: ' . $preparedBy, 0, 1, 'C');
+    }
+
     if ($type === '1') {
         function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10)
         {
@@ -83,6 +95,7 @@ try {
             $pdf->Ln();
             $counter++;
         }
+        addFooter($pdf, '_______________________________');
 
         $pdf->Output('inventory_list.pdf', 'I');
         $pdfPath = __DIR__ . '/assets/pdf/inventory/inventory_list.pdf';
@@ -102,6 +115,7 @@ try {
             }
             return $initialFontSize;
         }
+       
 
         $fetchShop = $products->getShopDetails();
         $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
@@ -167,7 +181,8 @@ try {
             $counter++;
         }
 
-      
+        addFooter($pdf, '_______________________________');
+
         $pdf->Output('inventory_list.pdf', 'I');
         $pdfPath = __DIR__ . '/assets/pdf/inventory/inventory_list.pdf';
 

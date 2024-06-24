@@ -296,6 +296,7 @@ if (isset($_SESSION['user_id'])) {
                       </tbody> 
                      
                     </table>
+                   
                     </div>
 
                 </div>

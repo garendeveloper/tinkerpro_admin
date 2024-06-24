@@ -150,7 +150,7 @@
         
         public function get_activeProducts()
         {
-            $sql = $this->connect()->prepare("SELECT * FROM PRODUCTS WHERE status = 1 ORDER BY prod_desc asc LIMIT 50");
+            $sql = $this->connect()->prepare("SELECT * FROM PRODUCTS WHERE status = 1 ORDER BY prod_desc asc");
             $sql->execute();
             $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 

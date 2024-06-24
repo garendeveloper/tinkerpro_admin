@@ -83,10 +83,9 @@
     //     return $initialFontSize;
     // }
     function autoAdjustFontSize($pdf, $text, $width) {
-        $maxFontSize = 12; // Starting font size (you can adjust this as needed)
-        $minFontSize = 6;  // Minimum font size
+        $maxFontSize = 10; 
+        $minFontSize = 6;  
         $pdf->SetFont('dejavusans', '', $width);
-        // Calculate the width of the text using different font sizes
         while ($maxFontSize >= $minFontSize) {
             $pdf->SetFont('', '', $maxFontSize);
             if ($pdf->GetStringWidth($text) <= $width) {
@@ -131,6 +130,8 @@
     $pdf->Ln(24);
 
     $items = $orders->get_orderData($order_id);
+    $pdf->SetDrawColor(192, 192, 192); 
+    $pdf->SetLineWidth(0.3); 
     $header = array('No.', 'ITEM DESCRIPTION', 'QTY', 'PRICE(Php.)', 'VAT(12%)', 'TOTAL (Php.)');
     $headerWidths = [];
     $maxCellHeight = 5;
@@ -139,11 +140,15 @@
         $headerWidths[] = $cellWidth;
     }
 
-    $hexColor = '#FFA500';
+    // $hexColor = '#FFA500';
+    // list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+
+    // $pdf->SetFillColor($r, $g, $b);
+
+    // $pdf->SetFont('', 'B', 10);
+    $hexColor = '#D3D3D3';
     list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
-
     $pdf->SetFillColor($r, $g, $b);
-
     $pdf->SetFont('', 'B', 10);
     foreach ($header as $i => $title) {
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $title, 1, 0, 'L', true);
