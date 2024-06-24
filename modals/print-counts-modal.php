@@ -151,7 +151,7 @@
             $("#active_print").val("1");
         });
         $("#btn_ic_thermal").on("click", function () {
-            $("#ic_img_preview").attr("src", "assets/img/thermal-paper.png");
+            $("#ic_img_preview").attr("src", "assets/img/thermal-paper.jpg");
             $("#btn_ic_bondpaper").css('border', '1px solid #ccc');
             $(this).css('border', '1px solid greenyellow');
             $("#active_print").val("2");
@@ -181,20 +181,29 @@
                     success: function (response) 
                     {
                   
-                        if(type === "1")
+                        loadingImage.setAttribute("hidden",true);
+                        var pdfFile = document.getElementById("pdfFile");
+                        pdfFile.removeAttribute('hidden')
+                        if( loadingImage.hasAttribute('hidden')) 
                         {
-                            loadingImage.setAttribute("hidden",true);
-                            var pdfFile = document.getElementById("pdfFile");
-                            pdfFile.removeAttribute('hidden')
-                            if( loadingImage.hasAttribute('hidden')) 
-                            {
-                                var newBlob = new Blob([response], { type: 'application/pdf' });
-                                var blobURL = URL.createObjectURL(newBlob);
-                                $('#pdfViewer').attr('src', blobURL);
-                            }
+                            var newBlob = new Blob([response], { type: 'application/pdf' });
+                            var blobURL = URL.createObjectURL(newBlob);
+                            $('#pdfViewer').attr('src', blobURL);
                         }
-                        else
-                        {
+                        // if(type === "1")
+                        // {
+                        //     loadingImage.setAttribute("hidden",true);
+                        //     var pdfFile = document.getElementById("pdfFile");
+                        //     pdfFile.removeAttribute('hidden')
+                        //     if( loadingImage.hasAttribute('hidden')) 
+                        //     {
+                        //         var newBlob = new Blob([response], { type: 'application/pdf' });
+                        //         var blobURL = URL.createObjectURL(newBlob);
+                        //         $('#pdfViewer').attr('src', blobURL);
+                        //     }
+                        // }
+                        // else
+                        // {
                             // var response = response.pdfContent;
                             // loadingImage.setAttribute("hidden",true);
                             // var pdfFile = document.getElementById("pdfFile");
@@ -214,12 +223,12 @@
                             //     $('#pdfFile').removeAttr('hidden');
                             //     $('#loadingImage').attr('hidden', true);
                             // }
-                            var pdfContent = atob(response.pdfContent);
+                        //     var pdfContent = atob(response.pdfContent);
 
-// Load PDF content into iframe for preview
-var iframe = document.getElementById('pdfViewer');
-iframe.src = 'data:application/pdf;base64,' + response.pdfContent;
-                        }
+                        //     // Load PDF content into iframe for preview
+                        //     var iframe = document.getElementById('pdfViewer');
+                        //     iframe.src = 'data:application/pdf;base64,' + response.pdfContent;
+                        // }
                     },
                     error: function (xhr, status, error) {
                         alert("Printing failed: " + xhr.responseText);

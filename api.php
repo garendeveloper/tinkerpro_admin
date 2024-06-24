@@ -46,8 +46,7 @@
         case 'get_salesData':
             echo json_encode($dashboard->get_salesDataByYear($_GET['year']));
             break;
-
-     
+            
         //Expenses
         case 'get_expenseDataById':
             echo json_encode($expense_facade->get_expenseDataById($_GET['expense_id']));

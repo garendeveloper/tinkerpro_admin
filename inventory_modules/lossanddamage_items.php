@@ -286,19 +286,35 @@
 
             toastr.error(message);
         }
+        // function filterProducts(term) {
+        //     return productsCache.filter(function (row) {
+        //     return row.product.toLowerCase().includes(term) ||
+        //         row.barcode.includes(term) ||
+        //         (row.brand && row.brand.toLowerCase().includes(term)) ||
+        //         (!row.brand && term === "");
+        //     }).map(function (row) {
+        //     var brand = row.brand === null ? " " : row.brand;
+        //     return {
+        //         label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
+        //         value: row.barcode ?? row.product,
+        //         id: row.product_id
+        //     };
+        //     });
+        // }
         function filterProducts(term) {
-            return productsCache.filter(function (row) {
-            return row.product.toLowerCase().includes(term) ||
-                row.barcode.includes(term) ||
-                (row.brand && row.brand.toLowerCase().includes(term)) ||
-                (!row.brand && term === "");
-            }).map(function (row) {
-            var brand = row.brand === null ? " " : row.brand;
-            return {
-                label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
-                value: row.barcode ?? row.product,
-                id: row.product_id
-            };
+            return productsCache.filter(function(row) {
+                var lowercaseTerm = term.toLowerCase();
+                return row.product.toLowerCase().includes(lowercaseTerm) ||
+                    row.barcode.includes(lowercaseTerm) ||
+                    (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
+                    (!row.brand && lowercaseTerm === "");
+            }).map(function(row) {
+                var brand = row.brand === null ? " " : "( " + row.brand + " )";
+                return {
+                    label: row.product + " (" + row.barcode + ")",
+                    value: row.barcode ?? row.product,
+                    id: row.product_id
+                };
             });
         }
         function append_to_table()

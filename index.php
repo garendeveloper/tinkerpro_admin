@@ -806,11 +806,12 @@ $('.custom_btns').on('click', function () {
       axios.get('api.php?action=get_salesDataByHour&start_date=' + start_date + '&end_date='+end_date)
           .then(function (response) {
               const salesData = response.data.salesData;
+              const labels = response.data.labels;
+              console.log(labels)
               if(salesData !== 0)
               {
                 show_allTotalSales($("#hourly_sales").val());
                 $("#hourly_sales_data").html('<canvas id="hourlySalesChart"  style="height: 50px; width: 50px;" class="chartjs-render-monitor"></canvas>');
-                const labels = response.data.labels;
                 const ctx = document.getElementById('hourlySalesChart').getContext('2d');
 
                 const colors = [
@@ -890,7 +891,6 @@ $('.custom_btns').on('click', function () {
       $("#period_reports").hide();
       $(".trigger_reports").hide();
     })
-
 
     $("#index").addClass('active');
     $("#pointer").html("Dashboard");
