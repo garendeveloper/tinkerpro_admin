@@ -99,7 +99,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     $pdf->Cell(0, 10, "Period: $formattedStartDate - $formattedEndDate", 0, 'L');
 } else {
     $otherFacade = new OtherReportsFacade;
-    $others =    $otherFacade->getDatePayments();
+    $others =    $otherFacade->getDateReturned();
     $dates = [];
     while ($row = $others->fetch(PDO::FETCH_ASSOC)) {
         $dates[] = $row['date'];
@@ -142,7 +142,7 @@ $previousRefNum = null;
 $discountsData = array();
 $itemDiscounts = array();
 $cartDiscounts = array();
-
+$overAllCart = 0;
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     if($row){
     $referenceNum = $row['receipt_id'];
@@ -248,6 +248,8 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $itemDiscounts[$referenceNum] += $itemDiscount;
     $cartDiscounts[$referenceNum] =   $cartDiscount;
     $cartRemove = $amountPerRef[$referenceNum] * $cartDiscounts[$referenceNum];
+
+    $overAllCart += $row['amount']-$itemDiscount-$discount-($row['amount']*$cartDiscount);
 }
 }
 
@@ -282,7 +284,11 @@ $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[2], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[3], $maxCellHeight, '', 1, 0, 'R');
 $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($amountPerRef[$previousRefNum]-$discountsData[$previousRefNum]-$itemDiscounts[$previousRefNum]-$cartRemove, 2), 1, 0, 'R');
-$pdf->Ln();
+$pdf->Ln(20);
+$pdf->SetFont('', 'B', 12);
+$pdf->Cell($headerWidths[0], $maxCellHeight, 'Total Returned Amount', 1, 0, 'L');
+$pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Cell($headerWidths[2]+$headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format($overAllCart,2), 1, 0, 'R');
 
 $pdfPath = $pdfFolder . 'returnAndExchangeList.pdf';
 $pdf->Output($pdfPath, 'F');
