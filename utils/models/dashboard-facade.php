@@ -50,6 +50,53 @@ class DashboardFacade extends DBConnection
             'total_expense_by_period' => $this->get_expenseValueFromDatePeriod($start_date, $end_date)['total_expense_of_the_month']
         ];
     }
+    public function get_salesDataByHour($start_date, $end_date)
+    {
+        $start_date = date("Y-m-d", strtotime($start_date));
+        $end_date = $this->convertDateFormat($end_date);
+        
+        $labels = [
+            '6AM-8AM' => '06:00:00 AND 08:00:00',
+            '8AM-10AM' => '08:00:00 AND 10:00:00',
+            '10AM-12PM' => '10:00:00 AND 12:00:00',
+            '12PM-2PM' => '12:00:00 AND 14:00:00',
+            '2PM-4PM' => '14:00:00 AND 16:00:00',
+            '4PM-6PM' => '16:00:00 AND 18:00:00',
+            '6PM-8PM' => '18:00:00 AND 20:00:00',
+            '8PM-10PM' => '20:00:00 AND 22:00:00',
+            '10PM-12AM' => '22:00:00 AND 00:00:00',
+            '12AM-2AM' => '00:00:00 AND 02:00:00',
+            '2AM-4AM' => '02:00:00 AND 04:00:00',
+            '4AM-6AM' => '04:00:00 AND 06:00:00'
+        ];
+        
+        $salesData = [];
+        $chart_labels = [];
+        foreach($labels as $label => $timeRange)
+        {
+            list($start_time, $end_time) = explode(' AND ', $timeRange);
+            $top_products = $this->query_top_products_by_hour($start_date, $end_date, $start_time, $end_time);
+
+            $sales = 0;
+            foreach($top_products as $row)
+            {
+                $grossAmount = $row['grossAmount'] 
+                            - $row['itemDiscount'] 
+                            - $row['overallDiscounts']
+                            - $row['totalCartDiscountPerItem'];
+                
+                $sales += $grossAmount;
+            }
+            
+            $chart_labels[] = $label;
+            $salesData[] = $sales;
+        }
+        
+        return [
+            'labels' => $chart_labels,
+            'salesData' => $salesData,
+        ];
+    }
     public function query_top_products_by_hour($start_date, $end_date, $start_time, $end_time)
     {
         $sql = $this->connect()->prepare("WITH TotalCartValue AS (
