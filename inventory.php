@@ -212,21 +212,47 @@ include ('./layout/admin/table-pagination-css.php');
       <div class="content-wrapper">
         <div
           style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-left: 15px; margin-bottom: 20px;">
-          <div class="horizontal-container" style="display: flex; align-items: center;">
-            <img src="assets/img/barcode.png" style="color: white; height: 60px; width: 50px; margin-right:5px;">
-            <input class="text-color italic-placeholder" id="searchInput" style="flex: 1 1 100%; height: 35px;"
+          <!-- <div class="horizontal-container" style="display: flex; align-items: center;">
+            <img src="assets/img/barcode.png" style="color: white; height: 80px; width: 70px; margin-right:5px;">
+            <input class="text-color italic-placeholder" id="searchInput" style="flex: 1 1 90%; height: 45px; font-size: 14px;"
               placeholder="Search Product,[code,serial no., barcode, name, brand]" autocomplete="off" autofocus />
           </div>
           <div style="display: flex; align-items: center;">
-            <button class="icon-button" style="margin-right: 10px;">
+            <button class="grid-item" style="margin-right: 10px;">
               <span class="search-icon"></span>
               Search
             </button>
-            <button class="icon-button" id="btn_openOption">
+            <button class="grid-item" id="btn_openOption">
               <span class="plus-icon"></span>
               Option
             </button>
-          </div>
+          </div> -->
+          <input id = "searchInput" class="text-color searchProducts" style="width: 75%; height: 45px; margin-right: 10px" placeholder="Search Product,[code, barcode, name, brand]"/>
+           <button onclick="searchProducts()" id="searchBtn" name="productSearch" class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+              viewBox="0 0 491.52 491.52" xml:space="preserve">
+            <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
+            <path style="opacity:0.5;fill:#FFFFFF;enable-background:new    ;" d="M98.081,234.62c-43.316-43.315-43.882-112.979-1.264-155.595
+              c9.509-9.511,20.41-16.745,32.021-21.96c-16.497,4.812-32.056,13.702-45.064,26.71c-41.288,41.289-41.289,108.231,0,149.521
+              c18.282,18.281,41.596,28.431,65.483,30.523C130.561,258.986,112.79,249.33,98.081,234.62z"/>
+            <path style="fill:#3A556A;" d="M270.636,46.433c-61.912-61.912-162.291-61.911-224.202,0.001s-61.912,162.291-0.001,224.202
+              c57.054,57.054,146.703,61.394,208.884,13.294l14.18,14.182l28.615-28.613l-14.182-14.182
+              C332.029,193.137,327.69,103.487,270.636,46.433z M250.301,250.302c-50.681,50.681-132.852,50.681-183.534,0
+              c-50.68-50.681-50.68-132.852,0.002-183.533s132.85-50.681,183.531,0C300.982,117.45,300.982,199.621,250.301,250.302z"/>
+            <path style="fill:#E56353;" d="M305.823,258.865l-46.959,46.958c-2.669,2.67-2.669,6.996,0,9.665l174.339,174.338
+              c12.132,12.133,68.755-44.49,56.623-56.623L315.488,258.865C312.819,256.196,308.493,256.196,305.823,258.865z"/>
+            <g>
+            <rect x="409.379" y="442.628" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 1084.9951 449.4294)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
+            <rect x="260.671" y="293.889" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 725.9606 300.6683)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
+                </g>
+                </svg>&nbsp;Search</button>
+           <button id="btn_openOption"  class="btn-control addProducts" style="margin-right:10px;width:150px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs>
+            <style>
+              .cls-1 {
+                fill: #699f4c;
+                fill-rule: evenodd;
+              }
+            </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp;Option</button>
+            <button class="btn-control clearproductsBtn" style="width:120px;order: 1" id = "clear_inventory_search"><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
         </div>
         <div>
           <div class="tbl_buttonsContainer">
@@ -546,6 +572,11 @@ include ('./layout/admin/table-pagination-css.php');
       show_purchaseOrderNo();
       display_datePurchased();
 
+      $("#clear_inventory_search").on("click", function(){
+        $("#searchInput").val("");
+        $("#searchInput").focus();
+        $('#searchInput').keypress();
+      })
       $("#printThis").on("click", function () {
         var active_tbl_id = $(".inventoryCard table").attr('id');
         if (active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks') {
@@ -1798,18 +1829,10 @@ include ('./layout/admin/table-pagination-css.php');
             data: {
               tbl_data: JSON.stringify(tbl_data),
               user_name: $("#first_name").val()+" "+$("#last_name").val(),
-
             },
             success: function (response) {
               if (response.status) {
-                $("#response_modal").slideDown({
-                  backdrop: 'static',
-                  keyboard: false,
-                });
-                $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; " + response.msg);
-                setTimeout(function () {
-                  $("#response_modal").slideUp();
-                }, 10000);
+                show_sweetReponse(response.msg);
                 var po_number = $("#q_product").val();
                 $("#tbl_quickInventories tbody").empty();
                 hideModals();
@@ -2423,21 +2446,38 @@ include ('./layout/admin/table-pagination-css.php');
         }
           $(this).val('');
       });
+      // function filterProducts(term) {
+      //   return productsCache.filter(function (row) {
+      //     return row.product.toLowerCase().includes(term) ||
+      //       row.barcode.includes(term) ||
+      //       (row.brand && row.brand.toLowerCase().includes(term)) ||
+      //       (!row.brand && term === "");
+      //   }).map(function (row) {
+      //     var brand = row.brand === null ? " " : row.brand;
+      //     return {
+      //       label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
+      //       value: row.barcode ?? row.product,
+      //       inventory_id: row.inventory_id,
+      //       id: row.product_id
+      //     };
+      //   });
+      // }
       function filterProducts(term) {
-        return productsCache.filter(function (row) {
-          return row.product.toLowerCase().includes(term) ||
-            row.barcode.includes(term) ||
-            (row.brand && row.brand.toLowerCase().includes(term)) ||
-            (!row.brand && term === "");
-        }).map(function (row) {
-          var brand = row.brand === null ? " " : row.brand;
-          return {
-            label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
-            value: row.barcode ?? row.product,
-            inventory_id: row.inventory_id,
-            id: row.product_id
-          };
-        });
+          return productsCache.filter(function(row) {
+              var lowercaseTerm = term.toLowerCase();
+              return row.product.toLowerCase().includes(lowercaseTerm) ||
+                  row.barcode.includes(lowercaseTerm) ||
+                  (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
+                  (!row.brand && lowercaseTerm === "");
+          }).map(function(row) {
+              var brand = row.brand === null ? " " : "( " + row.brand + " )";
+              return {
+                  label: row.product + " (" + row.barcode + ")",
+                  value: row.barcode ?? row.product,
+                  inventory_id: row.inventory_id,
+                  id: row.product_id
+              };
+          });
       }
       function check_ifProductCacheExists(product_id)
       {

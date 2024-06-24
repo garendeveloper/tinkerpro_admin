@@ -892,7 +892,6 @@ $('.custom_btns').on('click', function () {
       $(".trigger_reports").hide();
     })
 
-
     $("#index").addClass('active');
     $("#pointer").html("Dashboard");
     let year = new Date().getFullYear();
