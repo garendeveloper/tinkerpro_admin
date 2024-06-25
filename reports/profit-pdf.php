@@ -159,6 +159,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $totalT += $row['amount']?? 0;
     $totalCost = $row['newQty'] * $row['cost'];
     $grossAmount = $row['grossAmount'] - $row['itemDiscount'] - $row['overallDiscounts'];
+    $totalT += $grossAmount;
     $profit =$grossAmount - $totalCost;
     $totalProfit  +=  $profit;
 
