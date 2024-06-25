@@ -123,7 +123,7 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .sidebar nav ul li:hover {
-        background-color: #FF6700;
+        background-color: var(--hover-bg-color);
     }
 
     .logo {
@@ -136,9 +136,8 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .sidebar a.active {
-        background-color: '#FF6700',
+        background-color: var(--hover-bg-color);
     }
-
     .sidebar-footer {
         background-color: #151515;
         color: #fff;

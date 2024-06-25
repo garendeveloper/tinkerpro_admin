@@ -389,4 +389,22 @@ button:hover {
 .badge-success{
   color: lightgreen;
 }
+.pos-setting:hover {
+    background-color: var(--hover-bg-color);
+}
+.pos-setting.active{
+  background-color: var(--active-bg-color);
+}
+.purchase-grid-item.active{
+  background-color: var(--active-bg-color);
+}
+.purchase-grid-item:hover{
+  background-color: var(--hover-bg-color);
+}
+button.active{
+  background-color: var(--active-bg-color);
+}
+button:hover{
+  background-color: var(--hover-bg-color);
+}
   </style>

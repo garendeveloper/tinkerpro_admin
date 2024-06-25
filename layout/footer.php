@@ -45,6 +45,10 @@ if (isset($_GET["delete_user"])) {
 }
 ?>
 <script>
+  
+</script>
+
+<script>
 $(document).ready(function() {
     $('#toggle-sidebar').click(function() {
         $('#sidebar').toggleClass('collapsed');
@@ -55,7 +59,64 @@ $(document).ready(function() {
             $('#toggle-sidebar').find('i').removeClass('bi-chevron-double-right').addClass('bi-chevron-double-left');
         }
     });
-});
+    display_settings();
+    function display_settings()
+    {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=pos_settings',
+        success:function(response){
+          var defaultColor = "#FF6700";
+          if(!$.isEmptyObject(response))
+          {
+            $(".sidebar nav ul li").css("--hover-bg-color", response)
+            $(".pos-setting").css("--hover-bg-color", response)
+            $(".pos-setting").css("--active-bg-color", response)
+          
+            $(".purchase-grid-item").css("--hover-bg-color", response)
+            $(".purchase-grid-item").css("--active-bg-color", response)
+            $("button").css("--hover-bg-color", response)
+            $("button").css("--active-bg-color", response)
+            $("button").css("border-color", response)
+
+            $(".pos-setting:active").css("background-color", response);
+            $(".inventoryCard table thead tr th").css("background-color", response);
+            $(".inventoryCard table th").css("background-color", response);
+
+            $("table thead tr th").css("background-color", response);
+            $("table th").css("background-color", response);
+            $("table th").css("color", "#ffffff");
+            $("table thead").css("border-color", response);
+            $("table").css("border-color", response);
+            $("#pointer").css("color", response);
+            
+          }
+          else
+          {
+            $(".sidebar nav ul li").css("--hover-bg-color", defaultColor)
+            $(".pos-setting").css("--hover-bg-color", defaultColor)
+            $(".pos-setting").css("--active-bg-color", defaultColor)
+          
+            $(".purchase-grid-item").css("--hover-bg-color", defaultColor)
+            $(".purchase-grid-item").css("--active-bg-color", defaultColor)
+            $("button").css("--hover-bg-color", defaultColor)
+            $("button").css("--active-bg-color", defaultColor)
+            $("button").css("border-color", defaultColor)
+
+            $(".pos-setting:active").css("background-color", defaultColor);
+            $(".inventoryCard table thead tr th").css("background-color", defaultColor);
+            $(".inventoryCard table th").css("background-color", defaultColor);
+
+            $("table thead tr th").css("background-color", defaultColor);
+            $("table th").css("background-color", defaultColor);
+            $("table th").css("color", "#ffffff");
+            $("table thead").css("border-color", defaultColor);
+            $("table").css("border-color", defaultColor);
+          }
+        }
+      })
+    }
+  });
   $(document).ready(function () {
     $("#btn_logout").click(function () {
       $("#logoutModal").slideDown({

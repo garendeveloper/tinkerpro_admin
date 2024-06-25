@@ -159,7 +159,7 @@
     height: 40px;
     border: 2px solid gray;
     border-radius: 10px;
-    background-color: rgba(255, 103, 0, 2);
+    /* background-color: rgba(255, 103, 0, 2); */
 }
 </style>
 </head>
@@ -208,6 +208,24 @@
 	<script src="assets/login/vendor/daterangepicker/daterangepicker.js"></script>
 	<script src="assets/login/vendor/countdowntime/countdowntime.js"></script>
 	<script src="assets/login/js/main.js"></script>
+
+  <script>
+    display_settings();
+    function display_settings()
+    {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=pos_settings',
+        success:function(response){
+          if(response !== "")
+          {
+            $(".login-form-btn").css("background-color", response)
+            $(".login-form-btn").css("border-color", response)
+          }
+        }
+      })
+    }
+  </script>
 
 </body>
 </html>

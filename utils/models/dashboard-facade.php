@@ -1,6 +1,12 @@
 <?php
 class DashboardFacade extends DBConnection 
 {
+    public function pos_settings()
+    {
+        $stmt = $this->connect()->prepare("SELECT color_pallete FROM pos_settings");
+        $stmt->execute();
+        return $stmt->fetch()["color_pallete"] ?? "";
+    }
     public function get_product_total_count()
     {
         $stmt = $this->connect()->prepare("SELECT COUNT(products.id) as total FROM products INNER JOIN inventory ON inventory.product_id = products.id WHERE inventory.isReceived = 1");

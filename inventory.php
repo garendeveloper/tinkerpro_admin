@@ -218,11 +218,11 @@ include ('./layout/admin/table-pagination-css.php');
               placeholder="Search Product,[code,serial no., barcode, name, brand]" autocomplete="off" autofocus />
           </div>
           <div style="display: flex; align-items: center;">
-            <button class="grid-item" style="margin-right: 10px;">
+            <button class="grid-item"pos-setting  style="margin-right: 10px;">
               <span class="search-icon"></span>
               Search
             </button>
-            <button class="grid-item" id="btn_openOption">
+            <button class="grid-item"pos-setting  id="btn_openOption">
               <span class="plus-icon"></span>
               Option
             </button>
@@ -263,38 +263,38 @@ include ('./layout/admin/table-pagination-css.php');
           <div class="tbl_buttonsContainer">
             <div class="division">
               <div class="grid-container">
-                <button id="inventories" class="grid-item text-color button"><i class="bi bi-box-seam"></i>&nbsp;
+                <button id="inventories" class="grid-item pos-setting text-color button"><i class="bi bi-box-seam"></i>&nbsp;
                   Inventories</button>
-                <button id="stocks" class="grid-item text-color button"><i class="bi bi-graph-up"></i>&nbsp;
+                <button id="stocks" class="grid-item pos-setting text-color button"><i class="bi bi-graph-up"></i>&nbsp;
                   Stocks</button>
-                <button id="purchase-order" class="grid-item text-color button"><i class="bi bi-cart-check"></i>&nbsp;
+                <button id="purchase-order" class="grid-item pos-setting text-color button"><i class="bi bi-cart-check"></i>&nbsp;
                   Purchase Orders</button>
-                <button id="inventory-count" class="grid-item text-color button"><i class="bi bi-archive"></i>&nbsp;
+                <button id="inventory-count" class="grid-item pos-setting text-color button"><i class="bi bi-archive"></i>&nbsp;
                   Inventory Count</button>
-                <button id="loss-damage" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss &
+                <button id="loss-damage" class="grid-item pos-setting text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss &
                   Damage</button>
-                <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp;
+                <button id="expiration" class="grid-item pos-setting text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp;
                   Expiration <span id="expirationNotification" class="badge badge-danger"
                     style="font-size: 11px; background-color: red; color: white; "></span></button>
-                <!-- <button id="bom" class="grid-item text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button> -->
-                <!-- <button id="low-stocks" class="grid-item text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
-                        <button id="reorder-point" class="grid-item text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button> -->
+                <!-- <button id="bom" class="grid-item pos-setting text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button> -->
+                <!-- <button id="low-stocks" class="grid-item pos-setting text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
+                        <button id="reorder-point" class="grid-item pos-setting text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button> -->
               </div>
             </div>
           
             <div class="division">
               <div class="grid-container">
-                <!-- <button id="loss-damage" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button> -->
-                <!-- <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button> -->
-                <!-- <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration  <span id="expirationNotification" class="badge badge-danger" style = "font-size: 11px; background-color: red; color: white; "></span></button> -->
-                <!-- <button id="loss-damage2" class="grid-item text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button> -->
-                <!-- <button id="bom2" class="grid-item text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button> -->
-                <!-- <button id="print-price-tags" class="grid-item text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button> -->
+                <!-- <button id="loss-damage" class="grid-item pos-setting text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button> -->
+                <!-- <button id="stock-transfer" class="grid-item pos-setting text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button> -->
+                <!-- <button id="expiration" class="grid-item pos-setting text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration  <span id="expirationNotification" class="badge badge-danger" style = "font-size: 11px; background-color: red; color: white; "></span></button> -->
+                <!-- <button id="loss-damage2" class="grid-item pos-setting text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button> -->
+                <!-- <button id="bom2" class="grid-item pos-setting text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button> -->
+                <!-- <button id="print-price-tags" class="grid-item pos-setting text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button> -->
               </div>
             </div>
             <div class="division">
               <div class="grid-container">
-                <!-- <button id="recalculate-stocks" class="grid-item text-color button"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button> -->
+                <!-- <button id="recalculate-stocks" class="grid-item pos-setting text-color button"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button> -->
               </div>
             </div>
           </div>
@@ -1005,6 +1005,30 @@ include ('./layout/admin/table-pagination-css.php');
         }
        
       })
+      function display_settings()
+      {
+        $.ajax({
+          type: 'get',
+          url: 'api.php?action=pos_settings',
+          success:function(response){
+            var defaultColor = "#FF6700";
+            if(!$.isEmptyObject(response))
+            {
+              $(".inventoryCard table table-border th").css("background-color", response);
+              $(".inventoryCard table thead tr th").css("background-color", response);
+              $(".inventoryCard table th").css("background-color", response);
+
+              $("table thead tr th").css("background-color", response);
+              $("table th").css("background-color", response);
+              $("table th").css("color", "#ffffff");
+              
+            }
+            else
+            {
+            }
+          }
+        })
+      }
     
       function show_allStocks() 
       {
@@ -1013,7 +1037,7 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard #tbl_all_stocks").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-
+        display_settings();
         var tblData = `
             <table tabindex='0' id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
                 <thead>
@@ -1092,7 +1116,6 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard #tbl_all_lostanddamages").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_all_lostanddamageinfo',
@@ -1162,6 +1185,7 @@ include ('./layout/admin/table-pagination-css.php');
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_all_lostanddamages').DataTable().search($(this).val()).draw();
             });
+            display_settings();
           }
         })
       }
@@ -1170,7 +1194,7 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard #tbl_products").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-
+    
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_realtime_notifications',
@@ -1260,7 +1284,7 @@ include ('./layout/admin/table-pagination-css.php');
                 }
               })
               $("#paginationDiv").html($(".dt-paging")).show();
-
+              display_settings();
               $('#searchInput').on('keyup', function(event) {
                 $('.inventoryCard #tbl_expiredProducts').DataTable().search($(this).val()).draw();
               });
@@ -1272,7 +1296,7 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard #tbl_all_inventoryCounts").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-  
+       
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_allInventoryCounts',
@@ -1330,7 +1354,7 @@ include ('./layout/admin/table-pagination-css.php');
               }
             })
             $("#paginationDiv").html($(".dt-paging")).show();
-
+            display_settings();
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_all_inventoryCounts').DataTable().search($(this).val()).draw();
             });
@@ -2615,6 +2639,7 @@ include ('./layout/admin/table-pagination-css.php');
         }
         $("#paginationDiv").empty().hide();
         $("#searchInput").focus();
+        display_settings();
 
         var tblData = `
             <table tabindex='0' id='tbl_products' class='text-color table-border display' style='font-size: 12px;'>
@@ -2655,20 +2680,21 @@ include ('./layout/admin/table-pagination-css.php');
               { data: 'prod_desc' },
               { data: 'barcode' },
               { data: 'uom_name', className: 'text-center' },
-              { data: 'qty_purchased', className: 'text-center' },
-              { data: 'qty_received', className: 'text-center' },
+              { data: 'all_qty_purchased', className: 'text-center' },
+              { data: 'all_qty_received', className: 'text-center' },
               { data: 'product_stock', className: 'text-center' },
               { data: 'cost', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
               { data: 'prod_price', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
               { data: null, render: function (data) {
-                  var stock = data.product_stock !== null ? data.product_stock : 0;
-                  if (stock <= 10 && data.isReceived == 0) {
-                      return "<span style='color: violet'><i>TO PURCHASE</i></span>";
-                  } else if (stock > 0 && data.isReceived == 2) {
-                      return "<span style='color: yellow'>PURCHASED</span>";
-                  } else {
-                      return "<span style='color: lightgreen'>RECEIVED</span>";
-                  }
+                var stock = data.product_stock || 0;
+                var stock_count = data.stock_count;
+                var stock_status = data.stock_status === 1;
+                var isReceived = data.latest_isReceived;
+                var span = "<span style='color: red'><i>TO PURCHASE</i></span>";
+                if (isReceived === 1) span = "<span style='color: #72bf6a; font-weight: bold'><i>RECEIVED</i></span>";
+                if (isReceived === 0 && stock != 0) span = "<span style='color: yellow; font-weight: bold'><i>PURCHASED</i></span>";
+                if (stock_status && stock < stock_count) span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
+                return span;
               }, className: 'text-center' }
           ],
           ordering: true,
@@ -2776,6 +2802,7 @@ include ('./layout/admin/table-pagination-css.php');
           }
           $("#paginationDiv").empty().hide();
           $("#searchInput").focus();
+          display_settings();
 
           var tblData = `
               <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>

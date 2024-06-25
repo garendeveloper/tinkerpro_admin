@@ -37,6 +37,10 @@
     $response = array("message" => "Hello from API");
     $action = isset($_GET['action']) ? $_GET['action'] : null;
     switch ($action) {
+        case 'pos_settings':
+            echo json_encode($dashboard->pos_settings());
+            break;
+        //Dashboard
         case 'get_allTopProducts':
             echo json_encode($dashboard->get_allTopProducts($_GET['item'], $_GET['start_date'], $_GET['end_date']));
             break;

@@ -4,37 +4,58 @@ class InventoryFacade extends DBConnection
     public function get_allInventoriesDatatable($requestData)
     {
         $columns = array(
-            0 => 'products.id',
-            1 => 'products.prod_desc',
-            2 => 'products.barcode',
-            3 => 'uom.uom_name',
-            4 => 'inventory.qty_purchased',
-            5 => 'inventory.qty_received',
-            6 => 'products.product_stock',
-            7 => 'products.cost',
-            8 => 'products.prod_price'
+            0 => 'p.id',
+            1 => 'p.prod_desc',
+            2 => 'p.barcode',
+            3 => 'u.uom_name',
+            4 => 'all_qty_purchased',
+            5 => 'all_qty_received',
+            6 => 'p.product_stock',
+            7 => 'p.cost',
+            8 => 'p.prod_price',
         );
     
+        // $sql = "SELECT 
+        //             inventory.*, products.*, uom.*, SUM(inventory.qty_purchased) as all_qty_purchased, SUM(inventory.qty_received) as all_qty_received,
+        //             SUM(products.product_stock) AS total_stock,
+        //             COUNT(*) OVER() as total_count 
+        //         FROM inventory 
+        //         INNER JOIN products ON products.id = inventory.product_id 
+        //         LEFT JOIN uom ON uom.id = products.uom_id";
         $sql = "SELECT 
-                    inventory.*, products.*, uom.*, 
-                    SUM(products.product_stock) AS total_stock,
-                    COUNT(*) OVER() as total_count 
-                FROM inventory 
-                INNER JOIN products ON products.id = inventory.product_id 
-                LEFT JOIN uom ON uom.id = products.uom_id";
+                    i.*, p.*, u.uom_name,
+                    SUM(i.qty_purchased) as all_qty_purchased,
+                    SUM(i.qty_received) as all_qty_received,
+                    SUM(p.product_stock) AS total_stock,
+                    COUNT(*) as total_count,
+                    li.latest_isReceived
+                FROM 
+                    inventory i
+                INNER JOIN products p ON p.id = i.product_id
+                LEFT JOIN uom u ON u.id = p.uom_id
+                LEFT JOIN (
+                    SELECT product_id, isReceived as latest_isReceived
+                    FROM inventory
+                    WHERE (product_id, id) IN (
+                    SELECT product_id, MAX(id) as id
+                    FROM inventory
+                    GROUP BY product_id
+                    )
+                ) li ON li.product_id = p.id ";
+
     
             if (!empty($requestData['search']['value'])) {
-                $sql .= " WHERE products.prod_desc LIKE '%" . $requestData['search']['value'] . "%'
-                        OR products.barcode LIKE '%" . $requestData['search']['value'] . "%'
-                        OR uom.uom_name LIKE '%" . $requestData['search']['value'] . "%' ";
+                $sql .= " WHERE p.prod_desc LIKE '%" . $requestData['search']['value'] . "%'
+                        OR p.barcode LIKE '%" . $requestData['search']['value'] . "%'
+                        OR u.uom_name LIKE '%" . $requestData['search']['value'] . "%' ";
             }
     
-        $sql .= " GROUP BY products.id";
+        $sql .= " GROUP BY p.id, p.prod_desc, u.uom_name, li.latest_isReceived";
     
         if (!empty($requestData['order'])) {
             $sql .= " ORDER BY " . $columns[$requestData['order'][0]['column']] . " " . $requestData['order'][0]['dir'];
         } else {
-            $sql .= " ORDER BY products.prod_desc ASC";
+            $sql .= " ORDER BY p.prod_desc ASC";
         }
     
         $sql .= " LIMIT :limit OFFSET :offset";
@@ -65,6 +86,18 @@ class InventoryFacade extends DBConnection
         );
 
         return $json_data;
+    }
+    public function get_allInventoriesData()
+    {
+        $stmt = $this->connect()->prepare("SELECT 
+                                                inventory.*, products.*, uom.*, SUM(inventory.qty_purchased) as all_qty_purchased, SUM(inventory.qty_received) as all_qty_received
+                                            FROM inventory 
+                                            INNER JOIN products ON products.id = inventory.product_id 
+                                            LEFT JOIN uom ON uom.id = products.uom_id
+                                            GROUP BY products.id
+                                            ORDER BY products.prod_desc asc");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     public function get_allProductByInventoryType($type)
     {
