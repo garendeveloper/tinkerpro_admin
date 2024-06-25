@@ -66,7 +66,7 @@ $(document).ready(function() {
         type: 'get',
         url: 'api.php?action=pos_settings',
         success:function(response){
-          var defaultColor = "#FF6700";
+          var defaultColor = "#FF6900";
           if(!$.isEmptyObject(response))
           {
             $(".sidebar nav ul li").css("--hover-bg-color", response)
@@ -89,6 +89,7 @@ $(document).ready(function() {
             $("table thead").css("border-color", response);
             $("table").css("border-color", response);
             $("#pointer").css("color", response);
+ 
             
           }
           else

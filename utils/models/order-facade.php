@@ -203,5 +203,22 @@ class OrderFacade extends DBConnection
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function get_unpaidPurchases($startDate, $endDate, $supplier)
+    {
+        $sql = "SELECT orders.*, supplier.supplier, inventory.total
+                FROM orders
+                INNER JOIN supplier ON supplier.id = orders.supplier_id
+                INNER JOIN inventory ON inventory.order_id = orders.id
+                WHERE orders.isPaid = 0
+                AND date_purchased BETWEEN :startDate AND :endDate
+                AND supplier.id = :supplier_id
+                ORDER BY orders.id ASC";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(':startDate', $startDate, PDO::PARAM_STR);
+        $stmt->bindParam(':endDate', $endDate, PDO::PARAM_STR);
+        $stmt->bindParam(':supplier_id', $supplier, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

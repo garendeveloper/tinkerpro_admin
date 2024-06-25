@@ -145,7 +145,7 @@ class ExpenseFacade extends DBConnection
         $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, supplier.id as supplier_id, uom.id as uom_id, products.prod_desc as product,
                 COUNT(*) OVER() as total_count 
                 FROM expenses
-                INNER JOIN supplier ON supplier.id = expenses.supplier
+                LEFT JOIN supplier ON supplier.id = expenses.supplier
                 LEFT JOIN uom ON uom.id = expenses.uom_id
                 LEFT JOIN products ON products.id = expenses.product_id
                 WHERE expenses.id = '".$expense_id."'";

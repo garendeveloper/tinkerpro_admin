@@ -103,7 +103,7 @@ if (isset($_SESSION['user_id'])) {
     color: white;
 }
 .highlight {
-  background-color:   #FF6900;
+  background-color: #FF6900;
 }
 .anchor-container{
     padding:0;
@@ -616,7 +616,7 @@ input:not(:checked) + .sliderStatusExcludes {
                     <div class="select-arrow"></div>
                 </div>
             </div>
-           
+
             <a hidden href="#" onclick="openModalDatePicker()"class="custom-input" id="dateTimeAnchor" style="margin-top: 20px">
                 <input readonly type="text" id="datepicker" style="padding-left: 35px; flex: 1; text-align: center;">
                 <svg class="calendar-icon" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -789,11 +789,35 @@ function getSelectedProductValue() {
 
 $("#reporting").addClass('active');
   $("#pointer").html("Reporting");
+  // display_settings();
+  // function display_settings()
+  // {
+  //   $.ajax({
+  //     type: 'get',
+  //     url: 'api.php?action=pos_settings',
+  //     success:function(response){
+  //       var defaultColor = "#FF6900";
+  //       if(!$.isEmptyObject(response)){
+  //         $(".anchor-container div").each(function() {
+  //           if ($(this).hasClass("highlight")) {
+  //             $(this).toggleClass("highlight").css('background-color', response);
+  //           }
+  //           else
+  //           {
+  //             $(".anchor-container highlight").css("background-color","white");
+  //           }
+  //         });
+  //       }
+  //       else $(".anchor-container highlight").css("background-color", defaultColor);
+  //     }
+  //   })
+  // }
 function highlightDiv(id) {
   console.log(id)
   document.querySelectorAll('.anchor-container div').forEach(div => {
     div.classList.remove('highlight');
   });
+
   $('#PDFBtn').off('click');
   $('#EXCELBtn').off('click')
   $('#showReport').off('click')
@@ -1954,7 +1978,66 @@ function highlightDiv(id) {
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
-        }else if(id == 33){
+        }
+        else if (id == 20) {
+          generatePdf(id)
+          generateExcel(id)
+          printDocuments(id)
+          showReports(id)
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden',true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.removeAttribute('hidden');
+          
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.setAttribute('hidden',true);
+
+          var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.removeAttribute('hidden')
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+          
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+          
+          var discountDIV = document.getElementById('discountDIV');
+          discountDIV.setAttribute('hidden',true);
+
+          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
+          paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
+
+        }
+        else if(id == 33){
           generatePdf(id)
           generateExcel(id)
           printDocuments(id)
@@ -5987,7 +6070,8 @@ function printDocuments(id){
           }
           });
   });
-  }else if(id == 33){
+  }
+  else if(id == 33){
     $('#printDocu').off('click').on('click',function() {
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
@@ -6051,7 +6135,8 @@ function printDocuments(id){
           }
           });
   });
-  }else if(id == 34){
+  }
+  else if(id == 34){
     $('#printDocu').off('click').on('click',function() {
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
@@ -6512,7 +6597,88 @@ function showReports(id){
           });
      }
     })
-  }else if(id == 28){
+    
+  }
+  else if(id == 20)
+    {
+      $("#showReport").off('click').on('click', function(){
+        $('#showReportsModal').show()
+        if($('#showReportsModal').is(":visible"))
+        {
+          var loadingImage = document.getElementById("loadingImage");
+          loadingImage.removeAttribute("hidden");
+          var pdfFile= document.getElementById("pdfFile");
+          pdfFile.setAttribute('hidden',true)
+          var supplierSelect = document.getElementById('suppliersSelect')
+          var supplier = supplierSelect.value;
+          var datepicker = document.getElementById('datepicker').value
+          var singleDateData = null;
+          var startDate;
+          var endDate;
+          if (datepicker.includes('-')) {
+            var dateRange = datepicker.split(' - ');
+            var startDates = new Date(dateRange[0].trim());
+            var endDate = new Date(dateRange[1].trim());
+
+            var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+            var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+            startDate = formattedStartDate;
+            endDate = formattedEndDate;
+          } else {
+            var singleDate = datepicker.trim();
+            var singleDate = datepicker.trim();
+            var dateObj = new Date(singleDate);
+            var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+            singleDateData =  formattedDate
+          
+          }
+          if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+            singleDateData = ""
+          }
+          if(startDate == "" || startDate == null){
+            startDate = ""
+          }
+            if(endDate == "" || endDate == null){
+            endDate = ""
+          }
+          
+          $.ajax({
+            url: './reports/generate_unpaid_purchases.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+              startDate: startDate,
+              endDate: endDate,
+              supplier: supplier, 
+            },
+            success: function(response) 
+            {
+              if (response) 
+              {
+                loadingImage.setAttribute("hidden", true);
+                var pdfFile = document.getElementById("pdfFile");
+                pdfFile.removeAttribute('hidden');
+                
+                var timestamp = new Date().getTime();
+                var pdfUrl = './assets/pdf/purchase-reports/unpaid_purchases.pdf?t=' + timestamp;
+                
+                $('#pdfViewer').attr('src', pdfUrl);
+              } 
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+          });
+
+        }
+      })
+      
+    }
+  else if(id == 28){
     $('#showReport').off('click').on('click', function(){
        $('#showReportsModal').show()
     if($('#showReportsModal').is(":visible")){
