@@ -210,7 +210,7 @@
                     <label>PO#: <strong id="r_po_number"></strong></label>
                     <label>SUPPLIER: <strong id="r_supplier"></strong></label>
                 </div>
-
+                <input type="hidden" id = "order_isPaid" value = "0">
                 <div class="group">
                     <label>DATE: <strong id="r_datePurchased"></strong></label>
                     <label>STATUS: <strong id="r_isPaid"></strong></label>
@@ -402,6 +402,7 @@
                                 "<span style = 'color: lightgreen'>PAID</span>" :
                                 "<span style = 'color: red'>UNPAID</span>"
                             $("#r_isPaid").html(isPaid);
+                            $("#order_isPaid").val(data[0].isPaid);
                             
                             for (var i = 0; i < data.length; i++) {
                                

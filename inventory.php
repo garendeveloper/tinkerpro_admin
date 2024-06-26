@@ -1556,14 +1556,14 @@ include ('./layout/admin/table-pagination-css.php');
             });
             dataArray.push(rowData);
           });
-
+          var isPaid = $('#paidSwitch').prop('checked') ? 1 : 0; 
           $.ajax({
             type: 'POST',
             url: 'api.php?action=save_purchaseOrder',
             data: {
               data: JSON.stringify(dataArray),
               po_number: $("#pcs_no").val(),
-              isPaid: $('#paidSwitch').prop('checked'),
+              isPaid: isPaid,
               date_purchased: $("#date_purchased").val(),
               supplier: $("#supplier").val(),
               product: $("#product").val(),
@@ -1580,10 +1580,8 @@ include ('./layout/admin/table-pagination-css.php');
             dataType: 'json',
             success: function (response) {
               isSavingPO = false;
-              console.log(response)
               if (response.status) 
               {
-             
                 var order_id = response.order_id;
                 var po_number = response.po_number;
                 resetPurchaseOrderForm();
@@ -1634,7 +1632,10 @@ include ('./layout/admin/table-pagination-css.php');
                         }
                     });
                 }
-                $(".inventoryCard table").attr('id') === "tbl_orders" ? show_allOrders() : show_allInventories();
+                // $(".inventoryCard table").attr('id') === "tbl_orders" ? show_allOrders() : show_allInventories();
+                $(".grid-container button").removeClass('active');
+                $("#inventories").addClass('active');
+                show_allInventories();
               }
               else {
                 $.each(response.errors, function (key, value) {
@@ -1893,9 +1894,9 @@ include ('./layout/admin/table-pagination-css.php');
             data: { notifications: JSON.stringify(tbl_data) },
             success: function (response) {
               if (response.status) {
-
                 show_sweetReponse(response.msg);
                 show_expiration();
+                hideModals();
               }
             }
           })
@@ -2095,6 +2096,7 @@ include ('./layout/admin/table-pagination-css.php');
                     po_number: $("#r_po_number").text(),
                     supplier: $("#r_supplier").text(),
                     is_received: $("#is_received").val(),
+                    isPaid: $("#order_isPaid").val(),
                     user_name: $("#first_name").val()+" "+$("#last_name").val(),
                   },
                   success: function (response) {
@@ -2222,7 +2224,7 @@ include ('./layout/admin/table-pagination-css.php');
       }
       function validateUPForm() {
         var isValid = true;
-        $('#unpaid_form   input[type=text], input[type=number], input[type=date]').each(function () {
+        $('#unpaid_form   input[type=text]').each(function () {
           if ($(this).val() === '') {
             isValid = false;
             $(this).addClass('has-error');
@@ -2232,6 +2234,7 @@ include ('./layout/admin/table-pagination-css.php');
           }
         });
 
+        console.log(isValid)
         return isValid;
       }
       function validatePOForm() {
@@ -2648,7 +2651,7 @@ include ('./layout/admin/table-pagination-css.php');
                         <th class='text-center auto-fit'>No.</th>
                         <th class='auto-fit'>Product</th>
                         <th class='auto-fit'>Barcode</th>
-                        <th class='auto-fit' style='text-align: center'>Unit</th>
+                        <th class='auto-fit' style='text-align: center'>UOM</th>
                         <th class='auto-fit' style='text-align: center'>Qty Purchased</th>
                         <th class='auto-fit' style='text-align: center'>Qty Received</th>
                         <th class='auto-fit' style='text-align: center'>Qty in Store</th>
@@ -2690,10 +2693,18 @@ include ('./layout/admin/table-pagination-css.php');
                 var stock_count = data.stock_count;
                 var stock_status = data.stock_status === 1;
                 var isReceived = data.latest_isReceived;
-                var span = "<span style='color: red'><i>TO PURCHASE</i></span>";
-                if (isReceived === 1) span = "<span style='color: #72bf6a; font-weight: bold'><i>RECEIVED</i></span>";
-                if (isReceived === 0 && stock != 0) span = "<span style='color: yellow; font-weight: bold'><i>PURCHASED</i></span>";
-                if (stock_status && stock < stock_count) span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
+                var qty_purchased = data.all_qty_purchased;
+                var qty_received = data.all_qty_received;
+
+                var partially_received = qty_purchased !== 0 && qty_purchased < qty_received;
+                var fully_received = qty_purchased === 0 && qty_received !== 0;
+                var is_lowstock = stock_status && stock < stock_count;
+                var span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
+                if (isReceived === 1 && is_lowstock && fully_received) span = "<span><i style='color: #72bf6a; font-weight: bold'>RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
+                if (isReceived === 1 && !is_lowstock && fully_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>RECEIVED</i></span>";
+                if (isReceived === 1 && is_lowstock && partially_received) span = "<span><i style='color: #FF6900; font-weight: bold'>PARTIALLY RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
+                if (isReceived === 1 && !is_lowstock && partially_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>PARIALLY RECEIVED</i></span>";
+                // if (stock_status && stock < stock_count) span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
                 return span;
               }, className: 'text-center' }
           ],

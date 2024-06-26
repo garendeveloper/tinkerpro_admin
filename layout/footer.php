@@ -89,7 +89,7 @@ $(document).ready(function() {
             $("table thead").css("border-color", response);
             $("table").css("border-color", response);
             $("#pointer").css("color", response);
- 
+            $(".text-custom").css('color', response);
             
           }
           else
@@ -113,6 +113,7 @@ $(document).ready(function() {
             $("table th").css("color", "#ffffff");
             $("table thead").css("border-color", defaultColor);
             $("table").css("border-color", defaultColor);
+            $(".text-custom").css('color', defaultColor);
           }
         }
       })
