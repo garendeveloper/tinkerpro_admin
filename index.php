@@ -720,7 +720,7 @@ $('.custom_btns').on('click', function () {
 
               html += "<tr>";
               html += "<td style = 'text-align: left'>"+currentItem.product+"</td>";
-              html += "<td style = 'text-align: right'>"+formatNumberWithCommasAndDecimals(currentItem.total_paid_amount)+"</td>"
+              html += "<td style = 'text-align: right'>"+formatNegativeWithCommas(currentItem.total_paid_amount)+"</td>"
 
 
               productsName.push(currentItem.product);

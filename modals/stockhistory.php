@@ -248,6 +248,7 @@ $(document).ready(function() {
           },
           success: function (data) {
             var stocks = data.stocks;
+            var inventoryInfo = data.inventoryInfo;
             var tbl_rows = [];
             if(stocks.length > 0)
             {
@@ -256,7 +257,7 @@ $(document).ready(function() {
                 var stockItem = stocks[i];
                 var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
                 var stockTimestamp = stockItem.stock_date;
-                var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+                var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
                 tbl_rows.push(
                   `<tr>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
@@ -271,7 +272,7 @@ $(document).ready(function() {
               }
               var tfoot = `<tr>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
-                    <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${info.stock}</td>
+                    <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${inventoryInfo.product_stock}</td>
                 </tr>`;
 
               $("#tbl_stocks_history tbody").html(tbl_rows);

@@ -169,7 +169,11 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer" style='display: flex; justify-content: space-between; border: none'>
+        <!-- <div class="modal-footer" style='display: flex; justify-content: space-between; border: none'>
+          <button class="grid-item text-color button-cancel" style="border-radius: 0;" id="btn_pqtyCancel" data-dismiss="modal"><i class="bi bi-x"></i>&nbsp; Cancel</button>
+          <button class="grid-item text-color button" style="border-radius: 0;" type="submit"><i class="bi bi-arrow-right-circle"></i>&nbsp; Continue</button>
+        </div> -->
+        <div class="modal-footer" style='border: none'>
           <button class="grid-item text-color button-cancel" style="border-radius: 0;" id="btn_pqtyCancel" data-dismiss="modal"><i class="bi bi-x"></i>&nbsp; Cancel</button>
           <button class="grid-item text-color button" style="border-radius: 0;" type="submit"><i class="bi bi-arrow-right-circle"></i>&nbsp; Continue</button>
         </div>

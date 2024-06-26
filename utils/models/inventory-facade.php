@@ -24,17 +24,17 @@ class InventoryFacade extends DBConnection
         //         LEFT JOIN uom ON uom.id = products.uom_id";
         $sql = "SELECT 
                     i.*, p.*, u.uom_name,
-                    SUM(i.qty_purchased) as all_qty_purchased,
-                    SUM(i.qty_received) as all_qty_received,
                     SUM(p.product_stock) AS total_stock,
                     COUNT(*) as total_count,
-                    li.latest_isReceived
+                    li.latest_isReceived,
+                    li.qty_purchased as all_qty_purchased,
+                    li.qty_received as all_qty_received
                 FROM 
                     inventory i
                 INNER JOIN products p ON p.id = i.product_id
                 LEFT JOIN uom u ON u.id = p.uom_id
                 LEFT JOIN (
-                    SELECT product_id, isReceived as latest_isReceived
+                    SELECT product_id, isReceived as latest_isReceived, qty_purchased, qty_received
                     FROM inventory
                     WHERE (product_id, id) IN (
                     SELECT product_id, MAX(id) as id
@@ -524,7 +524,7 @@ class InventoryFacade extends DBConnection
     }
     public function save_order($formData)
     {
-        $isPaid = filter_var($formData['isPaid'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
+        $isPaid = $formData['isPaid'];
         $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
         $date_purchased = date('Y-m-d', strtotime($formData['date_purchased']));
         $po_number = $formData['po_number'];
@@ -551,21 +551,27 @@ class InventoryFacade extends DBConnection
 
             $order_id = $formData['order_id'];
         } else {
-            if (!$this->verify_order($po_number)) {
-                $sqlStatement = $this->connect()->prepare("INSERT INTO orders (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice) 
-                                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            if (!$this->verify_order($po_number)) 
+            {
+                $sql = "INSERT INTO orders 
+                        (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice) 
+                        VALUES 
+                        (:isPaid, :supplier_id, :date_purchased, :po_number, :price, :order_type, :totalTax, :totalQty, :totalPrice)";
 
-                $sqlStatement->bindParam(1, $isPaid, PDO::PARAM_STR);
-                $sqlStatement->bindParam(2, $supplier_id, PDO::PARAM_STR);
-                $sqlStatement->bindParam(3, $date_purchased, PDO::PARAM_STR);
-                $sqlStatement->bindParam(4, $po_number, PDO::PARAM_STR);
-                $sqlStatement->bindParam(5, $price, PDO::PARAM_STR);
-                $sqlStatement->bindParam(6, $order_type, PDO::PARAM_STR);
-                $sqlStatement->bindParam(7, $totalTax, PDO::PARAM_STR);
-                $sqlStatement->bindParam(8, $totalQty, PDO::PARAM_STR);
-                $sqlStatement->bindParam(9, $totalPrice, PDO::PARAM_STR);
-                $sqlStatement->execute();
+                $sqlStatement = $this->connect()->prepare($sql);
+                $params = [
+                    ':isPaid' => $isPaid,
+                    ':supplier_id' => $supplier_id,
+                    ':date_purchased' => $date_purchased,
+                    ':po_number' => $po_number,
+                    ':price' => $price,
+                    ':order_type' => $order_type,
+                    ':totalTax' => $totalTax,
+                    ':totalQty' => $totalQty,
+                    ':totalPrice' => $totalPrice,
+                ];
 
+                $sqlStatement->execute($params);
                 $order_id = $this->get_lastOrderData()['id'];
             }
             if($order_id > 0)
@@ -650,11 +656,12 @@ class InventoryFacade extends DBConnection
         $is_received = $formData['is_received'] !== 0 ? true : false;
         // $serializedFormData = $formData['receive_form'];
         $po_number = $formData["po_number"];
-      
+        $isPaid = $formData["isPaid"];
         foreach ($tbl_data as $row) 
         {
             $inventory_id = $row["inventory_id"];
             $qty_received = $row["qty_received"];
+    
             $expired_date = "";
             if($row["date_expired"] !== "")
             {
@@ -697,31 +704,34 @@ class InventoryFacade extends DBConnection
                     $product_info = $this->get_productInfoByInventoryId($inventory_id);
                     $product_id = $product_info['prod_id'];
 
-                    $expense_quantity = $qty_received;
-                    $expense_type = "PURCHASED ORDER";
-                    $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
-                    $invoice_number = $po_number;
-                    $price = $product_info['amount_beforeTax'];
-                    $total_amount = $expense_quantity * $price;
-                    $date_of_transaction = date('Y-m-d');
-                    $uom_id_expense = $this->get_productInfo($product_id)['uom_id'];
+                    if($isPaid === 0)
+                    {
+                        $expense_quantity = $qty_received;
+                        $expense_type = "PURCHASED ORDER";
+                        $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
+                        $invoice_number = $po_number;
+                        $price = $product_info['amount_beforeTax'];
+                        $total_amount = $expense_quantity * $price;
+                        $date_of_transaction = date('Y-m-d');
+                        $uom_id_expense = $this->get_productInfo($product_id)['uom_id'];
+    
+                        $expense_stmt = $this->connect()->prepare("
+                            INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )
+                        ");
+    
+                        $expense_stmt->bindParam(1, $product_id, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(3, $expense_type, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(4, $expense_quantity, PDO::PARAM_INT);
+                        $expense_stmt->bindParam(5, $uom_id_expense, PDO::PARAM_INT);
+                        $expense_stmt->bindParam(6, $supplier_id, PDO::PARAM_INT);
+                        $expense_stmt->bindParam(7, $invoice_number, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(8, $price, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(9, $total_amount, PDO::PARAM_STR);
+                        $expense_stmt->execute();
+                    }
 
-                    $expense_stmt = $this->connect()->prepare("
-                        INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )
-                    ");
-
-                    $expense_stmt->bindParam(1, $product_id, PDO::PARAM_STR);
-                    $expense_stmt->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
-                    $expense_stmt->bindParam(3, $expense_type, PDO::PARAM_STR);
-                    $expense_stmt->bindParam(4, $expense_quantity, PDO::PARAM_INT);
-                    $expense_stmt->bindParam(5, $uom_id_expense, PDO::PARAM_INT);
-                    $expense_stmt->bindParam(6, $supplier_id, PDO::PARAM_INT);
-                    $expense_stmt->bindParam(7, $invoice_number, PDO::PARAM_STR);
-                    $expense_stmt->bindParam(8, $price, PDO::PARAM_STR);
-                    $expense_stmt->bindParam(9, $total_amount, PDO::PARAM_STR);
-                    $expense_stmt->execute();
-                    
                     if($qty_received > 0) {$qty_received = "+".$qty_received;}
                     $stmt = $this->connect()->prepare("UPDATE products SET product_stock = product_stock + :new_stock WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
@@ -738,8 +748,8 @@ class InventoryFacade extends DBConnection
         
                     $stmt->bindParam(1, $product_id, PDO::PARAM_INT);
                     $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-                    $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
                     $stmt->bindParam(4, $qty_received, PDO::PARAM_STR); 
+                    $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
                     $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
                     $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
                     $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
@@ -1028,7 +1038,35 @@ class InventoryFacade extends DBConnection
                     $product_sql->bindParam(":id", $product_id);
                     $product_sql->execute();
 
-                  
+                    $isPaid = $order_data['isPaid'] === 1;
+
+                    if($isPaid)
+                    {
+                        $expense_quantity = $quantity;
+                        $expense_type = "PURCHASED ORDER";
+                        $supplier_id = $order_data['supplier_id'];
+                        $invoice_number = $order_data['po_number'];
+                        $price = $amount_beforeTax;
+                        $total_amount = $expense_quantity * $price;
+                        $date_of_transaction = date('Y-m-d');
+                        $uom_id_expense = $this->get_productInfo($product_id)['uom_id'];
+
+                        $expense_stmt = $this->connect()->prepare("
+                            INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )
+                        ");
+
+                        $expense_stmt->bindParam(1, $product_id, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(3, $expense_type, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(4, $expense_quantity, PDO::PARAM_INT);
+                        $expense_stmt->bindParam(5, $uom_id_expense, PDO::PARAM_INT);
+                        $expense_stmt->bindParam(6, $supplier_id, PDO::PARAM_INT);
+                        $expense_stmt->bindParam(7, $invoice_number, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(8, $price, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(9, $total_amount, PDO::PARAM_STR);
+                        $expense_stmt->execute();
+                    }
                 }
             }
             return [
@@ -1047,7 +1085,7 @@ class InventoryFacade extends DBConnection
     }
     public function get_orderData($order_id)
     {
-        $sql = "SELECT id, po_number
+        $sql = "SELECT *
                 FROM orders
                 WHERE orders.id = :order_id";
 
