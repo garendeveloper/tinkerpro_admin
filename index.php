@@ -303,6 +303,10 @@ body, div, h1, h2, h3, h4, h5, p{
   .topValue{
     font-size: 0.7rem;
   }
+  #net_income h1{
+    font-family: Century Gothic;
+    font-size: 3.5rem; 
+  }
 }
 
 @media (max-width: 992px) {
@@ -311,6 +315,10 @@ body, div, h1, h2, h3, h4, h5, p{
   }
   .topValue{
     font-size: 0.5rem;
+  }
+  #net_income h1{
+    font-family: Century Gothic;
+    font-size: 2.5rem; 
   }
 }
 
@@ -321,6 +329,10 @@ body, div, h1, h2, h3, h4, h5, p{
   .topValue{
     font-size: 0.3rem;
   }
+  #net_income h1{
+    font-family: Century Gothic;
+    font-size: 1.5rem; 
+  }
 }
 
 @media (max-width: 576px) {
@@ -329,6 +341,10 @@ body, div, h1, h2, h3, h4, h5, p{
   }
   .topValue{
     font-size: 0.1rem;
+  }
+  #net_income h1{
+    font-family: Century Gothic;
+    font-size: 0.5rem; 
   }
 }
 #tbl_top_products td{
@@ -428,7 +444,7 @@ body, div, h1, h2, h3, h4, h5, p{
             </div>
             <div class="col-12 col-md-4">
               <div class="border p-3 col1">
-                <div class="header-container">
+                <div class="header-container" id = "hs_data">
                   <h5>Hourly Sales</h5>
                   <select name="hourly_sales" id="hourly_sales" class = "trigger_reports" style=" color: #ffff; width: 100px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
                     <option>Amount</option>
@@ -707,6 +723,7 @@ $('.custom_btns').on('click', function () {
         },
         success: function(responseData)
         {
+          console.log(responseData['data']);
           if(responseData['data'].length > 0)
           {
             var tblRows = [];
@@ -729,11 +746,10 @@ $('.custom_btns').on('click', function () {
               totalCount = i+1;
               
             }
+  
             $("#top_products_in_table").hide();
             $("#tbl_dashboard").show();
-            var total_net_income = totalSales - responseData['total_expense_by_period'];
-            total_net_income = total_net_income < 0 ? formatNegativeWithCommas(total_net_income) : formatAmount(total_net_income);
-            $("#net_income").html("<h1>"+total_net_income+"</h1>");
+          
             $("#tbl_top_products tbody").html(html);
           
             $("#top_products_data").html('<canvas id="myDoughnutChart"></canvas>');
@@ -757,12 +773,22 @@ $('.custom_btns').on('click', function () {
             const ctx = document.getElementById('myDoughnutChart').getContext('2d');
             new Chart(ctx, config);
           }
+          if(responseData['top_expensive_by_period'] !== 0)
+          {
+            var total_net_income = totalSales - responseData['total_expense_by_period'];
+            total_net_income = total_net_income < 0 ? formatNegativeWithCommas(total_net_income) : formatAmount(total_net_income);
+            $("#net_income").html("<h1>"+total_net_income+"</h1>");
+          }
           else
           {
             $("#top_products_in_table").show();
-            $("#tbl_dashboard").hide();
+            $("#tbl_dashboard").hide();    
             $("#top_products_data").html('<p>No data to display</p>');
-            $("#net_income").html('<p>No data to display</p>');
+            if(responseData['top_expensive_by_period'] === 0)
+            {
+              $("#net_income").html('<p>No data to display</p>');
+            }
+           
           }
         }
       })
@@ -802,13 +828,16 @@ $('.custom_btns').on('click', function () {
       var start_date = $("#per_start_date").val();
       var end_date = $("#per_end_date").val();
 
-     
+      // $("#hourly_sales_data").hide();
+      // $("#hs_data").show();
       axios.get('api.php?action=get_salesDataByHour&start_date=' + start_date + '&end_date='+end_date)
           .then(function (response) {
               const salesData = response.data.salesData;
               const labels = response.data.labels;
-              console.log(labels)
-              if(salesData !== 0)
+              var allZeros = salesData.every(function(element) {
+                  return element === 0;
+              });
+              if(!allZeros)
               {
                 show_allTotalSales($("#hourly_sales").val());
                 $("#hourly_sales_data").html('<canvas id="hourlySalesChart"  style="height: 50px; width: 50px;" class="chartjs-render-monitor"></canvas>');
