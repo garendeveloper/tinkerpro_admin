@@ -26,9 +26,8 @@ class DashboardFacade extends DBConnection
     }
     public function get_allTopProducts($item, $start_date, $end_date)
     {
-        $start_date = date("Y-m-d", strtotime($start_date));
+        $start_date = $this->convertDateFormat($start_date);
         $end_date = $this->convertDateFormat($end_date);
-  
     
         $top_products = $this->query_top_products($start_date, $end_date);
 
@@ -48,7 +47,7 @@ class DashboardFacade extends DBConnection
         usort($tp_array, function($a, $b) {
             return $b['total_paid_amount'] - $a['total_paid_amount'];
         });
-        $data = array_slice($tp_array, 0, 5);
+        $data = array_slice($tp_array, 0, $item);
         return [
             'data'=> $data,
             'total_sales_by_period' => $total_sales_by_period,
@@ -58,7 +57,7 @@ class DashboardFacade extends DBConnection
     }
     public function get_salesDataByHour($start_date, $end_date)
     {
-        $start_date = date("Y-m-d", strtotime($start_date));
+        $start_date = $this->convertDateFormat($start_date);
         $end_date = $this->convertDateFormat($end_date);
         
         $labels = [
