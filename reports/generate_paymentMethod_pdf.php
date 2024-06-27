@@ -6,6 +6,15 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 
 use TCPDF;
 
+$pdfFolder = __DIR__ . '/../assets/pdf/payment_method/';
+
+$files = glob($pdfFolder . '*'); 
+foreach ($files as $file) {
+    if (is_file($file)) {
+        unlink($file); 
+    }
+}
+
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
@@ -25,12 +34,18 @@ $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate,$exclude);
+$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
 
-$pdf = new TCPDF();
+$paperSize = 'A4'; 
+
+if ($paperSize == 'A4') {
+    $pageWidth = 210;
+    $pageHeight = 297;
+}
+$pdf = new TCPDF('L', PDF_UNIT, array($pageWidth, $pageHeight), true, 'UTF-8', false);
 
 
 $pdf->SetCreator('TinkerPro Inc.');
@@ -117,7 +132,7 @@ $pdf->SetDrawColor(192, 192, 192);
 $pdf->SetLineWidth(0.3); 
 
 $header = array( 'Date', 'Cash', 'E-Wallet', 'Credit/Debit Cards', 'Credit','Coupons', 'Total(Php)');
-$headerWidths = array( 25, 25, 25, 35, 25, 25, 30);
+$headerWidths = array( 40, 40, 40, 40, 40, 40, 40);
 $maxCellHeight = 5; 
 
 $hexColor = '#F5F5F5';
@@ -143,23 +158,23 @@ $totalCoupons = 0;
 $pdf->SetFont('', '', 10); 
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $totalAmount += $row['total_amount'];
-    $totalCash += $row['cash_total'];
-    $totalEwallet += $row['e_wallet_total'];
-    $totalCC += $row['cdcards_total'];
-    $totalCoupons += $row['coupons_total'];
-    $totalCredit += $row['credit_total'];
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['payment_date'] !== null ? date('M j, Y', strtotime($row['payment_date'])) : '', $headerWidths[0]));
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $row['payment_date'] !== null ? date('M j, Y', strtotime($row['payment_date'])) : '', 1, 0, 'L');    
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['cash_total'], $headerWidths[1]));
-    $pdf->Cell($headerWidths[1], $maxCellHeight, number_format($row['cash_total'], 2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['e_wallet_total'], $headerWidths[2]));
-    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['e_wallet_total'], 2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['cdcards_total'], $headerWidths[3]));
-    $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['cdcards_total'], 2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['credit_total'], $headerWidths[4]));
-    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['credit_total'], 2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['coupons_total'], $headerWidths[5]));
-    $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['coupons_total'], 2), 1, 0, 'R');
+    $totalCash += $row['cash'];
+    $totalEwallet += $row['ewallet'];
+    $totalCC += $row['cc'];
+    $totalCoupons += $row['coupon'];
+    $totalCredit += $row['credit'];
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['date'] !== null ? date('M j, Y', strtotime($row['date'])) : '', $headerWidths[0]));
+    $pdf->Cell($headerWidths[0], $maxCellHeight, $row['date'] !== null ? date('M j, Y', strtotime($row['date'])) : '', 1, 0, 'L');    
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['cash'], $headerWidths[1]));
+    $pdf->Cell($headerWidths[1], $maxCellHeight, number_format($row['cash'], 2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['ewallet'], $headerWidths[2]));
+    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['ewallet'], 2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['cc'], $headerWidths[3]));
+    $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['cc'], 2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['credit'], $headerWidths[4]));
+    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['credit'], 2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['coupon'], $headerWidths[5]));
+    $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['coupon'], 2), 1, 0, 'R');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_amount'], $headerWidths[6]));
     $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($row['total_amount'], 2), 1, 0, 'R');
     $pdf->Ln();
@@ -175,19 +190,16 @@ $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($totalCredit, 2), 1, 
 $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($totalCoupons, 2), 1, 0, 'R'); 
 $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
-$pdf->SetFont('', 'I', 11); 
+$pdf->SetFont('', 'I', 12); 
 
-if($exclude == 0){
-    $pdf->Cell(0, 10, "NOTE: This report includes transactions for refunds and exchanges.***", 0, 'L');
-}else{
-    $pdf->Cell(0, 10, "NOTE: This report does not include transactions for refunds and exchanges.***", 0, 'L');
-}
+
+    $pdf->Cell(0, 10, "NOTE: This report does not include transactions for refunds and returns.***", 0, 'L');
+
+
+
+$pdfPath = $pdfFolder . 'paymentMethodList.pdf';
+$pdf->Output($pdfPath, 'F');
 
 $pdf->Output('paymentMethodList.pdf', 'I');
-$pdfPath = __DIR__ . '/../assets/pdf/payment_method/paymentMethodList.pdf';
-if (file_exists($pdfPath)) {
-    unlink($pdfPath);
-}
 
-$pdf->Output($pdfPath, 'F');
  ?>
