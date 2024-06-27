@@ -192,7 +192,7 @@ table, .stockhistory_form{
               <tr>
                 <th>Document Type</th>
                 <th>Document</th>
-                <th>Customer</th>
+                <th>User</th>
                 <th>Date</th>
                 <th>Stock Date</th>
                 <th>Quantity</th>

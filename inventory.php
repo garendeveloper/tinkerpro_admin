@@ -1632,10 +1632,10 @@ include ('./layout/admin/table-pagination-css.php');
                         }
                     });
                 }
-                // $(".inventoryCard table").attr('id') === "tbl_orders" ? show_allOrders() : show_allInventories();
+                $(".inventoryCard").html("");
                 $(".grid-container button").removeClass('active');
-                $("#inventories").addClass('active');
-                show_allInventories();
+                $("#purchase-order").addClass('active');
+                show_allOrders();
               }
               else {
                 $.each(response.errors, function (key, value) {
@@ -1895,8 +1895,12 @@ include ('./layout/admin/table-pagination-css.php');
             success: function (response) {
               if (response.status) {
                 show_sweetReponse(response.msg);
-                show_expiration();
                 hideModals();
+                $(".inventoryCard").html("");
+                $(".grid-container button").removeClass('active');
+                $("#expiration").addClass('active');
+                show_expiration();
+                show_expiredProducts();
               }
             }
           })
@@ -1922,11 +1926,17 @@ include ('./layout/admin/table-pagination-css.php');
               user_name: $("#first_name").val()+" "+$("#last_name").val(),
             },
             success: function (response) {
-              if (response.status) {
+              if (response.status) 
+              {
                 show_sweetReponse(response.msg);
                 var po_number = $("#q_product").val();
                 $("#tbl_quickInventories tbody").empty();
                 hideModals();
+
+                $(".inventoryCard").html("");
+                $(".grid-container button").removeClass('active');
+                $("#inventories").addClass('active');
+                show_allInventories();
               }
             }
           })
@@ -1962,8 +1972,12 @@ include ('./layout/admin/table-pagination-css.php');
                   $("#tbl_inventory_count tbody").empty();
                   $("#inventorycount_form")[0].reset();
                   show_inventory_count_reference_no();
-                  show_allInventories();
                   hideModals();
+
+                  $(".inventoryCard").html("");
+                  $(".grid-container button").removeClass('active');
+                  $("#inventory-count").addClass('active');
+                  show_allInventoryCounts();
                 }
               }
             })
@@ -2038,8 +2052,12 @@ include ('./layout/admin/table-pagination-css.php');
                       $("#footer_lossand_damages thead").find("#overall_total_cost").html("₱ 0.00");
                       $("#loss_and_damage_note").val("");
                       show_reference_no();
-                      show_allInventories();
                       hideModals();
+
+                      $(".inventoryCard").html("");
+                      $(".grid-container button").removeClass('active');
+                      $("#loss-damage").addClass('active');
+                      show_allLossAndDamagesInfo();
                     }
                   }
                 })
@@ -3234,27 +3252,15 @@ include ('./layout/admin/table-pagination-css.php');
         $("#po_form #product").focus();
       }
     })
+    $(document).on('click', function(event) {
+      var $modal = $('#optionModal');
+      if (!$modal.is(event.target) && $modal.has(event.target).length === 0) {
+        $modal.hide(); 
+      }
+    });
   </script>
   <script>
-    // $(document).on('input', '#product', function () {
-    //   var searchTerm = $(this).val().trim().toLowerCase();
-    //   $('.search-dropdown-item').each(function () {
-    //     var text = $(this).text().trim().toLowerCase();
-    //     if (text.includes(searchTerm)) {
-    //       $(this).show();
-    //     }
-    //     else {
-    //       $(this).hide();
-    //     }
-    //   });
-    //   $("#d_products").css('display', searchTerm ? 'block' : 'none');
-    // });
-    // $(document).on('click', '.search-dropdown-item', function () {
-    //   var clickedItem = $(this);
-    //   $("#product").val(clickedItem.text());
-    //   $("#d_products").css('display', 'none');
-    // });
-  
+
     $(document).on('click', '.search-dropdown-item1', function () {
       var clickedItem = $(this);
       $("#supplier").val(clickedItem.text());

@@ -121,6 +121,48 @@ class ExpenseFacade extends DBConnection
         }
     
     }
+    public function get_allExpensesByGroup($startDate, $endDate, $singleDate)
+    {
+        $stmt = $this->connect()->prepare(" SELECT 
+                                            CASE 
+                                                WHEN expense_type = 'PURCHASED ORDER' THEN 'Cost of goods sold'
+                                                ELSE expense_type
+                                            END AS expense_type,
+                                            ROUND(SUM(expenses.total_amount), 2) AS expense_amount
+                                        FROM expenses
+                                        WHERE 
+                                            (:singleDateParam IS NOT NULL AND date_of_transaction = :singleDateParam) OR
+                                            (:startDateParam IS NOT NULL AND :endDateParam IS NOT NULL AND date_of_transaction BETWEEN :startDateParam AND :endDateParam) OR
+                                            (:singleDateParam IS NULL AND :startDateParam IS NULL AND :endDateParam IS NULL AND date_of_transaction = CURDATE())
+                                        GROUP BY 
+                                            CASE 
+                                                WHEN expense_type = 'PURCHASED ORDER' THEN 'Cost of goods sold'
+                                                ELSE expense_type
+                                            END;");
+    
+        $params = [];
+    
+        if (!empty($singleDate)) {
+            $params[':singleDateParam'] = $singleDate;
+        } else {
+            $params[':singleDateParam'] = null;
+        }
+    
+        if (!empty($startDate)) {
+            $params[':startDateParam'] = $startDate;
+        } else {
+            $params[':startDateParam'] = null;
+        }
+    
+        if (!empty($endDate)) {
+            $params[':endDateParam'] = $endDate;
+        } else {
+            $params[':endDateParam'] = null;
+        }
+    
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     public function get_allExpenses($start_date, $end_date)
     {
         $requestData = $_REQUEST;

@@ -2525,7 +2525,70 @@ function generatePdf(id){
           });
     });
   }
+  else if(id == 11){
+    $('#PDFBtn').off('click').on('click',function() {
+      var selectedProduct =  getSelectedProductValue()
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
 
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/generate_income_statement_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+              var blob = new Blob([response], { type: 'application/pdf' });
+              var url = window.URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href = url;
+              a.download = 'income_statement.pdf';
+              document.body.appendChild(a);
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+    });
+  }
   else if (id == 28){
     $('#PDFBtn').off('click').on('click',function() {
       var customerSelect = document.getElementById('customersSelect')
@@ -5203,7 +5266,73 @@ function printDocuments(id){
           }
           });
   });
-  }else if(id == 28){
+  }else if(id == 11){
+    $('#printDocu').off('click').on('click',function() {
+      var selectedProduct =  getSelectedProductValue()
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+          url: './reports/generate_income_statement_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+           data: {
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+          success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+          },
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+          });
+  });
+  }
+  else if(id == 28){
     $('#printDocu').off('click').on('click',function() {
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
@@ -6718,7 +6847,7 @@ function showReports(id){
             pdfFile.removeAttribute('hidden');
             
             var timestamp = new Date().getTime();
-            var pdfUrl = './assets/pdf/salesReport/income_statement.pdf?t=' + timestamp;
+            var pdfUrl = './assets/pdf/income_statement/income_statement.pdf?t=' + timestamp;
             
             $('#pdfViewer').attr('src', pdfUrl);
           } 

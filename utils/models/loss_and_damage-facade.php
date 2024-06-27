@@ -205,4 +205,39 @@
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result;
         }
+        public function get_consolidatedLossAndDamages($startDate, $endDate, $singleDate)
+        {
+            $stmt = $this->connect()->prepare("SELECT SUM(loss_and_damages.total_cost) AS totalAmountDamage
+                                                FROM loss_and_damages
+                                                INNER JOIN products ON products.id = loss_and_damages.inventory_id
+                                                INNER JOIN loss_and_damage_info ON loss_and_damage_info.id = loss_and_damages.loss_and_damage_info_id
+                                                WHERE 
+                                                (:singleDateParam IS NOT NULL AND loss_and_damage_info.date_transact = :singleDateParam) OR
+                                                (:startDateParam IS NOT NULL AND :endDateParam IS NOT NULL AND loss_and_damage_info.date_transact BETWEEN :startDateParam AND :endDateParam) OR
+                                                (:singleDateParam IS NULL AND :startDateParam IS NULL AND :endDateParam IS NULL AND loss_and_damage_info.date_transact = CURDATE())");
+        
+            $params = [];
+        
+            if (!empty($singleDate)) {
+                $params[':singleDateParam'] = $singleDate;
+            } else {
+                $params[':singleDateParam'] = null;
+            }
+        
+            if (!empty($startDate)) {
+                $params[':startDateParam'] = $startDate;
+            } else {
+                $params[':startDateParam'] = null;
+            }
+        
+            if (!empty($endDate)) {
+                $params[':endDateParam'] = $endDate;
+            } else {
+                $params[':endDateParam'] = null;
+            }
+        
+            $stmt->execute($params);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
     }

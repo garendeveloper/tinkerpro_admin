@@ -337,7 +337,7 @@ class InventoryFacade extends DBConnection
             $stmt->bindParam(":new_stock", $newqty); 
             $stmt->bindParam(":id", $inventory_id); 
             $stmt->execute();
-
+            
             $currentStock = 0;
             $newqty = "+".$newqty;
             $stock_customer = $formData['user_name'];
@@ -348,7 +348,7 @@ class InventoryFacade extends DBConnection
 
             $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
             $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-            $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
+            $stmt->bindParam(3, $newqty, PDO::PARAM_STR); 
             $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
             $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
             $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 

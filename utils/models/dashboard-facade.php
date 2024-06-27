@@ -853,4 +853,46 @@ class DashboardFacade extends DBConnection
     {
         return count(array_filter($array)) === 0;
     }
+    public function get_allRevenues($startDate, $endDate, $singleDate)
+    {
+        $sql = "SELECT 
+                    ROUND(SUM(total_sales), 2) AS total_sales,
+                    ROUND(JSON_UNQUOTE(JSON_EXTRACT(all_data, '$.gross_amount')), 2) AS gross_amount,
+                    ROUND(JSON_UNQUOTE(JSON_EXTRACT(all_data, '$.vatable_sales')), 2) AS vatable_sales,
+                    ROUND(JSON_UNQUOTE(JSON_EXTRACT(all_data, '$.less_discount')), 2) AS less_discount,
+                    ROUND(JSON_UNQUOTE(JSON_EXTRACT(all_data, '$.less_return_amount')), 2) AS less_return_amount,
+                    ROUND(JSON_UNQUOTE(JSON_EXTRACT(all_data, '$.less_refund_amount')), 2) AS less_refund_amount
+                FROM 
+                    z_read
+                WHERE 
+                    (:singleDateParam IS NOT NULL AND DATE(date_time) = :singleDateParam) OR
+                    (:startDateParam IS NOT NULL AND :endDateParam IS NOT NULL AND DATE(date_time) BETWEEN :startDateParam AND :endDateParam) OR
+                    (:singleDateParam IS NULL AND :startDateParam IS NULL AND :endDateParam IS NULL AND DATE(date_time) = CURDATE())
+                ";
+        
+        $params = [];
+        
+        if (!empty($singleDate)) {
+            $params[':singleDateParam'] = $singleDate;
+        } else {
+            $params[':singleDateParam'] = null;
+        }
+        
+        if (!empty($startDate)) {
+            $params[':startDateParam'] = $startDate;
+        } else {
+            $params[':startDateParam'] = null;
+        }
+        
+        if (!empty($endDate)) {
+            $params[':endDateParam'] = $endDate;
+        } else {
+            $params[':endDateParam'] = null;
+        }
+        
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute($params);
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
