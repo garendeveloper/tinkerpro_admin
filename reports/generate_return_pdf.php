@@ -249,7 +249,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $cartDiscounts[$referenceNum] =   $cartDiscount;
     $cartRemove = $amountPerRef[$referenceNum] * $cartDiscounts[$referenceNum];
 
-    $overAllCart += $row['amount']-$itemDiscount-$discount-($row['amount']*$cartDiscount);
+    $overAllCart += $row['amount'];
 }
 }
 
@@ -288,7 +288,7 @@ $pdf->Ln(20);
 $pdf->SetFont('', 'B', 12);
 $pdf->Cell($headerWidths[0], $maxCellHeight, 'Total Returned Amount', 1, 0, 'L');
 $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
-$pdf->Cell($headerWidths[2]+$headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format($overAllCart,2), 1, 0, 'R');
+$pdf->Cell($headerWidths[2]+$headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format($overAllCart-$discountsData[$previousRefNum]-$itemDiscounts[$previousRefNum]-$cartRemove,2), 1, 0, 'R');
 
 $pdfPath = $pdfFolder . 'returnAndExchangeList.pdf';
 $pdf->Output($pdfPath, 'F');

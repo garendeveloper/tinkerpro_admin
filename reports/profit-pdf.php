@@ -152,10 +152,11 @@ $totalCost = 0;
 $totalT = 0 ;
 $totalProfit = 0;
 $grossAmount = 0;
+$totalCart=0;
 $pdf->SetFont('', '', 8); 
 
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-   
+    $totalCart += $row['totalCartDiscountPerItem'];
     $totalT += $row['amount']?? 0;
     $totalCost = $row['newQty'] * $row['cost'];
     $grossAmount = $row['grossAmount'] - $row['itemDiscount'] - $row['overallDiscounts'];
@@ -188,6 +189,22 @@ $pdf->Cell($headerWidths[3] , $maxCellHeight,  '', 1, 0, 'R');
 $pdf->Cell($headerWidths[4] , $maxCellHeight,  '', 1, 0, 'R'); 
 $pdf->Cell($headerWidths[5] , $maxCellHeight,  '', 1, 0, 'R'); 
 $pdf->Cell($headerWidths[6] , $maxCellHeight,  number_format($totalT,2), 1, 0, 'R'); 
+$pdf->Cell($headerWidths[7] , $maxCellHeight,  number_format($totalProfit,2), 1, 0, 'R'); 
+$pdf->Ln(); 
+$pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight, 'Total Cart Discounts', 1, 0, 'L'); 
+$pdf->Cell( $headerWidths[3], $maxCellHeight, '', 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[4], $maxCellHeight, '', 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[5], $maxCellHeight, '', 1, 0, 'R');
+$pdf->SetTextColor(255, 0, 0); 
+$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalCart, 2), 1, 0, 'R'); 
+$pdf->SetTextColor(0);
+$pdf->Cell( $headerWidths[7], $maxCellHeight, '', 1, 0, 'R');
+$pdf->Ln();
+$pdf->Cell($headerWidths[0] + $headerWidths[1]  + $headerWidths[2] , $maxCellHeight, 'Grand Total', 1, 0, 'L'); 
+$pdf->Cell($headerWidths[3] , $maxCellHeight,  '', 1, 0, 'R'); 
+$pdf->Cell($headerWidths[4] , $maxCellHeight,  '', 1, 0, 'R'); 
+$pdf->Cell($headerWidths[5] , $maxCellHeight,  '', 1, 0, 'R'); 
+$pdf->Cell($headerWidths[6] , $maxCellHeight,  number_format($totalT-$totalCart,2), 1, 0, 'R'); 
 $pdf->Cell($headerWidths[7] , $maxCellHeight,  number_format($totalProfit,2), 1, 0, 'R'); 
 $pdf->SetFont('', 'I', 12); 
 $pdf->Ln(); 
