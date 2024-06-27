@@ -159,6 +159,7 @@ $totalCart = 0;
 $pdf->SetFont('', '', 10); 
 
 while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
+    $totalCart += $row['totalCartDiscountPerItem'];
     $totalCost += $row['cost'];
     $totalTax += $row['totalVat'];
     $totalPrice += $row['prod_price'];
@@ -190,7 +191,23 @@ $pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight,
 $pdf->Cell( $headerWidths[3], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
 $pdf->Cell( $headerWidths[4], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
 $pdf->Cell( $headerWidths[5], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
-$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalAmount, 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format(  $totalAmount , 2), 1, 0, 'R'); 
+$pdf->Ln(); 
+
+$pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight, 'Total Cart Discounts', 1, 0, 'L'); 
+$pdf->Cell( $headerWidths[3], $maxCellHeight, '', 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[4], $maxCellHeight, '', 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[5], $maxCellHeight, '', 1, 0, 'R');
+$pdf->SetTextColor(255, 0, 0); 
+$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalCart, 2), 1, 0, 'R'); 
+$pdf->SetTextColor(0);
+$pdf->Ln();
+
+$pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight, 'Grand Total', 1, 0, 'L'); 
+$pdf->Cell( $headerWidths[3], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[4], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[5], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalAmount-$totalCart, 2), 1, 0, 'R'); 
 $pdf->SetFont('', 'I', 12); 
 $pdf->Ln(); 
 $pdf->Cell(0, 12, "NOTE: The total amount in this report has deductions applied for all discounts, including cart, item, and other discounts.***", 0, 'L');

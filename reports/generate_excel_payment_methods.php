@@ -37,16 +37,16 @@ $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate,$exclude);
+$fetchRefund= $refundFacade->getPaymentMethod($singleDateData,$startDate,$endDate);
 
 $rowIndex = 2;
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $sheet->setCellValue('A' . $rowIndex, $row['payment_date']);
-    $sheet->setCellValue('B' . $rowIndex, $row['cash_total']);
-    $sheet->setCellValue('C' . $rowIndex, $row['e_wallet_total']);
-    $sheet->setCellValue('D' . $rowIndex, $row['cdcards_total']);
-    $sheet->setCellValue('E' . $rowIndex, $row['credit_total']);
-    $sheet->setCellValue('F' . $rowIndex, $row['coupons_total']);
+    $sheet->setCellValue('A' . $rowIndex, $row['date']);
+    $sheet->setCellValue('B' . $rowIndex, $row['cash']);
+    $sheet->setCellValue('C' . $rowIndex, $row['ewallet']);
+    $sheet->setCellValue('D' . $rowIndex, $row['cC']);
+    $sheet->setCellValue('E' . $rowIndex, $row['credit']);
+    $sheet->setCellValue('F' . $rowIndex, $row['coupon']);
     $sheet->setCellValue('G' . $rowIndex, $row['total_amount']);
     $rowIndex++;
 }

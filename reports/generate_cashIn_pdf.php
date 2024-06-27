@@ -127,11 +127,11 @@ $pdf->SetLineWidth(0.3);
 
 $groupedData = [];
 $totalDiscount = 0;
-
+$grandTotal = 0;
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $lastName = $row['last_name'];
     $firstName = $row['first_name'];
-   
+    $grandTotal += $row['amount'];
     if (!isset($groupedData[$lastName])) {
         $groupedData[$lastName] = [];
     }
@@ -177,8 +177,11 @@ foreach ($groupedData as $lastName => $userData) {
 
     $pdf->SetFont('', 'B', 10); 
     $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, 'C'); 
-    $pdf->Cell( $headerWidths[2] + $headerWidths[3] , $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
-    $pdf->Ln(); 
+    $pdf->Cell( $headerWidths[2] + $headerWidths[3] , $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R');
+    $pdf->Ln(15); 
+    $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Overall Total', 1, 0, 'C'); 
+    $pdf->Cell( $headerWidths[2] + $headerWidths[3] , $maxCellHeight, number_format($grandTotal , 2), 1, 0, 'R'); 
+    $pdf->Ln();
 }
 
 $pdfPath = $pdfFolder . 'cashEntriesList.pdf';

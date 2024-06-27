@@ -2927,857 +2927,58 @@ class OtherReportsFacade extends DBConnection {
         }
     }
 
-    public function getPaymentMethod( $singleDateData, $startDate, $endDate, $exclude ) {
-        if ( $exclude == 1 ) {
-
-            if ( $singleDateData && !$startDate && !$endDate ) {
-                $sql = "SELECT 
-            payments.id AS id,
-            transactions.payment_id,
-            transactions.is_paid,
-            transactions.is_void, 
-            SUM(DISTINCT payments.change_amount) AS change_amount,
-            DATE(payments.date_time_of_payment) AS payment_date,
-    GREATEST(
-        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) 
-        - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0) 
-        - CASE
-            WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) > rc.credit_amount THEN
-                rc.credit_amount
-            WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) <= rc.credit_amount THEN
-                (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount)
-            ELSE 
-                0
-        END, 
-        0
-    ) AS credit_total,
+    public function getPaymentMethod( $singleDateData, $startDate, $endDate) {
+        if($singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT 
+        SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS cash,
+        SUM(JSON_VALUE(all_data, '$.credit')) AS credit,
+        SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS ewallet,
+        SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS coupon,
+        SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS cc,
+        (SUM(JSON_VALUE(all_data, '$.cash_in_receive')) +   SUM(JSON_VALUE(all_data, '$.credit')) + SUM(JSON_VALUE(all_data, '$.totalEwallet')) +  SUM(JSON_VALUE(all_data, '$.totalCoupon')) +   SUM(JSON_VALUE(all_data, '$.totalCcDb'))) as total_amount,
+        DATE(date_time) as date
+        FROM z_read
+        WHERE DATE(date_time) = :singleDateData
+        GROUP BY DATE(date_time);";
     
-              GREATEST(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType = 'cash' THEN (jt.amount - payments.change_amount) 
-                        ELSE 0 
-                    END
-                ) 
-                - COALESCE(
-                    SUM(
-                        CASE 
-                            WHEN jt.paymentType = 'cash' THEN rf.refunded_amt 
-                            ELSE 0 
-                        END
-                    ), 0
-                )
-                - CASE
-                    WHEN rc.cash_amount > 0 AND rc.total_return_amount > rc.cash_amount THEN rc.cash_amount
-                    WHEN rc.cash_amount > 0 AND rc.total_return_amount <= rc.cash_amount THEN rc.total_return_amount
-                    ELSE 0
-                  END,
-                0
-            ) AS cash_total,
-              GREATEST(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount 
-                        ELSE 0 
-                    END
-                ) 
-                - COALESCE(
-                    SUM(
-                        CASE 
-                            WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN rf.refunded_amt 
-                            ELSE 0 
-                        END
-                    ), 0
-                )
-                - CASE
-                    WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount THEN rc.ewallet_amount
-                    WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount THEN rc.total_return_amount - rc.cash_amount
-                    ELSE 0
-                  END,
-                0
-            ) AS e_wallet_total,
-              GREATEST(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount 
-                        ELSE 0 
-                    END
-                ) 
-                - COALESCE(
-                    SUM(
-                        CASE 
-                            WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN rf.refunded_amt 
-                            ELSE 0 
-                        END
-                    ), 0
-                )
-                - CASE 
-                    WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) > rc.cc_amount THEN rc.cc_amount
-                    WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) <= rc.cc_amount THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount
-                    ELSE 0
-                  END,
-                0
-            ) AS cdcards_total,
-            GREATEST(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType = 'coupon' THEN jt.amount 
-                        ELSE 0 
-                    END
-                ) 
-                - COALESCE(
-                    SUM(
-                        CASE 
-                            WHEN jt.paymentType = 'coupon' THEN rf.refunded_amt 
-                            ELSE 0 
-                        END
-                    ), 0
-                )
-                - CASE
-                    WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.coupon_amount) THEN rc.coupon_amount
-                    WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.coupon_amount) THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount
-                    ELSE 0
-                  END,
-                0
-            ) AS coupons_total,
-        GREATEST(
-            (SUM(jt.amount) - SUM(DISTINCT payments.change_amount)) 
-            - COALESCE(SUM(rf.refunded_amt), 0) 
-            - COALESCE(rc.total_return_amount, 0),
-            0
-        ) AS total_amount,
-        
-        
-            COALESCE(rc.total_return_amount, 0) AS total_return_amount,
-            COALESCE(rc.cash_amount, 0) AS return_cash_amount,
-            CASE
-               WHEN rc.cash_amount > 0 AND (rc.total_return_amount > rc.cash_amount) THEN 
-               rc.cash_amount
-               WHEN rc.cash_amount > 0 AND (rc.total_return_amount <= rc.cash_amount) THEN
-               rc.total_return_amount
-            ELSE 0
-            END AS tobe_deducted_cash,
-            CASE
-               WHEN rc.ewallet_amount > 0 AND ((rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount) THEN
-               rc.ewallet_amount
-               WHEN rc.ewallet_amount > 0 AND ((rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount) THEN
-               rc.total_return_amount - rc.cash_amount
-               ELSE 0
-             END AS tobe_deducted_ewallet,
-                CASE 
-                WHEN rc.cc_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount ) > rc.cc_amount) THEN
-                rc.cc_amount
-              WHEN rc.cc_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount ) <= rc.cc_amount)  THEN
-              (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount )
-             ELSE 0
-            END AS tobe_deducted_cc,
-            CASE
-             WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.cc_amount) THEN
-                rc.coupon_amount
-              WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.cc_amount) THEN
-              (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount)
-              ELSE 0
-               END AS tobe_deducted_coupon,
-      CASE
-        WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) > rc.credit_amount THEN
-            rc.credit_amount
-        WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) <= rc.credit_amount THEN
-            (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount)
-        ELSE 
-            0
-    END AS tobe_deducted_credits
-    
-        FROM 
-            payments
-        CROSS JOIN JSON_TABLE(
-            payments.payment_details, '$[*]' COLUMNS (
-                paymentType VARCHAR(255) PATH '$.paymentType', 
-                amount DECIMAL(10, 2) PATH '$.amount'
-            )
-        ) AS jt
-        INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id 
-            FROM transactions 
-            WHERE is_paid = 1 AND is_void = 0
-        ) AS t ON payments.id = t.payment_id
-        LEFT JOIN (
-            SELECT payment_id, SUM(refunded_amt) AS refunded_amt
-            FROM refunded
-            GROUP BY payment_id
-        ) AS rf ON rf.payment_id = payments.id
-        LEFT JOIN (
-        SELECT 
-            re.payment_id as payment_id,
-            COALESCE(jt.cash_amount, 0) as cash_amount,
-            COALESCE(jt.credit_amount, 0) as credit_amount,
-            COALESCE(jt.gcash_amount, 0) as gcash_amount,
-            COALESCE(jt.maya_amount, 0) as maya_amount,
-            COALESCE(jt.alipay_amount, 0) as alipay_amount,
-            COALESCE(jt.grab_pay_amount, 0) as grab_pay_amount,
-            COALESCE(jt.shopee_pay_amount, 0) as shopee_pay_amount,
-            COALESCE(jt.ewallet_amount, 0) as ewallet_amount,
-            COALESCE(jt.visa_amount, 0) as visa_amount,
-            COALESCE(jt.master_card_amount, 0) as master_card_amount,
-            COALESCE(jt.discover_card_amount, 0) as discover_card_amount,
-            COALESCE(jt.american_express_card_amount, 0) as american_express_card_amount,
-            COALESCE(jt.jcb_card_amount, 0) as jcb_card_amount,
-            COALESCE(jt.cc_amount, 0) as cc_amount,
-            COALESCE(jt.coupon_amount, 0) as coupon_amount,
-            ROUND(SUM(re.return_amount), 2) AS total_return_amount
-        FROM 
-            return_exchange re
-        LEFT JOIN (
-            SELECT 
-                p.id as payment_id,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END, 0)) as coupon_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END, 0)) as cash_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END, 0)) as credit_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'gcash' THEN jt.amount ELSE 0 END, 0)) as gcash_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'maya' THEN jt.amount ELSE 0 END, 0)) as maya_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'alipay' THEN jt.amount ELSE 0 END, 0)) as alipay_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'grab pay' THEN jt.amount ELSE 0 END, 0)) as grab_pay_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'shopee pay' THEN jt.amount ELSE 0 END, 0)) as shopee_pay_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END, 0)) as ewallet_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'visa' THEN jt.amount ELSE 0 END, 0)) as visa_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'master_card' THEN jt.amount ELSE 0 END, 0)) as master_card_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'discover' THEN jt.amount ELSE 0 END, 0)) as discover_card_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'american_express' THEN jt.amount ELSE 0 END, 0)) as american_express_card_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'jcb' THEN jt.amount ELSE 0 END, 0)) as jcb_card_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType IN ('visa', 'master_card', 'discover', 'american_express', 'jcb') THEN jt.amount ELSE 0 END, 0)) as cc_amount
-            FROM 
-                payments p
-            CROSS JOIN JSON_TABLE(
-                p.payment_details, '$[*]' COLUMNS (
-                    paymentType VARCHAR(255) PATH '$.paymentType', 
-                    amount DECIMAL(10, 2) PATH '$.amount'
-                )
-            ) AS jt
-            GROUP BY 
-                p.id
-        ) jt ON jt.payment_id = re.payment_id
-        
-        ) AS rc ON rc.payment_id = payments.id
-       INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id,is_paid,is_void 
-        FROM transactions 
-        WHERE is_paid = 1 AND is_void = 0
-    ) AS transactions ON payments.id = transactions.payment_id
-        WHERE 
-            JSON_VALID(payments.payment_details) AND jt.amount != 0.00 
-            AND transactions.is_paid = 1 AND transactions.is_void = 0 AND  DATE(payments.date_time_of_payment) = :singleDateData
-        GROUP BY 
-           DATE(payment_date)
-        ORDER BY 
-            payment_date ASC;";
-
                 $sql = $this->connect()->prepare( $sql );
                 $sql->bindParam( ':singleDateData',  $singleDateData );
+    
                 $sql->execute();
                 return $sql;
-
-            } else if ( !$singleDateData && $startDate && $endDate ) {
-                $sql = "SELECT 
-            payments.id AS id,
-            transactions.payment_id,
-            transactions.is_paid,
-            transactions.is_void, 
-            SUM(DISTINCT payments.change_amount) AS change_amount,
-            DATE(payments.date_time_of_payment) AS payment_date,
-    GREATEST(
-        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) 
-        - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0) 
-        - CASE
-            WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) > rc.credit_amount THEN
-                rc.credit_amount
-            WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) <= rc.credit_amount THEN
-                (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount)
-            ELSE 
-                0
-        END, 
-        0
-    ) AS credit_total,
-    
-              GREATEST(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType = 'cash' THEN (jt.amount - payments.change_amount) 
-                        ELSE 0 
-                    END
-                ) 
-                - COALESCE(
-                    SUM(
-                        CASE 
-                            WHEN jt.paymentType = 'cash' THEN rf.refunded_amt 
-                            ELSE 0 
-                        END
-                    ), 0
-                )
-                - CASE
-                    WHEN rc.cash_amount > 0 AND rc.total_return_amount > rc.cash_amount THEN rc.cash_amount
-                    WHEN rc.cash_amount > 0 AND rc.total_return_amount <= rc.cash_amount THEN rc.total_return_amount
-                    ELSE 0
-                  END,
-                0
-            ) AS cash_total,
-              GREATEST(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount 
-                        ELSE 0 
-                    END
-                ) 
-                - COALESCE(
-                    SUM(
-                        CASE 
-                            WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN rf.refunded_amt 
-                            ELSE 0 
-                        END
-                    ), 0
-                )
-                - CASE
-                    WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount THEN rc.ewallet_amount
-                    WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount THEN rc.total_return_amount - rc.cash_amount
-                    ELSE 0
-                  END,
-                0
-            ) AS e_wallet_total,
-              GREATEST(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount 
-                        ELSE 0 
-                    END
-                ) 
-                - COALESCE(
-                    SUM(
-                        CASE 
-                            WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN rf.refunded_amt 
-                            ELSE 0 
-                        END
-                    ), 0
-                )
-                - CASE 
-                    WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) > rc.cc_amount THEN rc.cc_amount
-                    WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) <= rc.cc_amount THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount
-                    ELSE 0
-                  END,
-                0
-            ) AS cdcards_total,
-            GREATEST(
-                SUM(
-                    CASE 
-                        WHEN jt.paymentType = 'coupon' THEN jt.amount 
-                        ELSE 0 
-                    END
-                ) 
-                - COALESCE(
-                    SUM(
-                        CASE 
-                            WHEN jt.paymentType = 'coupon' THEN rf.refunded_amt 
-                            ELSE 0 
-                        END
-                    ), 0
-                )
-                - CASE
-                    WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.coupon_amount) THEN rc.coupon_amount
-                    WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.coupon_amount) THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount
-                    ELSE 0
-                  END,
-                0
-            ) AS coupons_total,
-        GREATEST(
-            (SUM(jt.amount) - SUM(DISTINCT payments.change_amount)) 
-            - COALESCE(SUM(rf.refunded_amt), 0) 
-            - COALESCE(rc.total_return_amount, 0),
-            0
-        ) AS total_amount,
+        }else if(!$singleDateData && $startDate && $endDate){
+            $sql = "SELECT 
+            SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS cash,
+            SUM(JSON_VALUE(all_data, '$.credit')) AS credit,
+            SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS ewallet,
+            SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS coupon,
+            SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS cc,
+            (SUM(JSON_VALUE(all_data, '$.cash_in_receive')) +   SUM(JSON_VALUE(all_data, '$.credit')) + SUM(JSON_VALUE(all_data, '$.totalEwallet')) +  SUM(JSON_VALUE(all_data, '$.totalCoupon')) +   SUM(JSON_VALUE(all_data, '$.totalCcDb'))) as total_amount,
+            DATE(date_time) as date
+            FROM z_read
+            WHERE DATE(date_time) BETWEEN :startDate AND :endDate
+            GROUP BY DATE(date_time);";
         
-        
-            COALESCE(rc.total_return_amount, 0) AS total_return_amount,
-            COALESCE(rc.cash_amount, 0) AS return_cash_amount,
-            CASE
-               WHEN rc.cash_amount > 0 AND (rc.total_return_amount > rc.cash_amount) THEN 
-               rc.cash_amount
-               WHEN rc.cash_amount > 0 AND (rc.total_return_amount <= rc.cash_amount) THEN
-               rc.total_return_amount
-            ELSE 0
-            END AS tobe_deducted_cash,
-            CASE
-               WHEN rc.ewallet_amount > 0 AND ((rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount) THEN
-               rc.ewallet_amount
-               WHEN rc.ewallet_amount > 0 AND ((rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount) THEN
-               rc.total_return_amount - rc.cash_amount
-               ELSE 0
-             END AS tobe_deducted_ewallet,
-                CASE 
-                WHEN rc.cc_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount ) > rc.cc_amount) THEN
-                rc.cc_amount
-              WHEN rc.cc_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount ) <= rc.cc_amount)  THEN
-              (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount )
-             ELSE 0
-            END AS tobe_deducted_cc,
-            CASE
-             WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.cc_amount) THEN
-                rc.coupon_amount
-              WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.cc_amount) THEN
-              (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount)
-              ELSE 0
-               END AS tobe_deducted_coupon,
-      CASE
-        WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) > rc.credit_amount THEN
-            rc.credit_amount
-        WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) <= rc.credit_amount THEN
-            (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount)
-        ELSE 
-            0
-    END AS tobe_deducted_credits
+                    $sql = $this->connect()->prepare( $sql );
+                    $sql->bindParam( ':startDate',  $startDate);
+                    $sql->bindParam( ':endDate',  $endDate);
+                    $sql->execute();
+                    return $sql;
+        }
+        else{
+        $sql = "SELECT 
+        SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS cash,
+        SUM(JSON_VALUE(all_data, '$.credit')) AS credit,
+        SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS ewallet,
+        SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS coupon,
+        SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS cc,
+        (SUM(JSON_VALUE(all_data, '$.cash_in_receive')) +   SUM(JSON_VALUE(all_data, '$.credit')) + SUM(JSON_VALUE(all_data, '$.totalEwallet')) +  SUM(JSON_VALUE(all_data, '$.totalCoupon')) +   SUM(JSON_VALUE(all_data, '$.totalCcDb'))) as total_amount,
+        DATE(date_time) as date
+      FROM z_read
+        GROUP BY DATE(date_time);";
     
-        FROM 
-            payments
-        CROSS JOIN JSON_TABLE(
-            payments.payment_details, '$[*]' COLUMNS (
-                paymentType VARCHAR(255) PATH '$.paymentType', 
-                amount DECIMAL(10, 2) PATH '$.amount'
-            )
-        ) AS jt
-        INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id 
-            FROM transactions 
-            WHERE is_paid = 1 AND is_void = 0
-        ) AS t ON payments.id = t.payment_id
-        LEFT JOIN (
-            SELECT payment_id, SUM(refunded_amt) AS refunded_amt
-            FROM refunded
-            GROUP BY payment_id
-        ) AS rf ON rf.payment_id = payments.id
-        LEFT JOIN (
-        SELECT 
-            re.payment_id as payment_id,
-            COALESCE(jt.cash_amount, 0) as cash_amount,
-            COALESCE(jt.credit_amount, 0) as credit_amount,
-            COALESCE(jt.gcash_amount, 0) as gcash_amount,
-            COALESCE(jt.maya_amount, 0) as maya_amount,
-            COALESCE(jt.alipay_amount, 0) as alipay_amount,
-            COALESCE(jt.grab_pay_amount, 0) as grab_pay_amount,
-            COALESCE(jt.shopee_pay_amount, 0) as shopee_pay_amount,
-            COALESCE(jt.ewallet_amount, 0) as ewallet_amount,
-            COALESCE(jt.visa_amount, 0) as visa_amount,
-            COALESCE(jt.master_card_amount, 0) as master_card_amount,
-            COALESCE(jt.discover_card_amount, 0) as discover_card_amount,
-            COALESCE(jt.american_express_card_amount, 0) as american_express_card_amount,
-            COALESCE(jt.jcb_card_amount, 0) as jcb_card_amount,
-            COALESCE(jt.cc_amount, 0) as cc_amount,
-            COALESCE(jt.coupon_amount, 0) as coupon_amount,
-            ROUND(SUM(re.return_amount), 2) AS total_return_amount
-        FROM 
-            return_exchange re
-        LEFT JOIN (
-            SELECT 
-                p.id as payment_id,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END, 0)) as coupon_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END, 0)) as cash_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END, 0)) as credit_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'gcash' THEN jt.amount ELSE 0 END, 0)) as gcash_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'maya' THEN jt.amount ELSE 0 END, 0)) as maya_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'alipay' THEN jt.amount ELSE 0 END, 0)) as alipay_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'grab pay' THEN jt.amount ELSE 0 END, 0)) as grab_pay_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'shopee pay' THEN jt.amount ELSE 0 END, 0)) as shopee_pay_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END, 0)) as ewallet_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'visa' THEN jt.amount ELSE 0 END, 0)) as visa_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'master_card' THEN jt.amount ELSE 0 END, 0)) as master_card_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'discover' THEN jt.amount ELSE 0 END, 0)) as discover_card_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'american_express' THEN jt.amount ELSE 0 END, 0)) as american_express_card_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'jcb' THEN jt.amount ELSE 0 END, 0)) as jcb_card_amount,
-                SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType IN ('visa', 'master_card', 'discover', 'american_express', 'jcb') THEN jt.amount ELSE 0 END, 0)) as cc_amount
-            FROM 
-                payments p
-            CROSS JOIN JSON_TABLE(
-                p.payment_details, '$[*]' COLUMNS (
-                    paymentType VARCHAR(255) PATH '$.paymentType', 
-                    amount DECIMAL(10, 2) PATH '$.amount'
-                )
-            ) AS jt
-            GROUP BY 
-                p.id
-        ) jt ON jt.payment_id = re.payment_id
-        
-        ) AS rc ON rc.payment_id = payments.id
-       INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id,is_paid,is_void 
-        FROM transactions 
-        WHERE is_paid = 1 AND is_void = 0
-    ) AS transactions ON payments.id = transactions.payment_id
-        WHERE 
-            JSON_VALID(payments.payment_details) AND jt.amount != 0.00 
-            AND transactions.is_paid = 1 AND transactions.is_void = 0 AND  DATE(payments.date_time_of_payment) BETWEEN :startDate AND :endDate
-        GROUP BY 
-           DATE(payment_date)
-        ORDER BY 
-            payment_date ASC;";
-
-                $sql = $this->connect()->prepare( $sql );
-                $sql->bindParam( ':startDate', $startDate );
-                $sql->bindParam( ':endDate', $endDate );
-                $sql->execute();
-                return $sql;
-
-            } else {
-                $sql = "SELECT 
-        payments.id AS id,
-        transactions.payment_id,
-        transactions.is_paid,
-        transactions.is_void, 
-        SUM(DISTINCT payments.change_amount) AS change_amount,
-        DATE(payments.date_time_of_payment) AS payment_date,
-        SUM( DISTINCT COALESCE(rf_cash.total_refunded, 0)) as refundCash,
-GREATEST(
-    SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) 
-    - COALESCE(SUM(CASE WHEN jt.paymentType = 'credit' THEN rf.refunded_amt ELSE 0 END), 0) 
-    - CASE
-        WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) > rc.credit_amount THEN
-            rc.credit_amount
-        WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) <= rc.credit_amount THEN
-            (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount)
-        ELSE 
-            0
-    END, 
-    0
-) AS credit_total,
-
-          GREATEST(
-            SUM(
-                CASE 
-                    WHEN jt.paymentType = 'cash' THEN (jt.amount - payments.change_amount) 
-                    ELSE 0 
-                END
-            ) 
-            - SUM(DISTINCT COALESCE(rf_cash.total_refunded, 0))
-            - CASE
-                WHEN rc.cash_amount > 0 AND rc.total_return_amount > rc.cash_amount THEN rc.cash_amount
-                WHEN rc.cash_amount > 0 AND rc.total_return_amount <= rc.cash_amount THEN rc.total_return_amount
-                ELSE 0
-              END,
-            0
-        ) AS cash_total,
-          GREATEST(
-            SUM(
-                CASE 
-                    WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount 
-                    ELSE 0 
-                END
-            ) 
-          - SUM(DISTINCT COALESCE(rf_ewallet.total_refunded, 0))
-            - CASE
-                WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount THEN rc.ewallet_amount
-                WHEN rc.ewallet_amount > 0 AND (rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount THEN rc.total_return_amount - rc.cash_amount
-                ELSE 0
-              END,
-            0
-        ) AS e_wallet_total,
-          GREATEST(
-            SUM(
-                CASE 
-                    WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount 
-                    ELSE 0 
-                END
-            ) 
-            - SUM(DISTINCT COALESCE(rf_cc.total_refunded, 0))
-            - CASE 
-                WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) > rc.cc_amount THEN rc.cc_amount
-                WHEN rc.cc_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount) <= rc.cc_amount THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount
-                ELSE 0
-              END,
-            0
-        ) AS cdcards_total,
-        GREATEST(
-            SUM(
-                CASE 
-                    WHEN jt.paymentType = 'coupon' THEN jt.amount 
-                    ELSE 0 
-                END
-            ) 
-            - SUM(DISTINCT COALESCE(rf_coupons.total_refunded, 0))
-            - CASE
-                WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.coupon_amount) THEN rc.coupon_amount
-                WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.coupon_amount) THEN rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount
-                ELSE 0
-              END,
-            0
-        ) AS coupons_total,
-    GREATEST(
-        (SUM(jt.amount) - SUM(DISTINCT payments.change_amount)) 
-        - SUM(DISTINCT COALESCE(rf_ewallet.total_refunded, 0)) - SUM(DISTINCT COALESCE(rf_cash.total_refunded, 0)) - SUM(DISTINCT COALESCE(rf_cc.total_refunded, 0)) - SUM(DISTINCT COALESCE(rf_coupons.total_refunded, 0))
-        - COALESCE(rc.total_return_amount, 0),
-        0
-    ) AS total_amount,
-    
-    
-        COALESCE(rc.total_return_amount, 0) AS total_return_amount,
-        COALESCE(rc.cash_amount, 0) AS return_cash_amount,
-        CASE
-           WHEN rc.cash_amount > 0 AND (rc.total_return_amount > rc.cash_amount) THEN 
-           rc.cash_amount
-           WHEN rc.cash_amount > 0 AND (rc.total_return_amount <= rc.cash_amount) THEN
-           rc.total_return_amount
-        ELSE 0
-        END AS tobe_deducted_cash,
-        CASE
-           WHEN rc.ewallet_amount > 0 AND ((rc.total_return_amount - rc.cash_amount) > rc.ewallet_amount) THEN
-           rc.ewallet_amount
-           WHEN rc.ewallet_amount > 0 AND ((rc.total_return_amount - rc.cash_amount) <= rc.ewallet_amount) THEN
-           rc.total_return_amount - rc.cash_amount
-           ELSE 0
-         END AS tobe_deducted_ewallet,
-            CASE 
-            WHEN rc.cc_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount ) > rc.cc_amount) THEN
-            rc.cc_amount
-          WHEN rc.cc_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount ) <= rc.cc_amount)  THEN
-          (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount )
-         ELSE 0
-        END AS tobe_deducted_cc,
-        CASE
-         WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) > rc.cc_amount) THEN
-            rc.coupon_amount
-          WHEN rc.coupon_amount > 0 AND ((rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount) <= rc.cc_amount) THEN
-          (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount)
-          ELSE 0
-           END AS tobe_deducted_coupon,
-  CASE
-    WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) > rc.credit_amount THEN
-        rc.credit_amount
-    WHEN rc.credit_amount > 0 AND (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount) <= rc.credit_amount THEN
-        (rc.total_return_amount - rc.cash_amount - rc.ewallet_amount - rc.cc_amount - rc.coupon_amount)
-    ELSE 
-        0
-END AS tobe_deducted_credits
-
-    FROM 
-        payments
-    CROSS JOIN JSON_TABLE(
-        payments.payment_details, '$[*]' COLUMNS (
-            paymentType VARCHAR(255) PATH '$.paymentType', 
-            amount DECIMAL(10, 2) PATH '$.amount'
-        )
-    ) AS jt
-    INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id 
-        FROM transactions 
-        WHERE is_paid = 1 AND is_void = 0
-    ) AS t ON payments.id = t.payment_id
-    LEFT JOIN (
-        SELECT payment_id, SUM(refunded_amt) AS refunded_amt
-        FROM refunded
-        GROUP BY payment_id
-    ) AS rf ON rf.payment_id = payments.id
-    LEFT JOIN (
-    SELECT 
-        re.payment_id as payment_id,
-        COALESCE(jt.cash_amount, 0) as cash_amount,
-        COALESCE(jt.credit_amount, 0) as credit_amount,
-        COALESCE(jt.gcash_amount, 0) as gcash_amount,
-        COALESCE(jt.maya_amount, 0) as maya_amount,
-        COALESCE(jt.alipay_amount, 0) as alipay_amount,
-        COALESCE(jt.grab_pay_amount, 0) as grab_pay_amount,
-        COALESCE(jt.shopee_pay_amount, 0) as shopee_pay_amount,
-        COALESCE(jt.ewallet_amount, 0) as ewallet_amount,
-        COALESCE(jt.visa_amount, 0) as visa_amount,
-        COALESCE(jt.master_card_amount, 0) as master_card_amount,
-        COALESCE(jt.discover_card_amount, 0) as discover_card_amount,
-        COALESCE(jt.american_express_card_amount, 0) as american_express_card_amount,
-        COALESCE(jt.jcb_card_amount, 0) as jcb_card_amount,
-        COALESCE(jt.cc_amount, 0) as cc_amount,
-        COALESCE(jt.coupon_amount, 0) as coupon_amount,
-        ROUND(SUM(re.return_amount), 2) AS total_return_amount
-    FROM 
-        return_exchange re
-    LEFT JOIN (
-        SELECT 
-            p.id as payment_id,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END, 0)) as coupon_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END, 0)) as cash_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END, 0)) as credit_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'gcash' THEN jt.amount ELSE 0 END, 0)) as gcash_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'maya' THEN jt.amount ELSE 0 END, 0)) as maya_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'alipay' THEN jt.amount ELSE 0 END, 0)) as alipay_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'grab pay' THEN jt.amount ELSE 0 END, 0)) as grab_pay_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'shopee pay' THEN jt.amount ELSE 0 END, 0)) as shopee_pay_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END, 0)) as ewallet_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'visa' THEN jt.amount ELSE 0 END, 0)) as visa_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'master_card' THEN jt.amount ELSE 0 END, 0)) as master_card_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'discover' THEN jt.amount ELSE 0 END, 0)) as discover_card_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'american_express' THEN jt.amount ELSE 0 END, 0)) as american_express_card_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType = 'jcb' THEN jt.amount ELSE 0 END, 0)) as jcb_card_amount,
-            SUM(DISTINCT COALESCE(CASE WHEN jt.paymentType IN ('visa', 'master_card', 'discover', 'american_express', 'jcb') THEN jt.amount ELSE 0 END, 0)) as cc_amount
-        FROM 
-            payments p
-        CROSS JOIN JSON_TABLE(
-            p.payment_details, '$[*]' COLUMNS (
-                paymentType VARCHAR(255) PATH '$.paymentType', 
-                amount DECIMAL(10, 2) PATH '$.amount'
-            )
-        ) AS jt
-        GROUP BY 
-            p.id
-    ) jt ON jt.payment_id = re.payment_id
-    
-    ) AS rc ON rc.payment_id = payments.id
-    LEFT JOIN (
-    SELECT 
-        payment_id,
-        SUM(refunded_amt) AS total_refunded
-    FROM 
-        refunded
-    WHERE 
-        refunded_method_id = 1
-    GROUP BY 
-        payment_id
-) AS rf_cash ON rf_cash.payment_id = payments.id
-LEFT JOIN (
-    SELECT 
-        payment_id,
-        SUM(refunded_amt) AS total_refunded
-    FROM 
-        refunded
-    WHERE 
-        refunded_method_id IN (9,2,3,4,8)
-    GROUP BY 
-        payment_id
-) AS rf_ewallet ON rf_ewallet.payment_id = payments.id
-LEFT JOIN (
-    SELECT 
-        payment_id,
-        SUM(refunded_amt) AS total_refunded
-    FROM 
-        refunded
-    WHERE 
-        refunded_method_id = 6
-    GROUP BY 
-        payment_id
-) AS rf_cc ON rf_cc.payment_id = payments.id
-LEFT JOIN (
-    SELECT 
-        payment_id,
-        SUM(refunded_amt) AS total_refunded
-    FROM 
-        refunded
-    WHERE 
-        refunded_method_id = 7
-    GROUP BY 
-        payment_id
-) AS rf_coupons ON rf_coupons.payment_id = payments.id
-   INNER JOIN (
-    SELECT DISTINCT payment_id, receipt_id,is_paid,is_void 
-    FROM transactions 
-    WHERE is_paid = 1 AND is_void = 0
-) AS transactions ON payments.id = transactions.payment_id
-    WHERE 
-        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 
-        AND transactions.is_paid = 1 AND transactions.is_void = 0
-    GROUP BY 
-       DATE(payment_date)
-    ORDER BY 
-        payment_date ASC;";
-
                 $stmt = $this->connect()->query( $sql );
                 return $stmt;
-            }
-        } else {
-            if ( $singleDateData && !$startDate && !$endDate ) {
-                $sql = "SELECT 
-        DATE(payments.date_time_of_payment) AS payment_date,
-        SUM(DISTINCT payments.change_amount) as change_amount,
-        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
-        (SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END)-SUM(DISTINCT payments.change_amount))AS cash_total,
-        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
-        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
-        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
-        SUM(jt.amount) - SUM(DISTINCT payments.change_amount) AS total_amount
-        FROM 
-        payments
-        CROSS JOIN JSON_TABLE(
-        payments.payment_details, '$[*]' COLUMNS (
-            paymentType VARCHAR(255) PATH '$.paymentType', 
-            amount DECIMAL(10, 2) PATH '$.amount'
-        )
-        ) AS jt
-        INNER JOIN ( 
-        SELECT DISTINCT payment_id, receipt_id FROM transactions  WHERE is_paid = 1 AND is_void = 0
-        ) AS t ON payments.id = t.payment_id
-        WHERE 
-        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND DATE(payments.date_time_of_payment) = :singleDateData
-        GROUP BY 
-        DATE(payments.date_time_of_payment)
-        ORDER BY 
-        payment_date ASC;";
-
-                $sql = $this->connect()->prepare( $sql );
-                $sql->bindParam( ':singleDateData',  $singleDateData );
-                $sql->execute();
-                return $sql;
-            } else if ( !$singleDateData && $startDate && $endDate ) {
-                $sql = "SELECT 
-        DATE(payments.date_time_of_payment) AS payment_date,
-        SUM(DISTINCT payments.change_amount) as change_amount,
-        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
-        (SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END)-SUM(DISTINCT payments.change_amount))AS cash_total,
-        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
-        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
-        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
-        SUM(jt.amount) - SUM(DISTINCT payments.change_amount) AS total_amount
-        FROM 
-        payments
-        CROSS JOIN JSON_TABLE(
-        payments.payment_details, '$[*]' COLUMNS (
-            paymentType VARCHAR(255) PATH '$.paymentType', 
-            amount DECIMAL(10, 2) PATH '$.amount'
-        )
-        ) AS jt
-        INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id FROM transactions  WHERE is_paid = 1 AND is_void = 0
-        ) AS t ON payments.id = t.payment_id
-        WHERE 
-        JSON_VALID(payments.payment_details) AND jt.amount != 0.00 AND DATE(payments.date_time_of_payment) BETWEEN :startDate AND :endDate
-        GROUP BY 
-        DATE(payments.date_time_of_payment)
-        ORDER BY 
-        payment_date ASC;";
-
-                $sql = $this->connect()->prepare( $sql );
-                $sql->bindParam( ':startDate', $startDate );
-                $sql->bindParam( ':endDate', $endDate );
-                $sql->execute();
-                return $sql;
-            } else {
-                $sql = "SELECT 
-        DATE(payments.date_time_of_payment) AS payment_date,
-        SUM(DISTINCT payments.change_amount) as change_amount,
-        SUM(CASE WHEN jt.paymentType = 'credit' THEN jt.amount ELSE 0 END) AS credit_total,
-        (SUM(CASE WHEN jt.paymentType = 'cash' THEN jt.amount ELSE 0 END)-SUM(DISTINCT payments.change_amount))AS cash_total,
-        SUM(CASE WHEN jt.paymentType IN ('gcash', 'maya', 'alipay', 'grab pay', 'shopee pay') THEN jt.amount ELSE 0 END) AS e_wallet_total,
-        SUM(CASE WHEN jt.paymentType IN ('visa', 'master card', 'discover', 'american express', 'jcb') THEN jt.amount ELSE 0 END) AS cdcards_total,
-        SUM(CASE WHEN jt.paymentType = 'coupon' THEN jt.amount ELSE 0 END) AS coupons_total,
-        SUM(jt.amount) - SUM(DISTINCT payments.change_amount) AS total_amount
-        FROM 
-        payments
-        CROSS JOIN JSON_TABLE(
-        payments.payment_details, '$[*]' COLUMNS (
-            paymentType VARCHAR(255) PATH '$.paymentType', 
-            amount DECIMAL(10, 2) PATH '$.amount'
-        )
-        ) AS jt
-        INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id FROM transactions  WHERE is_paid = 1 AND is_void = 0
-        ) AS t ON payments.id = t.payment_id
-        WHERE 
-        JSON_VALID(payments.payment_details) AND jt.amount != 0.00
-        GROUP BY 
-        DATE(payments.date_time_of_payment)
-        ORDER BY 
-        payment_date ASC;";
-
-                $stmt = $this->connect()->query( $sql );
-                return $stmt;
-            }
         }
     }
 
@@ -7575,25 +6776,7 @@ GROUP BY
 
         if ( $selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate ) {
 
-            $sql = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+            $sql = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -7606,16 +6789,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -7624,7 +6806,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -7639,8 +6821,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND t.prod_id = :selectedProduct
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -7672,10 +6882,11 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE  t.prod_id = :selectedProduct
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -7683,17 +6894,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -7701,7 +6912,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -7761,10 +6972,11 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE t.prod_id = :selectedProduct
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -7772,17 +6984,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -7790,7 +7002,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -7834,25 +7046,7 @@ newQty > 0;";
             return $sql;
 
         } else if( !$selectedProduct && !$selectedCategories && !$selectedSubCategories && $singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+            $sql = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -7865,16 +7059,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -7883,7 +7076,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -7898,8 +7091,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -7931,7 +7152,7 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -7943,17 +7164,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -7961,7 +7182,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -8021,7 +7242,7 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -8033,17 +7254,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -8051,7 +7272,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -8095,25 +7316,7 @@ newQty > 0;";
             return $sql;
 
         }else if(!$selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && $startDate && $endDate){
-            $sql = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+            $sql = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -8126,16 +7329,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -8144,7 +7346,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -8159,8 +7361,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -8192,7 +7422,7 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -8204,17 +7434,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -8222,7 +7452,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -8282,11 +7512,11 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
-     WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
+    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -8294,17 +7524,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -8312,7 +7542,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -8348,7 +7578,7 @@ WHERE
 GROUP BY
     p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
 HAVING
-newQty > 0";
+newQty > 0;";
 
             $sql = $this->connect()->prepare( $sql );
             $sql->bindParam( ':startDate',  $startDate);
@@ -8356,25 +7586,7 @@ newQty > 0";
             $sql->execute();
             return $sql;
         }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+            $sql = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -8387,16 +7599,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -8405,7 +7616,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -8420,8 +7631,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND p.variant_id = :selectedSubCategories
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -8453,10 +7692,11 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.variant_id = :selectedSubCategories
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -8464,17 +7704,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -8482,7 +7722,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -8542,10 +7782,11 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.variant_id = :selectedSubCategories
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -8553,17 +7794,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -8571,7 +7812,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -8607,31 +7848,13 @@ WHERE
 GROUP BY
     p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
 HAVING
-newQty > 0";
+newQty > 0;";
             $sql = $this->connect()->prepare( $sql );
             $sql->bindParam( ':selectedSubCategories',  $selectedSubCategories);
             $sql->execute();
             return $sql;
         }else if($selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+            $sql = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -8644,16 +7867,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -8662,7 +7884,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -8677,8 +7899,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND  p.category_id = :selectedCategories AND p.id = :selectedProduct
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -8710,10 +7960,11 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.category_id = :selectedCategories AND products.id = :selectedProduct
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -8721,17 +7972,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -8739,7 +7990,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -8799,10 +8050,11 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.category_id = :selectedCategories AND products.id = :selectedProduct
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -8810,17 +8062,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -8828,7 +8080,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -8864,7 +8116,7 @@ WHERE
 GROUP BY
     p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
 HAVING
-newQty > 0
+newQty > 0;
            ";
             $sql = $this->connect()->prepare( $sql );
             $sql->bindParam( ':selectedCategories',  $selectedCategories);
@@ -8872,2374 +8124,7 @@ newQty > 0
             $sql->execute();
             return $sql;
         }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND p.category_id = :selectedCategories 
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-                       ";
-                        $sql = $this->connect()->prepare( $sql );
-                        $sql->bindParam( ':selectedCategories',  $selectedCategories);
-                        $sql->execute();
-                        return $sql;
-        }
-        else if($selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND p.variant_id = :selectedSubCategories AND p.id = :selectedProduct
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-           ";
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':selectedSubCategories',   $selectedSubCategories);
-            $sql->bindParam( ':selectedProduct',  $selectedProduct);
-            $sql->execute();
-            return $sql;  
-        }else if ($selectedProduct && !$selectedCategories && !$selectedSubCategories && $singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment)= :singleDateData AND products.id = :selectedProduct
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment)= :singleDateData AND products.id = :selectedProduct
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND DATE(py.date_time_of_payment)= :singleDateData AND p.id = :selectedProduct
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-           ";
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':singleDateData',  $singleDateData);
-            $sql->bindParam( ':selectedProduct',  $selectedProduct);
-            $sql->execute();
-            return $sql;  
-        }else if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && $startDate && $endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate  AND products.id = :selectedProduct
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate  AND products.id = :selectedProduct
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate  AND p.id = :selectedProduct
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-           ";
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->bindParam( ':selectedProduct',  $selectedProduct);
-            $sql->execute();
-            return $sql;  
-            //TOWORK ON MONDAY
-        }else if(!$selectedProduct && $selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND p.category_id = :selectedCategories AND p.variant_id = :selectedSubCategories
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-           ";
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':selectedSubCategories', $selectedSubCategories );
-            $sql->bindParam( ':selectedCategories',  $selectedCategories);
-            $sql->execute();
-            return $sql;  
-        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && $singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) = :singleDateData AND products.category_id = :selectedCategories
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) = :singleDateData AND products.category_id = :selectedCategories
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData AND p.category_id = :selectedCategories
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-           ";
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':singleDateData', $singleDateData);
-            $sql->bindParam( ':selectedCategories',  $selectedCategories);
-            $sql->execute();
-            return $sql;  
-        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && $startDate && $endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.category_id = :selectedCategories
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.category_id = :selectedCategories
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.category_id = :selectedCategories
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-           ";
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->bindParam( ':selectedCategories',  $selectedCategories);
-            $sql->execute();
-            return $sql;  
-        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && $singleDateData && !$startDate && !$endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) = :singleDateData AND products.variant_id = :selectedSubCategories
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) = :singleDateData AND products.variant_id = :selectedSubCategories
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData AND p.variant_id = :selectedSubCategories
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-           ";
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->bindParam( ':selectedSubCategories',  $selectedSubCategories);
-            $sql->execute();
-            return $sql;  
-        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && $startDate && $endDate){
-            $sql = "WITH TotalCartValue AS (
-                SELECT
-                DISTINCT
-                    py.id AS payment_id,
-                    py.cart_discount AS total_cart_value,
-                    py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                FROM
-                    transactions AS t
-                INNER JOIN
-                    products AS p ON p.id = t.prod_id
-                INNER JOIN
-                    payments AS py ON py.id = t.payment_id
-                WHERE
-                    t.is_paid = 1
-                    AND t.is_void = 0
-                GROUP BY
-                    py.id
-            )
-            SELECT DISTINCT  
-                p.id AS id, 
-                p.prod_desc AS prod_desc, 
-                p.cost AS cost,
-                p.sku AS sku, 
-                p.markup AS markup, 
-                py.id AS payment_id, 
-                p.prod_price AS prod_price,
-                SUM(t.prod_qty)  AS qty,
-                COALESCE(tr.total_qty,0) as refundedQty,
-                COALESCE(ret.total_qty,0) AS returnedQty,
-                SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                CAST(SUM(
-                    CASE 
-                        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                        WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                            THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                        ELSE 0 
-                    END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-            
-                CASE
-                    WHEN p.isVAT = 1 THEN 
-                        CAST(
-                            ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                            AS DECIMAL(10,2)
-                        )
-                    ELSE 0
-                END AS totalVat,
-                CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                COALESCE( tr.refundedamt,0)  as refundedAmt,
-                COALESCE( ret.returnamt,0) as returnAmt,
-                COALESCE(tr.total_cart,0) AS CARTrEFUND
-              
-            FROM 
-                products AS p
-            INNER JOIN 
-                transactions AS t ON p.id = t.prod_id 
-            INNER JOIN 
-                payments AS py ON py.id = t.payment_id 
-            INNER JOIN 
-                users AS u ON u.id = t.user_id 
-            INNER JOIN 
-                discounts AS d ON d.id = u.discount_id 
-            LEFT JOIN
-                TotalCartValue AS tc ON tc.payment_id = py.id
-            LEFT JOIN(WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS refunded_id,
-                    r.payment_id,
-                    r.prod_id,
-                    r.refunded_qty AS qty,
-                    r.refunded_amt AS amount,
-                    r.reference_num,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                  COALESCE(r.refunded_amt,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS refundCart
-                FROM refunded AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.prod_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.variant_id = :selectedSubCategories
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.refunded_id,
-                    rs.payment_id,
-                    rs.prod_id ,
-                    SUM(DISTINCT rs.refundCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                    
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-            ),
-            RefundTotals AS (
-                SELECT 
-                    cd.prod_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.prod_id
-            )
-            SELECT 
-                rt.prod_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-            FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-            LEFT JOIN (WITH RefundSums AS (
-                SELECT 
-                DISTINCT
-                    r.id AS return_id,
-                    r.payment_id,
-                    r.product_id,
-                    r.return_qty AS qty,
-                    r.return_amount AS amount,
-                    r.otherDetails,
-                    u.id AS user_id,
-                    u.discount_id,
-                    d.discount_amount AS discountRate,
-                    products.prod_desc AS prod_desc,
-                    products.barcode AS barcode,
-                    products.sku AS sku,
-                    products.isVAT,
-                    products.is_discounted,
-                    products.prod_price,
-                    r.itemDiscount,
-                    t.prod_qty,
-                           COALESCE(
-                                 CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                    )
-                                 AS total_item_discounts,
-                 COALESCE(r.return_amount,0) * COALESCE(
-                            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                            0
-                        ) AS returnCart
-                FROM return_exchange AS r
-                INNER JOIN payments AS p ON r.payment_id = p.id
-                INNER JOIN transactions AS t ON t.payment_id = p.id
-                INNER JOIN products ON r.product_id = products.id
-                INNER JOIN users AS u ON t.user_id = u.id
-                INNER JOIN discounts AS d ON u.discount_id = d.id
-                WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.variant_id = :selectedSubCategories
-            ),
-            CustomerDiscounts AS (
-                SELECT 
-                DISTINCT
-                    rs.return_id,
-                    rs.payment_id,
-                    rs.product_id,
-                    SUM(DISTINCT rs.returnCart) as overallCart,
-                    SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                    SUM(DISTINCT rs.qty) AS total_qty,
-                    CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                    SUM(
-                        CASE
-                            WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                    ) / 1.12) * rs.discountRate / 100
-                                    AS DECIMAL(10,2)
-                                )
-                            WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                CAST(
-                                    (
-                                        ((rs.qty * rs.prod_price) - 
-                                        ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                    ) * rs.discountRate / 100)
-                                    AS DECIMAL(10,2)
-                                )
-                            ELSE 0
-                        END
-                    ) AS total_customer_discount
-                FROM RefundSums AS rs
-                GROUP BY rs.return_id, rs.payment_id, rs.product_id
-            ),
-            ReturnTotals AS (
-                SELECT 
-                    cd.product_id,
-                    SUM(cd.total_qty) AS total_qty,
-                    CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                    CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                    CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                 SUM(cd.overAlldiscounts) AS overAlldiscounts
-                FROM CustomerDiscounts AS cd
-                GROUP BY cd.product_id
-            )
-            SELECT 
-                rt.product_id,
-                rt.total_qty,
-                rt.total_amount,
-                rt.total_customer_discount,
-                rt.overAlldiscounts,
-                rt.total_cart,
-                CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-            FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-            WHERE 
-                t.is_paid = 1 
-                AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.variant_id = :selectedSubCategories
-            GROUP BY
-                p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-            HAVING
-            newQty > 0
-           ";
-            $sql = $this->connect()->prepare( $sql);  
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->bindParam( ':selectedSubCategories',  $selectedSubCategories);
-            $sql->execute();
-            return $sql; 
-        }
-       
-        else {
-            $sql = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+            $sql = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -11252,16 +8137,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -11270,7 +8154,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -11285,8 +8169,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND p.category_id = :selectedCategories 
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -11318,10 +8230,11 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.category_id = :selectedCategories 
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -11329,17 +8242,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -11347,7 +8260,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -11407,10 +8320,11 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.category_id = :selectedCategories 
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -11418,17 +8332,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -11436,7 +8350,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -11468,7 +8382,2441 @@ SELECT
 FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
 WHERE 
     t.is_paid = 1 
-    AND t.is_void = 0
+    AND t.is_void = 0 AND p.category_id = :selectedCategories 
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;
+                       ";
+                        $sql = $this->connect()->prepare( $sql );
+                        $sql->bindParam( ':selectedCategories',  $selectedCategories);
+                        $sql->execute();
+                        return $sql;
+        }
+        else if($selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND p.variant_id = :selectedSubCategories AND p.id = :selectedProduct
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.variant_id = :selectedSubCategories AND products.id = :selectedProduct
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.variant_id = :selectedSubCategories AND products.id = :selectedProduct
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+     AND t.is_void = 0 AND p.variant_id = :selectedSubCategories AND p.id = :selectedProduct
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedSubCategories',   $selectedSubCategories);
+            $sql->bindParam( ':selectedProduct',  $selectedProduct);
+            $sql->execute();
+            return $sql;  
+        }else if ($selectedProduct && !$selectedCategories && !$selectedSubCategories && $singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment)= :singleDateData AND p.id = :selectedProduct
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment)= :singleDateData AND products.id = :selectedProduct
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment)= :singleDateData AND p.id = :selectedProduct
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment)= :singleDateData AND p.id = :selectedProduct
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData',  $singleDateData);
+            $sql->bindParam( ':selectedProduct',  $selectedProduct);
+            $sql->execute();
+            return $sql;  
+        }else if($selectedProduct && !$selectedCategories && !$selectedSubCategories && !$singleDateData && $startDate && $endDate){
+            $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate  AND p.id = :selectedProduct
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate  AND p.id = :selectedProduct
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate  AND products.id = :selectedProduct
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+     AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate  AND p.id = :selectedProduct
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':selectedProduct',  $selectedProduct);
+            $sql->execute();
+            return $sql;  
+           
+        }else if(!$selectedProduct && $selectedCategories && $selectedSubCategories && !$singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND p.category_id = :selectedCategories AND p.variant_id = :selectedSubCategories
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.category_id = :selectedCategories AND products.variant_id = :selectedSubCategories
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.category_id = :selectedCategories AND products.variant_id = :selectedSubCategories
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 AND p.category_id = :selectedCategories AND p.variant_id = :selectedSubCategories
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':selectedSubCategories', $selectedSubCategories );
+            $sql->bindParam( ':selectedCategories',  $selectedCategories);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && $singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData AND p.category_id = :selectedCategories
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) = :singleDateData AND products.category_id = :selectedCategories
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) = :singleDateData AND products.category_id = :selectedCategories
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+   AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData AND p.category_id = :selectedCategories
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData);
+            $sql->bindParam( ':selectedCategories',  $selectedCategories);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && $selectedCategories && !$selectedSubCategories && !$singleDateData && $startDate && $endDate){
+            $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.category_id = :selectedCategories
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.category_id = :selectedCategories
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.category_id = :selectedCategories
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.category_id = :selectedCategories
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':startDate', $startDate );
+            $sql->bindParam( ':endDate', $endDate );
+            $sql->bindParam( ':selectedCategories',  $selectedCategories);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && $singleDateData && !$startDate && !$endDate){
+            $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData AND p.variant_id = :selectedSubCategories
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) = :singleDateData AND products.variant_id = :selectedSubCategories
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) = :singleDateData AND products.variant_id = :selectedSubCategories
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData AND p.variant_id = :selectedSubCategories
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;
+           ";
+            $sql = $this->connect()->prepare( $sql );
+            $sql->bindParam( ':singleDateData', $singleDateData );
+            $sql->bindParam( ':selectedSubCategories',  $selectedSubCategories);
+            $sql->execute();
+            return $sql;  
+        }else if(!$selectedProduct && !$selectedCategories && $selectedSubCategories && !$singleDateData && $startDate && $endDate){
+            $sql = "SELECT DISTINCT  
+            p.id AS id, 
+            p.prod_desc AS prod_desc, 
+            p.cost AS cost,
+            p.sku AS sku, 
+            p.markup AS markup, 
+            py.id AS payment_id, 
+            p.prod_price AS prod_price,
+            SUM(t.prod_qty)  AS qty,
+            COALESCE(tr.total_qty,0) as refundedQty,
+            COALESCE(ret.total_qty,0) AS returnedQty,
+            SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+            CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+            SUM(
+                CASE 
+                    WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                        THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+                    WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                        THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+                    ELSE 0 
+                END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+            ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+            CASE
+                WHEN p.isVAT = 1 THEN 
+                    CAST(
+                        ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END AS totalVat,
+            (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+            COALESCE( tr.refundedamt,0)  as refundedAmt,
+            COALESCE( ret.returnamt,0) as returnAmt,
+            COALESCE(tr.total_cart,0) AS CARTrEFUND
+          
+        FROM 
+            products AS p
+        INNER JOIN 
+            transactions AS t ON p.id = t.prod_id 
+        INNER JOIN 
+            payments AS py ON py.id = t.payment_id 
+        INNER JOIN 
+            users AS u ON u.id = t.user_id 
+        INNER JOIN 
+            discounts AS d ON d.id = u.discount_id 
+        INNER JOIN (SELECT
+            py.id AS payment_id,
+            t.prod_id AS product_id,
+            SUM(t.prod_qty) AS prod_qty,
+            t.prod_price as prod_price,
+            py.cart_discount AS total_cart_value,
+            tr.total_subtotal,
+            t.prod_id,
+            SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+            CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+        FROM
+            transactions AS t
+        INNER JOIN
+            products AS p ON p.id = t.prod_id
+        INNER JOIN
+            payments AS py ON py.id = t.payment_id
+        INNER JOIN (
+            SELECT 
+                payment_id, 
+                SUM(subtotal) AS total_subtotal
+            FROM 
+                transactions 
+            GROUP BY 
+                payment_id
+        ) AS tr ON tr.payment_id = py.id
+        WHERE
+            t.is_paid = 1
+            AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.variant_id = :selectedSubCategories
+        GROUP BY
+            t.prod_id) AS cart on cart.prod_id = t.prod_id
+        LEFT JOIN(WITH RefundSums AS (
+            SELECT 
+            DISTINCT
+                r.id AS refunded_id,
+                r.payment_id,
+                r.prod_id,
+                r.refunded_qty AS qty,
+                r.refunded_amt AS amount,
+                r.reference_num,
+                r.otherDetails,
+                u.id AS user_id,
+                u.discount_id,
+                d.discount_amount AS discountRate,
+                products.prod_desc AS prod_desc,
+                products.barcode AS barcode,
+                products.sku AS sku,
+                products.isVAT,
+                products.is_discounted,
+                products.prod_price,
+                r.itemDiscount,
+                t.prod_qty,
+                       COALESCE(
+                             CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                                )
+                             AS total_item_discounts,
+              COALESCE(r.refunded_amt,0) * COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                        0
+                    ) AS refundCart
+            FROM refunded AS r
+            INNER JOIN payments AS p ON r.payment_id = p.id
+            INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+            INNER JOIN products ON r.prod_id = products.id
+            INNER JOIN users AS u ON t.user_id = u.id
+            INNER JOIN discounts AS d ON u.discount_id = d.id
+            WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.variant_id = :selectedSubCategories
+        ),
+        CustomerDiscounts AS (
+            SELECT 
+            DISTINCT
+                rs.refunded_id,
+                rs.payment_id,
+                rs.prod_id ,
+                SUM( rs.refundCart) as overallCart,
+                SUM( rs.total_item_discounts) AS overAlldiscounts,
+                SUM( rs.qty) AS total_qty,
+                CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+                SUM(
+                    CASE
+                        WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                            CAST(
+                                (
+                                    ((rs.qty * rs.prod_price) - 
+                                    (rs.total_item_discounts)
+                                ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                                
+                            )
+                        WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                            CAST(
+                                (
+                                    ((rs.qty * rs.prod_price) - 
+                                    (rs.total_item_discounts)
+                                ) * rs.discountRate / 100)
+                                AS DECIMAL(10,2)
+                            )
+                        ELSE 0
+                    END
+                ) AS total_customer_discount
+            FROM RefundSums AS rs
+            GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+        ),
+        RefundTotals AS (
+            SELECT 
+                cd.prod_id,
+                SUM(cd.total_qty) AS total_qty,
+                CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+                CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+                CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+             SUM(cd.overAlldiscounts) AS overAlldiscounts
+            FROM CustomerDiscounts AS cd
+            GROUP BY cd.prod_id
+        )
+        SELECT 
+            rt.prod_id,
+            rt.total_qty,
+            rt.total_amount,
+            rt.total_customer_discount,
+            rt.overAlldiscounts,
+            rt.total_cart,
+            CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+        FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+        LEFT JOIN (WITH RefundSums AS (
+            SELECT 
+            DISTINCT
+                r.id AS return_id,
+                r.payment_id,
+                r.product_id,
+                r.return_qty AS qty,
+                r.return_amount AS amount,
+                r.otherDetails,
+                u.id AS user_id,
+                u.discount_id,
+                d.discount_amount AS discountRate,
+                products.prod_desc AS prod_desc,
+                products.barcode AS barcode,
+                products.sku AS sku,
+                products.isVAT,
+                products.is_discounted,
+                products.prod_price,
+                r.itemDiscount,
+                t.prod_qty,
+                       COALESCE(
+                             CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                                )
+                             AS total_item_discounts,
+             COALESCE(r.return_amount,0) * COALESCE(
+                        CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                        0
+                    ) AS returnCart
+            FROM return_exchange AS r
+            INNER JOIN payments AS p ON r.payment_id = p.id
+            INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+            INNER JOIN products ON r.product_id = products.id
+            INNER JOIN users AS u ON t.user_id = u.id
+            INNER JOIN discounts AS d ON u.discount_id = d.id
+            WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.variant_id = :selectedSubCategories
+        ),
+        CustomerDiscounts AS (
+            SELECT 
+            DISTINCT
+                rs.return_id,
+                rs.payment_id,
+                rs.product_id,
+                SUM(rs.returnCart) as overallCart,
+                SUM(rs.total_item_discounts) AS overAlldiscounts,
+                SUM( rs.qty) AS total_qty,
+                CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+                SUM(
+                    CASE
+                        WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                            CAST(
+                                (
+                                    ((rs.qty * rs.prod_price) - 
+                                    (rs.total_item_discounts)
+                                ) / 1.12) * rs.discountRate / 100
+                                AS DECIMAL(10,2)
+                            )
+                        WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                            CAST(
+                                (
+                                    ((rs.qty * rs.prod_price) - 
+                                    (rs.total_item_discounts)
+                                ) * rs.discountRate / 100)
+                                AS DECIMAL(10,2)
+                            )
+                        ELSE 0
+                    END
+                ) AS total_customer_discount
+            FROM RefundSums AS rs
+            GROUP BY rs.return_id, rs.payment_id, rs.product_id
+        ),
+        ReturnTotals AS (
+            SELECT 
+                cd.product_id,
+                SUM(cd.total_qty) AS total_qty,
+                CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+                CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+                CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+             SUM(cd.overAlldiscounts) AS overAlldiscounts
+            FROM CustomerDiscounts AS cd
+            GROUP BY cd.product_id
+        )
+        SELECT 
+            rt.product_id,
+            rt.total_qty,
+            rt.total_amount,
+            rt.total_customer_discount,
+            rt.overAlldiscounts,
+            rt.total_cart,
+            CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+        FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+        WHERE 
+            t.is_paid = 1 
+            AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.variant_id = :selectedSubCategories
+        GROUP BY
+            p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+        HAVING
+        newQty > 0;";
+        
+        $sql = $this->connect()->prepare( $sql );
+        $sql->bindParam( ':selectedSubCategories', $selectedSubCategories);
+        $sql->bindParam( ':startDate',  $startDate);
+        $sql->bindParam( ':endDate',  $endDate);
+        $sql->execute();
+
+        return $sql;
+        }else{
+            $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+   
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 
 GROUP BY
     p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
 HAVING
@@ -11526,25 +10874,7 @@ newQty > 0;";
     public function getProfit( $selectedProduct,$singleDateData, $startDate, $endDate ) {
       
             if ( $selectedProduct && !$singleDateData && !$startDate && !$endDate ) {
-                $sqlQuery = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+                $sqlQuery = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -11557,16 +10887,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -11575,7 +10904,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -11590,8 +10919,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND p.id = :selectedProduct
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -11623,10 +10980,11 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.id = :selectedProduct
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -11634,17 +10992,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -11652,7 +11010,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -11669,7 +11027,7 @@ RefundTotals AS (
         CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
         CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
         CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-        SUM(cd.overAlldiscounts) AS overAlldiscounts
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
     FROM CustomerDiscounts AS cd
     GROUP BY cd.prod_id
 )
@@ -11712,10 +11070,11 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE products.id = :selectedProduct
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -11723,17 +11082,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -11741,7 +11100,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -11773,7 +11132,7 @@ SELECT
 FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
 WHERE 
     t.is_paid = 1 
-    AND t.is_void = 0 AND p.id = :selectedProduct
+    AND t.is_void = 0  AND p.id = :selectedProduct
 GROUP BY
     p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
 HAVING
@@ -11784,25 +11143,7 @@ newQty > 0;";
                 return $sql;
 
             }else if(!$selectedProduct && $singleDateData && !$startDate && !$endDate){
-                $sqlQuery = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+                $sqlQuery = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -11815,16 +11156,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -11833,7 +11173,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -11848,8 +11188,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -11881,7 +11249,7 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -11893,17 +11261,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -11911,7 +11279,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -11928,7 +11296,7 @@ RefundTotals AS (
         CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
         CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
         CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-        SUM(cd.overAlldiscounts) AS overAlldiscounts
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
     FROM CustomerDiscounts AS cd
     GROUP BY cd.prod_id
 )
@@ -11971,7 +11339,7 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -11983,17 +11351,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -12001,7 +11369,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -12033,7 +11401,7 @@ SELECT
 FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
 WHERE 
     t.is_paid = 1 
-    AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData
+    AND t.is_void = 0  AND DATE(py.date_time_of_payment) = :singleDateData
 GROUP BY
     p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
 HAVING
@@ -12043,25 +11411,7 @@ newQty > 0;";
                 $sql->execute();
                 return $sql;
             }else if(!$selectedProduct && !$singleDateData && $startDate && $endDate){
-                $sqlQuery = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+                $sqlQuery = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -12074,16 +11424,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -12092,7 +11441,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -12107,8 +11456,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND  DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -12140,7 +11517,7 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -12152,17 +11529,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -12170,7 +11547,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -12187,7 +11564,7 @@ RefundTotals AS (
         CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
         CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
         CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-        SUM(cd.overAlldiscounts) AS overAlldiscounts
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
     FROM CustomerDiscounts AS cd
     GROUP BY cd.prod_id
 )
@@ -12230,7 +11607,7 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -12242,17 +11619,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -12260,7 +11637,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -12292,7 +11669,7 @@ SELECT
 FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
 WHERE 
     t.is_paid = 1 
-    AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate
+    AND t.is_void = 0  AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate
 GROUP BY
     p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
 HAVING
@@ -12304,25 +11681,7 @@ newQty > 0;";
             $sql->execute();
             return $sql;
             }else if($selectedProduct && $singleDateData && !$startDate && !$endDate){
-                $sqlQuery = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+                $sqlQuery = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -12335,16 +11694,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -12353,7 +11711,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -12368,8 +11726,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) = :singleDateData AND p.id = :selectedProduct
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -12401,7 +11787,7 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -12413,17 +11799,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -12431,7 +11817,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -12448,7 +11834,7 @@ RefundTotals AS (
         CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
         CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
         CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-        SUM(cd.overAlldiscounts) AS overAlldiscounts
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
     FROM CustomerDiscounts AS cd
     GROUP BY cd.prod_id
 )
@@ -12491,7 +11877,7 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
@@ -12503,17 +11889,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -12521,7 +11907,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -12564,287 +11950,7 @@ newQty > 0;";
             $sql->execute();
             return $sql;
             }else if ($selectedProduct && !$singleDateData && $startDate && $endDate){
-                $sqlQuery = "WITH TotalCartValue AS (
-                    SELECT
-                    DISTINCT
-                        py.id AS payment_id,
-                        py.cart_discount AS total_cart_value,
-                        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-                    FROM
-                        transactions AS t
-                    INNER JOIN
-                        products AS p ON p.id = t.prod_id
-                    INNER JOIN
-                        payments AS py ON py.id = t.payment_id
-                    WHERE
-                        t.is_paid = 1
-                        AND t.is_void = 0
-                    GROUP BY
-                        py.id
-                )
-                SELECT DISTINCT  
-                    p.id AS id, 
-                    p.prod_desc AS prod_desc, 
-                    p.cost AS cost,
-                    p.sku AS sku, 
-                    p.markup AS markup, 
-                    py.id AS payment_id, 
-                    p.prod_price AS prod_price,
-                    SUM(t.prod_qty)  AS qty,
-                    COALESCE(tr.total_qty,0) as refundedQty,
-                    COALESCE(ret.total_qty,0) AS returnedQty,
-                    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
-                    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-                    CAST(SUM(
-                        CASE 
-                            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
-                            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
-                                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
-                            ELSE 0 
-                        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
-                    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-                
-                    CASE
-                        WHEN p.isVAT = 1 THEN 
-                            CAST(
-                                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
-                                AS DECIMAL(10,2)
-                            )
-                        ELSE 0
-                    END AS totalVat,
-                    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
-                    COALESCE( tr.refundedamt,0)  as refundedAmt,
-                    COALESCE( ret.returnamt,0) as returnAmt,
-                    COALESCE(tr.total_cart,0) AS CARTrEFUND
-                  
-                FROM 
-                    products AS p
-                INNER JOIN 
-                    transactions AS t ON p.id = t.prod_id 
-                INNER JOIN 
-                    payments AS py ON py.id = t.payment_id 
-                INNER JOIN 
-                    users AS u ON u.id = t.user_id 
-                INNER JOIN 
-                    discounts AS d ON d.id = u.discount_id 
-                LEFT JOIN
-                    TotalCartValue AS tc ON tc.payment_id = py.id
-                LEFT JOIN(WITH RefundSums AS (
-                    SELECT 
-                    DISTINCT
-                        r.id AS refunded_id,
-                        r.payment_id,
-                        r.prod_id,
-                        r.refunded_qty AS qty,
-                        r.refunded_amt AS amount,
-                        r.reference_num,
-                        r.otherDetails,
-                        u.id AS user_id,
-                        u.discount_id,
-                        d.discount_amount AS discountRate,
-                        products.prod_desc AS prod_desc,
-                        products.barcode AS barcode,
-                        products.sku AS sku,
-                        products.isVAT,
-                        products.is_discounted,
-                        products.prod_price,
-                        r.itemDiscount,
-                        t.prod_qty,
-                               COALESCE(
-                                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                        )
-                                     AS total_item_discounts,
-                      COALESCE(r.refunded_amt,0) * COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                                0
-                            ) AS refundCart
-                    FROM refunded AS r
-                    INNER JOIN payments AS p ON r.payment_id = p.id
-                    INNER JOIN transactions AS t ON t.payment_id = p.id
-                    INNER JOIN products ON r.prod_id = products.id
-                    INNER JOIN users AS u ON t.user_id = u.id
-                    INNER JOIN discounts AS d ON u.discount_id = d.id
-                    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.id = :selectedProduct
-                ),
-                CustomerDiscounts AS (
-                    SELECT 
-                    DISTINCT
-                        rs.refunded_id,
-                        rs.payment_id,
-                        rs.prod_id ,
-                        SUM(DISTINCT rs.refundCart) as overallCart,
-                        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                        SUM(DISTINCT rs.qty) AS total_qty,
-                        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                        SUM(
-                            CASE
-                                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                    CAST(
-                                        (
-                                            ((rs.qty * rs.prod_price) - 
-                                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
-                                        
-                                    )
-                                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                    CAST(
-                                        (
-                                            ((rs.qty * rs.prod_price) - 
-                                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                        ) * rs.discountRate / 100)
-                                        AS DECIMAL(10,2)
-                                    )
-                                ELSE 0
-                            END
-                        ) AS total_customer_discount
-                    FROM RefundSums AS rs
-                    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
-                ),
-                RefundTotals AS (
-                    SELECT 
-                        cd.prod_id,
-                        SUM(cd.total_qty) AS total_qty,
-                        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                        SUM(cd.overAlldiscounts) AS overAlldiscounts
-                    FROM CustomerDiscounts AS cd
-                    GROUP BY cd.prod_id
-                )
-                SELECT 
-                    rt.prod_id,
-                    rt.total_qty,
-                    rt.total_amount,
-                    rt.total_customer_discount,
-                    rt.overAlldiscounts,
-                    rt.total_cart,
-                    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
-                FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
-                LEFT JOIN (WITH RefundSums AS (
-                    SELECT 
-                    DISTINCT
-                        r.id AS return_id,
-                        r.payment_id,
-                        r.product_id,
-                        r.return_qty AS qty,
-                        r.return_amount AS amount,
-                        r.otherDetails,
-                        u.id AS user_id,
-                        u.discount_id,
-                        d.discount_amount AS discountRate,
-                        products.prod_desc AS prod_desc,
-                        products.barcode AS barcode,
-                        products.sku AS sku,
-                        products.isVAT,
-                        products.is_discounted,
-                        products.prod_price,
-                        r.itemDiscount,
-                        t.prod_qty,
-                               COALESCE(
-                                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
-                                        )
-                                     AS total_item_discounts,
-                     COALESCE(r.return_amount,0) * COALESCE(
-                                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
-                                0
-                            ) AS returnCart
-                    FROM return_exchange AS r
-                    INNER JOIN payments AS p ON r.payment_id = p.id
-                    INNER JOIN transactions AS t ON t.payment_id = p.id
-                    INNER JOIN products ON r.product_id = products.id
-                    INNER JOIN users AS u ON t.user_id = u.id
-                    INNER JOIN discounts AS d ON u.discount_id = d.id
-                    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.id = :selectedProduct
-                ),
-                CustomerDiscounts AS (
-                    SELECT 
-                    DISTINCT
-                        rs.return_id,
-                        rs.payment_id,
-                        rs.product_id,
-                        SUM(DISTINCT rs.returnCart) as overallCart,
-                        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-                        SUM(DISTINCT rs.qty) AS total_qty,
-                        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
-                        SUM(
-                            CASE
-                                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
-                                    CAST(
-                                        (
-                                            ((rs.qty * rs.prod_price) - 
-                                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
-                                        ) / 1.12) * rs.discountRate / 100
-                                        AS DECIMAL(10,2)
-                                    )
-                                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
-                                    CAST(
-                                        (
-                                            ((rs.qty * rs.prod_price) - 
-                                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
-                                        ) * rs.discountRate / 100)
-                                        AS DECIMAL(10,2)
-                                    )
-                                ELSE 0
-                            END
-                        ) AS total_customer_discount
-                    FROM RefundSums AS rs
-                    GROUP BY rs.return_id, rs.payment_id, rs.product_id
-                ),
-                ReturnTotals AS (
-                    SELECT 
-                        cd.product_id,
-                        SUM(cd.total_qty) AS total_qty,
-                        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
-                        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
-                        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-                     SUM(cd.overAlldiscounts) AS overAlldiscounts
-                    FROM CustomerDiscounts AS cd
-                    GROUP BY cd.product_id
-                )
-                SELECT 
-                    rt.product_id,
-                    rt.total_qty,
-                    rt.total_amount,
-                    rt.total_customer_discount,
-                    rt.overAlldiscounts,
-                    rt.total_cart,
-                    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
-                FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
-                WHERE 
-                    t.is_paid = 1 
-                    AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.id = :selectedProduct
-                GROUP BY
-                    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
-                HAVING
-                newQty > 0;";
-                            $sql = $this->connect()->prepare( $sqlQuery);
-                            $sql->bindParam( ':selectedProduct', $selectedProduct );
-                            $sql->bindParam( ':startDate', $startDate);
-                            $sql->bindParam( ':endDate', $endDate);
-                            $sql->execute();
-                            return $sql;
-            }
-            else {
-                $sql = "WITH TotalCartValue AS (
-    SELECT
-    DISTINCT
-        py.id AS payment_id,
-        py.cart_discount AS total_cart_value,
-        py.cart_discount/SUM(t.prod_qty) as cartdiscount
-    FROM
-        transactions AS t
-    INNER JOIN
-        products AS p ON p.id = t.prod_id
-    INNER JOIN
-        payments AS py ON py.id = t.payment_id
-    WHERE
-        t.is_paid = 1
-        AND t.is_void = 0
-    GROUP BY
-        py.id
-)
-SELECT DISTINCT  
+                $sqlQuery = "SELECT DISTINCT  
     p.id AS id, 
     p.prod_desc AS prod_desc, 
     p.cost AS cost,
@@ -12857,16 +11963,15 @@ SELECT DISTINCT
     COALESCE(ret.total_qty,0) AS returnedQty,
     SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
     CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
-    CAST(SUM(
+    SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
-        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)AS DECIMAL(10,2))  AS overallDiscounts,
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
     ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
-
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
@@ -12875,7 +11980,7 @@ SELECT DISTINCT
             )
         ELSE 0
     END AS totalVat,
-    CAST((CAST(COALESCE(SUM(tc.cartdiscount),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0))AS DECIMAL(10,2)) as totalCartDiscountPerItem,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
     COALESCE( tr.refundedamt,0)  as refundedAmt,
     COALESCE( ret.returnamt,0) as returnAmt,
     COALESCE(tr.total_cart,0) AS CARTrEFUND
@@ -12890,8 +11995,36 @@ INNER JOIN
     users AS u ON u.id = t.user_id 
 INNER JOIN 
     discounts AS d ON d.id = u.discount_id 
-LEFT JOIN
-    TotalCartValue AS tc ON tc.payment_id = py.id
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.id = :selectedProduct
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
 LEFT JOIN(WITH RefundSums AS (
     SELECT 
     DISTINCT
@@ -12923,10 +12056,11 @@ LEFT JOIN(WITH RefundSums AS (
             ) AS refundCart
     FROM refunded AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.prod_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.id = :selectedProduct
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -12934,17 +12068,17 @@ CustomerDiscounts AS (
         rs.refunded_id,
         rs.payment_id,
         rs.prod_id ,
-        SUM(DISTINCT rs.refundCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
@@ -12952,7 +12086,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -12969,7 +12103,7 @@ RefundTotals AS (
         CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
         CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
         CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
-        SUM(cd.overAlldiscounts) AS overAlldiscounts
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
     FROM CustomerDiscounts AS cd
     GROUP BY cd.prod_id
 )
@@ -13012,10 +12146,11 @@ LEFT JOIN (WITH RefundSums AS (
             ) AS returnCart
     FROM return_exchange AS r
     INNER JOIN payments AS p ON r.payment_id = p.id
-    INNER JOIN transactions AS t ON t.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
     INNER JOIN products ON r.product_id = products.id
     INNER JOIN users AS u ON t.user_id = u.id
     INNER JOIN discounts AS d ON u.discount_id = d.id
+    WHERE DATE(p.date_time_of_payment) BETWEEN :startDate AND :endDate AND products.id = :selectedProduct
 ),
 CustomerDiscounts AS (
     SELECT 
@@ -13023,17 +12158,17 @@ CustomerDiscounts AS (
         rs.return_id,
         rs.payment_id,
         rs.product_id,
-        SUM(DISTINCT rs.returnCart) as overallCart,
-        SUM(DISTINCT rs.total_item_discounts) AS overAlldiscounts,
-        SUM(DISTINCT rs.qty) AS total_qty,
-        CAST(SUM(DISTINCT rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
         SUM(
             CASE
                 WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.prod_qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) / 1.12) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
@@ -13041,7 +12176,7 @@ CustomerDiscounts AS (
                     CAST(
                         (
                             ((rs.qty * rs.prod_price) - 
-                            ((rs.qty * rs.prod_price) * ((rs.itemDiscount / (rs.qty * rs.prod_price)) * 100) / 100)
+                            (rs.total_item_discounts)
                         ) * rs.discountRate / 100)
                         AS DECIMAL(10,2)
                     )
@@ -13073,7 +12208,277 @@ SELECT
 FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
 WHERE 
     t.is_paid = 1 
-    AND t.is_void = 0
+    AND t.is_void = 0 AND DATE(py.date_time_of_payment) BETWEEN :startDate AND :endDate AND p.id = :selectedProduct
+GROUP BY
+    p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
+HAVING
+newQty > 0;";
+            $sql = $this->connect()->prepare( $sqlQuery);
+            $sql->bindParam( ':selectedProduct', $selectedProduct );
+            $sql->bindParam( ':startDate', $startDate);
+            $sql->bindParam( ':endDate', $endDate);
+            $sql->execute();
+            return $sql;
+            }
+            else {
+                $sql = "SELECT DISTINCT  
+    p.id AS id, 
+    p.prod_desc AS prod_desc, 
+    p.cost AS cost,
+    p.sku AS sku, 
+    p.markup AS markup, 
+    py.id AS payment_id, 
+    p.prod_price AS prod_price,
+    SUM(t.prod_qty)  AS qty,
+    COALESCE(tr.total_qty,0) as refundedQty,
+    COALESCE(ret.total_qty,0) AS returnedQty,
+    SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0) as newQty,
+    CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
+    SUM(
+        CASE 
+            WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+            WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
+                THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
+            ELSE 0 
+        END)-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
+    ((SUM(t.prod_qty) - COALESCE(tr.total_qty,0)- COALESCE(ret.total_qty,0)) * p.prod_price) AS grossAmount,
+    CASE
+        WHEN p.isVAT = 1 THEN 
+            CAST(
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                AS DECIMAL(10,2)
+            )
+        ELSE 0
+    END AS totalVat,
+    (CAST(COALESCE((cart.cartPerItem),0) AS  DECIMAL(10,2))- COALESCE(tr.total_cart,0)- COALESCE(ret.total_cart,0)) as totalCartDiscountPerItem,
+    COALESCE( tr.refundedamt,0)  as refundedAmt,
+    COALESCE( ret.returnamt,0) as returnAmt,
+    COALESCE(tr.total_cart,0) AS CARTrEFUND
+  
+FROM 
+    products AS p
+INNER JOIN 
+    transactions AS t ON p.id = t.prod_id 
+INNER JOIN 
+    payments AS py ON py.id = t.payment_id 
+INNER JOIN 
+    users AS u ON u.id = t.user_id 
+INNER JOIN 
+    discounts AS d ON d.id = u.discount_id 
+INNER JOIN (SELECT
+    py.id AS payment_id,
+    t.prod_id AS product_id,
+    SUM(t.prod_qty) AS prod_qty,
+    t.prod_price as prod_price,
+    py.cart_discount AS total_cart_value,
+    tr.total_subtotal,
+    t.prod_id,
+    SUM(CAST((t.prod_qty * t.prod_price) * (py.cart_discount / tr.total_subtotal)AS DECIMAL(10,2))) AS cartPerItem,
+    CAST((py.cart_discount / tr.total_subtotal) AS DECIMAL(10,2)) AS cart_discount
+FROM
+    transactions AS t
+INNER JOIN
+    products AS p ON p.id = t.prod_id
+INNER JOIN
+    payments AS py ON py.id = t.payment_id
+INNER JOIN (
+    SELECT 
+        payment_id, 
+        SUM(subtotal) AS total_subtotal
+    FROM 
+        transactions 
+    GROUP BY 
+        payment_id
+) AS tr ON tr.payment_id = py.id
+WHERE
+    t.is_paid = 1
+    AND t.is_void = 0 
+GROUP BY
+    t.prod_id) AS cart on cart.prod_id = t.prod_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+   
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.prod_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.prod_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.prod_id = p.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.product_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.product_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.product_id = p.id
+WHERE 
+    t.is_paid = 1 
+    AND t.is_void = 0 
 GROUP BY
     p.id, p.prod_desc, p.cost, p.sku, p.markup, p.prod_price
 HAVING
@@ -13121,7 +12526,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -13155,7 +12560,7 @@ GROUP BY
                         )
                     ) AS total_return_item_discounts,
                  CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
             ))AS DECIMAL(10,2)) AS returnCart
                 FROM 
@@ -13242,7 +12647,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -13276,7 +12681,7 @@ GROUP BY
                         )
                     ) AS total_return_item_discounts,
                  CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
             ))AS DECIMAL(10,2)) AS returnCart
                 FROM 
@@ -13362,7 +12767,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -13396,7 +12801,7 @@ GROUP BY
                         )
                     ) AS total_return_item_discounts,
                  CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
             ))AS DECIMAL(10,2)) AS returnCart
                 FROM 
@@ -13483,7 +12888,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -13517,7 +12922,7 @@ GROUP BY
                         )
                     ) AS total_return_item_discounts,
                  CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
             ))AS DECIMAL(10,2)) AS returnCart
                 FROM 
@@ -13604,7 +13009,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -13638,7 +13043,7 @@ GROUP BY
                         )
                     ) AS total_return_item_discounts,
                  CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20,4)),
                 0
             ))AS DECIMAL(10,2)) AS returnCart
                 FROM 
@@ -13726,7 +13131,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -13760,7 +13165,7 @@ GROUP BY
                         )
                     ) AS total_return_item_discounts,
                  CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
             ))AS DECIMAL(10,2)) AS returnCart
                 FROM 
@@ -13848,7 +13253,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -13881,21 +13286,21 @@ GROUP BY
                         0
                     )
                 ) AS total_return_item_discounts,
-             ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+             CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
-        )),2) AS returnCart,
-           ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+        ))AS DECIMAL(10,2)) AS returnCart,
+           CAST(SUM(COALESCE(rc.return_amount, 0)) - 
         COALESCE(
             CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
             0
         )-  COALESCE(
                         CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
                         0
-                    ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                    ) - CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
-        )),2),2) AS otherReturnPayments 
+        ))AS DECIMAL(10,2))AS DECIMAL(10,2)) AS otherReturnPayments 
           
             FROM 
                 return_exchange  rc
@@ -13906,8 +13311,8 @@ GROUP BY
         DISTINCT
             u.first_name AS first_name,
             u.last_name AS last_name, 
-            ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
-            ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
+            CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+            CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
             p.date_time_of_payment AS date,
             p.cart_discount AS cart_discount,
             COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
@@ -13978,7 +13383,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -14011,21 +13416,21 @@ GROUP BY
                             0
                         )
                     ) AS total_return_item_discounts,
-                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                 CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
-            )),2) AS returnCart,
-               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            ))AS DECIMAL(10,2)) AS returnCart,
+               CAST(SUM(COALESCE(rc.return_amount, 0)) - 
             COALESCE(
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
                 0
             )-  COALESCE(
                             CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
                             0
-                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                        ) - CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
-            )),2),2) AS otherReturnPayments 
+            ))AS DECIMAL(10,2))AS DECIMAL(10,2)) AS otherReturnPayments 
               
                 FROM 
                     return_exchange  rc
@@ -14036,8 +13441,8 @@ GROUP BY
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
-                ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
@@ -14108,7 +13513,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -14141,21 +13546,21 @@ GROUP BY
                             0
                         )
                     ) AS total_return_item_discounts,
-                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+              CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
-            )),2) AS returnCart,
-               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            ))AS DECIMAL(10,2)) AS returnCart,
+           CAST(SUM(COALESCE(rc.return_amount, 0)) - 
             COALESCE(
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
                 0
             )-  COALESCE(
                             CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
                             0
-                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                        ) - CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
-            )),2),2) AS otherReturnPayments 
+            ))AS DECIMAL(10,2))AS DECIMAL(10,2)) AS otherReturnPayments 
               
                 FROM 
                     return_exchange  rc
@@ -14166,8 +13571,8 @@ GROUP BY
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
-                ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
@@ -14240,7 +13645,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -14273,21 +13678,21 @@ GROUP BY
                             0
                         )
                     ) AS total_return_item_discounts,
-                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
-            )),2) AS returnCart,
-               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            ))AS DECIMAL(10,2)) AS returnCart,
+             CAST(SUM(COALESCE(rc.return_amount, 0)) - 
             COALESCE(
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
                 0
             )-  COALESCE(
                             CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
                             0
-                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                        ) - CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
-            )),2),2) AS otherReturnPayments 
+            ))AS DECIMAL(10,2))AS DECIMAL(10,2)) AS otherReturnPayments 
               
                 FROM 
                     return_exchange  rc
@@ -14298,8 +13703,8 @@ GROUP BY
             DISTINCT
                  u.first_name AS first_name,
                 u.last_name AS last_name, 
-                ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
-                ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
@@ -14318,8 +13723,6 @@ GROUP BY
                 COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal
              
            
-               
-                
             FROM 
                 payments AS p 
                 INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
@@ -14339,7 +13742,7 @@ GROUP BY
             $sql->bindParam( ':selectedUser', $selectedUser );
             $sql->execute();
             return $sql;
-        } else if ( $selectedUser  && !$singleDateData && $startDate && $endDate ) {
+        } else if ($selectedUser  && !$singleDateData && $startDate && $endDate ) {
             $sqlQuery = "WITH RefundSums AS (
                  SELECT 
     payment_id,
@@ -14372,7 +13775,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -14405,21 +13808,21 @@ GROUP BY
                             0
                         )
                     ) AS total_return_item_discounts,
-                 ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+          CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
                 0
-            )),2) AS returnCart,
-               ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+            ))AS DECIMAL(10,2)) AS returnCart,
+               CAST(SUM(COALESCE(rc.return_amount, 0)) - 
             COALESCE(
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
                 0
             )-  COALESCE(
                             CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
                             0
-                        ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                        ) - CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
                 0
-            )),2),2) AS otherReturnPayments 
+            ))AS DECIMAL(10,2))AS DECIMAL(10,2)) AS otherReturnPayments  
               
                 FROM 
                     return_exchange  rc
@@ -14430,8 +13833,8 @@ GROUP BY
             DISTINCT
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
-                ROUND(COALESCE(SUM(p.payment_amount), 0),2) AS paid_amount,
-                ROUND(COALESCE(SUM(p.change_amount), 0),2) AS totalChange,
+                CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
                 COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
@@ -14443,7 +13846,7 @@ GROUP BY
    
                 
                 COALESCE(SUM(res.return_amt), 0) AS return_amt,
-                COALESCE(SUM(res. total_return_item_discounts), 0) AS total_return_item_discounts,
+                COALESCE(SUM(res.total_return_item_discounts), 0) AS total_return_item_discounts,
                 COALESCE(SUM(res.rc_credits), 0) AS totalReturnCredits,
                 COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
                 COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
@@ -14505,7 +13908,7 @@ FROM (
             )
         ) AS total_item_discounts,
         CAST(SUM(COALESCE(r.refunded_amt, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
         )) AS DECIMAL(10,2)) AS refundCart
     FROM 
@@ -14538,21 +13941,21 @@ GROUP BY
                         0
                     )
                 ) AS total_return_item_discounts,
-             ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+             CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
             CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
             0
-        )),2) AS returnCart,
-           ROUND(SUM(COALESCE(rc.return_amount, 0)) - 
+        )) AS DECIMAL(10,2)) AS returnCart,
+           CAST(SUM(COALESCE(rc.return_amount, 0)) - 
         COALESCE(
             CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].credits')) AS DECIMAL(10, 2)),
             0
         )-  COALESCE(
                         CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].discount')) AS DECIMAL(10, 2)),
                         0
-                    ) - ROUND(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                    ) - CAST(SUM(COALESCE(rc.return_amount, 0) * COALESCE(
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(rc.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 4)),
             0
-        )),2),2) AS otherReturnPayments 
+        )) AS DECIMAL(10,2))AS DECIMAL(10,2)) AS otherReturnPayments 
           
             FROM 
                 return_exchange  rc
@@ -14589,12 +13992,12 @@ GROUP BY
         DISTINCT
             u.first_name AS first_name,
             u.last_name AS last_name, 
-            ROUND(COALESCE(SUM( p.payment_amount), 0),2) AS paid_amount,
-            ROUND(COALESCE(SUM( p.change_amount), 0),2) AS totalChange,
+            CAST(COALESCE(SUM( p.payment_amount), 0) AS DECIMAL(10,2)) AS paid_amount,
+            CAST(COALESCE(SUM( p.change_amount), 0) AS DECIMAL(10,2)) AS totalChange,
             p.date_time_of_payment AS date,
             p.cart_discount AS cart_discount,
             COALESCE(SUM(rs.refunded_amt), 0) AS refunded_amt,
-            COALESCE(rd.total_item_discounts, 0) AS total_item_discounts,
+            COALESCE(SUM(rs.total_item_discounts), 0) AS total_item_discounts,
             COALESCE(SUM(rs.credits), 0) AS totalCredits,
             COALESCE(SUM(rs.discountsTender), 0) AS totalDiscountsTender,
             COALESCE(SUM(rs.cartRateRefund), 0) AS cartRateRefundTotal,
@@ -14640,4 +14043,199 @@ public function getDateReturned(){
         $stmt = $this->connect()->query( $sql );
         return $stmt;
 }
+public function getInvoice(){
+    $sql = "SELECT r.barcode as receipt,DATE(py.date_time_of_payment)AS DATE, py.payment_amount as payment_amount,py.change_amount as change_amount, CAST((py.payment_amount-py.change_amount)AS DECIMAL(10,2)) as amountPaid,
+COALESCE(tr.refundedamt,0) as refundedamt,
+COALESCE(ret.returnamt,0) as returnamt
+FROM payments as py INNER JOIN (SELECT * FROM transactions GROUP BY payment_id) AS t ON t.payment_id = py.id
+INNER JOIN receipt as r ON r.id = t.receipt_id
+LEFT JOIN(WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS refunded_id,
+        r.payment_id,
+        r.prod_id,
+        r.refunded_qty AS qty,
+        r.refunded_amt AS amount,
+        r.reference_num,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+      COALESCE(r.refunded_amt,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS refundCart
+    FROM refunded AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.prod_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.refunded_id,
+        rs.payment_id,
+        rs.prod_id ,
+        SUM( rs.refundCart) as overallCart,
+        SUM( rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.refunded_id, rs.payment_id, rs.prod_id
+),
+RefundTotals AS (
+    SELECT 
+        cd.payment_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.prod_id
+)
+SELECT 
+    rt.payment_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart) AS DECIMAL(10,2)) AS refundedamt
+FROM RefundTotals AS rt)  AS tr On tr.payment_id = py.id
+LEFT JOIN (WITH RefundSums AS (
+    SELECT 
+    DISTINCT
+        r.id AS return_id,
+        r.payment_id,
+        r.product_id,
+        r.return_qty AS qty,
+        r.return_amount AS amount,
+        r.otherDetails,
+        u.id AS user_id,
+        u.discount_id,
+        d.discount_amount AS discountRate,
+        products.prod_desc AS prod_desc,
+        products.barcode AS barcode,
+        products.sku AS sku,
+        products.isVAT,
+        products.is_discounted,
+        products.prod_price,
+        r.itemDiscount,
+        t.prod_qty,
+               COALESCE(
+                     CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].itemDiscountsData')) AS DECIMAL(10, 2)), 0
+                        )
+                     AS total_item_discounts,
+     COALESCE(r.return_amount,0) * COALESCE(
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(r.otherDetails, '$[0].cartRate')) AS DECIMAL(20, 20)),
+                0
+            ) AS returnCart
+    FROM return_exchange AS r
+    INNER JOIN payments AS p ON r.payment_id = p.id
+    INNER JOIN (SELECT  * FROM transactions GROUP BY payment_id) as t on t.payment_id=p.id
+    INNER JOIN products ON r.product_id = products.id
+    INNER JOIN users AS u ON t.user_id = u.id
+    INNER JOIN discounts AS d ON u.discount_id = d.id
+    
+),
+CustomerDiscounts AS (
+    SELECT 
+    DISTINCT
+        rs.return_id,
+        rs.payment_id,
+        rs.product_id,
+        SUM(rs.returnCart) as overallCart,
+        SUM(rs.total_item_discounts) AS overAlldiscounts,
+        SUM( rs.qty) AS total_qty,
+        CAST(SUM(rs.amount)AS DECIMAL(10,2)) AS total_amount,
+        SUM(
+            CASE
+                WHEN rs.isVAT = 1 AND rs.is_discounted = 1 THEN 
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) / 1.12) * rs.discountRate / 100
+                        AS DECIMAL(10,2)
+                    )
+                WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
+                    CAST(
+                        (
+                            ((rs.qty * rs.prod_price) - 
+                            (rs.total_item_discounts)
+                        ) * rs.discountRate / 100)
+                        AS DECIMAL(10,2)
+                    )
+                ELSE 0
+            END
+        ) AS total_customer_discount
+    FROM RefundSums AS rs
+    GROUP BY rs.return_id, rs.payment_id, rs.product_id
+),
+ReturnTotals AS (
+    SELECT 
+        cd.payment_id,
+        SUM(cd.total_qty) AS total_qty,
+        CAST(SUM(cd.total_amount)AS DECIMAL(10,2)) AS total_amount,
+        CAST(SUM(cd.total_customer_discount)AS DECIMAL(10,2)) AS total_customer_discount,
+        CAST(SUM(cd.overallCart)AS DECIMAL(10,6)) as total_cart,
+     SUM(cd.overAlldiscounts) AS overAlldiscounts
+    FROM CustomerDiscounts AS cd
+    GROUP BY cd.product_id
+)
+SELECT 
+    rt.payment_id,
+    rt.total_qty,
+    rt.total_amount,
+    rt.total_customer_discount,
+    rt.overAlldiscounts,
+    rt.total_cart,
+    CAST((rt.total_amount-rt.total_customer_discount-rt.overAlldiscounts- rt.total_cart)AS DECIMAL(10,2)) AS returnamt
+FROM ReturnTotals AS rt) AS ret ON ret.payment_id = py.id
+WHERE
+t.is_paid = 1
+AND t.is_void = 0";
+        $stmt = $this->connect()->query( $sql );
+        return $stmt;
+}
+
+
 }
