@@ -1021,7 +1021,7 @@ input:checked + .sliderbom:before {
 
 /* new */
 
-.warrantLbl {
+.taxExlusive {
   position: relative;
   display: inline-block;
   width: 40px; 
@@ -1029,7 +1029,7 @@ input:checked + .sliderbom:before {
   outline: none; 
 }
 
-.warrantLbl input {
+.taxExlusive input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -1224,7 +1224,7 @@ input:checked + .stockeableSpan:before {
 }
 /* new */
 
-.stockWarning {
+.vatableTax {
   position: relative;
   display: inline-block;
   width: 40px; 
@@ -1232,7 +1232,7 @@ input:checked + .stockeableSpan:before {
   outline: none; 
 }
 
-.stockWarning input {
+.vatableTax input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -1374,7 +1374,7 @@ label{
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Type</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input" >
-                            <input class="custom-input"  name="expense_type" id="expense_type"  style="width: 259px" autocomplete="off"/>
+                            <input class="custom-input" placeholder = "Search Expense Type" name="expense_type" id="expense_type"  style="width: 259px" autocomplete="off"/>
                             <button type = "button"  id="btn_expense_type" class="custom-btn dropdown_btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1434,7 +1434,7 @@ label{
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Supplier</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input">
                             <input class="custom-input" hidden readonly name="supplier_id" id="supplier_id" style="width: 259px" />
-                            <input class="custom-input" name="supplier" id="supplier" style="width: 259px " autocomplete="off"/>
+                            <input class="custom-input" placeholder = "Search Supplier" name="supplier" id="supplier" style="width: 259px " autocomplete="off"/>
                             <button type = "button" name="btn_supplier" id="btn_supplier" class="custom-btn">
                             <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1458,7 +1458,7 @@ label{
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Invoice Number</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="invoice_number" id="invoice_number" autocomplete="off"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input class="brand" name="invoice_number" id="invoice_number" oninput = "$(this).closest('td').removeClass('form-error')"  autocomplete="off"/></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Price (Php)</td>
@@ -1473,17 +1473,17 @@ label{
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="brand" name="total_amount" id="total_amount" readonly autocomplete="off"/></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Tax
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Is Taxable?&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <label class="taxExlusive" style="margin-left: 5px">
+                              <input type="checkbox" id="toggleTaxIn">
+                              <span class="warrantySpan round"></span>
+                          </label>
                       </td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px; font-style:italic; color: #B2B2B2">
-                          <label class="stockWarning" style="margin-left: 5px">
-                              <input type="checkbox" id="stockToggle">
-                              <span class="warningSpan round"></span>
-                          </label>
-                          <input type="text" hidden class="quantity" id="quantity" style="width: 100px" placeholder="Stock Quantity" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); if(this.value.includes('-')) this.value = this.value.replace('-', ''); if(this.value.includes('.')) { let parts = this.value.split('.'); this.value = parts[0] + '.' + parts.slice(1).join('').slice(0, 2); }" maxlength="10"/>
+                          <input type="hidden" id = "isVatable" name = "isVatable" value = "0">
+                          <input type="text" style = "display: none" class="vatable_amount" id="vatable_amount" name = "vatable_amount" style="width: 80px" placeholder="Gross Amount (Inclusive of VAT):" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); if(this.value.includes('-')) this.value = this.value.replace('-', ''); if(this.value.includes('.')) { let parts = this.value.split('.'); this.value = parts[0] + '.' + parts.slice(1).join('').slice(0, 2); }" maxlength="10" readonly/>
                         </td>
                     </tr>
-              </tbody>
             </table>
           </div>
           <div style="margin-top: 10px; margin-left: 20px">
@@ -1492,8 +1492,9 @@ label{
           </div>
           <div id="scrollable-div">
               <div class="imageCard">
-                  <div  style="width:180px" class="imageExpense" id="imageExpense">
+                  <div  style="width:180px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid gray; background-color: #151515" class="imageExpense" id="imageExpense">
                       <img src="./assets/img/invoice.png" id= "imagePreview" alt="Image Preview" style = "width: 175px; height: 195px"></img>
+                      <p style = "color: red; font-size: 0.80rem" id = "dd_r">Drag or Drop your Receipt</p>
                    </div>   
                    <input type="file" hidden id = "image-input" accept="image/*" name = "image_url">
                    <div class="picture-button-container">
@@ -1502,9 +1503,9 @@ label{
                     </div>
                </div>
               </div>
-              <!-- <div style = "margin-left: 20px">
-                  <img src="./assets/img/expenses2.webp" alt="Image Preview" style = "width: 300px; height: 200px"></img> 
-               </div> -->
+              <div style = "margin-left: 20px">
+                <p id = "expense_errorMessages" style = "color: red">  
+              </div>
             <div class="button-container" style="display:flex;justify-content: space-between; position:absolute; ">
               <button  type = "button" class="btn-success-custom btn-error-custom" id = "btn_cancelExpense" style="margin-right: 10px; width: 100px; height: 40px">CANCEL</button>
               <button  class="btn-success-custom saveProductsBtn" type = "submit" style="margin-right: 10px; width: 100px; height: 40px">SAVE</button>
@@ -1540,6 +1541,22 @@ $(document).ready(function(){
       }
     });
   }
+  
+  $("#toggleTaxIn").on("change", function(){
+    var total_amount = $("#total_amount").val();
+    if($(this).prop("checked"))
+    {
+      $("#vatable_amount").show();
+      computeTax(total_amount);
+      $("#isVatable").val("1");
+    }
+    else
+    {
+      $("#vatable_amount").hide();
+      $("#vatable_amount").val("0");
+      $("#isVatable").val("0");
+    }
+  })
 
   $("#btn_expense_type").on("click", function(event) {
     event.stopPropagation();
@@ -1574,7 +1591,6 @@ $(document).ready(function(){
           $('#expense_type_dropdown a').show();
       }
   });
-
 
   $("#uomBtn").on("click", function(event) {
     event.stopPropagation();
@@ -1671,8 +1687,16 @@ $(document).ready(function(){
     
     var total_amount = (qty * price) - discount;
     $("#total_amount").val(total_amount.toFixed(2));
-  });
 
+    if ($("#toggleTaxIn").is(":checked")) {
+      computeTax(total_amount);
+    }
+  });
+  function computeTax(amount)
+  {
+    var vatable_amount = amount * 1.12;
+    $("#vatable_amount").val(vatable_amount.toFixed(2));
+  }
   $("#price, #discount, #qty").on("input", function() {
     var value = $(this).val();
     var formatted = value.replace(/[^0-9.]/g, '');
@@ -1701,15 +1725,13 @@ $(document).ready(function(){
     $(this).val(formatted);
   });
 
-
-
-
   $("#open_image").on("click", function() {
     $("#image-input").click();
-});
+  });
 
-$("#image-input").on("change", function() {
+  $("#image-input").on("change", function() {
     var file = this.files[0];
+    $("#dd_r").hide();
     if (file) {
         var reader = new FileReader();
         reader.onload = function(e) {
@@ -1719,10 +1741,11 @@ $("#image-input").on("change", function() {
     } else {
         $("#imagePreview").hide();
     }
-});
+  });
   $("#remove_image").on("click", function() {
     $("#imagePreview").attr("src", "./assets/img/invoice.png").show(); 
     $("#image-input").val(''); 
+    $("#dd_r").show();
   });
   $("#btn_cancelExpense").on("click", function(){
     $("#expense_form")[0].reset();
@@ -1744,6 +1767,61 @@ $("#image-input").on("change", function() {
  
 })
 
+$(document).ready(function() {
+  $('#imageExpense').on('dragover', function(e) {
+    e.preventDefault();
+    $(this).addClass('dragover');
+  });
 
+  $('#imageExpense').on('dragleave', function(e) {
+    e.preventDefault();
+    $(this).removeClass('dragover');
+  });
+
+  $('#imageExpense').on('drop', function(e) {
+    e.preventDefault();
+    $(this).removeClass('dragover');
+    var file = e.originalEvent.dataTransfer.files[0];
+
+    if (file.type.match('image.*')) {
+      $("#dd_r").hide();
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $('#imagePreview').attr('src', e.target.result);
+      };
+      reader.readAsDataURL(file);
+      $('#image-input').val(file);
+    } else {
+      show_errorResponse("Only images are allowed.")
+    }
+  });
+  function show_errorResponse(message) 
+  {
+    toastr.options = {
+      "onShown": function () {
+        $('.custom-toast').css({
+          "opacity": 1,
+          "width": "600px",
+          "text-align": "center",
+          "border": "2px solid #1E1C11",
+        });
+      },
+      "closeButton": true,
+      "positionClass": "toast-top-right",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "progressBar": true,
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+      "tapToDismiss": false,
+      "toastClass": "custom-toast",
+      "onclick": function () { alert('Clicked'); }
+
+    };
+    toastr.error(message);
+  }
+});
 </script>
 
