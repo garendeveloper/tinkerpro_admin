@@ -372,6 +372,23 @@
             $result =  $customer->updateCustomer($formData);
             echo json_encode([ 'success' => true, 'result' => $formData]);
             break;
+        case 'updateExpiration':
+            $value=  isset($_GET['value']) ? $_GET['value'] : null;
+            $coupon =  $userFacade->defaultCouponExpiration($value);
+            if ($coupon) {
+                echo json_encode(['success' => true, 'id' => $coupon]); 
+            } else {
+                echo json_encode(['success' => false]); 
+            }
+            break;
+        case 'getCurrent':
+            $result = $userFacade->getDefaultDate();
+            if ($result) {
+                echo json_encode(['success' => true, 'result' => $result]); 
+            } else {
+                echo json_encode(['success' => false]); 
+            }
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
