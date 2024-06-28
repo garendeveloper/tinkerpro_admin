@@ -158,11 +158,20 @@ if($expenses)
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 30));
         $pdf->Cell(108, $maxCellHeight, $row['expense_type'], 0, 0, 'L');
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['expense_type'], 108));
-        $pdf->Cell(50, $maxCellHeight, "-".number_format($row['expense_amount'], 2, '.', ','), 1, 0, 'R');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, "-".number_format($row['expense_amount'], 2, '.', ','), 50));
+        $pdf->Cell(50, $maxCellHeight, number_format($row['expense_amount'], 2, '.', ','), 1, 0, 'R');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($row['expense_amount'], 2, '.', ','), 50));
         $pdf->Ln(); 
         $counter++;
     }
+}
+else
+{
+    $pdf->Cell(138, $maxCellHeight, "", 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 138));
+    $pdf->SetFont('', 'B', 9);
+    $pdf->Cell(50, $maxCellHeight, "---", 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 50));
+    $pdf->Ln(); 
 }
 
 
@@ -227,8 +236,8 @@ $pdf->SetFont('', '', autoAdjustFontSize($pdf, "Loss and Damages Product", 108))
 $pdf->SetTextColor(255, 102, 102); 
 $pdf->SetFillColor(255, 255, 255);
 $pdf->SetFont('', 'B', 8);
-$pdf->Cell(50, $maxCellHeight, "-".number_format($lossanddamages, 2, '.', ','), 1, 0, 'R', true);
-$pdf->SetFont('', '', autoAdjustFontSize($pdf, "-".number_format($lossanddamages, 2, '.', ','), 50));
+$pdf->Cell(50, $maxCellHeight, number_format($lossanddamages, 2, '.', ','), 1, 0, 'R', true);
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($lossanddamages, 2, '.', ','), 50));
 $pdf->Ln(); 
 $pdf->Ln(); 
 

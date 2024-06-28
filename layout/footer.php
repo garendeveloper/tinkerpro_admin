@@ -90,7 +90,6 @@ $(document).ready(function() {
             $("table").css("border-color", response);
             $("#pointer").css("color", response);
             $(".text-custom").css('color', response);
-            
           }
           else
           {

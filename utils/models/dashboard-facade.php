@@ -796,7 +796,7 @@ class DashboardFacade extends DBConnection
                 $totalReturnAmt = $return_amount-$return_item_discounts-$return_credits-$totalReturnDiscountsTender;
             
                 $totalGrossSales = $sales-$totalRefundedAmt-$totalReturnAmt;
-                $monthly_gross_sale += $totalGrossSales;
+                $monthly_gross_sale += number_format($totalGrossSales, 2);
             
             }
             $month_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_expense_of_the_month'];

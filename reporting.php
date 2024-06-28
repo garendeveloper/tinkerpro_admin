@@ -105,6 +105,9 @@ if (isset($_SESSION['user_id'])) {
 .highlight {
   background-color: #FF6900;
 }
+/* .allAnchrBtn.active{
+  background-color: var(--active-bg-color);
+} */
 .anchor-container{
     padding:0;
     margin: 0;
@@ -682,9 +685,6 @@ input:not(:checked) + .sliderStatusExcludes {
 <?php include("layout/footer.php") ?>
 
 <script>
-
-
-
 document.getElementById('selectProducts').addEventListener('click', function() {
     document.getElementById('dropdownContent').style.display = 'block';
     $('#searchInput').focus()
@@ -790,7 +790,7 @@ function getSelectedProductValue() {
 }
 
 $("#reporting").addClass('active');
-  $("#pointer").html("Reporting");
+$("#pointer").html("Reporting");
   // display_settings();
   // function display_settings()
   // {
@@ -3975,7 +3975,71 @@ function generateExcel(id){
         }
     });
 });
-}else if(id == 28){
+}
+else if(id == 11){
+  $('#EXCELBtn').click(function() {
+      var selectedProduct =  getSelectedProductValue()
+      var datepicker = document.getElementById('datepicker').value
+      var singleDateData = null;
+      var startDate;
+      var endDate;
+      if (datepicker.includes('-')) {
+        var dateRange = datepicker.split(' - ');
+        var startDates = new Date(dateRange[0].trim());
+        var endDate = new Date(dateRange[1].trim());
+
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        startDate = formattedStartDate;
+        endDate = formattedEndDate;
+      } else {
+        var singleDate = datepicker.trim();
+        var singleDate = datepicker.trim();
+        var dateObj = new Date(singleDate);
+        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+        singleDateData =  formattedDate
+       
+      }
+      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+        singleDateData = ""
+      }
+      if(startDate == "" || startDate == null){
+        startDate = ""
+      }
+        if(endDate == "" || endDate == null){
+        endDate = ""
+      }
+      $.ajax({
+        url: './reports/generate_refund_excel.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+           data: {
+                selectedProduct: selectedProduct,
+                singleDateData: singleDateData,
+                startDate: startDate,
+                endDate: endDate
+            },
+       success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'refundList.xlsx'; 
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+}
+else if(id == 28){
   $('#EXCELBtn').click(function() {
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;

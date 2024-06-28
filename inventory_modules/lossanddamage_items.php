@@ -96,6 +96,28 @@
     .ui-autocomplete .ui-menu-item.ui-state-focus, .ui-menu-item:hover {
         background-color: #FF6900; 
     }
+    .fcontainer {
+        display: flex;
+        flex-direction: column;
+        height: 75vh; 
+        position: relative;
+    }
+    .bottom-area {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+.bottom-area {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+}
 </style>
 <div class="fcontainer" id="lossanddamage_div" style="display: none">
     <form id="lossanddamage_form">
@@ -165,8 +187,8 @@
 
     </table>
 
-    <div style="position: absolute;padding: 10px; width: 100%;">
-        <table id="footer_lossand_damages" class="">
+    <div style="position: absolute;padding: 10px; width: 100%;" class = "bottom-area">
+        <table id="footer_lossand_damages" class="text-color table-border">
             <thead style="border: none;">
                 <tr>
                     <th style="background-color: #1E1C11; width: 50%;">TOTAL</th>
@@ -180,7 +202,7 @@
             <textarea name="loss_and_damage_note" id="loss_and_damage_note" cols="80" rows="5" placeholder="Note"
                 style="background-color: #1E1C11; color: #ffff; width: 100%;">
 
-        </textarea>
+            </textarea>
         </div>
     </div>
 
