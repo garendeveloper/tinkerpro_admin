@@ -14,7 +14,7 @@ $selectedUser = $_GET['selectedUser'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
-$fetchUser = $userFacade->getAllCouponsStatus();
+$fetchUser = $userFacade->getAllCouponsStatus($value,$searchQuery);
 
 
 
@@ -29,7 +29,7 @@ while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
     <tr>
         <td  class='text-center td-h' ><?= $counter?><span hidden class="couponId"><?= $row['id'] ?></span></td>
         <td  class='text-center text-color td-h'><?= $row['qrNumber'] ?></span></td>
-        <td  class='text-center text-color td-h'><?= $row['c_amount'] ?></td>
+        <td  class='text-center text-color td-h'><?= number_format($row['c_amount'],2) ?></td>
         <td  class='text-center text-color td-h'><?= $row['transaction_dateTime'] !== null ? date('F d, Y', strtotime($row['transaction_dateTime'])) : '' ?></td>
         <td  class='text-center text-color employeeNum td-h'><?= $row['used_date'] !== null ? date('F d, Y', strtotime($row['used_date'])) : '' ?></td>
         <td  class='text-center text-color td-h'><?= $row['expiry_dateTime'] !== null ? date('F d, Y', strtotime($row['expiry_dateTime'])) : '' ?><span hidden class="statsData"><?= $row['status']?></span><span hidden class="statsDataID"><?= $row['status_id']?></span></td>
