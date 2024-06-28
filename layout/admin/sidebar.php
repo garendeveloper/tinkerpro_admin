@@ -205,6 +205,8 @@ if (isset($_SESSION['user_id'])) {
             <?php if ($accessUsers): ?>
                 <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text">Users</span></a></li>
             <?php endif ?>
+            <li><a href="coupons" id="coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
+                        class="text">Coupons</span></a></li>
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text">Logout</span></a></li>
             <li><a href="#" id="toggle-sidebar" class="d-flex justify-content-end"><i

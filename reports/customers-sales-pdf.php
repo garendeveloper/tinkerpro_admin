@@ -191,7 +191,9 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['first_name'] . ' ' . $row['last_name'], $headerWidths[1]));
     $pdf->Cell($headerWidths[1], $maxCellHeight, $row['first_name'] . ' ' . $row['last_name'], 1, 0, 'L');
     $pdf->SetFont('', '', autoAdjustFontSize($pdf,    $totalGrossSales  , $headerWidths[2]));
-    $pdf->Cell($headerWidths[2], $maxCellHeight,  number_format(   $totalGrossSales,2), 1, 0, 'R');
+    $totalGrossSales = max(0, $totalGrossSales);
+    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($totalGrossSales, 2), 1, 0, 'R');
+
 
     $pdf->Ln(); 
     $counter++;
