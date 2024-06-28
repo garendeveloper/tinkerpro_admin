@@ -450,5 +450,24 @@ public function getAllCouponsStatus(){
     $stmt = $this->connect()->query($sql);
     return $stmt;
 }
+
+public function fetchShop() {
+    $sql = $this->connect()->prepare("SELECT shop.*,
+invoice_name.*
+FROM shop
+INNER JOIN invoice_name ON invoice_name.id = shop.invoice_id_name;");
+    $sql->execute();
+    return $sql;
+  }
+  function getLatestReturnCouponData($id){
+        
+    $sql = $this->connect()->prepare("SELECT * FROM return_coupon WHERE id = :id");
+    $sql->bindParam(':id', $id);
+    $sql->execute();
+    $latestCoupon = $sql->fetchAll(PDO::FETCH_ASSOC);
+    return $latestCoupon;
 }
+
+}
+
 ?>

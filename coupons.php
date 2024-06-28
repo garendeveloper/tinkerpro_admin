@@ -71,6 +71,7 @@ if (isset($_SESSION['user_id'])) {
       <div class="main-panel">
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
+            <input hidden id="couponID"/>
            <input  class="text-color searchUsers" style="width: 80%; height: 45px; margin-right: 10px" placeholder="Search QR CODE"/>
            <button class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
               viewBox="0 0 491.52 491.52" xml:space="preserve">
@@ -305,7 +306,7 @@ if (isset($_SESSION['user_id'])) {
 .action-td{
   font-style: italic;
 }
-.highlightedUser {
+.highlightedCoupon {
     border: 2px solid #00B050 !important; 
 }
 
@@ -349,5 +350,26 @@ document.addEventListener("click", function(event) {
   }
 });
 
+$(document.body).on('click', '.editBtn', function() {
+        var id = $(this).closest('tr').find('.couponId').text();
+        
+        $('.highlightedCoupon').removeClass('highlightedCoupon');
+        var $row = $(this).closest('tr').addClass('highlightedCoupon');
+        printCoupon(id)
+        
+    });
+function printCoupon(id){
+    $.ajax({
+            url: './reports/coupons-print.php', 
+            type: 'GET',
+            data:{id:id},
+            success: function(response) {
+                console.log(response)
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText); 
+            }
+        });
+}
 
 </script>
