@@ -212,9 +212,11 @@
         $("#btn_invcSearch").click(function (e) {
             e.preventDefault();
             var inventory_id = $("#invc_product_id").val();
-            if(inventory_id !== 0)
+            var searchItem = $("#invc_product").val();
+            if(isExist(searchItem))
             {
-          
+                if(inventory_id !== 0)
+            {
                 if ($("select[name='qi_inventory_type']").val() === "") {
                     $("select[name='qi_inventory_type']").css('border', '1px solid red');
                 }
@@ -231,6 +233,8 @@
                     }
                 }
             }
+            }
+         
         })
         var productsCache = [];
         function show_allProducts() 
@@ -354,21 +358,21 @@
         });
 
       
-      $("#invc_product").on("keypress", function(event){
-        if(event.which === 13){
-            var product_id = $("#invc_product_id").val();
+    //   $("#invc_product").on("keypress", function(event){
+    //     if(event.which === 13){
+    //         var product_id = $("#invc_product_id").val();
       
-          if (!isDataExistInTable(product_id)) {
-            append_to_table1(product_id);
-          }
-          else
-          {
-            show_errorResponse("Product already in the table")
-          }
-          $("#invc_product").val('');
-        }
+    //       if (!isDataExistInTable(product_id)) {
+    //         append_to_table1(product_id);
+    //       }
+    //       else
+    //       {
+    //         show_errorResponse("Product already in the table")
+    //       }
+    //       $("#invc_product").val('');
+    //     }
       
-      })
+    //   })
 
     //   $("#invc_product").on("autocompletechange", function(event, ui) {
     //     var product_id = $("#invc_product_id").val();
@@ -391,6 +395,16 @@
             
         //     return false;
         // }
+        function isExist(product)
+        {
+            for (var i = 0; i < productsCache.length; i++) 
+            {
+                if (productsCache[i].product === product) 
+                {
+                    return true;
+                }
+            }
+        }
         function isDataExistInTable(data) 
         {
             var $matchingRow = $('#tbl_inventory_count tbody td[data-id="' + data + '"]').closest('tr');

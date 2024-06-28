@@ -76,18 +76,6 @@
                 $stmt->bindParam(4, $counted, PDO::PARAM_STR);
                 $stmt->bindParam(5, $difference, PDO::PARAM_STR);
                 $stmt->execute();
-
-                // $stmt = $this->connect()->prepare("UPDATE inventory SET stock = :new_stock  WHERE id = :id");
-                // $stmt->bindParam(":new_stock", $counted); 
-                // $stmt->bindParam(":id", $inventory_id); 
-                // $stmt->execute();
-
-                // $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
-                //                                     VALUES (?, ?, ?)");
-                // $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                // $stmt->bindParam(2, $counted, PDO::PARAM_STR); 
-                // $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
-                // $stmt->execute();
             
                 $stmt2 = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
                 $stmt2->bindParam(":new_stock", $counted); 
@@ -99,12 +87,13 @@
                 $stock_customer = $formData['user_name'];
                 $document_number = $reference_no;
                 $transaction_type = "Inventory Count";
+                $difference = $difference > 0 ? "+".$difference : $difference;
                 $stmt1 = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
                                                     VALUES (?, ?, ?, ?, ?, ?, ?)");
-    
+
                 $stmt1->bindParam(1, $inventory_id, PDO::PARAM_INT);
                 $stmt1->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-                $stmt1->bindParam(3, $currentStock, PDO::PARAM_STR); 
+                $stmt1->bindParam(3, $difference, PDO::PARAM_STR); 
                 $stmt1->bindParam(4, $counted, PDO::PARAM_STR); 
                 $stmt1->bindParam(5, $document_number, PDO::PARAM_STR); 
                 $stmt1->bindParam(6, $transaction_type, PDO::PARAM_STR); 

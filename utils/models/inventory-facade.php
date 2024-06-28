@@ -346,9 +346,10 @@ class InventoryFacade extends DBConnection
             $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
                                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
 
+            $movement = $qty_onhand > $newqty ? "-".$qty_onhand-$newqty : "-".$newqty - $qty_onhand;
             $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
             $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-            $stmt->bindParam(3, $newqty, PDO::PARAM_STR); 
+            $stmt->bindParam(3, $movement, PDO::PARAM_STR); 
             $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
             $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
             $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
