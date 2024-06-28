@@ -4011,26 +4011,23 @@ else if(id == 11){
         endDate = ""
       }
       $.ajax({
-        url: './reports/generate_refund_excel.php',
+        url: './reports/generate_income_statement_excel.php',
         type: 'GET',
         xhrFields: {
-            responseType: 'blob'
+          responseType: 'blob'
         },
-           data: {
-                selectedProduct: selectedProduct,
-                singleDateData: singleDateData,
-                startDate: startDate,
-                endDate: endDate
-            },
+        data: {
+            singleDateData: singleDateData,
+            startDate: startDate,
+            endDate: endDate
+        },
        success: function(response) {
             var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             var link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'refundList.xlsx'; 
+            link.download = 'income_statement.xlsx'; 
             document.body.appendChild(link);
             link.click();
-
-            // Clean up
             document.body.removeChild(link);
         },
         error: function(xhr, status, error) {
