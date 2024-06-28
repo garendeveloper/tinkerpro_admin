@@ -1472,6 +1472,17 @@ label{
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Total Amount (Php)</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="brand" name="total_amount" id="total_amount" readonly autocomplete="off"/></td>
                     </tr>
+                    <tr>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Tax
+                      </td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px; font-style:italic; color: #B2B2B2">
+                          <label class="stockWarning" style="margin-left: 5px">
+                              <input type="checkbox" id="stockToggle">
+                              <span class="warningSpan round"></span>
+                          </label>
+                          <input type="text" hidden class="quantity" id="quantity" style="width: 100px" placeholder="Stock Quantity" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); if(this.value.includes('-')) this.value = this.value.replace('-', ''); if(this.value.includes('.')) { let parts = this.value.split('.'); this.value = parts[0] + '.' + parts.slice(1).join('').slice(0, 2); }" maxlength="10"/>
+                        </td>
+                    </tr>
               </tbody>
             </table>
           </div>

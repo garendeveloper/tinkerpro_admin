@@ -90,6 +90,10 @@ $(document).ready(function() {
             $("table").css("border-color", response);
             $("#pointer").css("color", response);
             $(".text-custom").css('color', response);
+            $("span:not(.dynamic-color)").css('color', response);
+            $(".dt-column-title").css('color', "#FFFFF");
+            $(".title_div").css('color', response);
+            $(".title_div span").css('color', "#FFFFF");
           }
           else
           {
@@ -113,6 +117,8 @@ $(document).ready(function() {
             $("table thead").css("border-color", defaultColor);
             $("table").css("border-color", defaultColor);
             $(".text-custom").css('color', defaultColor);
+            $("span:not(.dynamic-color)").css('color', defaultColor);
+            $("span:not(th)").css('color', defaultColor);
           }
         }
       })
