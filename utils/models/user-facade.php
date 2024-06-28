@@ -440,6 +440,15 @@ public function addCustomer($formData){
     return true;
 
 }
-
+public function getCouponStatus(){
+    $sql = 'SELECT id,isUse FROM return_coupon';
+    $stmt = $this->connect()->query($sql);
+    return $stmt;
+}
+public function getAllCouponsStatus(){
+    $sql = 'SELECT * FROM return_coupon ORDER BY transaction_dateTime ASC';
+    $stmt = $this->connect()->query($sql);
+    return $stmt;
+}
 }
 ?>
