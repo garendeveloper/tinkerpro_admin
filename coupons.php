@@ -72,7 +72,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="content-wrapper">
           <div style="display: flex; margin-bottom: 20px;">
             <input hidden id="couponID"/>
-           <input  class="text-color searchUsers" style="width: 80%; height: 45px; margin-right: 10px" placeholder="Search QR CODE"/>
+           <input  class="text-color searchCoupon" style="width: 80%; height: 45px; margin-right: 10px" placeholder="Search QR CODE"/>
            <button class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
               viewBox="0 0 491.52 491.52" xml:space="preserve">
             <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
@@ -103,9 +103,29 @@ if (isset($_SESSION['user_id'])) {
             <div>
               <div class="card" style="height:700px; width: 100%">
                 <div class="card-body">
+               <div style="display:flex;width:100%">
                 <h2 class="text-color user-header" style="margin-left: 5px">Coupons Or Vouchers</h2>
+               <div class="custom-select" id="set_expiration" style="display:flex">
+                <div class="select-container">
+                    <select id="expirationSelect">
+                    <option  selected >Select Expiration Date</option>
+                    <?php
+                        $userFacade = new UserFacade;
+                        $others =     $userFacade->getExpiration();
+                        while ($row = $others->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['days'] .' </option>';
+                        }
+                        ?>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+                <button style="margin-left: 5px" class="setExpiration">Set Expiration</button>
+              </div>
+             
+            </div>
                   <?php include('errors.php'); ?>
-                  <div class="select-area dropdown custom-input">
+               
+                  <div class="select-area dropdown custom-input" >
                     <input class="custom-input texct-color filterStatus" readonly hidden name="filterStatus" id="filterStatus" style="width: 180px"/>
                     <input class="text-color filterStatusName" readonly name="filterStatusName" id="filterStatusName" style="width: 130px; border: 1px solid #808080; margin-right: 5px;">   
                     <button name="filterStatusBtn" id="filterStatusBtn" class="custom-btn">
@@ -120,13 +140,9 @@ if (isset($_SESSION['user_id'])) {
     </button>
     <div class="statusDropDown" id="statusDropDown">
         <?php
-            $userFacade = new UserFacade();
-            $status = $userFacade->getCouponStatus();
-            echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="0">All</a>';
-            while ($row = $status->fetch(PDO::FETCH_ASSOC)) {
-                $displayText = $row['isUse'] == 0 ? 'Not Used' : 'Used';
-                echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . $displayText . '</a>';
-            }
+            echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="all">All</a>';
+            echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="0">Not Use</a>';
+            echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="1">Used</a>';
                 ?>       
              </div>
         </div>
@@ -169,6 +185,58 @@ if (isset($_SESSION['user_id'])) {
 
 <?php include("layout/footer.php") ?>
 <style>
+ .setExpiration{
+    border-radius: 5px;
+ }   
+.custom-select {
+  position: absolute;
+  width: 300px;
+  top: 10px;
+  right: 0;
+}
+.custom-btn{
+border-radius: 5px;
+height: 40px;
+}
+.custom-select label {
+  display: block;
+}
+
+.custom-select .select-container {
+  position: relative;
+  /* margin-left: 10px;
+  margin-right: 10px; */
+}
+.custom-input input,
+.custom-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 8px 30px 8px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  background-color: #575757;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+}
+
+.custom-select .select-arrow {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #666;
+}
+
+.custom-select select:focus {
+  outline: none;
+  border-color:#333333;
+}
  .statusDropDown {
     display: none;
     position: absolute;
@@ -185,7 +253,7 @@ if (isset($_SESSION['user_id'])) {
 #topBar{
   background-color:#262626
 }
- 
+
   .statusDropDown a {
     display: block;
     width: 100%;
@@ -199,6 +267,7 @@ if (isset($_SESSION['user_id'])) {
     padding-bottom: 0;
     margin-top: 0;
     margin-bottom: 0;  
+   
   }
   
 
@@ -239,7 +308,7 @@ if (isset($_SESSION['user_id'])) {
     position: absolute; 
     left: 2px;
     right:2px;
-    margin-top: 80px;
+    margin-top: 90px;
   }
   .select-area {
   margin-top: 40px;
@@ -251,7 +320,7 @@ if (isset($_SESSION['user_id'])) {
 
 }
 
-  .searchUsers{
+  .searchCoupon{
   background-color: #7C7C7C;
   }
   .text-color::placeholder {
@@ -315,10 +384,7 @@ if (isset($_SESSION['user_id'])) {
 <script>
 
 
-$(document).ready(function() {
 
-    
-});
 function refreshTable() {
         $.ajax({
             url: './fetch-data/fetch-coupons.php', 
@@ -350,6 +416,31 @@ document.addEventListener("click", function(event) {
   }
 });
 
+function selectDataDisplay() {
+  var value;
+  $(".statusDropDown a").click(function(event) {
+          $('.searchUsers').val("")
+         event.preventDefault();
+         value = $(this).attr("data-value");
+        var statusName = $(this).text();
+        $("#filterStatus").val(value);
+        $("#filterStatusName").val(statusName);
+        $("#statusDropDown").hide();
+        $.ajax({
+            url: './fetch-data/fetch-coupons.php', 
+            type: 'GET',
+            data:{selectedValue:value},
+            success: function(response) {
+                $('#couponsTable').html(response); 
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText); 
+            }
+        });
+    });   
+    }
+selectDataDisplay()
+
 $(document.body).on('click', '.editBtn', function() {
         var id = $(this).closest('tr').find('.couponId').text();
         
@@ -364,12 +455,184 @@ function printCoupon(id){
             type: 'GET',
             data:{id:id},
             success: function(response) {
-                console.log(response)
+                Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Coupon Printed Successfully!',
+                timer: 1000, 
+                timerProgressBar: true, 
+                showConfirmButton: false 
+        })
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Error Printing!',
+                timer: 1000, 
+                timerProgressBar: true, 
+                showConfirmButton: false 
+        })
+            }
+        });
+}
+
+$(document).ready(function() {
+      $(".statusDropDown a[data-value='all']").click();
+      $('#generatePDFBtn').click(function() {
+      var searchData = $('.searchUsers').val();
+      var statusValue = $("#filterStatus").val(); 
+
+    $.ajax({
+        url: './reports/generate_pdf.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        data: {
+            selectedValue: statusValue,
+            searchQuery: searchData
+        },
+        success: function(response) {
+            var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'usersList.pdf';
+            document.body.appendChild(a);
+            a.click();
+
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            console.log(searchData)
+        }
+    });
+});
+
+
+  $('#generateEXCELBtn').click(function() {
+    var searchData = $('.searchUsers').val();
+    $.ajax({
+        url: './reports/generate_excel.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        data: {
+            selectedValue: $('#filterStatus').val(),
+            searchQuery: searchData 
+        },
+        success: function(response) {
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'usersList.xlsx'; 
+
+            
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+});
+ 
+$('#printThis').click(function() {
+    var searchData = $('.searchUsers').val();
+    var statusValue = $("#filterStatus").val(); 
+
+    $.ajax({
+        url: './reports/generate_pdf.php',
+        type: 'GET',
+        xhrFields: {
+            responseType: 'blob'
+        },
+        data: {
+            selectedValue: statusValue,
+            searchQuery: searchData
+        },
+        success: function(response) {
+          var blob = new Blob([response], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var win = window.open(url);
+            win.onload = function() {
+                win.print();
+                win.onafterprint = function() {
+                    window.focus(); 
+                    win.close();
+                }
+            }
+
+            window.URL.revokeObjectURL(url);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            console.log(searchData)
+        }
+    });
+});
+$('.searchCoupon').on('input', function(){
+    var searchData = $(this).val();
+    $.ajax({
+            url: './fetch-data/fetch-coupons.php', 
+            type: 'GET',
+            data: {
+            searchQuery: searchData 
+        },
+            success: function(response) {
+                $('#couponsTable').html(response); 
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText); 
             }
         });
-}
+});
+ $('.clearBtn').on('click', function(){
+    $('.searchCoupon').val("")
+    $(".statusDropDown a[data-value='all']").click();
+    refreshTable() 
+ })
 
+ $('.setExpiration').on('click', function(){
+    var selectedValue = $('#expirationSelect').val();
+    axios.post(`api.php?action=updateExpiration&value=${selectedValue}`).then(function (response) {
+        Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Coupon Expiration updated successfully!',
+                timer: 1000, 
+                timerProgressBar: true, 
+                showConfirmButton: false 
+        })
+      }).catch(function (error) {
+        Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Error!',
+                timer: 1000, 
+                timerProgressBar: true, 
+                showConfirmButton: false 
+        })
+      })
+});
+
+
+ });
+
+ function currentExpiration(){
+    axios.post('api.php?action=getCurrent').then(function (response) {
+       var defaultData = response.data.result[0].id;
+       $('#expirationSelect').val(defaultData)
+      }).catch(function (error) {
+       
+      }) 
+}
+currentExpiration()
 </script>

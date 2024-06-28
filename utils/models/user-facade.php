@@ -445,10 +445,30 @@ public function getCouponStatus(){
     $stmt = $this->connect()->query($sql);
     return $stmt;
 }
-public function getAllCouponsStatus(){
+public function getAllCouponsStatus($value,$searchQuery){
+    if ($value == "0" ||$value == "1" ) {
+        $sql = 'SELECT * FROM return_coupon WHERE isUse = :status_id ORDER BY transaction_dateTime ASC';
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->bindParam(':status_id', $value);
+        $stmt->execute();
+        return $stmt;
+    }else if($searchQuery){
+        $sql = 'SELECT * FROM return_coupon WHERE qrNumber LIKE :searchQuery ORDER BY transaction_dateTime ASC';
+        $stmt = $this->connect()->prepare($sql);
+        
+        if (!empty($searchQuery)) {
+            $searchParam = "%$searchQuery%";
+            $stmt->bindParam(':searchQuery', $searchParam);
+        }
+        
+        $stmt->execute();
+        return $stmt;
+    }
+    else{
     $sql = 'SELECT * FROM return_coupon ORDER BY transaction_dateTime ASC';
     $stmt = $this->connect()->query($sql);
     return $stmt;
+    }
 }
 
 public function fetchShop() {
@@ -467,6 +487,38 @@ INNER JOIN invoice_name ON invoice_name.id = shop.invoice_id_name;");
     $latestCoupon = $sql->fetchAll(PDO::FETCH_ASSOC);
     return $latestCoupon;
 }
+public function getExpiration(){
+    $sql = $this->connect()->prepare("SELECT *
+    FROM coupon_expiration");
+
+        $sql->execute();
+        return $sql;
+}
+public function defaultCouponExpiration($value){
+    $default = 1;
+
+    
+    $sqlUpdateAll = 'UPDATE coupon_expiration SET `default` = 0';
+    $conn = $this->connect();
+    $stmtUpdateAll = $conn->prepare($sqlUpdateAll);
+    $stmtUpdateAll->execute();
+
+    $sqlSetDefault = 'UPDATE coupon_expiration SET `default` = ? WHERE id = ?';
+    $stmtSetDefault = $conn->prepare($sqlSetDefault);
+    $stmtSetDefault->execute([$default, $value]);
+
+    return $stmtSetDefault;
+}
+public function getDefaultDate(){
+    $sql = $this->connect()->prepare("SELECT *
+    FROM coupon_expiration WHERE `default` = 1");
+
+        $sql->execute();
+        $default = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $default;
+}
+
+
 
 }
 
