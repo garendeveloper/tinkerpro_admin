@@ -22,7 +22,7 @@ return array(
     'Mpdf\\PsrLogAwareTrait\\' => array($vendorDir . '/mpdf/psr-log-aware-trait/src'),
     'Mpdf\\PsrHttpMessageShim\\' => array($vendorDir . '/mpdf/psr-http-message-shim/src'),
     'Mpdf\\' => array($vendorDir . '/mpdf/mpdf/src'),
-    'Mike42\\' => array($vendorDir . '/mike42/escpos-php/src/Mike42', $vendorDir . '/mike42/gfx-php/src/Mike42'),
+    'Mike42\\' => array($vendorDir . '/mike42/gfx-php/src/Mike42', $vendorDir . '/mike42/escpos-php/src/Mike42'),
     'Intervention\\Image\\' => array($vendorDir . '/intervention/image/src'),
     'Intervention\\Gif\\' => array($vendorDir . '/intervention/gif/src'),
     'GuzzleHttp\\Psr7\\' => array($vendorDir . '/guzzlehttp/psr7/src'),
