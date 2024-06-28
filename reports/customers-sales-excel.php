@@ -77,7 +77,9 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
    
     $sheet->setCellValue('A' . ($counter + 1), $counter); 
     $sheet->setCellValue('B' . ($counter + 1), $row['last_name'] . ' ' . $row['first_name']);
-    $sheet->setCellValue('C' . ($counter + 1),  $totalGrossSales); 
+    $totalGrossSales = max(0, $totalGrossSales);
+    $sheet->setCellValue('C' . ($counter + 1), $totalGrossSales);
+    
  
    
     $counter++;
