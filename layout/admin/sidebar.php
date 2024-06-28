@@ -179,38 +179,38 @@ if (isset($_SESSION['user_id'])) {
     <nav>
         <ul>
             <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
-                        class="text">Dashboard</span></a></li>
+                        class="text dynamic-color">Dashboard</span></a></li>
             <?php if ($accessInventory): ?>
                 <li><a href="inventory" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span
-                            class="text">Inventory</span></a>
+                            class="text dynamic-color">Inventory</span></a>
                 </li>
             <?php endif ?>
             <?php if ($accessProducts): ?>
                 <li><a href="products" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
-                            class="text">Products</span></a>
+                            class="text dynamic-color">Products</span></a>
                 </li>
             <?php endif ?>
             <li><a href="expenses" id="expenses"><i class="bi bi-wallet"></i>&nbsp;&nbsp; <span
-            class="text">Expenses</span></a></li>
+            class="text dynamic-color">Expenses</span></a></li>
 
             <li><a href="suppliers" id="suppliers"><i class="bi bi-building"></i>&nbsp;&nbsp; <span
-                        class="text">Suppliers</span></a></li>
+                        class="text dynamic-color">Suppliers</span></a></li>
             <li><a href="customer" id="customers"><i class="bi bi-people"></i>&nbsp;&nbsp; <span
-                        class="text">Customers</span></a></li>
+                        class="text dynamic-color">Customers</span></a></li>
             <?php if ($accessReporting): ?>
                 <li><a href="reporting" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span
-                            class="text">Reporting</span></a>
+                            class="text dynamic-color">Reporting</span></a>
                 </li>
             <?php endif ?>
             <?php if ($accessUsers): ?>
-                <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text">Users</span></a></li>
+                <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text dynamic-color">Users</span></a></li>
             <?php endif ?>
             <li><a href="coupons" id="coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
-                        class="text">Coupons</span></a></li>
+                        class="text dynamic-color">Coupons</span></a></li>
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
-                        class="text">Logout</span></a></li>
+                        class="text dynamic-color">Logout</span></a></li>
             <li><a href="#" id="toggle-sidebar" class="d-flex justify-content-end"><i
-                        class="bi bi-chevron-double-left"></i>&nbsp;&nbsp; <span class="text"></span></a></li>
+                        class="bi bi-chevron-double-left"></i>&nbsp;&nbsp; <span class="text dynamic-color"></span></a></li>
         </ul>
         <input hidden class="userId" id="userId" value="<?php echo $userId; ?>" />
     </nav>
@@ -220,7 +220,7 @@ if (isset($_SESSION['user_id'])) {
     <a href="backup-restore" id="backup-restore"><i class="bi bi-cloud-arrow-up-fill"></i>&nbsp; Backup & Restore</a> -->
     <!-- <a href="ingredients" id="ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a> -->
         <!-- <li><a href="ingredients" id="ingredients"><i class="bi bi-egg"></i>&nbsp;&nbsp; <span
-                        class="text">Ingredients</span></a></li> --> 
+                        class="text dynamic-color">Ingredients</span></a></li> --> 
 
 </div>
 <script>

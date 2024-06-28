@@ -163,7 +163,32 @@
                 $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
                 $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
                 $stmt->execute();
-                
+
+                $expense_quantity = $qty_damage;
+                $expense_type = "LOSS AND DAMAGE";
+                $supplier_id = 0;
+                $invoice_number = $reference_no;
+                $price = $cost;
+                $total_amount = $expense_quantity * $price;
+                $date_of_transaction = date('Y-m-d');
+                $uom_id_expense = $this->get_productInfo($inventory_id)['uom_id'];
+
+                $expense_stmt = $this->connect()->prepare("
+                    INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )
+                ");
+
+                $expense_stmt->bindParam(1, $inventory_id, PDO::PARAM_STR);
+                $expense_stmt->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
+                $expense_stmt->bindParam(3, $expense_type, PDO::PARAM_STR);
+                $expense_stmt->bindParam(4, $expense_quantity, PDO::PARAM_INT);
+                $expense_stmt->bindParam(5, $uom_id_expense, PDO::PARAM_INT);
+                $expense_stmt->bindParam(6, $supplier_id, PDO::PARAM_INT);
+                $expense_stmt->bindParam(7, $invoice_number, PDO::PARAM_STR);
+                $expense_stmt->bindParam(8, $price, PDO::PARAM_STR);
+                $expense_stmt->bindParam(9, $total_amount, PDO::PARAM_STR);
+                $expense_stmt->execute();
+
                 if(isset($sub_row_data))
                 {
                     foreach($sub_row_data as $sr)

@@ -264,61 +264,92 @@ class ExpenseFacade extends DBConnection
             $discount = $formdata['discount'];
             $total_amount = $formdata['total_amount'];
             $description = $formdata['description'];
+            $taxable_amount = $formdata['vatable_amount'];
+            $isTaxable= $formdata['isVatable'];
             $date_of_transaction = DateTime::createFromFormat('m-d-Y', $response['data']['date_of_transaction'])->format('Y-m-d');
             $invoice_photo_url = $response['data']['image_url'];
 
             if(empty($formdata['expense_id']))
             {
-                $sql = $this->connect()->prepare("
-                    INSERT INTO expenses (item_name, date_of_transaction, billable_receipt_no, expense_type, quantity, uom_id, supplier, invoice_number, price, discount, total_amount, description, invoice_photo_url)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ");
+                $isInvoiceNumberExist_SQL = $this->connect()->prepare("SELECT * FROM expenses WHERE invoice_number = :invoice_number");
+                $isInvoiceNumberExist_SQL->execute([':invoice_number'=>$formdata['invoice_number']]);
+                $isInvoiceNumberExist = $isInvoiceNumberExist_SQL->fetch(PDO::FETCH_ASSOC);
+                if(!$isInvoiceNumberExist)
+                {
+                    $sql = $this->connect()->prepare("
+                        INSERT INTO expenses (item_name, date_of_transaction, billable_receipt_no, expense_type, quantity, uom_id, supplier, invoice_number, price, discount, total_amount, description, invoice_photo_url, taxable_amount, isTaxable)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ");
 
-                $sql->bindParam(1, $item_name, PDO::PARAM_STR);
-                $sql->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
-                $sql->bindParam(3, $billable_receipt_no, PDO::PARAM_STR);
-                $sql->bindParam(4, $expense_type, PDO::PARAM_STR);
-                $sql->bindParam(5, $qty, PDO::PARAM_INT);
-                $sql->bindParam(6, $uom_id, PDO::PARAM_INT);
-                $sql->bindParam(7, $supplier_id, PDO::PARAM_INT);
-                $sql->bindParam(8, $invoice_number, PDO::PARAM_STR);
-                $sql->bindParam(9, $price, PDO::PARAM_STR);
-                $sql->bindParam(10, $discount, PDO::PARAM_STR);
-                $sql->bindParam(11, $total_amount, PDO::PARAM_STR);
-                $sql->bindParam(12, $description, PDO::PARAM_STR);
-                $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
-                $sql->execute();
+                    $sql->bindParam(1, $item_name, PDO::PARAM_STR);
+                    $sql->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
+                    $sql->bindParam(3, $billable_receipt_no, PDO::PARAM_STR);
+                    $sql->bindParam(4, $expense_type, PDO::PARAM_STR);
+                    $sql->bindParam(5, $qty, PDO::PARAM_INT);
+                    $sql->bindParam(6, $uom_id, PDO::PARAM_INT);
+                    $sql->bindParam(7, $supplier_id, PDO::PARAM_INT);
+                    $sql->bindParam(8, $invoice_number, PDO::PARAM_STR);
+                    $sql->bindParam(9, $price, PDO::PARAM_STR);
+                    $sql->bindParam(10, $discount, PDO::PARAM_STR);
+                    $sql->bindParam(11, $total_amount, PDO::PARAM_STR);
+                    $sql->bindParam(12, $description, PDO::PARAM_STR);
+                    $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
+                    $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
+                    $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
+                    $sql->execute();
 
-                $response['message'] = "Expense has been successfully saved!";
+                    $response['message'] = "Expense has been successfully saved!";
+                    $response['success'] = true;
+                }
+                else
+                {
+                    $response['errors']['invoice_number'] = 'Invoice number already exist.';
+                    $response['success'] = false;
+                }
             }
             else
             {
+            
                 $id = $formdata['expense_id'];
-                $sql = $this->connect()->prepare("
-                    UPDATE expenses
-                    SET item_name = ?, date_of_transaction = ?, billable_receipt_no = ?, expense_type = ?, quantity = ?, uom_id = ?, supplier = ?, invoice_number = ?, price = ?, discount = ?, total_amount = ?, description = ?, invoice_photo_url = ?
-                    WHERE id = ?
-                ");
-                
-                $sql->bindParam(1, $item_name, PDO::PARAM_STR);
-                $sql->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
-                $sql->bindParam(3, $billable_receipt_no, PDO::PARAM_STR);
-                $sql->bindParam(4, $expense_type, PDO::PARAM_STR);
-                $sql->bindParam(5, $qty, PDO::PARAM_INT);
-                $sql->bindParam(6, $uom_id, PDO::PARAM_INT);
-                $sql->bindParam(7, $supplier_id, PDO::PARAM_INT);
-                $sql->bindParam(8, $invoice_number, PDO::PARAM_STR);
-                $sql->bindParam(9, $price, PDO::PARAM_STR);
-                $sql->bindParam(10, $discount, PDO::PARAM_STR);
-                $sql->bindParam(11, $total_amount, PDO::PARAM_STR);
-                $sql->bindParam(12, $description, PDO::PARAM_STR);
-                $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
-                $sql->bindParam(14, $id, PDO::PARAM_INT);
-                $sql->execute();
+                $isInvoiceNumberExist_SQL = $this->connect()->prepare("SELECT * FROM expenses WHERE invoice_number = :invoice_number AND id <> :currentId");
+                $isInvoiceNumberExist_SQL->execute([':invoice_number'=>$formdata['invoice_number'], 'currentId'=>$id]);
+                $isInvoiceNumberExist = $isInvoiceNumberExist_SQL->fetch(PDO::FETCH_ASSOC);
+                if(!$isInvoiceNumberExist)
+                {
+                    $sql = $this->connect()->prepare("
+                        UPDATE expenses
+                        SET item_name = ?, date_of_transaction = ?, billable_receipt_no = ?, expense_type = ?, quantity = ?, uom_id = ?, supplier = ?, invoice_number = ?, price = ?, discount = ?, total_amount = ?, description = ?, invoice_photo_url = ?, taxable_amount = ?, isTaxable = ?
+                        WHERE id = ?
+                    ");
+                    
+                    $sql->bindParam(1, $item_name, PDO::PARAM_STR);
+                    $sql->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
+                    $sql->bindParam(3, $billable_receipt_no, PDO::PARAM_STR);
+                    $sql->bindParam(4, $expense_type, PDO::PARAM_STR);
+                    $sql->bindParam(5, $qty, PDO::PARAM_INT);
+                    $sql->bindParam(6, $uom_id, PDO::PARAM_INT);
+                    $sql->bindParam(7, $supplier_id, PDO::PARAM_INT);
+                    $sql->bindParam(8, $invoice_number, PDO::PARAM_STR);
+                    $sql->bindParam(9, $price, PDO::PARAM_STR);
+                    $sql->bindParam(10, $discount, PDO::PARAM_STR);
+                    $sql->bindParam(11, $total_amount, PDO::PARAM_STR);
+                    $sql->bindParam(12, $description, PDO::PARAM_STR);
+                    $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
+                    $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
+                    $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
+                    $sql->bindParam(16, $id, PDO::PARAM_INT);
+                    $sql->execute();
 
-                $response['message'] = "Expense has been successfully updated!";
+                    $response['message'] = "Expense has been successfully updated!";
+                    $response['success'] = true;
+                }
+                else
+                {
+                    $response['errors']['invoice_number'] = 'Invoice number already exist.';
+                    $response['success'] = false;
+                }
             }
-            $response['success'] = true;
+            
         }
     
         return $response;

@@ -734,6 +734,7 @@ h1, label, textarea, input, table,h5{
           {
             $('table td').removeClass('form-error'); 
             if (!response.success) {
+              var errors = "";
                 $.each(response.errors, function(key, error) {
                   if(key === "qty")
                   {
@@ -746,7 +747,9 @@ h1, label, textarea, input, table,h5{
                   else{
                     $('#' + key + '').closest("td").addClass("form-error");
                   } 
+                  errors += "<li>"+error+"</li>"
                 });
+                $("#expense_errorMessages").html(errors)
             } else {
               $("#expense_form")[0].reset();
               $("table td").removeClass('form-error');
