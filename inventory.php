@@ -1942,8 +1942,8 @@ include ('./layout/admin/table-pagination-css.php');
 
                 $(".inventoryCard").html("");
                 $(".grid-container button").removeClass('active');
-                $("#inventories").addClass('active');
-                show_allInventories();
+                $("#stocks").addClass('active');
+                show_allStocks();
               }
             }
           })

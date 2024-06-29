@@ -1,5 +1,6 @@
 <?php
 require_once ('./utils/models/ability-facade.php');
+require_once ('./utils/models/product-facade.php');
 $userId = 0;
 
 
@@ -43,7 +44,9 @@ if (isset($_SESSION['user_id'])) {
 
 <?php include ("./modals/permissionModal.php") ?>
 <?php include ("./modals/access_granted.php") ?>
-<?php include ("./modals/access_denied.php") ?>
+<?php include ("./modals/access_denied.php")
+
+?>
 
 
 
@@ -172,12 +175,54 @@ if (isset($_SESSION['user_id'])) {
             <span id = "ct7" style = "color: white; font-family: Century Gothic; font-weight: bold"></span>
             <span style = "color: white; font-family: Century Gothic; font-weight: bold"><i style = "color: lightblue; font-weight: normal">You are logged in as:</i> <span style = "color: green">[<?= $_SESSION['first_name']." ".$_SESSION['last_name']?>]</span></span>
         </div>
+      
     </div>
    
 </header>
 <div class="sidebar" id="sidebar">
     <nav>
         <ul>
+            <li>
+                <style>
+                    img {
+                        max-width: 100%; 
+                        height: auto; 
+                        margin: 0 auto; 
+                        display: block;
+                    }
+
+                    @media (max-width: 768px) {
+                        img {
+                            max-width: 200px; 
+                        }
+                    }
+
+                    @media (max-width: 480px) {
+                        img {
+                            max-width: 150px; 
+                        }
+                    }
+                    li {
+                        overflow: hidden;
+                    }
+
+                    .divider {
+                        border-bottom: 1px solid #ccc;
+                        margin: 20px 0;
+                    }
+                </style>
+                <div>
+                    <?php
+                        $products = new ProductFacade();
+                        $fetchShop = $products->getShopDetails();
+                        $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
+                        $ipAddress = gethostbyname(gethostname());
+                        $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
+                    ?>
+                    <img src="<?= $imageFile ?>" alt="" style="height: 100px; width: 250px;">
+                </div>
+                <div class="divider"></div>
+            </li>
             <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Dashboard</span></a></li>
             <?php if ($accessInventory): ?>
