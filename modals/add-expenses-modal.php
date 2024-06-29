@@ -1473,7 +1473,7 @@ label{
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input class="brand" name="total_amount" id="total_amount" readonly autocomplete="off"/></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Is Taxable?&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Is Tax Exlusive?&nbsp;&nbsp;&nbsp;
                           <label class="taxExlusive" style="margin-left: 5px">
                               <input type="checkbox" id="toggleTaxIn">
                               <span class="warrantySpan round"></span>
@@ -1481,7 +1481,7 @@ label{
                       </td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px; font-style:italic; color: #B2B2B2">
                           <input type="hidden" id = "isVatable" name = "isVatable" value = "0">
-                          <input type="text" style = "display: none" class="vatable_amount" id="vatable_amount" name = "vatable_amount" style="width: 80px" placeholder="Gross Amount (Inclusive of VAT):" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); if(this.value.includes('-')) this.value = this.value.replace('-', ''); if(this.value.includes('.')) { let parts = this.value.split('.'); this.value = parts[0] + '.' + parts.slice(1).join('').slice(0, 2); }" maxlength="10" readonly/>
+                          <input type="text"value = "0" class="vatable_amount" id="vatable_amount" name = "vatable_amount" style="width: 80px" placeholder="Gross Amount (Inclusive of VAT):" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); if(this.value.includes('-')) this.value = this.value.replace('-', ''); if(this.value.includes('.')) { let parts = this.value.split('.'); this.value = parts[0] + '.' + parts.slice(1).join('').slice(0, 2); }" maxlength="10" readonly/>
                         </td>
                     </tr>
             </table>
@@ -1523,6 +1523,7 @@ label{
 <script>
 
 $(document).ready(function(){
+  const TAX_RATE = 0.12; // define a constant for the tax rate
   $(window).on("click", function(event) {
     if (!$(event.target).hasClass("custom-btn") && !$(event.target).closest('.dropdown-content').length) {
       $(".dropdown-content").each(function() {
@@ -1532,6 +1533,8 @@ $(document).ready(function(){
       });
     }
   });
+  // var current_totalAmount = $("#total_amount").val();
+  // computeInclusive(current_totalAmount);
 
   function hide_dropdown()
   {
@@ -1542,21 +1545,7 @@ $(document).ready(function(){
     });
   }
   
-  $("#toggleTaxIn").on("change", function(){
-    var total_amount = $("#total_amount").val();
-    if($(this).prop("checked"))
-    {
-      $("#vatable_amount").show();
-      computeTax(total_amount);
-      $("#isVatable").val("1");
-    }
-    else
-    {
-      $("#vatable_amount").hide();
-      $("#vatable_amount").val("0");
-      $("#isVatable").val("0");
-    }
-  })
+  
 
   $("#btn_expense_type").on("click", function(event) {
     event.stopPropagation();
@@ -1691,10 +1680,47 @@ $(document).ready(function(){
     if ($("#toggleTaxIn").is(":checked")) {
       computeTax(total_amount);
     }
+    else
+    {
+      computeInclusive(total_amount);
+    }
   });
+  $("#toggleTaxIn").on("change", function(){
+    var total_amount = $("#total_amount").val();
+    if($(this).is(":checked"))
+    {
+      computeTax(total_amount);
+      $("#isVatable").val("1");
+    }
+    else
+    {
+      $("#isVatable").val("0");
+      computeInclusive(total_amount);
+    }
+  })
   function computeTax(amount)
   {
-    var vatable_amount = amount * 1.12;
+    var currentAmount = parseFloat(amount);
+    var tax_amount = parseFloat(amount / 1.12);
+    var tax = parseFloat(tax_amount * 0.12);
+    var vatable_amount = parseFloat(currentAmount + tax);
+    $("#vatable_amount").val(vatable_amount.toFixed(2));
+  }
+
+
+// function computeTax(amount) {
+//   const taxAmount = amount / (1 + TAX_RATE);
+//   const tax = taxAmount * TAX_RATE;
+//   const vatableAmount = amount + tax;
+//   const total = parseFloat()
+//   $("#vatable_amount").val(vatableAmount.toFixed(2));
+// }
+  function computeInclusive(amount)
+  {
+    var currentAmount = parseFloat(amount);
+    var tax_amount = parseFloat(amount / 1.12)
+    var tax = parseFloat(tax_amount * 0.12);
+    var vatable_amount = parseFloat(currentAmount - tax);
     $("#vatable_amount").val(vatable_amount.toFixed(2));
   }
   $("#price, #discount, #qty").on("input", function() {

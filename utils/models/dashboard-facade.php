@@ -824,7 +824,7 @@ class DashboardFacade extends DBConnection
             'top_month_value' => $maxValue,
             'top_expensiveMonth' => $expenseMonthName,
             'top_expensiveMonth_value' => $maxExpenseValue,
-            'annual_expenses' => $annual_expenses,
+            'annual_expenses' => $annual_expenses, 
         ];
         return $response;
     }
@@ -842,7 +842,7 @@ class DashboardFacade extends DBConnection
     {
         $stmt = $this->connect()->prepare("SELECT SUM(expenses.total_amount) AS total_expense_of_the_month
                                         FROM expenses
-                                        INNER JOIN supplier ON supplier.id = expenses.supplier
+                                        LEFT JOIN supplier ON supplier.id = expenses.supplier
                                         LEFT JOIN uom ON uom.id = expenses.uom_id
                                         WHERE MONTH(expenses.date_of_transaction) = :currentMonth
                                         AND YEAR(expenses.date_of_transaction) = :currentYear");

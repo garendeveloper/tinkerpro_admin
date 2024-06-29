@@ -123,22 +123,29 @@ class ExpenseFacade extends DBConnection
     }
     public function get_allExpensesByGroup($startDate, $endDate, $singleDate)
     {
-        $stmt = $this->connect()->prepare(" SELECT 
+        $stmt = $this->connect()->prepare("SELECT 
                                             CASE 
                                                 WHEN expense_type = 'PURCHASED ORDER' THEN 'Cost of goods sold'
-                                                ELSE expense_type
+                                                ELSE CONCAT(UCASE(SUBSTRING(expense_type, 1, 1)), LOWER(SUBSTRING(expense_type, 2)))
                                             END AS expense_type,
-                                            ROUND(SUM(expenses.total_amount), 2) AS expense_amount
+                                            ROUND(SUM(total_amount), 2) AS expense_amount,
+                                            ROUND(SUM(
+                                                CASE 
+                                                    WHEN isTaxable = 1 THEN expenses.taxable_amount - expenses.total_amount
+                                                    ELSE 0
+                                                END
+                                            ), 2) AS total_income_tax_expense
                                         FROM expenses
                                         WHERE 
-                                            (:singleDateParam IS NOT NULL AND date_of_transaction = :singleDateParam) OR
-                                            (:startDateParam IS NOT NULL AND :endDateParam IS NOT NULL AND date_of_transaction BETWEEN :startDateParam AND :endDateParam) OR
-                                            (:singleDateParam IS NULL AND :startDateParam IS NULL AND :endDateParam IS NULL AND date_of_transaction = CURDATE())
+                                            date_of_transaction = COALESCE(:singleDateParam, :startDateParam, CURDATE())
+                                            OR (date_of_transaction BETWEEN :startDateParam AND :endDateParam)
                                         GROUP BY 
                                             CASE 
                                                 WHEN expense_type = 'PURCHASED ORDER' THEN 'Cost of goods sold'
                                                 ELSE expense_type
-                                            END;");
+                                            END;
+                                        ");
+
     
         $params = [];
     
