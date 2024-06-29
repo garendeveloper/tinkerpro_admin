@@ -480,11 +480,10 @@ function printCoupon(id){
 $(document).ready(function() {
       $(".statusDropDown a[data-value='all']").click();
       $('#generatePDFBtn').click(function() {
-      var searchData = $('.searchUsers').val();
+      var searchData = $('.searchCoupon').val();
       var statusValue = $("#filterStatus").val(); 
-
     $.ajax({
-        url: './reports/generate_pdf.php',
+        url: './reports/coupons.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -498,7 +497,7 @@ $(document).ready(function() {
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement('a');
             a.href = url;
-            a.download = 'usersList.pdf';
+            a.download = 'coupon_list.pdf';
             document.body.appendChild(a);
             a.click();
 
@@ -514,9 +513,9 @@ $(document).ready(function() {
 
 
   $('#generateEXCELBtn').click(function() {
-    var searchData = $('.searchUsers').val();
+    var searchData = $('.searchCoupon').val();
     $.ajax({
-        url: './reports/generate_excel.php',
+       url: './reports/coupons-excel.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
@@ -529,7 +528,7 @@ $(document).ready(function() {
             var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             var link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'usersList.xlsx'; 
+            link.download = 'coupons_list.csv'; 
 
             
             document.body.appendChild(link);
@@ -545,11 +544,11 @@ $(document).ready(function() {
 });
  
 $('#printThis').click(function() {
-    var searchData = $('.searchUsers').val();
+    var searchData = $('.searchCoupon').val();
     var statusValue = $("#filterStatus").val(); 
 
     $.ajax({
-        url: './reports/generate_pdf.php',
+        url: './reports/coupons.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'

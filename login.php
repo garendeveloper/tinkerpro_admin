@@ -42,6 +42,7 @@
           $_SESSION['user_id'] = $row['id'];
           $_SESSION['first_name'] = $row['first_name'];
           $_SESSION['last_name'] = $row['last_name'];
+          $_SESSION['role_id'] = $row['role_id'];
           header('Location: index'); 
           exit;
         }
@@ -225,6 +226,9 @@
         }
       })
     }
+
+ 
+
   </script>
 
 </body>

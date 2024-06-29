@@ -21,6 +21,9 @@ if (isset($_SESSION["first_name"])) {
 if (isset($_SESSION["last_name"])) {
   $lastName = $_SESSION["last_name"];
 }
+if (isset($_SESSION["role_id"])) {
+  $role_id = $_SESSION["role_id"];
+}
 
 // Redirect to login page if user has not been logged in
 if ($userId == 0) {
@@ -363,6 +366,11 @@ body, div, h1, h2, h3, h4, h5, p{
     <?php include "layout/admin/sidebar.php" ?>
     <div class="main-panel">
       <div class="content-wrapper" id = "dashboard_content">
+      <input hidden type="text" id="userId" value="<?php echo isset($userId) ? htmlspecialchars($userId) : ''; ?>">
+      <input hidden type="text" id="firstName" value="<?php echo isset($firstName) ? htmlspecialchars($firstName) : ''; ?>">
+      <input hidden type="text" id="lastName" value="<?php echo isset($lastName) ? htmlspecialchars($lastName) : ''; ?>">
+      <input hidden type="text" id="roleId" value="<?php echo isset($role_id) ? htmlspecialchars($role_id) : ''; ?>">
+
         <div class="container">
           <div class="row">
             <div class="col-12 col-md-8">
@@ -1100,4 +1108,24 @@ $('.custom_btns').on('click', function () {
       });
     })
   });
+
+
+    document.addEventListener('DOMContentLoaded', function() {  
+        var userId = document.getElementById('userId').value;
+        var firstName = document.getElementById('firstName').value;
+        var lastName = document.getElementById('lastName').value;
+        var roleId = document.getElementById('roleId').value;
+
+        
+        var userInfo = {
+            userId: userId,
+            firstName: firstName,
+            lastName: lastName,
+            roleId: roleId
+        };
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+      
+    });
+
+
 </script>

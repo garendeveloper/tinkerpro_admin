@@ -207,6 +207,8 @@ if (isset($_SESSION['user_id'])) {
             <?php endif ?>
             <li><a href="coupons" id="coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Coupons</span></a></li>
+            <li><a href="charges" id="coupons"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
+            class="text dynamic-color">Charges</span></a></li>
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Logout</span></a></li>
             <li><a href="#" id="toggle-sidebar" class="d-flex justify-content-end"><i

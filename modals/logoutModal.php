@@ -72,6 +72,7 @@ h4{
   $(".continue_logout").off("click").on("click", function(){
     $('#logoutModal').hide();
     window.location.href = "logout.php";
+    localStorage.removeItem('userInfo')
   })
 </script>
 

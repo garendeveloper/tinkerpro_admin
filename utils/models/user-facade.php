@@ -447,13 +447,13 @@ public function getCouponStatus(){
 }
 public function getAllCouponsStatus($value,$searchQuery){
     if ($value == "0" ||$value == "1" ) {
-        $sql = 'SELECT * FROM return_coupon WHERE isUse = :status_id ORDER BY transaction_dateTime ASC';
+        $sql = 'SELECT * FROM return_coupon WHERE isUse = :status_id ORDER BY transaction_dateTime DESC';
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(':status_id', $value);
         $stmt->execute();
         return $stmt;
     }else if($searchQuery){
-        $sql = 'SELECT * FROM return_coupon WHERE qrNumber LIKE :searchQuery ORDER BY transaction_dateTime ASC';
+        $sql = 'SELECT * FROM return_coupon WHERE qrNumber LIKE :searchQuery ORDER BY transaction_dateTime DESC';
         $stmt = $this->connect()->prepare($sql);
         
         if (!empty($searchQuery)) {
@@ -465,7 +465,7 @@ public function getAllCouponsStatus($value,$searchQuery){
         return $stmt;
     }
     else{
-    $sql = 'SELECT * FROM return_coupon ORDER BY transaction_dateTime ASC';
+    $sql = 'SELECT * FROM return_coupon ORDER BY transaction_dateTime DESC';
     $stmt = $this->connect()->query($sql);
     return $stmt;
     }

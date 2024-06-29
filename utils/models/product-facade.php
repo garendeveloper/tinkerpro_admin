@@ -947,10 +947,36 @@ public function getTotalProductsCount() {
   }
 }
 
+public function getServiceCharge(){
+  $sql = 'SELECT * FROM charges WHERE charges = "Service Charge"';
+  $stmt = $this->connect()->query($sql);
+  $serviceCharge =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $serviceCharge;
+}
+public function getOtherCharge(){
+  $sql = 'SELECT * FROM charges WHERE charges = "Other Charges"';
+  $stmt = $this->connect()->query($sql);
+  $otherCharge =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $otherCharge;
+
+}
+public function updateCharges($id, $serviceValue){
+   $dataValue =  $serviceValue/100;
+  $updateServices = 'UPDATE charges SET rate = ? WHERE id = ?';
+  $conn = $this->connect();
+  $stmtUpdateAll = $conn->prepare($updateServices);
+  $stmtUpdateAll->execute([number_format($dataValue,8), $id]);
+  return $stmtUpdateAll;
+}
+public function updateOthers($id, $serviceValue){
+$dataValue =  $serviceValue/100;
+ $updateServices = 'UPDATE charges SET rate = ? WHERE id = ?';
+ $conn = $this->connect();
+ $stmtUpdateAll = $conn->prepare($updateServices);
+ $stmtUpdateAll->execute([number_format($dataValue,8), $id]);
+ return $stmtUpdateAll;
+}
+
 
 }  
-
-
-
-
 ?>
