@@ -72,6 +72,13 @@ h4{
   $(".continue_logout").off("click").on("click", function(){
     $('#logoutModal').hide();
     window.location.href = "logout.php";
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var firstName = userInfo.firstName;
+    var lastName = userInfo.lastName;
+    var cid = userInfo.userId;
+    var role_id = userInfo.roleId; 
+
+    insertLogs('Logout', 'User' + ' '+ firstName + ' ' + lastName + ' ' + role_id )
     localStorage.removeItem('userInfo')
   })
 </script>

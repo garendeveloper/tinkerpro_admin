@@ -1124,6 +1124,8 @@ $('.custom_btns').on('click', function () {
             roleId: roleId
         };
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+        // insertLogs('Login', 'User' + ' '+ firstName + ' ' + lastName + ' ' + roleId )
       
     });
 
