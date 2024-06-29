@@ -43,6 +43,8 @@
           $_SESSION['first_name'] = $row['first_name'];
           $_SESSION['last_name'] = $row['last_name'];
           $_SESSION['role_id'] = $row['role_id'];
+
+     
           header('Location: index'); 
           exit;
         }
@@ -172,7 +174,7 @@
         <h5>Manage Business, inventory, products and services</h5>
       </div> 
 			<div class="wrap-login100" >
-				<form class="login100-form " action="login.php" method = "post">
+				<form class="login100-form "  action="login.php" method = "post">
           <div class="d-flex" style="justify-content: center; ">
             <img style="height: 70px; width: 200px; z-index: 1; opacity: 1" src="./assets/img/tinkerpro-logo-light.png" class="img-fluid " alt="logo">
           </div>
@@ -209,6 +211,7 @@
 	<script src="assets/login/vendor/daterangepicker/daterangepicker.js"></script>
 	<script src="assets/login/vendor/countdowntime/countdowntime.js"></script>
 	<script src="assets/login/js/main.js"></script>
+  <script src="assets/js/main.js"></script>
 
   <script>
     display_settings();
@@ -226,9 +229,7 @@
         }
       })
     }
-
- 
-
+    
   </script>
 
 </body>
