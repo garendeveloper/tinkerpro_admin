@@ -389,6 +389,47 @@
                 echo json_encode(['success' => false]); 
             }
             break;
+        case 'getServiceCharge':
+            $result = $products->getServiceCharge();
+            if ($result) {
+                echo json_encode(['success' => true, 'result' => $result]); 
+            } else {
+                echo json_encode(['success' => false]); 
+            }
+            break;
+        case 'getOtherCharges':
+            $result = $products->getOtherCharge();
+            if ($result) {
+                echo json_encode(['success' => true, 'result' => $result]); 
+            } else {
+                echo json_encode(['success' => false]); 
+            }
+            break;
+        case 'updateServiceCharge':
+            $postData = json_decode(file_get_contents('php://input'), true);
+            $serviceValue = isset($postData['serviceValue']) ? $postData['serviceValue'] : null;
+            $id =  isset($postData['idValue']) ? $postData['idValue'] : null;
+
+            $result = $products->updateCharges($id, $serviceValue);
+            if ($result) {
+                echo json_encode(['success' => true, 'result' => $result]); 
+            } else {
+                echo json_encode(['success' => false]); 
+            }
+            break;
+            case 'updateOtherCharge':
+                $postData = json_decode(file_get_contents('php://input'), true);
+                $serviceValue = isset($postData['othersValue']) ? $postData['othersValue'] : null;
+                $id =  isset($postData['idValue']) ? $postData['idValue'] : null;
+    
+                $result = $products->updateOthers($id, $serviceValue);
+                if ($result) {
+                    echo json_encode(['success' => true, 'result' => $result]); 
+                } else {
+                    echo json_encode(['success' => false]); 
+                }
+                break;
+            
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

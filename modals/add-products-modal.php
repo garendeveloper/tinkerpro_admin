@@ -1464,7 +1464,7 @@ input:checked + .warningSpan:before {
                         </td>
                     </tr>
                     <tr>
-                        <td id="serviceChargeLbl" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Service Charge (1%)</td>
+                        <td id="serviceChargeLbl" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Service Charge <span id="service_charge"></span></td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px">  
                         <?php
                           $serviceCharges = "no"; 
@@ -1486,7 +1486,7 @@ input:checked + .warningSpan:before {
                         </td>
                     </tr>
                     <tr>
-                      <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Other Charges (2%)</td>
+                      <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Other Charges <span id="other_charges"></span></td>
                       <td class="td-height text-custom" style="font-size: 12px; height: 10px">
                           <?php
                           $otherChanges = "no"; 
@@ -2129,6 +2129,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
   var service = document.getElementById('serviceChargesToggle');
   var otherCharges = document.getElementById('otherChargesToggle');
+  if(!service.checked){
+    otherCharges.disabled = true
+  }else{
+    otherCharges.disabled = false
+  }
   var taxLabel = document.getElementById('taxtVatLbl');
   var serviceLabel = document.getElementById('serviceChargeLbl');
   var showTaxLbl = document.getElementById('showTaxVatLbl');
@@ -2170,7 +2175,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var tax = 0; // Declare tax outside the event listener function
 
 showTaxCheckbox.addEventListener('change', function() {
-    var sellingPrice = parseFloat(document.getElementById('selling_price').value);
+    var sellingPrice = 0;
+    var s = parseFloat(document.getElementById('selling_price').value);
+    if(s){
+      sellingPrice = parseFloat(document.getElementById('selling_price').value);
+    }
     var vatable = sellingPrice / 1.12;
     if (!this.checked) {
         tax = sellingPrice - vatable;
@@ -2182,10 +2191,29 @@ showTaxCheckbox.addEventListener('change', function() {
         document.getElementById('selling_price').value = newPrice.toFixed(2);
     }
 });
-var serviceCharge = 0.01; 
-
+var serviceCharge = 0; 
+function getServiceCharges(){
+  axios.get('api.php?action=getServiceCharge').then(function(response){
+     serviceCharge = response.data.result[0].rate
+     var displayRate = parseFloat(serviceCharge) *100;
+    var text = `(${displayRate.toFixed(2)}%)`;
+    document.getElementById('service_charge').textContent = text;
+  }).catch(function(error){
+    console.log(error)
+  })
+}
+getServiceCharges()
 service.addEventListener('change', function() {
-    var sellingPrice = parseFloat(document.getElementById('selling_price').value);
+  if(!service.checked){
+    otherCharges.disabled = true
+  }else{
+    otherCharges.disabled = false
+  }
+    var sellingPrice = 0;
+    var s = parseFloat(document.getElementById('selling_price').value);
+    if(s){
+      sellingPrice = parseFloat(document.getElementById('selling_price').value);
+    }
     
     if (this.checked) {
         var serviceFee = sellingPrice * serviceCharge;
@@ -2197,16 +2225,31 @@ service.addEventListener('change', function() {
         taxLabel.style.color = '#FF6900';
     } else {
         var originalPrice = sellingPrice / (1 + serviceCharge);
-        document.getElementById('selling_price').value = originalPrice.toFixed(2);
+        document.getElementById('selling_price').value = parseFloat(0);
         // Enable tax checkboxes
         taxCheckbox.disabled = false;
         showTaxCheckbox.disabled = false;
         taxLabel.style.color = '';
     }
 });
-var otherCharge = 0.02;
+var otherCharge = 0;
+function getOtherCharges(){
+  axios.get('api.php?action=getOtherCharges').then(function(response){
+    otherCharge = response.data.result[0].rate
+    var displayRate = parseFloat(otherCharge) *  100;
+    var text = `(${displayRate.toFixed(2)}%)`;
+    document.getElementById('other_charges').textContent = text;
+  }).catch(function(error){
+    console.log(error)
+  })
+}
+getOtherCharges()
 otherCharges.addEventListener('change', function() {
-    var sellingPrice = parseFloat(document.getElementById('selling_price').value);
+    var sellingPrice = 0;
+    var s = parseFloat(document.getElementById('selling_price').value);
+    if(s){
+      sellingPrice = parseFloat(document.getElementById('selling_price').value);
+    }
     
     if (this.checked) {
         var otherChargeFee = sellingPrice * otherCharge
@@ -2219,7 +2262,7 @@ otherCharges.addEventListener('change', function() {
         serviceLabel.style.color = '#FF6900';
     } else {
         var originalPrice = sellingPrice / (1 + otherCharge);
-        document.getElementById('selling_price').value = originalPrice.toFixed(2);
+        document.getElementById('selling_price').value = parseFloat(0);
         service.disabled = false
         serviceLabel.style.color = '';
         if(!service.checked){
