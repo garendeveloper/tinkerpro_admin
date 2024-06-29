@@ -110,7 +110,7 @@
         <div class="fieldContainer" style="margin-top: -3px;">
             <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
             <div class="search-container">
-                <input type="hidden" id="invc_product_id" value="0">
+                <input type="text" style = "display: none" id="invc_product_id" value="0">
                 <input type="text" style="width: 280px; height: 30px; font-size: 14px;"
                     class="search-input italic-placeholder" placeholder="Search Product [barcode,name,brand]"
                     name="invc_product" onkeyup="$(this).removeClass('has-error')" id="invc_product" autocomplete="off">
@@ -137,6 +137,7 @@
 
 <?php include("./modals/print-counts-modal.php")?>
 <script>
+
     $('#date_counted').datepicker({
         changeMonth: true,
         changeYear: true,
@@ -146,6 +147,8 @@
     var toastDisplayed = false;
 
     $(document).ready(function () {
+        
+        var productsCache = [];
         show_reference_no();
         function show_reference_no() {
             $.ajax({
@@ -213,9 +216,7 @@
             e.preventDefault();
             var inventory_id = $("#invc_product_id").val();
             var searchItem = $("#invc_product").val();
-            if(isExist(searchItem))
-            {
-                if(inventory_id !== 0)
+            if(inventory_id !== "" && inventory_id !== "0")
             {
                 if ($("select[name='qi_inventory_type']").val() === "") {
                     $("select[name='qi_inventory_type']").css('border', '1px solid red');
@@ -233,10 +234,14 @@
                     }
                 }
             }
+            else
+            {
+                show_errorResponse("Product not found.");
             }
-         
+            $("#invc_product").val("");
+            $("#invc_product_id").val("0");
         })
-        var productsCache = [];
+
         function show_allProducts() 
         {
             $.ajax({
@@ -256,6 +261,9 @@
                     }
                 }
             });
+        }
+        function isExist(product_id) {
+            return productsCache.some(product => product.product_id === product_id);
         }
         // function filterProducts(term) 
         // {
@@ -348,6 +356,17 @@
             select: function (event, ui) {
                 var selectedProductId = ui.item.id;
                 $("#invc_product_id").val(selectedProductId);
+                if(selectedProductId !== "" && selectedProductId !== "0")
+                {
+                    if (!isDataExistInTable(selectedProductId)) {
+                        append_to_table1(selectedProductId);
+                    }
+                    else {
+                        show_errorResponse("Product is already listed in the table")
+                    }
+                    $("#invc_product_id").val("0");
+                    $("#invc_product").val("");
+                }
                 return false;
             },
         });
@@ -357,35 +376,61 @@
 
         });
 
-      
     //   $("#invc_product").on("keypress", function(event){
     //     if(event.which === 13){
     //         var product_id = $("#invc_product_id").val();
+    //         if(product_id !== 0 || product_id !== "")
+    //         {
+    //             if (!isDataExistInTable(product_id)) {
+    //                 append_to_table1(product_id);
+    //             }
+    //             else
+    //             {
+    //                 show_errorResponse("Product already in the table")
+    //             }
+    //             $("#invc_product").val('');
+    //         }
       
-    //       if (!isDataExistInTable(product_id)) {
-    //         append_to_table1(product_id);
-    //       }
-    //       else
-    //       {
-    //         show_errorResponse("Product already in the table")
-    //       }
-    //       $("#invc_product").val('');
+       
     //     }
       
     //   })
 
-    //   $("#invc_product").on("autocompletechange", function(event, ui) {
-    //     var product_id = $("#invc_product_id").val();
+    $("#invc_product").on("keypress", function(event){
+        if(event.which === 13)
+        {
+            var product_id = $("#invc_product_id").val().trim();
+            if(product_id!== "" && product_id!== "0")
+            {
+                if (!isDataExistInTable(product_id)) {
+                    append_to_table1(product_id);
+                }
+                else
+                {
+                    show_errorResponse("Product already in the table")
+                }
+            }
+            else
+            {
+                show_errorResponse("Product not found.")
+                
+            }
+            $("#invc_product").val("");
+            $("#invc_product_id").val("0");
+        }
+    })
+      $("#invc_product").on("autocompletechange", function(event, ui) {
+        var product_id = $("#invc_product_id").val();
         
-    //     if (!isDataExistInTable(product_id)) {
-    //         append_to_table();
-    //     }
-    //     else
-    //     {
-    //       show_errorResponse("Product already in the table");
-    //     }
-    //       $(this).val('');
-    //   });
+        if (!isDataExistInTable(product_id)) {
+            append_to_table();
+        }
+        else
+        {
+          show_errorResponse("Product already in the table");
+        }
+          $(this).val('');
+      });
         // function isDataExistInTable(data) {
         //     var $matchingRow = $('#tbl_inventory_count tbody td:first[data-id="' + data + '"]').closest('tr');
             
@@ -395,16 +440,6 @@
             
         //     return false;
         // }
-        function isExist(product)
-        {
-            for (var i = 0; i < productsCache.length; i++) 
-            {
-                if (productsCache[i].product === product) 
-                {
-                    return true;
-                }
-            }
-        }
         function isDataExistInTable(data) 
         {
             var $matchingRow = $('#tbl_inventory_count tbody td[data-id="' + data + '"]').closest('tr');

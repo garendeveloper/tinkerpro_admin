@@ -25,16 +25,35 @@ $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
 
-$singleDateData = $singleDateData ? $singleDateData : date('Y-m-d');
+// $singleDateData = $singleDateData ? $singleDateData : date('Y-m-d');
+// $startDates = strtotime($startDate);
+// $formattedStartDate = date('F j, Y', $startDates);
+
+// $endDates = strtotime($endDate);
+// $formattedEndDate = date('F j, Y', $endDates);
+
+// $singleDateDatas = strtotime($singleDateData);
+// $formattedSingleDate = date('F j, Y', $singleDateDatas);
+// $current_date = $singleDateData ? $formattedSingleDate : $formattedStartDate." - ".$formattedEndDate;
 $startDates = strtotime($startDate);
 $formattedStartDate = date('F j, Y', $startDates);
 
 $endDates = strtotime($endDate);
 $formattedEndDate = date('F j, Y', $endDates);
 
-$singleDateDatas = strtotime($singleDateData);
-$formattedSingleDate = date('F j, Y', $singleDateDatas);
-$current_date = $singleDateData ? $formattedSingleDate : $formattedStartDate." - ".$formattedEndDate;
+$current_date = "---";
+if((empty($singleDateData) && empty($startDate) && empty($endDate)) || (!empty($singleDateData) && empty($startDate) && empty($endDate)))
+{
+    $singleDateData = date('Y-m-d');
+    $singleDateDatas = strtotime($singleDateData);
+    $formattedSingleDate = date('F j, Y', $singleDateDatas);
+    $current_date = $formattedSingleDate;
+}
+else
+{
+    $current_date =  $formattedStartDate." - ".$formattedEndDate;
+}
+
 
 $sales = $dashboard->get_allRevenues($startDate, $endDate, $singleDateData);
 $total_sales = $sales['total_sales'] ?? 0;
@@ -91,6 +110,7 @@ $sheet->getStyle('C5')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGH
 $expenses = $expenses->get_allExpensesByGroup($startDate, $endDate, $singleDateData);
 $rowIndex = 6;
 $total_expenses = 0;
+$income_tax_expense = 0;
 if($expenses)
 {
     foreach($expenses as $row_data)
@@ -102,6 +122,7 @@ if($expenses)
         $font->getColor()->setARGB('FFFF0000');
         $sheet->getStyle('C' . $rowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
         $total_expenses += $row_data['expense_amount'];
+        $income_tax_expense += $row['total_income_tax_expense'];
         $rowIndex++;
     }
 }
@@ -129,14 +150,14 @@ $sheet->setCellValue('C' . $lastIndex, number_format($net_incomeBefTax, 2, '.', 
 $sheet->getStyle('C' . $lastIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
 $lastIndex = $lastIndex+1;
-$net_incomeAfterTax = 0;
+$net_incomeAfterTax = $income_tax_expense;
 $sheet->setCellValue('A' . $lastIndex, ''); 
 $sheet->setCellValue('B' . $lastIndex, 'Net Income After Taxes'); 
 $sheet->setCellValue('C' . $lastIndex, number_format($net_incomeAfterTax, 2, '.', ','));
 $sheet->getStyle('C' . $lastIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
 $lastIndex = $lastIndex+1;
-$income_conOperations = $net_incomeBefTax - 0;
+$income_conOperations = $net_incomeBefTax - $net_incomeAfterTax;
 $sheet->getStyle('A'.$lastIndex.':C'.$lastIndex)->applyFromArray($headerStyle);
 $sheet->setCellValue('A'.$lastIndex, 'Income from Continuing Operations');
 $sheet->setCellValue('B'.$lastIndex, '');
@@ -144,23 +165,23 @@ $sheet->mergeCells('A'.$lastIndex.':B'.$lastIndex);
 $sheet->setCellValue('C'.$lastIndex, number_format($income_conOperations, 2, '.', ','));
 $sheet->getStyle('C'.$lastIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
-$lastIndex = $lastIndex+1;
-$sheet->getStyle('A'.$lastIndex.':C'.$lastIndex)->applyFromArray($headerStyle);
-$sheet->setCellValue('A'.$lastIndex, 'Below-the-line Items');
-$sheet->setCellValue('B'.$lastIndex, '');
-$sheet->mergeCells('A'.$lastIndex.':B'.$lastIndex);
-$sheet->setCellValue('C'.$lastIndex, '');
-$font = $sheet->getStyle('C'. $lastIndex)->getFont();
-$font->getColor()->setARGB('FFFF0000');
-$sheet->getStyle('C'.$lastIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+// $lastIndex = $lastIndex+1;
+// $sheet->getStyle('A'.$lastIndex.':C'.$lastIndex)->applyFromArray($headerStyle);
+// $sheet->setCellValue('A'.$lastIndex, 'Below-the-line Items');
+// $sheet->setCellValue('B'.$lastIndex, '');
+// $sheet->mergeCells('A'.$lastIndex.':B'.$lastIndex);
+// $sheet->setCellValue('C'.$lastIndex, '');
+// $font = $sheet->getStyle('C'. $lastIndex)->getFont();
+// $font->getColor()->setARGB('FFFF0000');
+// $sheet->getStyle('C'.$lastIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
-$lastIndex = $lastIndex+1;
-$sheet->setCellValue('A' . $lastIndex, ''); 
-$sheet->setCellValue('B' . $lastIndex, 'Loss and Damage Product'); 
-$sheet->setCellValue('C' . $lastIndex, number_format($lossanddamages, 2, '.', ','));
-$font = $sheet->getStyle('C'. $lastIndex)->getFont();
-$font->getColor()->setARGB('FFFF0000');
-$sheet->getStyle('C' . $lastIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+// $lastIndex = $lastIndex+1;
+// $sheet->setCellValue('A' . $lastIndex, ''); 
+// $sheet->setCellValue('B' . $lastIndex, 'Loss and Damage Product'); 
+// $sheet->setCellValue('C' . $lastIndex, number_format($lossanddamages, 2, '.', ','));
+// $font = $sheet->getStyle('C'. $lastIndex)->getFont();
+// $font->getColor()->setARGB('FFFF0000');
+// $sheet->getStyle('C' . $lastIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
 $lastIndex = $lastIndex+1;
 $net_income = $income_conOperations - $lossanddamages;

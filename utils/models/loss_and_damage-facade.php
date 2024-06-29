@@ -169,7 +169,7 @@
                 $supplier_id = 0;
                 $invoice_number = $reference_no;
                 $price = $cost;
-                $total_amount = $expense_quantity * $price;
+                $total_amount = $sub_total;
                 $date_of_transaction = date('Y-m-d');
                 $uom_id_expense = $this->get_productInfo($inventory_id)['uom_id'];
 

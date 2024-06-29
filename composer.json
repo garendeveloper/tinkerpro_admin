@@ -12,6 +12,7 @@
         "mike42/escpos-php": "*",
         "mpdf/mpdf": "*",
         "paymongo/paymongo-php": "*",
+        "phpoffice/phpspreadsheet": "*",
         "tecnickcom/tcpdf": "*",
         "xendit/xendit-php": "*"
     },

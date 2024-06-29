@@ -372,13 +372,23 @@
         $("#btn_searchLDProduct").click(function (e) {
             e.preventDefault();
             var product_id = $("#loss_and_damage_input_inventory_id").val();
-            if (!isDataExistInTable(product_id)) {
-                append_to_table();
+            if(product_id !== "" && product_id !== "0")
+            {
+                if (!isDataExistInTable(product_id)) {
+                    append_to_table();
+                }
+                else {
+                    show_errorResponse("Product is already listed in the table")
+                }
+                updateTotal();
             }
-            else {
-                show_errorResponse("Product is already listed in the table")
+            else
+            {
+                show_errorResponse("Product not found.")
+                
             }
-            updateTotal();
+            $("#loss_and_damage_input").val("");
+            $("#loss_and_damage_input_inventory_id").val("0");
         })
         $('#tbl_lossand_damages tbody').on('click', '.editable', function () {
             $(this).attr('contenteditable', true);
@@ -518,6 +528,19 @@
                 
                 var selectedProductId = ui.item.id;
                 $("#loss_and_damage_input_inventory_id").val(selectedProductId);
+                if(selectedProductId !== "" && selectedProductId !== "0")
+                {
+                    if (!isDataExistInTable(selectedProductId)) {
+                        append_to_table(selectedProductId);
+                    }
+                    else {
+                        show_errorResponse("Product is already listed in the table")
+                    }
+                    updateTotal();
+                    $("#loss_and_damage_input_inventory_id").val("0");
+                    $("#loss_and_damage_input").val("");
+                }
+
                 return false;
             },
         });
@@ -529,14 +552,22 @@
       $("#loss_and_damage_input").on("keypress", function(event){
         if(event.which === 13){
             var product_id = $("#loss_and_damage_input_inventory_id").val();
-          if (!isDataExistInTable(product_id)) {
-            append_to_table();
-          }
-          else
-          {
-            show_errorResponse("Product is already listed in the table")
-          }
-          $("#loss_and_damage_input").val('');
+            if(product_id !== "" && product_id !== "0")
+            {
+                if (!isDataExistInTable(product_id)) {
+                    append_to_table();
+                }
+                else
+                {
+                    show_errorResponse("Product is already listed in the table")
+                }
+                updateTotal();
+            }
+            else
+            {
+                show_errorResponse("Product not found.")
+            }
+            $("#loss_and_damage_input").val('');
         }
       
       })
