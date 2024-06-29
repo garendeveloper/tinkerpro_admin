@@ -3,7 +3,7 @@
         'name' => 'your-project-name/your-project-slug',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '7bff4491c4a57259460ba07421e3434a6b6161ff',
+        'reference' => 'd286e08b7a90635910b09621d2135d3f7bb086a1',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -103,7 +103,7 @@
         'intervention/image' => array(
             'pretty_version' => '3.7.1',
             'version' => '3.7.1.0',
-            'reference' => 'c7fb60e6c94dc016a23507d30296f71edde8c205',
+            'reference' => '137bdb356aacc01409d22aee3f0904497616cf3c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../intervention/image',
             'aliases' => array(),
@@ -373,7 +373,7 @@
         'your-project-name/your-project-slug' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '7bff4491c4a57259460ba07421e3434a6b6161ff',
+            'reference' => 'd286e08b7a90635910b09621d2135d3f7bb086a1',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

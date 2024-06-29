@@ -122,7 +122,7 @@ if($expenses)
         $font->getColor()->setARGB('FFFF0000');
         $sheet->getStyle('C' . $rowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
         $total_expenses += $row_data['expense_amount'];
-        $income_tax_expense += $row['total_income_tax_expense'];
+        $income_tax_expense += $row_data['total_income_tax_expense'];
         $rowIndex++;
     }
 }

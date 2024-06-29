@@ -38,13 +38,14 @@ $pdf->AddPage();
 
 
 $pdf->SetCellHeightRatio(1.5);
-$imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
+$ipAddress = gethostbyname(gethostname());
+$imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
+
 $imageWidth = 45; 
 $imageHeight = 15; 
 $imageX = 10; 
 $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
 $pdf->SetFont('', 'I', 8);
-
 
 $pdf->SetFont('', 'B', 10);
 $pdf->Cell(0, 10, 'Expenses', 0, 1, 'R', 0); 
