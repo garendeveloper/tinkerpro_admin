@@ -230,16 +230,24 @@ if (isset($_SESSION['user_id'])) {
         <ul>
             <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Dashboard</span></a></li>
-            <?php if ($accessInventory): ?>
-                <li><a href="inventory" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span
-                            class="text dynamic-color">Inventory</span></a>
-                </li>
-            <?php endif ?>
             <?php if ($accessProducts): ?>
                 <li><a href="products" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
                             class="text dynamic-color">Products</span></a>
                 </li>
             <?php endif ?>
+            
+            <?php if ($accessInventory): ?>
+                <li><a href="inventory" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span
+                            class="text dynamic-color">Inventory</span></a>
+                </li>
+            <?php endif ?>
+
+            <?php if ($accessProducts): ?>
+                <li><a href="priceTags" id="price_tags"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
+                            class="text dynamic-color">Price Tags</span></a>
+                </li>
+            <?php endif ?>
+        
             <li><a href="expenses" id="expenses"><i class="bi bi-wallet"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Expenses</span></a></li>
 

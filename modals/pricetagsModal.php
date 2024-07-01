@@ -18,7 +18,7 @@
     margin: 0 auto;
     border: none;
     width: 100%;
-    height: 1000px;
+    height: 100%;
     animation: slideInRight 0.5s;
     border-radius: 0;
     margin-top: -28px;
@@ -1141,22 +1141,10 @@ input[type="text"] {
                 <div
                     style="margin-top: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: space-between;">
                     <h2 class="text-custom" style="color:#FF6900; margin-right: 10px;">Option</h2>
-                    <button style="margin-right: 20px; " id="btn_minimizeModal" type="button"> <i
-                            class="mdi mdi-close"></i></button>
                 </div>
                 <div class="warning-container">
                     <div class="tableCard">
-                        <div class="purchase-grid-container" style = "font-size: 14px;">
-                            <button class="purchase-grid-item" id="btn_createPO">Purchase Order</button>
-                            <button class="purchase-grid-item" id="btn_inventoryCount">Inventory Count</button>
-                            <button class="purchase-grid-item" id="btn_expiration">Expiration</button>
-                            <button class="purchase-grid-item" id="btn_receiveItems">Receive Items</button>
-                            <button class="purchase-grid-item" id="btn_quickInventory">Quick Inventory</button>
-                            <!-- <button class="grid-item" id="btn_batchNumber">Batch Number</button> -->
-                            <!-- <button class="grid-item" id="btn_stockTransfer">Stocks Transfer</button> -->
-                            <button class="purchase-grid-item" id="btn_lossDamage">Loss & Damage</button>
-                            <!-- <button class="grid-item" id="btn_LOT">Lot Number</button> -->
-                        </div>
+                       
                         <?php include("./inventory_modules/purchase_items.php")?>
                         <?php include("./inventory_modules/received_items.php")?>
                         <?php include("./inventory_modules/expiration_items.php")?>
@@ -1172,18 +1160,6 @@ input[type="text"] {
                     padding: 3px 7px; 
                 }
             </style>
-            <div class="modal-footer" style="display: flex; justify-content: space-between; border: none; ">
-                <div>
-                    <button class="button button-cancel" id="btn_omCancel"
-                        style=" border-radius: 0;  width: 90px;"><i class="bi bi-x"></i>&nbsp; Cancel</button>
-                </div>
-                <div>
-                    <button class=" button " id="open_po_report" style=" border-radius: 0;  width: 90px;;"><i
-                            class="bi bi-printer"></i>&nbsp; Print</button>
-                    <button class="text-color button" style="border-radius: 0;  width: 90px;" id="btn_savePO"><i
-                            class="bi bi bi-arrow-right-circle"></i>&nbsp; Save</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>
