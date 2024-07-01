@@ -710,7 +710,7 @@ $('.custom_btns').on('click', function () {
       } else if (amount >= 1e3) {
           return (amount / 1e3).toFixed(2) + 'K';
       } else {
-          return amount.toFixed(2);
+          return amount;
       }
     }
    
@@ -731,7 +731,6 @@ $('.custom_btns').on('click', function () {
         },
         success: function(responseData)
         {
-          console.log(responseData['data']);
           if(responseData['data'].length > 0)
           {
             var tblRows = [];
@@ -845,6 +844,7 @@ $('.custom_btns').on('click', function () {
               var allZeros = salesData.every(function(element) {
                   return element === 0;
               });
+         
               if(!allZeros)
               {
                 show_allTotalSales($("#hourly_sales").val());

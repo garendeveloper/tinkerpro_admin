@@ -1165,15 +1165,21 @@ input[type="text"] {
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="display: flex; justify-content: space-between; border: none;">
+            <style>
+                .modal-footer.button{
+                    border-radius: 0;
+                    padding: 3px 7px; 
+                }
+            </style>
+            <div class="modal-footer" style="display: flex; justify-content: space-between; border: none; ">
                 <div>
-                    <button class="grid-item button button-cancel" id="btn_omCancel"
-                        style=" border-radius: 0"><i class="bi bi-x"></i>&nbsp; Cancel</button>
+                    <button class="button button-cancel" id="btn_omCancel"
+                        style=" border-radius: 0;  width: 90px;"><i class="bi bi-x"></i>&nbsp; Cancel</button>
                 </div>
                 <div>
-                    <button class="grid-item button " id="open_po_report" style=" border-radius: 0"><i
+                    <button class=" button " id="open_po_report" style=" border-radius: 0;  width: 90px;;"><i
                             class="bi bi-printer"></i>&nbsp; Print</button>
-                    <button class="grid-item text-color button" style="border-radius: 0" id="btn_savePO"><i
+                    <button class="text-color button" style="border-radius: 0;  width: 90px;" id="btn_savePO"><i
                             class="bi bi bi-arrow-right-circle"></i>&nbsp; Save</button>
                 </div>
             </div>

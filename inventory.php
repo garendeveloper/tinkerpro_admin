@@ -2857,6 +2857,7 @@ include ('./layout/admin/table-pagination-css.php');
                     $("#response_order_id").val("");
                     show_sweetReponse(response.message);
                     show_allOrders();
+                    show_allReceivedItems_PurchaseOrders();
                   }
               },
               error: function(response)

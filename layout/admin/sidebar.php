@@ -77,13 +77,13 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .sidebar a {
-        padding: 15px;
+        padding:15px;
         text-decoration: none;
         font-size: 14px;
         color: #ffff;
         font-family: Century Gothic;
         display: block;
-        margin-top: 10px;
+        margin-top: -30px;
 
     }
 
@@ -181,48 +181,49 @@ if (isset($_SESSION['user_id'])) {
 </header>
 <div class="sidebar" id="sidebar">
     <nav>
-        <ul>
-            <li>
-                <style>
+        <!-- <div>
+            <style>
+                img {
+                    max-width: 100%; 
+                    height: auto; 
+                    margin: 0 auto; 
+                    display: block;
+                }
+
+                @media (max-width: 768px) {
                     img {
-                        max-width: 100%; 
-                        height: auto; 
-                        margin: 0 auto; 
-                        display: block;
+                        max-width: 200px; 
                     }
+                }
 
-                    @media (max-width: 768px) {
-                        img {
-                            max-width: 200px; 
-                        }
+                @media (max-width: 480px) {
+                    img {
+                        max-width: 150px; 
                     }
+                }
+                li {
+                    overflow: hidden;
+                }
 
-                    @media (max-width: 480px) {
-                        img {
-                            max-width: 150px; 
-                        }
-                    }
-                    li {
-                        overflow: hidden;
-                    }
-
-                    .divider {
-                        border-bottom: 1px solid #ccc;
-                        margin: 20px 0;
-                    }
-                </style>
-                <div>
-                    <?php
-                        $products = new ProductFacade();
-                        $fetchShop = $products->getShopDetails();
-                        $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
-                        $ipAddress = gethostbyname(gethostname());
-                        $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
-                    ?>
-                    <img src="<?= $imageFile ?>" alt="" style="height: 100px; width: 250px;">
-                </div>
-                <div class="divider"></div>
-            </li>
+                .divider {
+                    border-bottom: 1px solid #ccc;
+                    margin: 20px 0;
+                }
+            </style>
+            <div>
+                <?php
+                    $products = new ProductFacade();
+                    $fetchShop = $products->getShopDetails();
+                    $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
+                    $ipAddress = gethostbyname(gethostname());
+                    $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
+                ?>
+                <img src="<?= $imageFile ?>" alt="" style="height: 100px; width: 250px;">
+            </div>
+            
+        </div>
+        <div class="divider"></div> -->
+        <ul>
             <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Dashboard</span></a></li>
             <?php if ($accessInventory): ?>
