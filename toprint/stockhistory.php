@@ -131,9 +131,10 @@
     $pdf->Ln();
     foreach ($items as $item) 
     {
+
         $stockDateTime = strtotime($item['stock_date']);
         $stockDate = date("M d y", $stockDateTime);
-        $stockTimestamp = date("M d y H:i:s", $stockDateTime); 
+        $stockTimestamp = date("M d y h:i:s A", $stockDateTime); 
     
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[0]));
         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');

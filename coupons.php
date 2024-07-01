@@ -384,6 +384,9 @@ height: 40px;
 <script>
 
 
+$("#s_coupons").addClass('active');
+  $("#pointer").html("Coupons");
+
 
 function refreshTable() {
         $.ajax({
@@ -478,6 +481,7 @@ function printCoupon(id){
 }
 
 $(document).ready(function() {
+
       $(".statusDropDown a[data-value='all']").click();
       $('#generatePDFBtn').click(function() {
       var searchData = $('.searchCoupon').val();

@@ -1,7 +1,7 @@
 <style>
  #stockhistory_modal  .modal-dialog {
   max-width: 1000px; 
-  min-width: 500px; 
+  min-width: 700px; 
   
 }
 
@@ -16,7 +16,7 @@
   background: #262625;
   border-radius: 0;
   position: relative;
-  height: 400px;
+  height: 500px;
   width: 1000px
 
 }
@@ -145,6 +145,68 @@ table, .stockhistory_form{
   opacity: 1; 
 }
 
+
+.stockhistory_container {
+    position: sticky;
+    top: 0;
+    z-index: 1; 
+}
+
+.stockhistory_form {
+    margin-bottom: 2px;
+}
+
+.table-container {
+    max-height: 80%;
+    max-width: 95%;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    background: #262626;
+    position: absolute;
+    margin: 0;
+    bottom: 0;
+    top: 60px;
+}
+
+/* #tbl_stocks_history {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tbl_stocks_history thead {
+    position: sticky;
+    top: 0;
+}
+
+#tbl_stocks_history th, #tbl_stocks_history td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+#tbl_stocks_history tbody {
+    overflow-y: auto;
+    max-height: 100px; 
+} */
+
+#tbl_stocks_history {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tbl_stocks_history th, #tbl_stocks_history td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+#tbl_stocks_history thead {
+    position: sticky;
+    top: 0; /* Stick thead to the top */
+    background-color: #f8f9fa; /* Background color of thead */
+    z-index: 1; /* Ensure it's above tbody */
+}
 </style>
 
 <div class="modal" id="stockhistory_modal"  tabindex="0" style="background-color: rgba(0, 0, 0, 0.7); overflow: hidden; z-index:999;">
@@ -170,38 +232,42 @@ table, .stockhistory_form{
           <h3 style="color: #FF6900"><b></b>LOADING PLEASE WAIT</b></h3><br>
           <img src="assets/img/globe.png" alt="Globe Image" style="width:75px; height: 75px; animation: rotate 2s linear infinite;" />
       </div>
-     <div class="modal-body" style="overflow-y: auto; max-height: calc(100vh - 150px);">
-        <div class="stockhistory_form">
-          <input type="hidden" id = "inventory_id">
-          <div class="input-group">
-            <!-- <label for="start_date" class="col-form-label">From:</label> -->
-              <input type="text" id="start_date" oninput="$(this).removeClass('has-error')" class="form-control date-picker" placeholder="From: " readonly>
-            </div>
-            <div class="input-group">
-              <!-- <label for="end_date" class="col-form-label">To:</label> -->
-              <input type="text" id="end_date" oninput="$(this).removeClass('has-error')" class="form-control date-picker" placeholder = "To: " readonly>
-            </div>
-            <div class="input-group">
-                <button id="btn_refreshStock" class="btn btn-secondary"><i class="bi bi-arrow-right" ></i></button>
-                <button id="btn_printStockHistory" class="btn btn-secondary"><i class="bi bi-printer"></i></button>
-                <button id="btn_refreshStockHistory" class="btn btn-secondary"><i class="bi bi-arrow-clockwise"></i></button>
-            </div>
+     <div class="modal-body" >
+        <div class="stockhistory_container">
+          <div class="stockhistory_form">
+            <input type="hidden" id = "inventory_id">
+              <div class="input-group">
+                <input type="text" id="start_date" oninput="$(this).removeClass('has-error')" class="form-control date-picker" placeholder="From: " readonly>
+                <input type="text" id="end_date" oninput="$(this).removeClass('has-error')" class="form-control date-picker" placeholder = "To: " readonly>
+              </div>
+              <div class="input-group">
+               
+              </div>
+              <div class="input-group">
+                  <button id="btn_refreshStock" class="btn btn-secondary"><i class="bi bi-arrow-right" ></i></button>
+                  <button id="btn_printStockHistory" class="btn btn-secondary"><i class="bi bi-printer"></i></button>
+                  <button id="btn_refreshStockHistory" class="btn btn-secondary"><i class="bi bi-arrow-clockwise"></i></button>
+              </div>
+          </div>
         </div>
-        <table id = "tbl_stocks_history">
-          <thead>
-              <tr>
-                <th>Document Type</th>
-                <th>Document</th>
-                <th>User</th>
-                <th>Date</th>
-                <th>Stock Date</th>
-                <th>Quantity</th>
-                <th>In Stock</th>
-              </tr>
-          </thead>
-          <tbody></tbody>
-          <tfoot></tfoot>
-      </table>
+        <div class="table-container">
+          <table id = "tbl_stocks_history">
+            <thead>
+                <tr>
+                  <th>Document Type</th>
+                  <th>Document</th>
+                  <th>User</th>
+                  <th>Date</th>
+                  <th>Stock Date</th>
+                  <th>Quantity</th>
+                  <th>In Stock</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+        </table>
+        </div>
+        
      </div>
     </div>
   </div>
@@ -257,7 +323,8 @@ $(document).ready(function() {
                 var stockItem = stocks[i];
                 var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
                 var stockTimestamp = stockItem.stock_date;
-                var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+                var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "</span>";
+                var new_stock = inventoryInfo.product_stock > 0 ? "<span style = 'color: #90EE90'>" + inventoryInfo.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + inventoryInfo.product_stock + "</span>";
                 tbl_rows.push(
                   `<tr>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
@@ -272,7 +339,7 @@ $(document).ready(function() {
               }
               var tfoot = `<tr>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
-                    <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${inventoryInfo.product_stock}</td>
+                    <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
                 </tr>`;
 
               $("#tbl_stocks_history tbody").html(tbl_rows);

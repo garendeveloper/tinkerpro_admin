@@ -85,6 +85,8 @@
         }
         public function save_loss_and_damage($formData)
         {
+            date_default_timezone_set('Asia/Manila');
+            
             $tbl_data = json_decode($formData["tbl_data"], true);
             $sub_row_data = json_decode($formData["sub_row_data"], true);
             $serializedFormData = $formData['loss_and_damage_form'];
@@ -147,7 +149,7 @@
                 $stmt->execute();
     
                
-                $currentDate = date('Y-m-d H:i:s');
+                $currentDate = date('Y-m-d h:i:s');
                 $qty_damage = $this->makeNegative($qty_damage);
                 $stock_customer = $formData['user_name'];
                 $document_number = $reference_no;

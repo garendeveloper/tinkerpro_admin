@@ -331,7 +331,8 @@ class InventoryFacade extends DBConnection
             $inventory_id = $row['inventory_id'];
             $qty_onhand = (float)$row['col_2'];
             $newqty = (float)$row['newqty'];
-            $currentDate = date('Y-m-d H:i:s');
+            date_default_timezone_set('Asia/Manila');
+            $currentDate = date('Y-m-d h:i:s');
 
             $stmt = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
             $stmt->bindParam(":new_stock", $newqty); 
@@ -346,7 +347,7 @@ class InventoryFacade extends DBConnection
             $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
                                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-            $movement = $qty_onhand > $newqty ? "-".$qty_onhand-$newqty : "-".$newqty - $qty_onhand;
+            $movement = $qty_onhand > $newqty ? "-".$qty_onhand-$newqty : "+".$newqty - $qty_onhand;
             $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
             $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
             $stmt->bindParam(3, $movement, PDO::PARAM_STR); 
@@ -740,7 +741,8 @@ class InventoryFacade extends DBConnection
                     $stmt->execute();
         
                     $currentStock = $this->get_productInfo($product_id)['product_stock'];
-                    $currentDate = date('Y-m-d H:i:s');
+                    date_default_timezone_set('Asia/Manila');
+                    $currentDate = date('Y-m-d h:i:s');
                     $stock_customer = $formData['user_name'];
                     $document_number = $po_number;
                     $transaction_type = "Received";

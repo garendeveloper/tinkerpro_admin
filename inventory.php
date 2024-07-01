@@ -408,29 +408,11 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("layout/admin/keyboardfunction.php") ?>
   <?php include ("./modals/purchaseOrder_response.php") ?>
   <?php include('./modals/loading-modal.php'); ?>
-
-  <script>
-
-    // var tableOffset = $(".inventoryCard table").offset().top;
-    // var $header = $(".inventoryCard table > thead").clone();
-    // var $fixedHeader = $("#header-fixed").append($header);
-
-    // $(window).bind("scroll", function() {
-    //   var offset = $(this).scrollTop();
-    //   if (offset >= tableOffset && $fixedHeader.is(":hidden")) {
-    //     $fixedHeader.show();
-    //   } else if (offset < tableOffset) {
-    //     $fixedHeader.hide();
-    //   }
-    // });
-     
-    </script>
   
   <script>
   
     $(document).ready(function () {
     
-
       $("#inventory").addClass('active');
       $("#inventories").addClass('active');
       $("#pointer").html("Inventory");
@@ -457,32 +439,6 @@ include ('./layout/admin/table-pagination-css.php');
           $('#paidSwitch').css('background-color', '');
         }
       });
-      // $('#date_purchased').datepicker({
-      //   changeMonth: true,
-      //   changeYear: true,
-      //   dateFormat: 'M dd y',
-      //   altFormat: 'M dd y',
-      //   altField: '#date_purchased',
-      //   maxDate: 0,
-      //   onSelect: function (dateText, inst) { }
-      // });
-      // $("#date_purchased").prop("readonly", true).flatpickr({
-      //   dateFormat: "M d y",
-      //   onClose: function(selectedDates) {
-      //   }
-      // });
-
-    // Event handler for the calendar button
-    // $('#calendar-btn').off('click').on('click', function () {
-
-    //   if (!$("#date_purchased").hasClass("flatpickr-open")) {
-    //       if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
-    //           $("#date_purchased").flatpickr();
-    //           $("#date_purchased").addClass("flatpickr-initialized");
-    //       }
-    //       $("#date_purchased").flatpickr().open();
-    //     }
-    // });
     $('#calendar-btn').off('click').on('click', function () {
       if (!$("#date_purchased").hasClass("flatpickr-open")) {
         if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
@@ -843,7 +799,8 @@ include ('./layout/admin/table-pagination-css.php');
               var stockItem = stocks[i];
               var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
               var stockTimestamp = stockItem.stock_date;
-              var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+              var stock = stockItem.stock > 0 ? "<span style = 'color: #90EE90'>" + stockItem.stock + "</span>" : "<span style = 'color: #FFCCCC'>" + stockItem.stock + "</span>";
+              var new_stock = info.product_stock > 0 ? "<span style = 'color: #90EE90'>" + info.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + info.product_stock + "</span>";
               tbl_rows.push(
                 `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
@@ -858,7 +815,7 @@ include ('./layout/admin/table-pagination-css.php');
             }
             var tfoot = `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${info.product_stock}</td>
+                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
               </tr>`;
 
             $("#tbl_stocks_history tbody").html(tbl_rows);

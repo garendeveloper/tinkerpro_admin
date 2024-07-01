@@ -77,13 +77,13 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .sidebar a {
-        padding:15px;
+        padding:5px;
         text-decoration: none;
-        font-size: 14px;
+        font-size: 16px;
         color: #ffff;
         font-family: Century Gothic;
         display: block;
-        margin-top: -30px;
+        margin-top: 10px;
 
     }
 
@@ -97,7 +97,9 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .sidebar nav ul li {
-        margin: 20px 0;
+        margin: 10px 0;
+       
+        
     }
 
     .sidebar nav ul li a {
@@ -105,11 +107,13 @@ if (isset($_SESSION['user_id'])) {
         text-decoration: none;
         display: flex;
         align-items: center;
+        margin-left: 5px;
     }
 
     .sidebar nav ul li a .icon {
         font-size: 24px;
-        margin-right: 10px;
+        margin-right: 30px;
+    
     }
 
     .sidebar.collapsed nav ul li a .text {
@@ -251,9 +255,9 @@ if (isset($_SESSION['user_id'])) {
             <?php if ($accessUsers): ?>
                 <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text dynamic-color">Users</span></a></li>
             <?php endif ?>
-            <li><a href="coupons" id="coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
+            <li><a href="coupons" id="s_coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Coupons</span></a></li>
-            <li><a href="charges" id="coupons"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
+            <li><a href="charges" id="charges"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Charges</span></a></li>
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Logout</span></a></li>
