@@ -31,41 +31,24 @@
             $this->SetY(10); 
             $this->SetX($imageX + $imageWidth + 5); 
 
+
             $this->SetFont('', 'B', 10);
-
-            $this->Cell(0, 10, '', 0, 1, 'L', 0);
-            $this->Ln(-2);
-            $this->SetFont('', '', 10); 
-
-            $this->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'L');
+            $this->Cell(0, 10, "STOCK MOVEMENT OF {$items['prod_desc']}", 0, 1, 'R', 0); 
             $this->Ln(-5);
-            $this->SetFont('', '', 10); 
+            $this->SetFont('',  10);
+            $this->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0); 
 
+            $this->Ln(-3);
+            $this->SetFont('', 'I', 10); 
+            $this->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'R');
+            $this->Ln(-9);
+            $this->SetFont('', 'I', 8); 
             $this->MultiCell(0, 10, "Contact: {$shop['contact_number']}", 0, 'L');
-            $this->SetFont('', 10); 
-            $this->Ln(-7);
-
+            $this->SetFont('' , 8); 
+            $this->Ln(-9);
             $current_date = date('F j, Y');
-            $this->MultiCell(0, 10, "TIN: {$shop['tin']}", 0, 'L');
-            $this->Ln(-9);
-             
-            $this->SetFont('','B'); 
-            $this->MultiCell(0, 10, "STOCK HISTORY OF : {$items['prod_desc']}", 0, 'R');
-            $this->Ln(-9);
-
-            
-
-        // $pdf->Ln(-3);
-        // $pdf->SetFont('', 'I', 10); // Bold, size 10
-        // $pdf->MultiCell(0, 10, "{$shop['shop_address']}", 0, 'R');
-        // $pdf->Ln(-9);
-        // $pdf->SetFont('', 'I', 8); // Italic, size 8
-        // $pdf->MultiCell(0, 10, "Contact: {$shop['contact_number']}", 0, 'L');
-        // $pdf->SetFont('', 8);
-        // $pdf->Ln(-9);
-        // $current_date = date('F j, Y');
-        // $pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
-        // $pdf->Ln(-2);
+            $this->Cell(0, 10, "Date: $current_date", 0, 'L');
+            $this->Ln(-2);
         }    
     }
 
@@ -107,6 +90,7 @@
     $pdf->SetLineWidth(0.3); 
 
     $items = $inventoryfacade->get_allStocksData($product_id)['stocks'];
+    
     if($start_date != 0 && $end_date != 0)
     {
         $items = $inventoryfacade->get_allStocksDataByDate($product_id, $start_date, $end_date)['stocks'];
@@ -115,7 +99,7 @@
     $headerWidths = [];
     $maxCellHeight = 5;
     foreach ($header as $title) {
-        $cellWidth = $pdf->GetStringWidth($title) + 10; 
+        $cellWidth = $pdf->GetStringWidth($title) + 10.5; 
         $headerWidths[] = $cellWidth;
     }
 
@@ -129,11 +113,15 @@
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $title, 1, 0, 'L', true);
     }
     $pdf->Ln();
+    // $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[0]));
+    // $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
+    // $pdf->Ln();
+    // Merge cells for total
     foreach ($items as $item) 
     {
         $stockDateTime = strtotime($item['stock_date']);
         $stockDate = date("M d y", $stockDateTime);
-        $stockTimestamp = date("M d y H:i:s", $stockDateTime); 
+        $stockTimestamp = date("M d y h:i:s A", $stockDateTime); 
     
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[0]));
         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');

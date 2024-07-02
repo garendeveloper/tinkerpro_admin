@@ -199,6 +199,55 @@ include ('./layout/admin/table-pagination-css.php');
       border-collapse: collapse; 
     } 
 
+#tbl_products tbody th,
+#tbl_products tbody td {
+    padding: 2px 2px; 
+    height: 30px; 
+    line-height: 0.5; 
+    border: 1px solid white;
+}
+
+#tbl_orders tbody th,
+#tbl_orders tbody td {
+    padding: 2px 2px; 
+    height: 5px; 
+    line-height: 0.2; 
+    border: 1px solid white;
+}
+
+#tbl_all_stocks  tbody th,
+#tbl_all_stocks tbody td {
+    padding: 2px 2px; 
+    height: 5px; 
+    line-height: 0.2;
+    border: 1px solid white;
+}
+
+#tbl_all_lostanddamages tbody th,
+#tbl_all_lostanddamages tbody td {
+    padding: 2px 2px; 
+    height: 30px; 
+    line-height: 1;
+    border: 1px solid white;
+}
+
+#tbl_all_inventoryCounts tbody th,
+#tbl_all_inventoryCounts tbody td {
+    padding: 2px 2px; 
+    height: 30px; 
+    line-height: 1;
+    border: 1px solid white;
+}
+
+.inventoryCard button {
+    height: 10;
+}
+.button-compress {
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden; /* Hides any content that overflows the cell */
+    text-overflow: ellipsis; /* Displays an ellipsis (...) to indicate overflow */
+}
+
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -212,21 +261,6 @@ include ('./layout/admin/table-pagination-css.php');
       <div class="content-wrapper">
         <div
           style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-left: 15px; margin-bottom: 20px;">
-          <!-- <div class="horizontal-container" style="display: flex; align-items: center;">
-            <img src="assets/img/barcode.png" style="color: white; height: 80px; width: 70px; margin-right:5px;">
-            <input class="text-color italic-placeholder" id="searchInput" style="flex: 1 1 90%; height: 45px; font-size: 14px;"
-              placeholder="Search Product,[code,serial no., barcode, name, brand]" autocomplete="off" autofocus />
-          </div>
-          <div style="display: flex; align-items: center;">
-            <button class="grid-item"pos-setting  style="margin-right: 10px;">
-              <span class="search-icon"></span>
-              Search
-            </button>
-            <button class="grid-item"pos-setting  id="btn_openOption">
-              <span class="plus-icon"></span>
-              Option
-            </button>
-          </div> -->
            <div class="horizontal-container" style="display: flex; align-items: center;">
             <img src="assets/img/barcode.png" style="color: white; height: 80px; width: 70px; margin-right:5px;">
             <input id = "searchInput" class="text-color searchProducts" style="width: 100%; height: 45px; margin-right: 10px; font-size: 14px;" placeholder="Search Product,[code, barcode, name, brand]" autocomplete="off" autofocus/>
@@ -374,29 +408,11 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("layout/admin/keyboardfunction.php") ?>
   <?php include ("./modals/purchaseOrder_response.php") ?>
   <?php include('./modals/loading-modal.php'); ?>
-
-  <script>
-
-    // var tableOffset = $(".inventoryCard table").offset().top;
-    // var $header = $(".inventoryCard table > thead").clone();
-    // var $fixedHeader = $("#header-fixed").append($header);
-
-    // $(window).bind("scroll", function() {
-    //   var offset = $(this).scrollTop();
-    //   if (offset >= tableOffset && $fixedHeader.is(":hidden")) {
-    //     $fixedHeader.show();
-    //   } else if (offset < tableOffset) {
-    //     $fixedHeader.hide();
-    //   }
-    // });
-     
-    </script>
   
   <script>
   
     $(document).ready(function () {
     
-
       $("#inventory").addClass('active');
       $("#inventories").addClass('active');
       $("#pointer").html("Inventory");
@@ -423,32 +439,6 @@ include ('./layout/admin/table-pagination-css.php');
           $('#paidSwitch').css('background-color', '');
         }
       });
-      // $('#date_purchased').datepicker({
-      //   changeMonth: true,
-      //   changeYear: true,
-      //   dateFormat: 'M dd y',
-      //   altFormat: 'M dd y',
-      //   altField: '#date_purchased',
-      //   maxDate: 0,
-      //   onSelect: function (dateText, inst) { }
-      // });
-      // $("#date_purchased").prop("readonly", true).flatpickr({
-      //   dateFormat: "M d y",
-      //   onClose: function(selectedDates) {
-      //   }
-      // });
-
-    // Event handler for the calendar button
-    // $('#calendar-btn').off('click').on('click', function () {
-
-    //   if (!$("#date_purchased").hasClass("flatpickr-open")) {
-    //       if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
-    //           $("#date_purchased").flatpickr();
-    //           $("#date_purchased").addClass("flatpickr-initialized");
-    //       }
-    //       $("#date_purchased").flatpickr().open();
-    //     }
-    // });
     $('#calendar-btn').off('click').on('click', function () {
       if (!$("#date_purchased").hasClass("flatpickr-open")) {
         if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
@@ -809,7 +799,8 @@ include ('./layout/admin/table-pagination-css.php');
               var stockItem = stocks[i];
               var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
               var stockTimestamp = stockItem.stock_date;
-              var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+              var stock = stockItem.stock > 0 ? "<span style = 'color: #90EE90'>" + stockItem.stock + "</span>" : "<span style = 'color: #FFCCCC'>" + stockItem.stock + "</span>";
+              var new_stock = info.product_stock > 0 ? "<span style = 'color: #90EE90'>" + info.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + info.product_stock + "</span>";
               tbl_rows.push(
                 `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
@@ -824,7 +815,7 @@ include ('./layout/admin/table-pagination-css.php');
             }
             var tfoot = `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${info.product_stock}</td>
+                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
               </tr>`;
 
             $("#tbl_stocks_history tbody").html(tbl_rows);
@@ -1047,7 +1038,7 @@ include ('./layout/admin/table-pagination-css.php');
                         <th class=''>Product</th>
                         <th >Barcode</th>
                         <th style='text-align: center'>Unit</th>
-                        <th  style='text-align: center'>Qty in Store</th>
+                        <th style='text-align: center'>Qty in Store</th>
                         <th class='autofit' style='text-align: center'>Action</th>
                     </tr>
                 </thead>
@@ -1089,6 +1080,8 @@ include ('./layout/admin/table-pagination-css.php');
             // columnDefs: [
             //     { targets: '_all', className: 'auto-fit' } 
             // ],
+            // scrollY: 'calc(100vh - 800px)', // Adjust height as needed
+            // scrollCollapse: false,
             dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
             fnDrawCallback: function (oSettings) {
                 if (oSettings.aoData.length === 0) {
@@ -1124,28 +1117,28 @@ include ('./layout/admin/table-pagination-css.php');
             var rows;
             rows = data.map(function (item) {
               return "<tr>" +
-                "<td class='autofit'>" + item.reference_no + "</td>" +
-                "<td class='autofit' style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
-                "<td class='autofit' style='text-align: center'>" + item.reason + "</td>" +
-                "<td class='autofit' style='text-align: center'>" + item.total_qty + "</td>" +
-                "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
-                "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
-                "<td class='autofit' style='text-align: center'>" + item.note + "</td>" +
-                "<td style='text-align: center' class='autofit'><button data-id = " + item.id + " id='btn_view_lossanddamage'><i class='bi bi-eye'></i></button></td>" +
+                "<td  style='text-align: center'>" + item.reference_no + "</td>" +
+                "<td  style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
+                "<td  style='text-align: center'>" + item.reason + "</td>" +
+                "<td  style='text-align: right'>" + item.total_qty + "</td>" +
+                "<td  style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
+                "<td  style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
+                "<td  style='text-align: center'>" + item.note + "</td>" +
+                "<td style='text-align: center' class='autofit'><i class='bi bi-eye' data-id = " + item.id + " id='btn_view_lossanddamage'></i></td>" +
                 "</tr>";
             }).join('');
 
             var tbl = "<table id='tbl_all_lostanddamages' class='text-color table-border' style='font-size: 12px;'>" +
               "<thead>" +
               "<tr>" +
-              "<th >Reference No.</th>" +
+              "<th class='autofit'>Reference No.</th>" +
               "<th style = 'text-align:center'>Date of Transaction</th>" +
               "<th style = 'text-align:center; background-color:red'>Reason</th>" +
               "<th style = 'text-align:center'>Total Qty</th>" +
               "<th style = 'text-align:center'>Total Cost</th>" +
               "<th style = 'text-align:center'>Overall Cost</th>" +
               "<th style = 'text-align:center'>Note</th>" +
-              "<th style = 'text-align:center'>Action</th>" +
+              "<th style = 'text-align:center' class='autofit'>Action</th>" +
               "</tr>" +
               "</thead>" +
               "<tbody>" +
@@ -1306,9 +1299,10 @@ include ('./layout/admin/table-pagination-css.php');
             if (data.length > 0) {
               inv_count_rows = data.map(function (item) {
                 return "<tr>" +
-                  "<td class='autofit'>" + item.reference_no + "</td>" +
-                  "<td class='autofit' style='text-align: center'>" + date_format(item.date_counted) + "</td>" +
-                  "<td style='text-align: center' class='autofit'><button data-id = " + item.id + " id='btn_view_inventoryCount'><i class='bi bi-eye'></i></button></td>" +
+                  "<td style='text-align: center'>" + item.reference_no + "</td>" +
+                  "<td  style='text-align: center'>" + date_format(item.date_counted) + "</td>" +
+                  "<td style='text-align: center'><i class='bi bi-eye' data-id = " + item.id + " id='btn_view_inventoryCount'></i></td>" +
+                  // "<td style='text-align: center' class='autofit'><button style = 'height: 10px;'data-id = " + item.id + " id='btn_view_inventoryCount'><i class='bi bi-eye'></i></button></td>" +
                   "</tr>";
               }).join('');
             }
@@ -1316,9 +1310,9 @@ include ('./layout/admin/table-pagination-css.php');
             var inv_count_tbl = "<table id='tbl_all_inventoryCounts' class='text-color table-border' style='font-size: 12px;'>" +
               "<thead>" +
               "<tr>" +
-              "<th >Reference No.</th>" +
+              "<th style = 'text-align:center' class='autofit'>Reference No.</th>" +
               "<th style = 'text-align:center'>Date of Transaction</th>" +
-              "<th style = 'text-align:center'>Action</th>" +
+              "<th style = 'text-align:center' class='autofit'>Action</th>" +
               "</tr>" +
               "</thead>" +
               "<tbody>" +
@@ -2737,7 +2731,8 @@ include ('./layout/admin/table-pagination-css.php');
                     </tr>
                 </thead>
                 <tbody></tbody>
-            </table>`;
+            </table> 
+            `;
 
         $(".inventoryCard").html(tblData);
    
@@ -2755,7 +2750,7 @@ include ('./layout/admin/table-pagination-css.php');
           columns: [
               { data: null, render: function (data, type, row, meta) {
                   return meta.row + meta.settings._iDisplayStart + 1;
-              }},
+              } , className: 'text-center'},
               { data: 'prod_desc' },
               { data: 'barcode' },
               { data: 'uom_name', className: 'text-center' },
@@ -2893,6 +2888,7 @@ include ('./layout/admin/table-pagination-css.php');
                     $("#response_order_id").val("");
                     show_sweetReponse(response.message);
                     show_allOrders();
+                    show_allReceivedItems_PurchaseOrders();
                   }
               },
               error: function(response)
@@ -2920,7 +2916,7 @@ include ('./layout/admin/table-pagination-css.php');
                           <th style='width: 2%;'>Total</th>
                           <th style='width: 2%;'>Is Paid</th>
                           <th style='width: 2%;'>Status</th>
-                          <th style='width: 1%;'>Action</th>
+                          <th style='width: 1%;' class='autofit'>Action</th>
                       </tr>
                   </thead>
                   <tbody></tbody>

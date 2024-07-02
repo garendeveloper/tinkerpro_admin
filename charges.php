@@ -325,7 +325,8 @@ height: 40px;
 
 </style>
 <script>
-
+ $("#charges").addClass('active');
+ $("#pointer").html("Charges");
 function getSRate(){
     axios.get('api.php?action=getServiceCharge').then(function(response){
      serviceCharge = response.data.result[0].rate

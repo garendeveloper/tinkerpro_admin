@@ -83,7 +83,8 @@
                 $stmt2->execute();
     
                 $currentStock = $this->get_productDataById($inventory_id)['product_stock'];
-                $currentDate = date('Y-m-d H:i:s');
+                date_default_timezone_set('Asia/Manila');
+                $currentDate = date('Y-m-d h:i:s');
                 $stock_customer = $formData['user_name'];
                 $document_number = $reference_no;
                 $transaction_type = "Inventory Count";

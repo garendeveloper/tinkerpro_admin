@@ -698,6 +698,32 @@ h1, label, textarea, input, table,h5{
         })
  
     });
+    function display_settings()
+    {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=pos_settings',
+        success:function(response){
+          var defaultColor = "#FF6900";
+          if(!$.isEmptyObject(response))
+          {
+            $("table thead tr th").css("background-color", response);
+            $("table th").css("background-color", response);
+            $("table th").css("color", "#ffffff");
+            $("table thead").css("border-color", response);
+            $("table").css("border-color", response);
+          }
+          else
+          {
+            $("table thead tr th").css("background-color", defaultColor);
+            $("table th").css("background-color", defaultColor);
+            $("table th").css("color", "#ffffff");
+            $("table thead").css("border-color", defaultColor);
+            $("table").css("border-color", defaultColor);
+          }
+        }
+      })
+    }
     function addCommasToNumber(number) 
     {
       var roundedNumber = Number(number).toFixed(2);
@@ -732,6 +758,7 @@ h1, label, textarea, input, table,h5{
           dataType: 'json',
           success: function(response)
           {
+            display_settings();
             $('table td').removeClass('form-error'); 
             if (!response.success) {
               var errors = "";

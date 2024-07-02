@@ -77,9 +77,9 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .sidebar a {
-        padding: 15px;
+        padding:5px;
         text-decoration: none;
-        font-size: 14px;
+        font-size: 16px;
         color: #ffff;
         font-family: Century Gothic;
         display: block;
@@ -97,7 +97,9 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .sidebar nav ul li {
-        margin: 20px 0;
+        margin: 10px 0;
+       
+        
     }
 
     .sidebar nav ul li a {
@@ -105,11 +107,13 @@ if (isset($_SESSION['user_id'])) {
         text-decoration: none;
         display: flex;
         align-items: center;
+        margin-left: 5px;
     }
 
     .sidebar nav ul li a .icon {
         font-size: 24px;
-        margin-right: 10px;
+        margin-right: 30px;
+    
     }
 
     .sidebar.collapsed nav ul li a .text {
@@ -181,60 +185,69 @@ if (isset($_SESSION['user_id'])) {
 </header>
 <div class="sidebar" id="sidebar">
     <nav>
-        <ul>
-            <li>
-                <style>
+        <!-- <div>
+            <style>
+                img {
+                    max-width: 100%; 
+                    height: auto; 
+                    margin: 0 auto; 
+                    display: block;
+                }
+
+                @media (max-width: 768px) {
                     img {
-                        max-width: 100%; 
-                        height: auto; 
-                        margin: 0 auto; 
-                        display: block;
+                        max-width: 200px; 
                     }
+                }
 
-                    @media (max-width: 768px) {
-                        img {
-                            max-width: 200px; 
-                        }
+                @media (max-width: 480px) {
+                    img {
+                        max-width: 150px; 
                     }
+                }
+                li {
+                    overflow: hidden;
+                }
 
-                    @media (max-width: 480px) {
-                        img {
-                            max-width: 150px; 
-                        }
-                    }
-                    li {
-                        overflow: hidden;
-                    }
-
-                    .divider {
-                        border-bottom: 1px solid #ccc;
-                        margin: 20px 0;
-                    }
-                </style>
-                <div>
-                    <?php
-                        $products = new ProductFacade();
-                        $fetchShop = $products->getShopDetails();
-                        $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
-                        $ipAddress = gethostbyname(gethostname());
-                        $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
-                    ?>
-                    <img src="<?= $imageFile ?>" alt="" style="height: 100px; width: 250px;">
-                </div>
-                <div class="divider"></div>
-            </li>
+                .divider {
+                    border-bottom: 1px solid #ccc;
+                    margin: 20px 0;
+                }
+            </style>
+            <div>
+                <?php
+                    $products = new ProductFacade();
+                    $fetchShop = $products->getShopDetails();
+                    $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
+                    $ipAddress = gethostbyname(gethostname());
+                    $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
+                ?>
+                <img src="<?= $imageFile ?>" alt="" style="height: 100px; width: 250px;">
+            </div>
+            
+        </div>
+        <div class="divider"></div> -->
+        <ul>
             <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Dashboard</span></a></li>
-            <?php if ($accessInventory): ?>
-                <li><a href="inventory" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span
-                            class="text dynamic-color">Inventory</span></a>
-                </li>
-            <?php endif ?>
             <?php if ($accessProducts): ?>
                 <li><a href="products" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
                             class="text dynamic-color">Products</span></a>
                 </li>
             <?php endif ?>
+            
+            <?php if ($accessInventory): ?>
+                <li><a href="inventory" id="inventory"><i class="bi bi-box-seam"></i>&nbsp;&nbsp; <span
+                            class="text dynamic-color">Inventory</span></a>
+                </li>
+            <?php endif ?>
+
+            <?php if ($accessProducts): ?>
+                <li><a href="priceTags" id="price_tags"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
+                            class="text dynamic-color">Price Tags</span></a>
+                </li>
+            <?php endif ?>
+        
             <li><a href="expenses" id="expenses"><i class="bi bi-wallet"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Expenses</span></a></li>
 
@@ -250,9 +263,9 @@ if (isset($_SESSION['user_id'])) {
             <?php if ($accessUsers): ?>
                 <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text dynamic-color">Users</span></a></li>
             <?php endif ?>
-            <li><a href="coupons" id="coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
+            <li><a href="coupons" id="s_coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Coupons</span></a></li>
-            <li><a href="charges" id="coupons"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
+            <li><a href="charges" id="charges"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Charges</span></a></li>
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Logout</span></a></li>

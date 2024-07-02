@@ -83,7 +83,7 @@
     //     return $initialFontSize;
     // }
     function autoAdjustFontSize($pdf, $text, $width) {
-        $maxFontSize = 10; 
+        $maxFontSize = 8; 
         $minFontSize = 6;  
         $pdf->SetFont('dejavusans', '', $width);
         while ($maxFontSize >= $minFontSize) {
@@ -126,7 +126,7 @@
 
     $pdf->AddPage();
 
-    $pdf->SetFont('helvetica', '', 12);
+    $pdf->SetFont('helvetica', '', 9);
     $pdf->Ln(24);
 
     $items = $orders->get_orderData($order_id);
@@ -136,20 +136,13 @@
     $headerWidths = [];
     $maxCellHeight = 5;
     foreach ($header as $title) {
-        $cellWidth = $pdf->GetStringWidth($title) + 11; 
+        $cellWidth = $pdf->GetStringWidth($title) + 15.9; 
         $headerWidths[] = $cellWidth;
     }
-
-    // $hexColor = '#FFA500';
-    // list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
-
-    // $pdf->SetFillColor($r, $g, $b);
-
-    // $pdf->SetFont('', 'B', 10);
     $hexColor = '#D3D3D3';
     list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
     $pdf->SetFillColor($r, $g, $b);
-    $pdf->SetFont('', 'B', 10);
+    $pdf->SetFont('', 'B', 9);
     foreach ($header as $i => $title) {
         $pdf->Cell($headerWidths[$i], $maxCellHeight, $title, 1, 0, 'L', true);
     }
@@ -188,7 +181,10 @@
         $pdf->Ln(); 
         $counter++;
     }
-    
+    $rowHeight = $maxCellHeight;
+    $mergeCells = 7;
+    $pdf->MultiCell($headerWidths[0], 7, "total", 1, 'C', false, 0, '', '', true);
+
     
 
     addFooter($pdf, '_______________________________', '_______________________________');

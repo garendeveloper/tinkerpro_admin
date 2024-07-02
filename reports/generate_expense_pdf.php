@@ -6,7 +6,7 @@ include( __DIR__ . '/../utils/models/product-facade.php');
 include( __DIR__ . '/../utils/models/expense-facade.php');
 
 
-function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
+function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 8) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {
         $initialFontSize--;
@@ -101,6 +101,8 @@ $pdf->SetLineWidth(0.3);
     $totalAmount = 0; 
     $pdf->SetFont('', '', 8); 
     $total_expenses = 0;
+    $total_price = 0;
+    $total_discount = 0;
     foreach($expenses_data as $row) {
         $item_name = $row['item_name'] == "" ? $row['product'] : $row['item_name'];
         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
@@ -127,14 +129,25 @@ $pdf->SetLineWidth(0.3);
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($row['total_amount'], 2), $headerWidths[11]));
         $pdf->Cell($headerWidths[11], $maxCellHeight, number_format($row['total_amount'], 2), 1, 0, 'R'); 
         $total_expenses += $row['total_amount'];
+        $total_price += $row['price'];
+        $total_discount += $row['discount'];
         $pdf->Ln(); 
         $counter++;
     }
 
 
-    $pdf->SetFont('', 'B', 8); 
-    $pdf->Cell(array_sum($headerWidths) - $headerWidths[10] - $headerWidths[11], $maxCellHeight, 'Total', 1, 0, 'R'); 
-    $pdf->Cell(($headerWidths[11]), $maxCellHeight, number_format( $total_expenses, 2), 1, 0, 'R'); 
+    $pdf->SetFont('', 'B', 9); 
+    $pdf->Cell(array_sum($headerWidths) - $headerWidths[9] - $headerWidths[10] - $headerWidths[11] - $headerWidths[12], $maxCellHeight, 'Total Price', 1, 0, 'R'); 
+    $pdf->Cell($headerWidths[9] + $headerWidths[10] + $headerWidths[11], $maxCellHeight, number_format( $total_price, 2), 1, 0, 'R'); 
+    $pdf->Ln(); 
+
+    $pdf->SetFont('', 'B', 9); 
+    $pdf->Cell(array_sum($headerWidths) - $headerWidths[9] - $headerWidths[10] - $headerWidths[11] - $headerWidths[12], $maxCellHeight, 'Total Discount', 1, 0, 'R'); 
+    $pdf->Cell($headerWidths[9] + $headerWidths[10] + $headerWidths[11], $maxCellHeight, number_format( $total_discount, 2), 1, 0, 'R'); 
+    $pdf->Ln(); 
+    $pdf->SetFont('', 'B', 9); 
+    $pdf->Cell(array_sum($headerWidths) - $headerWidths[9] - $headerWidths[10] - $headerWidths[11] - $headerWidths[12], $maxCellHeight, 'Total Expenses', 1, 0, 'R'); 
+    $pdf->Cell($headerWidths[9] + $headerWidths[10] + $headerWidths[11], $maxCellHeight, number_format($total_expenses, 2), 1, 0, 'R'); 
     $pdf->Ln(); 
 
 $pdf->Output('expensesList.pdf', 'I');

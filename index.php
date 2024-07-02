@@ -701,18 +701,47 @@ $('.custom_btns').on('click', function () {
       var item = $(this).val();
       show_allTopProducts(item);
     })
-    function formatAmount(amount) 
-    {
-      if (amount >= 1e9) {
-          return (amount / 1e9).toFixed(2) + 'B';
-      } else if (amount >= 1e6) {
-          return (amount / 1e6).toFixed(2) + 'M';
-      } else if (amount >= 1e3) {
-          return (amount / 1e3).toFixed(2) + 'K';
-      } else {
-          return amount.toFixed(2);
-      }
+    // function formatAmount(amount) 
+    // {
+    //   if (amount >= 1e9) {
+    //       return (amount / 1e9).toFixed(2) + 'B';
+    //   } else if (amount >= 1e6) {
+    //       return (amount / 1e6).toFixed(2) + 'M';
+    //   } else if (amount >= 1e3) {
+    //       return (amount / 1e3).toFixed(2) + 'K';
+    //   } else {
+    //       return amount;
+    //   }
+    // }
+    function formatAmount(amount) {
+    if (typeof amount !== 'number' || isNaN(amount)) {
+        return amount; 
     }
+
+    if (amount < 0) {
+        amount = Math.abs(amount);
+        if (amount >= 1e9) {
+            return '-' + (amount / 1e9).toFixed(2) + 'B';
+        } else if (amount >= 1e6) {
+            return '-' + (amount / 1e6).toFixed(2) + 'M';
+        } else if (amount >= 1e3) {
+            return '-' + (amount / 1e3).toFixed(2) + 'K';
+        } else {
+            return '-' + amount.toFixed(2);
+        }
+    } else {
+        if (amount >= 1e9) {
+            return (amount / 1e9).toFixed(2) + 'B';
+        } else if (amount >= 1e6) {
+            return (amount / 1e6).toFixed(2) + 'M';
+        } else if (amount >= 1e3) {
+            return (amount / 1e3).toFixed(2) + 'K';
+        } else {
+            return amount.toFixed(2);
+        }
+    }
+}
+
    
     function show_allTopProducts(item)
     {
@@ -731,7 +760,6 @@ $('.custom_btns').on('click', function () {
         },
         success: function(responseData)
         {
-          console.log(responseData['data']);
           if(responseData['data'].length > 0)
           {
             var tblRows = [];
@@ -784,7 +812,7 @@ $('.custom_btns').on('click', function () {
           if(responseData['top_expensive_by_period'] !== 0)
           {
             var total_net_income = totalSales - responseData['total_expense_by_period'];
-            total_net_income = total_net_income < 0 ? formatNegativeWithCommas(total_net_income) : formatAmount(total_net_income);
+            total_net_income = total_net_income < 0 ? formatAmount(total_net_income) : formatAmount(total_net_income);
             $("#net_income").html("<h1>"+total_net_income+"</h1>");
           }
           else
@@ -845,6 +873,7 @@ $('.custom_btns').on('click', function () {
               var allZeros = salesData.every(function(element) {
                   return element === 0;
               });
+         
               if(!allZeros)
               {
                 show_allTotalSales($("#hourly_sales").val());
