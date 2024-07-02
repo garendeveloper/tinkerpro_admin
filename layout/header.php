@@ -42,6 +42,7 @@
   <link rel="stylesheet" href="assets/css/toastr.min.css">
   <link rel="stylesheet" href="assets/table-sortable/dataTables.dataTables.min.css">
 
+
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/vendors/chart.js/Chart.min.js"></script>
@@ -68,6 +69,8 @@
   <script src="layout/admin/moment.min.js"></script>
   <script src="assets/js/html2canvas.min.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/JsLocalSearch.js"></script>
 </head>
 <body>
 

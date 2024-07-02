@@ -1157,27 +1157,51 @@ class DashboardFacade extends DBConnection
             foreach ($payments as $row) 
             {
 
+                // $paid_amount = $row['paid_amount'];
+                // $totalChange = $row['totalChange'];
+            
+                // $sales = $paid_amount - $totalChange;
+            
+                // $refunded_amt = $row['refunded_amt'];
+                // $refudned_item_discount = $row['total_item_discounts'];
+                // $refund_credits = $row['totalCredits'];
+                // $totalRefundDiscountsTendered = $row['totalDiscountsTender'];
+            
+                // $totalRefundedAmt =  $refunded_amt-$refudned_item_discount- $totalRefundDiscountsTendered;
+            
+                // //return
+                // $return_amount = $row['return_amt'];
+                // $return_item_discounts = $row['total_return_item_discounts'];
+                // $return_credits = $row['totalReturnCredits'];
+                // $totalReturnDiscountsTender = $row['totalDiscountsReturnTender'];
+            
+                // $totalReturnAmt = $return_amount-$return_item_discounts-$return_credits-$totalReturnDiscountsTender;
+            
+                // $totalGrossSales = $sales-$totalRefundedAmt-$totalReturnAmt;
+                // $monthly_gross_sale += $totalGrossSales;
                 $paid_amount = $row['paid_amount'];
                 $totalChange = $row['totalChange'];
-            
+
                 $sales = $paid_amount - $totalChange;
-            
                 $refunded_amt = $row['refunded_amt'];
                 $refudned_item_discount = $row['total_item_discounts'];
                 $refund_credits = $row['totalCredits'];
                 $totalRefundDiscountsTendered = $row['totalDiscountsTender'];
+
+                $cartDiscountAmount = $row['cartRefundTotal'];
+
+                $totalRefundedAmt =  $refunded_amt-$refudned_item_discount-$totalRefundDiscountsTendered-$cartDiscountAmount;
             
-                $totalRefundedAmt =  $refunded_amt-$refudned_item_discount- $totalRefundDiscountsTendered;
-            
-                //return
                 $return_amount = $row['return_amt'];
                 $return_item_discounts = $row['total_return_item_discounts'];
                 $return_credits = $row['totalReturnCredits'];
                 $totalReturnDiscountsTender = $row['totalDiscountsReturnTender'];
-            
-                $totalReturnAmt = $return_amount-$return_item_discounts-$return_credits-$totalReturnDiscountsTender;
-            
+
+                    $cartDiscountReturnAmount = $row['cartReturnTotal'];
+
+                $totalReturnAmt = $return_amount-$return_item_discounts-$totalReturnDiscountsTender-$cartDiscountReturnAmount;
                 $totalGrossSales = $sales-$totalRefundedAmt-$totalReturnAmt;
+
                 $monthly_gross_sale += $totalGrossSales;
             
             }
