@@ -43,11 +43,11 @@
                 <form id="priceTagForm" >
                     <div class="fieldContainer" style="margin-top: -3px;">
                         <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label>
-                        <div class="searchInput-container">
+                        <div class="search-container">
                             <input type="hidden" id="searchInput_id" value="0">
-                            <input type="text" style="width: 280px; height: 30px; font-size: 12px;"
-                                class="searchInput-input italic-placeholder" placeholder="searchInput Product,[Name, Barcode, Brand]" name="searchInput"
-                                onkeyup="$(this).removeClass('has-error')" id="searchInputInput" autocomplete="off">
+                            <input type="text" style="width: 280px; height: 30px; font-size: 14px;"
+                                class="search-input italic-placeholder" placeholder="searchInput Product,[Name, Barcode, Brand]" name="searchInput"
+                                onkeyup="$(this).removeClass('has-error')" id="searchInput" autocomplete="off">
 
                                
                         </div>
@@ -74,12 +74,12 @@
   </div>
 </div>
 
-<script>
+<!-- <script>
     $(document).ready(function () {
         
         var toastDisplayed = false;
         var products = [];
-
+        show_allProducts();
         $("#btn_searchInputProduct").click(function (e) {
             e.preventDefault();
             var inventory_id = $("#searchInput_id").val();
@@ -94,6 +94,7 @@
                 }
         })
         var productsCache = [];
+
         function show_allProducts() 
         {
             $.ajax({
@@ -114,6 +115,7 @@
             }
             });
         }
+        console.log(productsCache)
         function filterProducts(term) {
             return productsCache.filter(function(row) {
                 var lowercaseTerm = term.toLowerCase();
@@ -169,32 +171,30 @@
 
             toastr.error(message);
         }
-        $("#searchInput").on("input", function(e) {
-            var term = $(this).val();
-            $(this).autocomplete('searchInput', term);
-        });
+        // $("#searchInput").on("input", function(e) {
+        //     var term = $(this).val();
+        //     $(this).autocomplete('searchInput', term);
+        //     console.log(term)
+        // });
 
         $("#searchInput").autocomplete({
             minLength: 2,
             source: function (request, response) {
-            var term = request.term;
-            var filteredProducts = filterProducts(term);
-            var slicedProducts = filteredProducts.slice(0, 5);
-            response(slicedProducts);
-            if (slicedProducts.length > 0) {
-                $('#filters').show();
-            } else {
-                $('#filters').hide();
-            }
-            
-            // var slicedProductsLength = slicedProducts.length - 1;
-            // var selectedProductId = slicedProducts[slicedProductsLength].id;
-            //     $("#searchInput_id").val(selectedProductId);
+                var term = request.term;
+                var filteredProducts = filterProducts(term);
+                var slicedProducts = filteredProducts.slice(0, 5);
+                response(slicedProducts);
+                if (slicedProducts.length > 0) {
+                    $('#filters').show();
+                    var slicedProductsLength = slicedProducts.length - 1;
+                    var selectedProductId = slicedProducts[slicedProductsLength].id;
+                    $("#searchInput_id").val(selectedProductId);
+                } else {
+                    $('#filters').hide();
+                }
             },
             select: function (event, ui) {
                 var selectedProductId = ui.item.id;
-                console.log(selectedProductId)
-                alert(selectedProductId)
                 $("#searchInput_id").val(selectedProductId);
                 if(selectedProductId !== "" && selectedProductId !== "0")
                 {
@@ -234,4 +234,29 @@
             })
         }
     })
-</script>
+</script> -->
+<script>
+     var productsCache = [];
+show_allProducts();
+function show_allProducts() 
+{
+    $.ajax({
+    type: 'GET',
+    url: 'api.php?action=get_allProducts',
+    success: function (data) {
+        for (var i = 0; i < data.length; i++) 
+        {
+            var row = 
+            {
+                product_id: data[i].id,
+                product: data[i].prod_desc,
+                barcode: data[i].barcode,
+                brand: data[i].brand,
+            };
+            productsCache.push(row);
+        }
+    }
+    });
+}
+
+  </script>
