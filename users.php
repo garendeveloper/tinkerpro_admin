@@ -469,6 +469,13 @@ function selectDataDisplay() {
 
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+
+            insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Generate pdf');
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -502,6 +509,13 @@ function selectDataDisplay() {
 
             // Clean up
             document.body.removeChild(link);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+
+            insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Exported'+ 'usersList.xlsx');
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -536,6 +550,13 @@ $('#printThis').click(function() {
             }
 
             window.URL.revokeObjectURL(url);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+
+            insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Printing a pdf');
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);

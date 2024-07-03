@@ -2874,14 +2874,7 @@ include ('./layout/admin/table-pagination-css.php');
                   id: $("#response_order_id").val(),
               },
               success: function(response){
-                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                var firstName = userInfo.firstName;
-                var lastName = userInfo.lastName;
-                var cid = userInfo.userId;
-                var role_id = userInfo.roleId; 
-              
-              
-                insertLogs('Denied',firstName + ' ' + lastName + ' '+'tries to delete' + ' ' + 'P.O order id #:' + ' ' +  id )
+        
                   if(response.status)
                   {
                     $("#purchaseOrder_response").hide();

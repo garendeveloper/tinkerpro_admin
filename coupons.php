@@ -113,7 +113,7 @@ if (isset($_SESSION['user_id'])) {
                         $userFacade = new UserFacade;
                         $others =     $userFacade->getExpiration();
                         while ($row = $others->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['days'] .' </option>';
+                          echo '<option value="' . $row['id'] . '" data-days="' . $row['days'] . '">' . $row['days'] . '</option>';
                         }
                         ?>
                     </select>
@@ -458,6 +458,12 @@ function printCoupon(id){
             type: 'GET',
             data:{id:id},
             success: function(response) {
+              var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+              var firstName = userInfo.firstName;
+              var lastName = userInfo.lastName;
+              var cid = userInfo.userId;
+              var role_id = userInfo.roleId; 
+              insertLogs('Coupons', firstName + ' ' + lastName + ' ' + 'Printed a coupon id #:' + id);
                 Swal.fire({
                 icon: 'success',
                 title: 'Success!',
@@ -507,6 +513,13 @@ $(document).ready(function() {
 
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+
+            insertLogs('Coupons', firstName + ' ' + lastName + ' ' + 'Generated a pdf');
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -540,6 +553,13 @@ $(document).ready(function() {
 
             // Clean up
             document.body.removeChild(link);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+
+            insertLogs('Coupons', firstName + ' ' + lastName + ' ' + 'Exported' + 'coupons_list.csv' );
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -574,6 +594,12 @@ $('#printThis').click(function() {
             }
 
             window.URL.revokeObjectURL(url);
+        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        var firstName = userInfo.firstName;
+        var lastName = userInfo.lastName;
+        var cid = userInfo.userId;
+        var role_id = userInfo.roleId; 
+        insertLogs('Coupons', firstName + ' ' + lastName + ' ' + 'Printing pdf' );
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -602,32 +628,42 @@ $('.searchCoupon').on('input', function(){
     $(".statusDropDown a[data-value='all']").click();
     refreshTable() 
  })
-
- $('.setExpiration').on('click', function(){
-    var selectedValue = $('#expirationSelect').val();
+ $('.setExpiration').on('click', function() {
+    var expirationSelect = document.getElementById('expirationSelect');
+    var selectedValue = expirationSelect.value;
+    var selectedOption = expirationSelect.options[expirationSelect.selectedIndex];
+    var days = selectedOption.getAttribute('data-days');
+    
+    
     axios.post(`api.php?action=updateExpiration&value=${selectedValue}`).then(function (response) {
         Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Coupon Expiration updated successfully!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-        })
-      }).catch(function (error) {
+            icon: 'success',
+            title: 'Success!',
+            text: 'Coupon Expiration updated successfully!',
+            timer: 1000, 
+            timerProgressBar: true, 
+            showConfirmButton: false 
+        });
+        
+        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        var firstName = userInfo.firstName;
+        var lastName = userInfo.lastName;
+        var cid = userInfo.userId;
+        var role_id = userInfo.roleId; 
+        insertLogs('Coupons', firstName + ' ' + lastName + ' ' + 'Updated the coupon expiration to ' + days);
+    }).catch(function (error) {
         Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Error!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-        })
-      })
+            icon: 'error',
+            title: 'Error!',
+            text: 'Error!',
+            timer: 1000, 
+            timerProgressBar: true, 
+            showConfirmButton: false 
+        });
+    });
 });
 
-
- });
+});
 
  function currentExpiration(){
     axios.post('api.php?action=getCurrent').then(function (response) {

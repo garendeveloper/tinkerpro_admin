@@ -245,7 +245,7 @@ function refreshCustomerTable() {
 
 
 $('#generateCustomerDFBtn').click(function() {
-      var searchData = $('.searchCustomer').val();
+    var searchData = $('.searchCustomer').val();
    
     $.ajax({
         url: './reports/customers.php',
@@ -268,6 +268,14 @@ $('#generateCustomerDFBtn').click(function() {
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
             // $('#modalCashPrint').hide()
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+    
+    
+            insertLogs('Customers',firstName + ' ' + lastName + ' '+ 'Generating pdf');
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -300,6 +308,14 @@ $('#printCustomers').click(function() {
             }
 
             window.URL.revokeObjectURL(url);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+    
+    
+            insertLogs('Customers',firstName + ' ' + lastName + ' '+ 'Printing pdf');
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -329,6 +345,14 @@ $('#printCustomers').click(function() {
             a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+    
+    
+            insertLogs('Customers',firstName + ' ' + lastName + ' '+ 'Exported' + ' ' +'customer.csv');
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);

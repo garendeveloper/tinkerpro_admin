@@ -268,7 +268,12 @@ let deleteValidation = "false";
     }
     if (productname && barcode && cost && markup) {
       axios.post('api.php?action=addProduct', formData).then(function (response) {
-        console.log(response)
+        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        var firstName = userInfo.firstName;
+        var lastName = userInfo.lastName;
+        var cid = userInfo.userId;
+        var role_id = userInfo.roleId; 
+        insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Added' + ' ' +  productname +' '+ 'Barcode #:'+barcode)
         refreshProductsTable()
         // show_allProducts();
         closeAddProductsModal()
@@ -578,7 +583,14 @@ let deleteValidation = "false";
 
     if (productname && barcode && cost && markup) {
       axios.post('api.php?action=updateProduct', formData).then(function (response) {
-        console.log(response)
+        
+        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        var firstName = userInfo.firstName;
+        var lastName = userInfo.lastName;
+        var cid = userInfo.userId;
+        var role_id = userInfo.roleId; 
+        insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Updated' + ' ' +  productname +' '+ 'Barcode #:'+barcode)
+        refreshProductsTable()
         deleteValidation = "false";
         refreshProductsTable()
         closeAddProductsModal()

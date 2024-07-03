@@ -468,6 +468,14 @@ function addSupplier(){
     formData.append("suppliedIngredientsData", JSON.stringify(suppliedIngredientsData));
 
     axios.post('api.php?action=addSupplier', formData).then(function(response){
+      var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      var firstName = userInfo.firstName;
+      var lastName = userInfo.lastName;
+      var cid = userInfo.userId;
+      var role_id = userInfo.roleId; 
+    
+    
+      insertLogs('Supplier',firstName + ' ' + lastName + ' '+ 'Added supplier' + ' ' +  s_name)
       closeAddSupplierModal()
       refreshSupplierTable()
     }).catch(function(error){
@@ -575,6 +583,14 @@ function updateSupplied(){
     // formData.append("suppliedIngredientsData", JSON.stringify(suppliedIngredientsData));
     axios.post('api.php?action=updateSupplier', formData).then(function(response){
       console.log(response)
+      var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      var firstName = userInfo.firstName;
+      var lastName = userInfo.lastName;
+      var cid = userInfo.userId;
+      var role_id = userInfo.roleId; 
+    
+    
+      insertLogs('Supplier',firstName + ' ' + lastName + ' '+ 'Updated supplier' + ' ' +  s_name)
       closeAddSupplierModal()
       refreshSupplierTable()
     }).catch(function(error){
