@@ -586,7 +586,7 @@ h1, label, textarea, input, table,h5{
             ],
             ordering: true,
             order: [[0, 'DESC']],
-            pageLength: 100,
+            pageLength: 5,
             pagingType: 'full_numbers',
             dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
             fnDrawCallback: function (oSettings) {

@@ -67,15 +67,15 @@
   <script src="assets/js/toastr.min.js"></script>
   <script src="assets/table-sortable/dataTables.min.js"></script>
   <script src="layout/admin/moment.min.js"></script>
+  <script src="assets/jquery-barcode/jquery-barcode.js"></script>
+  <script src="assets/jquery-barcode/jquery-barcode.min.js"></script>
   <script src="assets/js/html2canvas.min.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/popper.min.js"></script>
   <!-- <script src="assets/js/JsBarcode.all.min.js"></script> -->
-   <script src="assets/jquery-barcode/jquery-barcode.js"></script>
-   <script src="assets/jquery-barcode/jquery-barcode.min.js"></script>
+
 </head>
 <body>
-
 <script>
  function display_ct7() 
  {
