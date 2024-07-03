@@ -343,7 +343,7 @@ body{
 </style>
 
 <?php include "layout/admin/css.php"?> 
-<!--  -->
+<?php include "layout/admin/barcodeassets.php"?> 
   <div class="container-scroller">
     <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
@@ -500,7 +500,7 @@ body{
   include("layout/footer.php");
 ?>
 
-    <!-- <script>
+    <script>
 	var defaultValues = {
     CODE128 : "Example 1234",
     CODE128A : "EXAMPLE",
@@ -615,7 +615,7 @@ var newBarcode = function() {
     $("#bar-text-margin-display").text($("#bar-text-margin").val());
 };
 
-	</script> -->
+	</script>
     
 <script>
   $(document).ready(function(){

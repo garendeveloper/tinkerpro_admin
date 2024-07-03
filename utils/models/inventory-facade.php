@@ -362,6 +362,13 @@ class InventoryFacade extends DBConnection
             'msg'=>'Quick inventory has been successfully saved!',	
         ];
     }
+    public function fetchProducts($search)
+    {
+        $stmt = $this->connect()->prepare("SELECT prod_desc FROM products WHERE prod_desc LIKE :p");
+        $stmt->execute(['p' => "%$search%"]);
+        $suggestions = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return $suggestions;
+    }
     public function get_allProducts()
     {
         // $sql = $this->connect()->prepare("SELECT A.*, B.id as inventory_id
