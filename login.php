@@ -44,8 +44,22 @@
           $_SESSION['last_name'] = $row['last_name'];
           $_SESSION['role_id'] = $row['role_id'];
 
-     
-          header('Location: index'); 
+          echo "<script>";
+          echo "var firstName = '" . $row['first_name'] . "';";
+          echo "var lastName = '" . $row['last_name'] . "';";
+          echo "var role_id = '" . $row['role_id'] . "';";
+          echo "var id = '" . $row['id'] . "';";
+          echo "
+              var userInfo = {
+                  userId: id,
+                  firstName: firstName,
+                  lastName: lastName,
+                  roleId: role_id
+              };
+              localStorage.setItem('userInfo', JSON.stringify(userInfo));";
+          echo "insertLogs('Login', 'User ' + firstName + ' ' + lastName + ' ' + role_id);";
+          echo "window.location.href = 'index.php';</script>";
+          // header('Location: index'); 
           exit;
         }
       } else {
@@ -83,7 +97,7 @@
     color: #555555;
     line-height: 0.5;
     margin-top: -20;
-    : -webkit-box;
+    /* : -webkit-box; */
     display: -webkit-flex;
     display: -moz-box;
     display: -ms-flexbox;

@@ -1,20 +1,49 @@
-2024-06-29 09:06:04 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:11:03 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:12:48 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:14:56 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:17:17 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:23:37 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:30:44 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:33:29 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:39:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:40:34 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:49:25 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
-2024-06-29 09:49:26 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:49:56 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
-2024-06-29 09:50:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:55:21 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:57:16 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 09:59:03 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 10:01:16 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 10:04:23 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-06-29 10:05:00 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-01 01:30:05 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-01 01:36:28 | Admin Admin | 1 | 2 | Login | User Admin Admin 
+2024-07-01 01:38:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-01 01:43:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-01 01:43:40 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-01 01:43:42 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-01 02:13:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-01 02:22:17 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000106 
+2024-07-01 02:25:44 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000107 Amount:₱ 0.00 
+2024-07-01 02:28:34 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000108 Amount:₱ 2,877.67 
+2024-07-01 02:35:36 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000109 Amount:₱ 227.50 
+2024-07-01 02:36:07 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000105 Amount:₱ 5,799.25 
+2024-07-01 02:37:42 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000110 Amount:₱ 830.00 
+2024-07-01 02:38:53 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000111 Amount:₱ 75.00 
+2024-07-01 02:41:17 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000112 Amount:₱ 594.00 
+2024-07-01 02:42:19 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000113 Amount:₱ 1,308.30 
+2024-07-01 02:42:58 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000114 Amount:₱ 48.00 
+2024-07-01 02:43:34 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000105 Amount:₱ 845.00 
+2024-07-01 02:51:51 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000105 Amount:₱ 4,425.00 
+2024-07-01 02:53:10 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000116 Amount:₱ 644,800,000,000,000.00 
+2024-07-01 03:53:56 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 02:00:14 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 02:06:45 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000117 Amount:₱ 6,180.00 
+2024-07-02 02:15:49 | Admin Admin | 1 | 2 | Products | Admin Admin Added Sample Product Barcode #:011532750853 
+2024-07-02 02:17:52 | Admin Admin | 1 | 2 | Products | Admin Admin Updated SAMPLE PRODUCT Barcode #:858571724102 
+2024-07-02 02:23:21 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted SAMPLE PRODUCT Barcode #:858571724102 
+2024-07-02 02:25:52 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted 24/7 MANGO 40G Barcode #:888779554 
+2024-07-02 02:26:00 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:26:02 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:26:04 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:26:05 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:27:25 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:32:06 | Admin Admin | 1 | 2 | Products | Admin Admin Exported productList.csv 
+2024-07-02 02:36:16 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-07-02 02:36:43 | Admin Admin | 1 | 2 | Products | Admin Admin Generate a pdf 
+2024-07-02 02:37:14 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-07-02 02:40:57 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added any 
+2024-07-02 02:57:02 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer 21212 21212 
+2024-07-02 03:00:38 | Admin Admin | 1 | 2 | Users | Admin Admin Added 211212 12121212121 
+2024-07-02 03:09:25 | Admin Admin | 1 | 2 | Coupons | Admin Admin Update the expiration to 6 
+2024-07-02 03:13:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Update the coupon expiration to 1 WEEK 
+2024-07-02 03:35:06 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 03:57:29 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 04:01:58 | Admin Admin | 1 | 2 | Charges | Admin Admin Updated service charges to 7% 
+2024-07-02 05:00:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 06:54:31 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 07:16:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 07:44:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-03 01:35:17 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 

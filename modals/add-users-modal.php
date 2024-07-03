@@ -778,6 +778,12 @@ function addUsers() {
         if(validation == true){
             axios.post('api.php?action=addUsersData', formData)
              .then(function(response) { 
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+                insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Added' + ' ' + firstname + ' '+ lastname);
                 refreshTable()
                 Swal.fire({
                 icon: 'success',
@@ -787,7 +793,7 @@ function addUsers() {
                 timerProgressBar: true, 
                 showConfirmButton: false 
             });
-            console.log(response.data)
+            
               closeAddUserModal()
             })
             .catch(function(error) {
@@ -1065,7 +1071,13 @@ function updateDataUser(){
         if(pass == cpass){
             axios.post('api.php?action=updateUserData', formData)
              .then(function(response) { 
-                console.log(response)
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+                insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Updated' + ' ' + firstname + ' '+ lastname);
+
                 refreshTable()
                 Swal.fire({
                 icon: 'success',

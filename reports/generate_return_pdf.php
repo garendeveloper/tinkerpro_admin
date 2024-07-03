@@ -138,11 +138,18 @@ $pdf->SetFont('', 'B', 10);
 
 
 $amountPerRef = array();
+$amountPerRefs = array();
+
 $previousRefNum = null;
 $discountsData = array();
 $itemDiscounts = array();
 $cartDiscounts = array();
 $overAllCart = 0;
+
+$firstDiscountSum = 0; 
+$processedRefs = array();
+$totalAmountPerRef = 0;
+
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     if($row){
     $referenceNum = $row['receipt_id'];
@@ -177,6 +184,14 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     if (!isset($cartDiscounts[$referenceNum])) {
         $cartDiscounts[$referenceNum] = 0;
     }
+
+    if (!isset($processedRefs[$referenceNum])) {
+        $firstDiscountSum += $discount;
+        $processedRefs[$referenceNum] = true;
+    }
+
+    $amountPerRefs[$referenceNum] += $row['amount'];
+    $totalAmountPerRef += $row['amount'];
    
   
     if ($referenceNum !== $previousRefNum) {
@@ -249,8 +264,13 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $cartDiscounts[$referenceNum] =   $cartDiscount;
     $cartRemove = $amountPerRef[$referenceNum] * $cartDiscounts[$referenceNum];
 
-    $overAllCart += $row['amount'];
+    $overAllCart += $row['amount']-$itemDiscount;
 }
+}
+$totalCartRemove = 0;
+foreach ($amountPerRefs as $referenceNum => $amount) {
+    $cartRemove = $amount * $cartDiscounts[$referenceNum];
+    $totalCartRemove += $cartRemove;
 }
 
 
@@ -288,7 +308,7 @@ $pdf->Ln(20);
 $pdf->SetFont('', 'B', 12);
 $pdf->Cell($headerWidths[0], $maxCellHeight, 'Total Returned Amount', 1, 0, 'L');
 $pdf->Cell($headerWidths[1], $maxCellHeight, '', 1, 0, 'R');
-$pdf->Cell($headerWidths[2]+$headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format($overAllCart-$discountsData[$previousRefNum]-$itemDiscounts[$previousRefNum]-$cartRemove,2), 1, 0, 'R');
+$pdf->Cell($headerWidths[2]+$headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format($overAllCart-$firstDiscountSum-$totalCartRemove,2), 1, 0, 'R');
 
 $pdfPath = $pdfFolder . 'returnAndExchangeList.pdf';
 $pdf->Output($pdfPath, 'F');

@@ -264,6 +264,14 @@ $('#generateSupplierDFBtn').click(function() {
 
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+    
+    
+           insertLogs('Supplier',firstName + ' ' + lastName + ' '+ 'Generated a pdf')
             // $('#modalCashPrint').hide()
         },
         error: function(xhr, status, error) {
@@ -297,6 +305,14 @@ $('#printSupplier').click(function() {
             }
 
             window.URL.revokeObjectURL(url);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+    
+    
+           insertLogs('Supplier',firstName + ' ' + lastName + ' '+ 'Printing a pdf')
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);
@@ -325,6 +341,15 @@ $('#printSupplier').click(function() {
             a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
+
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+    
+    
+           insertLogs('Supplier',firstName + ' ' + lastName + ' '+ 'Exported' + 'supplier.csv')
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText);

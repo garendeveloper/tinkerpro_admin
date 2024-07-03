@@ -1534,7 +1534,10 @@ include ('./layout/admin/table-pagination-css.php');
         }
       })
       var isSavingPO = false;
+      var totalPO = 0;
+      let validationID;
       function submit_purchaseOrder() {
+        totalPO =  $("#overallTotal").text();
         if (isSavingPO) return;
         var tbl_length = $("#tbl_purchaseOrders tbody tr").length;
         if (tbl_length > 0) {
@@ -1552,6 +1555,7 @@ include ('./layout/admin/table-pagination-css.php');
             dataArray.push(rowData);
           });
           var isPaid = $('#paidSwitch').prop('checked') ? 1 : 0; 
+          validationID =   $("#_order_id").val();
           $.ajax({
             type: 'POST',
             url: 'api.php?action=save_purchaseOrder',
@@ -1574,6 +1578,7 @@ include ('./layout/admin/table-pagination-css.php');
             },
             dataType: 'json',
             success: function (response) {
+              console.log(validationID);
               isSavingPO = false;
               if (response.status) 
               {
@@ -1595,6 +1600,17 @@ include ('./layout/admin/table-pagination-css.php');
                 show_allReceivedItems_PurchaseOrders();
                 hideModals();
                 $('#show_purchasePrintModal').show()
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+                console.log(order_id,'lmao')
+                if(validationID > 0){
+                  insertLogs('P.O Updated',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO)
+                }else{
+                  insertLogs('P.O Created',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO) 
+                }
                 if($('#show_purchasePrintModal').is(":visible"))
                 {
                     var loadingImage = document.getElementById("loadingImage");
@@ -1895,6 +1911,8 @@ include ('./layout/admin/table-pagination-css.php');
             data: { notifications: JSON.stringify(tbl_data) },
             success: function (response) {
               if (response.status) {
+                
+
                 show_sweetReponse(response.msg);
                 hideModals();
                 $(".inventoryCard").html("");
@@ -2816,8 +2834,18 @@ include ('./layout/admin/table-pagination-css.php');
           var order_id = $(this).data("id");
           if(is_received === 1)
           {
+
             var po_title = '<h6 style = "color: #FF9999; font-weight: bold">Sorry, the <i style = "color: red">PURCHASE ORDER</i> cannot be removed as it has already been received.</h6>';
             $("#purchaseOrder_response .po_title").html(po_title);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+              
+              
+                insertLogs('Denied',firstName + ' ' + lastName + ' '+'tries to delete' + ' ' + 'P.O order id #:' + ' ' + order_id )
+                
             $("#purchaseOrder_response").slideDown({
               backdrop: 'static',
               keyboard: false,
@@ -2846,6 +2874,7 @@ include ('./layout/admin/table-pagination-css.php');
                   id: $("#response_order_id").val(),
               },
               success: function(response){
+        
                   if(response.status)
                   {
                     $("#purchaseOrder_response").hide();
