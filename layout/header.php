@@ -70,8 +70,9 @@
   <script src="assets/js/html2canvas.min.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/popper.min.js"></script>
-  <script src="assets/js/JsLocalSearch.js"></script>
-  
+  <!-- <script src="assets/js/JsBarcode.all.min.js"></script> -->
+   <script src="assets/jquery-barcode/jquery-barcode.js"></script>
+   <script src="assets/jquery-barcode/jquery-barcode.min.js"></script>
 </head>
 <body>
 

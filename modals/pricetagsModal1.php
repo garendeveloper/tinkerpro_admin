@@ -45,8 +45,8 @@
                         <div class="search-container">
                             <input type="hidden" id="priceTag_id" value="0">
                             <input type="text" style="width: 280px; height: 30px; font-size: 12px;"
-                                class="search-input italic-placeholder" placeholder="Search Product,[Name, Barcode, Brand]" name="gsearchsimple"
-                                onkeyup="$(this).removeClass('has-error')" id="gsearchsimple" autocomplete="off">
+                                class="search-input italic-placeholder" placeholder="Search Product,[Name, Barcode, Brand]" name="priceTag"
+                                onkeyup="$(this).removeClass('has-error')" id="priceTag" autocomplete="off">
 
                                 <ul class="list-group">
 
@@ -78,7 +78,7 @@
   </div>
 </div>
 
-<!-- <script>
+<script>
     $(document).ready(function () {
         show_allProducts();
         var toastDisplayed = false;
@@ -200,11 +200,11 @@
                 show_errorResponse("Product not found.")
                 
             }
-            $("#gsearchsimple").val("");
+            $("#priceTag").val("");
             $("#priceTag_id").val("0");
         })
 
-        $("#gsearchsimple").autocomplete({
+        $("#priceTag").autocomplete({
             minLength: 2,
             source: function (request, response) {
             var term = request.term;
@@ -216,7 +216,7 @@
             } else {
                 $('#filters').hide();
             }
-            
+            console.log('font-size')
             var slicedProductsLength = slicedProducts.length - 1;
             var selectedProductId = slicedProducts[slicedProductsLength].id;
                 $("#priceTag_id").val(selectedProductId);
@@ -235,18 +235,18 @@
                     }
                     
                     $("#priceTag_id").val("0");
-                    $("#gsearchsimple").val("");
+                    $("#priceTag").val("");
                 }
 
                 return false;
             },
         });
-      $("#gsearchsimple").on("input", function(e) {
+      $("#priceTag").on("input", function(e) {
         e.preventDefault();
           var term = $(this).val();
           $(this).autocomplete('search', term);
       });
-      $("#gsearchsimple").on("keypress", function(event){
+      $("#priceTag").on("keypress", function(event){
         if(event.which === 13){
             var product_id = $("#priceTag_id").val();
             if(product_id !== "" && product_id !== "0")
@@ -263,16 +263,16 @@
             {
                 show_errorResponse("Product not found.")
             }
-            $("#gsearchsimple").val('');
+            $("#priceTag").val('');
         }
       
       })
     })
-</script> -->
-<script>
+</script>
+<!-- <script>
 $(document).ready(function(){
- $('#gsearchsimple').keyup(function(){
-  var query = $('#gsearchsimple').val();
+ $('priceTag').keyup(function(){
+  var query = $('priceTag').val();
   $('#detail').html('');
   $('.list-group').css('display', 'block');
   if(query.length == 2)
@@ -280,7 +280,7 @@ $(document).ready(function(){
    $.ajax({
     url:"fetch_inventory/fetchProduct.php",
     method:"POST",
-    data:{query:query},
+    data:{search:query},
     success:function(data)
     {
      $('.list-group').html(data);
@@ -301,7 +301,7 @@ $(document).ready(function(){
 
  $(document).on('click', '.gsearch', function(){
   var email = $(this).text();
-  $('#gsearchsimple').val(email);
+  $('priceTag').val(email);
   $('.list-group').css('display', 'none');
   $.ajax({
    url:"fetch_inventory/fetchProduct.php",
@@ -314,4 +314,4 @@ $(document).ready(function(){
   })
  });
 });
-</script>
+</script> -->

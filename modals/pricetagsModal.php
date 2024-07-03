@@ -35,7 +35,7 @@
     <div class="modal-content priceTagContent">
       <div class="modal-title">
         <div style="margin-top: 30px; margin-left: 20px">
-           <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">PRICE TAGS #</h5>
+           <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt"> PRICE TAGS # </h5>
         </div>
         <div class="warning-container">
           <div class="tableCard">
