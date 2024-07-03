@@ -511,6 +511,14 @@ function addCustomer(){
         axios.post('api.php?action=addCustomer', formData).then(function(response){
                closeAddingModal()
                refreshCustomerTable()
+               var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+               var firstName = userInfo.firstName;
+               var lastName = userInfo.lastName;
+               var cid = userInfo.userId;
+               var role_id = userInfo.roleId; 
+    
+    
+              insertLogs('Customers',firstName + ' ' + lastName + ' '+ 'Added customer' + ' ' + firstname + ' ' + lastname);
             }).catch(function(error){
             console.log("error")
             })
@@ -601,6 +609,14 @@ function updateCustomer(){
           console.log(response)
                closeAddingModal()
                refreshCustomerTable()
+               var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+               var firstName = userInfo.firstName;
+               var lastName = userInfo.lastName;
+               var cid = userInfo.userId;
+               var role_id = userInfo.roleId; 
+    
+    
+              insertLogs('Customers',firstName + ' ' + lastName + ' '+ 'Updated customer' + ' ' + firstname + ' ' + lastname);
             }).catch(function(error){
             console.log("error")
             })

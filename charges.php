@@ -363,6 +363,13 @@ $('.serviceSaveBtn').on('click', function(){
         serviceValue: serviceValue,
         idValue: idValue
      }).then(function(response){
+          var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+          var firstName = userInfo.firstName;
+          var lastName = userInfo.lastName;
+          var cid = userInfo.userId;
+          var role_id = userInfo.roleId; 
+      
+         insertLogs('Charges',firstName + ' ' + lastName + ' '+ 'Updated service charges to' + ' ' + serviceValue + '%' )
         getSRate()
         Swal.fire({
                 icon: 'success',
@@ -394,6 +401,13 @@ $('.othersSaveBtn').on('click', function(){
         othersValue: othersValue,
         idValue: idValue
      }).then(function(response){
+          var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+          var firstName = userInfo.firstName;
+          var lastName = userInfo.lastName;
+          var cid = userInfo.userId;
+          var role_id = userInfo.roleId; 
+      
+         insertLogs('Charges',firstName + ' ' + lastName + ' '+ 'Updated Other charges to' + ' ' +  othersValue + '%' )
         getORate()
         Swal.fire({
                 icon: 'success',

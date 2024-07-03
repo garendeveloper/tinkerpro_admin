@@ -532,6 +532,12 @@ function searchProducts(){
 
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+            insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Generate a pdf')
             $('#modalCashPrint').hide()
         },
         error: function(xhr, status, error) {
@@ -566,6 +572,12 @@ $('#printProduct').click(function() {
             }
 
             window.URL.revokeObjectURL(url);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+            insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Printing a pdf')
             $('#modalCashPrint').hide()
         },
         error: function(xhr, status, error) {
@@ -597,6 +609,12 @@ $('#printProduct').click(function() {
 
             // Clean up
             document.body.removeChild(link);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+            insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Exported'+' ' + 'productList.xlsx')
             $('#modalCashPrint').hide()
         },
         error: function(xhr, status, error) {
@@ -649,6 +667,12 @@ $('#exportProducts').click(function() {
             a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+            insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Exported'+' ' + 'productList.csv')
             $('#modalCashPrint').hide();
         },
         error: function(xhr, status, error) {
@@ -722,12 +746,21 @@ $('#exportProducts').click(function() {
     });
     $(document.body).on('click', '.deleteProducts', function() {
         var productId = $(this).closest('tr').find('.productsId').text();
+        var productName =  $(this).closest('tr').find('.productsName').text();
+        var productBarcode = $(this).closest('tr').find('.barcode').text();
     
       axios.delete(`api.php?action=deleteProduct&prod_id=${productId}`)
       .then(function(response){
           console.log(response)
         if (response.data.success) {
              refreshProductsTable()
+
+        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        var firstName = userInfo.firstName;
+        var lastName = userInfo.lastName;
+        var cid = userInfo.userId;
+        var role_id = userInfo.roleId; 
+        insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Deleted' + ' ' +  productName +' '+ 'Barcode #:'+ productBarcode)
              Swal.fire({
                 icon: 'success',
                 title: 'Success!',
@@ -737,6 +770,12 @@ $('#exportProducts').click(function() {
                 showConfirmButton: false 
     });
             } else {
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+            insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Tries to delete' + ' ' +  productName +' '+ 'Barcode #:'+ productBarcode)
                 Swal.fire({
                 icon: 'error',
                 title: 'Error!',
