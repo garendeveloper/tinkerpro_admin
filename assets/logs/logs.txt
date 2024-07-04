@@ -47,6 +47,7 @@
 2024-07-02 07:16:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-07-02 07:44:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-07-03 01:35:17 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
 2024-07-03 05:33:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-07-03 06:09:43 | Admin Admin | 1 | 2 | Products | Admin Admin Added KILLS MOSQUITOES IN SECONDS Barcode #:4801234107727 
 2024-07-03 06:12:38 | Admin Admin | 1 | 2 | Products | Admin Admin Added stik o Barcode #:4800166142288 
@@ -67,3 +68,5 @@
 2024-07-04 06:38:47 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-07-04 07:52:47 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-07-04 08:35:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+=======
+>>>>>>> eef94c991aa55ca076d1765296df1c994b5b698b

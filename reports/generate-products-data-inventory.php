@@ -163,9 +163,9 @@ while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
     $totalCost += $row['cost'];
     $totalTax += $row['totalVat'];
     $totalPrice += $row['prod_price'];
-    $grossAmount = $row['grossAmount'] - $row['itemDiscount'] - $row['overallDiscounts'];
+    $grossAmount = number_format($row['grossAmount'],2) - number_format($row['itemDiscount'],2) - number_format($row['overallDiscounts'],2);
 
-    $totalAmount += $grossAmount ;
+    $totalAmount += number_format($grossAmount,2);
   
      $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
      $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
