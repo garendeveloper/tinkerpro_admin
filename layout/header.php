@@ -41,6 +41,7 @@
   <link rel="stylesheet" href="assets/js/daterangepicker/daterangepicker.css">
   <link rel="stylesheet" href="assets/css/toastr.min.css">
   <link rel="stylesheet" href="assets/table-sortable/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="assets/css/flatpickr.min.css">
 
 
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>

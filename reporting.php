@@ -66,6 +66,8 @@ if (isset($_SESSION['user_id'])) {
 	}
     include('./modals/datePickerModal.php');
     include('./modals/showReportsModal.php');
+    include('./modals/sales_history.php');
+
 ?>
 <style>
 .headerReport{
@@ -328,6 +330,7 @@ input:not(:checked) + .sliderStatusExcludes {
  <div class="container-scroller">
   <!-- partial:partials/_navbar.html -->
   <?php include 'layout/admin/sidebar.php' ?>
+
     <!-- partial -->
     <div class="main-panel">
       <div class="content-wrapper" style="width:100%">
@@ -2216,7 +2219,10 @@ function highlightDiv(id) {
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
         }else if(id == 36){
-
+   
+          $('#salesHistoryModal').show();
+                runPrintPreview_history();
+            getAllSalesHistory();   
         }
         else{
 
