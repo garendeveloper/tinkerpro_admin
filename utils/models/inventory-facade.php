@@ -157,7 +157,7 @@ class InventoryFacade extends DBConnection
     {
         $sql = "SELECT products.*, uom.*
                 FROM products
-                INNER JOIN uom ON uom.id = products.uom_id
+                LEFT JOIN uom ON uom.id = products.uom_id
                 WHERE products.id = :inventory_id";
 
         $stmt = $this->connect()->prepare($sql);

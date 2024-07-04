@@ -795,12 +795,17 @@ include ('./layout/admin/table-pagination-css.php');
             });
             $("#stockhistory_modal").find(".modal-title").html("<span style = 'color: #FF6700; font-weight: bold'> "+info.prod_desc + "</span>&nbsp; - STOCK HISTORY")
             var tbl_rows = [];
-            for (var i = 0, len = stocks.length; i < len; i++) {
+
+            var stock_reference = info.product_stock > 0 ? "<span style = 'color: #90EE90'>" + info.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + info.product_stock + "</span>";
+            var new_stock = stocks.length !== 0 ? stock_reference : "0.00";
+
+            for (var i = 0, len = stocks.length; i < len; i++) 
+            {
               var stockItem = stocks[i];
               var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
               var stockTimestamp = stockItem.stock_date;
               var stock = stockItem.stock > 0 ? "<span style = 'color: #90EE90'>" + stockItem.stock + "</span>" : "<span style = 'color: #FFCCCC'>" + stockItem.stock + "</span>";
-              var new_stock = info.product_stock > 0 ? "<span style = 'color: #90EE90'>" + info.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + info.product_stock + "</span>";
+
               tbl_rows.push(
                 `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
