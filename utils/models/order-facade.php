@@ -71,9 +71,11 @@ class OrderFacade extends DBConnection
             1 => 'supplier.supplier',
             2 => 'orders.date_purchased',
             3 => 'orders.due_date',
-            4 => 'orders.price',
-            5 => 'orders.isPaid',
-            6 => 'orders.is_received'
+            4 => 'orders.totalQty',
+            5 => 'orders.totalPrice',
+            6 => 'orders.price',
+            7 => 'orders.isPaid',
+            8 => 'orders.is_received'
         );
 
         $sql = "SELECT 
@@ -85,7 +87,8 @@ class OrderFacade extends DBConnection
 
         if (!empty($requestData['search']['value'])) {
             $sql .= " AND (orders.po_number LIKE '%" . $requestData['search']['value'] . "%'
-                    OR supplier.supplier LIKE '%" . $requestData['search']['value'] . "%' )";
+                    OR supplier.supplier LIKE '%" . $requestData['search']['value'] . "%'
+                    OR orders.due_date LIKE '%" . $requestData['search']['value'] . "%' )";
         }
 
         $sql .= " GROUP BY orders.id, supplier.supplier";
@@ -104,7 +107,7 @@ class OrderFacade extends DBConnection
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $totalSql = "SELECT COUNT(*) as total FROM orders INNER JOIN supplier ON supplier.id = orders.supplier_id";
+        $totalSql = "SELECT COUNT(*) as total FROM orders INNER JOIN supplier ON supplier.id = orders.supplier_id WHERE orders.is_received = 0";
         $totalStmt = $this->connect()->prepare($totalSql);
         $totalStmt->execute();
         $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC);

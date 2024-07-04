@@ -94,7 +94,7 @@ switch($active_id)
         $pdf->SetDrawColor(192, 192, 192); 
         $pdf->SetLineWidth(0.3); 
         $header = array('No.', 'Product', 'Barcode', 'UOM', 'Qty in Store', 'Amt. Bef. Tax(Php)', 'Amt. Aft Tax (Php)');
-        $headerWidths = array(7, 50, 35, 15, 20, 30, 30);
+        $headerWidths = array(8, 50, 35, 15, 20, 30, 30);
         $maxCellHeight = 5;
         
         $hexColor = '#F5F5F5';
@@ -123,18 +123,19 @@ switch($active_id)
             $amountAfterTaxFormatted = number_format($item['prod_price'], 2);
 
             $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[1]));
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[0]));
             $pdf->Cell($headerWidths[1], $maxCellHeight, $item['prod_desc'], 1, 0, 'L');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['prod_desc'], $headerWidths[2]));
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['prod_desc'], $headerWidths[1]));
             $pdf->Cell($headerWidths[2], $maxCellHeight, $item['barcode'], 1, 0, 'L');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['barcode'], $headerWidths[3]));
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['barcode'], $headerWidths[2]));
             $pdf->Cell($headerWidths[3], $maxCellHeight, $item['uom_name'], 1, 0, 'C');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['uom_name'], $headerWidths[4]));
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['uom_name'], $headerWidths[3]));
             $pdf->Cell($headerWidths[4], $maxCellHeight, $item['product_stock'], 1, 0, 'R');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['product_stock'], $headerWidths[5]));
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['product_stock'], $headerWidths[4]));
             $pdf->Cell($headerWidths[5], $maxCellHeight, $amountBeforeTaxFormatted, 1, 0, 'R');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[6]));
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[5]));
             $pdf->Cell($headerWidths[6], $maxCellHeight, $amountAfterTaxFormatted, 1, 0, 'R');
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountAfterTaxFormatted, $headerWidths[6]));
             $pdf->Ln(); 
             $total_amountBeforeTax += number_format($item['cost']);
             $total_amountAfterTax += number_format($item['prod_price']);
@@ -201,8 +202,8 @@ switch($active_id)
         $items = $orders->get_allPurchaseOrders();
         $pdf->SetDrawColor(192, 192, 192); 
         $pdf->SetLineWidth(0.3); 
-        $header = array('No.','PO#', 'Supplier', 'Date Purchased', 'Is Paid', 'Total (Php)');
-        $headerWidths = array(10, 35, 50, 35, 25, 35);
+        $header = array('No.', 'PO#', 'Supplier', 'Date', 'Is Paid',  'Qty', 'Price', 'Total (Php)');
+        $headerWidths = array(10, 33, 33, 18, 15, 20, 30, 30);
         $maxCellHeight = 5;
         
         $hexColor = '#F5F5F5';
@@ -212,22 +213,25 @@ switch($active_id)
         
         $pdf->SetFont('', 'B', 9);
         for ($i = 0; $i < count($header); $i++) {
-            if($i === 5)
+            if($i === 5 || $i === 6 || $i === 7)
             {
                 $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'R', true);
             }
             else {
                 $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
             }
-            
+            $pdf->SetFont('', 'B', autoAdjustFontSize($pdf, $header[$i], $headerWidths[$i]));
         }
         $pdf->Ln();
         
         $over_all_total = 0;
-        foreach ($items as $item) {
+        $over_all_price = 0;
+        $over_all_qty = 0;
+        foreach ($items as $item) 
+        {
             $total = number_format($item['price'], 2);
             $originalDate = $item['date_purchased'];
-            $date_purchased = date("M d, Y", strtotime($originalDate));
+            $date_purchased = date("m-d-Y", strtotime($originalDate));
 
             $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
             $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[0]));
@@ -236,18 +240,34 @@ switch($active_id)
             $pdf->Cell($headerWidths[2], $maxCellHeight, $item['supplier'], 1, 0, 'L');
             $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['supplier'], $headerWidths[2]));
             $pdf->Cell($headerWidths[3], $maxCellHeight, $date_purchased, 1, 0, 'C');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $total, $headerWidths[3]));
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $date_purchased, $headerWidths[3]));
             $pdf->Cell($headerWidths[4], $maxCellHeight, $item['isPaid'] == 1 ? "Yes" : "No", 1, 0, 'C');
-            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $date_purchased, $headerWidths[4]));
-            $pdf->Cell($headerWidths[5], $maxCellHeight, $total, 1, 0, 'R');
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['isPaid'] == 1 ? "Yes" : "No", $headerWidths[4]));
+            $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($item['totalQty'], 2), 1, 0, 'R');
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['totalQty'], 2), $headerWidths[5]));
+            $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($item['totalPrice'], 2), 1, 0, 'R');
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['totalPrice'], 2), $headerWidths[6]));
+            $pdf->Cell($headerWidths[7], $maxCellHeight, $total, 1, 0, 'R');
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, $total, $headerWidths[7]));
          
             $pdf->Ln(); 
             $over_all_total += $item['price'];
+            $over_all_qty += $item['totalQty'];
+            $over_all_price += $item['totalPrice'];
             $counter++;
         }
-        $pdf->SetFont('', 'B', 9); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3], $maxCellHeight, 'Total', 1, 0, 'R'); 
-        $pdf->Cell($headerWidths[4] + $headerWidths[5], $maxCellHeight, number_format( $over_all_total, 2), 1, 0, 'R'); 
+        $pdf->Ln(); 
+        $pdf->SetFont('', 'B', 8); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total Qty', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[5] + $headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format( $over_all_qty, 2), 1, 0, 'R'); 
+        $pdf->Ln(); 
+        $pdf->Ln(); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total Price', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[5] + $headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format( $over_all_price, 2), 1, 0, 'R'); 
+        $pdf->Ln(); 
+        $pdf->SetFont('', 'B', 8); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Overall Total', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[5] + $headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format( $over_all_total, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
         
         break;

@@ -334,11 +334,11 @@ include ('./layout/admin/table-pagination-css.php');
           </div>
         </div>
         <div class="row" style="margin-top: -20px;">
-          <div class="card inventoryCard" style="width: 100%; height: 70vh;">
+          <div class="card inventoryCard" style="width: 100%; height: 60vh;">
 
           </div>
-          <div id="paginationDiv"></div>
-          <div style="display: flex; margin-top: 20px">
+          <div id="paginationDiv" ></div>
+          <div style="display: flex; ">
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg
                 version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke="">
@@ -563,7 +563,9 @@ include ('./layout/admin/table-pagination-css.php');
       })
       $("#printThis").on("click", function () {
         var active_tbl_id = $(".inventoryCard table").attr('id');
+    
         if (active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks') {
+          $('#modalCashPrint').show();
           $.ajax({
             url: './reports/generate_inventory_pdf.php',
             type: 'GET',
@@ -574,6 +576,7 @@ include ('./layout/admin/table-pagination-css.php');
               active_type: active_tbl_id,
             },
             success: function (response) {
+              $('#modalCashPrint').hide();
               var newBlob = new Blob([response], { type: 'application/pdf' });
               var blobURL = URL.createObjectURL(newBlob);
 
@@ -600,7 +603,10 @@ include ('./layout/admin/table-pagination-css.php');
       })
       $('#generateEXCELBtn').click(function () {
         var active_tbl_id = $(".inventoryCard table").attr('id');
-        if (active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks') {
+  
+        if (active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks') 
+        {
+          $('#modalCashPrint').show();
           var fileName = active_tbl_id.replace("tbl_", "");
           $.ajax({
             url: './reports/generate_inventory_excel.php',
@@ -612,6 +618,7 @@ include ('./layout/admin/table-pagination-css.php');
               active_type: active_tbl_id,
             },
             success: function (response) {
+              $('#modalCashPrint').hide();
               var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
               var link = document.createElement('a');
               link.href = window.URL.createObjectURL(blob);
@@ -793,7 +800,7 @@ include ('./layout/admin/table-pagination-css.php');
               backdrop: 'static',
               keyboard: false,
             });
-            $("#stockhistory_modal").find(".modal-title").html("<span style = 'color: #FF6700; font-weight: bold'> "+info.prod_desc + "</span>&nbsp; - STOCK HISTORY")
+            $("#stockhistory_modal").find(".modal-title").html("<span style = 'font-weight: bold' class = 'text-custom'> "+info.prod_desc + "</span>&nbsp; - STOCK HISTORY")
             var tbl_rows = [];
 
             var stock_reference = info.product_stock > 0 ? "<span style = 'color: #90EE90'>" + info.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + info.product_stock + "</span>";
@@ -2911,6 +2918,8 @@ include ('./layout/admin/table-pagination-css.php');
                           <th style='width: 4%;'>Supplier</th>
                           <th style='width: 2%;'>Date Purchased</th>
                           <th style='width: 2%;'>Due Date</th>
+                          <th style='width: 2%;'>Qty</th>
+                          <th style='width: 2%;'>Price</th>
                           <th style='width: 2%;'>Total</th>
                           <th style='width: 2%;'>Is Paid</th>
                           <th style='width: 2%;'>Status</th>
@@ -2941,6 +2950,20 @@ include ('./layout/admin/table-pagination-css.php');
                       className: 'text-center',
                       render: function (data) {
                           return data ? date_format(data) : 'Not Available';
+                      }
+                  },
+                  {
+                      data: 'totalQty',
+                      className: 'text-right',
+                      render: function (data) {
+                        return data;
+                      }
+                  },
+                  {
+                      data: 'totalPrice',
+                      className: 'text-right',
+                      render: function (data) {
+                        return '&#x20B1;&nbsp;' + addCommasToNumber(data);
                       }
                   },
                   {

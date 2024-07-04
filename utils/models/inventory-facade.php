@@ -121,8 +121,8 @@ class InventoryFacade extends DBConnection
         {
             $sql = "SELECT products.*, uom.*, products.id as product_id
                     FROM products
-                    JOIN uom ON uom.id = products.uom_id
-                    ORDER BY products.id DESC;";
+                    LEFT JOIN uom ON uom.id = products.uom_id
+                    ORDER BY products.id ASC;";
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->execute();
@@ -253,9 +253,11 @@ class InventoryFacade extends DBConnection
     public function get_realtime_notifications()
     {
         $query = "SELECT products.*, inventory.*, inventory.id as inventory_id
-                    FROM inventory
-                    JOIN products ON products.id = inventory.product_id
-                    ORDER BY inventory.id DESC;";
+                FROM inventory
+                INNER JOIN products ON products.id = inventory.product_id
+                WHERE inventory.date_expired IS NOT NULL AND inventory.date_expired <> '0000-00-00'
+                ORDER BY inventory.id DESC;";
+        
         $result = $this->connect()->prepare($query); 
         $result->execute();
         $result = $result->fetchAll(PDO::FETCH_ASSOC);

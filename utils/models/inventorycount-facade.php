@@ -68,38 +68,42 @@
                 $counted = $row['counted'];
                 $difference = $this->clean_number($row['difference']);
 
-                $stmt = $this->connect()->prepare("INSERT INTO inventory_count_items (inventory_id, inventory_count_info_id, qty, counted, difference)
-                                                    VALUES (?,?, ?, ?, ?)");
-                $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                $stmt->bindParam(2, $inventory_count_info_id, PDO::PARAM_STR);
-                $stmt->bindParam(3, $qty, PDO::PARAM_STR);
-                $stmt->bindParam(4, $counted, PDO::PARAM_STR);
-                $stmt->bindParam(5, $difference, PDO::PARAM_STR);
-                $stmt->execute();
-            
-                $stmt2 = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
-                $stmt2->bindParam(":new_stock", $counted); 
-                $stmt2->bindParam(":id", $inventory_id); 
-                $stmt2->execute();
-    
-                $currentStock = $this->get_productDataById($inventory_id)['product_stock'];
-                date_default_timezone_set('Asia/Manila');
-                $currentDate = date('Y-m-d h:i:s');
-                $stock_customer = $formData['user_name'];
-                $document_number = $reference_no;
-                $transaction_type = "Inventory Count";
-                $difference = $difference > 0 ? "+".$difference : $difference;
-                $stmt1 = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
-                                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+                if(!empty($counted))
+                {
+                    $stmt = $this->connect()->prepare("INSERT INTO inventory_count_items (inventory_id, inventory_count_info_id, qty, counted, difference)
+                                                        VALUES (?,?, ?, ?, ?)");
+                    $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                    $stmt->bindParam(2, $inventory_count_info_id, PDO::PARAM_STR);
+                    $stmt->bindParam(3, $qty, PDO::PARAM_STR);
+                    $stmt->bindParam(4, $counted, PDO::PARAM_STR);
+                    $stmt->bindParam(5, $difference, PDO::PARAM_STR);
+                    $stmt->execute();
 
-                $stmt1->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                $stmt1->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-                $stmt1->bindParam(3, $difference, PDO::PARAM_STR); 
-                $stmt1->bindParam(4, $counted, PDO::PARAM_STR); 
-                $stmt1->bindParam(5, $document_number, PDO::PARAM_STR); 
-                $stmt1->bindParam(6, $transaction_type, PDO::PARAM_STR); 
-                $stmt1->bindParam(7, $currentDate, PDO::PARAM_STR); 
-                $stmt1->execute();
+                    $stmt2 = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
+                    $stmt2->bindParam(":new_stock", $counted); 
+                    $stmt2->bindParam(":id", $inventory_id); 
+                    $stmt2->execute();
+
+                    $currentStock = $this->get_productDataById($inventory_id)['product_stock'];
+                    date_default_timezone_set('Asia/Manila');
+                    $currentDate = date('Y-m-d h:i:s');
+                    $stock_customer = $formData['user_name'];
+                    $document_number = $reference_no;
+                    $transaction_type = "Inventory Count";
+                    $difference = $difference > 0 ? "+".$difference : $difference;
+                    $stmt1 = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                        VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+                    $stmt1->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                    $stmt1->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+                    $stmt1->bindParam(3, $difference, PDO::PARAM_STR); 
+                    $stmt1->bindParam(4, $counted, PDO::PARAM_STR); 
+                    $stmt1->bindParam(5, $document_number, PDO::PARAM_STR); 
+                    $stmt1->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+                    $stmt1->bindParam(7, $currentDate, PDO::PARAM_STR); 
+                    $stmt1->execute();
+                }
+                
             }
            
             return [

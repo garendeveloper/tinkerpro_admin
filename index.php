@@ -1066,7 +1066,7 @@ $('.custom_btns').on('click', function () {
             $(".annual_total_sales").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
             $(".top_performing_month").html("<h4 style='color: #d9f500; font-size: 1rem'>Top Performing Month</h4>" +
                 "<h4>" + top_month + "</h4>" +
-                "<h4 class = 'topValue'>" +  formatNumberWithCommas(top_month_value) + "</h4>");
+                "<h4 class = 'topValue'>" +  top_month_value + "</h4>");
 
             $(".annual_total_expenses").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_expenses) + "</h3>");
             $(".top_expensive_month").html("<h4 style='color: #ff8792; font-size: 1rem'>Top Expensive Month</h4>" +
