@@ -82,6 +82,7 @@ switch ($active_id) {
           
         }
         $lastRowIndex = $counter + 1; 
+        $sheet->getStyle('A' . $lastRowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $sheet->mergeCells('A' . $lastRowIndex . ':D' . $lastRowIndex);
         $sheet->setCellValue('A' . $lastRowIndex, 'Total');
         $sheet->getStyle('A' . $lastRowIndex)->getFont()->setBold(true);
@@ -120,36 +121,70 @@ switch ($active_id) {
         $sheet->setCellValue('B1', 'PO#');
         $sheet->setCellValue('C1', 'Supplier');
         $sheet->setCellValue('D1', 'Date Purchased');
-        $sheet->setCellValue('E1', 'Total');
-        $sheet->setCellValue('F1', 'Is Paid');
+        $sheet->setCellValue('E1', 'Is Paid');
+        $sheet->setCellValue('F1', 'Qty');
+        $sheet->setCellValue('G1', 'Price');
+        $sheet->setCellValue('H1', 'Total');
 
         $headerStyle = [
             'font' => ['bold' => true],
             'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D3D3D3']],
         ];
-        $sheet->getStyle('A1:F1')->applyFromArray($headerStyle);
-        $counter = 1;
+        $sheet->getStyle('A1:H1')->applyFromArray($headerStyle);
 
-        foreach ($items as $item) {
-            $total = '₱' . number_format($item['totalPrice'], 2);
+        $counter = 1;
+        $over_all_total = 0;
+        $over_all_price = 0;
+        $over_all_qty = 0;
+        foreach ($items as $item) 
+        {
+            $total = number_format($item['totalPrice'], 2);
             $originalDate = $item['date_purchased'];
-            $date_purchased = date("M d, Y", strtotime($originalDate));
+            $date_purchased = date("m-d-Y", strtotime($originalDate));
 
             $isPaid = $item['isPaid'] === 1 ? "YES" : "NO";
             $sheet->setCellValue('A' . ($counter + 1), $counter);
             $sheet->setCellValue('B' . ($counter + 1), $item['po_number']);
             $sheet->setCellValue('C' . ($counter + 1), $item['supplier']);
             $sheet->setCellValue('D' . ($counter + 1), $date_purchased);
-            $sheet->setCellValue('E' . ($counter + 1), $total);
-            $sheet->setCellValue('F' . ($counter + 1), $isPaid);
+            $sheet->setCellValue('E' . ($counter + 1), $isPaid);
+            $sheet->setCellValue('F' . ($counter + 1), number_format($item['totalQty'], 2));
+            $sheet->setCellValue('G' . ($counter + 1), number_format($item['totalPrice'], 2));
+            $sheet->setCellValue('H' . ($counter + 1), $total);
+            
 
             $sheet->getStyle('A' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
             $sheet->getStyle('B' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
             $sheet->getStyle('C' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
-            $sheet->getStyle('E' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
-            $sheet->getStyle('F' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('D' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('E' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle('F' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+            $sheet->getStyle('G' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+            $sheet->getStyle('H' . ($counter + 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+
+            $over_all_total += $item['price'];
+            $over_all_qty += $item['totalQty'];
+            $over_all_price += $item['totalPrice'];
             $counter++;
         }
+
+        $lastRowIndex = $counter + 1; 
+        $sheet->getStyle('A' . $lastRowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
+        $sheet->mergeCells('A' . $lastRowIndex . ':E' . $lastRowIndex);
+        $sheet->setCellValue('A' . $lastRowIndex, 'Total');
+        $sheet->getStyle('A' . $lastRowIndex)->getFont()->setBold(true);
+        $sheet->setCellValue('F' . $lastRowIndex, number_format($over_all_qty, 2));
+        $sheet->setCellValue('G' . $lastRowIndex, number_format($over_all_price, 2));
+        $sheet->setCellValue('H' . $lastRowIndex, number_format($over_all_total, 2));
+        $sheet->getStyle('F' . $lastRowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+        $sheet->getStyle('G' . $lastRowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+        $sheet->getStyle('H' . $lastRowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+
+        $headerStyle = [
+            'font' => ['bold' => true],
+            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => ['rgb' => 'D3D3D3']],
+        ];
+        $sheet->getStyle('A'.$lastRowIndex.':H'.$lastRowIndex)->applyFromArray($headerStyle);
 
         foreach (range('A', 'F') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
@@ -230,10 +265,10 @@ switch ($active_id) {
 
 
         $lastRowIndex = $counter + 1; 
+        $sheet->getStyle('A' . $lastRowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $sheet->mergeCells('A' . $lastRowIndex . ':E' . $lastRowIndex);
         $sheet->setCellValue('A' . $lastRowIndex, 'Total');
         $sheet->getStyle('A' . $lastRowIndex)->getFont()->setBold(true);
-        $sheet->getStyle('A' . $lastRowIndex)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
         $sheet->setCellValue('F' . $lastRowIndex, number_format($over_all_qty, 2));
         $sheet->setCellValue('G' . $lastRowIndex, number_format($over_all_cost, 2));
         $sheet->setCellValue('H' . $lastRowIndex, number_format($over_all_totalCost, 2));

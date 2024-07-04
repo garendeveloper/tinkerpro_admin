@@ -241,13 +241,7 @@ if (isset($_SESSION['user_id'])) {
                             class="text dynamic-color">Inventory</span></a>
                 </li>
             <?php endif ?>
-
-            <?php if ($accessProducts): ?>
-                <li><a href="priceTags" id="price_tags"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
-                            class="text dynamic-color">Price Tags</span></a>
-                </li>
-            <?php endif ?>
-        
+         
             <li><a href="expenses" id="expenses"><i class="bi bi-wallet"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Expenses</span></a></li>
 
@@ -267,6 +261,16 @@ if (isset($_SESSION['user_id'])) {
                         class="text dynamic-color">Coupons</span></a></li>
             <li><a href="charges" id="charges"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Charges</span></a></li>
+
+
+            <li><a href="priceTags" id="price_tags"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
+                        class="text dynamic-color">Price Tags</span></a>
+            </li>
+            <li><a href="activityLogs" id="price_tags"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
+                        class="text dynamic-color">Activity Logs</span></a>
+            </li>
+        
+
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Logout</span></a></li>
             <li><a href="#" id="toggle-sidebar" class="d-flex justify-content-end"><i

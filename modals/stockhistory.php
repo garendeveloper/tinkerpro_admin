@@ -213,7 +213,7 @@ table, .stockhistory_form{
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <button id="close-modal"  name="close-modal" class="close-button" style="font-size: larger;">&times;</button>
-      <div class="modal-title">
+      <div class="modal-title text-custom">
         <div class="warning-container">
           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 47.5 47.5" viewBox="0 0 47.5 47.5" id="Warning">
             <defs>

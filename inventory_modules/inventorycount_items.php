@@ -199,10 +199,10 @@
                     var row = "";
                     for(var i =0 ;i<data.length; i++)
                     {
-                        row += "<tr data-id = "+data[i].product_id+">";
-                        row += "<td>" + data[i].prod_desc + "</td>";
+                        row += "<tr  data-id = "+data[i].product_id+">";
+                        row += "<td data-id = " +data[i].product_id+ ">" + data[i].prod_desc + "</td>";
                         row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
-                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted' value = ''></input></td>";
+                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  required></input></td>";
                         row += "<td style = 'text-align: right'></td>";
                         row += "</tr>";
                     }
@@ -265,22 +265,7 @@
         function isExist(product_id) {
             return productsCache.some(product => product.product_id === product_id);
         }
-        // function filterProducts(term) 
-        // {
-        //     return productsCache.filter(function (row) {
-        //     return row.product.toLowerCase().includes(term) ||
-        //         row.barcode.includes(term) ||
-        //         (row.brand && row.brand.toLowerCase().includes(term)) ||
-        //         (!row.brand && term === "");
-        //     }).map(function (row) {
-        //         var brand = row.brand === null ? " " : "( " + row.brand + " )";
-        //         return {
-        //             label: row.product + " (" + row.barcode + ")",
-        //             value: row.barcode ?? row.product,
-        //             id: row.product_id
-        //         };
-        //     });
-        // }
+
         function filterProducts(term) {
             return productsCache.filter(function(row) {
                 var lowercaseTerm = term.toLowerCase();
