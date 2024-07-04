@@ -263,10 +263,10 @@ if (isset($_SESSION['user_id'])) {
             class="text dynamic-color">Charges</span></a></li>
 
 
-            <li><a href="priceTags" id="price_tags"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
+            <li><a href="priceTags" id="price_tags"><i class="bi bi-tag fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price Tags</span></a>
             </li>
-            <li><a href="activityLogs" id="price_tags"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
+            <li><a href="activityLogs" id="activity_logs"><i class="bi bi-activity fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Activity Logs</span></a>
             </li>
         
