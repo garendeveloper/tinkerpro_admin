@@ -270,12 +270,14 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
 }
 
 .description-text{
-  height:42px;
+  height:30px;
+
   color: #ffff;      
 }
 
 .description-text p{
   position: relative;
+  font-size: 14px;
   top: 50%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
@@ -339,6 +341,10 @@ body{
   text-align: center;
   padding:15px 0;
   font-size: 30px;
+}
+.search-input{
+  font-size: 16px;
+  height: 30px;
 }
 </style>
 
@@ -410,13 +416,13 @@ body{
                   <!-- Background (color) -->
                   <div class="row">
                     <div class="description-text"><p>Background</p></div>
-                    <div class=" input-container"><input id="background-color" class="form-control color" value="#FFFFFF"/></div>
+                    <div class=" input-container"><input id="background-color" class="search-input color" value="#FFFFFF"/></div>
                     <div class="col-md-1  value-text"></div>
                   </div>
                   <!-- Line color -->
                   <div class="row">
                     <div class="description-text"><p>Line Color</p></div>
-                    <div class="  input-container"><input id="line-color" class="form-control color" value="#ffff000"/></div>
+                    <div class="  input-container"><input id="line-color" class="search-input color" value="#ffff000"/></div>
                     <div class=" value-text"></div>
                   </div>
                   <!-- Show text -->
@@ -502,7 +508,7 @@ body{
 
     <script>
 	var defaultValues = {
-    CODE128 : "Example 1234",
+    CODE128 : $("#priceTag").val(),
     CODE128A : "EXAMPLE",
     CODE128B : "Example text",
     CODE128C : "12345678",
@@ -523,9 +529,9 @@ body{
 $(document).ready(function(){
     $("#userInput").on('input',newBarcode);
     $("#barcodeType").change(function(){
-        $("#userInput").val( defaultValues[$(this).val()] );
-
+        $("#userInput").val($("#priceTag").val());
         newBarcode();
+        
     });
 
     $(".text-align").click(function(){

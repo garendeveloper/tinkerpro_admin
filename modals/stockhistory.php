@@ -318,13 +318,16 @@ $(document).ready(function() {
             var tbl_rows = [];
             if(stocks.length > 0)
             {
+              var stock_reference = inventoryInfo.product_stock > 0 ? "<span style = 'color: #90EE90'>" + inventoryInfo.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + inventoryInfo.product_stock + "</span>";
+              var new_stock = stocks.length !== 0 ? stock_reference : "0.00";
+
               for (var i = 0, len = stocks.length; i < len; i++) 
               {
                 var stockItem = stocks[i];
                 var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
                 var stockTimestamp = stockItem.stock_date;
                 var stock = stockItem.stock > 0 ? "<span style = 'color: green'>+" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "</span>";
-                var new_stock = inventoryInfo.product_stock > 0 ? "<span style = 'color: #90EE90'>" + inventoryInfo.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + inventoryInfo.product_stock + "</span>";
+        
                 tbl_rows.push(
                   `<tr>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>

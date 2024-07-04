@@ -157,7 +157,7 @@ class InventoryFacade extends DBConnection
     {
         $sql = "SELECT products.*, uom.*
                 FROM products
-                INNER JOIN uom ON uom.id = products.uom_id
+                LEFT JOIN uom ON uom.id = products.uom_id
                 WHERE products.id = :inventory_id";
 
         $stmt = $this->connect()->prepare($sql);
@@ -375,7 +375,14 @@ class InventoryFacade extends DBConnection
         //                                 FROM products A
         //                                 LEFT JOIN  inventory B ON A.ID = B.product_id
         //                                 WHERE B.product_id IS NULL");
-        $sql = $this->connect()->prepare("SELECT * FROM PRODUCTS order by prod_desc asc");
+        $sql = $this->connect()->prepare("SELECT products.*,
+                                        CASE 
+                                           WHEN uom.uom_name IS null THEN ''
+                                           ELSE uom.uom_name
+                                        END AS uom
+                                        FROM PRODUCTS 
+                                        LEFT JOIN uom ON products.uom_id = uom.id
+                                        order by products.prod_desc asc");
         $sql->execute();
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
