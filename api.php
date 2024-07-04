@@ -11,6 +11,7 @@
     include( __DIR__ . '/utils/models/customer-facade.php');
     include( __DIR__ . '/utils/models/dashboard-facade.php');
     include( __DIR__ . '/utils/models/expense-facade.php');
+    include( __DIR__ . '/utils/models/sales-history-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
@@ -19,6 +20,7 @@
     $inventory_count = new InventoryCountFacade();
     $loss_and_damage = new Loss_and_damage_facade();
     $expense_facade = new ExpenseFacade();
+    $salesHistory = new SalesHistoyFacade;
 
     include( __DIR__ . '/utils/models/ingredients-facade.php');
    
@@ -428,6 +430,16 @@
                 } else {
                     echo json_encode(['success' => false]); 
                 }
+                break;
+        case 'getSalesHistory' : 
+            $cashier_id = isset($data->cashier_id) ? $data->cashier_id : null;
+            $roleId = isset($data->roleId) ? $data->roleId : null;
+            $allUsers = isset($data->allUsers) ? $data->allUsers : 0;
+            $salesHistory->getAllSales($cashier_id, $roleId, $allUsers);
+            break;
+            case 'getTransactionsByNumJS' :
+                $transNo = isset($data->transNo) ? $data->transNo : null;
+                $salesHistory->getTransactionsByNumJS($transNo);
                 break;
             
         default:
