@@ -152,7 +152,7 @@ $totalAmountPerRef = 0;
 
 while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     if($row){
-    $referenceNum = $row['receipt_id'];
+    $referenceNum = $row['date'];
     $otherDetails = $row['otherDetails'];
     $otherDetailsArray = json_decode($otherDetails, true);
 
@@ -230,7 +230,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
             $pdf->Ln();
         }
         $pdf->SetFont('', 'B', 10);
-        $pdf->Cell(0, 10, "Reference No.: " . str_pad($referenceNum, 9, '0', STR_PAD_LEFT), 0, 'L');
+        $pdf->Cell(0, 10, "Reference No.: " . str_pad($row['receipt_id'], 9, '0', STR_PAD_LEFT), 0, 'L');
         $pdf->Ln(-1);
 
      
