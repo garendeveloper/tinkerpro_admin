@@ -94,6 +94,7 @@ $(document).ready(function() {
             $(".dt-column-title").css('color', "#FFFFF");
             $(".title_div").css('color', response);
             $(".title_div span").css('color', "#FFFFF");
+            $(".otherinput").css('background-color', "#262626");
           }
           else
           {

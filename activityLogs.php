@@ -77,25 +77,45 @@ if (isset($_SESSION['user_id'])) {
 
 	<style>
 
-.custom-select {
-        position: relative;
-        display: inline-block;
-    }
 
     .custom-select select {
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        padding-right: 25px;
         text-indent: 0.5em;
     }
 
     .custom-select i {
         position: absolute;
         top: 50%;
-        right: 5px;
         transform: translateY(-50%);
     }
+    .fcontainer{
+      overflow: auto;
+      height: 750px;
+    }
+tbody {
+    display: block;
+    overflow: auto;
+}
+thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+tbody td {
+    border: 1px solid #dddddd; 
+    padding: 8px; 
+}
+.fcontainer::-webkit-scrollbar {
+    width: 1px; 
+    margin-right: 200px;
+}
+
+.f-container::-webkit-scrollbar-thumb {
+    background-color: #151515; 
+    border-radius: 4px; 
+}
 </style>
 
 <?php include "layout/admin/css.php"?> 
@@ -104,6 +124,42 @@ if (isset($_SESSION['user_id'])) {
   body{
     font-family: "Century Gothic"
   }
+  .date-input-container {
+    display: flex;
+    align-items: center;
+}
+
+#dateRange {
+    width: 100px;
+    height: 25px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-right: 5px;
+}
+
+#calendar-btn {
+    border-radius: 3px;
+    cursor: pointer;
+    border-color: #FF6900;
+    font-size: 10px;
+}
+/* input::placeholder {
+  color: #666; 
+    font-style: italic; 
+    opacity: 0.7; 
+    font-size: 10px;
+}
+
+input:focus::placeholder {
+    color: #666; 
+    font-style: normal; 
+}
+
+input.opacity::placeholder {
+    color: #999; 
+    opacity: 0.7; 
+} */
+
 </style>
   <div class="container-scroller">
     <?php include 'layout/admin/sidebar.php' ?>
@@ -117,18 +173,15 @@ if (isset($_SESSION['user_id'])) {
               </div>
             </div>
             <div class = "row">
-                <div class = "col-md-3" style = "background-color: #151515; border-color: white;">
+                <div class = "" style = "background-color: #151515; border-color: white; width: 12%">
                   <div class="mainDiv" style = "margin-left: 25px; height: 90vh">
-                  <br>
-                  <div class="row">
-                      <div class="custom-select">
-                        <input  class="text-color" style="width: 100%; height: 30px; margin-right: 10px; text-align: center; border: 1px solid white;" id = "search_log" placeholder="Search Logs [Date&Time,User,Module,Activity]" autocomplete = "off" />
-                      </div>
-                    </div>
                   <br>
                     <div class="row">
                       <div class="custom-select">
-                        <input  class="text-color searchProducts" style="width: 100%; height: 30px; margin-right: 10px; text-align: center;" id = "date_range" placeholder="Select Date Period" autocomplete = "off" />
+                          <div class="date-input-container">
+                            <input type="text" name="dateRange"  style="width: 100%; height: 30px; text-align: center;" id="dateRange" placeholder="Select date">
+                        
+                        </div>
                       </div>
                     </div>
                     <br>
@@ -138,7 +191,7 @@ if (isset($_SESSION['user_id'])) {
                             <select name="application" id = "application"
                                 style=" background-color: #1E1C11; color: #ffff; width: 100%; border: 1px solid #ffff; font-size: 14px; height: 30px;">
                                 <option value="1">Cashiering App</option>
-                                <option value="2">Backend App</option>
+                                <option value="2">BackOffice App</option>
                             </select>
                         </div>
                     </div>
@@ -146,43 +199,50 @@ if (isset($_SESSION['user_id'])) {
                     <div class = "row">
                         <h5 class = "text-custom">Select User</h5>
                         <div class="custom-select" style="margin-right: 0px; ">
-                            <select name="supplier" id = "supplier"
+                            <select name="user" id = "user"
                                 style=" background-color: #1E1C11; color: #ffff; width: 100%; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                                <option value="">-- Select Here --</option>
                                 <?php
                                   $userFacade = new UserFacade;
                                   $users = $userFacade->getCustomersData();
                                   while ($row = $users->fetch(PDO::FETCH_ASSOC)) {
-                                      echo '<option value="' . $row['id'] . '">' . $row['first_name'] .' ' . $row['last_name'] . '</option>';
+                                      echo '<option value="' . $row['first_name'] .' ' . $row['last_name'] . '">' . $row['first_name'] .' ' . $row['last_name'] . '</option>';
                                   }
                               ?>
                             </select>
                         </div>
                     </div>
                     <br>
-                    <div class = "row">
-                        <h5 class = "text-custom">Select Module</h5>
+                     <div class = "row">
                         <div class="custom-select" style="margin-right: 0px; ">
-                            <select name="supplier" id = "supplier"
-                                style=" background-color: #1E1C11; color: #ffff; width: 100%; border: 1px solid #ffff; font-size: 14px; height: 30px;">
-                                <option value="All">All</option>
-                                <option value="Products">Products</option>
-                            </select>
+                          <button class = "button" style = "width: 100%; background-color: #ccc; height: 30px;" id = "downloadFile"><i class="bi bi-download"></i> Download File</button>
                         </div>
                     </div>
                   </div>
                 </div>
-                <div class = "col-md-9" style = "background-color: #262626;"  >
-                  <div class="tableCard" style = " width: 100%; background-color: #262626; border: 1px solid white;">
+                <div class = "col-md-11" style = "background-color: #262626; width: 88%"  >
+                    
+                    <div class="tableCard" style = " width: 100%; background-color: #262626; border: 1px solid white;     ">
+                      <table  class="text-color table-border" style="margin-top: -3px; ">
+                        <thead>
+                          <tr >
+                            <th colspan = "5" class = "otherinput">
+                              <input  class="text-color" style="width: 100%; height: 30px;" id = "search_log" placeholder="Search Logs [Date&Time,User,Module,Activity]" autocomplete = "off" autofocus="autofocus"/>
+                            </th>
+                          </tr>
+                        </thead>
+                        <thead>
+                            <tr>
+                                <th style="background-color: none; width: 15%; font-size: 12px;">DATE & TIME</th>
+                                <th style="background-color: none; text-align:center; width: 15%; font-size: 12px;">USER</th>
+                                <th style="background-color: none; text-align:center; width: 15%; font-size: 12px;">ROLE</th>
+                                <th style="background-color: none; width: 15%; font-size: 12px;">MODULE</th>
+                                <th style="background-color: none; text-align:center; width: 40%; font-size: 12px;">ACTIVITY</th>
+                            </tr>
+                        </thead>
+                      </table>
                       <div class="fcontainer"  >
-                          <table id="logTable" class="text-color table-border " style="margin-top: -3px; height: 300px; ">
-                              <thead>
-                                  <tr>
-                                      <th style="background-color: none; width: 25%; font-size: 12px;">DATE & TIME</th>
-                                      <th style="background-color: none; text-align:center; width: 25%; font-size: 12px;">USER</th>
-                                      <th style="background-color: none; width: 25%; font-size: 12px;">MODULE</th>
-                                      <th style="background-color: none; text-align:center; width: 25%; font-size: 12px;">ACTIVITY</th>
-                                  </tr>
-                              </thead>
+                          <table id="logTable" class="text-color table-border" style="margin-top: -3px; height: 300px; padding:10px;">
                               <tbody style="border-collapse: collapse; border: none">
 
                               </tbody>
@@ -205,7 +265,61 @@ if (isset($_SESSION['user_id'])) {
     $("#activity_logs").addClass('active');
     $("#pointer").html("Activity Logs");
  
-    var ipAddress = '192.168.0.111';
+
+    $('#downloadFile').on('click', function() {
+        var applicationType = $("#application").val() === "1" ? "Cashiering_Logs" : "Back_Office_Logs";
+        var tableData = '';
+        $('#logTable tbody').find('tr').each(function(index, row) {
+            $(row).find('td').each(function(index, col) {
+                tableData += $(col).text().trim() + '\t';
+            });
+            tableData = tableData.slice(0, -1) + '\n';
+        });
+
+        var blob = new Blob([tableData], { type: 'text/plain' });
+        var url = window.URL.createObjectURL(blob);
+
+        var link = $('<a></a>');
+        link.attr('href', url);
+        link.attr('download', applicationType + ".txt");
+
+        $('body').append(link);
+        link[0].click();
+
+        $(link).remove();
+        window.URL.revokeObjectURL(url);
+    });
+
+    $("#dateRange").flatpickr({
+        dateFormat: "M d y",
+          onClose: function(selectedDates) {
+            filterTable(selectedDates[0]);
+        }
+    });
+    function filterTable(selectedDate, user) {
+        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        $('#logTable tbody tr').each(function() {
+            const rowDate = $(this).find('td:first').text().trim();
+
+            const rowDateObj = new Date(rowDate);
+            const formattedRowDate = rowDateObj.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+
+            if (formattedRowDate !== formattedDate) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    }
+
     $('#search_log').on('keyup', function() {
         var value = $(this).val().toLowerCase(); 
         $('#logTable tbody tr').filter(function() {
@@ -220,18 +334,56 @@ if (isset($_SESSION['user_id'])) {
       tableBody.empty();
 
       lines.forEach(function(line) {
-          var columns = line.split('|'); 
-          var row = $('<tr>');
+          line = line.trim();
+          if (line) 
+          {
+              var columns = line.split('|');
+              if (columns.length >= 6) 
+              {
+                var role = columns[3].trim() || '';
+                var datetime = columns[0].trim() || '';
+                if(datetime !== '') datetime = formatDateToAMPM(datetime);
+                
+                if(role === "1") role = "Super Admin";
+                if(role === "2") role = "Admin";
+                if(role === "3") role = "Cashier";
 
-          row.append($('<td>').text(columns[0].trim())); 
-          row.append($('<td>').text(columns[1].trim())); 
-          row.append($('<td>').text(columns[4].trim())); 
-          row.append($('<td>').text(columns[5].trim())); 
-          row.append($('</tr>'));
-          tableBody.append(row);
+                var row = $('<tr>');
+                row.append($('<td style = "width: 15%">').text(datetime));
+                row.append($('<td style = "width: 15%">').text(columns[1].trim() || ''));
+                row.append($('<td style = "width: 15%">').text(role));
+                row.append($('<td style = "width: 15%">').text(columns[4].trim() || ''));
+                row.append($('<td style = "width: 40%">').text(columns[5].trim() || '')); 
+
+                tableBody.append(row);
+              } else {
+                  console.error('Line does not have enough columns:', line);
+              }
+          }
       });
     }
+    function formatDateToAMPM(datetimeString) 
+    {
+        var date = new Date(datetimeString);
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
+        var period = hours >= 12 ? 'PM' : 'AM';
+
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        var formattedTime = hours + ':' + minutes + ':' + seconds + ' ' + period;
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var formattedDate = monthNames[(date.getMonth())] + ' ' + date.getDate() + ',' + date.getFullYear();
+        return formattedDate + ' ' + formattedTime;
+    }
     function fetchData(applicationValue) {
+      $("#logTable tbody").empty();
         if (applicationValue === "1") {
             $.ajax({
                 type: 'GET',
@@ -247,7 +399,17 @@ if (isset($_SESSION['user_id'])) {
         }
         else
         {
-          $("#logTable tbody").empty();
+          $.ajax({
+                type: 'GET',
+                url: './assets/logs/logs.txt',
+                dataType: 'text',
+                success: function(data) {
+                    displayLogData(data); 
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error: ' + error);
+                }
+            });
         }
     }
 
