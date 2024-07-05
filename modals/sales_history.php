@@ -256,7 +256,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.reprintBtn').click(function() {
+    $('.reprintBtn').off('click').on('click',function() {
         var selectedDataHistory = $('.selectable-sales-row.selected');
         transactionNumber = selectedDataHistory.data('transaction');
         customerId = selectedDataHistory.data('userid');
@@ -268,15 +268,359 @@ $(document).ready(function() {
         var indicator_print = 0;
         var modalPrintLoad = $('#modalPrintLoadData');
 
+    $('.salesHistoryModal').focus();
+    var existingData = [];
+    var existingDataRefund = [];
+    var salesIndexRow = -1;
+    var selectedDateRange = $(".dateRange").val();
+    var selectedFilter = $("#select_filter").val();
+    var selected_doc = $(".select_filter_doc_type").val();
+    var selectedDates = selectedDateRange.split(" to ");
+    var startDate = new Date(selectedDates[0]);
+    var endDate = new Date(selectedDates[1]);
 
-        axios.post('api.php?action=getSalesHistory', {
+    var yesterDay = new Date (currentDate())
+    var thisMonth = new Date(currentDate())
+    var currentYear = new Date().getFullYear();
+
+    var totalToBePaidSum = 0;
+    var refundedAmoutn = 0;
+    var totalReturn = 0;
+
+    var all = selected_doc === 'ALL';
+    var succ = selected_doc === 'SUCCESS';
+    var refunded_doc = selected_doc === 'REFUNDED';
+    var voided_doc = selected_doc === 'VOID';
+    var testRow = document.querySelectorAll('.selectable-sales-row');
+    var texts = [];
+    var lastCell;
+    function returnTextStat () {
+        testRow.forEach(function(t_row) {
+            var lastCell = t_row.querySelector('td:last-child');
+            var text = lastCell.textContent.trim();
+            
+            texts.push(text);
+        });
+        return texts;
+    }
+
+    
+    if (selectedFilter === 'TODAY') {
+        startDate = dateAndTimeFormat(currentDate()).formatted_date;
+        
+        $('.dateRange').prop('disabled', true);
+        $('.current_date').text(startDate);
+    } else if (selectedFilter === 'YESTERDAY') {
+        yesterDay.setDate(yesterDay.getDate() - 1);
+        startDate = dateAndTimeFormat(yesterDay).formatted_date;
+        $('.current_date').text(startDate);
+        $('.dateRange').prop('disabled', true);
+    } else if (selectedFilter === 'THIS WEEK') {
+        Date.prototype.getWeek = function () {
+            var dt = new Date(this.getFullYear(), 0, 1);
+            return Math.ceil((((this - dt) / 86400000) + dt.getDay() + 1) / 7);
+        };
+
+        var thisWeek = new Date();
+        var firstDayOfWeek = new Date(thisWeek);
+        firstDayOfWeek.setDate(thisWeek.getDate() - thisWeek.getDay()); 
+
+        var lastDayOfWeek = new Date(thisWeek);
+        lastDayOfWeek.setDate(thisWeek.getDate() - thisWeek.getDay() + 6);
+
+        startDate = dateAndTimeFormat(firstDayOfWeek).formatted_date;
+        endDate = dateAndTimeFormat(lastDayOfWeek).formatted_date;
+        $('.dateRange').prop('disabled', true);
+        $('.current_date').text(startDate + ' to ' + endDate);
+    } else if (selectedFilter === 'THIS MONTH') {
+        thisMonth.setDate(thisMonth.getMonth());
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+        $('.dateRange').prop('disabled', true);
+        var startDateString = dateAndTimeFormat(thisMonth).formatted_date;
+        startDate = new Date(startDateString);
+        startDate.setDate(startDate.getDate() - 1);
+        startDate = dateAndTimeFormat(startDate).formatted_date
+        endDate = dateAndTimeFormat(lastDay).formatted_date;
+        $('.current_date').text(dateAndTimeFormat(startDate).formatted_date + ' to ' + dateAndTimeFormat(endDate).formatted_date);
+    } else if (selectedFilter === 'THIS YEAR') {
+        startDate = dateAndTimeFormat(new Date(currentYear, 0, 1)).formatted_date;
+        endDate = dateAndTimeFormat(new Date(currentYear, 11, 31)).formatted_date;
+        $('.dateRange').prop('disabled', true);
+        $('.current_date').text(startDate + ' to ' + endDate);
+    } else if (selectedFilter === 'CUSTOM') {
+        $('.dateRange').prop('disabled', false);
+        var startDate = new Date(selectedDates[0]);
+        var endDate = new Date(selectedDates[1]);
+        startDate = dateAndTimeFormat(new Date(selectedDates[0])).formatted_date
+        endDate = dateAndTimeFormat(new Date(selectedDates[1])).formatted_date
+        $('.current_date').text(dateAndTimeFormat(currentDate()).formatted_date);
+    }
+
+   var allUser = $('#all_user_sales').prop('checked') ? 1 : 0;
+   var filteredSalesHistory = [];
+axios.post('api.php?action=getSalesHistory', {
         'cashier_id': localStorage.userIds,
         'roleId': localStorage.roleIds,
         'allUsers': $('#all_user_sales').prop('checked') ? 1 : 0,
     })
     .then(function(response) {
         var salesHistory = response.data.data;
-        console.log(salesHistory)
+        var refundedData = response.data.data2;
+        var returnProducts = response.data.returnProducts;
+        var startingIndex = salesHistory.length;
+        var pay_details = response.data.payments_details;
+        var saleDate;
+      
+
+        $.each(salesHistory, function(index, sale) {
+           
+        
+        if(selectedFilter === 'CUSTOM') {
+            saleDate = dateAndTimeFormat(sale.date_time_of_payment).formatted_date;
+        } else {
+            saleDate = dateAndTimeFormat(sale.date_time_of_payment).formatted_date;
+        }
+
+        function getFilterTable(saleDate, startDate, endDate) {
+            if(selectedFilter === 'TODAY' && ((sale.is_void == 2 && selected_doc == 'VOIDED') 
+            || (sale.is_paid == 1 && sale.is_refunded == 0 && sale.is_void == 0 && selected_doc == 'SUCCESS' ) 
+            || (sale.is_paid == 1 && sale.is_refunded == 1 && refundedData.find(function(ref) { return ref.or_num === sale.or_num; }) && selected_doc == 'REFUNDED') 
+            ||  (sale.is_paid == 1 && sale.is_refunded == 2 && selected_doc == 'RET&EX')
+            || selected_doc == 'ALL')) {
+                return saleDate == dateAndTimeFormat(startDate).formatted_date;
+            } else if (selectedFilter == 'YESTERDAY' && ((sale.is_void == 2 && selected_doc == 'VOIDED') 
+            || (sale.is_paid == 1 && sale.is_refunded == 0 && sale.is_void == 0 && selected_doc == 'SUCCESS' ) 
+            || (sale.is_paid == 1 && sale.is_refunded == 1 && refundedData.find(function(ref) { return ref.or_num === sale.or_num; }) && selected_doc == 'REFUNDED') 
+            ||  (sale.is_paid == 1 && sale.is_refunded == 2 && selected_doc == 'RET&EX')
+            || selected_doc == 'ALL')) {
+                return saleDate == dateAndTimeFormat(startDate).formatted_date;
+            } else if ((selectedFilter === 'THIS WEEK' || selectedFilter === 'THIS MONTH') && ((sale.is_void == 2 && selected_doc == 'VOIDED') 
+            || (sale.is_paid == 1 && sale.is_refunded == 0 && sale.is_void == 0 && selected_doc == 'SUCCESS' ) 
+            || (sale.is_paid == 1 && sale.is_refunded == 1 && refundedData.find(function(ref) { return ref.or_num === sale.or_num; }) && selected_doc == 'REFUNDED') 
+            ||  (sale.is_paid == 1 && sale.is_refunded == 2 && selected_doc == 'RET&EX')
+            || selected_doc == 'ALL')) {
+                return saleDate >= dateAndTimeFormat(startDate).formatted_date || saleDate <= dateAndTimeFormat(endDate).formatted_date; 
+            }
+            else if (selectedFilter === 'THIS YEAR' && ((sale.is_void == 2 && selected_doc == 'VOIDED') 
+            || (sale.is_paid == 1 && sale.is_refunded == 0 && sale.is_void == 0 && selected_doc == 'SUCCESS' ) 
+            || (sale.is_paid == 1 && sale.is_refunded == 1 && refundedData.find(function(ref) { return ref.or_num === sale.or_num; }) && selected_doc == 'REFUNDED') 
+            ||  (sale.is_paid == 1 && sale.is_refunded == 2 && selected_doc == 'RET&EX')
+            || selected_doc == 'ALL')) {
+                return saleDate >= dateAndTimeFormat(startDate).formatted_date || saleDate <= dateAndTimeFormat(endDate).formatted_date;
+            }
+             else if (selectedFilter === 'CUSTOM' && ((sale.is_void == 2 && selected_doc == 'VOIDED') 
+            || (sale.is_paid == 1 && sale.is_refunded == 0 && sale.is_void == 0 && selected_doc == 'SUCCESS' ) 
+            || (sale.is_paid == 1 && sale.is_refunded == 1 && refundedData.find(function(ref) { return ref.or_num === sale.or_num; }) && selected_doc == 'REFUNDED') 
+            ||  (sale.is_paid == 1 && sale.is_refunded == 2 && selected_doc == 'RET&EX')
+            || selected_doc == 'ALL')) {
+                return saleDate >= dateAndTimeFormat(startDate).formatted_date || saleDate <= dateAndTimeFormat(endDate).formatted_date;
+            }
+        }
+        
+        if (getFilterTable(saleDate, startDate, endDate) ) {
+            displaySalesReport()
+            $('#receiptCount').text(receipt_count)
+        } else {
+            totalPayment = 0;
+            totalChange = 0;
+            $('#receiptCount').text(receipt_count)
+            $('#totalSalesHistory').text('₱' + parseFloat(totalPayment - totalChange).toFixed(2))
+        }
+
+        
+        function displaySalesReport() {
+            var descendingIndex = startingIndex - index;
+            receipt_count = startingIndex;
+            if (existingData.indexOf(sale.or_num) === -1) {
+
+                var row = '<tr class="selectable-sales-row"' +
+                    'data-transaction="' + sale.transaction_num + '" ' +
+                    'data-refunddata="' + sale.is_refunded + '" ' +
+                    'data-userid="' + sale.customer_id + '" ' +
+                    'data-discid="' + sale.discount_id + '" ' +
+                    'data-voided="' + sale.is_void + '" ' +
+                    'data-reasons="' + sale.reason + '" ' +
+                    'data-ornums="'+ (sale.barcode) + '" ' +
+                    '>' +
+                    '<td colspan="1">' + (descendingIndex) + '</td>' +
+                    '<td colspan="2">' + (sale.barcode) + '</td>' +
+                    '<td colspan="2">' + ' ' + '</td>' +
+                    '<td colspan="2">' + 'Sale' + '</td>' +
+                    '<td colspan="2">' + dateAndTimeFormat(sale.date_time_of_payment).formatted_date + " " + dateAndTimeFormat(sale.date_time_of_payment).formatted_time + '</td>';
+
+                
+                if (sale.temporary_name != null) {
+                    row += '<td colspan="2">' + sale.temporary_name + '</td>';
+                } else {
+                    row += '<td colspan="2">' + sale.cashier + '</td>';
+                }
+
+                if (pay_details.find(function(pay) { return pay.id === sale.payment_id})) {
+                    var getPayments = pay_details.filter(function(pay) { return pay.id === sale.payment_id });
+                    var cartDiscounts = parseFloat(getPayments[0].cart_discount);
+
+                    // var totalToBePay = parseFloat(sale.payment_amount) - parseFloat(cartDiscounts)
+                    var totalToBePay = parseFloat(sale.payment_amount)
+                    row += '<td colspan="2">' + sale.customer_type + '</td>' +
+                    '<td colspan="2">' + addCommas(parseFloat(totalToBePay).toFixed(2)) + '</td>';
+                }
+                
+                if (sale.is_paid == 1 && sale.is_refunded == 0 && sale.is_void == 0) {
+                    row += '<td  style="color: lightgreen;">' + 'SUCCESS' + '</td>';
+                } else if (sale.is_void == 2) {
+                    row += '<td class="text-danger" >' + 'VOIDED' + '</td>';
+                } else if (sale.is_paid == 1 && sale.is_refunded == 1 && refundedData.find(function(ref) { return ref.or_num === sale.or_num; })) {
+                    row += '<td class="text-warning" >' + 'REFUNDED' + '</td>';
+                    var refToGet = refundedData.filter(function(ref) { return ref.or_num === sale.or_num; });
+                    var allDetailsRefund = refToGet;
+                    var refund_total = 0;
+                    var totalAmountRefund = 0;
+                    var getCartDiscount1 = 0;
+                    var itemDiscountRef = 0;
+
+                for(var i = 0; i < allDetailsRefund.length; i++) {
+                    var refunded = JSON.parse(allDetailsRefund[i].otherDetails);
+                    var cartDiscounteRef = parseFloat(refunded[0].cartRate)
+                    getCartDiscount1 = parseFloat(allDetailsRefund[i].totalRefunded * cartDiscounteRef)
+                    totalAmountRefund = allDetailsRefund[i].totalRefunded;
+                    refundedAmoutn += ((parseFloat(totalAmountRefund - refunded[0].discount)) - getCartDiscount1 )- parseFloat(allDetailsRefund[i].itemDiscountsData)
+                }
+
+                } else if (sale.is_paid == 1 && sale.is_refunded == 2) {
+                    row += '<td class="text-primary" >' + 'RET&EX' + '</td>';
+                } else if (sale.is_paid == 1 && sale.is_refunded == 3) {
+                    row += '<td style="color: pink" >' + 'RETURN' + '</td>';
+                }
+
+                
+                if (sale.is_void != 2) {
+                    totalToBePaidSum += parseFloat(sale.payment_amount);
+                    if (pay_details.find(function(pay) { return pay.id === sale.payment_id})) {
+                        var getPayments = pay_details.filter(function(pay) { return pay.id === sale.payment_id });
+                        var cartDiscounts = parseFloat(getPayments[0].cart_discount);
+                        // totalToBePaidSum -= cartDiscounts;
+                    }
+                }
+
+               
+
+                // row += '</tr>';
+                // $('.salesHistoryTable tbody').append(row);
+
+                
+                if (sale.is_paid == 1 && sale.is_refunded == 1) {
+                    var refunds = refundedData.filter(function(ref) { return ref.or_num === sale.or_num; });
+                    refunds.sort(function(a, b) {
+                        return a.refunded_date_time.localeCompare(b.refunded_date_time);
+                    });
+                    
+                    refunds.forEach(function(refund) { 
+                        var refundRow = '<tr class="selectable-sales-row"' +
+                            'data-paymentid="'+ refund.payment_id +'"' + 
+                            'data-references="'+ refund.reference_num +'"' +
+                            '>' +
+                            '<td class="color_text" colspan="1" style="font-size: large; padding: 0;text-align: center; ">' + '&#x21B3;' + '</td>' +
+                            '<td class="color_text" colspan="2">' + refund.reference_num + '</td>' +
+                            '<td class="color_text" colspan="2">' + 'RS-' +  (refund.barcode) + '</td>' +
+                            '<td class="color_text" colspan="2">' + 'Refund' + '</td>' +
+                            '<td class="color_text" colspan="2">' + dateAndTimeFormat(refund.refunded_date_time).formatted_date + " " + dateAndTimeFormat(refund.refunded_date_time).formatted_time + '</td>';
+                        if (refund.temporary_name != null) {
+                            refundRow += '<td class="color_text" colspan="2">' + refund.temporary_name + '</td>';
+                        } else {
+                            refundRow += '<td class="color_text" colspan="2">' + refund.cashier + '</td>';
+                        }
+
+                        refundRow += '<td class="color_text" colspan="2">' + refund.customer_type + '</td>';
+                        var refundOtherDetails = JSON.parse(refund.otherDetails);
+                        var total_refund = 0;
+                        var getCartDiscount = 0;
+                        var item_discount = 0;
+                        
+                        for(var i = 0; i < refundOtherDetails.length; i++) {
+                            var cartDiscounteRef = parseFloat(refundOtherDetails[i].cartRate)
+                            getCartDiscount = parseFloat(refund.totalRefunded * cartDiscounteRef)
+                            total_refund = parseFloat(refundOtherDetails[i].discount);
+                            item_discount += parseFloat(refundOtherDetails[i].itemDiscountsData)
+                        }
+
+                        var totalRef = ((parseFloat(refund.totalRefunded - total_refund)) - getCartDiscount) - parseFloat(item_discount);
+                        refundRow += '<td class="color_text" colspan="2">' + addCommas(parseFloat('-' + (totalRef)).toFixed(2)) + '</td>' +
+                            '<td colspan="2" style="color: lightgreen;">' + 'SUCCESS' + '</td>' +
+                            '</tr>';
+
+                        var associatedSaleRow = $('.salesHistoryTable tbody tr[data-ornums="' + (refund.barcode) + '"]').last();
+                        // associatedSaleRow.after(refundRow);
+                    });
+
+                } else if ((sale.is_paid == 1 && sale.is_refunded == 3) || (sale.is_paid == 1 && sale.is_refunded == 2)) {
+                    var returned = returnProducts.filter(function(ret) { return ret.or_num === sale.or_num;})
+                    returned.sort(function(c, d) {
+                        return c.return_date.localeCompare(d.return_date);
+                    });
+
+                    returned.forEach(function(returns) { 
+                        var returnRow = '<tr class="selectable-sales-row"' +
+                            'data-paymentid="'+ returns.payment_id +'"' + 
+                            'data-refreturn="'+ 'returned' +'"' + 
+                            '>' +
+                            '<td class="color_text" colspan="1" style="font-size: large; padding: 0;text-align: center; ">' + '&#x21B3;' + '</td>' +
+                            '<td class="color_text" colspan="2">' + returns.returnID + '</td>' +
+                            '<td class="color_text" colspan="2">' + (returns.barcode) + '</td>' +
+                            '<td class="color_text" colspan="2">' + 'Return' + '</td>' +
+                            '<td class="color_text" colspan="2">' + dateAndTimeFormat(returns.return_date).formatted_date + " " + dateAndTimeFormat(returns.return_date).formatted_time + '</td>';
+                        if (returns.temporary_name != null) {
+                            returnRow += '<td class="color_text" colspan="2">' + returns.temporary_name + '</td>';
+                        } else {
+                            returnRow += '<td class="color_text" colspan="2">' + returns.cashier + '</td>';
+                        }
+
+                        returnRow += '<td class="color_text" colspan="2">' + returns.customer_type + '</td>';
+                        var returnOtherDetails = JSON.parse(returns.otherDetails);
+                        var total_return = 0;
+                        var getCartDiscount = 0;
+                        var itemDiscountReturn = 0;
+                        
+                        for(var i = 0; i < returnOtherDetails.length; i++) {
+                            var cartDiscounteRef = parseFloat(returnOtherDetails[i].cartRate)
+                            getCartDiscount = returns.totalReturn * cartDiscounteRef;
+                            itemDiscountReturn = parseFloat(returnOtherDetails[i].itemDiscountsData);
+                            total_return = parseFloat(returnOtherDetails[i].discount);
+                        }
+
+                        var totalReturns = Math.abs(Math.abs(parseFloat(returns.totalReturn - total_return)) - getCartDiscount) - parseFloat(itemDiscountReturn);
+                        totalReturn += totalReturns
+                        returnRow += '<td class="color_text" colspan="2">' + addCommas(parseFloat('-' + (totalReturns)).toFixed(2)) + '</td>' +
+                            '<td colspan="2" style="color: lightgreen;">' + 'SUCCESS' + '</td>' +
+                            '</tr>';
+
+                        var associatedRedSaleRow = $('.salesHistoryTable tbody tr[data-ornums="' + (returns.barcode) + '"]').last();
+                        // associatedRedSaleRow.after(returnRow);
+                    })
+                    $('#search-sales').on('input', function() {
+                    var searchTerm = $(this).val().trim().toLowerCase();
+                    $('.salesHistoryTable tbody tr').each(function() {
+                        var saleOrNum = $(this).find('td:nth-child(2)').text().trim().toLowerCase(); 
+                        var customer_name = $(this).find('td:nth-child(6)').text().trim().toLowerCase();
+                        if (saleOrNum.includes(searchTerm) || customer_name.includes(searchTerm)) {
+                            $(this).show(); 
+                            filteredSalesHistory.push(this);
+                        } else {
+                            $(this).hide(); 
+                        }
+                    });
+                });
+                }
+                filteredSalesHistory.push(sale);
+              
+            }
+           
+        }
+        
+       
+      })
+      var salesHistoryJSON = JSON.stringify(filteredSalesHistory);
         $.ajax({
             url: './reports/invoice-list-pdf.php',
             type: 'GET',
@@ -284,7 +628,7 @@ $(document).ready(function() {
                 responseType: 'blob'
             },
             data: {
-                salesHistory: JSON.stringify(salesHistory)
+                salesHistory:  salesHistoryJSON
             },
             success: function(response) {
                 var blob = new Blob([response], { type: 'application/pdf' });
@@ -303,6 +647,7 @@ $(document).ready(function() {
                 console.log(searchData)
             }
         });
+       
     })
     .catch(function(error) {
         console.error('Error fetching sales history:', error);
