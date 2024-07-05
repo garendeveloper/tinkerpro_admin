@@ -749,6 +749,7 @@ h1, label, textarea, input, table,h5{
       if(errorCount === 0)
       {
         var formData = new FormData(this);
+        var expense = $("#item_name").val();
         $.ajax({
           type: 'POST',
           url: 'api.php?action=save_expense',
@@ -783,6 +784,14 @@ h1, label, textarea, input, table,h5{
               show_sweetReponse(response.message);
               hide_modal();
               show_allExpenses("", "");
+              var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+              var firstName = userInfo.firstName;
+              var lastName = userInfo.lastName;
+              var cid = userInfo.userId;
+              var role_id = userInfo.roleId; 
+
+              insertLogs('Expense', "Created Expense: "+expense)
+
             }
           },
           error: function(e){
@@ -800,12 +809,20 @@ h1, label, textarea, input, table,h5{
         },
         success: function(response)
         {
+          display_settings();
           if(response.success)
           {
             $("#remove_expense_id").val("");
             $('#delete_expenseConfirmation').hide();
             show_sweetReponse(response.message);
             show_allExpenses("", "");
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+
+            insertLogs('Expense', "Deleted Expense: ")
           }
         },
         error: function(response){

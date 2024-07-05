@@ -1617,7 +1617,6 @@ include ('./layout/admin/table-pagination-css.php');
                 var lastName = userInfo.lastName;
                 var cid = userInfo.userId;
                 var role_id = userInfo.roleId; 
-                console.log(order_id,'lmao')
                 if(validationID > 0){
                   insertLogs('P.O Updated',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO)
                 }else{

@@ -85,11 +85,7 @@ if (isset($_SESSION['user_id'])) {
         text-indent: 0.5em;
     }
 
-    .custom-select i {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+ 
     .fcontainer{
       overflow: auto;
       height: 750px;
@@ -107,7 +103,9 @@ thead, tbody tr {
 tbody td {
     /* border: 1px solid #dddddd;  */
     border: 1px solid #262626;
-    padding: 8px; 
+    padding: 2px 2px; 
+    height: 5px; 
+    line-height:1;
 }
 .fcontainer::-webkit-scrollbar {
     width: 1px; 
@@ -121,7 +119,6 @@ tbody td {
 </style>
 
 <?php include "layout/admin/css.php"?> 
-<?php include "layout/admin/barcodeassets.php"?> 
 <style>
   body{
     font-family: "Century Gothic"
@@ -145,33 +142,35 @@ tbody td {
     border-color: #FF6900;
     font-size: 10px;
 }
-
+.highlighted {
+  border: 2px solid #DB7093;
+}
 </style>
   <div class="container-scroller">
     <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel" style = "overflow: hidden">
         <div class="content-wrapper">
-          <div class="row not_scrollable" style = "margin-bottom: 10px; margin-top: -20px;">
+          <div class="row not_scrollable" style = "margin-bottom: 10px; ">
             <div class="col-md-12" >
               <div id="title" class = "text-custom">
-                <h1 style = "font-weight: bold">ACTIVITY LOGS</h1>
+                <h4 style = "font-weight: bold">ACTIVITY LOGS</h4>
 
               </div>
             </div>
             <div class = "row">
                 <div class = "" style = "background-color: #151515; border-color: white; width: 12%">
-                  <div class="mainDiv" style = "margin-left: 25px; height: 90vh">
+                  <div class="mainDiv" style = "margin-left: 15px; height: 90vh">
                   <br>
                     <div class="row">
+                      <h6 class = "text-custom">Select Date</h6>
                       <div class="custom-select">
-                          <div class="date-input-container">
                             <input type="text" name="dateRange"  style="width: 100%; height: 30px; text-align: center;" id="dateRange" placeholder="Select date" autocomplete = "off">
-                        </div>
+                      
                       </div>
                     </div>
                     <br>
                     <div class = "row">
-                        <h5 class = "text-custom">Choose Application</h5>
+                        <h6 class = "text-custom">Choose Application</h6>
                         <div class="custom-select" style="margin-right: 0px; ">
                             <select name="application" id = "application"
                                 style=" background-color: #1E1C11; color: #ffff; width: 100%; border: 1px solid #ffff; font-size: 14px; height: 30px;">
@@ -182,7 +181,7 @@ tbody td {
                     </div>
                     <br>
                     <div class = "row">
-                        <h5 class = "text-custom">Select User</h5>
+                        <h6 class = "text-custom">Select User</h6>
                         <div class="custom-select" style="margin-right: 0px; ">
                             <select name="user" id = "user"
                                 style=" background-color: #1E1C11; color: #ffff; width: 100%; border: 1px solid #ffff; font-size: 14px; height: 30px;">
@@ -197,12 +196,12 @@ tbody td {
                             </select>
                         </div>
                     </div>
-                    <!-- <br>
-                     <div class = "row">
+                    <br>
+                    <div class = "row">
                         <div class="custom-select" style="margin-right: 0px; ">
-                          <button class = "button" style = "width: 100%; background-color: #ccc; height: 30px;" id = "downloadFile"> Download File</button>
+                             <button style = "height: 30px; border-radius: 10px; font-size: 0.9rem; width: 100%" id = "btn_reload"><i class = "bi bi-arrow-clockwise"></i> Reload</button>
                         </div>
-                    </div> -->
+                     </div>
                   </div>
                 </div>
                 <div class = "col-md-11" style = "background-color: #262626; width: 88%"  >
@@ -233,7 +232,9 @@ tbody td {
                           </table>
                       </div>
                     </div> 
-                    <button class = "button" style = "width: 100%; background-color: #ccc; height: 30px;" id = "downloadFile"> Download File</button>
+                    <div style = "position: absolute; bottom: 3vh; right: 0; margin-right: 3.5vh;">
+                      <button class="button" style="width: 200px; background-color: #262626; color: white; height: 40px; " id="downloadFile">Download File</button>
+                    </div>
                   </div>
                 </div>
             </div>
@@ -246,11 +247,18 @@ tbody td {
   include("layout/footer.php");
 ?>
 <script>
+  
   $(document).ready(function(){
     $("#activity_logs").addClass('active');
     $("#pointer").html("Activity Logs");
  
+    var initialApplicationValue = $("#application").val();
 
+    $("#logTable tbody").on("click", "tr", function() {
+        $("#logTable tbody tr").removeClass('highlighted');
+      
+      $(this).addClass('highlighted');
+    });
     $('#downloadFile').on('click', function() {
       var applicationType = $("#application").val() === "1" ? "Cashiering_Logs" : "Back_Office_Logs";
       var tableData = '';
@@ -292,31 +300,38 @@ tbody td {
         filterTable(selectedDate, selectedUser);
       }
     });
-
     $("#user").on("change", function(){
       var selectedDate = $('#dateRange').val();
         var selectedUser = $(this).val();
         filterTable(selectedDate, selectedUser);
     })
-    function filterTable(selectedDate, selectedUser) 
-    {
-      $('#logTable tbody tr').each(function() {
-          const rowDate = $(this).find('td:first').text().trim();
-          const rowUser = $(this).find('td:eq(1)').text().trim(); 
-          const rowDateObj = new Date(rowDate);
-          const formattedRowDate = rowDateObj.toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric'
-          });
+    function filterTable(selectedDate, selectedUser) {
+    $('#logTable tbody tr').each(function() {
+        const rowDate = $(this).find('td:first').text().trim();
+        const rowUser = $(this).find('td:eq(1)').text().trim(); 
+        const rowDateObj = new Date(rowDate);
+        const formattedRowDate = rowDateObj.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
 
-          if ((formattedRowDate !== selectedDate) || (rowUser !== selectedUser)) {
-              $(this).hide();
-          } else {
-              $(this).show();
-          }
-      });
-    }
+        const lowerCaseRowUser = rowUser.toLowerCase();
+        const lowerCaseSelectedUser = selectedUser.toLowerCase();
+
+        if (formattedRowDate !== selectedDate || lowerCaseRowUser !== lowerCaseSelectedUser) {
+            $(this).hide();
+        } else {
+            $(this).show();
+        }
+    }); 
+  }
+    $("#btn_reload").on("click", function(){
+      $("#dateRange").val("");
+      $("#user").val("");
+      var initialApplicationValue = $("#application").val();
+      fetchData(initialApplicationValue);
+    })
 
     $('#search_log').on('keyup', function() {
         var value = $(this).val().toLowerCase(); 
@@ -411,7 +426,6 @@ tbody td {
         }
     }
 
-    var initialApplicationValue = $("#application").val();
     fetchData(initialApplicationValue);
 
     $("#application").on("change", function() {

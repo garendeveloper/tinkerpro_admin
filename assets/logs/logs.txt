@@ -54,7 +54,6 @@
 2024-07-05 02:07:15 | lou zeus baculio | 50 | 3 | Login | User lou zeus baculio 3 
 2024-07-05 02:07:33 | lou zeus baculio | 50 | 3 | Logout | User lou zeus baculio 3 
 2024-07-05 02:07:39 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
-<<<<<<< HEAD
 2024-07-05 04:17:44 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-07-05 05:17:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-07-05 05:43:45 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted stik o Barcode #:4800166142288 
@@ -62,14 +61,5 @@
 2024-07-05 05:47:45 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted STIK O Barcode #:789266252195 
 2024-07-05 05:49:02 | Admin Admin | 1 | 2 | Users | Admin Admin Updated heidi Caones 
 2024-07-05 05:52:01 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer kordapyo customer customer 
-=======
-=======
-2024-07-04 10:39:02 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
-2024-07-04 10:40:32 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
-2024-07-05 01:21:25 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
-2024-07-05 01:53:38 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
-2024-07-05 02:05:30 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
-2024-07-05 02:05:37 | Julia Samonte | 31 | 3 | Login | User Julia Samonte 3 
-2024-07-05 02:06:09 | Julia Samonte | 31 | 3 | Logout | User Julia Samonte 3 
-2024-07-05 02:06:11 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
->>>>>>> ba17de5210ab876cfe5db0919ddedd98a021b93d
+2024-07-05 07:39:32 | Admin Admin | 1 | 2 | Expense | Deleted Expense:  
+2024-07-05 08:42:45 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
