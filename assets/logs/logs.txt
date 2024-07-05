@@ -55,3 +55,5 @@
 2024-07-05 02:05:37 | Julia Samonte | 31 | 3 | Login | User Julia Samonte 3 
 2024-07-05 02:06:09 | Julia Samonte | 31 | 3 | Logout | User Julia Samonte 3 
 2024-07-05 02:06:11 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 05:30:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 05:57:10 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
