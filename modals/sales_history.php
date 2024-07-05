@@ -159,16 +159,6 @@
         </div>
         <div class="row mt-2 me-1 row_button">
             <div class="col-lg-12 d-flex justify-content-between buttonActions">
-                <!-- <button id="cancel_receipt" class="btn btn-secondary shadow-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                </svg>CANCEL RECEIPT</button> -->
-
-                <!-- <h6 style="color: var(--primary-color)">Receipt Count: <span id="receiptCount"></span></h6>
-                <h6 style="color: var(--primary-color)">Refunded: <span id="totalSalesRefundedHistory"></span></h6>
-                <h6 style="color: var(--primary-color)">Return: <span id="totalSalesReturnHistory"></span></h6>
-                <h6 style="color: var(--primary-color)">Total Sales: <span id="totalSalesHistory"></span></h6> -->
-
                 <div class="d-flex" style="display: flex; justify-content: flex-end;width: 100%">
                     <button style="width: 150px" class="btn btn-secondary shadow-none reprintBtn" style="align-items: right">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
@@ -279,60 +269,44 @@ $(document).ready(function() {
         var modalPrintLoad = $('#modalPrintLoadData');
 
 
-        // console.log(refundedReceipt)
-        
-        if(paymentid) {
-            console.log(paymentid)
-            var printUrl = "./doc_printer/refund-print.php";
-        } else if(voided == 2) {
-            indicator_print = 2;
-            reasonToVoid = selectedDataHistory.data('reasons')
-            var printUrl = "./doc_printer/cancel-receipt.php";
-            var setIntervalPrint = setInterval(function() {
-                modalPrintLoad.fadeIn('fast'); 
-            },1);
-            setTimeout(function() {
-                clearInterval(setIntervalPrint);
-                modalPrintLoad.fadeOut('fast'); 
-                $('#search-input').focus();
-            },1500);
+        axios.post('api.php?action=getSalesHistory', {
+        'cashier_id': localStorage.userIds,
+        'roleId': localStorage.roleIds,
+        'allUsers': $('#all_user_sales').prop('checked') ? 1 : 0,
+    })
+    .then(function(response) {
+        var salesHistory = response.data.data;
+        console.log(salesHistory)
+        $.ajax({
+            url: './reports/invoice-list-pdf.php',
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            data: {
+                salesHistory: JSON.stringify(salesHistory)
+            },
+            success: function(response) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'invoiceList.pdf';
+                document.body.appendChild(a);
+                a.click();
 
-        } else if (refundedReceipt == 2) {
-            indicator_print = 3;
-            var printUrl = "./doc_printer/reprint-return.php";
-            var setIntervalPrint = setInterval(function() {
-                modalPrintLoad.fadeIn('fast'); 
-            },1);
-            setTimeout(function() {
-                clearInterval(setIntervalPrint);
-                modalPrintLoad.fadeOut('fast'); 
-                $('#search-input').focus();
-            },1500);
-
-        } else if (refundedReceipt == 1) {
-            indicator_print = 1;
-            var printUrl = "./doc_printer/reprint-refund.php";
-            var setIntervalPrint = setInterval(function() {
-                modalPrintLoad.fadeIn('fast'); 
-            },1);
-            setTimeout(function() {
-                clearInterval(setIntervalPrint);
-                modalPrintLoad.fadeOut('fast'); 
-                $('#search-input').focus();
-            },1500);
-
-        } else {
-            var printUrl = "./doc_printer/reprint-receipt.php";
-            var setIntervalPrint = setInterval(function() {
-                modalPrintLoad.fadeIn('fast'); 
-            },1);
-            setTimeout(function() {
-                clearInterval(setIntervalPrint);
-                modalPrintLoad.fadeOut('fast'); 
-                $('#search-input').focus();
-            },1500);
-        }
-        reprintReceipt(printUrl, indicator_print);
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log(searchData)
+            }
+        });
+    })
+    .catch(function(error) {
+        console.error('Error fetching sales history:', error);
+    });
     })
 
     $('#refundButton').click(function() {

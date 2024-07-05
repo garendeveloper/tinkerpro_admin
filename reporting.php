@@ -2220,9 +2220,62 @@ function highlightDiv(id) {
           toggleDivExcludes.checked = false
         }else if(id == 36){
    
+          var eportal = document.getElementById('e-portal');
+          eportal.setAttribute('hidden',true);
+
+          var entriesDiv = document.getElementById('entries');
+          entriesDiv.setAttribute('hidden',true);
+
+          var soldDiv = document.getElementById('soldDiv');
+          soldDiv.setAttribute('hidden',true);
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.setAttribute('hidden',true);
+
+          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+          dateTimeAnchor.setAttribute('hidden',true);
+
+          var customerDIV = document.getElementById('customerDIV');
+          customerDIV.setAttribute('hidden',true);
+
+         var suppliersDIV = document.getElementById('suppliersDIV');
+          suppliersDIV.setAttribute('hidden',true);
+
+          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+          cashRegisterDIV.setAttribute('hidden',true);
+
+          var categoriesDiv = document.getElementById('categoriesDiv');
+          categoriesDiv.setAttribute('hidden',true);
+
+          var productsDIV = document.getElementById('productsDIV');
+          productsDIV.setAttribute('hidden',true);
+
+          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+          subCategoriesDIV.setAttribute('hidden',true);
+
+   
+          var ingredientsDIV = document.getElementById('ingredientsDIV');
+          ingredientsDIV.setAttribute('hidden',true);
+
+          var methodDIV = document.getElementById('methodDIV');
+          methodDIV.setAttribute('hidden',true);
+
+          var discountDIV = document.getElementById('discountDIV');
+          discountDIV.setAttribute('hidden',true);
+
+          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
+          paymentMethodDIV.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+          toggleDivExcludes.setAttribute('hidden',true);
+
+          var toggleDivExcludes = document.getElementById('statusExcludes');
+          toggleDivExcludes.checked = false
+
           $('#salesHistoryModal').show();
-                runPrintPreview_history();
-            getAllSalesHistory();   
+           runPrintPreview_history();
+          getAllSalesHistory();   
+
         }
         else{
 
