@@ -2,6 +2,11 @@
 
 class UserFacade extends DBConnection {
 
+    public function fetchUserForLogs()
+    {
+        $stmt = $this->connect()->query("SELECT * FROM users ORDER BY users.id asc");
+        return $stmt;
+    }
     public function fetchUsers($value, $searchQuery, $selectedUser, $singleDateData, $startDate, $endDate) {
     
         if ($value > 0) {

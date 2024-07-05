@@ -102,9 +102,11 @@ thead, tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
+    height: 1px;
 }
 tbody td {
-    border: 1px solid #dddddd; 
+    /* border: 1px solid #dddddd;  */
+    border: 1px solid #262626;
     padding: 8px; 
 }
 .fcontainer::-webkit-scrollbar {
@@ -143,22 +145,6 @@ tbody td {
     border-color: #FF6900;
     font-size: 10px;
 }
-/* input::placeholder {
-  color: #666; 
-    font-style: italic; 
-    opacity: 0.7; 
-    font-size: 10px;
-}
-
-input:focus::placeholder {
-    color: #666; 
-    font-style: normal; 
-}
-
-input.opacity::placeholder {
-    color: #999; 
-    opacity: 0.7; 
-} */
 
 </style>
   <div class="container-scroller">
@@ -179,8 +165,7 @@ input.opacity::placeholder {
                     <div class="row">
                       <div class="custom-select">
                           <div class="date-input-container">
-                            <input type="text" name="dateRange"  style="width: 100%; height: 30px; text-align: center;" id="dateRange" placeholder="Select date">
-                        
+                            <input type="text" name="dateRange"  style="width: 100%; height: 30px; text-align: center;" id="dateRange" placeholder="Select date" autocomplete = "off">
                         </div>
                       </div>
                     </div>
@@ -204,7 +189,7 @@ input.opacity::placeholder {
                                 <option value="">-- Select Here --</option>
                                 <?php
                                   $userFacade = new UserFacade;
-                                  $users = $userFacade->getCustomersData();
+                                  $users = $userFacade->fetchUserForLogs();
                                   while ($row = $users->fetch(PDO::FETCH_ASSOC)) {
                                       echo '<option value="' . $row['first_name'] .' ' . $row['last_name'] . '">' . $row['first_name'] .' ' . $row['last_name'] . '</option>';
                                   }
@@ -212,17 +197,16 @@ input.opacity::placeholder {
                             </select>
                         </div>
                     </div>
-                    <br>
+                    <!-- <br>
                      <div class = "row">
                         <div class="custom-select" style="margin-right: 0px; ">
-                          <button class = "button" style = "width: 100%; background-color: #ccc; height: 30px;" id = "downloadFile"><i class="bi bi-download"></i> Download File</button>
+                          <button class = "button" style = "width: 100%; background-color: #ccc; height: 30px;" id = "downloadFile"> Download File</button>
                         </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <div class = "col-md-11" style = "background-color: #262626; width: 88%"  >
-                    
-                    <div class="tableCard" style = " width: 100%; background-color: #262626; border: 1px solid white;     ">
+                    <div class="tableCard" style = " width: 100%; background-color: #262626;  ">
                       <table  class="text-color table-border" style="margin-top: -3px; ">
                         <thead>
                           <tr >
@@ -249,6 +233,7 @@ input.opacity::placeholder {
                           </table>
                       </div>
                     </div> 
+                    <button class = "button" style = "width: 100%; background-color: #ccc; height: 30px;" id = "downloadFile"> Download File</button>
                   </div>
                 </div>
             </div>
@@ -267,57 +252,70 @@ input.opacity::placeholder {
  
 
     $('#downloadFile').on('click', function() {
-        var applicationType = $("#application").val() === "1" ? "Cashiering_Logs" : "Back_Office_Logs";
-        var tableData = '';
-        $('#logTable tbody').find('tr').each(function(index, row) {
-            $(row).find('td').each(function(index, col) {
-                tableData += $(col).text().trim() + '\t';
-            });
-            tableData = tableData.slice(0, -1) + '\n';
-        });
+      var applicationType = $("#application").val() === "1" ? "Cashiering_Logs" : "Back_Office_Logs";
+      var tableData = '';
+      $('#logTable tbody tr:visible').each(function(index, row) {
+          $(row).find('td').each(function(index, col) {
+              tableData += $(col).text().trim() + '\t';
+          });
+          tableData = tableData.slice(0, -1) + '\n';
+      });
 
-        var blob = new Blob([tableData], { type: 'text/plain' });
-        var url = window.URL.createObjectURL(blob);
+      var blob = new Blob([tableData], { type: 'text/plain' });
+      var url = window.URL.createObjectURL(blob);
 
-        var link = $('<a></a>');
-        link.attr('href', url);
-        link.attr('download', applicationType + ".txt");
+      var link = $('<a></a>');
+      link.attr('href', url);
+      link.attr('download', applicationType + ".txt");
 
-        $('body').append(link);
-        link[0].click();
+      $('body').append(link);
+      link[0].click();
 
-        $(link).remove();
-        window.URL.revokeObjectURL(url);
+      $(link).remove();
+      window.URL.revokeObjectURL(url);
     });
 
-    $("#dateRange").flatpickr({
-        dateFormat: "M d y",
-          onClose: function(selectedDates) {
-            filterTable(selectedDates[0]);
-        }
+    $('#dateRange').datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'M d, yy', 
+      onSelect: function(selectedDateText, inst) {
+        var date = new Date(selectedDateText);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var year = date.getFullYear(); 
+        var month = months[date.getMonth()]; 
+        var day = date.getDate();
+
+        var selectedDate = month + ' ' + day + ', ' + year;
+        
+        var selectedUser = $('#user').val();
+        filterTable(selectedDate, selectedUser);
+      }
     });
-    function filterTable(selectedDate, user) {
-        const formattedDate = selectedDate.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-        });
-        $('#logTable tbody tr').each(function() {
-            const rowDate = $(this).find('td:first').text().trim();
 
-            const rowDateObj = new Date(rowDate);
-            const formattedRowDate = rowDateObj.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
-            });
+    $("#user").on("change", function(){
+      var selectedDate = $('#dateRange').val();
+        var selectedUser = $(this).val();
+        filterTable(selectedDate, selectedUser);
+    })
+    function filterTable(selectedDate, selectedUser) 
+    {
+      $('#logTable tbody tr').each(function() {
+          const rowDate = $(this).find('td:first').text().trim();
+          const rowUser = $(this).find('td:eq(1)').text().trim(); 
+          const rowDateObj = new Date(rowDate);
+          const formattedRowDate = rowDateObj.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+          });
 
-            if (formattedRowDate !== formattedDate) {
-                $(this).hide();
-            } else {
-                $(this).show();
-            }
-        });
+          if ((formattedRowDate !== selectedDate) || (rowUser !== selectedUser)) {
+              $(this).hide();
+          } else {
+              $(this).show();
+          }
+      });
     }
 
     $('#search_log').on('keyup', function() {
@@ -379,7 +377,7 @@ input.opacity::placeholder {
 
         var formattedTime = hours + ':' + minutes + ':' + seconds + ' ' + period;
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var formattedDate = monthNames[(date.getMonth())] + ' ' + date.getDate() + ',' + date.getFullYear();
+        var formattedDate = monthNames[(date.getMonth())] + ' ' + date.getDate() + ', ' + date.getFullYear();
         return formattedDate + ' ' + formattedTime;
     }
     function fetchData(applicationValue) {
