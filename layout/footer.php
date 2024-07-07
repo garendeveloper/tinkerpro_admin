@@ -95,6 +95,7 @@ $(document).ready(function() {
             $(".title_div").css('color', response);
             $(".title_div span").css('color', "#FFFFF");
             $(".otherinput").css('background-color', "#262626");
+            $(".otherinput").css('border', "1px solid "+response);
           }
           else
           {

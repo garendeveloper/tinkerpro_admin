@@ -153,7 +153,7 @@ tbody td {
           <div class="row not_scrollable" style = "margin-bottom: 10px; ">
             <div class="col-md-12" >
               <div id="title" class = "text-custom">
-                <h1 style = "font-weight: bold">ACTIVITY LOGS</h1>
+                <h4 style = "font-weight: bold">ACTIVITY LOGS</h4>
 
               </div>
             </div>
@@ -218,21 +218,21 @@ tbody td {
                             <tr >
                                 <th class = "otherinput" style="background-color: none; width: 15%; font-size: 12px;">DATE & TIME</th>
                                 <th class = "otherinput" style="background-color: none; text-align:center; width: 15%; font-size: 12px;">USER</th>
-                                <th class = "otherinput" style="background-color: none; text-align:center; width: 10%; font-size: 12px;">ROLE</th>
+                                <th class = "otherinput" style="background-color: none; text-align:center; width: 15%; font-size: 12px;">ROLE</th>
                                 <th class = "otherinput" style="background-color: none; width: 15%; font-size: 12px;">MODULE</th>
-                                <th class = "otherinput" style="background-color: none; text-align:center; width: 50%; font-size: 12px;">ACTIVITY</th>
+                                <th class = "otherinput" style="background-color: none; text-align:center; width: 40%; font-size: 12px;">ACTIVITY</th>
                             </tr>
                         </thead>
                       </table>
                       <div class="fcontainer"  >
                           <table id="logTable" class="text-color " style="margin-top: -3px; height: 300px; padding:10px;">
                               <tbody style="border-collapse: collapse; border: none">
-                                <img id="noRecords" src ="./assets/img/tinkerpro-t.png" style="display: none;">
+
                               </tbody>
                           </table>
                       </div>
                     </div> 
-                    <div style = "position: absolute; bottom: 5vh; right: 0; margin-right: 3.5vh;">
+                    <div style = "position: absolute; bottom: 3vh; right: 0; margin-right: 3.5vh;">
                       <button class="button" style="width: 200px; background-color: #262626; color: white; height: 40px; " id="downloadFile">Download Txt File</button>
                     </div>
                   </div>
@@ -283,79 +283,48 @@ tbody td {
       window.URL.revokeObjectURL(url);
     });
 
-    $('#dateRange').flatpickr({
-      mode: 'range',
-      dateFormat: 'M d, Y',
-      onChange: function(selectedDates, dateStr, instance) {
-          if (selectedDates.length === 2) {
-              var startDate = selectedDates[0];
-              var endDate = selectedDates[1];
-              
-              var startFormatted = formatDate(startDate);
-              var endFormatted = formatDate(endDate);
-              
-              var selectedUser = $('#user').val();
-              var selectedDateFormatted = startFormatted + " to " + endFormatted;
-              filterTable(selectedDateFormatted, selectedUser);
-          }
+    $('#dateRange').datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'M d, yy', 
+      onSelect: function(selectedDateText, inst) {
+        var date = new Date(selectedDateText);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var year = date.getFullYear(); 
+        var month = months[date.getMonth()]; 
+        var day = date.getDate();
+
+        var selectedDate = month + ' ' + day + ', ' + year;
+        
+        var selectedUser = $('#user').val();
+        filterTable(selectedDate, selectedUser);
       }
     });
-
     $("#user").on("change", function(){
-        var selectedDates = $('#dateRange').val();
+      var selectedDate = $('#dateRange').val();
         var selectedUser = $(this).val();
-        filterTable(selectedDates, selectedUser);
-    });
-
-    function formatDate(date) {
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var year = date.getFullYear();
-        var month = months[date.getMonth()];
-        var day = ('0' + (date.getDate() + 1)).slice(-2);
-        return month + ' ' + day + ', ' + year;
-    }
-
-  function filterTable(selectedDates, selectedUser) 
-  {
-    if (!selectedDates || selectedDates.trim() === '') {
-        $('#logTable tbody tr').show();
-        return;
-    }
-
-    var dateRange = selectedDates.split(" to ");
-    var startDate = new Date(dateRange[0]);
-    var endDate = new Date(dateRange[1]);
-
-    const lowerCaseSelectedUser = selectedUser ? selectedUser.toLowerCase() : '';
-
+        filterTable(selectedDate, selectedUser);
+    })
+    function filterTable(selectedDate, selectedUser) {
     $('#logTable tbody tr').each(function() {
         const rowDate = $(this).find('td:first').text().trim();
-        const rowUser = $(this).find('td:eq(1)').text().trim();
+        const rowUser = $(this).find('td:eq(1)').text().trim(); 
         const rowDateObj = new Date(rowDate);
+        const formattedRowDate = rowDateObj.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
 
         const lowerCaseRowUser = rowUser.toLowerCase();
-    
-        if (!rowUser || rowUser.trim() === '') {
+        const lowerCaseSelectedUser = selectedUser.toLowerCase();
+
+        if (formattedRowDate !== selectedDate || lowerCaseRowUser !== lowerCaseSelectedUser) {
             $(this).hide();
-            return;
-        }
-
-        const isWithinRange = rowDateObj >= startDate && rowDateObj <= endDate;
-
-        if (!lowerCaseSelectedUser || lowerCaseRowUser === lowerCaseSelectedUser)
-        {
-          if (isWithinRange) 
-          {
-            $(this).show();
-          } 
-          else 
-          {
-              $(this).hide();
-          }
         } else {
-            $(this).hide();
+            $(this).show();
         }
-    });
+    }); 
   }
     $("#btn_reload").on("click", function(){
       $("#dateRange").val("");
@@ -376,7 +345,7 @@ tbody td {
       var lines = logText.split('\n');
       var tableBody = $('#logTable tbody');
       tableBody.empty();
-     
+
       lines.forEach(function(line) {
           line = line.trim();
           if (line) 
@@ -395,9 +364,9 @@ tbody td {
                 var row = $('<tr>');
                 row.append($('<td style = "width: 15%">').text(datetime));
                 row.append($('<td style = "width: 15%">').text(columns[1].trim() || ''));
-                row.append($('<td style = "width: 10%">').text(role));
+                row.append($('<td style = "width: 15%">').text(role));
                 row.append($('<td style = "width: 15%">').text(columns[4].trim() || ''));
-                row.append($('<td style = "width: 50%">').text(columns[5].trim() || '')); 
+                row.append($('<td style = "width: 40%">').text(columns[5].trim() || '')); 
 
                 tableBody.append(row);
               } else {
@@ -427,7 +396,6 @@ tbody td {
         return formattedDate + ' ' + formattedTime;
     }
     function fetchData(applicationValue) {
-      $('#modalCashPrint').show();
       $("#logTable tbody").empty();
         if (applicationValue === "1") {
             $.ajax({
@@ -436,7 +404,6 @@ tbody td {
                 dataType: 'text',
                 success: function(data) {
                     displayLogData(data); 
-                    $('#modalCashPrint').hide();
                 },
                 error: function(xhr, status, error) {
                     console.log('Error: ' + error);
@@ -451,7 +418,6 @@ tbody td {
                 dataType: 'text',
                 success: function(data) {
                     displayLogData(data); 
-                    $('#modalCashPrint').hide();
                 },
                 error: function(xhr, status, error) {
                     console.log('Error: ' + error);

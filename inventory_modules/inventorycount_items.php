@@ -123,10 +123,10 @@
     <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh">
         <thead>
             <tr>
-                <th style="background-color: #1E1C11; width: 50%">ITEM DESCRIPTION</th>
-                <th style="background-color: #1E1C11; text-align:center">QTY</th>
+                <th  style="background-color: #1E1C11; width: 50%">ITEM DESCRIPTION</th>
+                <th  style="background-color: #1E1C11; text-align:center">QTY</th>
                 <th style="background-color: #1E1C11; text-align:center">COUNTED</th>
-                <th style="background-color: #1E1C11; text-align:right">DIF.</th>
+                <th  style="background-color: #1E1C11; text-align:right">DIF.</th>
             </tr>
         </thead>
         <tbody style="border-collapse: collapse; border: none">

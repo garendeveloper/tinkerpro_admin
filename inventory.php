@@ -1438,7 +1438,8 @@ include ('./layout/admin/table-pagination-css.php');
             $("#date_counted").val(date_format(infoData['date_counted']));
 
             var rows = [];
-            for (var i = 0; i < inventoryData.length; i++) {
+            for (var i = 0; i < inventoryData.length; i++) 
+            {
               var inventory = inventoryData[i];
               var row = "<tr data-id=" + inventory.inventory_id + " data-ic_id = " + inventory.inventory_count_item_id + ">";
               row += "<td>" + inventory.prod_desc + "</td>";
@@ -1921,9 +1922,8 @@ include ('./layout/admin/table-pagination-css.php');
             url: 'api.php?action=save_expirationNotification',
             data: { notifications: JSON.stringify(tbl_data) },
             success: function (response) {
-              if (response.status) {
-                
-
+              if (response.status) 
+              {
                 show_sweetReponse(response.msg);
                 hideModals();
                 $(".inventoryCard").html("");
@@ -1931,6 +1931,14 @@ include ('./layout/admin/table-pagination-css.php');
                 $("#expiration").addClass('active');
                 show_expiration();
                 show_expiredProducts();
+
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+
+                insertLogs('Expiration', "Updated inventory expiration settings");
               }
             }
           })
@@ -1948,6 +1956,7 @@ include ('./layout/admin/table-pagination-css.php');
             })
             tbl_data.push(rowData);
           })
+       
           $.ajax({
             type: 'POST',
             url: 'api.php?action=save_quickInventory',
@@ -1967,6 +1976,16 @@ include ('./layout/admin/table-pagination-css.php');
                 $(".grid-container button").removeClass('active');
                 $("#stocks").addClass('active');
                 show_allStocks();
+
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+
+                $.each(tbl_data, function(index, item){
+                  insertLogs('Quick Inventory', "Quick inventory: "+item.col_1 + " From: "+item.col_2 + " To: "+item.newqty);
+                })
               }
             }
           })
@@ -1986,6 +2005,8 @@ include ('./layout/admin/table-pagination-css.php');
 
               tbl_data.push(rowData);
             });
+            var reference_no = $("#ic_reference").val();
+            var date_counted = $("#date_counted").val();
             $.ajax({
               type: 'post',
               url: 'api.php?action=save_inventory_count',
@@ -2008,6 +2029,15 @@ include ('./layout/admin/table-pagination-css.php');
                   $(".grid-container button").removeClass('active');
                   $("#inventory-count").addClass('active');
                   show_allInventoryCounts();
+
+                  var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                  var firstName = userInfo.firstName;
+                  var lastName = userInfo.lastName;
+                  var cid = userInfo.userId;
+                  var role_id = userInfo.roleId; 
+                  
+                  insertLogs('Inventory Count', "Successfully inventory count with reference #: "+reference_no + " Date: "+date_counted);
+              
                 }
               }
             })

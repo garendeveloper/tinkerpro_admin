@@ -750,6 +750,9 @@ h1, label, textarea, input, table,h5{
       {
         var formData = new FormData(this);
         var expense = $("#item_name").val();
+        var total_amount = $("#total_amount").val();
+        var invoice_number = $("#invoice_number").val();
+        var expense_id = $("#expense_id").val();
         $.ajax({
           type: 'POST',
           url: 'api.php?action=save_expense',
@@ -784,13 +787,21 @@ h1, label, textarea, input, table,h5{
               show_sweetReponse(response.message);
               hide_modal();
               show_allExpenses("", "");
+
               var userInfo = JSON.parse(localStorage.getItem('userInfo'));
               var firstName = userInfo.firstName;
               var lastName = userInfo.lastName;
               var cid = userInfo.userId;
               var role_id = userInfo.roleId; 
 
-              insertLogs('Expense', "Created Expense: "+expense)
+              if(expense_id !== "" && expense_id !== "0")
+              {
+                insertLogs('Expense', "Updated expense: "+expense + ", Amount: "+total_amount + ", Invoice#: "+invoice_number)
+              }
+              else
+              {
+                insertLogs('Expense', "Created expense: "+expense + ", Amount: "+total_amount + ", Invoice#: "+invoice_number)
+              }
 
             }
           },
@@ -812,6 +823,7 @@ h1, label, textarea, input, table,h5{
           display_settings();
           if(response.success)
           {
+            var info = response.info;
             $("#remove_expense_id").val("");
             $('#delete_expenseConfirmation').hide();
             show_sweetReponse(response.message);
@@ -822,7 +834,8 @@ h1, label, textarea, input, table,h5{
             var cid = userInfo.userId;
             var role_id = userInfo.roleId; 
 
-            insertLogs('Expense', "Deleted Expense: ")
+            var item_name = info['item_name'] === "" ? info['product'] : info['item_name'];
+            insertLogs('Expense', "Deleted Expense: "+item_name+ " Invoice #: "+info['invoice_number'] + " Amount: "+info['total_amount'])
           }
         },
         error: function(response){

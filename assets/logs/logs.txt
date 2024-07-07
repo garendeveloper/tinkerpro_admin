@@ -61,5 +61,25 @@
 2024-07-05 05:47:45 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted STIK O Barcode #:789266252195 
 2024-07-05 05:49:02 | Admin Admin | 1 | 2 | Users | Admin Admin Updated heidi Caones 
 2024-07-05 05:52:01 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer kordapyo customer customer 
-2024-07-05 07:39:32 | Admin Admin | 1 | 2 | Expense | Deleted Expense:  
 2024-07-05 08:42:45 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 09:26:32 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-05 09:26:36 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 09:26:52 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-06 07:35:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-06 08:59:29 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-06 08:59:41 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-06 11:01:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-06 11:55:09 | Admin Admin | 1 | 2 | Expense | Deleted Expense: CALCULATOR With Invoice Number: 25 
+2024-07-06 20:02:33 | Admin Admin | 1 | 2 | Expense | Deleted Expense: CEMENT With Invoice Number: 10-000000002 
+2024-07-06 20:06:02 | Admin Admin | 1 | 2 | Expense | Deleted Expense: CEMENT Invoice #: 50-000000007 Amount: 120.00 
+2024-07-06 20:14:45 | Admin Admin | 1 | 2 | Expense | Deleted Expense: SCHOOL EXERCIE BOOK Invoice #: 203434 Amount: 1200.00 
+2024-07-06 20:15:03 | Admin Admin | 1 | 2 | Expense | Succcessfully created expense: school exercice book, Amount: 1020.00, Invoice#: 56445 
+2024-07-06 20:18:24 | Admin Admin | 1 | 2 | Expense | Updated expense: ENJOYt, Amount: 9.00, Invoice#:  
+2024-07-06 20:19:18 | Admin Admin | 1 | 2 | Expense | Created expense: KINI, Amount: 11000.00, Invoice#: sdfafa 
+2024-07-06 20:25:51 | Admin Admin | 1 | 2 | Expiration | Updated expiration settings 
+2024-07-06 20:26:50 | Admin Admin | 1 | 2 | Inventory:Expiration | Updated expiration settings 
+2024-07-06 20:34:56 | Admin Admin | 1 | 2 | Quick Inventory | Quick Inventory: [object Object] 
+2024-07-06 20:35:24 | Admin Admin | 1 | 2 | Quick Inventory | Quick Inventory: [{"inventory_id":1,"col_1":"CEMENT","col_2":"25.00","newqty":"30","col_3":""}] 
+2024-07-06 20:41:41 | Admin Admin | 1 | 2 | Quick Inventory | CEMENT From:30.00 To: 
+2024-07-06 20:43:07 | Admin Admin | 1 | 2 | Quick Inventory | Quick inventory: CEMENT From:25.00 To:30 
+2024-07-06 20:51:30 | Admin Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000011 Date: Jul 06 24 

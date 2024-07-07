@@ -204,11 +204,13 @@ class ExpenseFacade extends DBConnection
     }
     public function delete_expense($expense_id)
     {
+        $info = $this->get_expenseDataById($expense_id);
         $sql = "DELETE FROM expenses WHERE id = '".$expense_id."'";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute();
         return  [
             'success'=>true,
+            'info'=> $info,
             'message'=>'Expense has been successfully removed.'
         ];
     }
