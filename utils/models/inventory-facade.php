@@ -681,7 +681,7 @@ class InventoryFacade extends DBConnection
             $qty_received = $row["qty_received"];
     
             $expired_date = "";
-            if($row["date_expired"] !== "")
+            if(isset($row["date_expired"]))
             {
                 $expired_date = date('Y-m-d', strtotime($row["date_expired"]));
             }

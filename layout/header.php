@@ -73,7 +73,7 @@
   <script src="assets/js/html2canvas.min.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/popper.min.js"></script>
-  <!-- <script src="assets/js/JsBarcode.all.min.js"></script> -->
+  <script src="assets/js/JsBarcode.all.js"></script>
 
 </head>
 <body>

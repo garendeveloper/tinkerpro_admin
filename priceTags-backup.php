@@ -73,7 +73,8 @@ if (isset($_SESSION['user_id'])) {
   // include ('./modals/pricetagsModal.php'); 
 ?>
 
-<style>
+
+	<style>
 	.rangeslider,
 .rangeslider__fill {
   background: #e6e6e6;
@@ -172,7 +173,7 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
     margin: 0 auto;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    /* box-shadow:0 1px 2px hsla(0, 0%, 0%, 0.3); */
+    box-shadow:0 1px 2px hsla(0, 0%, 0%, 0.3);
     margin-top:0px;
     margin-bottom:50px;
     min-width:100px;
@@ -180,6 +181,7 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
     padding-bottom: 20px;
     padding-top: 1px;
     display: inline-block;
+    background-color: #151515;
 }
 
 .container{
@@ -360,30 +362,12 @@ body{
   table thead th{
     font-size: 14px;
   }
-  tbody {
-    display: block;
-    overflow: auto;
-    border: 1px solid #151515;
-}
-thead, tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-    height: 1px;
-}
-tbody td {
-    /* border: 1px solid #dddddd;  */
-    border: 1px solid #151515;
-    padding: 5px 5px; 
-    height: 2px; 
-    line-height:1;
-}
 
 .printable-area{
   width: 100%;
   height: 100%;
   display: block;
-  /* background-color: #D3D3D3; */
+  background-color: #D3D3D3;
   color: #000;
   border: 1px solid white;
 }
@@ -448,94 +432,10 @@ h4 {
 .title{
   color: #ffff;
 }
-
-
-#barcode-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.barcode-wrapper {
+    margin-bottom: 10px; /* Adjust as per your layout needs */
 }
-
-.barcode-container {
-  display: inline-block;
-  position: relative;
-  padding: 20px;
-  font-family: Century Gothic;
-  margin-bottom: 25px;
-  width: 30mm;
-  height: 40mm;
-  box-sizing: 'border-box';
-}
-
-.product-info {
-    background-color: white; 
-    padding: 5px;
-    font-size: 12px;
-    line-height: 1.2;
-    width: 200px;
-    text-align: left;
-
-}
-
-.generated-barcode {
-    display: block;
-    margin: 0 auto;
-    width: 200px;
-    height: auto;
-    margin-top: -10px;
-}
-.barcode-container {
-    height: 110px;
-    line-height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    margin-left: 0;
-    margin-right: 25px;
-}
-  /* Print styles */
-  @media print {
-      body * {
-          visibility: hidden;
-      }
-      .printable-area, .printable-area * {
-          visibility: visible;
-      }
-      .printable-area {
-          position: absolute;
-          left: 0;
-          top: 0;
-          padding: 0;
-          margin: 0;
-          border: none;
-      }
-
-      
-    .product-info {
-        background-color: white; 
-        padding: 5px;
-        font-size: 5px;
-        line-height: 1.2;
-        width: 200px;
-        text-align: left;
-
-    }
-
-    .generated-barcode {
-        display: block;
-        margin: 0 auto;
-        width: 300px;
-        height: auto;
-        margin-top: -5px;
-    }
-
-  }
 </style>
-<script>
-		Number.prototype.zeroPadding = function(){
-			var ret = "" + this.valueOf();
-			return ret.length == 1 ? "0" + ret : ret;
-		};
-	</script>
 
 <?php include "layout/admin/css.php"?> 
 <?php include "layout/admin/barcodeassets.php"?> 
@@ -556,54 +456,182 @@ h4 {
               </div>
             </div>
             <div class = "row">
-                <div  style = "width:600px; background-color: #151515;">
+                <div  style = "width: 25%; background-color: #151515;">
                   <div class="mainDiv" style = "margin-left: 25px;">
-                    <div class="tableCard" >
-                        <div class="fcontainer"  >
-                            <form id="priceTagForm" >
-                                <div class="fieldContainer" style="margin-top: -3px;">
-                                    <label style = "margin-left: -10px;"><img src="assets/img/barcode.png" style="color: white; height: 70px; width: 50px;"></label>
-                                    <div class="search-container">
-                                        <input type="hidden" id="searchInput_id" value="0">
-                                        <input type="hidden" id="barcode_value" value = "0">
-                                        <input type="hidden" id="product_name" value = "0">
-                                        <input type="hidden" id="product_price" value = "0">
-                                        <input type="hidden" id="sku" value = "0">
-                                        <input type="hidden" id="uom" value = "0">
-                                        <input type="text" style="width: 360px; height: 40px; font-size: 14px; border: 1px solid white;"
-                                            class="search-input italic-placeholder" placeholder="Search Product,[Name, Barcode, Brand]" name="searchInput"
-                                            onkeyup="$(this).removeClass('has-error')" id="searchInput" autocomplete="off">
-                                          
-                                    </div>
-                                    <button style="font-size: 1.5rem; height: 40px; width: 230px; border-radius: 4px;" id="btn_searchInputProduct">
-                                        Add Product</button>
-                                </div>
-                            </form>
-                        
-                            <table id="tbl_priceTags" class="text-color table-border " style="margin-top: -3px; ">
-                                <thead>
-                                    <tr>
-                                        <th class = "otherinput" style="background-color: #1E1C11; width: 50%; font-size: 12px;">ITEM DESCRIPTION</th>
-                                        <th class = "otherinput" style="background-color: #1E1C11; text-align:center; width: 50%; font-size: 12px;">BARCODE</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="border-collapse: collapse; border: none">
+                    <div class="row">
+                        <div>
+                            <h4 class = "text-custom">Choose Barcode Type:</h4>
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="ean8"
+                                  >
+                            <label>EAN 8</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="ean13"
+                                  checked="checked">
+                            <label>EAN 13</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="datamatrix">
+                            <label>Data Matrix (2D barcode)</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="upc">
+                            <label>UPC</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="code11">
+                            <label>code 11</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="code39">
+                            <label>code 39</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="code93">
+                            <label>code 93</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="code128">
+                            <label>code 128</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="codabar">
+                            <label>codabar</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="std25">
+                            <label>standard 2 of 5 (industrial)</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="int25">
+                            <label>interleaved 2 of 5</label>
+                            <br />
+                            <input type="radio"
+                                  name="barcodeType"
+                                  value="msi">
+                            <label>MSI</label>
+                            <br />
+                        </div>
+                        <div class="config" style = "color: white;">
+                          <div class="title">Misc</div>
+                            Background : <input type="color" id="bgColor" value="#FFFFFF" size="7"><br />
+                            "1" Bars : <input type="color" id="color" value="#000000" size="7"><br />
+                          <div class="barcode1D">
+                            bar width: <input type="text" id="barWidth" value="1" size="3"><br />
+                            bar height: <input type="text" id="barHeight" value="50" size="3"><br />
+                          </div>
+                          <div class="barcode2D">
+                            Module Size: <input type="text" id="moduleSize" value="5" size="3"><br />
+                            Quiet Zone Modules: <input type="text" id="quietZoneSize" value="1" size="3"><br />
+                            Form: <input type="checkbox" name="rectangular" id="rectangular"><label for="rectangular">Rectangular</label><br />
+                          </div>
+                          <div id="miscCanvas">
+                            x : <input type="text" id="posX" value="10" size="3"><br />
+                            y : <input type="text" id="posY" value="20" size="3"><br />
+                          </div>
+                        </div>
 
-                                </tbody>
-                            </table>
-                      </div> 
+                        <div>
+                            <h4 class = "text-custom">Choose Barcode Format</h4>
+                            <input type="radio"
+                                  name="rendererType"
+                                  value="css"
+                                 >
+                            <label>CSS</label>
+                            <br />
+                            <input type="radio"
+                                  name="rendererType"
+                                  value="canvas"
+                                  >
+                            <label>Canvas</label>
+                            <br />
+                            
+                            <input type="radio"
+                                  name="rendererType"
+                                  value="bmp">
+                            <label>BMP</label>
+                            <br />
+                            <input type="radio"
+                                  name="rendererType"
+                                  value="svg" checked="checked">
+                            <label>SVG</label>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                       
+                        <!-- <input type="button"
+                        id = "generate_barcode"
+                              value="Update Changes"
+                              class="button" > <i class =  "bi bi-clockwise"></i></input> -->
+                    </div>
+                </div>
+                </div>
+                <div  style = "width: 50%" >
+                  <div class="printable-area"  style = "width: 100%;  ">
+                    <div class="row print_output" id = "barcodeContainer" style = "margin-left: 20px; background-color: white; ">
+                      <div id="productInfo" >
+                          <div id="productName"></div>
+                          <div id="productPrice"></div>
+                      </div>
+                        <div id="barcodeoutput">
+
+                        </div>
+                        
+                        <canvas id="canvasOutput"
+                                width="200"
+                                height="130"></canvas>
                     </div>
                   </div>
                 </div>
-                <div  style = "width: 1100px;" >
-                  <div class="printable-area"  style = "width: 100%;  ">
-                    <div class="row" id = "barcodeContainer" style = "margin-left: 20px;  ">
-                 
-                    </div>
+                <div style = "width: 25%; height: 100%; background-color: #151515;" >
+                  <div class="tableCard" style = " width: 100%">
+                      <div class="fcontainer"  >
+                          <form id="priceTagForm" >
+                              <div class="fieldContainer" style="margin-top: -3px;">
+                                  <label style = "margin-left: -10px;"><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 30px;"></label>
+                                  <div class="search-container">
+                                      <input type="hidden" id="searchInput_id" value="0">
+                                      <input type="hidden" id="barcode_value" value = "0">
+                                      <input type="hidden" id="product_name" value = "0">
+                                      <input type="hidden" id="product_price" value = "0">
+                                      <input type="hidden" id="sku" value = "0">
+                                      <input type="hidden" id="uom" value = "0">
+                                      <input type="text" style="width: 200px; height: 30px; font-size: 14px; border: 1px solid white;"
+                                          class="search-input italic-placeholder" placeholder="Search Product,[Name, Barcode, Brand]" name="searchInput"
+                                          onkeyup="$(this).removeClass('has-error')" id="searchInput" autocomplete="off">
+                                        
+                                  </div>
+                                  <button style="font-size: 1rem; height: 30px; width: 100px; border-radius: 4px;" id="btn_searchInputProduct">
+                                      Add Product</button>
+                              </div>
+                          </form>
+                          <table id="tbl_priceTags" class="text-color table-border " style="margin-top: -3px; ">
+                              <thead>
+                                  <tr>
+                                      <th style="background-color: #1E1C11; width: 50%; font-size: 12px;">ITEM DESCRIPTION</th>
+                                      <th style="background-color: #1E1C11; text-align:center; width: 50%; font-size: 12px;">BARCODE</th>
+                                  </tr>
+                              </thead>
+                              <tbody style="border-collapse: collapse; border: none">
+
+                              </tbody>
+                          </table>
+                      </div>
+                    </div> 
                   </div>
-                  <div style = "position: absolute; bottom: 0; right: 20px; margin-right: 4vh;">
-                      <button class="button" style="width: 200px; background-color: #151515; border: 1px solid red; color: white; height: 40px; " id="btnPrintBarcode">Print Barcode</button>
-                    </div>
                 </div>
             </div>
           </div>
@@ -615,48 +643,195 @@ h4 {
   include("layout/footer.php");
 ?>
   <script>
-  $(document).ready(function(){
-    var toastDisplayed = false;
-    var products = [];
-    let productsCache = [];
-    show_allProducts();
+    $(document).ready(function () {
+        
+        var toastDisplayed = false;
+        var products = [];
+        let productsCache = [];
+        show_allProducts();
 
-    $("#price_tags").addClass('active');
-    $("#pointer").html("Price Tags");
+      //   function generateBarcode(inputValue, productName, productPrice, sku, uom) 
+      //   {
+      //     let barcodeType = $("input[name=barcodeType]:checked").val();
+      //     let rendererType = $("input[name=rendererType]:checked").val();
+      //     // let settings = {
+      //     //   output: rendererType,
+      //     //   bgColor: '#FFFFFF',
+      //     //   color: '#000000',
+      //     //   barWidth: '1',
+      //     //   barHeight: '30',
+      //     //   moduleSize: '4',
+      //     //   posX: '5',
+      //     //   posY: '2',
+      //     //   addQuietZone: '1'
+      //     // };
+      //     let settings = {
+      //       output:rendererType,
+      //       bgColor: $("#bgColor").val(),
+      //       color: $("#color").val(),
+      //       barWidth: $("#barWidth").val(),
+      //       barHeight: $("#barHeight").val(),
+      //       moduleSize: $("#moduleSize").val(),
+      //       posX: $("#posX").val(),
+      //       posY: $("#posY").val(),
+      //       addQuietZone: $("#quietZoneSize").val()
+      //     };
 
-    $("#btnPrintBarcode").off("click").on("click", function(){
-      window.print();
-    })
-    $("#btn_searchInputProduct").click(function (e) {
-        e.preventDefault();
-        var inventory_id = $("#searchInput_id").val();
-        var barcode = $("#barcode_value").val();
-        var productPrice = $("#product_price").val();
-        var productName = $("#product_name").val();
-        var uom = $("#uom").val();
-        var sku = $("#sku").val();
-        if(inventory_id !== "" && inventory_id !== "0")
-        {
-            if (!isDataExistInTable(inventory_id)) 
+      //     let title = $("<div>").css({
+      //       "font-size": "10px",
+      //       "font-family": "Century Gothic",
+      //       "color": "#000000",
+      //       "font-weight": "bold",
+      //       "background-color": "white",
+      //     })
+      //     title.html("&nbsp;&nbsp;"+productName + "&nbsp;" + uom + "<br>&#8369;&nbsp;" + productPrice + "<br>" + "SKU : "+sku);
+
+      //     let barcodeOutput = $("<div>").barcode(inputValue, barcodeType, settings);
+      //     barcodeOutput.prepend(title); 
+
+      //     if (rendererType != 'canvas') {
+      //       $("#canvasOutput").hide();
+      //       $("#barcodeoutput").html("").show();
+      //       $("#barcodeoutput").append(barcodeOutput);
+      //     } else {
+      //       createCanvas();
+      //       $("#barcodeoutput").hide();
+      //       $("#canvasOutput").show();
+      //       $("#canvasOutput").append(barcodeOutput);
+      //     }
+      // }
+
+      function generateBarcode(inputValue, productName, productPrice, sku, uom) {
+    let barcodeType = $("input[name=barcodeType]:checked").val();
+    let rendererType = $("input[name=rendererType]:checked").val();
+    
+    let settings = {
+        output: rendererType,
+        bgColor: $("#bgColor").val(),
+        color: $("#color").val(),
+        barWidth: $("#barWidth").val(),
+        barHeight: $("#barHeight").val(),
+        moduleSize: $("#moduleSize").val(),
+        posX: $("#posX").val(),
+        posY: $("#posY").val(),
+        addQuietZone: $("#quietZoneSize").val()
+    };
+
+    let title = $("<div>").css({
+        "font-size": "10px",
+        "font-family": "Century Gothic",
+        "color": "#000000",
+        "font-weight": "bold",
+        "background-color": "white",
+    });
+    title.html("&nbsp;&nbsp;" + productName + "&nbsp;" + uom + "<br>&#8369;&nbsp;" + productPrice + "<br>" + "SKU : " + sku);
+
+    let barcodeWrapper = $("<div>").addClass('barcode-wrapper');
+
+    let barcodeOutput = $("<div>").barcode(inputValue, barcodeType, settings);
+    barcodeOutput.prepend(title);
+
+    barcodeWrapper.append(barcodeOutput);
+
+    if (rendererType != 'canvas') {
+        $("#canvasOutput").hide();
+        $("#barcodeContainer").append(barcodeWrapper);
+    } else {
+        createCanvas();
+        $("#barcodeContainer").append(barcodeWrapper);
+    }
+}
+      function createCanvas() {
+        let canvas = $('#canvasOutput').get(0);
+        let ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+      }
+//       function generateBarcode(inputValue, productName, productPrice, sku, uom) {
+//   let barcodeType = $("input[name=barcodeType]:checked").val();
+//   let rendererType = $("input[name=rendererType]:checked").val();
+  
+//   let settings = {
+//     format: barcodeType, // Use 'auto' or specify barcode format explicitly
+//     displayValue: true,
+//     background: '#FFFFFF',
+//     lineColor: '#000000',
+//     width: 1,
+//     height: 30,
+//     margin: 10,
+//     fontSize: 10,
+//     fontOptions: 'bold',
+//     textAlign: 'left',
+//     textPosition: 'bottom',
+//     textMargin: 2
+//   };
+
+//   let container = $("<div>").css({
+//     "font-family": "Century Gothic",
+//     "background-color": "white",
+//     "padding": "5px"
+//   });
+
+//   let title = $("<div>").html(productName + "&nbsp;" + uom + "<br>&#8369;&nbsp;" + productPrice + "<br>" + "SKU: " + sku);
+//   container.append(title);
+
+//   let barcodeOutput = $("<svg>");
+
+//   try {
+//     JsBarcode(barcodeOutput[0], inputValue, settings);
+//   } catch (error) {
+//     console.error('Error generating barcode:', error);
+//     return; // Exit function early if barcode generation fails
+//   }
+
+//   container.append(barcodeOutput);
+
+//   if (rendererType !== 'canvas') {
+//     $("#canvasOutput").hide();
+//     $("#barcodeoutput").html("").show().append(container);
+//   } else {
+//     createCanvas();
+//     $("#barcodeoutput").hide();
+//     $("#canvasOutput").show().html(container);
+//   }
+// }
+
+function createCanvas() {
+  let canvas = $('#canvasOutput').get(0);
+  let ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeRect(0, 0, canvas.width, canvas.height);
+}
+        $("#btn_searchInputProduct").click(function (e) {
+            e.preventDefault();
+            var inventory_id = $("#searchInput_id").val();
+            var barcode = $("#barcode_value").val();
+            var productPrice = $("#product_price").val();
+            var productName = $("#product_name").val();
+            var uom = $("#uom").val();
+            var sku = $("#sku").val();
+            if(inventory_id !== "" && inventory_id !== "0")
             {
-              display_productBy(inventory_id);
-              generateBarcode(barcode, productName, productPrice, sku, uom);
+                if (!isDataExistInTable(inventory_id)) 
+                {
+                  display_productBy(inventory_id);
+                  generateBarcode(barcode, productName, productPrice, sku, uom);
+                }
+                else
+                {
+                  show_errorResponse("Product is already in the table.");
+                }
+                $("#searchInput").val("");
+                $("#searchInput_id").val("0");
+                $("#barcode_value").val("0");
+                $("#product_name").val("0");
+                $("#product_value").val("0");
             }
             else
             {
-              show_errorResponse("Product is already in the table.");
+              show_errorResponse("Product is not found.");
             }
-            $("#searchInput").val("");
-            $("#searchInput_id").val("0");
-            $("#barcode_value").val("0");
-            $("#product_name").val("0");
-            $("#product_value").val("0");
-        }
-        else
-        {
-          show_errorResponse("Product is not found.");
-        }
-    })
+        })
         function show_allProducts() 
         {
             $.ajax({
@@ -741,43 +916,6 @@ h4 {
             toastr.error(message);
         }
 
-        function generateBarcode(barcode, productName, price, sku, uom) 
-        {
-          try {
-              var barcodeContainer = $("<div>").addClass("barcode-container");
-
-              var productInfoElement = $("<div>").addClass("product-info").css({
-                  'margin-bottom': '2px'
-              });
-
-              productInfoElement.html(`
-                  <div style = 'font-weight: bold'>${productName}&nbsp;${uom} <br></div>
-                  <div>${price}</div>
-                  <div>SKU:${sku}</div>
-              `);
-
-              var barcodeElement = $("<img>").addClass("generated-barcode");
-              JsBarcode(barcodeElement[0], barcode, {
-                  format: "EAN13",
-                  displayValue: true,
-                  fontSize: 20,
-                  height: 40,
-                  width: 2,
-                  textAlign: "center"
-              });
-
-              barcodeContainer.append(productInfoElement);
-
-              barcodeContainer.append(barcodeElement);
-
-              $("#barcodeContainer").append(barcodeContainer);
-          } catch (error) {
-              console.error("Error in generateBarcode:", error);
-          }
-      }
-
-
-      
         $("#searchInput").autocomplete({
             minLength: 2,
             source: function (request, response) {
@@ -849,13 +987,19 @@ h4 {
                 success: function (data) {
                     var row = "";
                     row += "<tr data-id = " + data['id'] + ">";
-                    row += "<td  data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
-                    row += "<td  style = 'text-align:right'>" + data['barcode'] + "</td>";
+                    row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
+                    row += "<td style = 'text-align:center'>" + data['barcode'] + "</td>";
                     row += "</tr>";
                     $("#tbl_priceTags tbody").append(row);
                 }
             })
         }
+    })
+</script>
+<script>
+  $(document).ready(function(){
+    $("#price_tags").addClass('active');
+    $("#pointer").html("Price Tags");
 
     $("#priceTagsModal").addClass('slideInRight');
     $(".priceTagsContent").addClass('slideInRight');

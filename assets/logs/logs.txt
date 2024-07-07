@@ -83,3 +83,7 @@
 2024-07-06 20:41:41 | Admin Admin | 1 | 2 | Quick Inventory | CEMENT From:30.00 To: 
 2024-07-06 20:43:07 | Admin Admin | 1 | 2 | Quick Inventory | Quick inventory: CEMENT From:25.00 To:30 
 2024-07-06 20:51:30 | Admin Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000011 Date: Jul 06 24 
+2024-07-07 15:07:12 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-07 15:11:05 | Admin Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000012 Date: Jul 07 24 Total Amount₱ 200.00 
+2024-07-07 18:03:23 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000003 Amount:₱ 1,040.00 
+2024-07-07 18:04:42 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 

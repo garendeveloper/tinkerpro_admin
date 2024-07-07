@@ -2086,6 +2086,8 @@ include ('./layout/admin/table-pagination-css.php');
                   subRowData.push(row_data);
                 })
 
+                var reference = $("#ld_reference").val();
+                var date_damage = $("#date_damage").val();
                 var total_qty = $("#footer_lossand_damages thead").find("#total_qty").text();
                 var total_cost = $("#footer_lossand_damages thead").find("#total_cost").text();
                 var overall_total_cost = $("#footer_lossand_damages thead").find("#overall_total_cost").text();
@@ -2118,6 +2120,15 @@ include ('./layout/admin/table-pagination-css.php');
                       $(".grid-container button").removeClass('active');
                       $("#loss-damage").addClass('active');
                       show_allLossAndDamagesInfo();
+
+                      var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                      var firstName = userInfo.firstName;
+                      var lastName = userInfo.lastName;
+                      var cid = userInfo.userId;
+                      var role_id = userInfo.roleId; 
+
+                      insertLogs('Loss and Damages', "Declared loss and damages with reference #: "+reference + " Date: "+date_damage + " Total Amount"+overall_total_cost);
+                
                     }
                   }
                 })
@@ -2164,6 +2175,8 @@ include ('./layout/admin/table-pagination-css.php');
                   subRowData.push(rowData);
                 });
                 var receive_form = $("#receive_all").serialize();
+                var po_number = $("#r_po_number").text();
+                var supplier = $("#r_supplier").text();
                 $.ajax({
                   type: 'POST',
                   url: 'api.php?action=save_receivedItems',
@@ -2190,6 +2203,14 @@ include ('./layout/admin/table-pagination-css.php');
                       show_allInventories();
                       isSaving = false;
                       hideModals();
+
+                      var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                      var firstName = userInfo.firstName;
+                      var lastName = userInfo.lastName;
+                      var cid = userInfo.userId;
+                      var role_id = userInfo.roleId; 
+
+                      insertLogs('Received Items', "Tender received items, PO Number: "+po_number+" Supplier: "+supplier);
                     }
 
                   },
