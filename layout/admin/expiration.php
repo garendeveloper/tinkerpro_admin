@@ -16,6 +16,7 @@
                     var secondNotif_isActive = isActive(notifications[1].is_active);//15
                     var thirdNotif_isActive = isActive(notifications[2].is_active);//5
                     var fourthNotif_isActive = isActive(notifications[3].is_active);//0
+                    
                     totalExpired = 0;
                     products.forEach(function (product) {
                         var daysRemaining = product.days_remaining;

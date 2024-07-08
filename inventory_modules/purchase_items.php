@@ -81,9 +81,11 @@
         <div class="fieldContainer" style = "margin-top: 2px;">
             <label>Supplier</label>
             <div class="custom-select" style="margin-right: 0px; ">
-                <select name="supplier" id = "supplier"
+                <select name="supplier" class = "choices-single" id = "supplier"
                     style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
-                    
+                    <option value="">
+                
+                    </option>
                 </select>
                 <i class="bi bi-chevron-double-down"></i>
             </div>
@@ -131,5 +133,6 @@
 
 
 <script>
-   
+
+
 </script>

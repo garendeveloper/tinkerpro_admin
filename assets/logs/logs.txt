@@ -87,3 +87,28 @@
 2024-07-07 15:11:05 | Admin Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000012 Date: Jul 07 24 Total Amount₱ 200.00 
 2024-07-07 18:03:23 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000003 Amount:₱ 1,040.00 
 2024-07-07 18:04:42 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 09:09:51 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 09:54:53 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 10:10:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 10:42:58 | Admin Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-08 10:43:10 | Admin Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-08 10:43:25 | Admin Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-08 11:47:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 12:22:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 12:43:06 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 12:55:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 12:57:37 | Admin Admin | 1 | 2 | Products | Admin Admin Added Bato ( 1kl ) Barcode #:116387998526 
+2024-07-08 13:00:40 | Admin Admin | 1 | 2 | Quick Inventory | Quick inventory: Bato ( 1kl ) From: 0.00 To: 50 
+2024-07-08 13:06:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 13:32:57 | Admin Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-08 14:25:42 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 14:53:24 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 14:58:35 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 15:57:03 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 16:27:24 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 16:34:15 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 16:41:35 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 16:42:55 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 16:46:21 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 17:15:57 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 18:26:24 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 

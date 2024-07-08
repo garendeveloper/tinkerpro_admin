@@ -201,7 +201,7 @@ include ('./layout/admin/table-pagination-css.php');
 
 #tbl_products tbody th,
 #tbl_products tbody td {
-    padding: 2px 2px; 
+    padding: 10px 10px; 
     height: 30px; 
     line-height: 0.5; 
     border: 1px solid white;
@@ -225,7 +225,7 @@ include ('./layout/admin/table-pagination-css.php');
 
 #tbl_all_lostanddamages tbody th,
 #tbl_all_lostanddamages tbody td {
-    padding: 2px 2px; 
+    padding: 5px 5px; 
     height: 30px; 
     line-height: 1;
     border: 1px solid white;
@@ -238,6 +238,16 @@ include ('./layout/admin/table-pagination-css.php');
     line-height: 1;
     border: 1px solid white;
 }
+#tbl_preview{
+  width: 100%;
+}
+#tbl_preview tbody th,
+#tbl_preview tbody td {
+    padding: 7px 7px; 
+    height: 30px; 
+    line-height: 1;
+    font-size: 14px;
+}
 
 .inventoryCard button {
     height: 10;
@@ -247,7 +257,9 @@ include ('./layout/admin/table-pagination-css.php');
     overflow: hidden; /* Hides any content that overflows the cell */
     text-overflow: ellipsis; /* Displays an ellipsis (...) to indicate overflow */
 }
-
+i:hover{
+  color: #FF6900;
+}
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -338,7 +350,7 @@ include ('./layout/admin/table-pagination-css.php');
 
           </div>
           <div id="paginationDiv" ></div>
-          <div style="display: flex; ">
+          <!-- <div style="display: flex; ">
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg
                 version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke="">
@@ -392,8 +404,50 @@ include ('./layout/admin/table-pagination-css.php');
                   </g>
                 </g>
               </svg>&nbsp;Save as Excel</button>
+          </div> -->
+        </div>
+
+
+        <div style="display: flex; margin-top: 10px; justify-content: space-between; ">
+          <div>
+            <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke=""><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffff;} </style> <g> <path class="st0" d="M488.626,164.239c-7.794-7.813-18.666-12.684-30.578-12.676H409.01V77.861L331.145,0h-4.225H102.99v151.564 H53.955c-11.923-0.008-22.802,4.862-30.597,12.676c-7.806,7.798-12.665,18.671-12.657,30.574v170.937 c-0.008,11.919,4.847,22.806,12.661,30.589c7.794,7.813,18.678,12.669,30.593,12.661h49.034V512h306.02V409.001h49.037 c11.901,0.008,22.78-4.848,30.574-12.661c7.818-7.784,12.684-18.67,12.677-30.589V194.814 C501.306,182.91,496.436,172.038,488.626,164.239z M323.519,21.224l62.326,62.326h-62.326V21.224z M123.392,20.398l179.725,0.015 v83.542h85.491v47.609H123.392V20.398z M388.608,491.602H123.392v-92.801h-0.016v-96.638h265.217v106.838h0.015V491.602z M480.896,365.751c-0.004,6.353-2.546,11.996-6.694,16.17c-4.166,4.136-9.813,6.667-16.155,6.682h-49.049V281.75H102.974v106.853 H53.955c-6.365-0.015-12.007-2.546-16.166-6.682c-4.144-4.174-6.682-9.817-6.686-16.17V194.814 c0.004-6.338,2.538-11.988,6.686-16.155c4.167-4.144,9.809-6.682,16.166-6.698h49.034h306.02h49.037 c6.331,0.016,11.985,2.546,16.151,6.698c4.156,4.174,6.694,9.817,6.698,16.155V365.751z"></path> <rect x="167.59" y="336.155" class="st0" width="176.82" height="20.405"></rect> <rect x="167.59" y="388.618" class="st0" width="176.82" height="20.398"></rect> <rect x="167.59" y="435.255" class="st0" width="83.556" height="20.398"></rect> <path class="st0" d="M353.041,213.369c-9.263,0-16.767,7.508-16.767,16.774c0,9.251,7.504,16.759,16.767,16.759 c9.263,0,16.77-7.508,16.77-16.759C369.811,220.877,362.305,213.369,353.041,213.369z"></path> <path class="st0" d="M424.427,213.369c-9.262,0-16.77,7.508-16.77,16.774c0,9.251,7.508,16.759,16.77,16.759 c9.258,0,16.766-7.508,16.766-16.759C441.193,220.877,433.685,213.369,424.427,213.369z"></path> </g> </g></svg>&nbsp;Print</button>
+            <button class="btn-control" id="generatePDFBtn" style="width:160px; height:45px; margin-right: 10px"><svg width="25px" height="25px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2.5 6.5V6H2V6.5H2.5ZM6.5 6.5V6H6V6.5H6.5ZM6.5 10.5H6V11H6.5V10.5ZM13.5 3.5H14V3.29289L13.8536 3.14645L13.5 3.5ZM10.5 0.5L10.8536 0.146447L10.7071 0H10.5V0.5ZM2.5 7H3.5V6H2.5V7ZM3 11V8.5H2V11H3ZM3 8.5V6.5H2V8.5H3ZM3.5 8H2.5V9H3.5V8ZM4 7.5C4 7.77614 3.77614 8 3.5 8V9C4.32843 9 5 8.32843 5 7.5H4ZM3.5 7C3.77614 7 4 7.22386 4 7.5H5C5 6.67157 4.32843 6 3.5 6V7ZM6 6.5V10.5H7V6.5H6ZM6.5 11H7.5V10H6.5V11ZM9 9.5V7.5H8V9.5H9ZM7.5 6H6.5V7H7.5V6ZM9 7.5C9 6.67157 8.32843 6 7.5 6V7C7.77614 7 8 7.22386 8 7.5H9ZM7.5 11C8.32843 11 9 10.3284 9 9.5H8C8 9.77614 7.77614 10 7.5 10V11ZM10 6V11H11V6H10ZM10.5 7H13V6H10.5V7ZM10.5 9H12V8H10.5V9ZM2 5V1.5H1V5H2ZM13 3.5V5H14V3.5H13ZM2.5 1H10.5V0H2.5V1ZM10.1464 0.853553L13.1464 3.85355L13.8536 3.14645L10.8536 0.146447L10.1464 0.853553ZM2 1.5C2 1.22386 2.22386 1 2.5 1V0C1.67157 0 1 0.671573 1 1.5H2ZM1 12V13.5H2V12H1ZM2.5 15H12.5V14H2.5V15ZM14 13.5V12H13V13.5H14ZM12.5 15C13.3284 15 14 14.3284 14 13.5H13C13 13.7761 12.7761 14 12.5 14V15ZM1 13.5C1 14.3284 1.67157 15 2.5 15V14C2.22386 14 2 13.7761 2 13.5H1Z" fill="#ffff"></path> </g></svg>&nbsp;Save as PDF</button>
+            <button class="btn-control" id="generateEXCELBtn" style="width:160px; height:45px;"><svg height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 26" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffff;" d="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162 C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8 h-4V6h4V8z"></path> <path style="fill:#ffff;" d="M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678 H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037 c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 L9.488,18.08L9.488,18.08z"></path> </g> </g></svg>&nbsp;Save as Excel</button>
+          </div>
+          <div style = "margin-top: -40px;">
+            <style>
+              .title_div{
+                text-align: right;
+              }
+              .tbl_value{
+                color: #ffffff;
+                text-align: right;
+                width: 120px;
+              }
+
+            </style>
+
+            <table class = "" style = "background-color: none" id = "tbl_preview">
+              <tbody>
+          
+                    <tr>
+                      <td class = "otherinput title_div" style = "background-color: #262626;" id = "tbl_row1"></td>
+                      <td  class = "otherinput tbl_value"  style = "background-color: #262626;" id = "tbl_row1_value"></td>
+                    </tr>
+                    <tr>
+                      <td class = "otherinput title_div" style = "background-color: #262626;" id = "tbl_row2"></td>
+                      <td  class = "otherinput tbl_value"  style = "background-color: #262626;" id = "tbl_row2_value"></td>
+                    </tr>
+                    <tr>
+                      <td class = "otherinput title_div" style = "background-color: #262626;" id = "tbl_row0"></td>
+                      <td  class = "otherinput tbl_value"  style = "background-color: #262626;" id = "tbl_row0_value"></td>
+                    </tr>
+              </tbody>
+            </table>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>
@@ -404,11 +458,13 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("./modals/purchase_modal_payment.php") ?>
   <?php include ("./modals/received_payment_confirmation.php") ?>
   <?php include ("./modals/stockhistory.php") ?>
-  <?php include ("layout/footer.php") ?>
   <?php include ("layout/admin/keyboardfunction.php") ?>
   <?php include ("./modals/purchaseOrder_response.php") ?>
   <?php include('./modals/loading-modal.php'); ?>
   
+
+  <?php include ("layout/footer.php") ?>
+
   <script>
   
     $(document).ready(function () {
@@ -416,7 +472,7 @@ include ('./layout/admin/table-pagination-css.php');
       $("#inventory").addClass('active');
       $("#inventories").addClass('active');
       $("#pointer").html("Inventory");
-
+      $(".otherinput").css('border', '1px solid white')
       $(".tablinks").click(function (e) {
         e.preventDefault();
         var tabId = $(this).data("tab");
@@ -678,7 +734,7 @@ include ('./layout/admin/table-pagination-css.php');
         show_allOrders();
         $("#tbl_products").hide();
       })
-      $(".inventoryCard").on('click', '.btn_openPayment', function () {
+      $(".inventoryCard").on('click', '#btn_openPayment', function () {
         $("#purchase_modal_payment #modalTitle").html("<i class = 'bi bi-exclamation-triangle bi-lg exclamation-icon'></i>&nbsp; <strong style = 'color: #ffff'>ATTENTION REQUIRED!</strong> ");
         $("#purchase_modal_payment").slideDown({
           backdrop: 'static',
@@ -1088,12 +1144,6 @@ include ('./layout/admin/table-pagination-css.php');
             ordering: true,
             order: [[1, 'asc']],
             pageLength: 100,
-            // pagingType: 'full_numbers',
-            // columnDefs: [
-            //     { targets: '_all', className: 'auto-fit' } 
-            // ],
-            // scrollY: 'calc(100vh - 800px)', // Adjust height as needed
-            // scrollCollapse: false,
             dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
             fnDrawCallback: function (oSettings) {
                 if (oSettings.aoData.length === 0) {
@@ -1101,6 +1151,24 @@ include ('./layout/admin/table-pagination-css.php');
                 } else {
                     $("#paginationDiv").show();
                 }
+
+                var rowCount = table.rows().count();
+
+                $('#tbl_row0').html("Total Items");
+                $('#tbl_row0_value').html(rowCount);
+
+                var totalSum = table
+                .column(4, { page: 'current' })
+                .data()
+                .reduce(function (acc, val) {
+                    return acc + parseFloat(val);
+                }, 0);
+
+                $('#tbl_row1').html("Total Stocks In Store");
+                $('#tbl_row1_value').html(totalSum);
+
+                $('#tbl_row2').hide();
+                $('#tbl_row2_value').hide();
             },
         
             createdRow: function (row, data, dataIndex) {
@@ -1121,6 +1189,9 @@ include ('./layout/admin/table-pagination-css.php');
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_lostanddamages")) {
             $(".inventoryCard #tbl_all_lostanddamages").DataTable().destroy();
         }
+        // $('#tbl_row2').show();
+        // $('#tbl_row2_value').show();
+
         $("#paginationDiv").empty().hide();
         $.ajax({
           type: 'get',
@@ -1160,18 +1231,6 @@ include ('./layout/admin/table-pagination-css.php');
 
             $(".inventoryCard").html(tbl);
 
-            // $('.inventoryCard #tbl_all_lostanddamages').DataTable({
-            //     ordering: true,
-            //     order: [[0, 'asc']], 
-            //     pageLength: 50,
-            //     sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-            //     language: {
-            //         paginate: {
-            //             previous: '<i class="fa fa-angle-left"></i>',
-            //             next: '<i class="fa fa-angle-right"></i>'
-            //         }
-            //     },
-            // });
             $('.inventoryCard #tbl_all_lostanddamages').DataTable({
               ordering: true,
               order: [[0, 'asc']], 
@@ -1184,6 +1243,28 @@ include ('./layout/admin/table-pagination-css.php');
                 } else {
                   $("#paginationDiv").show();
                 }
+
+                
+                // var rowCount = this.rows().count();
+
+                // $('#tbl_row0').html("Total Items");
+                // $('#tbl_row0_value').html(rowCount);
+
+                // // Calculate total sum of column 3 (assuming it contains numeric data)
+                // var totalSum = this
+                //     .column(5, { page: 'current' })
+                //     .data()
+                //     .reduce(function (acc, val) {
+                //         return acc + parseFloat(val);
+                //     }, 0);
+
+                // $('#tbl_row1').html("Overall Cost Of Damages");
+                // $('#tbl_row1_value').html(totalSum);
+
+                // $('#tbl_row2').hide();
+                // $('#tbl_row2_value').hide();
+
+
               }
             })
             $("#paginationDiv").html($(".dt-paging")).show();
@@ -1236,12 +1317,14 @@ include ('./layout/admin/table-pagination-css.php');
               else {
                 temp = false;
               }
-              if (temp) {
+              if (temp) 
+              {
+                var expiration = days_remaining > 0 ? `This product has a remaining shelf life of <span style = 'color: #FF6900; font-size: 14px;'>${days_remaining}</span> days` : `This product has already expired. <span style = 'color: red; font-size: 14px;'>${days_remaining}</span> days`;
                 return `<tr>
                     <td class="autofit">${item.prod_desc}</td>
                     <td class="autofit">${item.barcode}</td>
                     <td class="autofit" style="text-align: center">${date_format(item.date_expired)}</td>
-                    <td class="autofit" style="text-align: center">This product has a remaining shelf life of <span style = 'color: red; font-size: 14px;'>${days_remaining}</span> days</td>
+                    <td class="autofit" style="text-align: center">${expiration}</td>
                 </tr>`;
               }
             });
@@ -1301,6 +1384,7 @@ include ('./layout/admin/table-pagination-css.php');
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_inventoryCounts")) {
             $(".inventoryCard #tbl_all_inventoryCounts").DataTable().destroy();
         }
+        // $("#tbl_preview").hide();
         $("#paginationDiv").empty().hide();
        
         $.ajax({
@@ -1867,7 +1951,7 @@ include ('./layout/admin/table-pagination-css.php');
           "hideMethod": "fadeOut",
           "tapToDismiss": false,
           "toastClass": "custom-toast",
-          "onclick": function () { alert('Clicked'); }
+          "onclick": function () {  }
 
         };
         toastr.success(message);
@@ -1899,13 +1983,13 @@ include ('./layout/admin/table-pagination-css.php');
           "hideMethod": "fadeOut",
           "tapToDismiss": false,
           "toastClass": "custom-toast",
-          "onclick": function () { alert('Clicked'); }
+          "onclick": function () {  }
 
         };
         toastr.error(message);
       }
 
-      $("#btn_savePO").click(function (e) {
+      $("#btn_savePO").off("click").on("click", function (e) {
         e.preventDefault();
         var activeModuleId = $("button.active").attr('id');
         if (activeModuleId === "btn_expiration") {
@@ -2135,7 +2219,7 @@ include ('./layout/admin/table-pagination-css.php');
               }
             }
             else {
-              alert("Please add a product");
+              show_errorResponse("Please add a product");
             }
           }
         }
@@ -2177,6 +2261,8 @@ include ('./layout/admin/table-pagination-css.php');
                 var receive_form = $("#receive_all").serialize();
                 var po_number = $("#r_po_number").text();
                 var supplier = $("#r_supplier").text();
+        
+                
                 $.ajax({
                   type: 'POST',
                   url: 'api.php?action=save_receivedItems',
@@ -2221,7 +2307,7 @@ include ('./layout/admin/table-pagination-css.php');
             }
           }
           else {
-            alert("Please find a purchase number first!");
+            show_errorResponse("Please find a purchase number first!");
           }
         }
         else {
@@ -2774,6 +2860,9 @@ include ('./layout/admin/table-pagination-css.php');
         }
         $("#paginationDiv").empty().hide();
         $("#searchInput").focus();
+
+        $('#tbl_row2').show();
+        $('#tbl_row2_value').show();
         display_settings();
 
         var tblData = `
@@ -2852,7 +2941,34 @@ include ('./layout/admin/table-pagination-css.php');
               } else {
                   $("#paginationDiv").show();
               }
-              }
+
+              var rowCount = table.rows().count();
+
+              $('#tbl_row0').html("Total Items");
+              $('#tbl_row0_value').html(rowCount);
+
+
+              var totalSum = table
+              .column(8, { page: 'current' })
+              .data()
+              .reduce(function (acc, val) {
+                  return acc + parseFloat(val);
+              }, 0);
+
+              $('#tbl_row1').html("Total Amount Before Tax");
+              $('#tbl_row1_value').html(totalSum);
+
+              var totalSum = table
+                  .column(8, { page: 'current' })
+                  .data()
+                  .reduce(function (acc, val) {
+                      return acc + parseFloat(val);
+                  }, 0);
+
+              $('#tbl_row2').html("Total Amount After Tax");
+              $('#tbl_row2_value').html(addCommasToNumber(totalSum));
+
+            }
           });
           table;
           $("#paginationDiv").html($(".dt-paging")).show();
@@ -2863,22 +2979,6 @@ include ('./layout/admin/table-pagination-css.php');
                   table.search($('#searchInput').val()).draw();
               }, 100); 
           });
-          // $('#searchInput').on({
-          //   keypress: function() { typed_into = true; },
-          //   change: function() {
-          //       if (typed_into) {
-          //           typed_into = false; 
-          //       } else {
-          //       }
-          //   }
-          // });
-          // $('#searchInput').on('keyup', function (event) {
-          //     clearTimeout(debounceTimeout);
-          //     debounceTimeout = setTimeout(function () {
-          //         table.search($('#searchInput').val()).draw();
-          //     }, 100); 
-          // });
-   
         }
         $('#product').on('keypress', function(event) {
           if (event.keyCode === 13 || event.keyCode === 27) { 
@@ -2894,10 +2994,12 @@ include ('./layout/admin/table-pagination-css.php');
           e.preventDefault();
           var is_received = $(this).data('isreceived');
           var order_id = $(this).data("id");
-          if(is_received === 1)
+          var isPaid = $(this).data("ispaid");
+        
+          var po_number = $(this).data("po_number");
+          if(isPaid === 1)
           {
-
-            var po_title = '<h6 style = "color: #FF9999; font-weight: bold">Sorry, the <i style = "color: red">PURCHASE ORDER</i> cannot be removed as it has already been received.</h6>';
+            var po_title = '<h6 style = "color: #FF9999; font-weight: bold">Sorry, the <i style = "color: red">PURCHASE ORDER</i> cannot be removed; the order may have already been received or paid.</h6>';
             $("#purchaseOrder_response .po_title").html(po_title);
             var userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 var firstName = userInfo.firstName;
@@ -2906,7 +3008,7 @@ include ('./layout/admin/table-pagination-css.php');
                 var role_id = userInfo.roleId; 
               
               
-                insertLogs('Denied',firstName + ' ' + lastName + ' '+'tries to delete' + ' ' + 'P.O order id #:' + ' ' + order_id )
+                insertLogs('Denied','Tries to delete' + ' ' + 'P.O order id #:' + ' ' + po_number )
                 
             $("#purchaseOrder_response").slideDown({
               backdrop: 'static',
@@ -2959,7 +3061,8 @@ include ('./layout/admin/table-pagination-css.php');
           $("#paginationDiv").empty().hide();
           $("#searchInput").focus();
           display_settings();
-
+          $('#tbl_row2').show();
+          $('#tbl_row2_value').show();
           var tblData = `
               <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>
                   <thead>
@@ -3043,9 +3146,9 @@ include ('./layout/admin/table-pagination-css.php');
                       render: function (data) {
                         return `
                             <div class = 'icon-container'>
-                              <i data-id='${data.order_id}' id='btn_openPayment' ${data.isPaid === 1 ? "disabled" : ""} class='bi bi-cash bi-md icon-button'></i>
+                              <i data-id='${data.order_id}' id='btn_openPayment' class='bi bi-cash bi-md icon-button  ${data.isPaid === 1 ? "disabled" : ""}'></i>
                               <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
-                              <i data-id='${data.order_id}' data-isReceived='${data.is_received}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
+                              <i data-id='${data.order_id}' data-po_number = '${data.po_number}' data-isReceived='${data.is_received}' data-isPaid = '${data.isPaid}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
                             </div>`;
                           // return `
                           //     <button data-id='${data.order_id}' class='grid-item button btn_openPayment' id='btn_openPayment' ${data.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
@@ -3066,6 +3169,32 @@ include ('./layout/admin/table-pagination-css.php');
                   } else {
                       $("#paginationDiv").show();
                   }
+                  var rowCount = table.rows().count();
+
+                  $('#tbl_row0').html("Total Items");
+                  $('#tbl_row0_value').html(rowCount);
+
+
+                  var totalSum = table
+                  .column(5, { page: 'current' })
+                  .data()
+                  .reduce(function (acc, val) {
+                      return acc + parseFloat(val);
+                  }, 0);
+
+                  $('#tbl_row1').html("Total Price");
+                  $('#tbl_row1_value').html(totalSum);
+
+                  var totalSum = table
+                      .column(6, { page: 'current' })
+                      .data()
+                      .reduce(function (acc, val) {
+                          return acc + parseFloat(val);
+                      }, 0);
+
+                  $('#tbl_row2').html("Total Amount");
+                  $('#tbl_row2_value').html(addCommasToNumber(totalSum));
+
               },
               createdRow: function (row, data, dataIndex) {
                 $(row).attr('data-id', data.order_id);
@@ -3106,7 +3235,7 @@ include ('./layout/admin/table-pagination-css.php');
           }
       }
 
-      $(".inventoryCard").on('click', '.btn_editOrder', function (e) {
+      $(".inventoryCard").on('click', '#btn_editOrder', function (e) {
         e.preventDefault();
         var order_id = $(this).data('id');
         $("#stocktransfer_div").hide();

@@ -190,7 +190,8 @@ class OrderFacade extends DBConnection
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $tbl_data = [];
-        foreach ($data as $row) {
+        foreach ($data as $row) 
+        {
             $tbl_data[] = [
                 'inventory_id' => $row['inventory_id'],
                 'po_number' => $row['po_number'],

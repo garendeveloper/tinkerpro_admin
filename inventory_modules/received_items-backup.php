@@ -407,7 +407,7 @@
                             for (var i = 0; i < data.length; i++) {
                                
                                 var item = data[i];
-                                var expired_date = item.date_expired !== "0000-00-00"? date_format(item.date_expired) : "";
+                                var expired_date = item.date_expired !== null ? date_format(item.date_expired) : "";
                                 table += "<tr data-id = " + data[i].inventory_id + ">";
                                 if(item.qty_purchased === 0)
                                 {
@@ -429,9 +429,14 @@
                                 {
                                     table += "<td style = 'text-align: center; background-color: #262626; '  ><input id = 'qty_received'  placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
 
-                                    table +=
+                                    if (data[i].date_expired === null) {
+                                        table +=
                                             "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
-                                 
+                                    }
+                                    else {
+                                        table +=
+                                            "<td style = 'text-align: center; background-color: #262626; '>" + expired_date + "</td>";
+                                    }
                                     // if (data[i].isSerialized === 1) {
                                     //     table +=
                                     //         "<td style = 'text-align: center'><div class='custom-checkbox checked disabled' id='check_isSerialized'></div></td>";

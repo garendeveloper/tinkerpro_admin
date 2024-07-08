@@ -41,8 +41,9 @@
   <link rel="stylesheet" href="assets/js/daterangepicker/daterangepicker.css">
   <link rel="stylesheet" href="assets/css/toastr.min.css">
   <link rel="stylesheet" href="assets/table-sortable/dataTables.dataTables.min.css">
-    <link rel="stylesheet" href="assets/css/flatpickr.min.css">
-
+  <link rel="stylesheet" href="assets/css/flatpickr.min.css">
+  <!-- <link rel="stylesheet" href="assets/css/choices.min.css"> -->
+  <!-- <link rel="stylesheet" href="assets/css/base.min.css"> -->
 
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>
   <script src="assets/js/jquery.min.js"></script>
@@ -74,6 +75,7 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/JsBarcode.all.js"></script>
+  <!-- <script src="assets/js/choices.min.js"></script> -->
 
 </head>
 <body>

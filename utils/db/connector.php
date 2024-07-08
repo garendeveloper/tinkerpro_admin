@@ -12,6 +12,7 @@ class DBConnection
     protected function connect()
     {
         try {
+            date_default_timezone_set('Asia/Manila');
             $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db;
             $pdo = new PDO($dsn, $this->user, $this->pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

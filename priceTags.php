@@ -492,40 +492,46 @@ h4 {
     margin-left: 0;
     margin-right: 25px;
 }
-  /* Print styles */
   @media print {
       body * {
           visibility: hidden;
       }
+      @page {
+        size: 80mm 297mm; /* Set width and height for thermal paper */
+    }
       .printable-area, .printable-area * {
           visibility: visible;
       }
       .printable-area {
           position: absolute;
-          left: 0;
+          left: -200px;
           top: 0;
+          width: 80mm;
           padding: 0;
           margin: 0;
           border: none;
+          box-sizing: border-box; 
       }
 
+      
       
     .product-info {
         background-color: white; 
         padding: 5px;
         font-size: 5px;
         line-height: 1.2;
-        width: 200px;
+        /* width: 200px; */
+        width: calc(100% - 10px);
         text-align: left;
+        box-sizing: border-box
 
     }
 
     .generated-barcode {
         display: block;
         margin: 0 auto;
-        width: 300px;
+        width: 100%;
         height: auto;
-        margin-top: -5px;
     }
 
   }

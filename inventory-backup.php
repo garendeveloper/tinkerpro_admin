@@ -199,6 +199,55 @@ include ('./layout/admin/table-pagination-css.php');
       border-collapse: collapse; 
     } 
 
+#tbl_products tbody th,
+#tbl_products tbody td {
+    padding: 2px 2px; 
+    height: 30px; 
+    line-height: 0.5; 
+    border: 1px solid white;
+}
+
+#tbl_orders tbody th,
+#tbl_orders tbody td {
+    padding: 2px 2px; 
+    height: 5px; 
+    line-height: 0.2; 
+    border: 1px solid white;
+}
+
+#tbl_all_stocks  tbody th,
+#tbl_all_stocks tbody td {
+    padding: 2px 2px; 
+    height: 5px; 
+    line-height: 0.2;
+    border: 1px solid white;
+}
+
+#tbl_all_lostanddamages tbody th,
+#tbl_all_lostanddamages tbody td {
+    padding: 2px 2px; 
+    height: 30px; 
+    line-height: 1;
+    border: 1px solid white;
+}
+
+#tbl_all_inventoryCounts tbody th,
+#tbl_all_inventoryCounts tbody td {
+    padding: 2px 2px; 
+    height: 30px; 
+    line-height: 1;
+    border: 1px solid white;
+}
+
+.inventoryCard button {
+    height: 10;
+}
+.button-compress {
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden; /* Hides any content that overflows the cell */
+    text-overflow: ellipsis; /* Displays an ellipsis (...) to indicate overflow */
+}
+
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -212,68 +261,84 @@ include ('./layout/admin/table-pagination-css.php');
       <div class="content-wrapper">
         <div
           style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-left: 15px; margin-bottom: 20px;">
-          <div class="horizontal-container" style="display: flex; align-items: center;">
-            <img src="assets/img/barcode.png" style="color: white; height: 60px; width: 50px; margin-right:5px;">
-            <input class="text-color italic-placeholder" id="searchInput" style="flex: 1 1 100%; height: 35px;"
-              placeholder="Search Product,[code,serial no., barcode, name, brand]" autocomplete="off" autofocus />
+           <div class="horizontal-container" style="display: flex; align-items: center;">
+            <img src="assets/img/barcode.png" style="color: white; height: 80px; width: 70px; margin-right:5px;">
+            <input id = "searchInput" class="text-color searchProducts" style="width: 100%; height: 45px; margin-right: 10px; font-size: 14px;" placeholder="Search Product,[code, barcode, name, brand]" autocomplete="off" autofocus/>
           </div>
           <div style="display: flex; align-items: center;">
-            <button class="icon-button" style="margin-right: 10px;">
-              <span class="search-icon"></span>
-              Search
-            </button>
-            <button class="icon-button" id="btn_openOption">
-              <span class="plus-icon"></span>
-              Option
-            </button>
+          <button id="searchBtn" name="productSearch" class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+              viewBox="0 0 491.52 491.52" xml:space="preserve">
+            <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
+            <path style="opacity:0.5;fill:#FFFFFF;enable-background:new    ;" d="M98.081,234.62c-43.316-43.315-43.882-112.979-1.264-155.595
+              c9.509-9.511,20.41-16.745,32.021-21.96c-16.497,4.812-32.056,13.702-45.064,26.71c-41.288,41.289-41.289,108.231,0,149.521
+              c18.282,18.281,41.596,28.431,65.483,30.523C130.561,258.986,112.79,249.33,98.081,234.62z"/>
+            <path style="fill:#3A556A;" d="M270.636,46.433c-61.912-61.912-162.291-61.911-224.202,0.001s-61.912,162.291-0.001,224.202
+              c57.054,57.054,146.703,61.394,208.884,13.294l14.18,14.182l28.615-28.613l-14.182-14.182
+              C332.029,193.137,327.69,103.487,270.636,46.433z M250.301,250.302c-50.681,50.681-132.852,50.681-183.534,0
+              c-50.68-50.681-50.68-132.852,0.002-183.533s132.85-50.681,183.531,0C300.982,117.45,300.982,199.621,250.301,250.302z"/>
+            <path style="fill:#E56353;" d="M305.823,258.865l-46.959,46.958c-2.669,2.67-2.669,6.996,0,9.665l174.339,174.338
+              c12.132,12.133,68.755-44.49,56.623-56.623L315.488,258.865C312.819,256.196,308.493,256.196,305.823,258.865z"/>
+            <g>
+            <rect x="409.379" y="442.628" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 1084.9951 449.4294)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
+            <rect x="260.671" y="293.889" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 725.9606 300.6683)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
+                </g>
+                </svg>&nbsp;Search</button>
+           <button id="btn_openOption"  class="btn-control addProducts" style="margin-right:10px;width:150px "><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs>
+            <style>
+              .cls-1 {
+                fill: #699f4c;
+                fill-rule: evenodd;
+              }
+            </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z"  transform="translate(-1050 -210)"/></svg>&nbsp;Option</button>
+            <button class="btn-control clearproductsBtn" style="width:120px;order: 1" id = "clear_inventory_search"><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
           </div>
         </div>
         <div>
           <div class="tbl_buttonsContainer">
             <div class="division">
               <div class="grid-container">
-                <button id="inventories" class="grid-item text-color button"><i class="bi bi-box-seam"></i>&nbsp;
+                <button id="inventories" class="grid-item pos-setting text-color button"><i class="bi bi-box-seam"></i>&nbsp;
                   Inventories</button>
-                <button id="stocks" class="grid-item text-color button"><i class="bi bi-graph-up"></i>&nbsp;
+                <button id="stocks" class="grid-item pos-setting text-color button"><i class="bi bi-graph-up"></i>&nbsp;
                   Stocks</button>
-                <button id="purchase-order" class="grid-item text-color button"><i class="bi bi-cart-check"></i>&nbsp;
+                <button id="purchase-order" class="grid-item pos-setting text-color button"><i class="bi bi-cart-check"></i>&nbsp;
                   Purchase Orders</button>
-                <button id="inventory-count" class="grid-item text-color button"><i class="bi bi-archive"></i>&nbsp;
+                <button id="inventory-count" class="grid-item pos-setting text-color button"><i class="bi bi-archive"></i>&nbsp;
                   Inventory Count</button>
-                <button id="loss-damage" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss &
+                <button id="loss-damage" class="grid-item pos-setting text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss &
                   Damage</button>
-                <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp;
+                <button id="expiration" class="grid-item pos-setting text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp;
                   Expiration <span id="expirationNotification" class="badge badge-danger"
                     style="font-size: 11px; background-color: red; color: white; "></span></button>
-                <!-- <button id="bom" class="grid-item text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button> -->
-                <!-- <button id="low-stocks" class="grid-item text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
-                        <button id="reorder-point" class="grid-item text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button> -->
+                <!-- <button id="bom" class="grid-item pos-setting text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button> -->
+                <!-- <button id="low-stocks" class="grid-item pos-setting text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
+                        <button id="reorder-point" class="grid-item pos-setting text-color button"><i class="bi bi-arrow-up-circle"></i>&nbsp; Re-order Point</button> -->
               </div>
             </div>
           
             <div class="division">
               <div class="grid-container">
-                <!-- <button id="loss-damage" class="grid-item text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button> -->
-                <!-- <button id="stock-transfer" class="grid-item text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button> -->
-                <!-- <button id="expiration" class="grid-item text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration  <span id="expirationNotification" class="badge badge-danger" style = "font-size: 11px; background-color: red; color: white; "></span></button> -->
-                <!-- <button id="loss-damage2" class="grid-item text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button> -->
-                <!-- <button id="bom2" class="grid-item text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button> -->
-                <!-- <button id="print-price-tags" class="grid-item text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button> -->
+                <!-- <button id="loss-damage" class="grid-item pos-setting text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss & Damage</button> -->
+                <!-- <button id="stock-transfer" class="grid-item pos-setting text-color button"><i class="bi bi-arrow-right-circle"></i>&nbsp; Stocks Transfer</button> -->
+                <!-- <button id="expiration" class="grid-item pos-setting text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp; Expiration  <span id="expirationNotification" class="badge badge-danger" style = "font-size: 11px; background-color: red; color: white; "></span></button> -->
+                <!-- <button id="loss-damage2" class="grid-item pos-setting text-color button"><i class="bi bi-exclamation-diamond-fill"></i>&nbsp; Loss & Damage</button> -->
+                <!-- <button id="bom2" class="grid-item pos-setting text-color button"><i class="bi bi-journal-check"></i>&nbsp; B.O.M</button> -->
+                <!-- <button id="print-price-tags" class="grid-item pos-setting text-color button"><i class="bi bi-printer"></i>&nbsp; Print Price Tags</button> -->
               </div>
             </div>
             <div class="division">
               <div class="grid-container">
-                <!-- <button id="recalculate-stocks" class="grid-item text-color button"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button> -->
+                <!-- <button id="recalculate-stocks" class="grid-item pos-setting text-color button"><i class="bi bi-calculator-fill"></i>&nbsp; Recalculate Stocks</button> -->
               </div>
             </div>
           </div>
         </div>
         <div class="row" style="margin-top: -20px;">
-          <div class="card inventoryCard" style="width: 100%; height: 70vh;">
+          <div class="card inventoryCard" style="width: 100%; height: 60vh;">
 
           </div>
-          <div id="paginationDiv"></div>
-          <div style="display: flex; margin-top: 20px">
+          <div id="paginationDiv" ></div>
+          <div style="display: flex; ">
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg
                 version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke="">
@@ -343,40 +408,11 @@ include ('./layout/admin/table-pagination-css.php');
   <?php include ("layout/admin/keyboardfunction.php") ?>
   <?php include ("./modals/purchaseOrder_response.php") ?>
   <?php include('./modals/loading-modal.php'); ?>
-
-  <script>
-
-    // var tableOffset = $(".inventoryCard table").offset().top;
-    // var $header = $(".inventoryCard table > thead").clone();
-    // var $fixedHeader = $("#header-fixed").append($header);
-
-    // $(window).bind("scroll", function() {
-    //   var offset = $(this).scrollTop();
-    //   if (offset >= tableOffset && $fixedHeader.is(":hidden")) {
-    //     $fixedHeader.show();
-    //   } else if (offset < tableOffset) {
-    //     $fixedHeader.hide();
-    //   }
-    // });
-    
-    hidePopups();
-        document.addEventListener('DOMContentLoaded', function() {
-            var dateInput = document.getElementById('date_purchased');
-            dateInput.removeAttribute('autofocus'); 
-        });
-        function hidePopups() {
-        $('#date_purchased').removeAttr('autofocus');
-        $("#p_qty").focus();
-        $("#date_purchased").flatpickr().destroy();
-        $("#date_purchased").flatpickr().close();
-      }
-     
-    </script>
   
   <script>
   
     $(document).ready(function () {
-      
+    
       $("#inventory").addClass('active');
       $("#inventories").addClass('active');
       $("#pointer").html("Inventory");
@@ -403,32 +439,6 @@ include ('./layout/admin/table-pagination-css.php');
           $('#paidSwitch').css('background-color', '');
         }
       });
-      // $('#date_purchased').datepicker({
-      //   changeMonth: true,
-      //   changeYear: true,
-      //   dateFormat: 'M dd y',
-      //   altFormat: 'M dd y',
-      //   altField: '#date_purchased',
-      //   maxDate: 0,
-      //   onSelect: function (dateText, inst) { }
-      // });
-      $("#date_purchased").prop("readonly", true).flatpickr({
-        dateFormat: "M d y",
-        onClose: function(selectedDates) {
-        }
-      });
-
-    // Event handler for the calendar button
-    // $('#calendar-btn').off('click').on('click', function () {
-
-    //   if (!$("#date_purchased").hasClass("flatpickr-open")) {
-    //       if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
-    //           $("#date_purchased").flatpickr();
-    //           $("#date_purchased").addClass("flatpickr-initialized");
-    //       }
-    //       $("#date_purchased").flatpickr().open();
-    //     }
-    // });
     $('#calendar-btn').off('click').on('click', function () {
       if (!$("#date_purchased").hasClass("flatpickr-open")) {
         if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
@@ -528,6 +538,9 @@ include ('./layout/admin/table-pagination-css.php');
   <script>
     var perPage = 25;
     $(document).ready(function () {
+      let inventoryCurrentPage = 1;
+      const inventoryPageSize = 300;
+
       var totalTax = 0;
       var totalQty = 0;
       var totalPrice = 0;
@@ -536,15 +549,23 @@ include ('./layout/admin/table-pagination-css.php');
       var isSaving = false;
       var lastInputTime = 0; 
       var productsCache = [];
+      var   toastDisplayed =false;
       $("#tbl_orders").hide();
       show_allInventories();
       show_allSuppliers();
       show_purchaseOrderNo();
       display_datePurchased();
 
+      $("#clear_inventory_search").on("click", function(){
+        $("#searchInput").val("");
+        $("#searchInput").focus();
+        $('#searchInput').keypress();
+      })
       $("#printThis").on("click", function () {
         var active_tbl_id = $(".inventoryCard table").attr('id');
+    
         if (active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks') {
+          $('#modalCashPrint').show();
           $.ajax({
             url: './reports/generate_inventory_pdf.php',
             type: 'GET',
@@ -555,6 +576,7 @@ include ('./layout/admin/table-pagination-css.php');
               active_type: active_tbl_id,
             },
             success: function (response) {
+              $('#modalCashPrint').hide();
               var newBlob = new Blob([response], { type: 'application/pdf' });
               var blobURL = URL.createObjectURL(newBlob);
 
@@ -581,7 +603,10 @@ include ('./layout/admin/table-pagination-css.php');
       })
       $('#generateEXCELBtn').click(function () {
         var active_tbl_id = $(".inventoryCard table").attr('id');
-        if (active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks') {
+  
+        if (active_tbl_id !== 'tbl_all_inventoryCounts' && active_tbl_id !== 'tbl_all_stocks') 
+        {
+          $('#modalCashPrint').show();
           var fileName = active_tbl_id.replace("tbl_", "");
           $.ajax({
             url: './reports/generate_inventory_excel.php',
@@ -593,6 +618,7 @@ include ('./layout/admin/table-pagination-css.php');
               active_type: active_tbl_id,
             },
             success: function (response) {
+              $('#modalCashPrint').hide();
               var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
               var link = document.createElement('a');
               link.href = window.URL.createObjectURL(blob);
@@ -649,7 +675,7 @@ include ('./layout/admin/table-pagination-css.php');
       $("#purchase-order").on('click', function () {
         $(".grid-container button").removeClass('active');
         $(this).addClass('active');
-        show_allOrders(1, perPage);
+        show_allOrders();
         $("#tbl_products").hide();
       })
       $(".inventoryCard").on('click', '.btn_openPayment', function () {
@@ -774,13 +800,19 @@ include ('./layout/admin/table-pagination-css.php');
               backdrop: 'static',
               keyboard: false,
             });
-            $("#stockhistory_modal").find(".modal-title").html("<span style = 'color: #FF6700; font-weight: bold'> "+info.prod_desc + "</span>&nbsp; - STOCK HISTORY")
+            $("#stockhistory_modal").find(".modal-title").html("<span style = 'font-weight: bold' class = 'text-custom'> "+info.prod_desc + "</span>&nbsp; - STOCK HISTORY")
             var tbl_rows = [];
-            for (var i = 0, len = stocks.length; i < len; i++) {
+
+            var stock_reference = info.product_stock > 0 ? "<span style = 'color: #90EE90'>" + info.product_stock + "</span>" : "<span style = 'color: #FFCCCC'>" + info.product_stock + "</span>";
+            var new_stock = stocks.length !== 0 ? stock_reference : "0.00";
+
+            for (var i = 0, len = stocks.length; i < len; i++) 
+            {
               var stockItem = stocks[i];
               var stockDate = $.datepicker.formatDate("dd M yy", new Date(stockItem.stock_date));
               var stockTimestamp = stockItem.stock_date;
-              var stock = stockItem.product_stock > 0 ? "<span style = 'color: green'>" + stockItem.stock + "</span>" : "<span style = 'color: red'>" + stockItem.stock + "<span>";
+              var stock = stockItem.stock > 0 ? "<span style = 'color: #90EE90'>" + stockItem.stock + "</span>" : "<span style = 'color: #FFCCCC'>" + stockItem.stock + "</span>";
+
               tbl_rows.push(
                 `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
@@ -795,7 +827,7 @@ include ('./layout/admin/table-pagination-css.php');
             }
             var tfoot = `<tr>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${info.product_stock}</td>
+                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
               </tr>`;
 
             $("#tbl_stocks_history tbody").html(tbl_rows);
@@ -810,9 +842,81 @@ include ('./layout/admin/table-pagination-css.php');
         $("#stockhistory_modal #inventory_id").val(id);
         display_allStocksData(id);
       })
+      // function show_purchased_order(id) {
+      //           $.ajax({
+      //               type: 'GET',
+      //               url: 'api.php?action=get_orderDataById&id=' + id,
+      //               dataType: 'json',
+      //               success: function (data) {
+      //                   var length = data.length;
+      //                   if(length > 0 )
+      //                   {
+      //                       var table = "";
+      //                       if (data[0].isReceived === 1) $("#received_status").html("RECEIVED");
+      //                       else $("#received_status").html("PENDING");
+      //                       $("#r_supplier").html(data[0].supplier);
+      //                       $("#is_received").val(data[0].isReceived);
+      //                       $("#r_datePurchased").html(date_format(data[0].date_purchased));
+      //                       $("#r_po_number").html(data[0].po_number);
+      //                       var isPaid = data[0].isPaid === 1 ?
+      //                           "<span style = 'color: lightgreen'>PAID</span>" :
+      //                           "<span style = 'color: red'>UNPAID</span>"
+      //                       $("#r_isPaid").html(isPaid);
+                            
+      //                       for (var i = 0; i < data.length; i++) {
+                               
+      //                           var item = data[i];
+      //                           var expired_date = item.date_expired !== "0000-00-00"? date_format(item.date_expired) : "";
+      //                           table += "<tr data-id = " + data[i].inventory_id + ">";
+      //                           if(item.qty_purchased === 0)
+      //                           {
+      //                               table += "<td data-id = " + data[i].inventory_id + " colspan = '2'>" + data[i].prod_desc + "</td>";
+      //                           }
+      //                           else
+      //                           {
+      //                               table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
+      //                               table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
+      //                           }
+
+      //                           table += "<td style = 'text-align: center; '>" + data[i].qty_purchased + "</td>";
+
+      //                           if(item.qty_purchased === 0)
+      //                           {
+      //                               table += "<td style = 'text-align: center; background-color: #262626; font-style: italic; color: green' colspan = '2'><b>Fully Received</b></td>";
+      //                           }
+      //                           else
+      //                           {
+      //                               table += "<td style = 'text-align: center; background-color: #262626; '  ><input id = 'qty_received'  placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
+
+      //                               if (data[i].date_expired === null) {
+      //                                   table +=
+      //                                       "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
+      //                               }
+      //                               else {
+      //                                   table +=
+      //                                       "<td style = 'text-align: center; background-color: #262626; '>" + expired_date + "</td>";
+      //                               }
+      //                           }
+      //                       }
+      //                       $("#tbl_receivedItems tbody").html(table);
+      //                       $("#po_data_div").show();
+      //                   }
+      //                   else
+      //                   {
+      //                       show_errorResponse("No purchase order found!");
+      //                   }
+      //                   is_purchasefound = false;
+      //               },
+      //               error: function (data) {
+      //                   alert("No response")
+      //               }
+      //           })
+      //   }
       $(".inventoryCard").on("dblclick", "tr", function(){
         var id = $(this).data('id');
         var active_tbl_id = $(".inventoryCard table").attr('id');
+        $("#"+active_tbl_id+" tbody").find("tr").removeClass('highlighted-row')
+        $(this).toggleClass('highlighted-row');
         switch(active_tbl_id)
         {
           case 'tbl_all_stocks':
@@ -896,7 +1000,7 @@ include ('./layout/admin/table-pagination-css.php');
                 $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(data[0].price));
               },
               error: function (data) {
-                alert("No response")
+                console.log("Server Error")
               }
             })
             break;
@@ -905,96 +1009,112 @@ include ('./layout/admin/table-pagination-css.php');
         }
        
       })
-      function show_allStocks() {
+      function display_settings()
+      {
+        $.ajax({
+          type: 'get',
+          url: 'api.php?action=pos_settings',
+          success:function(response){
+            var defaultColor = "#FF6700";
+            if(!$.isEmptyObject(response))
+            {
+              $(".inventoryCard table table-border th").css("background-color", response);
+              $(".inventoryCard table thead tr th").css("background-color", response);
+              $(".inventoryCard table th").css("background-color", response);
+
+              $("table thead tr th").css("background-color", response);
+              $("table th").css("background-color", response);
+              $("table th").css("color", "#ffffff");
+              
+            }
+            else
+            {
+            }
+          }
+        })
+      }
+    
+      function show_allStocks() 
+      {
+        $("#searchInput").focus();
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_stocks")) {
             $(".inventoryCard #tbl_all_stocks").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-
-        $("#searchInput").focus();
-        $('#modalCashPrint').show();
-        $.ajax({
-          type: 'GET',
-          url: 'api.php?action=get_allInventories',
-          success: function (data) {
-            $('#modalCashPrint').hide();
-            var tblRows = [];
-            var counter = 0;
-            if (data.length > 0) {
-              for (var i = 0, len = data.length; i < len; i++) {
-                var currentItem = data[i];
-                var stock = currentItem.product_stock;
-                if (stock > 10) stock = "<span style = 'color: yellowgreen'>" + stock + "</span>";
-                if (stock <= 10 && stock > 0) stock = "<span style = 'color: red'>" + stock + "</span>";
-                tblRows.push(
-                  `<tr data-id = '${currentItem.product_id}'>
-                      <td class="text-center" >${i + 1}</td>
-                      <td>${currentItem.prod_desc}</td>
-                      <td>${currentItem.barcode}</td>
-                      <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                      <td class="text-center" style = 'text-align: center'>${stock === -1 ? 0 : stock} </td>
-                      <td style = 'text-align: center'><button style ="border-radius: 5px; height: 25px; margin: 0;" data-id = '${currentItem.product_id}' id = "btn_openStockHistory">History</button></td>
-                  </tr>`
-                );
-              }
-            }
-
-            var tblData = `
-            <table id='tbl_all_stocks' class='text-color table-border' style='font-size: 12px;'>
+        display_settings();
+        var tblData = `
+            <table tabindex='0' id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
                 <thead>
                     <tr>
-                        <th class='text-center auto-fit'>No.</th>
-                        <th class = 'auto-fit'>Product</th>
-                        <th class='auto-fit'>Barcode</th>
-                        <th class='auto-fit' style = 'text-align: center'>Unit</th>
-                        <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
-                        <th class='auto-fit' style = 'text-align: center'>Action</th>
+                        <th class='autofit text-center'>No.</th>
+                        <th class=''>Product</th>
+                        <th >Barcode</th>
+                        <th style='text-align: center'>Unit</th>
+                        <th style='text-align: center'>Qty in Store</th>
+                        <th class='autofit' style='text-align: center'>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${tblRows.join('')}
-                </tbody>
+                <tbody></tbody>
             </table>`;
 
-            $(".inventoryCard").html(tblData);
-            // $('.inventoryCard #tbl_all_stocks').DataTable({
-            //     ordering: true,
-            //     order: [[0, 'asc']], 
-            //     pageLength: 50,
-            //     sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-            //     language: {
-            //         paginate: {
-            //             previous: '<i class="fa fa-angle-left"></i>',
-            //             next: '<i class="fa fa-angle-right"></i>'
-            //         }
-            //     },
-            // });
-            $('.inventoryCard #tbl_all_stocks').DataTable({
-              ordering: true,
-              order: [[0, 'asc']], 
-              pageLength: 300,
-              pagingType: 'full_numbers',
-              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-              fnDrawCallback: function(oSettings) {
+        $(".inventoryCard").html(tblData);
+
+        var table = $('.inventoryCard #tbl_all_stocks').DataTable({
+            serverSide: true,
+            processing: true,
+            ajax: {
+                url: 'api.php?action=get_allInventories',
+                type: 'POST'
+            },
+            language: {
+              emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
+            },
+            columns: [
+                { data: null, render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }, className: 'text-center'},
+                { data: 'prod_desc'},
+                { data: 'barcode', className: 'text-center' },
+                { data: 'uom_name', className: 'text-center' },
+                { data: 'product_stock', className: 'text-center', render: function (data) {
+                    if (data > 10) return "<span style='color: yellowgreen'>" + data + "</span>";
+                    if (data <= 10 && data > 0) return "<span style='color: red'>" + data + "</span>";
+                    return data === -1 ? 0 : data;
+                }, className: 'text-center' },
+                { data: null, render: function (data) {
+                    return `<i data-id='${data.product_id}' id='btn_openStockHistory' class="bi bi-graph-up icon-button"></i>`;
+                }, className: 'text-center' }
+            ],
+            ordering: true,
+            order: [[1, 'asc']],
+            pageLength: 100,
+            // pagingType: 'full_numbers',
+            // columnDefs: [
+            //     { targets: '_all', className: 'auto-fit' } 
+            // ],
+            // scrollY: 'calc(100vh - 800px)', // Adjust height as needed
+            // scrollCollapse: false,
+            dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+            fnDrawCallback: function (oSettings) {
                 if (oSettings.aoData.length === 0) {
-                  $("#paginationDiv").hide();
+                    $("#paginationDiv").hide();
                 } else {
-                  $("#paginationDiv").show();
+                    $("#paginationDiv").show();
                 }
-              }
-            })
-            $("#paginationDiv").html($(".dt-paging")).show();
-
-            $('#searchInput').on('keyup', function(event) {
-              $('.inventoryCard #tbl_all_stocks').DataTable().search($(this).val()).draw();
-              // if (event.keyCode === 13 || $(this).val().length >= 12)
-              // {
-               
-              //   $(this).val(''); 8996001603444
-
-              // }
-            });
-          }
+            },
+        
+            createdRow: function (row, data, dataIndex) {
+              $(row).attr('data-id', data.product_id);
+            }
+        });
+        table;
+        $("#paginationDiv").html($(".dt-paging")).show();
+        var debounceTimeout;
+        $('#searchInput').on('keyup', function (event) {
+            clearTimeout(debounceTimeout);
+            debounceTimeout = setTimeout(function () {
+                table.search($('#searchInput').val()).draw();
+            }, 100); 
         });
       }
       function show_allLossAndDamagesInfo() {
@@ -1002,7 +1122,6 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard #tbl_all_lostanddamages").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_all_lostanddamageinfo',
@@ -1010,28 +1129,28 @@ include ('./layout/admin/table-pagination-css.php');
             var rows;
             rows = data.map(function (item) {
               return "<tr>" +
-                "<td class='autofit'>" + item.reference_no + "</td>" +
-                "<td class='autofit' style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
-                "<td class='autofit' style='text-align: center'>" + item.reason + "</td>" +
-                "<td class='autofit' style='text-align: center'>" + item.total_qty + "</td>" +
-                "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
-                "<td class='autofit' style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
-                "<td class='autofit' style='text-align: center'>" + item.note + "</td>" +
-                "<td style='text-align: center' class='autofit'><button data-id = " + item.id + " id='btn_view_lossanddamage'><i class='bi bi-eye'></i></button></td>" +
+                "<td  style='text-align: center'>" + item.reference_no + "</td>" +
+                "<td  style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
+                "<td  style='text-align: center'>" + item.reason + "</td>" +
+                "<td  style='text-align: right'>" + item.total_qty + "</td>" +
+                "<td  style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
+                "<td  style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
+                "<td  style='text-align: center'>" + item.note + "</td>" +
+                "<td style='text-align: center' class='autofit'><i class='bi bi-eye' data-id = " + item.id + " id='btn_view_lossanddamage'></i></td>" +
                 "</tr>";
             }).join('');
 
             var tbl = "<table id='tbl_all_lostanddamages' class='text-color table-border' style='font-size: 12px;'>" +
               "<thead>" +
               "<tr>" +
-              "<th >Reference No.</th>" +
+              "<th class='autofit'>Reference No.</th>" +
               "<th style = 'text-align:center'>Date of Transaction</th>" +
               "<th style = 'text-align:center; background-color:red'>Reason</th>" +
               "<th style = 'text-align:center'>Total Qty</th>" +
               "<th style = 'text-align:center'>Total Cost</th>" +
               "<th style = 'text-align:center'>Overall Cost</th>" +
               "<th style = 'text-align:center'>Note</th>" +
-              "<th style = 'text-align:center'>Action</th>" +
+              "<th style = 'text-align:center' class='autofit'>Action</th>" +
               "</tr>" +
               "</thead>" +
               "<tbody>" +
@@ -1072,6 +1191,7 @@ include ('./layout/admin/table-pagination-css.php');
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_all_lostanddamages').DataTable().search($(this).val()).draw();
             });
+            display_settings();
           }
         })
       }
@@ -1080,7 +1200,7 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard #tbl_products").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-
+    
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_realtime_notifications',
@@ -1170,7 +1290,7 @@ include ('./layout/admin/table-pagination-css.php');
                 }
               })
               $("#paginationDiv").html($(".dt-paging")).show();
-
+              display_settings();
               $('#searchInput').on('keyup', function(event) {
                 $('.inventoryCard #tbl_expiredProducts').DataTable().search($(this).val()).draw();
               });
@@ -1182,18 +1302,19 @@ include ('./layout/admin/table-pagination-css.php');
             $(".inventoryCard #tbl_all_inventoryCounts").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
-  
+       
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_allInventoryCounts',
           success: function (data) {
-            var inv_count_rows;
+            var inv_count_rows = "";
             if (data.length > 0) {
               inv_count_rows = data.map(function (item) {
                 return "<tr>" +
-                  "<td class='autofit'>" + item.reference_no + "</td>" +
-                  "<td class='autofit' style='text-align: center'>" + date_format(item.date_counted) + "</td>" +
-                  "<td style='text-align: center' class='autofit'><button data-id = " + item.id + " id='btn_view_inventoryCount'><i class='bi bi-eye'></i></button></td>" +
+                  "<td style='text-align: center'>" + item.reference_no + "</td>" +
+                  "<td  style='text-align: center'>" + date_format(item.date_counted) + "</td>" +
+                  "<td style='text-align: center'><i class='bi bi-eye' data-id = " + item.id + " id='btn_view_inventoryCount'></i></td>" +
+                  // "<td style='text-align: center' class='autofit'><button style = 'height: 10px;'data-id = " + item.id + " id='btn_view_inventoryCount'><i class='bi bi-eye'></i></button></td>" +
                   "</tr>";
               }).join('');
             }
@@ -1201,9 +1322,9 @@ include ('./layout/admin/table-pagination-css.php');
             var inv_count_tbl = "<table id='tbl_all_inventoryCounts' class='text-color table-border' style='font-size: 12px;'>" +
               "<thead>" +
               "<tr>" +
-              "<th >Reference No.</th>" +
+              "<th style = 'text-align:center' class='autofit'>Reference No.</th>" +
               "<th style = 'text-align:center'>Date of Transaction</th>" +
-              "<th style = 'text-align:center'>Action</th>" +
+              "<th style = 'text-align:center' class='autofit'>Action</th>" +
               "</tr>" +
               "</thead>" +
               "<tbody>" +
@@ -1240,7 +1361,7 @@ include ('./layout/admin/table-pagination-css.php');
               }
             })
             $("#paginationDiv").html($(".dt-paging")).show();
-
+            display_settings();
             $('#searchInput').on('keyup', function(event) {
               $('.inventoryCard #tbl_all_inventoryCounts').DataTable().search($(this).val()).draw();
             });
@@ -1317,7 +1438,8 @@ include ('./layout/admin/table-pagination-css.php');
             $("#date_counted").val(date_format(infoData['date_counted']));
 
             var rows = [];
-            for (var i = 0; i < inventoryData.length; i++) {
+            for (var i = 0; i < inventoryData.length; i++) 
+            {
               var inventory = inventoryData[i];
               var row = "<tr data-id=" + inventory.inventory_id + " data-ic_id = " + inventory.inventory_count_item_id + ">";
               row += "<td>" + inventory.prod_desc + "</td>";
@@ -1425,7 +1547,10 @@ include ('./layout/admin/table-pagination-css.php');
         }
       })
       var isSavingPO = false;
+      var totalPO = 0;
+      let validationID;
       function submit_purchaseOrder() {
+        totalPO =  $("#overallTotal").text();
         if (isSavingPO) return;
         var tbl_length = $("#tbl_purchaseOrders tbody tr").length;
         if (tbl_length > 0) {
@@ -1442,14 +1567,15 @@ include ('./layout/admin/table-pagination-css.php');
             });
             dataArray.push(rowData);
           });
-
+          var isPaid = $('#paidSwitch').prop('checked') ? 1 : 0; 
+          validationID =   $("#_order_id").val();
           $.ajax({
             type: 'POST',
             url: 'api.php?action=save_purchaseOrder',
             data: {
               data: JSON.stringify(dataArray),
               po_number: $("#pcs_no").val(),
-              isPaid: $('#paidSwitch').prop('checked'),
+              isPaid: isPaid,
               date_purchased: $("#date_purchased").val(),
               supplier: $("#supplier").val(),
               product: $("#product").val(),
@@ -1465,11 +1591,10 @@ include ('./layout/admin/table-pagination-css.php');
             },
             dataType: 'json',
             success: function (response) {
+              console.log(validationID);
               isSavingPO = false;
-              console.log(response)
               if (response.status) 
               {
-             
                 var order_id = response.order_id;
                 var po_number = response.po_number;
                 resetPurchaseOrderForm();
@@ -1488,6 +1613,16 @@ include ('./layout/admin/table-pagination-css.php');
                 show_allReceivedItems_PurchaseOrders();
                 hideModals();
                 $('#show_purchasePrintModal').show()
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+                if(validationID > 0){
+                  insertLogs('P.O Updated',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO)
+                }else{
+                  insertLogs('P.O Created',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO) 
+                }
                 if($('#show_purchasePrintModal').is(":visible"))
                 {
                     var loadingImage = document.getElementById("loadingImage");
@@ -1520,7 +1655,10 @@ include ('./layout/admin/table-pagination-css.php');
                         }
                     });
                 }
-                $(".inventoryCard table").attr('id') === "tbl_orders" ? show_allOrders() : show_allInventories();
+                $(".inventoryCard").html("");
+                $(".grid-container button").removeClass('active');
+                $("#purchase-order").addClass('active');
+                show_allOrders();
               }
               else {
                 $.each(response.errors, function (key, value) {
@@ -1729,12 +1867,18 @@ include ('./layout/admin/table-pagination-css.php');
           "hideMethod": "fadeOut",
           "tapToDismiss": false,
           "toastClass": "custom-toast",
-          "onclick": function () { alert('Clicked'); }
+          "onclick": function () {  }
 
         };
         toastr.success(message);
       }
       function show_errorResponse(message) {
+        if (toastDisplayed) {
+                return; 
+            }
+
+        toastDisplayed = true; 
+
         toastr.options = {
           "onShown": function () {
             $('.custom-toast').css({
@@ -1755,7 +1899,7 @@ include ('./layout/admin/table-pagination-css.php');
           "hideMethod": "fadeOut",
           "tapToDismiss": false,
           "toastClass": "custom-toast",
-          "onclick": function () { alert('Clicked'); }
+          "onclick": function () {  }
 
         };
         toastr.error(message);
@@ -1778,10 +1922,23 @@ include ('./layout/admin/table-pagination-css.php');
             url: 'api.php?action=save_expirationNotification',
             data: { notifications: JSON.stringify(tbl_data) },
             success: function (response) {
-              if (response.status) {
-
+              if (response.status) 
+              {
                 show_sweetReponse(response.msg);
+                hideModals();
+                $(".inventoryCard").html("");
+                $(".grid-container button").removeClass('active');
+                $("#expiration").addClass('active');
                 show_expiration();
+                show_expiredProducts();
+
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+
+                insertLogs('Expiration', "Updated inventory expiration settings");
               }
             }
           })
@@ -1799,27 +1956,36 @@ include ('./layout/admin/table-pagination-css.php');
             })
             tbl_data.push(rowData);
           })
+       
           $.ajax({
             type: 'POST',
             url: 'api.php?action=save_quickInventory',
             data: {
               tbl_data: JSON.stringify(tbl_data),
               user_name: $("#first_name").val()+" "+$("#last_name").val(),
-
             },
             success: function (response) {
-              if (response.status) {
-                $("#response_modal").slideDown({
-                  backdrop: 'static',
-                  keyboard: false,
-                });
-                $("#r_message").html("<i class = 'bi bi-box-seam'></i>&nbsp; " + response.msg);
-                setTimeout(function () {
-                  $("#response_modal").slideUp();
-                }, 10000);
+              if (response.status) 
+              {
+                show_sweetReponse(response.msg);
                 var po_number = $("#q_product").val();
                 $("#tbl_quickInventories tbody").empty();
                 hideModals();
+
+                $(".inventoryCard").html("");
+                $(".grid-container button").removeClass('active');
+                $("#stocks").addClass('active');
+                show_allStocks();
+
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+
+                $.each(tbl_data, function(index, item){
+                  insertLogs('Quick Inventory', "Quick inventory: "+item.col_1 + " From: "+item.col_2 + " To: "+item.newqty);
+                })
               }
             }
           })
@@ -1839,6 +2005,8 @@ include ('./layout/admin/table-pagination-css.php');
 
               tbl_data.push(rowData);
             });
+            var reference_no = $("#ic_reference").val();
+            var date_counted = $("#date_counted").val();
             $.ajax({
               type: 'post',
               url: 'api.php?action=save_inventory_count',
@@ -1855,8 +2023,21 @@ include ('./layout/admin/table-pagination-css.php');
                   $("#tbl_inventory_count tbody").empty();
                   $("#inventorycount_form")[0].reset();
                   show_inventory_count_reference_no();
-                  show_allInventories();
                   hideModals();
+
+                  $(".inventoryCard").html("");
+                  $(".grid-container button").removeClass('active');
+                  $("#inventory-count").addClass('active');
+                  show_allInventoryCounts();
+
+                  var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                  var firstName = userInfo.firstName;
+                  var lastName = userInfo.lastName;
+                  var cid = userInfo.userId;
+                  var role_id = userInfo.roleId; 
+                  
+                  insertLogs('Inventory Count', "Successfully inventory count with reference #: "+reference_no + " Date: "+date_counted);
+              
                 }
               }
             })
@@ -1905,6 +2086,8 @@ include ('./layout/admin/table-pagination-css.php');
                   subRowData.push(row_data);
                 })
 
+                var reference = $("#ld_reference").val();
+                var date_damage = $("#date_damage").val();
                 var total_qty = $("#footer_lossand_damages thead").find("#total_qty").text();
                 var total_cost = $("#footer_lossand_damages thead").find("#total_cost").text();
                 var overall_total_cost = $("#footer_lossand_damages thead").find("#overall_total_cost").text();
@@ -1931,8 +2114,21 @@ include ('./layout/admin/table-pagination-css.php');
                       $("#footer_lossand_damages thead").find("#overall_total_cost").html("₱ 0.00");
                       $("#loss_and_damage_note").val("");
                       show_reference_no();
-                      show_allInventories();
                       hideModals();
+
+                      $(".inventoryCard").html("");
+                      $(".grid-container button").removeClass('active');
+                      $("#loss-damage").addClass('active');
+                      show_allLossAndDamagesInfo();
+
+                      var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                      var firstName = userInfo.firstName;
+                      var lastName = userInfo.lastName;
+                      var cid = userInfo.userId;
+                      var role_id = userInfo.roleId; 
+
+                      insertLogs('Loss and Damages', "Declared loss and damages with reference #: "+reference + " Date: "+date_damage + " Total Amount"+overall_total_cost);
+                
                     }
                   }
                 })
@@ -1979,6 +2175,8 @@ include ('./layout/admin/table-pagination-css.php');
                   subRowData.push(rowData);
                 });
                 var receive_form = $("#receive_all").serialize();
+                var po_number = $("#r_po_number").text();
+                var supplier = $("#r_supplier").text();
                 $.ajax({
                   type: 'POST',
                   url: 'api.php?action=save_receivedItems',
@@ -1987,7 +2185,9 @@ include ('./layout/admin/table-pagination-css.php');
                     receive_form: receive_form,
                     subRowData: JSON.stringify(subRowData),
                     po_number: $("#r_po_number").text(),
+                    supplier: $("#r_supplier").text(),
                     is_received: $("#is_received").val(),
+                    isPaid: $("#order_isPaid").val(),
                     user_name: $("#first_name").val()+" "+$("#last_name").val(),
                   },
                   success: function (response) {
@@ -2003,6 +2203,14 @@ include ('./layout/admin/table-pagination-css.php');
                       show_allInventories();
                       isSaving = false;
                       hideModals();
+
+                      var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                      var firstName = userInfo.firstName;
+                      var lastName = userInfo.lastName;
+                      var cid = userInfo.userId;
+                      var role_id = userInfo.roleId; 
+
+                      insertLogs('Received Items', "Tender received items, PO Number: "+po_number+" Supplier: "+supplier);
                     }
 
                   },
@@ -2082,19 +2290,25 @@ include ('./layout/admin/table-pagination-css.php');
         e.preventDefault();
         var product = $("#product").val();
         var product_id = $("#selected_product_id").val();
-        if (!isDataExistInTable(product_id)) {
-          if (validatePOForm()) {
-            var qty = 0;
-            var price = 0;
-            hidePopups();
-           show_purchaseQtyModal(product_id, qty, price);
+        if(product_id !== "0" && product_id !== "")
+        {
+          if (!isDataExistInTable(product_id)) {
+            if (validatePOForm()) {
+              var qty = 0;
+              var price = 0;
+              hidePopups();
+              show_purchaseQtyModal(product_id, qty, price);
+            }
+          }
+          else {
+            show_errorResponse("Item is already in the table");
           }
         }
         else {
-          show_errorResponse("Item is already in the table");
-          $("#product").val("");
-          $("#selected_product_id").val("0");
+            show_errorResponse("Product not found.");
         }
+        $("#product").val("");
+        $("#selected_product_id").val("0");
       })
       function roundToTwoDecimalPlaces(number) {
         return parseFloat(number).toFixed(2);
@@ -2115,7 +2329,7 @@ include ('./layout/admin/table-pagination-css.php');
       }
       function validateUPForm() {
         var isValid = true;
-        $('#unpaid_form   input[type=text], input[type=number], input[type=date]').each(function () {
+        $('#unpaid_form   input[type=text]').each(function () {
           if ($(this).val() === '') {
             isValid = false;
             $(this).addClass('has-error');
@@ -2125,6 +2339,7 @@ include ('./layout/admin/table-pagination-css.php');
           }
         });
 
+        console.log(isValid)
         return isValid;
       }
       function validatePOForm() {
@@ -2189,12 +2404,14 @@ include ('./layout/admin/table-pagination-css.php');
       $('#prod_form input').on('keypress', function(event) {
           if (event.keyCode === 13) {
             $(this).submit();
+            $("#product").focus();
+            $('#calendar-btn').prop('disabled', false);
           }
       });
-      $('#date_purchased').on('focus click', function(event) {
-                event.preventDefault();
-              hidePopups();
-            });
+      // $('#date_purchased').on('focus click', function(event) {
+      //           event.preventDefault();
+      //         hidePopups();
+      //       });
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
         
@@ -2229,7 +2446,6 @@ include ('./layout/admin/table-pagination-css.php');
                 } 
               else
               {
-                console.log("No")
                 $("#tbl_purchaseOrders tbody").append(
                   "<tr data-rowid = "+data['id']+">" +
                   "<td data-rowid = "+data['id']+" data-id = " + data['id'] + " data-inv_id = " + data['inventory_id']+ " data-qty = " + p_qty+ " data-price = " + price + " >" + data['prod_desc'] + "</td>" +
@@ -2248,7 +2464,6 @@ include ('./layout/admin/table-pagination-css.php');
               $("#purchaseQty_modal").hide();
               $("#prod_form")[0].reset();
               $("#product").val("");
-              show_allProducts();
               $("#item_verifier").val("");
             }
           })
@@ -2387,30 +2602,50 @@ include ('./layout/admin/table-pagination-css.php');
             hidePopups();
             var selectedProductId = ui.item.id;
             $("#selected_product_id").val(selectedProductId);
+            // if(selectedProductId !== "" && selectedProductId !== "0")
+            // {
+            //   if (!isDataExistInTable(selectedProductId)) {
+            //     var qty = 0;
+            //     var price = 0;
+            //     show_purchaseQtyModal(selectedProductId, qty, price);
+            //   }
+            //   else
+            //   {
+            //     show_errorResponse("Product already exists in the purchase table")
+            //   }
+            // }
             return false;
           },
       });
-      $("#product").on("input", function() {
-        hidePopups();
-          var term = $(this).val();
-          $(this).autocomplete('search', term);
-      });
+      // $("#product").on("input", function() {
+      //   hidePopups();
+      //     var term = $(this).val();
+      //     $(this).autocomplete('search', term);
+      // });
       $("#product").on("keypress", function(event){
         if(event.which === 13){
           $('#date_purchased').attr('readonly', true);
           $('#calendar-btn').attr('readonly', true);
           hidePopups();
           var product_id = $("#selected_product_id").val();
-          if (!isDataExistInTable(product_id)) {
-            var qty = 0;
-            var price = 0;
-           show_purchaseQtyModal(product_id, qty, price);
+          if(product_id !== "" && product_id !== "0")
+          {
+            if (!isDataExistInTable(product_id)) {
+              var qty = 0;
+              var price = 0;
+            show_purchaseQtyModal(product_id, qty, price);
+            }
+            else
+            {
+              show_errorResponse("Product already exists in the purchase table")
+            }
           }
           else
           {
-            show_errorResponse("Product already exists in the purchase table")
+            show_errorResponse("Product not found.")
           }
           $("#product").val('');
+          $("#selected_product_id").val();
         }
       
       })
@@ -2418,32 +2653,54 @@ include ('./layout/admin/table-pagination-css.php');
       $("#product").on("autocompletechange", function(event, ui) {
         var product_id = $("#selected_product_id").val();
         hidePopups();
-        if (!isDataExistInTable(product_id)) {
-          var qty = 0;
-          var price = 0;
-          show_purchaseQtyModal(product_id, qty, price);
-        }
-        else
+        if(product_id !== "" || product_id !== "0")
         {
-          show_errorResponse("Product already exists in the purchase table")
+          
+          if (!isDataExistInTable(product_id)) {
+            var qty = 0;
+            var price = 0;
+            show_purchaseQtyModal(product_id, qty, price);
+          }
+          else
+          {
+            show_errorResponse("Product already exists in the purchase table")
+          }
         }
-          $(this).val('');
+        $("#selected_product_id").val("0");
+        $("#product").val("");
       });
+      // function filterProducts(term) {
+      //   return productsCache.filter(function (row) {
+      //     return row.product.toLowerCase().includes(term) ||
+      //       row.barcode.includes(term) ||
+      //       (row.brand && row.brand.toLowerCase().includes(term)) ||
+      //       (!row.brand && term === "");
+      //   }).map(function (row) {
+      //     var brand = row.brand === null ? " " : row.brand;
+      //     return {
+      //       label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
+      //       value: row.barcode ?? row.product,
+      //       inventory_id: row.inventory_id,
+      //       id: row.product_id
+      //     };
+      //   });
+      // }
       function filterProducts(term) {
-        return productsCache.filter(function (row) {
-          return row.product.toLowerCase().includes(term) ||
-            row.barcode.includes(term) ||
-            (row.brand && row.brand.toLowerCase().includes(term)) ||
-            (!row.brand && term === "");
-        }).map(function (row) {
-          var brand = row.brand === null ? " " : row.brand;
-          return {
-            label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
-            value: row.barcode ?? row.product,
-            inventory_id: row.inventory_id,
-            id: row.product_id
-          };
-        });
+          return productsCache.filter(function(row) {
+              var lowercaseTerm = term.toLowerCase();
+              return row.product.toLowerCase().includes(lowercaseTerm) ||
+                  row.barcode.includes(lowercaseTerm) ||
+                  (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
+                  (!row.brand && lowercaseTerm === "");
+          }).map(function(row) {
+              var brand = row.brand === null ? " " : "( " + row.brand + " )";
+              return {
+                  label: row.product + " (" + row.barcode + ")",
+                  value: row.barcode ?? row.product,
+                  inventory_id: row.inventory_id,
+                  id: row.product_id
+              };
+          });
       }
       function check_ifProductCacheExists(product_id)
       {
@@ -2458,18 +2715,14 @@ include ('./layout/admin/table-pagination-css.php');
         return searchDataExists;
       }
       function hidePopups() {
-        $('#date_purchased').removeAttr('autofocus');
-        $('#calendar-btn').removeAttr('autofocus');
+        $('#calendar-btn').prop('disabled', true);
         $("#p_qty").focus();
-        $("#date_purchased").flatpickr().destroy();
-        $("#date_purchased").blur();
-        $("#date_purchased").flatpickr().close();
       }
       function show_purchaseQtyModal(product_id, qty, price )
       {
         hidePopups();
         $("#prod_form #p_qty").focus();
-        if(product_id !== -1)
+        if(product_id !== "" && product_id !== "0")
         {
           $("#selected_product_id").val(product_id);
           $("#purchaseQty_modal").slideDown({
@@ -2491,6 +2744,10 @@ include ('./layout/admin/table-pagination-css.php');
             }
           });
         }
+        else
+        {
+          show_errorResponse("Product not found.")
+        }
       }
       function show_allProducts() {
         $.ajax({
@@ -2510,248 +2767,324 @@ include ('./layout/admin/table-pagination-css.php');
           }
         });
       }
-     
-      function show_allInventories() {
+      function show_allInventories() 
+      {
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
             $(".inventoryCard #tbl_products").DataTable().destroy();
         }
         $("#paginationDiv").empty().hide();
+        $("#searchInput").focus();
+        display_settings();
 
-        $('#modalCashPrint').show();
-        $.ajax({
-          type: 'GET',
-          url: 'api.php?action=get_allInventories',
-          success: function (data) {
-            var tblRows = [];
-            if (data.length > 0) {
-              for (var i = 0, len = data.length; i < len; i++) 
-              {
-                var currentItem = data[i];
-                var stock = currentItem.product_stock !== null ? currentItem.product_stock : 0;
-                tblRows.push(
-                    `<tr>
-                          <td class="text-center">${i + 1}</td>
-                          <td>${currentItem.prod_desc}</td>
-                          <td>${currentItem.barcode}</td>
-                          <td class="text-center" style = 'text-align: center'>${currentItem.uom_name}</td>
-                          <td class="text-center" style = 'text-align: center'>${currentItem.qty_purchased}</td>
-                                   <td class="text-center" style = 'text-align: center'>${currentItem.qty_received}</td>
-                          <td class="text-center" style = 'text-align: center'>${stock}</td>
-                          <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.cost)}</td>
-                          <td class="text-right" style = 'text-align: center'>&#x20B1; ${addCommasToNumber(currentItem.prod_price)}</td>
-                          <td style='text-align: center'>
-                          ${stock <= 10 && currentItem.isReceived == 0 ? "<span style='color: violet'><i>TO PURCHASE</i></span>" :
-                            (stock > 0 && currentItem.isReceived == 2 ? "<span style='color: yellow'>PURCHASED</span>" :
-                              "<span style='color: lightgreen'>RECEIVED</span>")}
-                        </td>
-                      </tr>`
-                  );
-              }
-            }
-
-            var tblData = `
-            <table tabindex = '0' id='tbl_products' class='text-color table-border display' style='font-size: 12px;'>
+        var tblData = `
+            <table tabindex='0' id='tbl_products' class='text-color table-border display' style='font-size: 12px;'>
                 <thead>
                     <tr>
                         <th class='text-center auto-fit'>No.</th>
-                        <th class = 'auto-fit'>Product</th>
+                        <th class='auto-fit'>Product</th>
                         <th class='auto-fit'>Barcode</th>
-                        <th class='auto-fit' style = 'text-align: center'>Unit</th>
-                        <th class='auto-fit' style = 'text-align: center'>Qty Purchased</th>
-                          <th class='auto-fit' style = 'text-align: center'>Qty Received</th>
-                        <th class='auto-fit' style = 'text-align: center'>Qty in Store</th>
-                        <th class='auto-fit' style = 'text-align: center'>Amount Before Tax</th>
-                        <th class='auto-fit' style = 'text-align: center'>Amount After Tax</th>
-                        <th class='auto-fit' style = 'text-align: center'>Document Type</th>
+                        <th class='auto-fit' style='text-align: center'>UOM</th>
+                        <th class='auto-fit' style='text-align: center'>Qty Purchased</th>
+                        <th class='auto-fit' style='text-align: center'>Qty Received</th>
+                        <th class='auto-fit' style='text-align: center'>Qty in Store</th>
+                        <th class='auto-fit' style='text-align: center'>Amount Before Tax</th>
+                        <th class='auto-fit' style='text-align: center'>Amount After Tax</th>
+                        <th class='auto-fit' style='text-align: center'>Document Type</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${tblRows.join('')}
-                </tbody>
-            </table>`;
+                <tbody></tbody>
+            </table> 
+            `;
 
-            $(".inventoryCard").html(tblData);
-            $('#modalCashPrint').hide();
+        $(".inventoryCard").html(tblData);
+   
 
-              // var table = $('.inventoryCard #tbl_products').DataTable({
-              //     ordering: true,
-              //     order: [[0, 'asc']],
-              //     pageLength: 300,
-              //     dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-              //     language: {
-              //         paginate: {
-              //             previous: '<i class="fa fa-angle-left"></i>',
-              //             next: '<i class="fa fa-angle-right"></i>'
-              //         }
-              //     },
-              //     keys: true
-              // });
-              $('.inventoryCard #tbl_products').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 300,
-                pagingType: 'full_numbers',
-                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-                fnDrawCallback: function(oSettings) {
-                  if (oSettings.aoData.length === 0) {
-                    $("#paginationDiv").hide();
-                  } else {
-                    $("#paginationDiv").show();
-                  }
-                }
-              })
-              $("#paginationDiv").html($(".dt-paging")).show();
+        var table = $('.inventoryCard #tbl_products').DataTable({
+          serverSide: true,
+          processing: true,
+          ajax: {
+            url: 'api.php?action=get_allInventories',
+            type: 'POST'
+          },
+          language: {
+              emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
+          },
+          columns: [
+              { data: null, render: function (data, type, row, meta) {
+                  return meta.row + meta.settings._iDisplayStart + 1;
+              } , className: 'text-center'},
+              { data: 'prod_desc' },
+              { data: 'barcode' },
+              { data: 'uom_name', className: 'text-center' },
+              { data: 'all_qty_purchased', className: 'text-center' },
+              { data: 'all_qty_received', className: 'text-center' },
+              { data: 'product_stock', className: 'text-center' },
+              { data: 'cost', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
+              { data: 'prod_price', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
+              { data: null, render: function (data) {
+                var stock = data.product_stock || 0;
+                var stock_count = data.stock_count;
+                var stock_status = data.stock_status === 1;
+                var isReceived = data.latest_isReceived;
+                var qty_purchased = data.all_qty_purchased;
+                var qty_received = data.all_qty_received;
 
-              $('#searchInput').on('input', function(event) {
-                $('.inventoryCard #tbl_products').DataTable().search($(this).val()).draw();
-              });
+                var partially_received = qty_purchased !== 0 && qty_purchased < qty_received;
+                var fully_received = qty_purchased === 0 && qty_received !== 0;
+                var is_lowstock = stock_status && stock < stock_count;
+                var span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
+                if (isReceived === 1 && is_lowstock && fully_received) span = "<span><i style='color: #72bf6a; font-weight: bold'>RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
+                if (isReceived === 1 && !is_lowstock && fully_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>RECEIVED</i></span>";
+                if (isReceived === 1 && is_lowstock && partially_received) span = "<span><i style='color: #FF6900; font-weight: bold'>PARTIALLY RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
+                if (isReceived === 1 && !is_lowstock && partially_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>PARIALLY RECEIVED</i></span>";
+                // if (stock_status && stock < stock_count) span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
+                return span;
+              }, className: 'text-center' }
+          ],
+          ordering: true,
+          order: [[1, 'asc']],
+          pageLength: 100,
+          pagingType: 'full_numbers',
+          dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+          fnDrawCallback: function (oSettings) {
+              if (oSettings.aoData.length === 0) {
+                  $("#paginationDiv").hide();
+              } else {
+                  $("#paginationDiv").show();
+              }
+              }
+          });
+          table;
+          $("#paginationDiv").html($(".dt-paging")).show();
+          var debounceTimeout;
+          $('#searchInput').on('keyup', function (event) {
+              clearTimeout(debounceTimeout);
+              debounceTimeout = setTimeout(function () {
+                  table.search($('#searchInput').val()).draw();
+              }, 100); 
+          });
+          // $('#searchInput').on({
+          //   keypress: function() { typed_into = true; },
+          //   change: function() {
+          //       if (typed_into) {
+          //           typed_into = false; 
+          //       } else {
+          //       }
+          //   }
+          // });
+          // $('#searchInput').on('keyup', function (event) {
+          //     clearTimeout(debounceTimeout);
+          //     debounceTimeout = setTimeout(function () {
+          //         table.search($('#searchInput').val()).draw();
+          //     }, 100); 
+          // });
+   
+        }
+        $('#product').on('keypress', function(event) {
+          if (event.keyCode === 13 || event.keyCode === 27) { 
+            hidePopups();
           }
         });
-      }
-      $('#product').on('keypress', function(event) {
-        if (event.keyCode === 13 || event.keyCode === 27) { 
-           hidePopups();
+        function date_format(date) {
+          var date = new Date(date);
+          var formattedDate = $.datepicker.formatDate("M dd yy", date);
+          return formattedDate;
         }
-      });
-      function date_format(date) {
-        var date = new Date(date);
-        var formattedDate = $.datepicker.formatDate("M dd yy", date);
-        return formattedDate;
-      }
-      $(".inventoryCard").on("click", "#btn_removeOrder", function(e){
-        e.preventDefault();
-        var is_received = $(this).data('isreceived');
-        var order_id = $(this).data("id");
-        if(is_received === 1)
-        {
-          var po_title = '<h6 style = "color: #FF9999; font-weight: bold">Sorry, the <i style = "color: red">PURCHASE ORDER</i> cannot be removed as it has already been received.</h6>';
-          $("#purchaseOrder_response .po_title").html(po_title);
-          $("#purchaseOrder_response").slideDown({
-            backdrop: 'static',
-            keyboard: false,
-          });
-          $("#response_order_id").val("0");
-          $("#po_btn_continue").hide();
-        }
-        else
-        {
-          var po_title = '<h6>Are you sure you want to delete the <i style="color: #FF6700">PURCHASE ORDER</i>?</h6>';
-          po_title += '<h6>This action cannot be undone!</h6>';
-          $("#purchaseOrder_response .po_title").html(po_title);
-          $("#purchaseOrder_response").slideDown({
-            backdrop: 'static',
-            keyboard: false,
-          });
-          $("#response_order_id").val(order_id);
-          $("#po_btn_continue").show();
-        }
-      })
-      $("#po_btn_continue").on("click", function(){
-        $.ajax({
-            type: 'get',
-            url: 'api.php?action=delete_purchaseOrder',
-            data: {
-                id: $("#response_order_id").val(),
-            },
-            success: function(response){
-                if(response.status)
-                {
-                  $("#purchaseOrder_response").hide();
-                  $("#response_order_id").val("");
-                  show_sweetReponse(response.message);
-                  show_allOrders(1, 300);
-                }
-            },
-            error: function(response)
-            {
-                console.log("Server Error:")
-            }
+        $(".inventoryCard").on("click", "#btn_removeOrder", function(e){
+          e.preventDefault();
+          var is_received = $(this).data('isreceived');
+          var order_id = $(this).data("id");
+          var isPaid = $(this).data("ispaid");
+        
+          var po_number = $(this).data("po_number");
+          if(isPaid === 1)
+          {
+            var po_title = '<h6 style = "color: #FF9999; font-weight: bold">Sorry, the <i style = "color: red">PURCHASE ORDER</i> cannot be removed; the order may have already been received or paid.</h6>';
+            $("#purchaseOrder_response .po_title").html(po_title);
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+              
+              
+                insertLogs('Denied','Tries to delete' + ' ' + 'P.O order id #:' + ' ' + po_number )
+                
+            $("#purchaseOrder_response").slideDown({
+              backdrop: 'static',
+              keyboard: false,
+            });
+            $("#response_order_id").val("0");
+            $("#po_btn_continue").hide();
+          }
+          else
+          {
+            var po_title = '<h6>Are you sure you want to delete the <i style="color: #FF6700">PURCHASE ORDER</i>?</h6>';
+            po_title += '<h6>This action cannot be undone!</h6>';
+            $("#purchaseOrder_response .po_title").html(po_title);
+            $("#purchaseOrder_response").slideDown({
+              backdrop: 'static',
+              keyboard: false,
+            });
+            $("#response_order_id").val(order_id);
+            $("#po_btn_continue").show();
+          }
         })
-      })
-      function show_allOrders(currentPage, perPage) {
-        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
-            $(".inventoryCard #tbl_products").DataTable().destroy();
-        }
-        $("#paginationDiv").empty().hide();
-
-        $("#tbl_orders").show();
-        $.ajax({
-          type: 'GET',
-          url: 'api.php?action=get_allOrders&currentPage=' + currentPage + '&perPage=' + perPage,
-          success: function (data) {
-            var tblRows = [];
-            if (data.length > 0) {
-              for (var i = 0, len = data.length; i < len; i++) {
-                var currentItem = data[i];
-                if (currentItem.order_type === 1) {
-                  var dueDateCell = currentItem.due_date === null ? "Not Available" : date_format(currentItem.due_date);
-                  var isPaidCell = currentItem.isPaid === 1 ? "<td class='text-center badge-success'>Paid</td>" : "<td class='text-center badge-danger'>Unpaid</td>";
-                  var status = currentItem.is_received === 1 ? "<td class='text-center badge-success'>Received</td>" : "<td class='text-center badge-warning' style = 'color: yellow;'>To Receive</td>";
-
-                  tblRows.push(
-                    `<tr data-id='${currentItem.order_id}'>
-                          <td style='text-align: center'>${currentItem.po_number}</td>
-                          <td>${currentItem.supplier}</td>
-                          <td class='text-center'>${date_format(currentItem.date_purchased)}</td>
-                          <td class='text-center'>${dueDateCell}</td>
-                          <td style='text-align: right'>&#x20B1;&nbsp;${addCommasToNumber(currentItem.price)}</td>
-                          ${isPaidCell}
-                          ${status}
-                          <td style='text-align: center'>
-                              <button data-id='${currentItem.order_id}' class='grid-item button btn_openPayment' id = "btn_openPayment" ${currentItem.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
-                              <button data-id='${currentItem.order_id}' class='grid-item button btn_editOrder' id = "btn_editOrder"><i class='bi bi-pencil-fill bi-md'></i></button>
-                              <button data-id='${currentItem.order_id}' data-isReceived='${currentItem.is_received}' class='grid-item button btn_removeOrder' id = "btn_removeOrder"><i class='bi bi-trash bi-md'></i></button>
-                          </td>
-                      </tr>`
-                  );
-                }
+        $("#po_btn_continue").on("click", function(){
+          $.ajax({
+              type: 'get',
+              url: 'api.php?action=delete_purchaseOrder',
+              data: {
+                  id: $("#response_order_id").val(),
+              },
+              success: function(response){
+        
+                  if(response.status)
+                  {
+                    $("#purchaseOrder_response").hide();
+                    $("#response_order_id").val("");
+                    show_sweetReponse(response.message);
+                    show_allOrders();
+                    show_allReceivedItems_PurchaseOrders();
+                  }
+              },
+              error: function(response)
+              {
+                  console.log("Server Error:")
               }
-            }
+          })
+        })
+        function show_allOrders() {
+          if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_orders")) {
+              $(".inventoryCard #tbl_orders").DataTable().destroy();
+          }
+          $("#paginationDiv").empty().hide();
+          $("#searchInput").focus();
+          display_settings();
 
-
-            var tblData = `
-              <table id='tbl_orders' class='text-color table-border' style='font-size: 12px;'>
+          var tblData = `
+              <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>
                   <thead>
                       <tr>
                           <th style='width: 2%;'>PO#</th>
                           <th style='width: 4%;'>Supplier</th>
                           <th style='width: 2%;'>Date Purchased</th>
                           <th style='width: 2%;'>Due Date</th>
+                          <th style='width: 2%;'>Qty</th>
+                          <th style='width: 2%;'>Price</th>
                           <th style='width: 2%;'>Total</th>
                           <th style='width: 2%;'>Is Paid</th>
                           <th style='width: 2%;'>Status</th>
-                          <th style='width: 1%;'>Action</th>
+                          <th style='width: 1%;' class='autofit'>Action</th>
                       </tr>
                   </thead>
-                  <tbody>
-                      ${tblRows.join('')}
-                  </tbody>
-              </table>`;
+                  <tbody></tbody>
+              </table> `;
 
-            $(".inventoryCard").html(tblData);
-            $('.inventoryCard #tbl_orders').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 300,
-                // sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-                // fnDrawCallback: function(oSettings) {
-                //   if (oSettings.aoData.length === 0) {
-                //     $("#tbl_products_wrapper").html('<div style="text-align: center; padding: 20px;">No data available in table <img src="./assets/img/tinkerpro-logo-light.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"></div>');
-                //     $("#paginationDiv").empty().hide();
-                //   } else {
-                //     $("#paginationDiv").show();
-                //   }
-                // }
-            });
-            $("#paginationDiv").html($(".dt-paging")).show();
+          $(".inventoryCard").html(tblData);
 
-            $('#searchInput').on('keyup', function(event) {
-              $('.inventoryCard #tbl_orders').DataTable().search($(this).val()).draw();
-            });
-          }
-        });
+          var table = $('.inventoryCard #tbl_orders').DataTable({
+              serverSide: true,
+              processing: true,
+              ajax: {
+                  url: 'api.php?action=get_allOrders',
+                  type: 'GET'
+              },
+              language: {
+                emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
+              },
+              columns: [
+                  { data: 'po_number', className: 'text-center' },
+                  { data: 'supplier' },
+                  { data: 'date_purchased', className: 'text-center' },
+                  {
+                      data: 'due_date',
+                      className: 'text-center',
+                      render: function (data) {
+                          return data ? date_format(data) : 'Not Available';
+                      }
+                  },
+                  {
+                      data: 'totalQty',
+                      className: 'text-right',
+                      render: function (data) {
+                        return data;
+                      }
+                  },
+                  {
+                      data: 'totalPrice',
+                      className: 'text-right',
+                      render: function (data) {
+                        return '&#x20B1;&nbsp;' + addCommasToNumber(data);
+                      }
+                  },
+                  {
+                      data: 'price',
+                      className: 'text-right',
+                      render: function (data) {
+                          return '&#x20B1;&nbsp;' + addCommasToNumber(data);
+                      }
+                  },
+                  {
+                      data: 'isPaid',
+                      className: 'text-center',
+                      render: function (data) {
+                          return data === 1 ? "<span class='text-center badge-success'>Paid</span>" : "<span class='text-center badge-danger'>Unpaid</span>";
+                      }
+                  },
+                  {
+                      data: 'is_received',
+                      className: 'text-center',
+                      render: function (data) {
+                          return data === 1 ? "<span class='text-center badge-success' >Received</span>" : "<span class='text-center badge-warning' style = 'color: yellow;'>To Receive</span>";
+                      }
+                  },
+                  {
+                      data: null,
+                      className: 'text-center',
+                      render: function (data) {
+                        return `
+                            <div class = 'icon-container'>
+                              <i data-id='${data.order_id}' id='btn_openPayment' ${data.isPaid === 1 ? "disabled" : ""} class='bi bi-cash bi-md icon-button'></i>
+                              <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
+                              <i data-id='${data.order_id}' data-po_number = '${data.po_number}' data-isReceived='${data.is_received}' data-isPaid = '${data.isPaid}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
+                            </div>`;
+                          // return `
+                          //     <button data-id='${data.order_id}' class='grid-item button btn_openPayment' id='btn_openPayment' ${data.isPaid === 1 ? "disabled" : ""}><i class='bi bi-cash bi-md'></i></button>
+                          //     <button data-id='${data.order_id}' class='grid-item button btn_editOrder' id='btn_editOrder'><i class='bi bi-pencil-fill bi-md'></i></button>
+                          //     <button data-id='${data.order_id}' data-isReceived='${data.is_received}' class='grid-item button btn_removeOrder' id='btn_removeOrder'><i class='bi bi-trash bi-md'></i></button>
+                          // `;
+                      }
+                  }
+              ],
+              ordering: true,
+              order: [[0, 'asc']],
+              pageLength: 100,
+              pagingType: 'full_numbers',
+              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+              fnDrawCallback: function (oSettings) {
+                  if (oSettings.aoData.length === 0) {
+                      $("#paginationDiv").hide();
+                  } else {
+                      $("#paginationDiv").show();
+                  }
+              },
+              createdRow: function (row, data, dataIndex) {
+                $(row).attr('data-id', data.order_id);
+              }
+          });
+
+          table;
+          $("#paginationDiv").html($(".dt-paging")).show();
+          var debounceTimeout;
+          $('#searchInput').on('keyup', function (event) {
+              clearTimeout(debounceTimeout);
+              debounceTimeout = setTimeout(function () {
+                  table.search($('#searchInput').val()).draw();
+              }, 100); 
+          });
       }
+      
       $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
           var productId = $(this).find("td[data-id]").data("id");
           var qty_purchased = $(this).find("td:nth-child(2)").text();
@@ -3061,31 +3394,18 @@ include ('./layout/admin/table-pagination-css.php');
           $("#optionModal").show();
           $(".optionmodal-content").show();
         }, 100);
-        hidePopups();
         $("#po_form #product").focus();
       }
     })
+    // $(document).on('click', function(event) {
+    //   var $modal = $('#optionModal');
+    //   if (!$modal.is(event.target) && $modal.has(event.target).length === 0) {
+    //     $modal.hide(); 
+    //   }
+    // });
   </script>
   <script>
-    // $(document).on('input', '#product', function () {
-    //   var searchTerm = $(this).val().trim().toLowerCase();
-    //   $('.search-dropdown-item').each(function () {
-    //     var text = $(this).text().trim().toLowerCase();
-    //     if (text.includes(searchTerm)) {
-    //       $(this).show();
-    //     }
-    //     else {
-    //       $(this).hide();
-    //     }
-    //   });
-    //   $("#d_products").css('display', searchTerm ? 'block' : 'none');
-    // });
-    // $(document).on('click', '.search-dropdown-item', function () {
-    //   var clickedItem = $(this);
-    //   $("#product").val(clickedItem.text());
-    //   $("#d_products").css('display', 'none');
-    // });
-  
+
     $(document).on('click', '.search-dropdown-item1', function () {
       var clickedItem = $(this);
       $("#supplier").val(clickedItem.text());

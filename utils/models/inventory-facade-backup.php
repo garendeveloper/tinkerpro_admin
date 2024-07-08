@@ -252,12 +252,12 @@ class InventoryFacade extends DBConnection
     }
     public function get_realtime_notifications()
     {
-        date_default_timezone_set('Asia/Manila');
-        $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired
-                    FROM inventory
-                    INNER JOIN products ON products.id = inventory.product_id
-                    INNER JOIN received_items ON received_items.inventory_id = inventory.id
-                    WHERE received_items.date_expired IS NOT NULL  ";
+
+        $query = "SELECT products.*, inventory.*, inventory.id as inventory_id
+                FROM inventory
+                INNER JOIN products ON products.id = inventory.product_id
+                WHERE inventory.date_expired IS NOT NULL 
+                ORDER BY inventory.id DESC;";
         
         $result = $this->connect()->prepare($query); 
         $result->execute();
@@ -267,12 +267,8 @@ class InventoryFacade extends DBConnection
         {
             $expiration_date = new DateTime($row['date_expired'] ?? '');
             $now = new DateTime();
-        
-            $interval = $now->diff($expiration_date);
+            $interval = $expiration_date->diff($now);
             $days_remaining = $interval->days;
-            if ($expiration_date > $now) {
-                $days_remaining++;
-            }
             $products[] = [
                 'prod_desc'=>$row['prod_desc'],
                 'barcode'=>$row['barcode'],
@@ -672,13 +668,6 @@ class InventoryFacade extends DBConnection
         $sql->execute();
         return $sql->fetch();
     }
-    public function get_orderDataByPONumber($po_number)
-    {
-        $stmt = $this->connect()->prepare("SELECT orders.* FROM orders 
-                                            WHERE orders.po_number = :po_number");
-        $stmt->execute([':po_number'=>$po_number]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
     public function save_receivedItems($formData)
     {
         $tbl_data = json_decode($formData['tbl_data'], true);
@@ -687,14 +676,13 @@ class InventoryFacade extends DBConnection
         // $serializedFormData = $formData['receive_form'];
         $po_number = $formData["po_number"];
         $isPaid = $formData["isPaid"];
-        $order_id = $this->get_orderDataByPONumber($po_number)['id'];
         foreach ($tbl_data as $row) 
         {
             $inventory_id = $row["inventory_id"];
             $qty_received = $row["qty_received"];
     
-            $expired_date = null;
-            if(isset($row["date_expired"]) && $row["date_expired"] !== "")
+            $expired_date = "";
+            if(isset($row["date_expired"]))
             {
                 $expired_date = date('Y-m-d', strtotime($row["date_expired"]));
             }
@@ -713,14 +701,18 @@ class InventoryFacade extends DBConnection
                 $sql->bindParam(":po_number", $po_number, PDO::PARAM_STR);
                 $sql->execute();
 
-                $product_info = $this->get_productInfoByInventoryId($inventory_id);
-                $product_id = $product_info['prod_id'];
+                $sql = "UPDATE inventory SET qty_received = :v1, date_expired = :v2, isSerialized = :v3 WHERE id = :id";
+                $sqlStatement = $this->connect()->prepare($sql);
+                $sqlStatement->bindParam(':v1', $qty_received);
+                $sqlStatement->bindParam(':v2', $expired_date, PDO::PARAM_STR);
+                $sqlStatement->bindParam(':v3', $is_serialized, PDO::PARAM_INT);
+                $sqlStatement->bindParam(':id', $inventory_id);
+                $sqlStatement->execute();
 
                 if($is_received)
                 {
                     $isReceived = 1;
-
-                    $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = qty_received + :qty_received, qty_purchased = qty_purchased - :counted WHERE id = :id");
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = :qty_received, qty_purchased = qty_purchased - :counted WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
                     $stmt->bindParam(":isReceived", $isReceived); 
                     $stmt->bindParam(":qty_received", $qty_received);
@@ -728,17 +720,8 @@ class InventoryFacade extends DBConnection
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
-                    $stmt = $this->connect()->prepare("
-                        INSERT INTO received_items (inventory_id, qty_received, date_expired)
-                        VALUES (:inventory_id, :qty_received, :date_expired)
-                    ");
-                    $params = [
-                        ':inventory_id' => $inventory_id,
-                        ':qty_received' => $qty_received,
-                        ':date_expired'=> $expired_date
-                    ];
-                    $stmt->execute($params);
-
+                    $product_info = $this->get_productInfoByInventoryId($inventory_id);
+                    $product_id = $product_info['prod_id'];
 
                     if($isPaid === 0)
                     {
@@ -807,7 +790,6 @@ class InventoryFacade extends DBConnection
                 else
                 {
                     $isReceived = 1;
-
                     $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = :qty_received, qty_purchased = qty_purchased - :counted WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
                     $stmt->bindParam(":isReceived", $isReceived); 
@@ -816,17 +798,13 @@ class InventoryFacade extends DBConnection
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
-                    $stmt = $this->connect()->prepare("
-                        INSERT INTO received_items (inventory_id, qty_received, date_expired)
-                        VALUES (:inventory_id, :qty_received, :date_expired)
-                    ");
-                    $params = [
-                        ':inventory_id' => $inventory_id,
-                        ':qty_received' => $qty_received,
-                        ':date_expired'=> $expired_date
-                    ];
-                    $stmt->execute($params);
-
+                    // $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock, date)
+                    //                                     VALUES (?, ?, ?)");
+                    // $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                    // $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
+                    // $stmt->bindParam(3, $currentDate, PDO::PARAM_STR); 
+                    // $stmt->execute();
+                    $product_id = get_productInfoByInventoryId($inventory_id)['prod_id'];
                     $stmt = $this->connect()->prepare("UPDATE products SET product_stock = product_stock + :new_stock WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
                     $stmt->bindParam(":id", $product_id); 
