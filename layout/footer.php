@@ -97,7 +97,10 @@ $(document).ready(function() {
             $(".title_div span").css('color', "#FFFFF");
             $(".otherinput").css('background-color', "#262626");
             $(".otherinput").css('border', "1px solid "+response);
-  
+            $(".inputGray").css('background-color', "#7C7C7C");
+            $(".inputGray").css('border', "1px solid "+response);
+            $(".th-noborder").css('border', 'none')
+            $(".highlighted").css("--hover-bg-color", response)
           }
           else
           {

@@ -379,24 +379,9 @@ tbody td {
     line-height:1;
 }
 
-.printable-area{
-  width: 100%;
-  height: 100%;
-  display: block;
-  /* background-color: #D3D3D3; */
-  color: #000;
-  border: 1px solid white;
-}
+
 input{
   font-family: Century Gothic;
-}
-@media print {
-  .printable-area {
-    display: block !important; 
-  }
-  .no-print {
-    display: none; 
-  }
 }
 
 .mainDiv {
@@ -459,82 +444,107 @@ h4 {
 .barcode-container {
   display: inline-block;
   position: relative;
-  padding: 20px;
+  padding: 10px; /* Adjust padding as necessary */
   font-family: Century Gothic;
-  margin-bottom: 25px;
+  margin-bottom: 2mm; /* Adjust spacing between rows */
   width: 30mm;
   height: 40mm;
-  box-sizing: 'border-box';
+  box-sizing: border-box;
 }
 
 .product-info {
-    background-color: white; 
-    padding: 5px;
-    font-size: 12px;
-    line-height: 1.2;
-    width: 200px;
-    text-align: left;
-
+  background-color: white;
+  padding: 5px;
+  font-size: 12px;
+  line-height: 1.2;
+  width: 200px;
+  text-align: left;
 }
 
 .generated-barcode {
-    display: block;
-    margin: 0 auto;
-    width: 200px;
-    height: auto;
-    margin-top: -10px;
+  display: block;
+  margin: 0 auto;
+  width: 200px;
+  height: auto;
+  margin-top: -10px;
 }
-.barcode-container {
-    height: 110px;
-    line-height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    margin-left: 0;
-    margin-right: 25px;
-}
-  @media print {
-      body * {
-          visibility: hidden;
-      }
-      @page {
-        size: 80mm 297mm; /* Set width and height for thermal paper */
+@media print {
+  /* styles for printing */
+  @page {
+        size: 40mm 297mm; /* Set width and height for thermal paper */
     }
-      .printable-area, .printable-area * {
-          visibility: visible;
-      }
-      .printable-area {
-          position: absolute;
-          left: -200px;
-          top: 0;
-          width: 80mm;
-          padding: 0;
-          margin: 0;
-          border: none;
-          box-sizing: border-box; 
-      }
-
-      
-      
+  body * {
+        visibility: hidden;
+    }
+     .printable-area, .printable-area * {
+        visibility: visible;
+    }
+  .printable-area {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    margin-top:0px;
+    top:0;
+    left:0;
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+  }
+  .barcode-container {
+    width: 30mm;
+    height: 40mm;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  .product-info {
+    font-size: 10pt;
+    margin-bottom: 2mm;
+  }
+  .generated-barcode {
+    width: 100%;
+    height: auto;
+    margin-top: -1mm;
+  }
+}
+    /* .printable-area, .printable-area * {
+        visibility: visible;
+    }
+    .printable-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+        border: none;
+        display: block;
+        clear: both; 
+    }
+    .barcode-container {
+        margin-top: 2mm; 
+        height: 30mm; 
+        width: 40mm; 
+        text-align: center;
+        vertical-align: middle;
+        margin-left: 0; 
+        display: inline-block;
+        clear: both; 
+    }
     .product-info {
         background-color: white; 
         padding: 5px;
-        font-size: 5px;
+        font-size: 10px;
         line-height: 1.2;
-        /* width: 200px; */
-        width: calc(100% - 10px);
+        width: 80mm;
         text-align: left;
-        box-sizing: border-box
-
+        box-sizing: border-box;
     }
-
     .generated-barcode {
         display: block;
-        margin: 0 auto;
-        width: 100%;
-        height: auto;
+        width: 100%; 
+        height: auto; 
+        margin-top: -1mm; 
     }
-
-  }
+} */
 </style>
 <script>
 		Number.prototype.zeroPadding = function(){
@@ -589,8 +599,8 @@ h4 {
                             <table id="tbl_priceTags" class="text-color table-border " style="margin-top: -3px; ">
                                 <thead>
                                     <tr>
-                                        <th class = "otherinput" style="background-color: #1E1C11; width: 50%; font-size: 12px;">ITEM DESCRIPTION</th>
-                                        <th class = "otherinput" style="background-color: #1E1C11; text-align:center; width: 50%; font-size: 12px;">BARCODE</th>
+                                        <th class = "otherinput" style="background-color: #1E1C11; width: 80%; font-size: 12px;">ITEM DESCRIPTION</th>
+                                        <th class = "otherinput" style="background-color: #1E1C11; text-align:left; width: 20%; font-size: 12px;">BARCODE</th>
                                     </tr>
                                 </thead>
                                 <tbody style="border-collapse: collapse; border: none">
@@ -855,8 +865,8 @@ h4 {
                 success: function (data) {
                     var row = "";
                     row += "<tr data-id = " + data['id'] + ">";
-                    row += "<td  data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
-                    row += "<td  style = 'text-align:right'>" + data['barcode'] + "</td>";
+                    row += "<td style= 'width: 80%' data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
+                    row += "<td style= 'width: 20%'>" + data['barcode'] + "</td>";
                     row += "</tr>";
                     $("#tbl_priceTags tbody").append(row);
                 }
