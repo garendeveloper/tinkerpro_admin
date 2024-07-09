@@ -71,6 +71,7 @@ if (isset($_SESSION['user_id'])) {
 	}
 
   include('./modals/loading-modal.php');
+  include('./modals/logDatePickerModal.php');
   // include ('./modals/pricetagsModal.php'); 
 ?>
 
@@ -143,7 +144,45 @@ tbody td {
     font-size: 10px;
 }
 .highlighted {
-  border: 2px solid #DB7093;
+  background-color: #DB7093;
+}
+table tr:hover {
+    cursor: pointer; 
+    border: 2px solid #DB7093;
+  }
+
+  .custom-input input{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 8px 30px 8px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  background-color: #575757;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+}
+
+  .custom-input {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+
+.custom-input input {
+  padding-left: 30px; 
+  width: 100%
+}
+
+.custom-input .calendar-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px; 
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 </style>
   <div class="container-scroller">
@@ -158,14 +197,22 @@ tbody td {
               </div>
             </div>
             <div class = "row">
-                <div class = "" style = "background-color: #151515; border-color: white; width: 12%">
+                <div class = "" style = "background-color: #151515; border-color: white; width: 15%">
                   <div class="mainDiv" style = "margin-left: 15px; height: 90vh">
                   <br>
                     <div class="row">
                       <h6 class = "text-custom">Select Date</h6>
                       <div class="custom-select">
-                            <input type="text" name="dateRange"  style="width: 100%; height: 30px; text-align: center;" id="dateRange" placeholder="Select date" autocomplete = "off">
-                      
+                        <a  href="#"  class="custom-input" id="btn_datePicker" style="margin-top: 20px">
+                            <input readonly type="text" id="datepicker" style="padding-left: 35px; flex: 1; text-align: center;">
+                            <svg class="calendar-icon" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier"> 
+                                    <path d="M7 10H17M7 14H12M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                        </a>
                       </div>
                     </div>
                     <br>
@@ -204,7 +251,7 @@ tbody td {
                      </div>
                   </div>
                 </div>
-                <div class = "col-md-11" style = "background-color: #262626; width: 88%"  >
+                <div class = "col-md-11" style = "background-color: #262626; width: 85%"  >
                     <div class="tableCard" style = " width: 100%; background-color: #262626;  ">
                       <table  class="text-color table-border" style="margin-top: -3px; ">
                         <thead>
@@ -248,11 +295,14 @@ tbody td {
 ?>
 <script>
   
+
   $(document).ready(function(){
     $("#activity_logs").addClass('active');
     $("#pointer").html("Activity Logs");
-    
+
+ 
     var initialApplicationValue = $("#application").val();
+   
 
     $("#logTable tbody").on("click", "tr", function() {
         $("#logTable tbody tr").removeClass('highlighted');
@@ -283,48 +333,124 @@ tbody td {
       window.URL.revokeObjectURL(url);
     });
 
-    $('#dateRange').flatpickr({
-      mode: 'range',
-      dateFormat: 'M d, Y',
-      onChange: function(selectedDates, dateStr, instance) {
-          if (selectedDates.length === 2) {
-              var startDate = selectedDates[0];
-              var endDate = selectedDates[1];
+    // $('#dateRange').flatpickr({
+    //   mode: 'range',
+    //   dateFormat: 'M d, Y',
+    //   onChange: function(selectedDates, dateStr, instance) {
+    //       if (selectedDates.length === 2) {
+    //           var startDate = selectedDates[0];
+    //           var endDate = selectedDates[1];
               
-              var startFormatted = formatDate(startDate);
-              var endFormatted = formatDate(endDate);
+    //           var startFormatted = formatDate(startDate);
+    //           var endFormatted = formatDate(endDate);
               
-              var selectedUser = $('#user').val();
-              var selectedDateFormatted = startFormatted + " to " + endFormatted;
-              filterTable(selectedDateFormatted, selectedUser);
+    //           var selectedUser = $('#user').val();
+    //           var selectedDateFormatted = startFormatted + " to " + endFormatted;
+    //           filterTable(selectedDateFormatted, selectedUser);
+    //       }
+    //   }
+    // });
+    $("#btn_datePicker").off("click").on("click", function(){
+      $('#dateTimeModal').show()
+      $('.predefinedDates').val("");
+   })
+
+   $('.okBtnDates').off('click').on('click', function() {
+      var selectedDatePre = document.getElementById("predefinedDates").value;
+      var predefinedDouble = document.getElementById("predefinedDouble").value;
+
+      var dateFrom = document.getElementById("datepickerDiv").value;
+      var dateTo = document.getElementById("datepickerDiv2").value;
+
+      if (selectedDatePre !== "" || predefinedDouble !== "" || dateFrom !== "" || dateTo !== "") {
+          if (selectedDatePre !== "" && predefinedDouble === "") {
+              var date = new Date(selectedDatePre);
+              const formattedDateSelected = date.toLocaleDateString("en-PH", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit"
+              });
+              document.getElementById('datepicker').value = formattedDateSelected;
+          } else if (selectedDatePre === "" && predefinedDouble !== "") {
+              var dates = predefinedDouble.split(" - ");
+              var startDateString = dates[0];
+              var endDateString = dates[1];
+
+              var startDate = new Date(startDateString);
+              var formattedStartDate = startDate.toLocaleDateString("en-PH", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit"
+              });
+
+              var endDate = new Date(endDateString);
+              var formattedEndDate = endDate.toLocaleDateString("en-PH", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit"
+              });
+
+              var formattedDates = formattedStartDate + " - " + formattedEndDate;
+              document.getElementById('datepicker').value = formattedDates;
+          } else {
+            var dateFrom = new Date(document.getElementById("datepickerDiv").value);
+            var dateTo = new Date(document.getElementById("datepickerDiv2").value);
+              const formattedDateFrom = dateFrom.toLocaleDateString("en-PH", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit"
+              });
+              const formattedDateTo = dateTo.toLocaleDateString("en-PH", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit"
+              });
+
+              var selectedDates = formattedDateFrom + " - " + formattedDateTo;
+              document.getElementById('datepicker').value = selectedDates;
           }
+      } else {
+          document.getElementById('datepicker').value = "";
       }
-    });
+
+      $('#dateTimeModal').hide();
+      $('.predefinedDates').val("");
+      $('.predefinedDouble').val("");
+      clearFields();
+
+      var selectedDate = $("#datepicker").val();
+      var selectedUser = $('#user').val();
+      filterTable(selectedDate, selectedUser);
+
+  });
+
+
 
     $("#user").on("change", function(){
-        var selectedDates = $('#dateRange').val();
+        var selectedDates = $('#datepicker').val();
         var selectedUser = $(this).val();
         filterTable(selectedDates, selectedUser);
     });
 
-    function formatDate(date) {
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var year = date.getFullYear();
-        var month = months[date.getMonth()];
-        var day = ('0' + (date.getDate() + 1)).slice(-2);
-        return month + ' ' + day + ', ' + year;
-    }
-
-  function filterTable(selectedDates, selectedUser) 
-  {
+    function filterTable(selectedDates, selectedUser) {
+    // Trim and check if selectedDates is empty
     if (!selectedDates || selectedDates.trim() === '') {
         $('#logTable tbody tr').show();
         return;
     }
 
-    var dateRange = selectedDates.split(" to ");
+    var dateRange = selectedDates.split(" - ");
     var startDate = new Date(dateRange[0]);
     var endDate = new Date(dateRange[1]);
+
+    // Check if it's a single date selection
+    if (startDate.getTime() === endDate.getTime()) {
+        // For single date, adjust endDate to next day
+        endDate.setDate(startDate.getDate() + 1);
+    } else {
+        // Adjust endDate to include the full day of the end date
+        endDate.setDate(endDate.getDate() + 1);
+    }
 
     const lowerCaseSelectedUser = selectedUser ? selectedUser.toLowerCase() : '';
 
@@ -335,28 +461,22 @@ tbody td {
 
         const lowerCaseRowUser = rowUser.toLowerCase();
     
+        // Check if rowUser is empty
         if (!rowUser || rowUser.trim() === '') {
             $(this).hide();
             return;
         }
 
-        const isWithinRange = rowDateObj >= startDate && rowDateObj <= endDate;
+        const isWithinRange = rowDateObj >= startDate && rowDateObj < endDate;
 
-        if (!lowerCaseSelectedUser || lowerCaseRowUser === lowerCaseSelectedUser)
-        {
-          if (isWithinRange) 
-          {
+        // Filter based on user selection and date range
+        if ((!lowerCaseSelectedUser || lowerCaseRowUser === lowerCaseSelectedUser) && isWithinRange) {
             $(this).show();
-          } 
-          else 
-          {
-              $(this).hide();
-          }
         } else {
             $(this).hide();
         }
     });
-  }
+}
     $("#btn_reload").on("click", function(){
       $("#dateRange").val("");
       $("#user").val("");
@@ -393,7 +513,7 @@ tbody td {
                 if(role === "3") role = "Cashier";
 
                 var row = $('<tr>');
-                row.append($('<td style = "width: 15%">').text(datetime));
+                row.append($('<td style = "width: 15%; ">').text(datetime));
                 row.append($('<td style = "width: 15%">').text(columns[1].trim() || ''));
                 row.append($('<td style = "width: 10%">').text(role));
                 row.append($('<td style = "width: 15%">').text(columns[4].trim() || ''));
@@ -408,25 +528,30 @@ tbody td {
     }
     function formatDateToAMPM(datetimeString) 
     {
-        var date = new Date(datetimeString);
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var seconds = date.getSeconds();
+      var date = new Date(datetimeString);
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var seconds = date.getSeconds();
 
-        var period = hours >= 12 ? 'PM' : 'AM';
+      var period = hours >= 12 ? 'PM' : 'AM';
 
-        hours = hours % 12;
-        hours = hours ? hours : 12;
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      
+      hours = hours < 10 ? '0' + hours : hours;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
+      var formattedTime = hours + ':' + minutes + ':' + seconds + ' ' + period;
 
-        var formattedTime = hours + ':' + minutes + ':' + seconds + ' ' + period;
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var formattedDate = monthNames[(date.getMonth())] + ' ' + date.getDate() + ', ' + date.getFullYear();
-        return formattedDate + ' ' + formattedTime;
-    }
-    function fetchData(applicationValue) {
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var formattedDay = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+      var formattedDate = monthNames[date.getMonth()] + ' ' + formattedDay + ', ' + date.getFullYear();
+
+      return formattedDate + ' ' + formattedTime;
+  }
+    function fetchData(applicationValue) 
+    {
       $('#modalCashPrint').show();
       $("#logTable tbody").empty();
         if (applicationValue === "1") {

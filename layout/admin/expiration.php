@@ -12,51 +12,31 @@
                     function isActive(value) {
                         return value === 1;
                     }
-                    var firstNotif_isActive = isActive(notifications[0].is_active);//30
-                    var secondNotif_isActive = isActive(notifications[1].is_active);//15
-                    var thirdNotif_isActive = isActive(notifications[2].is_active);//5
-                    var fourthNotif_isActive = isActive(notifications[3].is_active);//0
-                    
-                    totalExpired = 0;
-                    products.forEach(function (product) {
+
+                    var thresholds = [
+                        { active: isActive(notifications[0].is_active), min: 16, max: 30 },
+                        { active: isActive(notifications[1].is_active), min: 6, max: 15 },
+                        { active: isActive(notifications[2].is_active), min: 1, max: 5 },
+                        { active: isActive(notifications[3].is_active), min: -365, max: 0 }
+                    ];
+
+                    totalExpired = products.reduce(function (total, product) {
                         var daysRemaining = product.days_remaining;
                         var isReceived = product.is_received === 1;
-                        if(isReceived)
-                        {
-                            if (firstNotif_isActive) {
-                                if(daysRemaining <= 30 && daysRemaining >= 16){
-                                    totalExpired += 1;
+
+                        if (isReceived) {
+                            thresholds.forEach(function (threshold) {
+                                if (threshold.active && daysRemaining >= threshold.min && daysRemaining <= threshold.max) {
+                                    total++;
                                 }
-                            }
-                            if (secondNotif_isActive) {
-                                if(daysRemaining <= 15 && daysRemaining >= 6){
-                                    totalExpired += 1;
-                                }
-                            }
-                            if (thirdNotif_isActive) {
-                                if(daysRemaining <= 5 && daysRemaining >= 1){
-                                    totalExpired += 1;
-                                }
-                            }
-                            if (fourthNotif_isActive) {
-                                if(daysRemaining === 0){
-                                    totalExpired += 1;
-                                }
-                            }
+                            });
                         }
-                      
-                        
-                    });
-                    if(totalExpired > 0)
-                    {
-                        $("#expirationNotification").css('display', 'inline-block');
-                        $("#expirationNotification").text(totalExpired);
-                    }
-                    else
-                    {
-                        $("#expirationNotification").css('display', 'none');
-                        $("#expirationNotification").text("0");
-                    }
+
+                        return total;
+                    }, 0);
+
+                    $("#expirationNotification").css('display', totalExpired > 0 ? 'inline-block' : 'none');
+                    $("#expirationNotification").text(totalExpired.toString());
                    
                 }   
             });

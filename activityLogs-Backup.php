@@ -71,6 +71,7 @@ if (isset($_SESSION['user_id'])) {
 	}
 
   include('./modals/loading-modal.php');
+  include('./modals/datePickerModal.php');
   // include ('./modals/pricetagsModal.php'); 
 ?>
 
@@ -143,7 +144,45 @@ tbody td {
     font-size: 10px;
 }
 .highlighted {
-  border: 2px solid #DB7093;
+  background-color: #DB7093;
+}
+table tr:hover {
+    cursor: pointer; 
+    border: 2px solid #DB7093;
+  }
+
+  .custom-input input{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 8px 30px 8px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  background-color: #575757;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+}
+
+  .custom-input {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+
+.custom-input input {
+  padding-left: 30px; 
+  width: 100%
+}
+
+.custom-input .calendar-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px; 
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 </style>
   <div class="container-scroller">
@@ -153,7 +192,7 @@ tbody td {
           <div class="row not_scrollable" style = "margin-bottom: 10px; ">
             <div class="col-md-12" >
               <div id="title" class = "text-custom">
-                <h4 style = "font-weight: bold">ACTIVITY LOGS</h4>
+                <h1 style = "font-weight: bold">ACTIVITY LOGS</h1>
 
               </div>
             </div>
@@ -164,8 +203,16 @@ tbody td {
                     <div class="row">
                       <h6 class = "text-custom">Select Date</h6>
                       <div class="custom-select">
-                            <input type="text" name="dateRange"  style="width: 100%; height: 30px; text-align: center;" id="dateRange" placeholder="Select date" autocomplete = "off">
-                      
+                        <a  href="#"  class="custom-input" id="btn_datePicker" style="margin-top: 20px">
+                            <input readonly type="text" id="datepicker" style="padding-left: 35px; flex: 1; text-align: center;">
+                            <svg class="calendar-icon" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier"> 
+                                    <path d="M7 10H17M7 14H12M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </g>
+                            </svg>
+                        </a>
                       </div>
                     </div>
                     <br>
@@ -218,21 +265,21 @@ tbody td {
                             <tr >
                                 <th class = "otherinput" style="background-color: none; width: 15%; font-size: 12px;">DATE & TIME</th>
                                 <th class = "otherinput" style="background-color: none; text-align:center; width: 15%; font-size: 12px;">USER</th>
-                                <th class = "otherinput" style="background-color: none; text-align:center; width: 15%; font-size: 12px;">ROLE</th>
+                                <th class = "otherinput" style="background-color: none; text-align:center; width: 10%; font-size: 12px;">ROLE</th>
                                 <th class = "otherinput" style="background-color: none; width: 15%; font-size: 12px;">MODULE</th>
-                                <th class = "otherinput" style="background-color: none; text-align:center; width: 40%; font-size: 12px;">ACTIVITY</th>
+                                <th class = "otherinput" style="background-color: none; text-align:center; width: 50%; font-size: 12px;">ACTIVITY</th>
                             </tr>
                         </thead>
                       </table>
                       <div class="fcontainer"  >
                           <table id="logTable" class="text-color " style="margin-top: -3px; height: 300px; padding:10px;">
                               <tbody style="border-collapse: collapse; border: none">
-
+                                <img id="noRecords" src ="./assets/img/tinkerpro-t.png" style="display: none;">
                               </tbody>
                           </table>
                       </div>
                     </div> 
-                    <div style = "position: absolute; bottom: 3vh; right: 0; margin-right: 3.5vh;">
+                    <div style = "position: absolute; bottom: 5vh; right: 0; margin-right: 3.5vh;">
                       <button class="button" style="width: 200px; background-color: #262626; color: white; height: 40px; " id="downloadFile">Download Txt File</button>
                     </div>
                   </div>
@@ -248,11 +295,21 @@ tbody td {
 ?>
 <script>
   
+
   $(document).ready(function(){
     $("#activity_logs").addClass('active');
     $("#pointer").html("Activity Logs");
-    
+
+    $("#btn_datePicker").off("click").on("click", function(){
+      $('#dateTimeModal').show()
+      $('.predefinedDates').val("")
+      var datefrom = $("#dateFrom").text();
+      var dateTo = $("#dateTo").text();
+      console.log(datefrom+" "+dateTo)
+   })
+
     var initialApplicationValue = $("#application").val();
+   
 
     $("#logTable tbody").on("click", "tr", function() {
         $("#logTable tbody tr").removeClass('highlighted');
@@ -283,48 +340,79 @@ tbody td {
       window.URL.revokeObjectURL(url);
     });
 
-    $('#dateRange').datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'M d, yy', 
-      onSelect: function(selectedDateText, inst) {
-        var date = new Date(selectedDateText);
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var year = date.getFullYear(); 
-        var month = months[date.getMonth()]; 
-        var day = date.getDate();
-
-        var selectedDate = month + ' ' + day + ', ' + year;
-        
-        var selectedUser = $('#user').val();
-        filterTable(selectedDate, selectedUser);
+    $('#dateRange').flatpickr({
+      mode: 'range',
+      dateFormat: 'M d, Y',
+      onChange: function(selectedDates, dateStr, instance) {
+          if (selectedDates.length === 2) {
+              var startDate = selectedDates[0];
+              var endDate = selectedDates[1];
+              
+              var startFormatted = formatDate(startDate);
+              var endFormatted = formatDate(endDate);
+              
+              var selectedUser = $('#user').val();
+              var selectedDateFormatted = startFormatted + " to " + endFormatted;
+              filterTable(selectedDateFormatted, selectedUser);
+          }
       }
     });
+
     $("#user").on("change", function(){
-      var selectedDate = $('#dateRange').val();
+        var selectedDates = $('#dateRange').val();
         var selectedUser = $(this).val();
-        filterTable(selectedDate, selectedUser);
-    })
-    function filterTable(selectedDate, selectedUser) {
+        filterTable(selectedDates, selectedUser);
+    });
+
+    function formatDate(date) {
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var year = date.getFullYear();
+        var month = months[date.getMonth()];
+        var day = ('0' + (date.getDate() + 1)).slice(-2);
+        return month + ' ' + day + ', ' + year;
+    }
+
+  function filterTable(selectedDates, selectedUser) 
+  {
+    if (!selectedDates || selectedDates.trim() === '') {
+        $('#logTable tbody tr').show();
+        return;
+    }
+
+    var dateRange = selectedDates.split(" to ");
+    var startDate = new Date(dateRange[0]);
+    var endDate = new Date(dateRange[1]);
+
+    const lowerCaseSelectedUser = selectedUser ? selectedUser.toLowerCase() : '';
+
     $('#logTable tbody tr').each(function() {
         const rowDate = $(this).find('td:first').text().trim();
-        const rowUser = $(this).find('td:eq(1)').text().trim(); 
+        const rowUser = $(this).find('td:eq(1)').text().trim();
         const rowDateObj = new Date(rowDate);
-        const formattedRowDate = rowDateObj.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric'
-        });
 
         const lowerCaseRowUser = rowUser.toLowerCase();
-        const lowerCaseSelectedUser = selectedUser.toLowerCase();
-
-        if (formattedRowDate !== selectedDate || lowerCaseRowUser !== lowerCaseSelectedUser) {
+    
+        if (!rowUser || rowUser.trim() === '') {
             $(this).hide();
-        } else {
-            $(this).show();
+            return;
         }
-    }); 
+
+        const isWithinRange = rowDateObj >= startDate && rowDateObj <= endDate;
+
+        if (!lowerCaseSelectedUser || lowerCaseRowUser === lowerCaseSelectedUser)
+        {
+          if (isWithinRange) 
+          {
+            $(this).show();
+          } 
+          else 
+          {
+              $(this).hide();
+          }
+        } else {
+            $(this).hide();
+        }
+    });
   }
     $("#btn_reload").on("click", function(){
       $("#dateRange").val("");
@@ -345,7 +433,7 @@ tbody td {
       var lines = logText.split('\n');
       var tableBody = $('#logTable tbody');
       tableBody.empty();
-
+     
       lines.forEach(function(line) {
           line = line.trim();
           if (line) 
@@ -362,11 +450,11 @@ tbody td {
                 if(role === "3") role = "Cashier";
 
                 var row = $('<tr>');
-                row.append($('<td style = "width: 15%">').text(datetime));
+                row.append($('<td style = "width: 15%; ">').text(datetime));
                 row.append($('<td style = "width: 15%">').text(columns[1].trim() || ''));
-                row.append($('<td style = "width: 15%">').text(role));
+                row.append($('<td style = "width: 10%">').text(role));
                 row.append($('<td style = "width: 15%">').text(columns[4].trim() || ''));
-                row.append($('<td style = "width: 40%">').text(columns[5].trim() || '')); 
+                row.append($('<td style = "width: 50%">').text(columns[5].trim() || '')); 
 
                 tableBody.append(row);
               } else {
@@ -396,6 +484,7 @@ tbody td {
         return formattedDate + ' ' + formattedTime;
     }
     function fetchData(applicationValue) {
+      $('#modalCashPrint').show();
       $("#logTable tbody").empty();
         if (applicationValue === "1") {
             $.ajax({
@@ -404,6 +493,7 @@ tbody td {
                 dataType: 'text',
                 success: function(data) {
                     displayLogData(data); 
+                    $('#modalCashPrint').hide();
                 },
                 error: function(xhr, status, error) {
                     console.log('Error: ' + error);
@@ -418,6 +508,7 @@ tbody td {
                 dataType: 'text',
                 success: function(data) {
                     displayLogData(data); 
+                    $('#modalCashPrint').hide();
                 },
                 error: function(xhr, status, error) {
                     console.log('Error: ' + error);

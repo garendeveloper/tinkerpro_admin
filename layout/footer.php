@@ -83,6 +83,7 @@ $(document).ready(function() {
             $(".inventoryCard table thead tr th").css("background-color", response);
             $(".inventoryCard table th").css("background-color", response);
 
+            // $("table tr").css("--active-bg-color", response)
             $("table thead tr th").css("background-color", response);
             $("table th").css("background-color", response);
             $("table th").css("color", "#ffffff");
@@ -96,6 +97,7 @@ $(document).ready(function() {
             $(".title_div span").css('color', "#FFFFF");
             $(".otherinput").css('background-color', "#262626");
             $(".otherinput").css('border', "1px solid "+response);
+  
           }
           else
           {
@@ -121,6 +123,7 @@ $(document).ready(function() {
             $(".text-custom").css('color', defaultColor);
             $("span:not(.dynamic-color)").css('color', defaultColor);
             $("span:not(th)").css('color', defaultColor);
+
           }
         }
       })

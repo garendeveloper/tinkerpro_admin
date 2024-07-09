@@ -254,10 +254,10 @@ class InventoryFacade extends DBConnection
     {
         date_default_timezone_set('Asia/Manila');
         $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired
-                    FROM inventory
-                    INNER JOIN products ON products.id = inventory.product_id
-                    INNER JOIN received_items ON received_items.inventory_id = inventory.id
-                    WHERE received_items.date_expired IS NOT NULL  ";
+                FROM inventory
+                INNER JOIN products ON products.id = inventory.product_id
+                INNER JOIN received_items ON received_items.inventory_id = inventory.id
+                WHERE received_items.date_expired IS NOT NULL  ";
         
         $result = $this->connect()->prepare($query); 
         $result->execute();
@@ -272,6 +272,9 @@ class InventoryFacade extends DBConnection
             $days_remaining = $interval->days;
             if ($expiration_date > $now) {
                 $days_remaining++;
+            }
+            else {
+                $days_remaining = -$days_remaining; 
             }
             $products[] = [
                 'prod_desc'=>$row['prod_desc'],

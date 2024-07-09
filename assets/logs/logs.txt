@@ -112,3 +112,18 @@
 2024-07-08 16:46:21 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
 2024-07-08 17:15:57 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
 2024-07-08 18:26:24 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-09 09:44:18 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-09 10:37:54 | Admin Admin | 1 | 2 | Quick Inventory | Quick inventory: CEMENT From: 71.00 To: 70 
+2024-07-09 10:41:49 | Admin Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000013 Date: Jul 09 24 Total Amount₱ 40.00 
+2024-07-09 11:00:12 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:00:31 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:00:36 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:02:09 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:21:04 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:21:30 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:21:43 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:48:37 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-09 11:57:36 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 12:16:36 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-09 12:32:10 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 13:54:58 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
