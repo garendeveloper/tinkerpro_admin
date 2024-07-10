@@ -133,12 +133,10 @@
     $pdf->SetDrawColor(192, 192, 192); 
     $pdf->SetLineWidth(0.3); 
     $header = array('No.', 'ITEM DESCRIPTION', 'QTY', 'PRICE(Php.)', 'VAT(12%)', 'TOTAL (Php.)');
-    $headerWidths = [];
     $maxCellHeight = 5;
-    foreach ($header as $title) {
-        $cellWidth = $pdf->GetStringWidth($title) + 15.9; 
-        $headerWidths[] = $cellWidth;
-    }
+
+    $headerWidths = array(20, 50, 30, 30, 30, 30);
+    $maxCellHeight = 5; 
     $hexColor = '#D3D3D3';
     list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
     $pdf->SetFillColor($r, $g, $b);
@@ -154,11 +152,20 @@
     $totalTax = 0;
     $formatted_tax = 0;
 
+    $overall_qty = 0;
+    $overall_price = 0;
+    $overall_vat = 0;
+    $overall_total = 0;
     foreach ($items as $item) 
     {
-        $amountBeforeTaxFormatted = '₱' . number_format($item['cost'], 2);
-        $tax = '₱' . number_format($item['tax'], 2);
-        $total = '₱' . number_format($item['total'], 2);
+        $amountBeforeTaxFormatted = number_format($item['cost'], 2);
+        $tax = number_format($item['tax'], 2);
+        $total = number_format($item['total'], 2);
+
+        $overall_qty += $item['qty_purchased'];
+        $overall_price += $item['cost'];
+        $overall_vat += $item['tax'];
+        $overall_total += $item['total'];
     
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[0]));
         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
@@ -166,8 +173,8 @@
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['prod_desc'], $headerWidths[1]));
         $pdf->Cell($headerWidths[1], $maxCellHeight, $item['prod_desc'], 1, 0, 'L');
     
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['qty_purchased'], $headerWidths[2]));
-        $pdf->Cell($headerWidths[2], $maxCellHeight, $item['qty_purchased'], 1, 0, 'C');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['qty_purchased'], 2), $headerWidths[2]));
+        $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($item['qty_purchased'], 2), 1, 0, 'R');
     
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[3]));
         $pdf->Cell($headerWidths[3], $maxCellHeight, $amountBeforeTaxFormatted, 1, 0, 'R');
@@ -181,10 +188,19 @@
         $pdf->Ln(); 
         $counter++;
     }
-    $rowHeight = $maxCellHeight;
-    $mergeCells = 7;
-    $pdf->MultiCell($headerWidths[0], 7, "total", 1, 'C', false, 0, '', '', true);
 
+    $pdf->SetFont('', 'B', 8); 
+    $pdf->SetFont('', 'B', autoAdjustFontSize($pdf, 'Total Price', $headerWidths[0] + $headerWidths[1]));
+    $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total Price', 1, 0, 'L'); 
+    $pdf->SetFont('', 'B', autoAdjustFontSize($pdf, number_format( $overall_qty, 2), $headerWidths[2]));
+    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format( $overall_qty, 2), 1, 0, 'R'); 
+    $pdf->SetFont('', 'B', autoAdjustFontSize($pdf, number_format( $overall_price, 2), $headerWidths[3]));
+    $pdf->Cell($headerWidths[3], $maxCellHeight, number_format( $overall_price, 2), 1, 0, 'R'); 
+    $pdf->SetFont('', 'B', autoAdjustFontSize($pdf, number_format( $overall_vat, 2), $headerWidths[4]));
+    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format( $overall_vat, 2), 1, 0, 'R'); 
+    $pdf->SetFont('', 'B', autoAdjustFontSize($pdf, number_format( $overall_total, 2), $headerWidths[5]));
+    $pdf->Cell($headerWidths[5], $maxCellHeight, number_format( $overall_total, 2), 1, 0, 'R'); 
+    $pdf->Ln(); 
     
 
     addFooter($pdf, '_______________________________', '_______________________________');

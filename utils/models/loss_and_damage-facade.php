@@ -83,6 +83,61 @@
             $number = str_replace(["₱", ",", " ",], "", $number);
             return $number;
         }
+        public function delete_lossanddamage($id, $reference_no, $user)
+        {
+            $sql = $this->connect()->prepare("SELECT * FROM loss_and_damages WHERE loss_and_damage_info_id = :info_id");
+            $sql->execute([':info_id'=>$id]);
+            $declared_products = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            $document_number = $reference_no;
+            $stock_user = $user;
+            foreach($declared_products as $dp)
+            {
+                $product_id = $dp['inventory_id'];
+                $return_qty = "+".$dp['qty_damage'];
+                $current_stock = $this->get_productInfo($dp['inventory_id'])['product_stock'];
+                $new_stock = $current_stock + $dp['qty_damage'];
+                $currentDate = date('Y-m-d h:i:s');
+                $transaction_type = "Return Loss and Damage";
+                $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+    
+                $stmt->bindParam(1, $product_id, PDO::PARAM_INT);
+                $stmt->bindParam(2, $stock_user, PDO::PARAM_STR); 
+                $stmt->bindParam(3, $return_qty, PDO::PARAM_STR); 
+                $stmt->bindParam(4, $new_stock, PDO::PARAM_STR); 
+                $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+                $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+                $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
+                $stmt->execute();
+
+                $product = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :prod_id");
+                $product->execute([
+                    ':new_stock'=>$new_stock,
+                    ':prod_id'=>$product_id
+                ]);
+            }
+
+            $expense_stmt = $this->connect()->prepare("DELETE FROM expenses WHERE invoice_number = :invoice_number");
+            $expense_stmt->execute([
+                ':invoice_number'=>$reference_no
+            ]);
+
+            $lossanddamage_stmt = $this->connect()->prepare("DELETE FROM loss_and_damages WHERE loss_and_damage_info_id = :info_id ");
+            $lossanddamage_stmt->execute([
+                ':info_id'=>$id,
+            ]);
+
+            $lossanddamageinfo_stmt = $this->connect()->prepare("DELETE FROM loss_and_damage_info WHERE id = :id ");
+            $lossanddamageinfo_stmt->execute([
+                ':id'=>$id,
+            ]);
+
+            return [
+                'success'=>true,
+                'message'=>'Item with reference no: '.$reference_no.' has been succesully removed',
+            ];
+        }
         public function save_loss_and_damage($formData)
         {
             date_default_timezone_set('Asia/Manila');

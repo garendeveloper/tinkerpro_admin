@@ -14,7 +14,7 @@
        color: #FF6900;
     }
     #tbl_purchaseOrders thead{
-       border: 1px solid #FF6900;
+       border: 1px solid #FF6900;className: 'text-center',
     }
     #tbl_purchaseOrders tbody td{
         border: none;
@@ -56,6 +56,16 @@
     #date_purchased:focus {
         outline: none; /* Remove focus outline when element is focused (optional) */
     }
+
+    #tbl_purchaseOrders tbody th,
+    #tbl_purchaseOrders tbody td {
+        padding: 5px 5px; 
+        height: 20px; 
+        line-height: 0.5; 
+    }
+    #tbl_purchaseOrders {
+        border: none;
+    }
 </style>
 <div class="fcontainer" id = "purchaseItems_div" style = "display: none">
     <form id="po_form">
@@ -82,7 +92,7 @@
             <label>Supplier</label>
             <div class="custom-select" style="margin-right: 0px; ">
                 <select name="supplier" class = "choices-single" id = "supplier"
-                    style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                    style=" background-color: #262626; color: #ffff; width:390px; font-size: 14px; height: 30px;">
                     <option value="">
                 
                     </option>

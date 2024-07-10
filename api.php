@@ -173,6 +173,10 @@
             $formData = $_POST;
             echo json_encode($inventory_count->save_inventory_count($formData));
             break;
+
+        case 'delete_lossanddamage':
+            echo json_encode($loss_and_damage->delete_lossanddamage($_GET['id'], $_GET['reference_no'], $_GET['user']));
+            break;
         case 'save_loss_and_damage':
             $formData = $_POST;
             echo json_encode($loss_and_damage->save_loss_and_damage($formData));

@@ -21,8 +21,6 @@
 
 }
 
-
-
 #stockhistory_modal .close-button {
   position: absolute;
   right: 1.6em;
@@ -251,6 +249,7 @@ table, .stockhistory_form{
           </div>
         </div>
         <div class="table-container">
+       
           <table id = "tbl_stocks_history">
             <thead>
                 <tr>

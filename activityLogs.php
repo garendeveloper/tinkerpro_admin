@@ -607,6 +607,7 @@ tbody td {
                 url: 'fetch-data/log_reader.php',
                 dataType: 'text',
                 success: function(data) {
+                 
                     displayLogData(data); 
                     $('#modalCashPrint').hide();
                 },
@@ -622,6 +623,7 @@ tbody td {
                 url: './assets/logs/logs.txt',
                 dataType: 'text',
                 success: function(data) {
+                  console.log(data)
                     displayLogData(data); 
                     $('#modalCashPrint').hide();
                 },

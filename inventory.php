@@ -471,6 +471,7 @@ i:hover{
   <?php include ("./modals/stockhistory.php") ?>
   <?php include ("layout/admin/keyboardfunction.php") ?>
   <?php include ("./modals/purchaseOrder_response.php") ?>
+  <?php include ("./modals/lossanddamage_response.php") ?>
   <?php include('./modals/loading-modal.php'); ?>
   
 
@@ -521,9 +522,6 @@ i:hover{
         }
       }
     });
-      // $('#calendar-btn').on('click',function () {
-      //   $('#date_purchased').datepicker('show');
-      // });
 
       $('#s_due').datepicker({
         changeMonth: true,
@@ -893,7 +891,7 @@ i:hover{
               );
             }
             var tfoot = `<tr>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
+                  <td style = 'text-align: left;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
                   <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
               </tr>`;
 
@@ -1222,7 +1220,7 @@ i:hover{
                 "<td  style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
                 "<td  style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
                 "<td  style='text-align: center'>" + item.note + "</td>" +
-                "<td style='text-align: center' class='autofit'><i class='bi bi-eye' data-id = " + item.id + " id='btn_view_lossanddamage'></i></td>" +
+                "<td style='text-align: center' class='autofit'><i class='bi bi-eye' data-id = " + item.id + "  id='btn_view_lossanddamage'></i>&nbsp;<i class='bi bi-trash' data-id = " + item.id + " data-reference_no = "+item.reference_no+"  id='btn_delete_lossanddamage'></i></td>" +
                 "</tr>";
             }).join('');
 
@@ -1291,6 +1289,47 @@ i:hover{
           }
         })
       }
+      $(".inventoryCard").off("click").on("click", "#btn_delete_lossanddamage", function(){
+        var id = $(this).data('id');
+        var reference = $(this).data('reference_no');
+        $("#response_ld_id").val(id);
+        $("#response_ld_reference").val(reference);
+        var po_title = '<h6>Are you sure you want to delete the <i style="color: #FF6700">LOSS AND DAMAGE WITH REFERENCE: '+reference+'</i>?</h6>';
+        po_title += '<h6>This action cannot be undone!</h6>';
+        $("#lossanddamage_response .ld_title").html(po_title);
+        $("#lossanddamage_response").slideDown({
+          backdrop: 'static',
+          keyboard: false,
+        });
+      });
+      $("#ld_btn_continue").off("click").on("click", function(){
+        var id = $("#response_ld_id").val();
+        var reference_no = $("#response_ld_reference").val();
+        $.ajax({
+          type: 'get',
+          url: 'api.php?action=delete_lossanddamage',
+          data: {
+            id: id,
+            reference_no: reference_no,
+            user: $("#first_name").val()+" "+$("#last_name").val(),
+          },
+          success: function(response){
+            if(response.success)
+            {
+              show_allLossAndDamagesInfo();
+              show_sweetReponse(response.message);
+              $("#lossanddamage_response").hide();
+            }
+            else{
+              show_errorResponse("Unable to delete the item.")
+            }
+          },
+          error: function(error)
+          {
+            console.log("Server error!");
+          }
+        })
+      });
       function show_expiredProducts() {
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_expiredProducts")) {
             $(".inventoryCard #tbl_expiredProducts").DataTable().destroy();
@@ -1487,13 +1526,13 @@ i:hover{
         $("#quickinventory_div").hide()
         $("#expiration_div").hide()
         $("#lossanddamage_div").show();
-             $(".purchase-grid-container button").removeClass('active');
+        $(".purchase-grid-container button").removeClass('active');
         $("#btn_lossDamage").addClass('active');
         $("#purchaseItems_div").hide();
         $("#inventorycount_div").hide();
         $("#open_po_report").hide();
         $("#btn_savePO").attr("disabled", true);
-        $("#btn_omCancel").attr("disabled", true);
+        // $("#btn_omCancel").attr("disabled", true);
         $("#lossanddamage_form").find('input').removeClass('has-error');
         openOptionModal();
       })
@@ -1664,7 +1703,7 @@ i:hover{
               order_id: $("#_order_id").val(),
               inventory_id: $("#_inventory_id").val(),
               remove_inventories: remove_inventories,
-              payment_settings: $("#unpaid_form").serialize(),
+              unpaid_form: $("#unpaid_form").serialize(),
               amortization_frequency_text: $("#amortization_frequency option:selected").text(),
             },
             dataType: 'json',
@@ -2326,12 +2365,10 @@ i:hover{
                   backdrop: 'static',
                   keyboard: false,
                 });
+                $("#unpaid_term").focus();
                 $("#unpaid_form")[0].reset();
-                $("#product_name").text($("#product").val());
-                $("#s_price").val($("#overallTotal").text());
-                $("#r_balance").val($("#overallTotal").text());
-                $("#loan_amount").val($("#overallTotal").text());
-                $("#unpaid_modalTitle").html("<i class = 'bi bi-exclamation-triangle' style = 'color: red;'></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
+                $("#unpaid_note").val("");
+                $("#unpaid_amount").val(clean_number($("#overallTotal").text()));
               }
               else {
                 $("#paid_purchase_modal").slideDown({
@@ -2409,7 +2446,7 @@ i:hover{
       }
       function validateUPForm() {
         var isValid = true;
-        $('#unpaid_form   input[type=text]').each(function () {
+        $('#unpaid_form   input[type=text], input[type=date]').each(function () {
           if ($(this).val() === '') {
             isValid = false;
             $(this).addClass('has-error');
@@ -2418,8 +2455,6 @@ i:hover{
             $(this).removeClass('has-error');
           }
         });
-
-        console.log(isValid)
         return isValid;
       }
       function validatePOForm() {

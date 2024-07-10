@@ -596,7 +596,7 @@ h4 {
                                 </div>
                             </form>
                         
-                            <table id="tbl_priceTags" class="text-color table-border " style="margin-top: -3px; ">
+                            <table id="tbl_priceTags" class="text-color table-border " style="margin-top: -3px; border: none;">
                                 <thead>
                                     <tr>
                                         <th class = "otherinput" style="background-color: #1E1C11; width: 80%; font-size: 12px;">ITEM DESCRIPTION</th>

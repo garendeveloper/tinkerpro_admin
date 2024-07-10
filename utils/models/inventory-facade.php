@@ -579,87 +579,64 @@ class InventoryFacade extends DBConnection
         } else {
             if (!$this->verify_order($po_number)) 
             {
-                $sql = "INSERT INTO orders 
-                        (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice) 
-                        VALUES 
-                        (:isPaid, :supplier_id, :date_purchased, :po_number, :price, :order_type, :totalTax, :totalQty, :totalPrice)";
+                if($isPaid === 1)
+                {
+                    $sql = "INSERT INTO orders 
+                            (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice) 
+                            VALUES 
+                            (:isPaid, :supplier_id, :date_purchased, :po_number, :price, :order_type, :totalTax, :totalQty, :totalPrice)";
 
-                $sqlStatement = $this->connect()->prepare($sql);
-                $params = [
-                    ':isPaid' => $isPaid,
-                    ':supplier_id' => $supplier_id,
-                    ':date_purchased' => $date_purchased,
-                    ':po_number' => $po_number,
-                    ':price' => $price,
-                    ':order_type' => $order_type,
-                    ':totalTax' => $totalTax,
-                    ':totalQty' => $totalQty,
-                    ':totalPrice' => $totalPrice,
-                ];
+                    $sqlStatement = $this->connect()->prepare($sql);
+                    $params = [
+                        ':isPaid' => $isPaid,
+                        ':supplier_id' => $supplier_id,
+                        ':date_purchased' => $date_purchased,
+                        ':po_number' => $po_number,
+                        ':price' => $price,
+                        ':order_type' => $order_type,
+                        ':totalTax' => $totalTax,
+                        ':totalQty' => $totalQty,
+                        ':totalPrice' => $totalPrice,
+                    ];
 
-                $sqlStatement->execute($params);
-                $order_id = $this->get_lastOrderData()['id'];
-            }
-            if($order_id > 0)
-            {
-                if ($isPaid === 0) {
-                    $serializedFormData = $formData['payment_settings'];
-                   
-                    $payment_settings = [];
-                    parse_str($serializedFormData, $payment_settings);
-    
-                    $due_date = date('Y-m-d', strtotime($payment_settings['s_due']));
-                    $loanAmount = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_amount']));
-                    $interestRate = $payment_settings['interest_rate'];
-                    $withInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['withInterest']));
-                    $totalWithInterest = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['total_withInterest']));
-                    $loanTerm = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['loan_term']));
-                    $amortizationFrequency = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['amortization_frequency']));
-                    $amortizationFrequencyText = $formData['amortization_frequency_text'];
-                    $installment = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['installment']));
-                    $rBalance = $this->remove_nonBreakingSpace($this->clean_number($payment_settings['r_balance']));
-                    $orderId = $order_id;
-                    $payment = $installment;
-                    if($rBalance === "0.00")
-                    {
-                        $changePaid = 1;
-                        $sql = "UPDATE orders SET isPaid = :v1 WHERE id = :id";
-                        $sqlStatement = $this->connect()->prepare($sql);
-                        $sqlStatement->bindParam(':v1', $changePaid);
-                        $sqlStatement->bindParam(':id', $orderId);
-                        $sqlStatement->execute();
-                    }
-                    $sql = "INSERT INTO order_payment_settings (loan, loan_percentage, interest, with_interest, due_date, term, amortization_value, amortization_text, installment, balance, order_id)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    $stmt = $this->connect()->prepare($sql);
-                    $stmt->bindParam(1, $loanAmount, PDO::PARAM_STR);
-                    $stmt->bindParam(2, $interestRate, PDO::PARAM_STR);
-                    $stmt->bindParam(3, $withInterest, PDO::PARAM_STR);
-                    $stmt->bindParam(4, $totalWithInterest, PDO::PARAM_STR);
-                    $stmt->bindParam(5, $due_date, PDO::PARAM_STR);
-                    $stmt->bindParam(6, $loanTerm, PDO::PARAM_STR);
-                    $stmt->bindParam(7, $amortizationFrequency, PDO::PARAM_STR);
-                    $stmt->bindParam(8, $amortizationFrequencyText, PDO::PARAM_STR);
-                    $stmt->bindParam(9, $installment, PDO::PARAM_STR);
-                    $stmt->bindParam(10, $rBalance, PDO::PARAM_STR);
-                    $stmt->bindParam(11, $orderId, PDO::PARAM_STR);
-                    $stmt->execute();
-    
-                    $last_setting_id = $this->get_lastSettingData()['id'];
-    
-                    $sql_payment = "INSERT INTO order_payments (order_setting_id, payment, balance, date_paid)
-                                        VALUES (?, ?, ?, ?)";
-    
-                    $orderSettingId = $last_setting_id;
-    
-                    $date_paid = date("Y-m-d");
-                    $stmt_payment = $this->connect()->prepare($sql_payment);
-                    $stmt_payment->bindParam(1, $orderSettingId, PDO::PARAM_INT);
-                    $stmt_payment->bindParam(2, $payment, PDO::PARAM_STR);
-                    $stmt_payment->bindParam(3, $rBalance, PDO::PARAM_STR);
-                    $stmt_payment->bindParam(4, $date_paid, PDO::PARAM_STR);
-                    $stmt_payment->execute();
+                    $sqlStatement->execute($params);
                 }
+                else
+                {
+                    $serializedFormData = $formData['unpaid_form'];
+                    $unpaid_form = [];
+                    parse_str($serializedFormData, $unpaid_form);
+
+                    $sql = "INSERT INTO orders 
+                            (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice, isNotification, isReccurring, term, due_date, note) 
+                            VALUES 
+                            (:isPaid, :supplier_id, :date_purchased, :po_number, :price, :order_type, :totalTax, :totalQty, :totalPrice, :isNotification, :isReccurring, :term, :due_date, :note)";
+
+                    $isNotification = isset($unpaid_form['notification_unpaid']) && $unpaid_form['notification_unpaid'] == 'on' ? 1 : 0;
+                    $isReccurring = isset($unpaid_form['reccurring_unpaid']) && $unpaid_form['reccurring_unpaid'] == 'on' ? 1 : 0;
+                    $term = $unpaid_form['unpaid_term'];
+                    $unpaid_note = $unpaid_form['unpaid_note'];
+                    $dueDate = date('Y-m-d', strtotime($unpaid_form['unpaid_dueDate']));
+                    $sqlStatement = $this->connect()->prepare($sql);
+                    $params = [
+                        ':isPaid' => $isPaid,
+                        ':supplier_id' => $supplier_id,
+                        ':date_purchased' => $date_purchased,
+                        ':po_number' => $po_number,
+                        ':price' => $price,
+                        ':order_type' => $order_type,
+                        ':totalTax' => $totalTax,
+                        ':totalQty' => $totalQty,
+                        ':totalPrice' => $totalPrice,
+                        ':isReccurring' => $isReccurring,
+                        ':isNotification' => $isNotification,
+                        ':term' => $term,
+                        ':due_date'=>$dueDate,
+                        ':note' => $unpaid_note,
+                    ];
+                    $sqlStatement->execute($params);
+                }
+                $order_id = $this->get_lastOrderData()['id'];
             }
         }
         return $order_id;

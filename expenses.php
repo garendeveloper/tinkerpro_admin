@@ -561,7 +561,7 @@ h1, label, textarea, input, table,h5{
                 },
             },
             columns: [
-                { data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
+                { data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1, className: 'text-center', },
                 { 
                     data: 'item_name',
                     render: (data, type, row) => {
@@ -582,7 +582,17 @@ h1, label, textarea, input, table,h5{
                 { data: 'price', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
                 { data: 'discount', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
                 { data: 'total_amount', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
-                { data: null, render: data => `<button style='border-radius: 5px; height: 25px; margin: 0;' data-id='${data.id}' id='btn_removeExpense'><i class='bi bi-trash'></i></button>`, className: 'text-center' }
+                // { data: null, render: data => `<button style='border-radius: 5px; height: 25px; margin: 0;' data-id='${data.id}' id='btn_removeExpense'><i class='bi bi-trash'></i></button>`, className: 'text-center' }
+                {
+                  data: null,
+                  render: (data, type, row) => {
+                    if (data.product_id !== 0) {
+                      return `<button style='border-radius: 5px; height: 25px; margin: 0;'  >NO DELETE</button>`;
+                    } else {
+                      return `<button style='border-radius: 5px; height: 25px; margin: 0;' data-id='${data.id}' id='btn_removeExpense'><i class='bi bi-trash'></i></button>`;
+                    }
+                  }, className: 'text-center',
+                }
             ],
             ordering: true,
             order: [[0, 'DESC']],

@@ -128,3 +128,22 @@
 2024-07-09 12:32:10 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
 2024-07-09 13:54:58 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-07-09 17:38:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 09:24:06 | Julia Samonte | 31 | 3 | Login | User Julia Samonte 3 
+2024-07-10 09:24:29 | Julia Samonte | 31 | 3 | Logout | User Julia Samonte 3 
+2024-07-10 09:24:31 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 09:50:52 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 10:21:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 11:52:02 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-10 11:53:48 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 13:24:00 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 14:03:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 14:56:12 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 16:42:14 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 16:51:23 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000004 Amount:₱ 2,380.00 
+2024-07-10 17:41:24 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 17:48:19 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000005 Amount:₱ 20,180.00 
+2024-07-10 17:49:48 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000006 Amount:₱ 4,000.00 
+2024-07-10 17:50:39 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000006 Supplier: P&G 
+2024-07-10 17:51:05 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000006 Supplier: P&G 
+2024-07-10 17:51:24 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-10 17:56:00 | Admin Admin | 1 | 2 | Products | Admin Admin Added 7 EEVEN  OG9 DRINKING WATER Barcode #:4800049721142 
