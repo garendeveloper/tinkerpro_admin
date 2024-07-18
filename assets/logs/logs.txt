@@ -1,0 +1,738 @@
+<<<<<<< HEAD
+2024-06-29 09:06:04 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:11:03 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:12:48 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:14:56 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:17:17 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:23:37 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:30:44 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:33:29 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:39:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:40:34 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:49:25 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-06-29 09:49:26 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:49:56 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-06-29 09:50:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:55:21 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:57:16 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 09:59:03 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 10:01:16 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 10:04:23 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 10:05:00 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-06-29 10:15:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+=======
+2024-07-01 01:30:05 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-01 01:36:28 | Admin Admin | 1 | 2 | Login | User Admin Admin 
+2024-07-01 01:38:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-01 01:43:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-01 01:43:40 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-01 01:43:42 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-01 02:13:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-01 02:22:17 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000106 
+2024-07-01 02:25:44 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000107 Amount:₱ 0.00 
+2024-07-01 02:28:34 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000108 Amount:₱ 2,877.67 
+2024-07-01 02:35:36 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000109 Amount:₱ 227.50 
+2024-07-01 02:36:07 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000105 Amount:₱ 5,799.25 
+2024-07-01 02:37:42 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000110 Amount:₱ 830.00 
+2024-07-01 02:38:53 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000111 Amount:₱ 75.00 
+2024-07-01 02:41:17 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000112 Amount:₱ 594.00 
+2024-07-01 02:42:19 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000113 Amount:₱ 1,308.30 
+2024-07-01 02:42:58 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000114 Amount:₱ 48.00 
+2024-07-01 02:43:34 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000105 Amount:₱ 845.00 
+2024-07-01 02:51:51 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000105 Amount:₱ 4,425.00 
+2024-07-01 02:53:10 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000116 Amount:₱ 644,800,000,000,000.00 
+2024-07-01 03:53:56 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 02:00:14 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 02:06:45 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000117 Amount:₱ 6,180.00 
+2024-07-02 02:15:49 | Admin Admin | 1 | 2 | Products | Admin Admin Added Sample Product Barcode #:011532750853 
+2024-07-02 02:17:52 | Admin Admin | 1 | 2 | Products | Admin Admin Updated SAMPLE PRODUCT Barcode #:858571724102 
+2024-07-02 02:23:21 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted SAMPLE PRODUCT Barcode #:858571724102 
+2024-07-02 02:25:52 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted 24/7 MANGO 40G Barcode #:888779554 
+2024-07-02 02:26:00 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:26:02 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:26:04 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:26:05 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:27:25 | Admin Admin | 1 | 2 | Products | Admin Admin Tries to delete 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-02 02:32:06 | Admin Admin | 1 | 2 | Products | Admin Admin Exported productList.csv 
+2024-07-02 02:36:16 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-07-02 02:36:43 | Admin Admin | 1 | 2 | Products | Admin Admin Generate a pdf 
+2024-07-02 02:37:14 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-07-02 02:40:57 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added any 
+2024-07-02 02:57:02 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer 21212 21212 
+2024-07-02 03:00:38 | Admin Admin | 1 | 2 | Users | Admin Admin Added 211212 12121212121 
+2024-07-02 03:09:25 | Admin Admin | 1 | 2 | Coupons | Admin Admin Update the expiration to 6 
+2024-07-02 03:13:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Update the coupon expiration to 1 WEEK 
+2024-07-02 03:35:06 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 03:57:29 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 04:01:58 | Admin Admin | 1 | 2 | Charges | Admin Admin Updated service charges to 7% 
+2024-07-02 05:00:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 06:54:31 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 07:16:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-02 07:44:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-03 01:35:17 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> da01ef6922aa6b51a33402bf7689779b73986fd3
+2024-07-03 03:46:45 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 01:25:30 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 01:49:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+=======
+2024-07-03 05:33:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-03 06:09:43 | Admin Admin | 1 | 2 | Products | Admin Admin Added KILLS MOSQUITOES IN SECONDS Barcode #:4801234107727 
+2024-07-03 06:12:38 | Admin Admin | 1 | 2 | Products | Admin Admin Added stik o Barcode #:4800166142288 
+2024-07-03 08:01:57 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-03 09:22:51 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-03 09:37:28 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-03 10:17:43 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+>>>>>>> 917dcdc9f15cea3a39897d61c287e02e12be76fb
+2024-07-04 02:37:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 02:42:03 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-04 02:42:08 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 03:12:05 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 03:30:28 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 03:44:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 04:04:35 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 05:19:55 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 05:50:32 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 07:00:45 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 07:16:47 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+=======
+>>>>>>> eef94c991aa55ca076d1765296df1c994b5b698b
+2024-07-04 08:13:57 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 10:29:49 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 01:19:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 01:37:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 02:03:47 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 02:21:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 06:11:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+=======
+2024-07-05 01:07:48 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 02:04:36 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-05 02:04:42 | Julia Samonte | 31 | 3 | Login | User Julia Samonte 3 
+2024-07-05 02:07:10 | Julia Samonte | 31 | 3 | Logout | User Julia Samonte 3 
+2024-07-05 02:07:15 | lou zeus baculio | 50 | 3 | Login | User lou zeus baculio 3 
+2024-07-05 02:07:33 | lou zeus baculio | 50 | 3 | Logout | User lou zeus baculio 3 
+2024-07-05 02:07:39 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 04:17:44 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-05 05:17:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 05:43:45 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted stik o Barcode #:4800166142288 
+2024-07-05 05:46:42 | Admin Admin | 1 | 2 | Products | Admin Admin Added STIK O Barcode #:789266252195 
+2024-07-05 05:47:45 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted STIK O Barcode #:789266252195 
+2024-07-05 05:49:02 | Admin Admin | 1 | 2 | Users | Admin Admin Updated heidi Caones 
+2024-07-05 05:52:01 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer kordapyo customer customer 
+<<<<<<< HEAD
+=======
+=======
+2024-07-04 10:39:02 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-04 10:40:32 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 01:21:25 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 01:53:38 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 02:05:30 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-05 02:05:37 | Julia Samonte | 31 | 3 | Login | User Julia Samonte 3 
+2024-07-05 02:06:09 | Julia Samonte | 31 | 3 | Logout | User Julia Samonte 3 
+2024-07-05 02:06:11 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+>>>>>>> ba17de5210ab876cfe5db0919ddedd98a021b93d
+>>>>>>> 878f7d6479d441c83a458c9c1d366267c202ebac
+2024-07-05 07:11:52 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-09 06:40:18 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+=======
+2024-07-05 08:42:45 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 09:26:32 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-05 09:26:36 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-05 09:26:52 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-06 07:35:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-06 08:59:29 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-06 08:59:41 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-06 11:01:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-06 11:55:09 | Admin Admin | 1 | 2 | Expense | Deleted Expense: CALCULATOR With Invoice Number: 25 
+2024-07-06 20:02:33 | Admin Admin | 1 | 2 | Expense | Deleted Expense: CEMENT With Invoice Number: 10-000000002 
+2024-07-06 20:06:02 | Admin Admin | 1 | 2 | Expense | Deleted Expense: CEMENT Invoice #: 50-000000007 Amount: 120.00 
+2024-07-06 20:14:45 | Admin Admin | 1 | 2 | Expense | Deleted Expense: SCHOOL EXERCIE BOOK Invoice #: 203434 Amount: 1200.00 
+2024-07-06 20:15:03 | Admin Admin | 1 | 2 | Expense | Succcessfully created expense: school exercice book, Amount: 1020.00, Invoice#: 56445 
+2024-07-06 20:18:24 | Admin Admin | 1 | 2 | Expense | Updated expense: ENJOYt, Amount: 9.00, Invoice#:  
+2024-07-06 20:19:18 | Admin Admin | 1 | 2 | Expense | Created expense: KINI, Amount: 11000.00, Invoice#: sdfafa 
+2024-07-06 20:25:51 | Admin Admin | 1 | 2 | Expiration | Updated expiration settings 
+2024-07-06 20:26:50 | Admin Admin | 1 | 2 | Inventory:Expiration | Updated expiration settings 
+2024-07-06 20:34:56 | Admin Admin | 1 | 2 | Quick Inventory | Quick Inventory: [object Object] 
+2024-07-06 20:35:24 | Admin Admin | 1 | 2 | Quick Inventory | Quick Inventory: [{"inventory_id":1,"col_1":"CEMENT","col_2":"25.00","newqty":"30","col_3":""}] 
+2024-07-06 20:41:41 | Admin Admin | 1 | 2 | Quick Inventory | CEMENT From:30.00 To: 
+2024-07-06 20:43:07 | Admin Admin | 1 | 2 | Quick Inventory | Quick inventory: CEMENT From:25.00 To:30 
+2024-07-06 20:51:30 | Admin Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000011 Date: Jul 06 24 
+2024-07-07 15:07:12 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-07 15:11:05 | Admin Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000012 Date: Jul 07 24 Total Amount₱ 200.00 
+2024-07-07 18:03:23 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000003 Amount:₱ 1,040.00 
+2024-07-07 18:04:42 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 09:09:51 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 09:54:53 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 10:10:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 10:42:58 | Admin Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-08 10:43:10 | Admin Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-08 10:43:25 | Admin Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-08 11:47:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 12:22:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 12:43:06 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 12:55:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 12:57:37 | Admin Admin | 1 | 2 | Products | Admin Admin Added Bato ( 1kl ) Barcode #:116387998526 
+2024-07-08 13:00:40 | Admin Admin | 1 | 2 | Quick Inventory | Quick inventory: Bato ( 1kl ) From: 0.00 To: 50 
+2024-07-08 13:06:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 13:32:57 | Admin Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-08 14:25:42 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 14:53:24 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 14:58:35 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 15:57:03 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 16:27:24 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-08 16:34:15 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 16:41:35 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 16:42:55 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 16:46:21 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 17:15:57 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: PRINCE 
+2024-07-08 18:26:24 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-09 09:44:18 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-09 10:37:54 | Admin Admin | 1 | 2 | Quick Inventory | Quick inventory: CEMENT From: 71.00 To: 70 
+2024-07-09 10:41:49 | Admin Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000013 Date: Jul 09 24 Total Amount₱ 40.00 
+2024-07-09 11:00:12 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:00:31 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:00:36 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:02:09 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:21:04 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:21:30 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:21:43 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 11:48:37 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-09 11:57:36 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 12:16:36 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-09 12:32:10 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-09 13:54:58 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
+>>>>>>> 9ffe881afeb260da5c0946163ee15858c52d34ee
+=======
+2024-07-09 17:38:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
+>>>>>>> 9d8f810a002945522c96fa184947e1c8dcfed0c1
+2024-07-10 13:57:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 13:58:25 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000105 Supplier: GAISANO 
+2024-07-10 14:01:38 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000105 Supplier: GAISANO 
+2024-07-10 14:13:36 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-10 16:37:28 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 17:36:18 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 17:55:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 18:16:44 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+=======
+2024-07-10 09:24:06 | Julia Samonte | 31 | 3 | Login | User Julia Samonte 3 
+2024-07-10 09:24:29 | Julia Samonte | 31 | 3 | Logout | User Julia Samonte 3 
+2024-07-10 09:24:31 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 09:50:52 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 10:21:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 11:52:02 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-10 11:53:48 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 13:24:00 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 14:03:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 14:56:12 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 16:42:14 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 16:51:23 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000004 Amount:₱ 2,380.00 
+2024-07-10 17:41:24 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-10 17:48:19 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000005 Amount:₱ 20,180.00 
+2024-07-10 17:49:48 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000006 Amount:₱ 4,000.00 
+2024-07-10 17:50:39 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000006 Supplier: P&G 
+2024-07-10 17:51:05 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000006 Supplier: P&G 
+2024-07-10 17:51:24 | Admin Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-10 17:56:00 | Admin Admin | 1 | 2 | Products | Admin Admin Added 7 EEVEN  OG9 DRINKING WATER Barcode #:4800049721142 
+<<<<<<< HEAD
+>>>>>>> ac43903f3b54da0e4f4d978b1cd8779bf655f835
+2024-07-11 10:13:49 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-11 10:18:49 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Alexander Caones 
+2024-07-11 10:19:43 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Rey Garren Balingit 
+2024-07-11 10:21:33 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-11 10:21:42 | Alexander Caones | 1 | 2 | Users | Alexander Caones Updated Rey Garren Balingit 
+2024-07-11 10:38:38 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-13 20:44:56 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-14 12:38:07 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-14 15:03:05 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-14 15:05:19 | Alexander Caones | 1 | 2 | Products | Alexander Caones Added Sample Product Barcode #:694364862789 
+2024-07-14 15:43:50 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-14 15:45:56 | Alexander Caones | 1 | 2 | Products | Alexander Caones Added Sample Product Barcode #:130780663449 
+2024-07-14 16:19:41 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-14 16:26:32 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-14 16:41:34 | Zeus Baculio | 50 | 2 | Customers | Zeus Baculio Added customer Marites  Balines 
+2024-07-14 16:41:43 | Zeus Baculio | 50 | 2 | Customers | Zeus Baculio Updated customer Marites  Balines 
+2024-07-14 16:49:46 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-14 17:07:03 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-14 17:12:08 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to null 
+=======
+2024-07-11 08:30:10 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-11 08:37:18 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000007 Amount:₱ 500.00 
+2024-07-11 08:40:14 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-11 08:40:17 | heidi Caones | 52 | 3 | Login | User heidi Caones 3 
+2024-07-11 08:40:32 | heidi Caones | 52 | 3 | Logout | User heidi Caones 3 
+2024-07-11 08:40:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-11 08:41:16 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-11 08:41:21 | Julia Samonte | 31 | 3 | Login | User Julia Samonte 3 
+2024-07-11 08:41:45 | Julia Samonte | 31 | 3 | Logout | User Julia Samonte 3 
+2024-07-11 08:41:47 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-11 08:46:14 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted KILLS MOSQUITOES IN SECONDS Barcode #:4801234107727 
+2024-07-11 10:09:35 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000008 Amount:₱ 1,040.00 
+2024-07-11 10:26:00 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-11 10:45:52 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-11 11:04:37 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-13 18:24:10 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-13 18:40:23 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000009 Amount:₱ 240.00 
+2024-07-13 18:49:32 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000011 Amount:₱ 240.00 
+2024-07-13 18:51:03 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000012 Amount:₱ 525.00 
+2024-07-13 18:53:22 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000013 Amount:₱ 240.00 
+2024-07-13 18:55:25 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000014 Amount:₱ 765.00 
+2024-07-13 19:08:28 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000015 Amount:₱ 2,970.00 
+2024-07-13 19:09:52 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000016 Amount:₱ 1,225.00 
+2024-07-13 20:04:51 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-13 20:17:53 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-14 11:22:59 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-14 11:27:31 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000017 Amount:₱ 520.00 
+2024-07-14 12:16:31 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-14 12:25:27 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000017 Amount:₱ 520.00 
+2024-07-14 12:29:01 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000018 Amount:₱ 800.00 
+2024-07-14 12:32:52 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000019 Amount:₱ 420.00 
+2024-07-14 12:33:04 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000020 Amount:₱ 1,060.00 
+2024-07-14 12:36:24 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000021 Amount:₱ 560.00 
+2024-07-14 12:36:51 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000021 Amount:₱ 560.00 
+2024-07-14 14:41:48 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-14 15:49:32 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-14 16:43:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-14 17:12:13 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-14 17:54:02 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000022 Amount:₱ 640.00 
+2024-07-14 17:54:21 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000023 Amount:₱ 640.00 
+2024-07-14 17:54:49 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000023 Amount:₱ 640.00 
+2024-07-14 17:55:09 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000023 Amount:₱ 640.00 
+2024-07-14 17:57:20 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000023 Amount:₱ 640.00 
+2024-07-14 17:58:08 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000023 Amount:₱ 640.00 
+2024-07-14 18:03:21 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000016 Amount:₱ 1,225.00 
+2024-07-14 18:04:27 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000016 Amount:₱ 1,225.00 
+2024-07-14 18:04:42 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000016 Amount:₱ 1,225.00 
+2024-07-14 18:05:37 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000015 Amount:₱ 2,970.00 
+2024-07-14 18:06:17 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000016 Amount:₱ 1,225.00 
+2024-07-14 18:10:02 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000016 Amount:₱ 1,225.00 
+2024-07-14 18:11:05 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000024 Amount:₱ 460.00 
+2024-07-14 18:11:27 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000025 Amount:₱ 640.00 
+2024-07-14 18:11:41 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000025 Amount:₱ 640.00 
+2024-07-14 18:12:25 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000026 Amount:₱ 640.00 
+<<<<<<< HEAD
+>>>>>>> e2410140daca1dce9b9f7913c95f55983b958623
+2024-07-15 09:14:37 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+=======
+2024-07-15 09:15:51 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
+>>>>>>> 23c054e637ae7b51ec0b647fcb52fd397edb9b62
+2024-07-15 10:10:53 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 11:03:34 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 11:03:37 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 11:34:57 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 12:53:11 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:07:16 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:08:37 | Alexander Caones | 1 | 2 | Users | Alexander Caones Added OJT 123 
+2024-07-15 13:08:37 | Alexander Caones | 1 | 2 | Users | Alexander Caones Added OJT 123 
+2024-07-15 13:08:46 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 13:08:50 | OJT 123 | 64 | 3 | Login | User OJT 123 3 
+2024-07-15 13:09:09 | OJT 123 | 64 | 3 | Logout | User OJT 123 3 
+2024-07-15 13:09:12 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:09:35 | Alexander Caones | 1 | 2 | Users | Alexander Caones Updated OJT 123 
+2024-07-15 13:10:00 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 13:10:04 | OJT 123 | 64 | 3 | Login | User OJT 123 3 
+2024-07-15 13:10:19 | OJT 123 | 64 | 3 | Logout | User OJT 123 3 
+2024-07-15 13:10:23 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:13:02 | Alexander Caones | 1 | 2 | Users | Alexander Caones Updated OJT 123 
+2024-07-15 13:13:47 | Alexander Caones | 1 | 2 | Users | Alexander Caones Updated OJT 123 
+2024-07-15 13:13:58 | Alexander Caones | 1 | 2 | Users | Alexander Caones Updated OJT 123 
+2024-07-15 13:14:00 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 13:14:05 | OJT 123 | 64 | 3 | Login | User OJT 123 3 
+2024-07-15 13:14:31 | OJT 123 | 64 | 3 | Logout | User OJT 123 3 
+2024-07-15 13:14:33 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:15:40 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 13:15:47 | OJT 123 | 64 | 3 | Login | User OJT 123 3 
+2024-07-15 13:16:27 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 13:16:30 | OJT 123 | 64 | 3 | Login | User OJT 123 3 
+2024-07-15 13:17:35 | OJT 123 | 64 | 3 | Logout | User OJT 123 3 
+2024-07-15 13:17:35 | OJT 123 | 64 | 3 | Logout | User OJT 123 3 
+2024-07-15 13:17:37 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:18:11 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:18:39 | Alexander Caones | 1 | 2 | Users | Alexander Caones Updated OJT 123 
+2024-07-15 13:18:55 | Alexander Caones | 1 | 2 | Users | Alexander Caones Updated OJT 123 
+2024-07-15 13:19:07 | Alexander Caones | 1 | 2 | Users | Alexander Caones Updated OJT 123 
+2024-07-15 13:19:41 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:19:43 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 13:19:46 | OJT 123 | 64 | 3 | Login | User OJT 123 3 
+2024-07-15 13:20:41 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-15 13:21:02 | OJT 123 | 64 | 3 | Logout | User OJT 123 3 
+2024-07-15 13:21:10 | OJT 123 | 65 | 3 | Login | User OJT 123 3 
+2024-07-15 13:21:20 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:23:17 | OJT 123 | 65 | 3 | Logout | User OJT 123 3 
+2024-07-15 13:23:19 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:23:24 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-15 13:24:28 | Alexander Caones | 1 | 2 | Users | Alexander Caones Added John Doe 
+2024-07-15 13:24:33 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 13:24:35 | John Doe | 66 | 3 | Login | User John Doe 3 
+2024-07-15 13:25:14 | John Doe | 66 | 3 | Logout | User John Doe 3 
+2024-07-15 13:25:16 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:25:45 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 13:27:39 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA CALDRTA 155G Barcode #:748485700038 
+2024-07-15 13:30:25 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 13:30:42 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 13:31:51 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-15 13:32:25 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PNEAPL 40G 1/2T Barcode #:759247 
+2024-07-15 13:32:41 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PNEAPL 40G 1T Barcode #:236133 
+2024-07-15 13:36:55 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-15 13:39:04 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 SRDNS RED 155G Barcode #:128169 
+2024-07-15 13:39:30 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-07-15 13:40:25 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA ADOBO 155G Barcode #:1523288843286 
+2024-07-15 13:42:16 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA AFRITADA 155G Barcode #:221166 
+2024-07-15 13:42:43 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 13:43:33 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 13:44:26 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA MECHADO 155G Barcode #:748485700045 
+2024-07-15 13:48:23 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated ABC ERASER Barcode #:969228 
+2024-07-15 13:50:33 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA SPICY CALDERETA Barcode #:748485701370 
+2024-07-15 13:52:34 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA ADOBO 155G Barcode #:748485700014 
+2024-07-15 13:53:10 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA SPICY PAKSIW 155G Barcode #:748485701387 
+2024-07-15 13:53:35 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA AFRITADA 155G Barcode #:748485700021 
+2024-07-15 13:54:22 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 13:54:44 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA AFRITADA 155G Barcode #:748485700021 
+2024-07-15 13:55:41 | Alexander Caones | 1 | 2 | Users | Alexander Caones Added John DFDFD 
+2024-07-15 13:57:04 | Alexander Caones | 1 | 2 | Users | Alexander Caones Added Jay Caones 
+2024-07-15 13:58:34 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-15 13:59:35 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:00:23 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-15 14:02:32 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:02:54 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 14:03:24 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:03:51 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:04:11 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 14:05:54 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 7 UP LEMON LIME 1.5L Barcode #:152477 
+2024-07-15 14:06:07 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 7 UP LEMON LIME 330ML Barcode #:786585 
+2024-07-15 14:06:21 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated A BONNE SPA MILK SALT 350G Barcode #:650572 
+2024-07-15 14:06:49 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-15 14:07:24 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-15 14:07:50 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-15 14:08:10 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 SRDNS RED 155G Barcode #:128169 
+2024-07-15 14:08:41 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-15 14:09:24 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA AFRITADA 155G Barcode #:748485700021 
+2024-07-15 14:09:41 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 14:09:55 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA ADOBO 155G Barcode #:748485700014 
+2024-07-15 14:09:57 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 14:10:19 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA ADOBO 155G Barcode #:748485700014 
+2024-07-15 14:10:41 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 SRDNS RED 155G Barcode #:128169 
+2024-07-15 14:10:55 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-15 14:10:58 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 7 UP LEMON LIME 1.5L Barcode #:152477 
+2024-07-15 14:11:18 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-07-15 14:11:29 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-07-15 14:11:36 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:11:49 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-07-15 14:12:00 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:12:06 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA MECHADO 155G Barcode #:748485700045 
+2024-07-15 14:12:21 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 14:12:40 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:12:47 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 7 UP LEMON LIME 1.5L Barcode #:152477 
+2024-07-15 14:13:07 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA SPICY CALDERETA Barcode #:748485701370 
+2024-07-15 14:13:10 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA AFRITADA 155G Barcode #:748485700021 
+2024-07-15 14:13:30 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA SPICY CALDERETA Barcode #:748485701370 
+2024-07-15 14:13:33 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-15 14:13:50 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-07-15 14:13:52 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-15 14:14:17 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 SRDNS RED 155G Barcode #:128169 
+2024-07-15 14:14:43 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 14:14:57 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 14:15:13 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 14:15:37 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:15:37 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 14:15:53 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-07-15 14:15:55 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 14:16:07 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-07-15 14:16:15 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 14:16:25 | OJT 123 | 65 | 3 | Login | User OJT 123 3 
+2024-07-15 14:16:53 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:16:54 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA MECHADO 155G Barcode #:748485700045 
+2024-07-15 14:17:11 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA MECHADO 155G Barcode #:748485700045 
+2024-07-15 14:17:47 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 14:17:54 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 14:17:58 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA FLKSnOIL 155G Barcode #:748485700083 
+2024-07-15 14:19:12 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA SPICY CALDERETA Barcode #:748485701370 
+2024-07-15 14:19:33 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA SPICY CALDERETA Barcode #:748485701370 
+2024-07-15 14:20:34 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA SPICY PAKSIW 155G Barcode #:748485701387 
+2024-07-15 14:20:46 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA SPICY PAKSIW 35G Barcode #:2131644570623 
+2024-07-15 14:21:14 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 555 TUNA SPICY PAKSIW 35G Barcode #:2131644570623 
+2024-07-15 14:22:53 | OJT 123 | 65 | 3 | Products | OJT 123 Updated 7 UP LEMON LIME 1.5L Barcode #:152477 
+2024-07-15 14:28:29 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-15 14:28:40 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-15 14:28:47 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:28:57 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:29:13 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORANGE 40G 1T Barcode #:823423794448 
+2024-07-15 14:29:28 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 14:30:38 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-15 14:30:40 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 14:31:13 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 ORNG 40G MENUDO Barcode #:924640 
+=======
+2024-07-15 10:25:56 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-15 12:56:44 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-15 12:59:34 | Admin Admin | 1 | 2 | Products | Admin Admin Updated CEMENT Barcode #:101010101010 
+2024-07-15 13:00:21 | Admin Admin | 1 | 2 | Products | Admin Admin Updated CEMENT Barcode #:888779554 
+2024-07-15 13:36:20 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-15 13:36:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-15 14:00:55 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-15 14:35:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
+>>>>>>> 85d3833940b599af6ef6433fd4b618d8484ab51c
+2024-07-15 14:43:55 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 14:49:23 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 14:52:51 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 14:57:35 | Alexander Caones | 1 | 2 | P.O Created | Alexander Caones P.0 # 10-000000001 Amount:₱ 9,000.00 
+2024-07-15 14:59:15 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:04:42 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:05:37 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Deleted 24/7 ORNG 40G MENUDO Barcode #:924640 
+2024-07-15 15:06:31 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Deleted 555 TUNA CALDRTA 155G Barcode #:748485700038 
+2024-07-15 15:08:39 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Added supplier Unknown 
+2024-07-15 15:11:20 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:11:38 | Alexander Caones | 1 | 2 | P.O Created | Alexander Caones P.0 # 10-000000028 Amount:₱ 199.50 
+2024-07-15 15:12:59 | Alexander Caones | 1 | 2 | P.O Created | Alexander Caones P.0 # 10-000000029 Amount:₱ 1,540.80 
+2024-07-15 15:14:48 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:19:59 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:30:24 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:35:37 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:45:47 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:46:55 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 15:54:21 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 16:01:59 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 16:09:29 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 16:17:22 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 16:28:00 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 16:33:40 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 16:45:08 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 16:49:01 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+=======
+2024-07-15 15:21:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-15 15:23:49 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000027 Amount:₱ 460.00 
+2024-07-15 16:26:42 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000028 Amount:₱ 1,960.00 
+2024-07-15 16:39:37 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000029 Amount:₱ 500.00 
+2024-07-15 17:55:58 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
+2024-07-15 18:27:32 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-15 18:28:54 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-15 18:28:57 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 09:05:00 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 09:06:51 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 09:22:42 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 09:24:04 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 09:38:34 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 09:39:13 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 09:53:57 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 09:55:02 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:08:48 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:10:15 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:10:24 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:25:26 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:25:30 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:37:43 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:41:23 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:42:01 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 10:56:41 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 11:11:47 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 11:13:50 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 11:13:58 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-16 11:16:48 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 WEEK 
+2024-07-16 11:16:53 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 MONTH 
+2024-07-16 11:16:56 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 MONTH 
+2024-07-16 11:27:04 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 11:29:01 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 11:34:33 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 11:42:22 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 11:44:09 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-16 12:11:15 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-16 12:14:07 | Zeus Baculio | 50 | 2 | Received Items | Tender received items, PO Number: 10-000000029 Supplier: PRINCE 
+2024-07-16 12:22:18 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-16 12:29:48 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-07-16 12:30:04 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-16 12:33:24 | Zeus Baculio | 50 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000005 Date: Jul 16 24 Total Amount₱ 1,444.00 
+2024-07-16 12:34:52 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-07-16 12:40:33 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-16 12:41:48 | Zeus Baculio | 50 | 2 | Quick Inventory | Quick inventory: 3M ELECTRICAL TAPE BLACK BIG From: -9.00 To: 1 
+2024-07-16 12:42:49 | Zeus Baculio | 50 | 2 | Quick Inventory | Quick inventory: 3M ELECTRICAL TAPE BLACK BIG From: 1.00 To: 3 
+=======
+2024-07-16 09:31:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 09:49:45 | Admin Admin | 1 | 2 | Coupons | Admin Admin Updated the coupon expiration to 1 WEEK 
+2024-07-16 09:49:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Updated the coupon expiration to 1 WEEK 
+2024-07-16 10:36:28 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 10:52:05 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 11:07:17 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 11:30:39 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-16 11:30:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 12:47:10 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 13:08:00 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 13:26:35 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 13:42:29 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 13:58:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 14:13:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 14:28:46 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 15:12:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 15:27:49 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 15:43:18 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 16:15:55 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 16:42:35 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 16:57:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 17:13:03 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 17:29:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 17:44:49 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-16 18:02:14 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 09:07:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 09:26:07 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 09:48:28 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 10:47:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 11:04:12 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 11:19:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 11:35:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 11:47:44 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 SRDNS RED 155G Barcode #:128169 
+2024-07-17 11:48:03 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 TUNA ADOBO 155G Barcode #:838124 
+2024-07-17 11:48:11 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 TUNA AFRITADA 155G Barcode #:221166 
+2024-07-17 11:48:19 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 TUNA CALDRTA 155G Barcode #:591457 
+2024-07-17 11:53:57 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer KALO KALO LAST NAME 
+2024-07-17 13:19:09 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 13:35:13 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 13:50:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 14:08:32 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 14:52:10 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 15:09:08 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 15:30:53 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 16:18:52 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 17:09:51 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 18:24:21 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-17 18:37:57 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 09:08:42 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 09:11:03 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 09:13:03 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 09:26:20 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 09:30:22 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 09:37:59 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA SPICY PAKSIW 155G Barcode #:748485701387 
+2024-07-18 09:38:25 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-18 09:38:42 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-18 09:39:10 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 TUNA SPICY PAKSIW 155G Barcode #:748485701387 
+2024-07-18 09:41:54 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 09:46:04 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 09:55:05 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 7 UP LEMON LIME 1.5L Barcode #:152477 
+2024-07-18 09:55:15 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 7 UP LEMON LIME 1.5L Barcode #:152477 
+2024-07-18 09:58:05 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:01:38 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:13:14 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:16:43 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:20:48 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:21:26 | Alexander Caones | 1 | 2 | Logout | User Alexander Caones 2 
+2024-07-18 10:22:20 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:25:53 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated ZOY Barcode #:419529 
+2024-07-18 10:28:34 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:31:59 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:32:31 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 10:34:15 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 10:43:22 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:43:52 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:45:42 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 10:46:14 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 10:47:08 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:51:11 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 10:59:10 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:02:22 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:06:29 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:06:43 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:06:57 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:14:20 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:16:22 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:16:41 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:17:56 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:18:34 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:18:42 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated WINGS ACTIVE GUARD 1/2DZ Barcode #:714663 
+2024-07-18 11:19:02 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated WINGS ACTIVE GUARD 1/2DZ Barcode #:714663 
+2024-07-18 11:19:41 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:19:46 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:19:52 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:20:01 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:20:27 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:21:48 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:22:47 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:25:53 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40Gss Barcode #:577074 
+2024-07-18 11:26:02 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:26:10 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PNEAPL 40G 1/2Tss Barcode #:759247 
+2024-07-18 11:26:16 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PNEAPL 40G 1/2T Barcode #:759247 
+2024-07-18 11:26:28 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated WINGS ACTIVE GUARD 1/2DZsssss Barcode #:714663 
+2024-07-18 11:26:50 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 555 SRDNS RED 155Gsss Barcode #:128169 
+2024-07-18 11:29:26 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:30:16 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:30:21 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:30:31 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:31:26 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:32:13 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:32:29 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:32:41 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:32:59 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:33:07 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:33:54 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:34:26 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:35:49 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:36:10 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:5770742 
+2024-07-18 11:36:21 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:46:08 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:47:06 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:47:19 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:49:38 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:53:32 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 11:53:45 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:54:42 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 11:58:40 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 12:00:34 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 12:04:17 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 12:04:51 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 12:05:29 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40Gss Barcode #:577074 
+2024-07-18 12:05:35 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40Gs Barcode #:577074 
+2024-07-18 12:06:18 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40G Barcode #:577074 
+2024-07-18 12:08:43 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 12:08:51 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PINEAPLE 40Gs Barcode #:577074 
+2024-07-18 12:10:08 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated 24/7 PNEAPL 40G 1/2T Barcode #:759247 
+2024-07-18 13:06:38 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:06:51 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:07:14 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:22:00 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:22:12 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:22:27 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:44:16 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:44:28 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:44:47 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:45:29 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 13:45:46 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated ZOY Barcode #:419529 
+2024-07-18 13:46:06 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated ZOY Barcode #:419529 
+2024-07-18 13:47:21 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated ZOY Barcode #:419529 
+2024-07-18 13:47:38 | Alexander Caones | 1 | 2 | Products | Alexander Caones Updated ZOY Barcode #:419529 
+2024-07-18 13:52:05 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-18 13:59:29 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 14:00:40 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 14:03:30 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Printed a coupon id #:1 
+2024-07-18 14:06:23 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier Balik Bayawak 
+2024-07-18 14:06:28 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier Balik Bayawak 
+2024-07-18 14:06:54 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier IPAK CEBU 
+2024-07-18 14:07:06 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier DATA BLITZ 
+2024-07-18 14:14:57 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 14:17:33 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 14:31:05 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 14:32:41 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-18 14:56:12 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-17 18:40:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-17 18:42:32 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-18 09:18:51 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-18 10:09:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-18 11:29:09 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-18 11:42:32 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000001 Amount:₱ 3,481.60 
+2024-07-18 11:49:28 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000001 Amount:₱ 3,481.60 
+2024-07-18 11:51:32 | Admin Admin | 1 | 2 | P.O Updated | Admin Admin P.0 # 10-000000001 Amount:₱ 3,481.60 
+2024-07-18 12:06:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-07-18 12:07:12 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Talkosoy Admin 
+2024-07-18 12:07:16 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-07-18 12:07:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-18 13:22:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-18 13:44:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-18 13:59:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-18 14:19:38 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-18 14:34:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-18 14:55:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-18 15:22:39 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000001 Date: Jul 18 24 Total Amount₱ 237.50 
+2024-07-18 15:23:30 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000001 Date: Jul 18 24 
+2024-07-18 15:26:47 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-18 18:12:09 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
