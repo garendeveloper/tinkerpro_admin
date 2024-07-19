@@ -96,6 +96,7 @@ echo $html;
 
 .hoverRow:hover {
     background: #292928;
+    cursor: pointer
 }
 
 .productAnch {
