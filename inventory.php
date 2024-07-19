@@ -177,6 +177,8 @@ include ('./layout/admin/table-pagination-css.php');
     color: white;
     outline: none;
 }
+
+
 .inventoryCard tbody tr:hover{
   background-color: #292928;
 }

@@ -108,6 +108,7 @@
 #animated-text span:nth-child(12) { animation-delay: 1.2s;}
 </style>
 
+<div class="modal" id="modalCashPrint" tabindex="0">
 <div class="modal" id="modalCashPrint" tabindex="0" >
     <div class="modal-content">
         <div class="modal-body">
