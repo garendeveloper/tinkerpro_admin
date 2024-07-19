@@ -539,7 +539,6 @@ function searchProducts(){
         },
         success: function(response) {
           $('#productTable').html(response); 
-          $('.searchProducts').val("")
         },
         error: function(xhr, status, error) {
             console.error(xhr.responseText); 
@@ -550,10 +549,8 @@ function searchProducts(){
   $(document).ready(function() {
   
     $('#generateProductPDFBtn').click(function() {
-      $('#modalCashPrint').show()
-      var searchData = $('.searchProducts').val();
-    
-   
+    $('#modalCashPrint').show()
+    var searchData = $('.searchProducts').val();
     $.ajax({
         url: './reports/generate_products_pdf.php',
         type: 'GET',

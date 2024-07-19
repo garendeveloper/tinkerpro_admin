@@ -47,14 +47,12 @@ const totalPages = <?php echo $totalPages; ?>;
 
 function refreshProductsTable(page) {
     currentPage = page;
-    $('#modalCashPrint').show();
     $.ajax({
         url: './fetch-data/fetch-products.php',
         type: 'GET',
         data: { page: page },
         success: function (response) {
             $('#productTable').html(response);
-            $('#modalCashPrint').hide();
         },
         error: function (xhr, status, error) {
             console.error(xhr.responseText);

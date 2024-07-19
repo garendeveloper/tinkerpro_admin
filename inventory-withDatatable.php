@@ -177,11 +177,6 @@ include ('./layout/admin/table-pagination-css.php');
     color: white;
     outline: none;
 }
-
-
-.inventoryCard tbody tr:hover{
-  background-color: #292928;
-}
   /* .dt-paging-button {
     text-decoration: none; 
     border: 1px solid #fefefe;
@@ -374,26 +369,6 @@ i:hover{
 .inventoryCard i{
   padding: 0px;
 }
-  .productAnch {
-      cursor: pointer;
-  }
-
-  .td-h {
-      font-size: 12px;
-      margin: 0; 
-      padding: 0;
-      height: auto; 
-  }
-
-  .highlightedss {
-      background: var(--primary-color);
-      color: #fff;
-  }
-
-  table tbody td {
-      border: 1px solid #292928;
-  }
-
 /* 
 #tbl_products tbody tr td:nth-child(1), #inv_head thead tr th:nth-child(1){
   width: 5%;
@@ -437,18 +412,15 @@ i:hover{
       style="display: grid; grid-template-columns: 4.5rem auto auto; align-items: center;background-color:#292928">
       <div class="content-wrapper" >
         <div
-          style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-left: -5px; margin-bottom: 5px; margin-top: -10px;">
+          style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-left: -5px; margin-bottom: 5px; margin-top: -20px;">
            <div class="horizontal-container" style="display: flex; align-items: center;">
-            <!-- <img src="assets/img/barcode.png" style="color: white; height: 80px; width: 70px; margin-right:5px;"> -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="60" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
-              <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
-            </svg>
-            <input id = "searchInput" class="text-color searchProducts" style="width: 100%; height: 45px; margin-left: 10px; margin-right: 10px; font-size: 14px;" placeholder="Search Product,[code, barcode, name, brand]" autocomplete="off" autofocus/>
+            <img src="assets/img/barcode.png" style="color: white; height: 80px; width: 70px; margin-right:5px;">
+            <input id = "searchInput" class="text-color searchProducts" style="width: 100%; height: 45px; margin-right: 10px; font-size: 14px;" placeholder="Search Product,[code, barcode, name, brand]" autocomplete="off" autofocus/>
           </div>
           <div style="display: flex; align-items: center; ">
           <button id="searchBtn" name="productSearch" class="btn-control" style="margin-right:10px; width:120px"><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
               viewBox="0 0 491.52 491.52" xml:space="preserve">
-            <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
+            <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
             <path style="opacity:0.5;fill:#FFFFFF;enable-background:new    ;" d="M98.081,234.62c-43.316-43.315-43.882-112.979-1.264-155.595
               c9.509-9.511,20.41-16.745,32.021-21.96c-16.497,4.812-32.056,13.702-45.064,26.71c-41.288,41.289-41.289,108.231,0,149.521
               c18.282,18.281,41.596,28.431,65.483,30.523C130.561,258.986,112.79,249.33,98.081,234.62z"/>
@@ -473,7 +445,7 @@ i:hover{
             <button class="btn-control clearproductsBtn" style="width:120px;order: 1" id = "clear_inventory_search"><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Clear</button>
           </div>
         </div>
-        <div style = "margin-top: 10px;">
+        <div>
           <div class="tbl_buttonsContainer" style = "margin-left: -15px">
             <div class="division">
               <div class="grid-container">
@@ -787,18 +759,16 @@ i:hover{
       function show_allInventories()
       {
         $.ajax({
-              url: './fetch-data/inventory-pagination.php', 
-              type: 'GET',
-              success: function(response) {
-                  $('#paginationDiv').html(response)
-                  $("#searchInput").val("");
-              },
-              error: function(xhr, status, error) {
-                  console.error(xhr.responseText); 
-              }
-          });
+            url: './fetch-data/inventory-pagination.php', 
+            type: 'GET',
+            success: function(response) {
+                $('#paginationDiv').html(response)
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText); 
+            }
+        });
       }
-      
 
       $("#clear_inventory_search").on("click", function(){
         $("#searchInput").val("");
@@ -1150,8 +1120,8 @@ i:hover{
       $(".inventoryCard").on("dblclick", "tr", function(){
         var id = $(this).data('id');
         var active_tbl_id = $(".inventoryCard table").attr('id');
-        // $("#"+active_tbl_id+" tbody").find("tr").removeClass('highlighted-row')
-        // $(this).toggleClass('highlighted-row');
+        $("#"+active_tbl_id+" tbody").find("tr").removeClass('highlighted-row')
+        $(this).toggleClass('highlighted-row');
         switch(active_tbl_id)
         {
           case 'tbl_all_stocks':

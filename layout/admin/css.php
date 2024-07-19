@@ -342,9 +342,7 @@ button:hover {
     .dataTables_filter {
             display: none; /* Hide the default search box */
         }
-        .inventoryCard table tr:hover {
-    border: 1px solid green;
-}
+     
 .highlighteds{
      border: 2px solid #00B050 !important; 
   }
