@@ -526,25 +526,7 @@ function showPaginationBtn(){
 }
 
 showPaginationBtn()
-function refreshProductsTable(page) {
-  $('.paginationTag').removeClass('active');
-  $('.paginationTag').eq(page - 1).addClass('active');
-  $('.searchProducts').focus();
-  $('#modalCashPrint').show();
-    $.ajax({
-      url: './fetch-data/fetch-products.php',
-      type: 'GET',
-      data: { page: page },
-      success: function (response) {
-        $('#productTable').html(response);
-        $('#modalCashPrint').hide();
-      },
-      error: function (xhr, status, error) {
-        console.error(xhr.responseText);
-      }
-    });
-}
-refreshProductsTable(1)
+
 
 function searchProducts(){
  

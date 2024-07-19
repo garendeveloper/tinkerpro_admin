@@ -126,7 +126,7 @@ $(document).ready(function() {
             $(".purchase-grid-item").css("--active-bg-color", defaultColor)
             $("button").css("--hover-bg-color", defaultColor)
             $("button").css("--active-bg-color", defaultColor)
-            $("button").css("border-color", defaultColor)
+            // $("button").css("border-color", defaultColor)
 
             $(".pos-setting:active").css("background-color", defaultColor);
             $(".inventoryCard table thead tr th").css("background-color", defaultColor);

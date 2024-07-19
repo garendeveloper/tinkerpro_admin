@@ -26,7 +26,7 @@ ob_start();
 if ($fetchProduct->rowCount() > 0) {
     while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
         ?>
-        <tr href="#" onclick="highlightBorder(this)" ondblclick="openModal(this)">
+        <tr class="hoverRow" href="#" onclick="highlightBorder(this)" ondblclick="openModal(this)">
         <td hidden class='text-center td-h'><span class="stock_status"><?= $row['stock_status'] ?></span><span class="stock_count"><?= $row['stock_count'] ?></span></td>
         <td hidden class='text-center td-h'><span class="isBOM"><?= $row['is_BOM'] ?></span><span class="isWarranty"><?= $row['is_warranty'] ?></span><span class="is_stockable"><?= $row['is_stockable'] ?></span></td>
         <td hidden class='text-center td-h'><span class="categoryDetails"><?= $row['category_details'] ?? null ?></span><span class="categoryid"><?= $row['category_id'] ?? null ?></span></span><span class="variantid"><?= $row['variant_id'] ?? null ?></span></td> 
@@ -42,10 +42,10 @@ if ($fetchProduct->rowCount() > 0) {
         <td class='code text-center td-h'   style="width: 100px" ><?= $row['code']?></td>
         <td class='uom_name text-center td-h'   style="width: 100px" ><?= $row['uom_name'] ?? null ?></td>
         <td class='brand text-center td-h'   style="width: 100px" ><?= $row['brand']?></td>
-        <td class='prod_price text-center td-h'   style="width: 100px" ><?= $row['prod_price']?></td>
-        <td class='markup text-center td-h'   style="width: 100px" ><?= $row['markup']?></td>
-        <td class='cost text-center td-h'   style="width: 100px" ><?= $row['cost']?></td>
-        <td class='text-center td-h' style="width: 319px">
+        <td class='prod_price text-end td-h pe-1'   style="width: 100px" ><?= $row['prod_price']?></td>
+        <td class='markup text-end td-h pe-1'   style="width: 100px" ><?= $row['markup']?></td>
+        <td class='cost text-end td-h pe-1' style="width: 100px" ><?= $row['cost']?></td>
+        <td class='text-center td-h' style="width: 319px;">
         <?php
         if ($row['category_details'] !== null) {
             $category_details = json_decode($row['category_details'], true);
@@ -93,6 +93,10 @@ $html = ob_get_clean();
 echo $html;
 ?>
 <style>
+
+.hoverRow:hover {
+    background: #292928;
+}
 
 .productAnch {
     cursor: pointer;
