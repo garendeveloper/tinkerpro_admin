@@ -1046,12 +1046,12 @@ input {
 }
 
 .autocomplete-items div:hover {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
     color: #ffff;
 }
 
 .autocomplete-active {
-    background-color: #FF6900 !important;
+    background-color: var(--primary-color) !important;
     color: #ffffff;
 }
 

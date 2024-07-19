@@ -108,7 +108,7 @@
 #animated-text span:nth-child(12) { animation-delay: 1.2s;}
 </style>
 
-<div class="modal" id="modalCashPrint" tabindex="0" style="background-color: rgba(0, 0, 0, 0.9);">
+<div class="modal" id="modalCashPrint" tabindex="0" >
     <div class="modal-content">
         <div class="modal-body">
             <div class="spinner"></div>

@@ -93,7 +93,7 @@ class InventoryFacade extends DBConnection
         if(!empty($searchInput))
         {
             $sql = $this->connect()->prepare("SELECT 
-                                                i.*, p.*, u.uom_name,
+                                                i.*, p.*, u.uom_name, i.id as inventory_id,
                                                 SUM(p.product_stock) AS total_stock,
                                                 COUNT(*) as total_count,
                                                 li.latest_isReceived,
@@ -113,13 +113,13 @@ class InventoryFacade extends DBConnection
                                                 )
                                             ) li ON li.product_id = p.id 
                                             WHERE 
-                                                products.prod_desc LIKE :searchQuery OR 
-                                                products.barcode LIKE :searchQuery OR 
-                                                products.sku LIKE :searchQuery OR 
-                                                products.code LIKE :searchQuery OR 
-                                                products.brand LIKE :searchQuery 
+                                                p.prod_desc LIKE :searchQuery OR 
+                                                p.barcode LIKE :searchQuery OR 
+                                                p.sku LIKE :searchQuery OR 
+                                                p.code LIKE :searchQuery OR 
+                                                p.brand LIKE :searchQuery 
                                             GROUP BY i.product_id
-                                            ORDER BY prod_desc ASC LIMIT  10");
+                                            ORDER BY p.prod_desc ASC LIMIT  10");
 
             $searchParam = "%" . $searchInput . "%";
             $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
@@ -130,7 +130,7 @@ class InventoryFacade extends DBConnection
         {
             
             $sql = $this->connect()->prepare("SELECT 
-                                                    i.*, p.*, u.uom_name,
+                                                    i.*, p.*, u.uom_name, i.id as inventory_id,
                                                     SUM(p.product_stock) AS total_stock,
                                                     COUNT(*) as total_count,
                                                     li.latest_isReceived,

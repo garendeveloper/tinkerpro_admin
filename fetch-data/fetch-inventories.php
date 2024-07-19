@@ -37,8 +37,8 @@ if (count($inventories) > 0)
         if ($isReceived === 1 && $is_lowstock && $partially_received) $span = "<span><i style='color: #FF6900; font-weight: bold'>PARTIALLY RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
         if ($isReceived === 1 && !$is_lowstock && $partially_received) $span = "<span style='color: #72bf6a; font-weight: bold'><i>PARIALLY RECEIVED</i></span>";
         ?> 
-            <tr  onclick="highlightBorder(this)">
-                <td><?= $counter?></td>
+            <tr  data-id = '<?=$row['inventory_id']?>'>
+                <td class = "text-center"><?= $counter?></td>
                 <td><?= $row['prod_desc']?></td>
                 <td><?= $row['barcode']?></td>
                 <td class = "text-center"><?= $row['uom_name']?></td>
@@ -67,38 +67,15 @@ if (count($inventories) > 0)
 $html = ob_get_clean();
 echo $html;
 ?>
-<style>
 
-.productAnch {
-    cursor: pointer;
-}
-
-.td-h {
-    font-size: 12px;
-    margin: 0; 
-    padding: 0;
-    height: auto; 
-}
-
-.highlightedss {
-    background: var(--primary-color);
-    color: #fff;
-    font-weight: bold;
-}
-
-table tbody td {
-    border: 1px solid #292928;
-}
-
-</style>
-<script>
+<!-- <script>
     function highlightBorder(element) {
         $allTrs = document.querySelectorAll('tr');
-        allTrs.forEach(function(tr) {
+        $allTrs.forEach(function(tr) {
             tr.classList.remove('highlightedss');
         });
 
         $('.highlighteds').removeClass('highlighteds');
         element.classList.add('highlightedss');
     }
-</script>
+</script> -->

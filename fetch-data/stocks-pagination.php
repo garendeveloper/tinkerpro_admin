@@ -20,24 +20,19 @@
 <script>
     $('#searchInput').focus();
     var tblData = `
-        <table tabindex='0' id='tbl_products' class='' style='font-size: 12px; margin-top: -20px; margin-right: -10px; margin-left: -3px; width: 100%;'>
-            <thead >
-                <tr>
-                    <th class='text-center ' >No.</th>
-                    <th>Product</th>
-                    <th >Barcode</th>
-                    <th>UOM</th>
-                    <th  >Qty Purchased</th>
-                    <th  style='text-align: center'>Qty Received</th>
-                    <th  style='text-align: center'>Qty in Store</th>
-                    <th  style='text-align: center'>Amount Before Tax</th>
-                    <th  style='text-align: center'>Amount After Tax</th>
-                    <th style='text-align: center'>Document Type</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table> 
-        `;
+            <table tabindex='0' id='tbl_all_stocks'  style='font-size: 12px;'>
+                <thead>
+                    <tr>
+                        <th class='autofit text-center'>No.</th>
+                        <th class=''>Product</th>
+                        <th >Barcode</th>
+                        <th style='text-align: center'>Unit</th>
+                        <th style='text-align: center'>Qty in Store</th>
+                        <th class='autofit' style='text-align: center'>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>`;
     $(".inventoryCard").html(tblData);
  
     $("#searchInput").on("input", function(){
