@@ -138,7 +138,46 @@ include ('./layout/admin/table-pagination-css.php');
   .highlighteds{
      border: 1px solid #00B050; 
   }
-  .dt-paging-button {
+  .paginationTag {
+    text-decoration: none; 
+    border: 1px solid #fefefe;
+    margin-right: 1px; 
+    width: 40px;
+    height: 40px;
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center; 
+    background-color: #888888;
+    color: #fefefe;
+}
+
+.paginationTag:hover{
+  color: #FF6900;
+}
+
+    #paginationDiv{
+      margin-top: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .paginationTag {
+    text-decoration: none;
+    padding: 5px 10px;
+    margin: 2px;
+    border: 1px solid #ddd;
+    color: #000;
+}
+.paginationTag:hover {
+    background-color: #f0f0f0;
+}
+.paginationTag.active {
+    background-color: #00B050;
+    color: white;
+    outline: none;
+}
+  /* .dt-paging-button {
     text-decoration: none; 
     border: 1px solid #fefefe;
     margin-right: 1px; 
@@ -185,7 +224,7 @@ include ('./layout/admin/table-pagination-css.php');
     background-color: #00B050;
     color: white;
     outline: none;
-}
+} */
 #main-content {
     overflow: hidden;
 }
@@ -711,7 +750,7 @@ i:hover{
       var productsCache = [];
       var   toastDisplayed =false;
       $("#tbl_orders").hide();
-      show_allInventories();
+      
       show_allSuppliers();
       show_purchaseOrderNo();
       display_datePurchased();
@@ -2759,165 +2798,326 @@ i:hover{
       //     $(this).autocomplete('search', term);
       // });
      
-      function show_allInventories() 
-      {
-        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
-            $(".inventoryCard #tbl_products").DataTable().destroy();
-            $("#tbl_preview").html("");
-        }
-        $("#paginationDiv").empty().hide();
-        $("#searchInput").focus();
+    //   function show_allInventories() 
+    //   {
+    //     if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
+    //         $(".inventoryCard #tbl_products").DataTable().destroy();
+    //         $("#tbl_preview").html("");
+    //     }
+    //     $("#paginationDiv").empty().hide();
+    //     $("#searchInput").focus();
 
     
-        $("#tbl_preview").show();
-        $('#tbl_row2').show();
-        $('#tbl_row2_value').show();
+    //     $("#tbl_preview").show();
+    //     $('#tbl_row2').show();
+    //     $('#tbl_row2_value').show();
 
         
-        // var header = `
-        //   <table tabindex='0' id='inv_head' class='text-color table-border display' style='font-size: 12px; margin-left: -5px;'>
-        //       <thead style = "background-color: none">
-        //           <tr style = "background-color: none">
-        //               <th class='text-center ' >No.</th>
-        //               <th >Product</th>
-        //               <th >Barcode</th>
-        //               <th >UOM</th>
-        //               <th  >Qty Purchased</th>
-        //               <th  style='text-align: center'>Qty Received</th>
-        //               <th  style='text-align: center'>Qty in Store</th>
-        //               <th  style='text-align: center'>Amount Before Tax</th>
-        //               <th  style='text-align: center'>Amount After Tax</th>
-        //               <th style='text-align: center'>Document Type</th>
-        //           </tr>
-        //       </thead>
-        //       <tbody ></tbody>
-        //   </table> 
-        //   `;
-          var tblData = `
-          <table tabindex='0' id='tbl_products' class='' style='font-size: 12px; margin-top: -20px; margin-right: 15px; margin-left: -3px; width: 100%;'>
-               <thead >
-                <tr>
-                  <tr style = "background-color: none">
-                      <th class='text-center ' >No.</th>
-                      <th>Product</th>
-                      <th >Barcode</th>
-                      <th>UOM</th>
-                      <th  >Qty Purchased</th>
-                      <th  style='text-align: center'>Qty Received</th>
-                      <th  style='text-align: center'>Qty in Store</th>
-                      <th  style='text-align: center'>Amount Before Tax</th>
-                      <th  style='text-align: center'>Amount After Tax</th>
-                      <th style='text-align: center'>Document Type</th>
-                  </tr>
-                  </tr>
-              </thead>
-          </table> 
-          `;
-        // $(".inventoryHeader").html(header);
-        $(".inventoryCard").html(tblData);
+    //     // var header = `
+    //     //   <table tabindex='0' id='inv_head' class='text-color table-border display' style='font-size: 12px; margin-left: -5px;'>
+    //     //       <thead style = "background-color: none">
+    //     //           <tr style = "background-color: none">
+    //     //               <th class='text-center ' >No.</th>
+    //     //               <th >Product</th>
+    //     //               <th >Barcode</th>
+    //     //               <th >UOM</th>
+    //     //               <th  >Qty Purchased</th>
+    //     //               <th  style='text-align: center'>Qty Received</th>
+    //     //               <th  style='text-align: center'>Qty in Store</th>
+    //     //               <th  style='text-align: center'>Amount Before Tax</th>
+    //     //               <th  style='text-align: center'>Amount After Tax</th>
+    //     //               <th style='text-align: center'>Document Type</th>
+    //     //           </tr>
+    //     //       </thead>
+    //     //       <tbody ></tbody>
+    //     //   </table> 
+    //     //   `;
+    //       var tblData = `
+    //       <table tabindex='0' id='tbl_products' class='' style='font-size: 12px; margin-top: -20px; margin-right: 15px; margin-left: -3px; width: 100%;'>
+    //            <thead >
+    //             <tr>
+    //               <tr style = "background-color: none">
+    //                   <th class='text-center ' >No.</th>
+    //                   <th>Product</th>
+    //                   <th >Barcode</th>
+    //                   <th>UOM</th>
+    //                   <th  >Qty Purchased</th>
+    //                   <th  style='text-align: center'>Qty Received</th>
+    //                   <th  style='text-align: center'>Qty in Store</th>
+    //                   <th  style='text-align: center'>Amount Before Tax</th>
+    //                   <th  style='text-align: center'>Amount After Tax</th>
+    //                   <th style='text-align: center'>Document Type</th>
+    //               </tr>
+    //               </tr>
+    //           </thead>
+    //       </table> 
+    //       `;
+    //     // $(".inventoryHeader").html(header);
+    //     $(".inventoryCard").html(tblData);
    
 
-        var table = $('.inventoryCard #tbl_products').DataTable({
-          serverSide: true,
-          ajax: {
-            url: 'api.php?action=get_allInventories',
-            type: 'POST'
+    //     var table = $('.inventoryCard #tbl_products').DataTable({
+    //       serverSide: true,
+    //       ajax: {
+    //         url: 'api.php?action=get_allInventories',
+    //         type: 'POST'
+    //       },
+    //       pageLength: 200,
+    //       language: {
+    //           emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
+    //       },
+    //       columns: [
+    //           { data: null, render: function (data, type, row, meta) {
+    //               return meta.row + meta.settings._iDisplayStart + 1;
+    //           } , className: 'text-center'},
+    //           { data: 'prod_desc' },
+    //           { data: 'barcode' },
+    //           { data: 'uom_name', className: 'text-center' },
+    //           { data: 'all_qty_purchased', className: 'text-right' },
+    //           { data: 'all_qty_received', className: 'text-right' },
+    //           { data: 'product_stock', className: 'text-right' },
+    //           { data: 'cost', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
+    //           { data: 'prod_price', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
+    //           { data: null, render: function (data) {
+    //             var stock = data.product_stock || 0;
+    //             var stock_count = data.stock_count;
+    //             var stock_status = data.stock_status === 1;
+    //             var isReceived = data.latest_isReceived;
+    //             var qty_purchased = data.all_qty_purchased;
+    //             var qty_received = data.all_qty_received;
+
+    //             var partially_received = qty_purchased !== 0 && qty_purchased < qty_received;
+    //             var fully_received = qty_purchased === 0 && qty_received !== 0;
+    //             var is_lowstock = stock_status && stock < stock_count;
+    //             var span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
+    //             if (isReceived === 1 && is_lowstock && fully_received) span = "<span><i style='color: #72bf6a; font-weight: bold'>RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
+    //             if (isReceived === 1 && !is_lowstock && fully_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>RECEIVED</i></span>";
+    //             if (isReceived === 1 && is_lowstock && partially_received) span = "<span><i style='color: #FF6900; font-weight: bold'>PARTIALLY RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
+    //             if (isReceived === 1 && !is_lowstock && partially_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>PARIALLY RECEIVED</i></span>";
+    //             // if (stock_status && stock < stock_count) span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
+    //             return span;
+    //           }, className: 'text-center' }
+    //       ],
+    //       order: [[1, 'asc']],
+    //       pageLength: 100,
+    //       pagingType: 'full_numbers',
+    //       dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+    //       fnDrawCallback: function (oSettings) {
+    //           if (oSettings.aoData.length === 0) {
+    //               $("#paginationDiv").hide();
+    //           } else {
+    //               $("#paginationDiv").show();
+    //           }
+
+    //           var rowCount = table.rows().count();
+
+    //           $('#tbl_row0').html("Total Items");
+    //           $('#tbl_row0_value').html(rowCount);
+
+
+    //           var totalSum = table
+    //           .column(8, { page: 'current' })
+    //           .data()
+    //           .reduce(function (acc, val) {
+    //               return acc + parseFloat(val);
+    //           }, 0);
+
+    //           $('#tbl_row1').html("Total Amount Before Tax");
+    //           $('#tbl_row1_value').html(totalSum);
+
+    //           var totalSum = table
+    //               .column(8, { page: 'current' })
+    //               .data()
+    //               .reduce(function (acc, val) {
+    //                   return acc + parseFloat(val);
+    //               }, 0);
+
+    //           $('#tbl_row2').html("Total Amount After Tax");
+    //           $('#tbl_row2_value').html(addCommasToNumber(totalSum));
+
+    //         }
+    //       });
+    //       table;
+    // //       table.on('draw', function () {
+    // //     var tableContainer = $('.table-container');
+    // //     var tableBody = tableContainer.find('tbody');
+    // //     var tableHead = tableContainer.find('thead');
+
+    // //     // Match the header width to the body initially
+    // //     tableHead.css('width', tableBody[0].scrollWidth + 'px');
+    // // });
+
+    //       $("#paginationDiv").html($(".dt-paging")).show();
+    //       var debounceTimeout;
+    //       $('#searchInput').on('keyup', function (event) {
+    //           clearTimeout(debounceTimeout);
+    //           debounceTimeout = setTimeout(function () {
+    //               table.search($('#searchInput').val()).draw();
+    //           }, 100); 
+    //       });
+
+    //       display_settings();
+    //     }
+    
+    showPaginationBtn()
+    function showPaginationBtn()
+    {
+      $.ajax({
+          url: './fetch-data/inventory-pagination.php', 
+          type: 'GET',
+          success: function(response) {
+              $('#paginationDiv').html(response)
           },
-          language: {
-              emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
-          },
-          columns: [
-              { data: null, render: function (data, type, row, meta) {
-                  return meta.row + meta.settings._iDisplayStart + 1;
-              } , className: 'text-center'},
-              { data: 'prod_desc' },
-              { data: 'barcode' },
-              { data: 'uom_name', className: 'text-center' },
-              { data: 'all_qty_purchased', className: 'text-right' },
-              { data: 'all_qty_received', className: 'text-right' },
-              { data: 'product_stock', className: 'text-right' },
-              { data: 'cost', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
-              { data: 'prod_price', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
-              { data: null, render: function (data) {
-                var stock = data.product_stock || 0;
-                var stock_count = data.stock_count;
-                var stock_status = data.stock_status === 1;
-                var isReceived = data.latest_isReceived;
-                var qty_purchased = data.all_qty_purchased;
-                var qty_received = data.all_qty_received;
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText); 
+          }
+      });
+      
+    }
+    // $('#paginationBtns').on('click', 'a.paginationTag', function() {
+    //     alert();
+    //       // var page = $(this).data('page'); 
+    //       // console.log('Clicked on page:', page);
+        
+    //       // show_allInventories(page);
+    //   });
 
-                var partially_received = qty_purchased !== 0 && qty_purchased < qty_received;
-                var fully_received = qty_purchased === 0 && qty_received !== 0;
-                var is_lowstock = stock_status && stock < stock_count;
-                var span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
-                if (isReceived === 1 && is_lowstock && fully_received) span = "<span><i style='color: #72bf6a; font-weight: bold'>RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
-                if (isReceived === 1 && !is_lowstock && fully_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>RECEIVED</i></span>";
-                if (isReceived === 1 && is_lowstock && partially_received) span = "<span><i style='color: #FF6900; font-weight: bold'>PARTIALLY RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
-                if (isReceived === 1 && !is_lowstock && partially_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>PARIALLY RECEIVED</i></span>";
-                // if (stock_status && stock < stock_count) span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
-                return span;
-              }, className: 'text-center' }
-          ],
-          order: [[1, 'asc']],
-          pageLength: 100,
-          pagingType: 'full_numbers',
-          dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-          fnDrawCallback: function (oSettings) {
-              if (oSettings.aoData.length === 0) {
-                  $("#paginationDiv").hide();
-              } else {
-                  $("#paginationDiv").show();
-              }
+    // function show_allInventories(page)
+    // {
+    //   $('.paginationTag').removeClass('active');
+    //   $('.paginationTag').eq(page - 1).addClass('active');
+    //   $('.searchProducts').focus();
+    //   $('#modalCashPrint').show();
+    //   var tblData = `
+    //       <table tabindex='0' id='tbl_products' class='' style='font-size: 12px; margin-top: -20px; margin-right: 15px; margin-left: -3px; width: 100%;'>
+    //            <thead >
+    //               <tr style = "background-color: none">
+    //                   <th class='text-center ' >No.</th>
+    //                   <th>Product</th>
+    //                   <th >Barcode</th>
+    //                   <th>UOM</th>
+    //                   <th  >Qty Purchased</th>
+    //                   <th  style='text-align: center'>Qty Received</th>
+    //                   <th  style='text-align: center'>Qty in Store</th>
+    //                   <th  style='text-align: center'>Amount Before Tax</th>
+    //                   <th  style='text-align: center'>Amount After Tax</th>
+    //                   <th style='text-align: center'>Document Type</th>
+    //               </tr>
+    //           </thead>
+    //           <tbody></tbody>
+    //       </table> 
+    //       `;
+    //   $(".inventoryCard").html(tblData);
+    //   $.ajax({
+    //     url: './fetch-data/fetch-inventories.php',
+    //     type: 'GET',
+    //     data: { page: page },
+    //     success: function (response) {
+    //       $('#tbl_products tbody').html(response);
+    //       $('#modalCashPrint').hide();
+    //     },
+    //     error: function (xhr, status, error) {
+    //       console.error(xhr.responseText);
+    //     }
+    //   });
+    // }
+   
+//     function show_allInventories() {
+//     if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
+//         $(".inventoryCard #tbl_products").DataTable().destroy();
+//     }
 
-              var rowCount = table.rows().count();
+//     var tblData = `
+//           <table tabindex='0' id='tbl_products' class='' style='font-size: 12px; margin-top: -20px; margin-right: 15px; margin-left: -3px; width: 100%;'>
+//                <thead >
+//                 <tr>
+//                   <tr style = "background-color: none">
+//                       <th class='text-center ' >No.</th>
+//                       <th>Product</th>
+//                       <th >Barcode</th>
+//                       <th>UOM</th>
+//                       <th  >Qty Purchased</th>
+//                       <th  style='text-align: center'>Qty Received</th>
+//                       <th  style='text-align: center'>Qty in Store</th>
+//                       <th  style='text-align: center'>Amount Before Tax</th>
+//                       <th  style='text-align: center'>Amount After Tax</th>
+//                       <th style='text-align: center'>Document Type</th>
+//                   </tr>
+//                   </tr>
+//               </thead>
+//           </table> 
+//           `;
+//         // $(".inventoryHeader").html(header);
+//         $(".inventoryCard").html(tblData);
 
-              $('#tbl_row0').html("Total Items");
-              $('#tbl_row0_value').html(rowCount);
+//     var table = $('.inventoryCard #tbl_products').DataTable({
+//         serverSide: true,
+//         processing: true,
+//         ajax: {
+//             url: 'api.php?action=get_allInventories',
+//             type: 'POST',
+//             error: function(xhr, error, thrown) {
+//                 console.log("Error loading data:", error);
+//             }
+//         },
+//         language: {
+//             emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
+//         },
+//         columns: [
+//             { data: null, render: function (data, type, row, meta) {
+//                 return meta.row + meta.settings._iDisplayStart + 1;
+//             }, className: 'text-center' },
+//             { data: 'prod_desc' },
+//             { data: 'barcode' },
+//             { data: 'uom_name', className: 'text-center' },
+//             { data: 'all_qty_purchased', className: 'text-right' },
+//             { data: 'all_qty_received', className: 'text-right' },
+//             { data: 'product_stock', className: 'text-right' },
+//             { data: 'cost', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
+//             { data: 'prod_price', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
+//             { data: null, render: function (data) {
+//                 // Render document type column content here
+//             }, className: 'text-center' }
+//         ],
+//         order: [[1, 'asc']],
+//         pagingType: 100, // Set default page length
+//         pagingType: 'full_numbers',
+//         dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+//         drawCallback: function (settings) {
+//             var api = this.api();
+//             var pageInfo = api.page.info();
 
+//             $('#tbl_row0').html("Total Items");
+//             $('#tbl_row0_value').html(pageInfo.recordsDisplay);
 
-              var totalSum = table
-              .column(8, { page: 'current' })
-              .data()
-              .reduce(function (acc, val) {
-                  return acc + parseFloat(val);
-              }, 0);
+//             var totalSum = api.column(8, { page: 'current' }).data()
+//                 .reduce(function (acc, val) { return acc + parseFloat(val); }, 0);
 
-              $('#tbl_row1').html("Total Amount Before Tax");
-              $('#tbl_row1_value').html(totalSum);
+//             $('#tbl_row1').html("Total Amount Before Tax");
+//             $('#tbl_row1_value').html(totalSum);
 
-              var totalSum = table
-                  .column(8, { page: 'current' })
-                  .data()
-                  .reduce(function (acc, val) {
-                      return acc + parseFloat(val);
-                  }, 0);
+//             $('#tbl_row2').html("Total Amount After Tax");
+//             $('#tbl_row2_value').html(addCommasToNumber(totalSum));
+//         }
+//     });
 
-              $('#tbl_row2').html("Total Amount After Tax");
-              $('#tbl_row2_value').html(addCommasToNumber(totalSum));
+//     table.on('error', function(e, settings, techNote, message) {
+//         console.log("DataTables error:", message);
+//     });
 
-            }
-          });
-          table;
-    //       table.on('draw', function () {
-    //     var tableContainer = $('.table-container');
-    //     var tableBody = tableContainer.find('tbody');
-    //     var tableHead = tableContainer.find('thead');
+//     $('#paginationDiv').html($(".dataTables_paginate")).show();
 
-    //     // Match the header width to the body initially
-    //     tableHead.css('width', tableBody[0].scrollWidth + 'px');
-    // });
+//     var debounceTimeout;
+//     $('#searchInput').on('keyup', function (event) {
+//         clearTimeout(debounceTimeout);
+//         debounceTimeout = setTimeout(function () {
+//             table.search($('#searchInput').val()).draw();
+//         }, 300); // Adjust debounce time as needed
+//     });
 
-          $("#paginationDiv").html($(".dt-paging")).show();
-          var debounceTimeout;
-          $('#searchInput').on('keyup', function (event) {
-              clearTimeout(debounceTimeout);
-              debounceTimeout = setTimeout(function () {
-                  table.search($('#searchInput').val()).draw();
-              }, 100); 
-          });
+//     display_settings();
+// }
 
-          display_settings();
-        }
 
         $('#product').on('keypress', function(event) {
           if (event.keyCode === 13 || event.keyCode === 27) { 

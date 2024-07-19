@@ -15,13 +15,6 @@ class InventoryFacade extends DBConnection
             8 => 'p.prod_price',
         );
     
-        // $sql = "SELECT 
-        //             inventory.*, products.*, uom.*, SUM(inventory.qty_purchased) as all_qty_purchased, SUM(inventory.qty_received) as all_qty_received,
-        //             SUM(products.product_stock) AS total_stock,
-        //             COUNT(*) OVER() as total_count 
-        //         FROM inventory 
-        //         INNER JOIN products ON products.id = inventory.product_id 
-        //         LEFT JOIN uom ON uom.id = products.uom_id";
         $sql = "SELECT 
                     i.*, p.*, u.uom_name,
                     SUM(p.product_stock) AS total_stock,
@@ -37,21 +30,21 @@ class InventoryFacade extends DBConnection
                     SELECT product_id, isReceived as latest_isReceived, qty_purchased, qty_received
                     FROM inventory
                     WHERE (product_id, id) IN (
-                    SELECT product_id, MAX(id) as id
-                    FROM inventory
-                    GROUP BY product_id
+                        SELECT product_id, MAX(id) as id
+                        FROM inventory
+                        GROUP BY product_id
                     )
                 ) li ON li.product_id = p.id ";
-
     
-            if (!empty($requestData['search']['value'])) {
-                $sql .= " WHERE p.prod_desc LIKE '%" . $requestData['search']['value'] . "%'
-                        OR p.barcode LIKE '%" . $requestData['search']['value'] . "%'
-                        OR u.uom_name LIKE '%" . $requestData['search']['value'] . "%' ";
-            }
+        $whereClause = '';
+        $params = array();
     
-        $sql .= " GROUP BY p.id";
-        // $sql .= " GROUP BY p.id, p.prod_desc, u.uom_name, li.latest_isReceived";
+        if (!empty($requestData['search']['value'])) {
+            $whereClause .= " WHERE p.prod_desc LIKE :search OR p.barcode LIKE :search OR u.uom_name LIKE :search";
+            $params['search'] = "%" . $requestData['search']['value'] . "%";
+        }
+    
+        $sql .= $whereClause . " GROUP BY p.id";
     
         if (!empty($requestData['order'])) {
             $sql .= " ORDER BY " . $columns[$requestData['order'][0]['column']] . " " . $requestData['order'][0]['dir'];
@@ -64,30 +57,218 @@ class InventoryFacade extends DBConnection
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(':limit', $requestData['length'], PDO::PARAM_INT);
         $stmt->bindParam(':offset', $requestData['start'], PDO::PARAM_INT);
+        
+        foreach ($params as $key => $value) {
+            $stmt->bindParam(":$key", $value);
+        }
+    
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
         return $data;
     }
-    public function get_allInventories()
+    
+    // public function get_allInventories()
+    // {
+    //     $requestData = $_REQUEST;
+    //     $data = $this->get_allInventoriesDatatable($requestData);
+    
+    //     $totalData = $totalFiltered = 0;
+    //     if (count($data) > 0) {
+    //         $totalData = $totalFiltered = $data[0]['total_count'];
+    //     }
+    
+    //     $json_data = array(
+    //         "draw" => intval($requestData['draw']),
+    //         "recordsTotal" => intval($totalData),
+    //         "recordsFiltered" => intval($totalFiltered),
+    //         "data" => $data
+    //     );
+    
+    //     return $json_data;
+    // }
+    public function get_allInventories($searchInput, $offset, $recordsPerPage)
     {
-        $requestData = $_REQUEST;
-        $data = $this->get_allInventoriesDatatable($requestData);
+        $sql = "";
+        if(!empty($searchInput))
+        {
+            $sql = $this->connect()->prepare("SELECT 
+                                                i.*, p.*, u.uom_name,
+                                                SUM(p.product_stock) AS total_stock,
+                                                COUNT(*) as total_count,
+                                                li.latest_isReceived,
+                                                li.qty_purchased as all_qty_purchased,
+                                                li.qty_received as all_qty_received
+                                            FROM 
+                                                inventory i
+                                            INNER JOIN products p ON p.id = i.product_id
+                                            LEFT JOIN uom u ON u.id = p.uom_id
+                                            LEFT JOIN (
+                                                SELECT product_id, isReceived as latest_isReceived, qty_purchased, qty_received
+                                                FROM inventory
+                                                WHERE (product_id, id) IN (
+                                                    SELECT product_id, MAX(id) as id
+                                                    FROM inventory
+                                                    GROUP BY product_id
+                                                )
+                                            ) li ON li.product_id = p.id 
+                                            WHERE 
+                                                products.prod_desc LIKE :searchQuery OR 
+                                                products.barcode LIKE :searchQuery OR 
+                                                products.sku LIKE :searchQuery OR 
+                                                products.code LIKE :searchQuery OR 
+                                                products.brand LIKE :searchQuery 
+                                            GROUP BY i.product_id
+                                            ORDER BY prod_desc ASC LIMIT  10");
 
-        $totalData = $totalFiltered = 0;
-        if (count($data) > 0) {
-            $totalData = $totalFiltered = $data[0]['total_count'];
+            $searchParam = "%" . $searchInput . "%";
+            $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
         }
+        else
+        {
+            
+            $sql = $this->connect()->prepare("SELECT 
+                                                    i.*, p.*, u.uom_name,
+                                                    SUM(p.product_stock) AS total_stock,
+                                                    COUNT(*) as total_count,
+                                                    li.latest_isReceived,
+                                                    li.qty_purchased as all_qty_purchased,
+                                                    li.qty_received as all_qty_received
+                                                FROM 
+                                                    inventory i
+                                                INNER JOIN products p ON p.id = i.product_id
+                                                LEFT JOIN uom u ON u.id = p.uom_id
+                                                LEFT JOIN (
+                                                    SELECT product_id, isReceived as latest_isReceived, qty_purchased, qty_received
+                                                    FROM inventory
+                                                    WHERE (product_id, id) IN (
+                                                        SELECT product_id, MAX(id) as id
+                                                        FROM inventory
+                                                        GROUP BY product_id
+                                                    )
+                                                ) li ON li.product_id = p.id 
+                                                GROUP BY i.product_id
+                                                ORDER BY p.prod_desc ASC LIMIT  $offset, $recordsPerPage");
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $json_data = array(
-            "draw" => intval($requestData['draw']),
-            "recordsTotal" => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data" => $data
-        );
-
-        return $json_data;
+        }
     }
+    public function get_totalInventories()
+    {
+        $sql = $this->connect()->prepare("SELECT 
+                                                    i.*, p.*, u.uom_name,
+                                                    SUM(p.product_stock) AS total_stock,
+                                                    COUNT(*) as total_count,
+                                                    li.latest_isReceived,
+                                                    li.qty_purchased as all_qty_purchased,
+                                                    li.qty_received as all_qty_received
+                                                FROM 
+                                                    inventory i
+                                                INNER JOIN products p ON p.id = i.product_id
+                                                LEFT JOIN uom u ON u.id = p.uom_id
+                                                LEFT JOIN (
+                                                    SELECT product_id, isReceived as latest_isReceived, qty_purchased, qty_received
+                                                    FROM inventory
+                                                    WHERE (product_id, id) IN (
+                                                        SELECT product_id, MAX(id) as id
+                                                        FROM inventory
+                                                        GROUP BY product_id
+                                                    )
+                                                ) li ON li.product_id = p.id 
+                                                GROUP BY i.product_id");
+        $sql->execute();
+        return $sql->rowCount();                     
+    }
+    // public function get_allInventoriesDatatable($requestData)
+    // {
+    //     $columns = array(
+    //         0 => 'p.id',
+    //         1 => 'p.prod_desc',
+    //         2 => 'p.barcode',
+    //         3 => 'u.uom_name',
+    //         4 => 'all_qty_purchased',
+    //         5 => 'all_qty_received',
+    //         6 => 'p.product_stock',
+    //         7 => 'p.cost',
+    //         8 => 'p.prod_price',
+    //     );
+    
+    //     // $sql = "SELECT 
+    //     //             inventory.*, products.*, uom.*, SUM(inventory.qty_purchased) as all_qty_purchased, SUM(inventory.qty_received) as all_qty_received,
+    //     //             SUM(products.product_stock) AS total_stock,
+    //     //             COUNT(*) OVER() as total_count 
+    //     //         FROM inventory 
+    //     //         INNER JOIN products ON products.id = inventory.product_id 
+    //     //         LEFT JOIN uom ON uom.id = products.uom_id";
+    //     $sql = "SELECT 
+    //                 i.*, p.*, u.uom_name,
+    //                 SUM(p.product_stock) AS total_stock,
+    //                 COUNT(*) as total_count,
+    //                 li.latest_isReceived,
+    //                 li.qty_purchased as all_qty_purchased,
+    //                 li.qty_received as all_qty_received
+    //             FROM 
+    //                 inventory i
+    //             INNER JOIN products p ON p.id = i.product_id
+    //             LEFT JOIN uom u ON u.id = p.uom_id
+    //             LEFT JOIN (
+    //                 SELECT product_id, isReceived as latest_isReceived, qty_purchased, qty_received
+    //                 FROM inventory
+    //                 WHERE (product_id, id) IN (
+    //                         SELECT product_id, MAX(id) as id
+    //                         FROM inventory
+    //                         GROUP BY product_id
+    //                         )
+    //             ) li ON li.product_id = p.id ";
+
+    
+    //         if (!empty($requestData['search']['value'])) {
+    //             $sql .= " WHERE p.prod_desc LIKE '%" . $requestData['search']['value'] . "%'
+    //                     OR p.barcode LIKE '%" . $requestData['search']['value'] . "%'
+    //                     OR u.uom_name LIKE '%" . $requestData['search']['value'] . "%' ";
+    //         }
+    
+    //     $sql .= " GROUP BY p.id";
+    //     // $sql .= " GROUP BY p.id, p.prod_desc, u.uom_name, li.latest_isReceived";
+    
+    //     if (!empty($requestData['order'])) {
+    //         $sql .= " ORDER BY " . $columns[$requestData['order'][0]['column']] . " " . $requestData['order'][0]['dir'];
+    //     } else {
+    //         $sql .= " ORDER BY p.prod_desc ASC";
+    //     }
+    
+    //     $sql .= " LIMIT :limit OFFSET :offset";
+    
+    //     $stmt = $this->connect()->prepare($sql);
+    //     $stmt->bindParam(':limit', $requestData['length'], PDO::PARAM_INT);
+    //     $stmt->bindParam(':offset', $requestData['start'], PDO::PARAM_INT);
+    //     $stmt->execute();
+    //     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    //     return $data;
+    // }
+    // public function get_allInventories()
+    // {
+    //     $requestData = $_REQUEST;
+    //     $data = $this->get_allInventoriesDatatable($requestData);
+
+    //     $totalData = $totalFiltered = 0;
+    //     if (count($data) > 0) {
+    //         $totalData = $totalFiltered = $data[0]['total_count'];
+    //     }
+
+    //     $json_data = array(
+    //         "draw" => intval($requestData['draw']),
+    //         "recordsTotal" => intval($totalData),
+    //         "recordsFiltered" => intval($totalFiltered),
+    //         "data" => $data
+    //     );
+
+    //     return $json_data;
+    // }
     public function get_allInventoriesData()
     {
         $stmt = $this->connect()->prepare("SELECT 

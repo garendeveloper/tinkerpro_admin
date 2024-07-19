@@ -736,3 +736,7 @@
 2024-07-18 15:23:30 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000001 Date: Jul 18 24 
 2024-07-18 15:26:47 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
 2024-07-18 18:12:09 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-19 09:17:19 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-19 10:29:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-19 11:33:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40Gss Barcode #:888779554 
+2024-07-19 11:33:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 

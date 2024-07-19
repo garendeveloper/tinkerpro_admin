@@ -14,7 +14,7 @@ $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$recordsPerPage = 300;
+$recordsPerPage = 100;
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($page - 1) * $recordsPerPage;
 
