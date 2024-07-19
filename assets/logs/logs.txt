@@ -756,3 +756,7 @@
 2024-07-19 13:01:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-19 13:51:08 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: ACE CHOCO 30G From: 0.00 To: 32 
 2024-07-19 13:51:10 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000002 Amount:₱ 6,802.42 
+2024-07-19 15:18:23 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-19 15:55:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-19 17:56:13 | Talkosoy Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-19 18:09:16 | Talkosoy Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
