@@ -773,3 +773,9 @@
 2024-07-20 13:08:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-20 15:18:23 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 0.00 
 2024-07-20 15:18:43 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 95.00 
+2024-07-20 16:06:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 16:33:48 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 16:50:54 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 17:07:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 17:29:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 17:46:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
