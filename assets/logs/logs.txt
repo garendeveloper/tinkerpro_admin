@@ -760,3 +760,16 @@
 2024-07-19 15:55:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-19 17:56:13 | Talkosoy Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
 2024-07-19 18:09:16 | Talkosoy Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 
+2024-07-19 18:32:06 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-07-20 09:10:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 09:13:05 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 09:52:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 10:31:06 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000003 Amount:₱ 504.00 
+2024-07-20 10:58:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 11:04:01 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000002 Date: Jul 20 24 Total Amount₱ 1,475.00 
+2024-07-20 11:08:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:3538616594578 
+2024-07-20 11:09:21 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000002 Date: Jul 20 24 
+2024-07-20 11:33:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 13:08:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-20 15:18:23 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 0.00 
+2024-07-20 15:18:43 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 95.00 

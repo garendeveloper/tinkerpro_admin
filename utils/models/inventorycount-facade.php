@@ -1,4 +1,5 @@
 <?php
+use Xendit\PaymentMethod\GetAllPaymentMethodsDefaultResponse;
     class InventoryCountFacade extends DBConnection
     {
         public function check_inventorycountinfo_exist($reference_no)
@@ -159,11 +160,35 @@
             $row = $sql->fetch(PDO::FETCH_ASSOC);
             return $row;
         }
-        public function get_allData()
+        public function get_allData($searchInput, $offset, $recordsPerPage)
+        {
+            if(!empty($searchInput))
+            {
+                $sql = "SELECT *
+                        FROM inventory_count_info ic 
+                        WHERE   ic.date_counted 
+                        LIKE :searchQuery OR 
+                        ic.reference_no LIKE :searchQuery";
+
+                $searchParam = "%" . $searchInput . "%";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            else
+            {
+                $sql = "SELECT * FROM inventory_count_info ic  ORDER BY ic.id ASC LIMIT  $offset, $recordsPerPage";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+        }
+        public function total_inventoryCounts()
         {
             $sql = "SELECT * FROM inventory_count_info";
             $stmt = $this->connect()->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->rowCount();
         }
     }

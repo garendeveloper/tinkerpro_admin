@@ -80,6 +80,7 @@
             data: { searchInput:searchInput },
             success: function (response) {
              $('#tbl_all_stocks tbody').html(response);
+             display_records();
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
@@ -97,13 +98,64 @@
             type: 'GET',
             data: { page: currentPageD },
             success: function (response) {
-            $('#tbl_all_stocks tbody').html(response);
+                $('#tbl_all_stocks tbody').html(response);
+                display_records();
             },
             error: function (xhr, status, error) {
             console.error(xhr.responseText);
             }
         });
         updatePaginationButtons();
+    }
+    function numberWithCommas(number) 
+    {
+        var numString = number.toString();
+        var parts = numString.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+    }
+    function removeCommas(numString) 
+    {
+        return numString.replace(/,/g, '');
+    }
+    function removeCommas(numString) 
+    {
+        return numString.replace(/,/g, '');
+    }
+    function display_records() 
+    {
+        $("#preview_records").html('');
+
+        var table = `
+            <table tabindex='0' style='width: 100%;' id="tbl_previewRecord">
+                <tbody>
+                   <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Items:</th>
+                        <th style="background-color: #262626; border: 1px solid #262626; "  class = "text-right"  id="total_items"></th>
+                    </tr>
+                    <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Qty In Store:</th>
+                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_qty_store"></th>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+
+        var totalQtyS = 0;
+
+        var itemCount = $('.inventoryCard #tbl_all_stocks tbody tr').length;
+        $('.inventoryCard #tbl_all_stocks tbody tr').each(function() {
+            var qs = removeCommas($(this).find('td:eq(4)').text().trim());
+            qs = parseFloat(qs);
+            if (!isNaN(qs)) 
+            {
+                totalQtyS += qs;
+            }
+        });
+      
+        $("#preview_records").html(table);
+        $('#total_items').text(numberWithCommas(itemCount));
+        $('#total_qty_store').text(numberWithCommas(totalQtyS.toFixed(2)));
     }
     $(".inventoryCard tbody").on("click", "tr", function(e){
         e.preventDefault();

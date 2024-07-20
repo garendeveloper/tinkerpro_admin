@@ -193,8 +193,13 @@
 <div class="fcontainer" id="received_div" style="display: none;">
     <form id="receive_form">
         <div class="fieldContainer" style="margin-top: -5px;">
-            <img src="assets/img/barcode.png"
-                style="height: 50px; width: 50px; border-radius: 0;  margin-right: 2px; margin-left: 0px;">
+            <!-- <img src="assets/img/barcode.png"
+                style="height: 50px; width: 50px; border-radius: 0;  margin-right: 2px; margin-left: 0px;"> -->
+                <label>
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+              </svg>
+             </label>
             <div class="search-container">
                 <input type="hidden" id="is_received" name="is_received" value="0">
                 <input type="text" style="width: 280px; height: 30px; font-size: 16px;"
@@ -243,7 +248,7 @@
                     <label>RECEIVED STATUS: <strong id="received_status">RECEIVED</strong></label>
                 </div>
             </div>
-            <table id="tbl_receivedItems" class="text-color" style="">
+            <table id="tbl_receivedItems" class="text-color" >
                 <thead>
                     <tr>
                         <th style="background-color: #1E1C11; width: 40%" colspan="2">ITEM DESCRIPTION</th>

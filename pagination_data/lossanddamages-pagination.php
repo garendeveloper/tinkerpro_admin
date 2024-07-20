@@ -1,23 +1,23 @@
 <?php
     include(__DIR__ . '/../utils/db/connector.php');
     include(__DIR__ . '/../utils/models/product-facade.php');
-    include(__DIR__ . '/../utils/models/order-facade.php');
+    include( __DIR__ . '/../utils/models/loss_and_damage-facade.php');
 
-    $orderfacade = new OrderFacade;
+    $loss_and_damage = new Loss_and_damage_facade();
 
-    $totalRecords = $orderfacade->get_totalOrders();
+    $totalRecords = $loss_and_damage->total_lossAndDamagesInfo();
     $totalPages = ceil($totalRecords / 100);
     echo "<div id='paginationBtns'>";
     echo "<a  class='paginationButtons paginationTag prev' href='javascript:void(0)' onclick='changePage(\"prev\")'>Prev</a>";
 
     for ($i = 1; $i <= min(20, $totalPages); $i++) {
         $activeClass = ($i == 1) ? 'active' : '';
-        echo "<a  class='paginationButtons paginationTag $activeClass' href='javascript:void(0)' onclick='show_allOrderData($i)'>$i</a> ";
+        echo "<a  class='paginationButtons paginationTag $activeClass' href='javascript:void(0)' onclick='show_allLossAndDamagesData($i)'>$i</a> ";
     }
 
     if ($totalPages > 20) {
         echo "<a  class='paginationButtons paginationTag dots' href='javascript:void(0)' onclick='changePageGroup(1)'>...</a>";
-        echo "<a  class='paginationButtons paginationTag' href='javascript:void(0)' onclick='show_allOrderData($totalPages)'>$totalPages</a> ";
+        echo "<a  class='paginationButtons paginationTag' href='javascript:void(0)' onclick='show_allLossAndDamagesData($totalPages)'>$totalPages</a> ";
     }
 
     echo "<a  class='paginationButtons paginationTag next' href='javascript:void(0)' onclick='changePage(\"next\")'>Next</a>";
@@ -50,34 +50,32 @@
     $(".inventoryCard").html();
 
     var tblData = `
-              <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
-                  <thead>
-                      <tr>
-                          <th style='width: 2%;'>PO Number</th>
-                          <th style='width: 4%;'>Supplier</th>
-                          <th style='width: 2%;'>Date Purchased</th>
-                          <th style='width: 2%;'>Due Date</th>
-                          <th style='width: 2%;'>Qty</th>
-                          <th style='width: 2%;'>Price</th>
-                          <th style='width: 2%;'>Total</th>
-                          <th style='width: 2%;'>Is Paid</th>
-                          <th style='width: 2%;'>Status</th>
-                          <th style='width: 1%;' class='autofit'>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody></tbody>
-              </table> `;
+             <table id='tbl_all_lostanddamages' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
+                <thead>
+                    <tr>
+                        <th class='autofit'>Reference No.</th>
+                        <th style = 'text-align:center'>Date of Transaction</th>
+                        <th style = 'text-align:center;'>Reason</th>
+                        <th style = 'text-align:center'>Total Qty</th>
+                        <th style = 'text-align:center'>Total Cost</th>
+                        <th style = 'text-align:center'>Overall Cost</th>
+                        <th style = 'text-align:center'>Note</th>
+                        <th style = 'text-align:center' class='autofit'>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+              </table>`;
 
     $(".inventoryCard").html(tblData);
  
     $("#searchInput").on("input", function(){
         var searchInput = $(this).val();
         $.ajax({
-            url: './fetch-data/fetch-orders.php',
+            url: './fetch-data/fetch-lossanddamages.php',
             type: 'GET',
             data: { searchInput:searchInput },
             success: function (response) {
-             $('#tbl_orders tbody').html(response);
+             $('#tbl_all_lostanddamages tbody').html(response);
              display_records();
             },
             error: function (xhr, status, error) {
@@ -85,19 +83,18 @@
             }
         });
     })
-   
-    function show_allOrderData(page)
+    function show_allLossAndDamagesData(page)
     {
         currentPageD = page;
         $('.paginationTag').removeClass('active');
         $('.paginationTag').eq(page - 1).addClass('active');
         $('#searchInput').focus();
         $.ajax({
-            url: './fetch-data/fetch-orders.php',
+            url: './fetch-data/fetch-lossanddamages.php',
             type: 'GET',
             data: { page: currentPageD },
             success: function (response) {
-                $('#tbl_orders tbody').html(response);
+                $('#tbl_all_lostanddamages tbody').html(response);
                 display_records();
             },
             error: function (xhr, status, error) {
@@ -129,55 +126,55 @@
                         <th style="background-color: #262626; border: 1px solid #262626; "  class = "text-right"  id="total_items"></th>
                     </tr>
                     <tr style="background-color: #262626; font-size: 12px;">
-                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Qty Purchased:</th>
-                        <th style="background-color: #262626; border: 1px solid #262626; "  class = "text-right"  id="total_qty_purchased"></th>
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Qty Damage:</th>
+                        <th style="background-color: #262626; border: 1px solid #262626; "  class = "text-right"  id="total_qtyD"></th>
                     </tr>
                      <tr style="background-color: #262626; font-size: 12px;">
-                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Price:</th>
-                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_pp"></th>
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Cost:</th>
+                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_cd"></th>
                     </tr>
                     <tr style="background-color: #262626; font-size: 12px;">
-                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Overall Total:</th>
-                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_pot"></th>
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Overall Total Cost:</th>
+                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_cot"></th>
                     </tr>
                     </tr>
                 </tbody>
             </table>
         `;
 
-        var totalQtyP = 0;  
-        var totalPP = 0;
-        var totalPOT = 0;
+        var totalqd = 0;
+        var totalcd = 0;
+        var totalcot = 0;
 
-        var itemCount = $('.inventoryCard #tbl_orders tbody tr').length;
-        $('.inventoryCard #tbl_orders tbody tr').each(function() {
-            var qty_purchased = removeCommas($(this).find('td:eq(4)').text().trim());
-            qty_purchased = parseFloat(qty_purchased);
-            if (!isNaN(qty_purchased)) 
+        var itemCount = $('.inventoryCard #tbl_all_lostanddamages tbody tr').length;
+        $('.inventoryCard #tbl_all_lostanddamages tbody tr').each(function() {
+            var qd = removeCommas($(this).find('td:eq(3)').text().trim());
+            qd = parseFloat(qd);
+            if (!isNaN(qd)) 
             {
-                totalQtyP += qty_purchased;
+                totalqd += qd;
             }
 
-            var pp = removeCommas($(this).find('td:eq(5)').text().trim());
-            pp = parseFloat(pp);
-            if (!isNaN(pp)) 
+            var cd = removeCommas($(this).find('td:eq(4)').text().trim());
+            cd = parseFloat(cd);
+            if (!isNaN(cd)) 
             {
-                totalPP += pp;
+                totalcd += cd;
             }
 
-            var pot = removeCommas($(this).find('td:eq(6)').text().trim());
-            pot = parseFloat(pot);
-            if (!isNaN(pot)) 
+            var cot = removeCommas($(this).find('td:eq(5)').text().trim());
+            cot = parseFloat(cot);
+            if (!isNaN(cot)) 
             {
-                totalPOT += pot;
+                totalcot += cot;
             }
         });
       
         $("#preview_records").html(table);
         $('#total_items').text(numberWithCommas(itemCount));
-        $('#total_qty_purchased').text(numberWithCommas(totalQtyP.toFixed(2)));
-        $('#total_pp').text(numberWithCommas(totalPP.toFixed(2)));
-        $('#total_pot').text(numberWithCommas(totalPOT.toFixed(2)));
+        $('#total_qtyD').text(numberWithCommas(totalqd.toFixed(2)));
+        $('#total_cd').text(numberWithCommas(totalcd.toFixed(2)));
+        $('#total_cot').text(numberWithCommas(totalcot.toFixed(2)));
     }
     $(".inventoryCard tbody").on("click", "tr", function(e){
         e.preventDefault();
@@ -207,13 +204,13 @@
             }
 
             const activeClass = (i == currentPageD) ? 'active' : '';
-            paginationBtns.innerHTML += `<a style='${styleString}' class='paginationTag ${activeClass}' href='javascript:void(0)' onclick='show_allOrderData(${i})'>${i}</a>`;
+            paginationBtns.innerHTML += `<a style='${styleString}' class='paginationTag ${activeClass}' href='javascript:void(0)' onclick='show_allLossAndDamagesData(${i})'>${i}</a>`;
         }
         if (endPage < totalPages) {
             paginationBtns.innerHTML += `<a style='border-radius: 50%; background: transparent; border: 1px solid #757373; color: #fff' class='paginationTag dots' href='javascript:void(0)' onclick='changePageGroup(1)'>...</a>`;
         }
         if (endPage < totalPages) {
-            paginationBtns.innerHTML += `<a style='border-radius: 50%; background: transparent; border: 1px solid #757373; color: #fff' class='paginationTag' href='javascript:void(0)' onclick='show_allOrderData(${totalPages})'>${totalPages}</a>`;
+            paginationBtns.innerHTML += `<a style='border-radius: 50%; background: transparent; border: 1px solid #757373; color: #fff' class='paginationTag' href='javascript:void(0)' onclick='show_allLossAndDamagesData(${totalPages})'>${totalPages}</a>`;
         }
         paginationBtns.innerHTML += `<a style='border-radius: 50%; background: transparent; border: 1px solid #757373; color: #fff' class='paginationTag next' href='javascript:void(0)' onclick='changePage("next")'>Next</a>`;
     }
@@ -229,7 +226,7 @@
             currentPageD--;
         }
 
-        show_allOrderData(currentPageD);
+        show_allLossAndDamagesData(currentPageD);
     }
 
     function changePageGroup(direction) 
@@ -242,6 +239,6 @@
         updatePaginationButtons();
     }
 
-    show_allOrderData(1);
+    show_allLossAndDamagesData(1);
    
 </script>

@@ -135,9 +135,9 @@
             $order_id = $_GET['order_id'];
             echo json_encode($inventory->get_orderPaymentHistory($order_id));
             break;
-        case 'get_all_lostanddamageinfo':
-            echo json_encode($loss_and_damage->get_all_lostanddamageinfo());
-            break;
+        // case 'get_all_lostanddamageinfo':
+        //     echo json_encode($loss_and_damage->get_all_lostanddamageinfo());
+        //     break;
         case 'get_lostanddamage_data':
             $id = $_GET['id'];
             echo json_encode($loss_and_damage->get_lostanddamage_data($id));
@@ -153,9 +153,9 @@
             $product = $_GET['data'];
             echo json_encode($inventory->get_productInfo($product));
             break;
-        case 'get_allInventoryCounts':
-            echo json_encode($inventory_count->get_allData());
-            break;
+        // case 'get_allInventoryCounts':
+        //     echo json_encode($inventory_count->get_allData());
+        //     break;
         case 'get_realtime_notifications':
             echo json_encode($inventory->get_realtime_notifications());
             break;
@@ -212,9 +212,9 @@
         case 'get_allPurchaseOrders':
             echo json_encode($order->get_allPurchaseOrders());
             break;
-        case 'get_allOrders':
-            echo json_encode($order->get_allOrders());
-            break;
+        // case 'get_allOrders':
+        //     echo json_encode($order->get_allOrders());
+        //     break;
         case 'get_orderData':
             $order_id = $_GET['order_id'];
             echo json_encode($order->get_orderData($order_id));
