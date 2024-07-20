@@ -7,13 +7,6 @@
 
     $totalRecords = $inventoryfacade->get_totalInventories();
     $totalPages = ceil($totalRecords / 100);
-    // echo "<div id='paginationBtns'>";
-    // for ($i = 1; $i <= $totalPages; $i++) 
-    // {
-    //     $activeClass = ($i == 1) ? 'active' : ''; 
-    //     echo "<a class='paginationTag $activeClass' href='javascript:void(0)' onclick='show_allInventoriesData($i)' data-page = '$i'>$i</a> ";
-    // }
-    // echo "</div>";
     echo "<div id='paginationBtns'>";
     echo "<a  class='paginationButtons paginationTag prev' href='javascript:void(0)' onclick='changePage(\"prev\")'>Prev</a>";
 
@@ -45,6 +38,7 @@
         height: 5px;
         padding: 10px 10px;
     }
+  
 
 </style>
 
@@ -85,12 +79,111 @@
             data: { searchInput:searchInput },
             success: function (response) {
              $('#tbl_products tbody').html(response);
+             display_records();
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
             }
         });
     })
+    function numberWithCommas(number) 
+    {
+        var numString = number.toString();
+        var parts = numString.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+    }
+    function removeCommas(numString) 
+    {
+        return numString.replace(/,/g, '');
+    }
+    function display_records() 
+    {
+        $("#preview_records").html('');
+
+        var table = `
+            <table tabindex='0' style='width: 100%;' id="tbl_previewRecord">
+                <tbody>
+                   <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Items:</th>
+                        <th style="background-color: #262626; border: 1px solid #262626; "  class = "text-right"  id="total_items"></th>
+                    </tr>
+                    <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Qty Purchased:</th>
+                        <th style="background-color: #262626; border: 1px solid #262626; "  class = "text-right"  id="total_qty_purchased"></th>
+                    </tr>
+                     <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Qty Received:</th>
+                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_qty_received"></th>
+                    </tr>
+                    <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Qty In Store:</th>
+                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_qty_store"></th>
+                    </tr>
+                    <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Amount Before Tax:</th>
+                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_amtB"></th>
+                    </tr>
+                    <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Amount After Tax:</th>
+                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_amtA"></th>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+
+        var totalQtyP = 0;  
+        var totalQtyR = 0;
+        var totalQtyS = 0;
+        var amtB = 0;
+        var amtA = 0;
+
+        var itemCount = $('.inventoryCard #tbl_products tbody tr').length;
+        $('.inventoryCard #tbl_products tbody tr').each(function() {
+            var qty_purchased = removeCommas($(this).find('td:eq(4)').text().trim());
+            qty_purchased = parseFloat(qty_purchased);
+            if (!isNaN(qty_purchased)) 
+            {
+                totalQtyP += qty_purchased;
+            }
+
+            var qr = removeCommas($(this).find('td:eq(5)').text().trim());
+            qr = parseFloat(qr);
+            if (!isNaN(qr)) 
+            {
+                totalQtyR += qr;
+            }
+
+            var qs = removeCommas($(this).find('td:eq(6)').text().trim());
+            qs = parseFloat(qs);
+            if (!isNaN(qs)) 
+            {
+                totalQtyS += qs;
+            }
+
+            var ab = removeCommas($(this).find('td:eq(7)').text().trim());
+            ab = parseFloat(ab);
+            if (!isNaN(ab)) 
+            {
+                amtB += ab;
+            }
+
+            var aa = removeCommas($(this).find('td:eq(8)').text().trim());
+            aa = parseFloat(aa);
+            if (!isNaN(aa)) 
+            {
+                amtA += aa;
+            }
+        });
+      
+        $("#preview_records").html(table);
+        $('#total_items').text(numberWithCommas(itemCount));
+        $('#total_qty_purchased').text(numberWithCommas(totalQtyP.toFixed(2)));
+        $('#total_qty_received').text(numberWithCommas(totalQtyR.toFixed(2)));
+        $('#total_qty_store').text(numberWithCommas(totalQtyS.toFixed(2)));
+        $('#total_amtB').text(numberWithCommas(amtB.toFixed(2)));
+        $('#total_amtA').text(numberWithCommas(amtA.toFixed(2)));
+    }
     function show_allInventoriesData(page)
     {
         currentPageD = page;
@@ -102,7 +195,8 @@
             type: 'GET',
             data: { page: currentPageD },
             success: function (response) {
-            $('#tbl_products tbody').html(response);
+                $('#tbl_products tbody').html(response);
+                display_records();
             },
             error: function (xhr, status, error) {
             console.error(xhr.responseText);

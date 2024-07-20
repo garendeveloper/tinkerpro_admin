@@ -137,8 +137,8 @@ switch($active_id)
             $pdf->Cell($headerWidths[6], $maxCellHeight, $amountAfterTaxFormatted, 1, 0, 'R');
             $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountAfterTaxFormatted, $headerWidths[6]));
             $pdf->Ln(); 
-            $total_amountBeforeTax += number_format($item['cost']);
-            $total_amountAfterTax += number_format($item['prod_price']);
+            $total_amountBeforeTax +=$item['cost'];
+            $total_amountAfterTax += $item['prod_price'];
             $total_qty += $item['product_stock'];
             $counter++;
         }
@@ -303,7 +303,7 @@ switch($active_id)
         $pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
         $pdf->Ln(-3);
 
-        $items = $loss_and_damage->get_all_lostanddamageinfo();
+        $items = $loss_and_damage->get_allData();
         $pdf->SetDrawColor(192, 192, 192); 
         $pdf->SetLineWidth(0.3); 
         $header = array('No','Reference No.','Date', 'Reason', 'Note', 'Total Qty', 'Total Cost', 'Overall Cost');
@@ -417,7 +417,7 @@ switch($active_id)
         $pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
         $pdf->Ln(-2);
 
-        $items = $loss_and_damage->get_all_lostanddamageinfo();
+        $items = $loss_and_damage->get_allData();
         $header = array('No','Product.','Barcode', 'Expiration Date', 'Days Remaining');
         $headerWidths = array(10, 60, 50, 35, 35);
         $maxCellHeight = 5;

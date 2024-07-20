@@ -4029,7 +4029,6 @@ function generateExcel(id){
               link.href = window.URL.createObjectURL(blob);
               link.download = 'e'+e+'.xlsx'; 
 
-              
               document.body.appendChild(link);
               link.click();
 
@@ -4044,6 +4043,7 @@ function generateExcel(id){
   }
   else if(id == 2){
     $('#EXCELBtn').off('click').on('click',function() {
+      $('#modalCashPrint').show();
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -4091,16 +4091,15 @@ function generateExcel(id){
                 endDate: endDate
             },
             success: function(response) {
-            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'usersSales.xlsx'; 
+              $('#modalCashPrint').hide();
+              var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+              var link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = 'usersSales.xlsx'; 
+              document.body.appendChild(link);
+              link.click();
 
-            
-            document.body.appendChild(link);
-            link.click();
-
-            document.body.removeChild(link);
+              document.body.removeChild(link);
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);

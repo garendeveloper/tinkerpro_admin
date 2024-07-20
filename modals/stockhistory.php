@@ -13,7 +13,7 @@
 
 #stockhistory_modal .modal-content {
   color: #ffff;
-  background: #262625;
+  background: #262626;
   border-radius: 0;
   position: relative;
   height: 500px;
@@ -167,59 +167,53 @@ table, .stockhistory_form{
     top: 60px;
 }
 
-/* #tbl_stocks_history {
-    width: 100%;
-    border-collapse: collapse;
-}
 
-#tbl_stocks_history thead {
-    position: sticky;
-    top: 0;
-}
-
-#tbl_stocks_history th, #tbl_stocks_history td {
-    padding: 8px;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-#tbl_stocks_history tbody {
-    overflow-y: auto;
-    max-height: 100px; 
-} */
 
 #tbl_stocks_history {
     width: 100%;
     border-collapse: collapse;
+    border: 1px solid var(--primary-color);
 }
 
 #tbl_stocks_history th, #tbl_stocks_history td {
     padding: 8px;
-    border: 1px solid #ccc;
+    border: none;
     text-align: center;
 }
 
 #tbl_stocks_history thead {
     position: sticky;
     top: 0; /* Stick thead to the top */
-    background-color: #f8f9fa; /* Background color of thead */
-    z-index: 1; /* Ensure it's above tbody */
+    border: 1px solid #151515;
+    background-color: #151515; 
+    z-index: 1; 
+}
+#tbl_stocks_history thead tr th {
+  background-color: #151515; 
+  border: 1px solid none;
+  padding: 10px 10px;
+}
+#tbl_stocks_history tbody th,
+#tbl_stocks_history tbody td {
+  padding: 8px 8px; 
+  height: 20px; 
+  line-height: 0.5; 
 }
 </style>
 
 <div class="modal" id="stockhistory_modal"  tabindex="0" style="background-color: rgba(0, 0, 0, 0.7); overflow: hidden; z-index:999;">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <button id="close-modal"  name="close-modal" class="close-button" style="font-size: larger;">&times;</button>
+      <button id="close-modal"  name="close-modal" class="close-button" style="font-size: larger; background-color: var(--primary-color)">&times;</button>
       <div class="modal-title text-custom">
         <div class="warning-container">
           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 47.5 47.5" viewBox="0 0 47.5 47.5" id="Warning">
             <defs>
               <clipPath id="a">
-                <path d="M0 38h38V0H0v38Z" fill="#000000" class="color000000 svgShape"></path>
+                <path d="M0 38h38V0H0v38Z" fill="var(--primary-color)" class="color000000 svgShape"></path>
               </clipPath>
             </defs>
-            <g clip-path="url(#a)" transform="matrix(1.25 0 0 -1.25 0 47.5)" fill="#000000" class="color000000 svgShape">
+            <g clip-path="url(#a)" transform="matrix(1.25 0 0 -1.25 0 47.5)" fill="var(--primary-color)" class="color000000 svgShape">
               <path fill="#b50604" d="M0 0c-1.842 0-2.654 1.338-1.806 2.973l15.609 30.055c.848 1.635 2.238 1.635 3.087 0L32.499 2.973C33.349 1.338 32.536 0 30.693 0H0Z" transform="translate(3.653 2)" class="colorffcc4d svgShape"></path>
               <path fill="#131212" d="M0 0c0 1.302.961 2.108 2.232 2.108 1.241 0 2.233-.837 2.233-2.108v-11.938c0-1.271-.992-2.108-2.233-2.108-1.271 0-2.232.807-2.232 2.108V0Zm-.187-18.293a2.422 2.422 0 0 0 2.419 2.418 2.422 2.422 0 0 0 2.419-2.418 2.422 2.422 0 0 0-2.419-2.419 2.422 2.422 0 0 0-2.419 2.419" transform="translate(16.769 26.34)" class="color231f20 svgShape"></path>
             </g>
@@ -227,7 +221,7 @@ table, .stockhistory_form{
         </div>
       </div>
       <div hidden id="loadingImage" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 800px; position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.8); z-index: 9999;">
-          <h3 style="color: #FF6900"><b></b>LOADING PLEASE WAIT</b></h3><br>
+          <h3 style="color: var(--primary-color)"><b></b>LOADING PLEASE WAIT</b></h3><br>
           <img src="assets/img/globe.png" alt="Globe Image" style="width:75px; height: 75px; animation: rotate 2s linear infinite;" />
       </div>
      <div class="modal-body" >
@@ -248,12 +242,12 @@ table, .stockhistory_form{
               </div>
           </div>
         </div>
-        <div class="table-container">
+        <div class="table-container" style = "margin-top: 10px;">
        
           <table id = "tbl_stocks_history">
             <thead>
                 <tr>
-                  <th>Document Type</th>
+                  <th style = "text-align: left">Document Type</th>
                   <th>Document</th>
                   <th>User</th>
                   <th>Date</th>
@@ -329,19 +323,19 @@ $(document).ready(function() {
         
                 tbl_rows.push(
                   `<tr>
-                    <td  style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
+                    <td  style = 'text-align: left;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.document_number}</td>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_customer}</td>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockDate}</td>
                     <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockTimestamp}</td>
-                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
-                    <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
+                    <td style = 'text-align: right;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
+                    <td style = 'text-align: right; font-size: 12px; font-weight: bold'>${stock}</td>
                 </tr>`
                 );
               }
               var tfoot = `<tr>
-                    <td style = 'text-align: center;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
-                    <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
+                    <td style = 'text-align: left;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
+                    <td style = 'text-align: right; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
                 </tr>`;
 
               $("#tbl_stocks_history tbody").html(tbl_rows);

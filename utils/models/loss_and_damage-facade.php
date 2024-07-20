@@ -34,12 +34,46 @@
             $row = $result->fetch(PDO::FETCH_ASSOC);
             return $row;
         }
-        public function get_all_lostanddamageinfo()
+        public function get_allData()
         {
-            $sql = "SELECT * FROM loss_and_damage_info ORDER BY id ASC";
-            $result = $this->connect()->prepare($sql);
-            $result->execute();
-            return $result->fetchAll(PDO::FETCH_ASSOC);
+            $sql = "SELECT * FROM loss_and_damage_info ld  ORDER BY ld.id";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function get_all_lostanddamageinfo($searchInput, $offset, $recordsPerPage)
+        {
+            if(!empty($searchInput))
+            {
+                $sql = "SELECT *
+                        FROM loss_and_damage_info ld 
+                        WHERE ld.reference_no LIKE :searchQuery OR 
+                        ld.reason LIKE :searchQuery OR
+                        ld.other_reason LIKE :searchQuery OR
+                        ld.date_transact LIKE :searchQuery OR
+                        ld.note LIKE :searchQuery";
+
+                $searchParam = "%" . $searchInput . "%";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            else
+            {
+                $sql = "SELECT * FROM loss_and_damage_info ld  ORDER BY ld.id ASC LIMIT  $offset, $recordsPerPage";
+                $stmt = $this->connect()->prepare($sql);
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+           
+        }
+        public function total_lossAndDamagesInfo()
+        {
+            $sql = "SELECT * FROM loss_and_damage_info";
+            $stmt = $this->connect()->prepare($sql);
+            $stmt->execute();
+            return $stmt->rowCount();
         }
         public function get_lostanddamage_data($id)
         {

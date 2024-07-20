@@ -209,12 +209,12 @@ if(count($items) > 0)
         $pdf->Cell($headerWidths[2], $maxCellHeight, $customerID, 1, 0, 'C');
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['barcode'], $headerWidths[3]));
         $pdf->Cell($headerWidths[3], $maxCellHeight, $item['barcode'], 1, 0, 'C');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['totalAmount'], $headerWidths[4]));
-        $pdf->Cell($headerWidths[4], $maxCellHeight, $item['totalAmount'], 1, 0, 'C');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['overAllDiscounts'], $headerWidths[5]));
-        $pdf->Cell($headerWidths[5], $maxCellHeight, $item['overAllDiscounts'], 1, 0, 'R');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item['netSales'], $headerWidths[6]));
-        $pdf->Cell($headerWidths[6], $maxCellHeight, $item['netSales'], 1, 0, 'R');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['totalAmount'], 2), $headerWidths[4]));
+        $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($item['totalAmount'], 2), 1, 0, 'R');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['overAllDiscounts'], 2), $headerWidths[5]));
+        $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($item['overAllDiscounts'], 2), 1, 0, 'R');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['netSales'], 2), $headerWidths[6]));
+        $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($item['netSales'], 2), 1, 0, 'R');
       
         $pdf->Ln(); 
         $counter++;

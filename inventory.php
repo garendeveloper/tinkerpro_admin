@@ -277,24 +277,6 @@ include ('./layout/admin/table-pagination-css.php');
     border: 1px solid #292928;
    
 }
-/* .display thead tr{
-  border: 1px solid var(--primary-color);
-}
-.display thead tr th{
-  background-color: none;
-} */
-/* #tbl_products tbody tr{
-  border: 1px solid #292928;
-} */
-/* 
-.display tbody th,
-.display tbody td {
-    padding: 8px 8px; 
-    height: 20px; 
-    line-height: 0.5; 
-    border: 1px solid #292928;
-} */
-
 #tbl_orders tbody th,
 #tbl_orders tbody td {
     /* padding: 0px 1px; 
@@ -321,10 +303,10 @@ include ('./layout/admin/table-pagination-css.php');
 
 #tbl_all_lostanddamages tbody th,
 #tbl_all_lostanddamages tbody td {
-    padding: 5px 5px; 
-    height: 30px; 
-    line-height: 1;
-    border: 1px solid #292928;
+  padding: 8px 8px; 
+  height: 20px; 
+  line-height: 0.5; 
+  border: 1px solid #292928;
     /* padding: 0px 1px; 
     height: 3px; 
     line-height: 0.1; 
@@ -333,14 +315,17 @@ include ('./layout/admin/table-pagination-css.php');
 
 #tbl_all_inventoryCounts tbody th,
 #tbl_all_inventoryCounts tbody td {
-    padding: 2px 2px; 
-    height: 30px; 
-    line-height: 1;
-    border: 1px solid #292928;
-    /* padding: 0px 1px; 
-    height: 3px; 
-    line-height: 0.1; 
-    border: 1px solid #292928; */
+  padding: 6px 6px; 
+  height: 15px; 
+  line-height: 0.5; 
+  border: 1px solid #292928;
+}
+#tbl_previewRecord tbody th,
+#tbl_previewRecord tbody td {
+  padding: 2px 2px; 
+  height: 10px; 
+  line-height: 0.5; 
+  border: 1px solid #292928;
 }
 #tbl_preview{
   width: 100%;
@@ -350,20 +335,16 @@ include ('./layout/admin/table-pagination-css.php');
     padding: 7px 7px; 
     height: 30px; 
     line-height: 1;
-    font-size: 14px;
+    font-size: 12px;
+    font-weight: normal;
     
 }
 
 #tbl_expiredProducts tbody th,
 #tbl_expiredProducts tbody td {
-    /* padding: 7px 7px; 
+    padding: 8px 8px; 
     height: 20px; 
-    line-height: 1;
-    font-size: 14px;
-    border: 1px solid #292928; */
-    padding: 0px 1px; 
-    height: 3px; 
-    line-height: 0.1; 
+    line-height: 0.5; 
     border: 1px solid #292928;
 }
 
@@ -401,37 +382,6 @@ i:hover{
       border: 1px solid #292928;
   }
 
-/* 
-#tbl_products tbody tr td:nth-child(1), #inv_head thead tr th:nth-child(1){
-  width: 5%;
-}
-#tbl_products tbody tr td:nth-child(2), #inv_head thead tr th:nth-child(2){
-  width: 20.5%;
-}
-#tbl_products tbody tr td:nth-child(3), #inv_head thead tr th:nth-child(3){
-  width: 10%;
-}
-#tbl_products tbody tr td:nth-child(4), #inv_head thead tr th:nth-child(4){
-  width: 5%;
-}
-#tbl_products tbody tr td:nth-child(5), #inv_head thead tr th:nth-child(5){
-  width: 8%;
-}
-#tbl_products tbody tr td:nth-child(6), #inv_head thead tr th:nth-child(6){
-  width: 8%;
-}
-#tbl_products tbody tr td:nth-child(7), #inv_head thead tr th:nth-child(7){
-  width: 8%;
-}
-#tbl_products tbody tr td:nth-child(8), #inv_head thead tr th:nth-child(8){
-  width: 10%;
-}
-#tbl_products tbody tr td:nth-child(9), #inv_head thead tr th:nth-child(9){
-  width: 10%;
-}
-#tbl_products tbody tr td:nth-child(10), #inv_head thead tr th:nth-child(10){
-  width: 10%;
-} */
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -587,7 +537,7 @@ i:hover{
         </div>
 
 
-        <div style="display: flex; margin-top: 20px; justify-content: space-between; ">
+        <div style="display: flex; margin-top: 3px; justify-content: space-between; ">
           <div>
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke=""><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffff;} </style> <g> <path class="st0" d="M488.626,164.239c-7.794-7.813-18.666-12.684-30.578-12.676H409.01V77.861L331.145,0h-4.225H102.99v151.564 H53.955c-11.923-0.008-22.802,4.862-30.597,12.676c-7.806,7.798-12.665,18.671-12.657,30.574v170.937 c-0.008,11.919,4.847,22.806,12.661,30.589c7.794,7.813,18.678,12.669,30.593,12.661h49.034V512h306.02V409.001h49.037 c11.901,0.008,22.78-4.848,30.574-12.661c7.818-7.784,12.684-18.67,12.677-30.589V194.814 C501.306,182.91,496.436,172.038,488.626,164.239z M323.519,21.224l62.326,62.326h-62.326V21.224z M123.392,20.398l179.725,0.015 v83.542h85.491v47.609H123.392V20.398z M388.608,491.602H123.392v-92.801h-0.016v-96.638h265.217v106.838h0.015V491.602z M480.896,365.751c-0.004,6.353-2.546,11.996-6.694,16.17c-4.166,4.136-9.813,6.667-16.155,6.682h-49.049V281.75H102.974v106.853 H53.955c-6.365-0.015-12.007-2.546-16.166-6.682c-4.144-4.174-6.682-9.817-6.686-16.17V194.814 c0.004-6.338,2.538-11.988,6.686-16.155c4.167-4.144,9.809-6.682,16.166-6.698h49.034h306.02h49.037 c6.331,0.016,11.985,2.546,16.151,6.698c4.156,4.174,6.694,9.817,6.698,16.155V365.751z"></path> <rect x="167.59" y="336.155" class="st0" width="176.82" height="20.405"></rect> <rect x="167.59" y="388.618" class="st0" width="176.82" height="20.398"></rect> <rect x="167.59" y="435.255" class="st0" width="83.556" height="20.398"></rect> <path class="st0" d="M353.041,213.369c-9.263,0-16.767,7.508-16.767,16.774c0,9.251,7.504,16.759,16.767,16.759 c9.263,0,16.77-7.508,16.77-16.759C369.811,220.877,362.305,213.369,353.041,213.369z"></path> <path class="st0" d="M424.427,213.369c-9.262,0-16.77,7.508-16.77,16.774c0,9.251,7.508,16.759,16.77,16.759 c9.258,0,16.766-7.508,16.766-16.759C441.193,220.877,433.685,213.369,424.427,213.369z"></path> </g> </g></svg>&nbsp;Print</button>
             <button class="btn-control" id="generatePDFBtn" style="width:160px; height:45px; margin-right: 10px"><svg width="25px" height="25px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2.5 6.5V6H2V6.5H2.5ZM6.5 6.5V6H6V6.5H6.5ZM6.5 10.5H6V11H6.5V10.5ZM13.5 3.5H14V3.29289L13.8536 3.14645L13.5 3.5ZM10.5 0.5L10.8536 0.146447L10.7071 0H10.5V0.5ZM2.5 7H3.5V6H2.5V7ZM3 11V8.5H2V11H3ZM3 8.5V6.5H2V8.5H3ZM3.5 8H2.5V9H3.5V8ZM4 7.5C4 7.77614 3.77614 8 3.5 8V9C4.32843 9 5 8.32843 5 7.5H4ZM3.5 7C3.77614 7 4 7.22386 4 7.5H5C5 6.67157 4.32843 6 3.5 6V7ZM6 6.5V10.5H7V6.5H6ZM6.5 11H7.5V10H6.5V11ZM9 9.5V7.5H8V9.5H9ZM7.5 6H6.5V7H7.5V6ZM9 7.5C9 6.67157 8.32843 6 7.5 6V7C7.77614 7 8 7.22386 8 7.5H9ZM7.5 11C8.32843 11 9 10.3284 9 9.5H8C8 9.77614 7.77614 10 7.5 10V11ZM10 6V11H11V6H10ZM10.5 7H13V6H10.5V7ZM10.5 9H12V8H10.5V9ZM2 5V1.5H1V5H2ZM13 3.5V5H14V3.5H13ZM2.5 1H10.5V0H2.5V1ZM10.1464 0.853553L13.1464 3.85355L13.8536 3.14645L10.8536 0.146447L10.1464 0.853553ZM2 1.5C2 1.22386 2.22386 1 2.5 1V0C1.67157 0 1 0.671573 1 1.5H2ZM1 12V13.5H2V12H1ZM2.5 15H12.5V14H2.5V15ZM14 13.5V12H13V13.5H14ZM12.5 15C13.3284 15 14 14.3284 14 13.5H13C13 13.7761 12.7761 14 12.5 14V15ZM1 13.5C1 14.3284 1.67157 15 2.5 15V14C2.22386 14 2 13.7761 2 13.5H1Z" fill="#ffff"></path> </g></svg>&nbsp;Save as PDF</button>
@@ -605,8 +555,8 @@ i:hover{
               }
 
             </style>
-
-            <table class = "" style = "background-color: none" id = "tbl_preview">
+            <div id = "preview_records"></div>
+            <!-- <table class = "" style = "background-color: none" id = "tbl_preview">
               <tbody>
           
                     <tr>
@@ -622,7 +572,7 @@ i:hover{
                       <td  class = "otherinput tbl_value"  style = "background-color: #262626;" id = "tbl_row0_value"></td>
                     </tr>
               </tbody>
-            </table>
+            </table> -->
           </div>
         </div>
 
@@ -832,6 +782,48 @@ i:hover{
               }
           });
       }
+      function show_allInventoryCounts()
+      {
+        $.ajax({
+              url: './pagination_data/inventoryCount-pagination.php', 
+              type: 'GET',
+              success: function(response) {
+                  $('#paginationDiv').html(response)
+                  $("#searchInput").val("");
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText); 
+              }
+          });
+      }
+      function show_allLossAndDamagesInfo()
+      {
+        $.ajax({
+              url: './pagination_data/lossanddamages-pagination.php', 
+              type: 'GET',
+              success: function(response) { 
+                  $('#paginationDiv').html(response)
+                  $("#searchInput").val("");
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText); 
+              }
+          });
+      }
+      function show_expiredProducts()
+      {
+        $.ajax({
+              url: './pagination_data/expirations-pagination.php', 
+              type: 'GET',
+              success: function(response) { 
+                  $('#paginationDiv').html(response)
+                  $("#searchInput").val("");
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText); 
+              }
+          });
+      }
       
 
       $("#clear_inventory_search").on("click", function(){
@@ -864,9 +856,7 @@ i:hover{
                   newWindow.print();
                   newWindow.focus();
                 };
-              } else {
-                alert('Please allow popups for this website');
-              }
+              } 
             },
             error: function (xhr, status, error) {
               console.error(xhr.responseText);
@@ -967,14 +957,13 @@ i:hover{
             data: formData,
             success: function (response) {
               if (response.status) {
-                alert(response.msg);
                 show_allPaymentHistory();
               }
             }
           })
         }
         else {
-          alert("This payment already been paid");
+          console.log("");
         }
       })
       function show_allPaymentHistory() {
@@ -1084,19 +1073,19 @@ i:hover{
 
               tbl_rows.push(
                 `<tr>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
+                  <td style = 'text-align: left;  font-size: 12px; font-weight: bold'>${stockItem.transaction_type}</td>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.document_number}</td>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_customer}</td>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockDate}</td>
                   <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockTimestamp}</td>
-                  <td style = 'text-align: center;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold'>${stock}</td>
+                  <td style = 'text-align: right;  font-size: 12px; font-weight: bold'>${stockItem.stock_qty}</td>
+                  <td style = 'text-align: right; font-size: 12px; font-weight: bold'>${stock}</td>
               </tr>`
               );
             }
             var tfoot = `<tr>
                   <td style = 'text-align: left;  font-size: 12px; font-weight: bold' colspan ='6'>Remaining Stock</td>
-                  <td style = 'text-align: center; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
+                  <td style = 'text-align: right; font-size: 12px; font-weight: bold; color: #ccc' >${new_stock}</td>
               </tr>`;
 
             $("#tbl_stocks_history tbody").html(tbl_rows);
@@ -1111,88 +1100,52 @@ i:hover{
         $("#stockhistory_modal #inventory_id").val(id);
         display_allStocksData(id);
       })
-      // function show_purchased_order(id) {
-      //           $.ajax({
-      //               type: 'GET',
-      //               url: 'api.php?action=get_orderDataById&id=' + id,
-      //               dataType: 'json',
-      //               success: function (data) {
-      //                   var length = data.length;
-      //                   if(length > 0 )
-      //                   {
-      //                       var table = "";
-      //                       if (data[0].isReceived === 1) $("#received_status").html("RECEIVED");
-      //                       else $("#received_status").html("PENDING");
-      //                       $("#r_supplier").html(data[0].supplier);
-      //                       $("#is_received").val(data[0].isReceived);
-      //                       $("#r_datePurchased").html(date_format(data[0].date_purchased));
-      //                       $("#r_po_number").html(data[0].po_number);
-      //                       var isPaid = data[0].isPaid === 1 ?
-      //                           "<span style = 'color: lightgreen'>PAID</span>" :
-      //                           "<span style = 'color: red'>UNPAID</span>"
-      //                       $("#r_isPaid").html(isPaid);
-                            
-      //                       for (var i = 0; i < data.length; i++) {
-                               
-      //                           var item = data[i];
-      //                           var expired_date = item.date_expired !== "0000-00-00"? date_format(item.date_expired) : "";
-      //                           table += "<tr data-id = " + data[i].inventory_id + ">";
-      //                           if(item.qty_purchased === 0)
-      //                           {
-      //                               table += "<td data-id = " + data[i].inventory_id + " colspan = '2'>" + data[i].prod_desc + "</td>";
-      //                           }
-      //                           else
-      //                           {
-      //                               table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
-      //                               table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
-      //                           }
-
-      //                           table += "<td style = 'text-align: center; '>" + data[i].qty_purchased + "</td>";
-
-      //                           if(item.qty_purchased === 0)
-      //                           {
-      //                               table += "<td style = 'text-align: center; background-color: #262626; font-style: italic; color: green' colspan = '2'><b>Fully Received</b></td>";
-      //                           }
-      //                           else
-      //                           {
-      //                               table += "<td style = 'text-align: center; background-color: #262626; '  ><input id = 'qty_received'  placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
-
-      //                               if (data[i].date_expired === null) {
-      //                                   table +=
-      //                                       "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
-      //                               }
-      //                               else {
-      //                                   table +=
-      //                                       "<td style = 'text-align: center; background-color: #262626; '>" + expired_date + "</td>";
-      //                               }
-      //                           }
-      //                       }
-      //                       $("#tbl_receivedItems tbody").html(table);
-      //                       $("#po_data_div").show();
-      //                   }
-      //                   else
-      //                   {
-      //                       show_errorResponse("No purchase order found!");
-      //                   }
-      //                   is_purchasefound = false;
-      //               },
-      //               error: function (data) {
-      //                   alert("No response")
-      //               }
-      //           })
-      //   }
       $(".inventoryCard").on("dblclick", "tr", function(){
         var id = $(this).data('id');
         var active_tbl_id = $(".inventoryCard table").attr('id');
-        // $("#"+active_tbl_id+" tbody").find("tr").removeClass('highlighted-row')
-        // $(this).toggleClass('highlighted-row');
         switch(active_tbl_id)
         {
+          case 'tbl_products':
+            $(".purchase-grid-container button").removeClass('active');
+            $("#btn_createPO").addClass('active');
+            $("#expiration_div").hide();
+            $("#received_div").hide()
+            $("#quickinventory_div").hide();
+            $("#stocktransfer_div").hide();
+            $("#lossanddamage_div").hide();
+            $("#inventorycount_div").hide();
+            $("#purchaseItems_div").show();
+            $("#po_form #product").focus();
+            openOptionModal();
+            $("#open_po_report").hide();
+            $("#btn_omPayTerms").hide();
+            $("#po_form #product").focus();
+
+            $("#unpaid_identifier").val("0");
+            $("#unpaid_order_id").val("0");
+            $("#unpaid_purchase_modal .modal-content").css('height', '430px');
+            $("#unpaid_purchase_modal #unpaid_toHide1").show();
+            $("#unpaid_purchase_modal #unpaid_toHide2").show();
+
+            $("#unpaid_purchase_modal #unpaid_hide1").show();
+            $("#unpaid_purchase_modal #unpaid_hide2").show();
+            $("#unpaid_purchase_modal #unpaid_hide3").show();
+            $("#unpaid_purchase_modal #unpaid_hide4").hide();
+
+            $("#unpaid_purchase_modal #btn_saveUnpaid").html('<i class = "bi bi-printer"></i>&nbsp; Save & Print');
+            show_allSuppliers();
+            break;
           case 'tbl_all_stocks':
             $("#start_date").val("");
             $("#end_date").val("");
             $("#stockhistory_modal #inventory_id").val(id);
             display_allStocksData(id);
+            break;
+          case 'tbl_all_inventoryCounts':
+            show_inventoryCountDetails(id);
+            break;
+          case 'tbl_all_lostanddamages':
+            show_lossanddamage_details(id);
             break;
           case 'tbl_orders':
             orderdata(id);
@@ -1223,197 +1176,6 @@ i:hover{
             else
             {
             }
-          }
-        })
-      }
-    
-      // function show_allStocks() 
-      // {
-      //   $("#searchInput").focus();
-      //   if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_stocks")) {
-      //       $(".inventoryCard #tbl_all_stocks").DataTable().destroy();
-      //       $("#tbl_preview").html("");
-      //   }
-      //   $("#tbl_preview").show();
-      //   $("#paginationDiv").empty().hide();
- 
-      //   var tblData = `
-      //       <table tabindex='0' id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
-      //           <thead>
-      //               <tr>
-      //                   <th class='autofit text-center'>No.</th>
-      //                   <th class=''>Product</th>
-      //                   <th >Barcode</th>
-      //                   <th style='text-align: center'>Unit</th>
-      //                   <th style='text-align: center'>Qty in Store</th>
-      //                   <th class='autofit' style='text-align: center'>Action</th>
-      //               </tr>
-      //           </thead>
-      //           <tbody></tbody>
-      //       </table>`;
-
-      //   $(".inventoryCard").html(tblData);
-
-      //   var table = $('.inventoryCard #tbl_all_stocks').DataTable({
-      //       serverSide: true,
-      //       processing: true,
-      //       ajax: {
-      //           url: 'api.php?action=get_allInventories',
-      //           type: 'POST'
-      //       },
-      //       language: {
-      //         emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
-      //       },
-      //       columns: [
-      //           { data: null, render: function (data, type, row, meta) {
-      //               return meta.row + meta.settings._iDisplayStart + 1;
-      //           }, className: 'text-center'},
-      //           { data: 'prod_desc'},
-      //           { data: 'barcode', className: 'text-center' },
-      //           { data: 'uom_name', className: 'text-center' },
-      //           { data: 'product_stock', className: 'text-center', render: function (data) {
-      //               if (data > 10) return "<span style='color: yellowgreen'>" + data + "</span>";
-      //               if (data <= 10 && data > 0) return "<span style='color: red'>" + data + "</span>";
-      //               return data === -1 ? 0 : data;
-      //           }, className: 'text-center' },
-      //           { data: null, render: function (data) {
-      //               return `<i data-id='${data.product_id}' id='btn_openStockHistory' class="bi bi-graph-up icon-button"></i>`;
-      //           }, className: 'text-center' }
-      //       ],
-      //       ordering: true,
-      //       order: [[1, 'asc']],
-      //       pageLength: 100,
-      //       dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-      //       fnDrawCallback: function (oSettings) {
-      //           if (oSettings.aoData.length === 0) {
-      //               $("#paginationDiv").hide();
-      //           } else {
-      //               $("#paginationDiv").show();
-      //           }
-
-      //           var rowCount = table.rows().count();
-
-      //           $('#tbl_row0').html("Total Items");
-      //           $('#tbl_row0_value').html(rowCount);
-
-      //           var totalSum = table
-      //           .column(4, { page: 'current' })
-      //           .data()
-      //           .reduce(function (acc, val) {
-      //               return acc + parseFloat(val);
-      //           }, 0);
-
-      //           $('#tbl_row1').html("Total Stocks In Store");
-      //           $('#tbl_row1_value').html(totalSum);
-
-      //           $('#tbl_row2').hide();
-      //           $('#tbl_row2_value').hide();
-      //       },
-        
-      //       createdRow: function (row, data, dataIndex) {
-      //         $(row).attr('data-id', data.product_id);
-      //       }
-      //   });
-      //   table;
-      //   $("#paginationDiv").html($(".dt-paging")).show();
-      //   var debounceTimeout;
-      //   $('#searchInput').on('keyup', function (event) {
-      //       clearTimeout(debounceTimeout);
-      //       debounceTimeout = setTimeout(function () {
-      //           table.search($('#searchInput').val()).draw();
-      //       }, 100); 
-      //   });
-
-      //   display_settings();
-      // }
-      function show_allLossAndDamagesInfo() {
-        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_lostanddamages")) {
-            $(".inventoryCard #tbl_all_lostanddamages").DataTable().destroy();
-            $("#tbl_preview").html("");
-        }
-        $("#tbl_preview").hide();
-
-        $("#paginationDiv").empty().hide();
-        $.ajax({
-          type: 'get',
-          url: 'api.php?action=get_all_lostanddamageinfo',
-          success: function (data) {
-            var rows;
-            rows = data.map(function (item) {
-              return "<tr>" +
-                "<td  style='text-align: center'>" + item.reference_no + "</td>" +
-                "<td  style='text-align: center'>" + date_format(item.date_transact) + "</td>" +
-                "<td  style='text-align: center'>" + item.reason + "</td>" +
-                "<td  style='text-align: right'>" + item.total_qty + "</td>" +
-                "<td  style='text-align: right'>₱ " + addCommasToNumber(item.total_cost) + "</td>" +
-                "<td  style='text-align: right'>₱ " + addCommasToNumber(item.over_all_total_cost) + "</td>" +
-                "<td  style='text-align: center'>" + item.note + "</td>" +
-                "<td style='text-align: center' class='autofit'><i class='bi bi-eye' data-id = " + item.id + "  id='btn_view_lossanddamage'></i>&nbsp;<i class='bi bi-trash' data-id = " + item.id + " data-reference_no = "+item.reference_no+"  id='btn_delete_lossanddamage'></i></td>" +
-                "</tr>";
-            }).join('');
-
-            var tbl = "<table id='tbl_all_lostanddamages' class='text-color table-border' style='font-size: 12px;'>" +
-              "<thead>" +
-              "<tr>" +
-              "<th class='autofit'>Reference No.</th>" +
-              "<th style = 'text-align:center'>Date of Transaction</th>" +
-              "<th style = 'text-align:center; background-color:red'>Reason</th>" +
-              "<th style = 'text-align:center'>Total Qty</th>" +
-              "<th style = 'text-align:center'>Total Cost</th>" +
-              "<th style = 'text-align:center'>Overall Cost</th>" +
-              "<th style = 'text-align:center'>Note</th>" +
-              "<th style = 'text-align:center' class='autofit'>Action</th>" +
-              "</tr>" +
-              "</thead>" +
-              "<tbody>" +
-              rows +
-              "</tbody>" +
-              "</table>";
-
-            $(".inventoryCard").html(tbl);
-
-            $('.inventoryCard #tbl_all_lostanddamages').DataTable({
-              ordering: true,
-              order: [[0, 'asc']], 
-              pageLength: 300,
-              pagingType: 'full_numbers',
-              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-              fnDrawCallback: function(oSettings) {
-                if (oSettings.aoData.length === 0) {
-                  $("#paginationDiv").hide();
-                } else {
-                  $("#paginationDiv").show();
-                }
-
-                
-                // var rowCount = this.rows().count();
-
-                // $('#tbl_row0').html("Total Items");
-                // $('#tbl_row0_value').html(rowCount);
-
-                // // Calculate total sum of column 3 (assuming it contains numeric data)
-                // var totalSum = this
-                //     .column(5, { page: 'current' })
-                //     .data()
-                //     .reduce(function (acc, val) {
-                //         return acc + parseFloat(val);
-                //     }, 0);
-
-                // $('#tbl_row1').html("Overall Cost Of Damages");
-                // $('#tbl_row1_value').html(totalSum);
-
-                // $('#tbl_row2').hide();
-                // $('#tbl_row2_value').hide();
-
-
-              }
-            })
-            $("#paginationDiv").html($(".dt-paging")).show();
-
-            $('#searchInput').on('keyup', function(event) {
-              $('.inventoryCard #tbl_all_lostanddamages').DataTable().search($(this).val()).draw();
-            });
-            display_settings();
           }
         })
       }
@@ -1458,168 +1220,9 @@ i:hover{
           }
         })
       });
-      function show_expiredProducts() {
-        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_expiredProducts")) {
-            $(".inventoryCard #tbl_expiredProducts").DataTable().destroy();
-            $("#tbl_preview").html("");
-        }
-        $("#tbl_preview").hide();
-        $("#paginationDiv").empty().hide();
-    
-        $.ajax({
-          type: 'get',
-          url: 'api.php?action=get_realtime_notifications',
-          success: function (resp_data) {
-            var data = resp_data.products;
-            var notifications = resp_data.notifications;
-            function isActive(value) {
-              return value === 1;
-            }
 
-            var firstNotif_isActive = isActive(notifications[0].is_active);//30
-            var secondNotif_isActive = isActive(notifications[1].is_active);//15
-            var thirdNotif_isActive = isActive(notifications[2].is_active);//5
-            var fourthNotif_isActive = isActive(notifications[3].is_active);//0
-            var totalExpired = 0;
-            var temp = false;
-            var verifier = false;
-            var expiry = data.map(function (item) 
-            {
-              var days_remaining = item.days_remaining;
-                if ((firstNotif_isActive && days_remaining <= 30 && days_remaining >= 16) ||
-                    (secondNotif_isActive && days_remaining <= 15 && days_remaining >= 6) ||
-                    (thirdNotif_isActive && days_remaining <= 5 && days_remaining >= 1) ||
-                    (fourthNotif_isActive && days_remaining <= 0)) {
-                    
-                    var expiration = days_remaining > 0 ?
-                        `This product has a remaining shelf life of <span style="color: #FF6900; font-size: 14px;">${days_remaining}</span> days` :
-                        `<span style="color: red; font-size: 14px;"> This product has already expired. ${days_remaining}</span> days`;
-                    
-                    return `<tr>
-                        <td class="autofit">${item.prod_desc}</td>
-                        <td class="autofit">${item.barcode}</td>
-                        <td class="autofit" style="text-align: center">${date_format(item.date_expired)}</td>
-                        <td class="autofit" style="text-align: center">${expiration}</td>
-                    </tr>`;
-                }
-            });
-            var tbl_expiry = `
-                      <table id="tbl_expiredProducts" class="text-color table-border" style="font-size: 12px;">
-                          <thead>
-                              <tr>
-                                  <th>Product</th>
-                                  <th>Barcode</th>
-                                  <th style="text-align: center">Expiration Date</th>
-                                  <th style="text-align: center; background-color: red">Days Remaining</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              ${ expiry.join('') }
-                          </tbody>
-                      </table>`;
-
-            $(".inventoryCard").html(tbl_expiry);
-
-            $('.inventoryCard #tbl_expiredProducts').DataTable({
-                ordering: true,
-                order: [[0, 'asc']], 
-                pageLength: 300,
-                pagingType: 'full_numbers',
-                dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-                fnDrawCallback: function(oSettings) {
-                  if (oSettings.aoData.length === 0) {
-                    $("#paginationDiv").hide();
-                  } else {
-                    $("#paginationDiv").show();
-                  }
-                }
-              })
-              $("#paginationDiv").html($(".dt-paging")).show();
-  
-              $('#searchInput').on('keyup', function(event) {
-                $('.inventoryCard #tbl_expiredProducts').DataTable().search($(this).val()).draw();
-              });
-          }
-        })
-      }
-  
-      function show_allInventoryCounts() {
-        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_inventoryCounts")) {
-            $(".inventoryCard #tbl_all_inventoryCounts").DataTable().destroy();
-        }
-        // $("#tbl_preview").hide();
-        $("#tbl_preview").hide();
-        $("#paginationDiv").empty().hide();
-       
-        $.ajax({
-          type: 'get',
-          url: 'api.php?action=get_allInventoryCounts',
-          success: function (data) {
-            var inv_count_rows = "";
-            if (data.length > 0) {
-              inv_count_rows = data.map(function (item) {
-                return "<tr>" +
-                  "<td style='text-align: center'>" + item.reference_no + "</td>" +
-                  "<td  style='text-align: center'>" + date_format(item.date_counted) + "</td>" +
-                  "<td style='text-align: center'><i class='bi bi-eye' data-id = " + item.id + " id='btn_view_inventoryCount'></i></td>" +
-                  // "<td style='text-align: center' class='autofit'><button style = 'height: 10px;'data-id = " + item.id + " id='btn_view_inventoryCount'><i class='bi bi-eye'></i></button></td>" +
-                  "</tr>";
-              }).join('');
-            }
-
-            var inv_count_tbl = "<table id='tbl_all_inventoryCounts' class='text-color table-border' style='font-size: 12px;'>" +
-              "<thead>" +
-              "<tr>" +
-              "<th style = 'text-align:center' class='autofit'>Reference No.</th>" +
-              "<th style = 'text-align:center'>Date of Transaction</th>" +
-              "<th style = 'text-align:center' class='autofit'>Action</th>" +
-              "</tr>" +
-              "</thead>" +
-              "<tbody>" +
-              inv_count_rows +
-              "</tbody>" +
-              "</table>";
-
-            $(".inventoryCard").html(inv_count_tbl);
-
-            // $('.inventoryCard #tbl_all_inventoryCounts').DataTable({
-            //     ordering: true,
-            //     order: [[0, 'asc']], 
-            //     pageLength: 50,
-            //     sDom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-center"ip>>>',
-            //     language: {
-            //         paginate: {
-            //             previous: '<i class="fa fa-angle-left"></i>',
-            //             next: '<i class="fa fa-angle-right"></i>'
-            //         }
-            //     },
-            // });
-            $('.inventoryCard #tbl_all_inventoryCounts').DataTable({
-              ordering: true,
-              order: [[0, 'asc']], 
-              pageLength: 300,
-              pagingType: 'full_numbers',
-              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-              fnDrawCallback: function(oSettings) {
-                if (oSettings.aoData.length === 0) {
-                  $("#paginationDiv").hide();
-                } else {
-                  $("#paginationDiv").show();
-                }
-              }
-            })
-            $("#paginationDiv").html($(".dt-paging")).show();
-            display_settings();
-            $('#searchInput').on('keyup', function(event) {
-              $('.inventoryCard #tbl_all_inventoryCounts').DataTable().search($(this).val()).draw();
-            });
-          }
-        })
-      }
-
-      $(".inventoryCard").on('click', "#btn_view_lossanddamage", function (e) {
-        e.preventDefault();
-        var id = $(this).data('id');
+      function show_lossanddamage_details(id)
+      {
         $.ajax({
           type: 'get',
           url: 'api.php?action=get_lostanddamage_data',
@@ -1663,13 +1266,18 @@ i:hover{
         $("#inventorycount_div").hide();
         $("#open_po_report").hide();
         $("#btn_savePO").attr("disabled", true);
+        $("#btn_omPayTerms").hide();
         // $("#btn_omCancel").attr("disabled", true);
         $("#lossanddamage_form").find('input').removeClass('has-error');
         openOptionModal();
-      })
-      $(".inventoryCard").on("click", "#btn_view_inventoryCount", function (e) {
+      }
+      $(".inventoryCard").on('click', "#btn_view_lossanddamage", function (e) {
         e.preventDefault();
         var id = $(this).data('id');
+        show_lossanddamage_details(id);
+      })
+      function show_inventoryCountDetails(id)
+      {
         $("#printcount_modal").find("#inv_id").val(id);
         $.ajax({
           type: 'get',
@@ -1713,12 +1321,18 @@ i:hover{
             $("#qi_inventory_type").attr("disabled", true);
             $("#btn_go_inventory").attr("disabled", true);
             $("#btn_savePO").attr("disabled", true);
-            $("#btn_omCancel").attr("disabled", true);
+            // $("#btn_omCancel").attr("disabled", true);
+            $("#btn_omPayTerms").hide();
             $("#inventorycount_form").find('input').removeClass('has-error');
             openOptionModal();
 
           }
         })
+      }
+      $(".inventoryCard").on("click", "#btn_view_inventoryCount", function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        show_inventoryCountDetails();
       })
       function display_datePurchased() {
         var currentDate = new Date();
@@ -2447,16 +2061,16 @@ i:hover{
           var received_items_length = $("#tbl_receivedItems tbody tr").length;
           if (received_items_length > 0) {
             if (validateTableInputs(table_id)) {
-              $("#received_payment_confirmation").slideDown({
-                backdrop: 'static',
-                keyboard: false,
-              });
-              $("#received_payment_confirmation #paid_title").html("Before proceeding, would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>");
-              $("#received_payment_confirmation #total_paid").html($("#overallTotal").text());
-              $("#received_payment_confirmation #paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color: #FF6700;'>ATTENTION REQUIRED!</strong> ");
-              $("#received_payment_confirmation #btn_confirmPayment").on("click", function (e) {
+              // $("#received_payment_confirmation").slideDown({
+              //   backdrop: 'static',
+              //   keyboard: false,
+              // });
+              // $("#received_payment_confirmation #paid_title").html("Before proceeding, would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>");
+              // $("#received_payment_confirmation #total_paid").html($("#overallTotal").text());
+              // $("#received_payment_confirmation #paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color: #FF6700;'>ATTENTION REQUIRED!</strong> ");
+              // $("#received_payment_confirmation #btn_confirmPayment").on("click", function (e) {
 
-                e.preventDefault();
+              //   e.preventDefault();
                 if (isSaving) return;
                 isSaving = true;
                 var tbl_data = [];
@@ -2522,7 +2136,7 @@ i:hover{
                   error: function () {
                   }
                 })
-              })
+              // })
             }
           }
           else {
@@ -2871,319 +2485,6 @@ i:hover{
 
       var finish = 0;
      
-      // $("#product").on("input", function() {
-      //   hidePopups();
-      //     var term = $(this).val();
-      //     $(this).autocomplete('search', term);
-      // });
-     
-    //   function show_allInventories() 
-    //   {
-    //     if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
-    //         $(".inventoryCard #tbl_products").DataTable().destroy();
-    //         $("#tbl_preview").html("");
-    //     }
-    //     $("#paginationDiv").empty().hide();
-    //     $("#searchInput").focus();
-
-    
-    //     $("#tbl_preview").show();
-    //     $('#tbl_row2').show();
-    //     $('#tbl_row2_value').show();
-
-        
-    //     // var header = `
-    //     //   <table tabindex='0' id='inv_head' class='text-color table-border display' style='font-size: 12px; margin-left: -5px;'>
-    //     //       <thead style = "background-color: none">
-    //     //           <tr style = "background-color: none">
-    //     //               <th class='text-center ' >No.</th>
-    //     //               <th >Product</th>
-    //     //               <th >Barcode</th>
-    //     //               <th >UOM</th>
-    //     //               <th  >Qty Purchased</th>
-    //     //               <th  style='text-align: center'>Qty Received</th>
-    //     //               <th  style='text-align: center'>Qty in Store</th>
-    //     //               <th  style='text-align: center'>Amount Before Tax</th>
-    //     //               <th  style='text-align: center'>Amount After Tax</th>
-    //     //               <th style='text-align: center'>Document Type</th>
-    //     //           </tr>
-    //     //       </thead>
-    //     //       <tbody ></tbody>
-    //     //   </table> 
-    //     //   `;
-    //       var tblData = `
-    //       <table tabindex='0' id='tbl_products' class='' style='font-size: 12px; margin-top: -20px; margin-right: 15px; margin-left: -3px; width: 100%;'>
-    //            <thead >
-    //             <tr>
-    //               <tr style = "background-color: none">
-    //                   <th class='text-center ' >No.</th>
-    //                   <th>Product</th>
-    //                   <th >Barcode</th>
-    //                   <th>UOM</th>
-    //                   <th  >Qty Purchased</th>
-    //                   <th  style='text-align: center'>Qty Received</th>
-    //                   <th  style='text-align: center'>Qty in Store</th>
-    //                   <th  style='text-align: center'>Amount Before Tax</th>
-    //                   <th  style='text-align: center'>Amount After Tax</th>
-    //                   <th style='text-align: center'>Document Type</th>
-    //               </tr>
-    //               </tr>
-    //           </thead>
-    //       </table> 
-    //       `;
-    //     // $(".inventoryHeader").html(header);
-    //     $(".inventoryCard").html(tblData);
-   
-
-    //     var table = $('.inventoryCard #tbl_products').DataTable({
-    //       serverSide: true,
-    //       ajax: {
-    //         url: 'api.php?action=get_allInventories',
-    //         type: 'POST'
-    //       },
-    //       pageLength: 200,
-    //       language: {
-    //           emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
-    //       },
-    //       columns: [
-    //           { data: null, render: function (data, type, row, meta) {
-    //               return meta.row + meta.settings._iDisplayStart + 1;
-    //           } , className: 'text-center'},
-    //           { data: 'prod_desc' },
-    //           { data: 'barcode' },
-    //           { data: 'uom_name', className: 'text-center' },
-    //           { data: 'all_qty_purchased', className: 'text-right' },
-    //           { data: 'all_qty_received', className: 'text-right' },
-    //           { data: 'product_stock', className: 'text-right' },
-    //           { data: 'cost', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
-    //           { data: 'prod_price', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
-    //           { data: null, render: function (data) {
-    //             var stock = data.product_stock || 0;
-    //             var stock_count = data.stock_count;
-    //             var stock_status = data.stock_status === 1;
-    //             var isReceived = data.latest_isReceived;
-    //             var qty_purchased = data.all_qty_purchased;
-    //             var qty_received = data.all_qty_received;
-
-    //             var partially_received = qty_purchased !== 0 && qty_purchased < qty_received;
-    //             var fully_received = qty_purchased === 0 && qty_received !== 0;
-    //             var is_lowstock = stock_status && stock < stock_count;
-    //             var span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
-    //             if (isReceived === 1 && is_lowstock && fully_received) span = "<span><i style='color: #72bf6a; font-weight: bold'>RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
-    //             if (isReceived === 1 && !is_lowstock && fully_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>RECEIVED</i></span>";
-    //             if (isReceived === 1 && is_lowstock && partially_received) span = "<span><i style='color: #FF6900; font-weight: bold'>PARTIALLY RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
-    //             if (isReceived === 1 && !is_lowstock && partially_received) span = "<span style='color: #72bf6a; font-weight: bold'><i>PARIALLY RECEIVED</i></span>";
-    //             // if (stock_status && stock < stock_count) span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
-    //             return span;
-    //           }, className: 'text-center' }
-    //       ],
-    //       order: [[1, 'asc']],
-    //       pageLength: 100,
-    //       pagingType: 'full_numbers',
-    //       dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-    //       fnDrawCallback: function (oSettings) {
-    //           if (oSettings.aoData.length === 0) {
-    //               $("#paginationDiv").hide();
-    //           } else {
-    //               $("#paginationDiv").show();
-    //           }
-
-    //           var rowCount = table.rows().count();
-
-    //           $('#tbl_row0').html("Total Items");
-    //           $('#tbl_row0_value').html(rowCount);
-
-
-    //           var totalSum = table
-    //           .column(8, { page: 'current' })
-    //           .data()
-    //           .reduce(function (acc, val) {
-    //               return acc + parseFloat(val);
-    //           }, 0);
-
-    //           $('#tbl_row1').html("Total Amount Before Tax");
-    //           $('#tbl_row1_value').html(totalSum);
-
-    //           var totalSum = table
-    //               .column(8, { page: 'current' })
-    //               .data()
-    //               .reduce(function (acc, val) {
-    //                   return acc + parseFloat(val);
-    //               }, 0);
-
-    //           $('#tbl_row2').html("Total Amount After Tax");
-    //           $('#tbl_row2_value').html(addCommasToNumber(totalSum));
-
-    //         }
-    //       });
-    //       table;
-    // //       table.on('draw', function () {
-    // //     var tableContainer = $('.table-container');
-    // //     var tableBody = tableContainer.find('tbody');
-    // //     var tableHead = tableContainer.find('thead');
-
-    // //     // Match the header width to the body initially
-    // //     tableHead.css('width', tableBody[0].scrollWidth + 'px');
-    // // });
-
-    //       $("#paginationDiv").html($(".dt-paging")).show();
-    //       var debounceTimeout;
-    //       $('#searchInput').on('keyup', function (event) {
-    //           clearTimeout(debounceTimeout);
-    //           debounceTimeout = setTimeout(function () {
-    //               table.search($('#searchInput').val()).draw();
-    //           }, 100); 
-    //       });
-
-    //       display_settings();
-    //     }
-    
-    
-    // $('#paginationBtns').on('click', 'a.paginationTag', function() {
-    //     alert();
-    //       // var page = $(this).data('page'); 
-    //       // console.log('Clicked on page:', page);
-        
-    //       // show_allInventories(page);
-    //   });
-
-    // function show_allInventories(page)
-    // {
-    //   $('.paginationTag').removeClass('active');
-    //   $('.paginationTag').eq(page - 1).addClass('active');
-    //   $('.searchProducts').focus();
-    //   $('#modalCashPrint').show();
-    //   var tblData = `
-    //       <table tabindex='0' id='tbl_products' class='' style='font-size: 12px; margin-top: -20px; margin-right: 15px; margin-left: -3px; width: 100%;'>
-    //            <thead >
-    //               <tr style = "background-color: none">
-    //                   <th class='text-center ' >No.</th>
-    //                   <th>Product</th>
-    //                   <th >Barcode</th>
-    //                   <th>UOM</th>
-    //                   <th  >Qty Purchased</th>
-    //                   <th  style='text-align: center'>Qty Received</th>
-    //                   <th  style='text-align: center'>Qty in Store</th>
-    //                   <th  style='text-align: center'>Amount Before Tax</th>
-    //                   <th  style='text-align: center'>Amount After Tax</th>
-    //                   <th style='text-align: center'>Document Type</th>
-    //               </tr>
-    //           </thead>
-    //           <tbody></tbody>
-    //       </table> 
-    //       `;
-    //   $(".inventoryCard").html(tblData);
-    //   $.ajax({
-    //     url: './fetch-data/fetch-inventories.php',
-    //     type: 'GET',
-    //     data: { page: page },
-    //     success: function (response) {
-    //       $('#tbl_products tbody').html(response);
-    //       $('#modalCashPrint').hide();
-    //     },
-    //     error: function (xhr, status, error) {
-    //       console.error(xhr.responseText);
-    //     }
-    //   });
-    // }
-   
-//     function show_allInventories() {
-//     if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_products")) {
-//         $(".inventoryCard #tbl_products").DataTable().destroy();
-//     }
-
-//     var tblData = `
-//           <table tabindex='0' id='tbl_products' class='' style='font-size: 12px; margin-top: -20px; margin-right: 15px; margin-left: -3px; width: 100%;'>
-//                <thead >
-//                 <tr>
-//                   <tr style = "background-color: none">
-//                       <th class='text-center ' >No.</th>
-//                       <th>Product</th>
-//                       <th >Barcode</th>
-//                       <th>UOM</th>
-//                       <th  >Qty Purchased</th>
-//                       <th  style='text-align: center'>Qty Received</th>
-//                       <th  style='text-align: center'>Qty in Store</th>
-//                       <th  style='text-align: center'>Amount Before Tax</th>
-//                       <th  style='text-align: center'>Amount After Tax</th>
-//                       <th style='text-align: center'>Document Type</th>
-//                   </tr>
-//                   </tr>
-//               </thead>
-//           </table> 
-//           `;
-//         // $(".inventoryHeader").html(header);
-//         $(".inventoryCard").html(tblData);
-
-//     var table = $('.inventoryCard #tbl_products').DataTable({
-//         serverSide: true,
-//         processing: true,
-//         ajax: {
-//             url: 'api.php?action=get_allInventories',
-//             type: 'POST',
-//             error: function(xhr, error, thrown) {
-//                 console.log("Error loading data:", error);
-//             }
-//         },
-//         language: {
-//             emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
-//         },
-//         columns: [
-//             { data: null, render: function (data, type, row, meta) {
-//                 return meta.row + meta.settings._iDisplayStart + 1;
-//             }, className: 'text-center' },
-//             { data: 'prod_desc' },
-//             { data: 'barcode' },
-//             { data: 'uom_name', className: 'text-center' },
-//             { data: 'all_qty_purchased', className: 'text-right' },
-//             { data: 'all_qty_received', className: 'text-right' },
-//             { data: 'product_stock', className: 'text-right' },
-//             { data: 'cost', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
-//             { data: 'prod_price', render: function (data) { return '<span style="text-align: right; display: block;">&#x20B1; ' + addCommasToNumber(data) + '</span>'; } },
-//             { data: null, render: function (data) {
-//                 // Render document type column content here
-//             }, className: 'text-center' }
-//         ],
-//         order: [[1, 'asc']],
-//         pagingType: 100, // Set default page length
-//         pagingType: 'full_numbers',
-//         dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-//         drawCallback: function (settings) {
-//             var api = this.api();
-//             var pageInfo = api.page.info();
-
-//             $('#tbl_row0').html("Total Items");
-//             $('#tbl_row0_value').html(pageInfo.recordsDisplay);
-
-//             var totalSum = api.column(8, { page: 'current' }).data()
-//                 .reduce(function (acc, val) { return acc + parseFloat(val); }, 0);
-
-//             $('#tbl_row1').html("Total Amount Before Tax");
-//             $('#tbl_row1_value').html(totalSum);
-
-//             $('#tbl_row2').html("Total Amount After Tax");
-//             $('#tbl_row2_value').html(addCommasToNumber(totalSum));
-//         }
-//     });
-
-//     table.on('error', function(e, settings, techNote, message) {
-//         console.log("DataTables error:", message);
-//     });
-
-//     $('#paginationDiv').html($(".dataTables_paginate")).show();
-
-//     var debounceTimeout;
-//     $('#searchInput').on('keyup', function (event) {
-//         clearTimeout(debounceTimeout);
-//         debounceTimeout = setTimeout(function () {
-//             table.search($('#searchInput').val()).draw();
-//         }, 300); // Adjust debounce time as needed
-//     });
-
-//     display_settings();
-// }
-
-
         $('#product').on('keypress', function(event) {
           if (event.keyCode === 13 || event.keyCode === 27) { 
             hidePopups();
@@ -3234,200 +2535,31 @@ i:hover{
             $("#po_btn_continue").show();
           }
         })
-        $("#po_btn_continue").on("click", function(){
-          $.ajax({
-              type: 'get',
-              url: 'api.php?action=delete_purchaseOrder',
-              data: {
-                  id: $("#response_order_id").val(),
-              },
-              success: function(response){
-        
-                  if(response.status)
-                  {
-                    $("#purchaseOrder_response").hide();
-                    $("#response_order_id").val("");
-                    show_sweetReponse(response.message);
-                    show_allOrders();
-                    show_allReceivedItems_PurchaseOrders();
-                  }
-              },
-              error: function(response)
-              {
-                  console.log("Server Error:")
-              }
-          })
-        })
-      //   function show_allOrders() 
-      //   {
-      //     if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_orders")) 
-      //     {
-      //         $(".inventoryCard #tbl_orders").DataTable().destroy();
-      //         $("#tbl_preview").html("");
-      //     }
-      //     $("#paginationDiv").empty().hide();
-      //     $("#searchInput").focus();
-      //     display_settings();
-      //     $("#tbl_preview").show();
-      //     $('#tbl_row2').show();
-      //     $('#tbl_row2_value').show();
-      //     var tblData = `
-      //         <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>
-      //             <thead>
-      //                 <tr>
-      //                     <th style='width: 2%;'>PO#</th>
-      //                     <th style='width: 4%;'>Supplier</th>
-      //                     <th style='width: 2%;'>Date Purchased</th>
-      //                     <th style='width: 2%;'>Due Date</th>
-      //                     <th style='width: 2%;'>Qty</th>
-      //                     <th style='width: 2%;'>Price</th>
-      //                     <th style='width: 2%;'>Total</th>
-      //                     <th style='width: 2%;'>Is Paid</th>
-      //                     <th style='width: 2%;'>Status</th>
-      //                     <th style='width: 1%;' class='autofit'>Action</th>
-      //                 </tr>
-      //             </thead>
-      //             <tbody></tbody>
-      //         </table> `;
-
-      //     $(".inventoryCard").html(tblData);
-
-      //     var table = $('.inventoryCard #tbl_orders').DataTable({
-      //         serverSide: true,
-      //         processing: true,
-      //         ajax: {
-      //             url: 'api.php?action=get_allOrders',
-      //             type: 'GET'
-      //         },
-      //         language: {
-      //           emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
-      //         },
-      //         columns: [
-      //             { data: 'po_number', className: 'text-center' },
-      //             { data: 'supplier' },
-      //             { data: 'date_purchased', className: 'text-center' },
-      //             {
-      //                 data: 'due_date',
-      //                 className: 'text-center',
-      //                 render: function (data) {
-      //                     return data ? date_format(data) : 'Not Available';
-      //                 }
-      //             },
-      //             {
-      //                 data: 'totalQty',
-      //                 className: 'text-right',
-      //                 render: function (data) {
-      //                   return data;
-      //                 }
-      //             },
-      //             {
-      //                 data: 'totalPrice',
-      //                 className: 'text-right',
-      //                 render: function (data) {
-      //                   return '&#x20B1;&nbsp;' + addCommasToNumber(data);
-      //                 }
-      //             },
-      //             {
-      //                 data: 'price',
-      //                 className: 'text-right',
-      //                 render: function (data) {
-      //                     return '&#x20B1;&nbsp;' + addCommasToNumber(data);
-      //                 }
-      //             },
-      //             {
-      //                 data: 'isPaid',
-      //                 className: 'text-center',
-      //                 render: function (data) {
-      //                     return data === 1 ? "<span class='text-center badge-success'>Paid</span>" : "<span class='text-center badge-danger'>Unpaid</span>";
-      //                 }
-      //             },
-      //             {
-      //                 data: 'is_received',
-      //                 className: 'text-center',
-      //                 render: function (data) {
-      //                     return data === 1 ? "<span class='text-center badge-success' >Received</span>" : "<span class='text-center badge-warning' style = 'color: yellow;'>To Receive</span>";
-      //                 }
-      //             },
-      //             {
-      //                 data: null,
-      //                 className: 'text-center',
-      //                 render: function (data) {
-      //                   if(data.isPaid === 1)
-      //                   {
-      //                     return `
-      //                       <div class = 'icon-container'>
-      //                         <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
-      //                         <i data-id='${data.order_id}' data-po_number = '${data.po_number}' data-isReceived='${data.is_received}' data-isPaid = '${data.isPaid}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
-
-      //                         </div>`;
-      //                   }
-      //                   else
-      //                   {
-      //                     return `
-      //                       <div class = 'icon-container'>
-      //                         <i data-id='${data.order_id}' id='btn_openUnpaidPayment' class='bi bi-cash bi-md icon-button openUnpaidPayment'></i>
-      //                         <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
-      //                         <i data-id='${data.order_id}' data-po_number = '${data.po_number}' data-isReceived='${data.is_received}' data-isPaid = '${data.isPaid}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
-                               
-      //                         </div>`;
-      //                   }
-      //                 }
-      //             }
-      //         ],
-      //         ordering: true,
-      //         order: [[0, 'asc']],
-      //         pageLength: 100,
-      //         pagingType: 'full_numbers',
-      //         dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-      //         fnDrawCallback: function (oSettings) {
-      //             if (oSettings.aoData.length === 0) {
-      //                 $("#paginationDiv").hide();
-      //             } else {
-      //                 $("#paginationDiv").show();
-      //             }
-      //             var rowCount = table.rows().count();
-
-      //             $('#tbl_row0').html("Total Items");
-      //             $('#tbl_row0_value').html(rowCount);
-
-
-      //             var totalSum = table
-      //             .column(5, { page: 'current' })
-      //             .data()
-      //             .reduce(function (acc, val) {
-      //                 return acc + parseFloat(val);
-      //             }, 0);
-
-      //             $('#tbl_row1').html("Total Price");
-      //             $('#tbl_row1_value').html(totalSum);
-
-      //             var totalSum = table
-      //                 .column(6, { page: 'current' })
-      //                 .data()
-      //                 .reduce(function (acc, val) {
-      //                     return acc + parseFloat(val);
-      //                 }, 0);
-
-      //             $('#tbl_row2').html("Total Amount");
-      //             $('#tbl_row2_value').html(addCommasToNumber(totalSum));
-
-      //         },
-      //         createdRow: function (row, data, dataIndex) {
-      //           $(row).attr('data-id', data.order_id);
-      //         }
-      //     });
-
-      //     table;
-      //     $("#paginationDiv").html($(".dt-paging")).show();
-      //     var debounceTimeout;
-      //     $('#searchInput').on('keyup', function (event) {
-      //         clearTimeout(debounceTimeout);
-      //         debounceTimeout = setTimeout(function () {
-      //             table.search($('#searchInput').val()).draw();
-      //         }, 100); 
-      //     });
-      // }
+      $("#po_btn_continue").on("click", function(){
+        $.ajax({
+            type: 'get',
+            url: 'api.php?action=delete_purchaseOrder',
+            data: {
+                id: $("#response_order_id").val(),
+            },
+            success: function(response){
       
+                if(response.status)
+                {
+                  $("#purchaseOrder_response").hide();
+                  $("#response_order_id").val("");
+                  show_sweetReponse(response.message);
+                  show_allOrders();
+                  show_allReceivedItems_PurchaseOrders();
+                }
+            },
+            error: function(response)
+            {
+                console.log("Server Error:")
+            }
+        })
+      })
+     
       $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
           var productId = $(this).find("td[data-id]").data("id");
           var qty_purchased = $(this).find("td:nth-child(2)").text();

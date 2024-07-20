@@ -432,6 +432,111 @@ class InventoryFacade extends DBConnection
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
+    public function get_productsForExpiring($searchInput, $offset, $recordsPerPage)
+    {
+        date_default_timezone_set('Asia/Manila');
+        if(!empty($searchInput))
+        {
+            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired
+                    FROM inventory
+                    INNER JOIN products ON products.id = inventory.product_id
+                    INNER JOIN received_items ON received_items.inventory_id = inventory.id
+                    WHERE received_items.date_expired IS NOT NULL  
+                    AND products.prod_desc LIKE :searchQuery OR
+                    products.barcode LIKE :searchQuery";
+            
+            $searchParam = "%" . $searchInput . "%";
+            $stmt = $this->connect()->prepare($query);
+            $stmt->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $products = []; $notifications = [];
+            foreach( $result as $row )
+            {
+                $expiration_date = new DateTime($row['date_expired'] ?? '');
+                $now = new DateTime();
+            
+                $interval = $now->diff($expiration_date);
+                $days_remaining = $interval->days;
+                if ($expiration_date > $now) {
+                    $days_remaining++;
+                }
+                else {
+                    $days_remaining = -$days_remaining; 
+                }
+                $products[] = [
+                    'inventory_id' => $row['inventory_id'],
+                    'prod_desc'=>$row['prod_desc'],
+                    'barcode'=>$row['barcode'],
+                    'is_received' =>$row['isReceived'],
+                    'date_expired'=>$row['date_expired'],
+                    'days_remaining'=>$days_remaining,
+                ];
+            }
+            $notify_before = $this->get_expirationNotification();
+            foreach($notify_before as $nb)
+            {
+                $notifications[] = [
+                    'notify_before' => $nb['notify_before'],
+                    'is_active' => $nb['is_active'],
+                ];
+            }
+            return [
+                'products'=> $products,
+                'notifications'=> $notifications,
+            ];
+        }
+        else
+        {
+            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired
+                        FROM inventory
+                        INNER JOIN products ON products.id = inventory.product_id
+                        INNER JOIN received_items ON received_items.inventory_id = inventory.id
+                        ORDER BY products.id ASC LIMIT $offset, $recordsPerPage";
+            
+            $stmt = $this->connect()->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $products = []; $notifications = [];
+            foreach( $result as $row )
+            {
+                $expiration_date = new DateTime($row['date_expired'] ?? '');
+                $now = new DateTime();
+            
+                $interval = $now->diff($expiration_date);
+                $days_remaining = $interval->days;
+                if ($expiration_date > $now) {
+                    $days_remaining++;
+                }
+                else {
+                    $days_remaining = -$days_remaining; 
+                }
+                $products[] = [
+                    'inventory_id' => $row['inventory_id'],
+                    'prod_desc'=>$row['prod_desc'],
+                    'barcode'=>$row['barcode'],
+                    'is_received' =>$row['isReceived'],
+                    'date_expired'=>$row['date_expired'],
+                    'days_remaining'=>$days_remaining,
+                ];
+            }
+            $notify_before = $this->get_expirationNotification();
+            foreach($notify_before as $nb)
+            {
+                $notifications[] = [
+                    'notify_before' => $nb['notify_before'],
+                    'is_active' => $nb['is_active'],
+                ];
+            }
+            return [
+                'products'=> $products,
+                'notifications'=> $notifications,
+            ];
+        }
+        
+    }
     public function get_realtime_notifications()
     {
         date_default_timezone_set('Asia/Manila');
@@ -459,6 +564,7 @@ class InventoryFacade extends DBConnection
                 $days_remaining = -$days_remaining; 
             }
             $products[] = [
+                'inventory_id' => $row['inventory_id'],
                 'prod_desc'=>$row['prod_desc'],
                 'barcode'=>$row['barcode'],
                 'is_received' =>$row['isReceived'],
@@ -478,6 +584,55 @@ class InventoryFacade extends DBConnection
             'products'=> $products,
             'notifications'=> $notifications,
         ];
+    }
+    public function total_forExpiringProducts()
+    {
+        date_default_timezone_set('Asia/Manila');
+        $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired
+                FROM inventory
+                INNER JOIN products ON products.id = inventory.product_id
+                INNER JOIN received_items ON received_items.inventory_id = inventory.id
+                WHERE received_items.date_expired IS NOT NULL  ";
+        
+        $result = $this->connect()->prepare($query); 
+        $result->execute();
+        return $result->rowCount();
+        // $products = []; $notifications = [];
+        // foreach( $result as $row )
+        // {
+        //     $expiration_date = new DateTime($row['date_expired'] ?? '');
+        //     $now = new DateTime();
+        
+        //     $interval = $now->diff($expiration_date);
+        //     $days_remaining = $interval->days;
+        //     if ($expiration_date > $now) 
+        //     {
+        //         $days_remaining++;
+        //     }
+        //     else 
+        //     {
+        //         $days_remaining = -$days_remaining; 
+        //     }
+        //     $products[] = [
+        //         'prod_desc'=>$row['prod_desc'],
+        //         'barcode'=>$row['barcode'],
+        //         'is_received' =>$row['isReceived'],
+        //         'date_expired'=>$row['date_expired'],
+        //         'days_remaining'=>$days_remaining,
+        //     ];
+        // }
+        // $notify_before = $this->get_expirationNotification();
+        // foreach($notify_before as $nb)
+        // {
+        //     $notifications[] = [
+        //         'notify_before' => $nb['notify_before'],
+        //         'is_active' => $nb['is_active'],
+        //     ];
+        // }
+        // return [
+        //     'products'=> $products,
+        //     'notifications'=> $notifications,
+        // ];
     }
     public function save_expirationNotification($data)
     {
@@ -1080,9 +1235,9 @@ class InventoryFacade extends DBConnection
                                                         VALUES (?, ?, ?, ?, ?, ?, ?)");
         
                     $stmt->bindParam(1, $product_id, PDO::PARAM_INT);
-                    $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-                    $stmt->bindParam(4, $qty_received, PDO::PARAM_STR); 
-                    $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
+                    $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
+                    $stmt->bindParam(3, $stock_customer, PDO::PARAM_STR); 
+                    $stmt->bindParam(4, $currentStock, PDO::PARAM_STR); 
                     $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
                     $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
                     $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 

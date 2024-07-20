@@ -42,7 +42,7 @@
     left: 50%; 
     transform: translateX(-50%);
     border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid #FF6900;
+    border-top: 4px solid var(--primary-color);
     border-radius: 50%;
     width: 25px;
     height: 25px;
@@ -86,7 +86,7 @@
         color: white; 
     }
     50% {
-        color: #FF6900; 
+        color: var(--primary-color); 
     }
 }
 

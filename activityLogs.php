@@ -14,10 +14,11 @@
   
   $abilityFacade = new AbilityFacade;
 
-  if (isset($_SESSION['totalPages'])) {
-    $totalPages = $_SESSION['totalPages'];
-    unset($_SESSION['totalPages']); 
-}
+  if (isset($_SESSION['totalPages'])) 
+  {
+      $totalPages = $_SESSION['totalPages'];
+      unset($_SESSION['totalPages']); 
+  }
 
 if (isset($_SESSION['user_id'])) {
  
@@ -72,19 +73,18 @@ if (isset($_SESSION['user_id'])) {
 
   include('./modals/loading-modal.php');
   include('./modals/logDatePickerModal.php');
-  // include ('./modals/pricetagsModal.php'); 
 ?>
 
 
 	<style>
 
 
-    .custom-select select {
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        text-indent: 0.5em;
-    }
+  .custom-select select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      text-indent: 0.5em;
+  }
 
  
     .fcontainer{
@@ -116,21 +116,25 @@ tbody td {
     line-height:2;
 }
 #searchHead th{
-    /* border: 1px solid #dddddd;  */
     border: none;
     padding: 2px 2px; 
     height: 3px; 
     line-height:1;
 }
 .fcontainer::-webkit-scrollbar {
-    width: 1px; 
-    margin-right: 200px;
+    width: 10px; 
+    margin-right: 100px;
 }
 
 .f-container::-webkit-scrollbar-thumb {
-    background-color: #151515; 
-    border-radius: 4px; 
+  background: #888; 
+  border-radius: 10px; 
 }
+
+.f-container::-webkit-scrollbar-track {
+    background: #151515;
+}
+
 </style>
 
 <?php include "layout/admin/css.php"?> 

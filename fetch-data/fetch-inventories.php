@@ -67,15 +67,3 @@ if (count($inventories) > 0)
 $html = ob_get_clean();
 echo $html;
 ?>
-
-<!-- <script>
-    function highlightBorder(element) {
-        $allTrs = document.querySelectorAll('tr');
-        $allTrs.forEach(function(tr) {
-            tr.classList.remove('highlightedss');
-        });
-
-        $('.highlighteds').removeClass('highlighteds');
-        element.classList.add('highlightedss');
-    }
-</script> -->
