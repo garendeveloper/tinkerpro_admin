@@ -130,7 +130,7 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .sidebar nav ul li:hover {
-        background-color: var(--hover-bg-color);
+        background-color: #262626;
     }
 
     .logo {

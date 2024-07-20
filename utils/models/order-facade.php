@@ -121,14 +121,62 @@ class OrderFacade extends DBConnection
 
         return $response;
     }
-    
-    public function get_allOrders()
+    public function get_totalOrders()
     {
-        $requestData = $_REQUEST;
-        $data = $this->get_allOrdersDatatable($requestData);
-    
-        return $data;
+        $sql = $this->connect()->prepare("SELECT 
+                                                orders.*, supplier.*, orders.id as order_id
+                                            FROM 
+                                                orders
+                                            INNER JOIN supplier ON supplier.id = orders.supplier_id
+                                            WHERE orders.is_received = 0
+                                            GROUP BY orders.id, supplier.supplier");
+
+        $sql->execute();
+        return $sql->rowCount();
     }
+    public function get_allOrders($searchInput, $offset, $recordsPerPage)
+    {
+        if(!empty($searchInput))
+        {
+            $sql = $this->connect()->prepare("SELECT 
+                                                orders.*, supplier.*, orders.id as order_id
+                                            FROM 
+                                                orders
+                                            INNER JOIN supplier ON supplier.id = orders.supplier_id
+                                            WHERE orders.is_received = 0
+                                            AND
+                                                orders.po_number LIKE :searchQuery OR 
+                                                supplier.supplier LIKE :searchQuery OR 
+                                                orders.due_date LIKE :searchQuery
+                                            GROUP BY orders.id, supplier.supplier
+                                            ORDER BY orders.po_number ASC LIMIT  $offset, $recordsPerPage");
+
+            $searchParam = "%" . $searchInput . "%";
+            $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else
+        {
+            $sql = $this->connect()->prepare("SELECT 
+                                                    orders.*, supplier.*, orders.id as order_id
+                                                FROM 
+                                                    orders
+                                                INNER JOIN supplier ON supplier.id = orders.supplier_id
+                                                WHERE orders.is_received = 0
+                                                GROUP BY orders.id, supplier.supplier");
+
+            $sql->execute();
+            return $sql->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+    // public function get_allOrders()
+    // {
+    //     $requestData = $_REQUEST;
+    //     $data = $this->get_allOrdersDatatable($requestData);
+    
+    //     return $data;
+    // }
     public function fetch_products()
     {
         $stmt = $this->connect()->prepare("SELECT products.*, orders.*

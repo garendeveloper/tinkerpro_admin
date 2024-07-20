@@ -84,8 +84,8 @@ $(document).ready(function() {
             // $("button").css("border-color", response)
 
             $(".pos-setting:active").css("background-color", response);
-            $(".inventoryCard table thead tr th").css("background-color", response);
-            $(".inventoryCard table th").css("background-color", response);
+            // $(".inventoryCard table thead tr th").css("background-color", "#292928");
+            // $(".inventoryCard table th").css("background-color", "#292928");
 
             $(".productHeader tr th").css({
               'border-color': '#292928',
@@ -93,16 +93,16 @@ $(document).ready(function() {
             });
 
 
-            $("table tr").css("--active-bg-color", response)
-            $("table thead tr th").css("background-color", '');
-            $("table th").css("background-color", '');
+            // $("table tr").css("--active-bg-color", response)
+            // $("table thead tr th").css("background-color", '');
+            // $("table th").css("background-color", '');
 
          
             $(".font-size").css('color', response)
          
-            $("table th").css("color", "#ffffff");
+            // $("table th").css("color", "#ffffff");
             $("table thead").css("border-color", response);
-            $("table").css("border-color", response);
+            // $("table").css("border-color", response);
             $("#pointer").css("color", response);
             $(".text-custom").css('color', response);
             $("span:not(.dynamic-color)").css('color', response);

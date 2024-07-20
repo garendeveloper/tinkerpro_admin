@@ -297,17 +297,25 @@ include ('./layout/admin/table-pagination-css.php');
 
 #tbl_orders tbody th,
 #tbl_orders tbody td {
-    padding: 0px 1px; 
+    /* padding: 0px 1px; 
     height: 3px; 
     line-height: 0.1; 
-    border: 1px solid #292928;
+    border: 1px solid #292928; */
+  padding: 8px 8px; 
+  height: 20px; 
+  line-height: 0.5; 
+  border: 1px solid #292928;
 }
 
 #tbl_all_stocks  tbody th,
 #tbl_all_stocks tbody td {
-  padding: 0px 1px; 
+  /* padding: 0px 1px; 
   height: 3px; 
   line-height: 0.1; 
+  border: 1px solid #292928; */
+  padding: 8px 8px; 
+  height: 20px; 
+  line-height: 0.5; 
   border: 1px solid #292928;
 }
 
@@ -389,7 +397,6 @@ i:hover{
       background: var(--primary-color);
       color: #fff;
   }
-
   table tbody td {
       border: 1px solid #292928;
   }
@@ -439,7 +446,6 @@ i:hover{
         <div
           style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-left: -5px; margin-bottom: 5px; margin-top: -10px;">
            <div class="horizontal-container" style="display: flex; align-items: center;">
-            <!-- <img src="assets/img/barcode.png" style="color: white; height: 80px; width: 70px; margin-right:5px;"> -->
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="60" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
               <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
             </svg>
@@ -519,7 +525,7 @@ i:hover{
           <!-- <div class="inventoryHeader" style="width: 100%;background-color: #151515; height: 10vh; margin-top: -20px; margin-left: 4px; padding: 10px;">
           
           </div> -->
-          <div class="card inventoryCard" style="width: 100%;background-color: #151515; height: 60vh; margin-top: -10px; margin-left: -10px;">
+          <div class="card inventoryCard" style="width: 100%;background-color: #151515; height: 64vh; margin-top: -10px; margin-left: -10px;">
 
           </div>   
           <div id="paginationDiv" ></div>
@@ -787,7 +793,35 @@ i:hover{
       function show_allInventories()
       {
         $.ajax({
-              url: './fetch-data/inventory-pagination.php', 
+              url: './pagination_data/inventory-pagination.php', 
+              type: 'GET',
+              success: function(response) {
+                  $('#paginationDiv').html(response)
+                  $("#searchInput").val("");
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText); 
+              }
+          });
+      }
+      function show_allStocks()
+      {
+        $.ajax({
+              url: './pagination_data/stocks-pagination.php', 
+              type: 'GET',
+              success: function(response) {
+                  $('#paginationDiv').html(response)
+                  $("#searchInput").val("");
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText); 
+              }
+          });
+      }
+      function show_allOrders()
+      {
+        $.ajax({
+              url: './pagination_data/orders-pagination.php', 
               type: 'GET',
               success: function(response) {
                   $('#paginationDiv').html(response)
@@ -1177,13 +1211,13 @@ i:hover{
             var defaultColor = "#FF6700";
             if(!$.isEmptyObject(response))
             {
-              $(".inventoryCard table table-border th").css("background-color", response);
-              $(".inventoryCard table thead tr th").css("background-color", response);
-              $(".inventoryCard table th").css("background-color", response);
+              // $(".inventoryCard table table-border th").css("background-color", response);
+              // $(".inventoryCard table thead tr th").css("background-color", response);
+              // $(".inventoryCard table th").css("background-color", response);
 
-              $("table thead tr th").css("background-color", response);
-              $("table th").css("background-color", response);
-              $("table th").css("color", "#ffffff");
+              // $("table thead tr th").css("background-color", response);
+              // $("table th").css("background-color", response);
+              // $("table th").css("color", "#ffffff");
               
             }
             else
@@ -1193,105 +1227,105 @@ i:hover{
         })
       }
     
-      function show_allStocks() 
-      {
-        $("#searchInput").focus();
-        if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_stocks")) {
-            $(".inventoryCard #tbl_all_stocks").DataTable().destroy();
-            $("#tbl_preview").html("");
-        }
-        $("#tbl_preview").show();
-        $("#paginationDiv").empty().hide();
+      // function show_allStocks() 
+      // {
+      //   $("#searchInput").focus();
+      //   if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_stocks")) {
+      //       $(".inventoryCard #tbl_all_stocks").DataTable().destroy();
+      //       $("#tbl_preview").html("");
+      //   }
+      //   $("#tbl_preview").show();
+      //   $("#paginationDiv").empty().hide();
  
-        var tblData = `
-            <table tabindex='0' id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
-                <thead>
-                    <tr>
-                        <th class='autofit text-center'>No.</th>
-                        <th class=''>Product</th>
-                        <th >Barcode</th>
-                        <th style='text-align: center'>Unit</th>
-                        <th style='text-align: center'>Qty in Store</th>
-                        <th class='autofit' style='text-align: center'>Action</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>`;
+      //   var tblData = `
+      //       <table tabindex='0' id='tbl_all_stocks' class='text-color table-border display' style='font-size: 12px;'>
+      //           <thead>
+      //               <tr>
+      //                   <th class='autofit text-center'>No.</th>
+      //                   <th class=''>Product</th>
+      //                   <th >Barcode</th>
+      //                   <th style='text-align: center'>Unit</th>
+      //                   <th style='text-align: center'>Qty in Store</th>
+      //                   <th class='autofit' style='text-align: center'>Action</th>
+      //               </tr>
+      //           </thead>
+      //           <tbody></tbody>
+      //       </table>`;
 
-        $(".inventoryCard").html(tblData);
+      //   $(".inventoryCard").html(tblData);
 
-        var table = $('.inventoryCard #tbl_all_stocks').DataTable({
-            serverSide: true,
-            processing: true,
-            ajax: {
-                url: 'api.php?action=get_allInventories',
-                type: 'POST'
-            },
-            language: {
-              emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
-            },
-            columns: [
-                { data: null, render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }, className: 'text-center'},
-                { data: 'prod_desc'},
-                { data: 'barcode', className: 'text-center' },
-                { data: 'uom_name', className: 'text-center' },
-                { data: 'product_stock', className: 'text-center', render: function (data) {
-                    if (data > 10) return "<span style='color: yellowgreen'>" + data + "</span>";
-                    if (data <= 10 && data > 0) return "<span style='color: red'>" + data + "</span>";
-                    return data === -1 ? 0 : data;
-                }, className: 'text-center' },
-                { data: null, render: function (data) {
-                    return `<i data-id='${data.product_id}' id='btn_openStockHistory' class="bi bi-graph-up icon-button"></i>`;
-                }, className: 'text-center' }
-            ],
-            ordering: true,
-            order: [[1, 'asc']],
-            pageLength: 100,
-            dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-            fnDrawCallback: function (oSettings) {
-                if (oSettings.aoData.length === 0) {
-                    $("#paginationDiv").hide();
-                } else {
-                    $("#paginationDiv").show();
-                }
+      //   var table = $('.inventoryCard #tbl_all_stocks').DataTable({
+      //       serverSide: true,
+      //       processing: true,
+      //       ajax: {
+      //           url: 'api.php?action=get_allInventories',
+      //           type: 'POST'
+      //       },
+      //       language: {
+      //         emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
+      //       },
+      //       columns: [
+      //           { data: null, render: function (data, type, row, meta) {
+      //               return meta.row + meta.settings._iDisplayStart + 1;
+      //           }, className: 'text-center'},
+      //           { data: 'prod_desc'},
+      //           { data: 'barcode', className: 'text-center' },
+      //           { data: 'uom_name', className: 'text-center' },
+      //           { data: 'product_stock', className: 'text-center', render: function (data) {
+      //               if (data > 10) return "<span style='color: yellowgreen'>" + data + "</span>";
+      //               if (data <= 10 && data > 0) return "<span style='color: red'>" + data + "</span>";
+      //               return data === -1 ? 0 : data;
+      //           }, className: 'text-center' },
+      //           { data: null, render: function (data) {
+      //               return `<i data-id='${data.product_id}' id='btn_openStockHistory' class="bi bi-graph-up icon-button"></i>`;
+      //           }, className: 'text-center' }
+      //       ],
+      //       ordering: true,
+      //       order: [[1, 'asc']],
+      //       pageLength: 100,
+      //       dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+      //       fnDrawCallback: function (oSettings) {
+      //           if (oSettings.aoData.length === 0) {
+      //               $("#paginationDiv").hide();
+      //           } else {
+      //               $("#paginationDiv").show();
+      //           }
 
-                var rowCount = table.rows().count();
+      //           var rowCount = table.rows().count();
 
-                $('#tbl_row0').html("Total Items");
-                $('#tbl_row0_value').html(rowCount);
+      //           $('#tbl_row0').html("Total Items");
+      //           $('#tbl_row0_value').html(rowCount);
 
-                var totalSum = table
-                .column(4, { page: 'current' })
-                .data()
-                .reduce(function (acc, val) {
-                    return acc + parseFloat(val);
-                }, 0);
+      //           var totalSum = table
+      //           .column(4, { page: 'current' })
+      //           .data()
+      //           .reduce(function (acc, val) {
+      //               return acc + parseFloat(val);
+      //           }, 0);
 
-                $('#tbl_row1').html("Total Stocks In Store");
-                $('#tbl_row1_value').html(totalSum);
+      //           $('#tbl_row1').html("Total Stocks In Store");
+      //           $('#tbl_row1_value').html(totalSum);
 
-                $('#tbl_row2').hide();
-                $('#tbl_row2_value').hide();
-            },
+      //           $('#tbl_row2').hide();
+      //           $('#tbl_row2_value').hide();
+      //       },
         
-            createdRow: function (row, data, dataIndex) {
-              $(row).attr('data-id', data.product_id);
-            }
-        });
-        table;
-        $("#paginationDiv").html($(".dt-paging")).show();
-        var debounceTimeout;
-        $('#searchInput').on('keyup', function (event) {
-            clearTimeout(debounceTimeout);
-            debounceTimeout = setTimeout(function () {
-                table.search($('#searchInput').val()).draw();
-            }, 100); 
-        });
+      //       createdRow: function (row, data, dataIndex) {
+      //         $(row).attr('data-id', data.product_id);
+      //       }
+      //   });
+      //   table;
+      //   $("#paginationDiv").html($(".dt-paging")).show();
+      //   var debounceTimeout;
+      //   $('#searchInput').on('keyup', function (event) {
+      //       clearTimeout(debounceTimeout);
+      //       debounceTimeout = setTimeout(function () {
+      //           table.search($('#searchInput').val()).draw();
+      //       }, 100); 
+      //   });
 
-        display_settings();
-      }
+      //   display_settings();
+      // }
       function show_allLossAndDamagesInfo() {
         if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_all_lostanddamages")) {
             $(".inventoryCard #tbl_all_lostanddamages").DataTable().destroy();
@@ -3224,173 +3258,175 @@ i:hover{
               }
           })
         })
-        function show_allOrders() {
-          if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_orders")) {
-              $(".inventoryCard #tbl_orders").DataTable().destroy();
-              $("#tbl_preview").html("");
-          }
-          $("#paginationDiv").empty().hide();
-          $("#searchInput").focus();
-          display_settings();
-          $("#tbl_preview").show();
-          $('#tbl_row2').show();
-          $('#tbl_row2_value').show();
-          var tblData = `
-              <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>
-                  <thead>
-                      <tr>
-                          <th style='width: 2%;'>PO#</th>
-                          <th style='width: 4%;'>Supplier</th>
-                          <th style='width: 2%;'>Date Purchased</th>
-                          <th style='width: 2%;'>Due Date</th>
-                          <th style='width: 2%;'>Qty</th>
-                          <th style='width: 2%;'>Price</th>
-                          <th style='width: 2%;'>Total</th>
-                          <th style='width: 2%;'>Is Paid</th>
-                          <th style='width: 2%;'>Status</th>
-                          <th style='width: 1%;' class='autofit'>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody></tbody>
-              </table> `;
+      //   function show_allOrders() 
+      //   {
+      //     if ($.fn.DataTable.isDataTable(".inventoryCard #tbl_orders")) 
+      //     {
+      //         $(".inventoryCard #tbl_orders").DataTable().destroy();
+      //         $("#tbl_preview").html("");
+      //     }
+      //     $("#paginationDiv").empty().hide();
+      //     $("#searchInput").focus();
+      //     display_settings();
+      //     $("#tbl_preview").show();
+      //     $('#tbl_row2').show();
+      //     $('#tbl_row2_value').show();
+      //     var tblData = `
+      //         <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px;'>
+      //             <thead>
+      //                 <tr>
+      //                     <th style='width: 2%;'>PO#</th>
+      //                     <th style='width: 4%;'>Supplier</th>
+      //                     <th style='width: 2%;'>Date Purchased</th>
+      //                     <th style='width: 2%;'>Due Date</th>
+      //                     <th style='width: 2%;'>Qty</th>
+      //                     <th style='width: 2%;'>Price</th>
+      //                     <th style='width: 2%;'>Total</th>
+      //                     <th style='width: 2%;'>Is Paid</th>
+      //                     <th style='width: 2%;'>Status</th>
+      //                     <th style='width: 1%;' class='autofit'>Action</th>
+      //                 </tr>
+      //             </thead>
+      //             <tbody></tbody>
+      //         </table> `;
 
-          $(".inventoryCard").html(tblData);
+      //     $(".inventoryCard").html(tblData);
 
-          var table = $('.inventoryCard #tbl_orders').DataTable({
-              serverSide: true,
-              processing: true,
-              ajax: {
-                  url: 'api.php?action=get_allOrders',
-                  type: 'GET'
-              },
-              language: {
-                emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
-              },
-              columns: [
-                  { data: 'po_number', className: 'text-center' },
-                  { data: 'supplier' },
-                  { data: 'date_purchased', className: 'text-center' },
-                  {
-                      data: 'due_date',
-                      className: 'text-center',
-                      render: function (data) {
-                          return data ? date_format(data) : 'Not Available';
-                      }
-                  },
-                  {
-                      data: 'totalQty',
-                      className: 'text-right',
-                      render: function (data) {
-                        return data;
-                      }
-                  },
-                  {
-                      data: 'totalPrice',
-                      className: 'text-right',
-                      render: function (data) {
-                        return '&#x20B1;&nbsp;' + addCommasToNumber(data);
-                      }
-                  },
-                  {
-                      data: 'price',
-                      className: 'text-right',
-                      render: function (data) {
-                          return '&#x20B1;&nbsp;' + addCommasToNumber(data);
-                      }
-                  },
-                  {
-                      data: 'isPaid',
-                      className: 'text-center',
-                      render: function (data) {
-                          return data === 1 ? "<span class='text-center badge-success'>Paid</span>" : "<span class='text-center badge-danger'>Unpaid</span>";
-                      }
-                  },
-                  {
-                      data: 'is_received',
-                      className: 'text-center',
-                      render: function (data) {
-                          return data === 1 ? "<span class='text-center badge-success' >Received</span>" : "<span class='text-center badge-warning' style = 'color: yellow;'>To Receive</span>";
-                      }
-                  },
-                  {
-                      data: null,
-                      className: 'text-center',
-                      render: function (data) {
-                        if(data.isPaid === 1)
-                        {
-                          return `
-                            <div class = 'icon-container'>
-                              <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
-                              <i data-id='${data.order_id}' data-po_number = '${data.po_number}' data-isReceived='${data.is_received}' data-isPaid = '${data.isPaid}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
+      //     var table = $('.inventoryCard #tbl_orders').DataTable({
+      //         serverSide: true,
+      //         processing: true,
+      //         ajax: {
+      //             url: 'api.php?action=get_allOrders',
+      //             type: 'GET'
+      //         },
+      //         language: {
+      //           emptyTable: '<div id="noDataImageContainer"><img src="./assets/img/tinkerpro-t.png" alt="No Data"><h5>No matching records found</h5></div>'
+      //         },
+      //         columns: [
+      //             { data: 'po_number', className: 'text-center' },
+      //             { data: 'supplier' },
+      //             { data: 'date_purchased', className: 'text-center' },
+      //             {
+      //                 data: 'due_date',
+      //                 className: 'text-center',
+      //                 render: function (data) {
+      //                     return data ? date_format(data) : 'Not Available';
+      //                 }
+      //             },
+      //             {
+      //                 data: 'totalQty',
+      //                 className: 'text-right',
+      //                 render: function (data) {
+      //                   return data;
+      //                 }
+      //             },
+      //             {
+      //                 data: 'totalPrice',
+      //                 className: 'text-right',
+      //                 render: function (data) {
+      //                   return '&#x20B1;&nbsp;' + addCommasToNumber(data);
+      //                 }
+      //             },
+      //             {
+      //                 data: 'price',
+      //                 className: 'text-right',
+      //                 render: function (data) {
+      //                     return '&#x20B1;&nbsp;' + addCommasToNumber(data);
+      //                 }
+      //             },
+      //             {
+      //                 data: 'isPaid',
+      //                 className: 'text-center',
+      //                 render: function (data) {
+      //                     return data === 1 ? "<span class='text-center badge-success'>Paid</span>" : "<span class='text-center badge-danger'>Unpaid</span>";
+      //                 }
+      //             },
+      //             {
+      //                 data: 'is_received',
+      //                 className: 'text-center',
+      //                 render: function (data) {
+      //                     return data === 1 ? "<span class='text-center badge-success' >Received</span>" : "<span class='text-center badge-warning' style = 'color: yellow;'>To Receive</span>";
+      //                 }
+      //             },
+      //             {
+      //                 data: null,
+      //                 className: 'text-center',
+      //                 render: function (data) {
+      //                   if(data.isPaid === 1)
+      //                   {
+      //                     return `
+      //                       <div class = 'icon-container'>
+      //                         <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
+      //                         <i data-id='${data.order_id}' data-po_number = '${data.po_number}' data-isReceived='${data.is_received}' data-isPaid = '${data.isPaid}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
+
+      //                         </div>`;
+      //                   }
+      //                   else
+      //                   {
+      //                     return `
+      //                       <div class = 'icon-container'>
+      //                         <i data-id='${data.order_id}' id='btn_openUnpaidPayment' class='bi bi-cash bi-md icon-button openUnpaidPayment'></i>
+      //                         <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
+      //                         <i data-id='${data.order_id}' data-po_number = '${data.po_number}' data-isReceived='${data.is_received}' data-isPaid = '${data.isPaid}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
                                
-                              </div>`;
-                        }
-                        else
-                        {
-                          return `
-                            <div class = 'icon-container'>
-                              <i data-id='${data.order_id}' id='btn_openUnpaidPayment' class='bi bi-cash bi-md icon-button openUnpaidPayment'></i>
-                              <i data-id='${data.order_id}' id='btn_editOrder' class='bi bi-pencil-fill bi-md icon-button'></i>
-                              <i data-id='${data.order_id}' data-po_number = '${data.po_number}' data-isReceived='${data.is_received}' data-isPaid = '${data.isPaid}' id='btn_removeOrder' class='bi bi-trash bi-md icon-button'></i>
-                               
-                              </div>`;
-                        }
-                      }
-                  }
-              ],
-              ordering: true,
-              order: [[0, 'asc']],
-              pageLength: 100,
-              pagingType: 'full_numbers',
-              dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-              fnDrawCallback: function (oSettings) {
-                  if (oSettings.aoData.length === 0) {
-                      $("#paginationDiv").hide();
-                  } else {
-                      $("#paginationDiv").show();
-                  }
-                  var rowCount = table.rows().count();
+      //                         </div>`;
+      //                   }
+      //                 }
+      //             }
+      //         ],
+      //         ordering: true,
+      //         order: [[0, 'asc']],
+      //         pageLength: 100,
+      //         pagingType: 'full_numbers',
+      //         dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
+      //         fnDrawCallback: function (oSettings) {
+      //             if (oSettings.aoData.length === 0) {
+      //                 $("#paginationDiv").hide();
+      //             } else {
+      //                 $("#paginationDiv").show();
+      //             }
+      //             var rowCount = table.rows().count();
 
-                  $('#tbl_row0').html("Total Items");
-                  $('#tbl_row0_value').html(rowCount);
+      //             $('#tbl_row0').html("Total Items");
+      //             $('#tbl_row0_value').html(rowCount);
 
 
-                  var totalSum = table
-                  .column(5, { page: 'current' })
-                  .data()
-                  .reduce(function (acc, val) {
-                      return acc + parseFloat(val);
-                  }, 0);
+      //             var totalSum = table
+      //             .column(5, { page: 'current' })
+      //             .data()
+      //             .reduce(function (acc, val) {
+      //                 return acc + parseFloat(val);
+      //             }, 0);
 
-                  $('#tbl_row1').html("Total Price");
-                  $('#tbl_row1_value').html(totalSum);
+      //             $('#tbl_row1').html("Total Price");
+      //             $('#tbl_row1_value').html(totalSum);
 
-                  var totalSum = table
-                      .column(6, { page: 'current' })
-                      .data()
-                      .reduce(function (acc, val) {
-                          return acc + parseFloat(val);
-                      }, 0);
+      //             var totalSum = table
+      //                 .column(6, { page: 'current' })
+      //                 .data()
+      //                 .reduce(function (acc, val) {
+      //                     return acc + parseFloat(val);
+      //                 }, 0);
 
-                  $('#tbl_row2').html("Total Amount");
-                  $('#tbl_row2_value').html(addCommasToNumber(totalSum));
+      //             $('#tbl_row2').html("Total Amount");
+      //             $('#tbl_row2_value').html(addCommasToNumber(totalSum));
 
-              },
-              createdRow: function (row, data, dataIndex) {
-                $(row).attr('data-id', data.order_id);
-              }
-          });
+      //         },
+      //         createdRow: function (row, data, dataIndex) {
+      //           $(row).attr('data-id', data.order_id);
+      //         }
+      //     });
 
-          table;
-          $("#paginationDiv").html($(".dt-paging")).show();
-          var debounceTimeout;
-          $('#searchInput').on('keyup', function (event) {
-              clearTimeout(debounceTimeout);
-              debounceTimeout = setTimeout(function () {
-                  table.search($('#searchInput').val()).draw();
-              }, 100); 
-          });
-      }
+      //     table;
+      //     $("#paginationDiv").html($(".dt-paging")).show();
+      //     var debounceTimeout;
+      //     $('#searchInput').on('keyup', function (event) {
+      //         clearTimeout(debounceTimeout);
+      //         debounceTimeout = setTimeout(function () {
+      //             table.search($('#searchInput').val()).draw();
+      //         }, 100); 
+      //     });
+      // }
       
       $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
           var productId = $(this).find("td[data-id]").data("id");

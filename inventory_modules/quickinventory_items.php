@@ -84,7 +84,7 @@
     <table id="tbl_quickInventories" class="text-color table-border" style="margin-top: -3px;">
         <thead>
             <tr>
-                <th style="background-color:none;  width: 50%">ITEM DESCRIPTION</th>
+                <th style="background-color: #1E1C11;  width: 50%">ITEM DESCRIPTION</th>
                 <th style="background-color: #1E1C11;  ">QTY ON HAND</th>
                 <th style="background-color: #1E1C11;  ">NEW QTY</th>
             </tr>
