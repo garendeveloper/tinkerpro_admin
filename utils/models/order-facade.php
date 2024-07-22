@@ -309,6 +309,17 @@ class OrderFacade extends DBConnection
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function get_paymentHistory($order_id)
+    {
+        
+        $sql = $this->connect()->prepare("SELECT order_payments.*, payment_method.*
+                                        FROM order_payments 
+                                        INNER JOIN orders ON order_payments.order_id = orders.id
+                                        LEFT JOIN payment_method ON order_payments.payment_method_id = payment_method.id
+                                        WHERE orders.id = $order_id");
+        $sql->execute();
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
+    }
     public function get_unpaidPurchases($startDate, $endDate, $supplier)
     {
         $sql = "";

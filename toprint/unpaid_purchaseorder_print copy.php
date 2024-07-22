@@ -73,6 +73,15 @@
         }    
     }
 
+    // function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10)
+    // {
+    //     $pdf->SetFont('dejavusans', '', $initialFontSize);
+    //     while ($pdf->GetStringWidth($text) > $maxWidth) {
+    //         $initialFontSize--;
+    //         $pdf->SetFont('', '', $initialFontSize);
+    //     }
+    //     return $initialFontSize;
+    // }
     function autoAdjustFontSize($pdf, $text, $width) {
         $maxFontSize = 8; 
         $minFontSize = 6;  

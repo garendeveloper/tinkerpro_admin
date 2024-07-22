@@ -147,11 +147,6 @@ class BirFacade extends DBConnection {
             'resetCount' => $resetCount,
             'z_counter' => $z_counter,
         ];
-    
-        // echo json_encode([
-        //     'result' => $result,
-        //     'data' => $ZReadData,
-        // ]);
         return $result;
     }
   
