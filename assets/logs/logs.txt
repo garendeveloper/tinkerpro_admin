@@ -756,6 +756,42 @@
 2024-07-19 13:01:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-19 13:51:08 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: ACE CHOCO 30G From: 0.00 To: 32 
 2024-07-19 13:51:10 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000002 Amount:₱ 6,802.42 
+<<<<<<< HEAD
+2024-07-19 14:18:42 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 14:33:54 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 14:38:19 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 14:54:34 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 15:02:49 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-19 15:27:09 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated XSAKTO Barcode #:158812 
+2024-07-19 15:27:25 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated XSAKTO (1) Barcode #:158812 
+2024-07-19 15:27:34 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated XSAKTO Barcode #:158812 
+2024-07-19 15:28:25 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Printing a pdf 
+2024-07-19 15:28:50 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Generate a pdf 
+2024-07-19 15:33:23 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 15:33:27 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 15:48:43 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 15:49:04 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:04:17 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:04:33 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:07:26 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:19:27 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:19:51 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:34:40 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:35:20 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:49:49 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 16:50:27 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 17:05:01 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 17:07:28 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 17:20:12 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 17:22:38 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 17:35:21 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 17:37:53 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 17:50:32 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-19 17:57:55 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-19 18:02:47 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-19 18:03:13 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-19 18:09:14 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+=======
 2024-07-19 15:18:23 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-19 15:55:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-19 17:56:13 | Talkosoy Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000002 

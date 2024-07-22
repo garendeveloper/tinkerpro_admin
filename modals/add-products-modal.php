@@ -63,7 +63,7 @@
     height: 100%;
     margin-top: 15px;
     margin-bottom: 15px;
-    
+   
 }
 
 
@@ -77,6 +77,7 @@
     
     /* #FF6900; */
 .tableCard{
+   
     height: auto; 
     max-height: none; 
 }
@@ -1286,9 +1287,42 @@ input:checked + .warningSpan:before {
 #scrollable-div {
   overflow-y: auto; 
   overflow-x: hidden; 
-  min-height: 25vh;
-  max-height: 38vh;
+  min-height: auto;
+  position: absolute;
+  top: 600px;
+  height: auto;
 }
+
+.modal-title {
+  position: absolute;
+  top: 0;
+  height: 100%; 
+  overflow-y: auto; 
+  overflow-x: hidden; 
+}
+
+#generate, .addCategory, #uomBtn.custom-btn{
+  font-weight: 100;
+  box-shadow: none;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--primary-color);
+}
+
+
+#uomBtn.custom-btn {
+  font-size: 20px;
+}
+
+#uomBtn {
+  height: 20px;
+}
+
+
+.addCategory:hover {
+    background: none
+}
+
 
 </style>
 
@@ -1319,22 +1353,20 @@ input:checked + .warningSpan:before {
                     </tr>
                     <tr>
                         <td class="barcodeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode<sup>*</sup></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;"><input  oninput="validateNumber(this)" class="barcode" id="barcode" name="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;">
+                          <div class="d-flex">
+                            <input  oninput="validateNumber(this)" class="barcode" id="barcode" name="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button>
+                          </div>
+                        </td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Unit of measure</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><div class="dropdown custom-input">
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px">
+                          <div class="dropdown custom-input d-flex">
                             <input class="custom-input" readonly hidden name="uomID" id="uomID" style="width: 259px"/>
                             <input class="custom-input" readonly name="uomType" id="uomType" style="width: 259px"/>
                             <button name="uomBtn" id="uomBtn" class="custom-btn">
-                            <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
+                              &#129171;
                             </button>
                             <div class="dropdown-content" id="uomDropDown">
                             <?php
@@ -1348,7 +1380,7 @@ input:checked + .warningSpan:before {
                             <div id="variants" style="display: none;">
    
                             </div>
-                        </div></td>
+                          </div></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Brand</td>
@@ -1602,8 +1634,7 @@ input:checked + .warningSpan:before {
 <!-- </div> -->
 <script>
 
-    
-  
+
   document.getElementById('stockToggle').addEventListener('change', function() {
         var quantityInput = document.querySelector('.quantity');
         if (this.checked) {
