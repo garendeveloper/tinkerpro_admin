@@ -907,6 +907,22 @@
 2024-07-22 17:14:03 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-22 17:14:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-22 17:14:43 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+<<<<<<< HEAD
 2024-07-22 17:47:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-22 17:48:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CHIPPY BBQ RED 110G Barcode #:55807 
 2024-07-22 17:50:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added CHIPPY  Barcode #:677943201281 
+=======
+2024-07-22 17:29:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 17:31:42 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 17:33:01 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 17:35:19 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 17:44:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 17:58:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 18:00:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 18:00:44 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 18:01:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:2108310831548 
+2024-07-22 18:03:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:7622300601768 
+2024-07-22 18:05:27 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 18:05:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA ADOBO 155G Barcode #:748485700014 
+2024-07-22 18:28:59 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+>>>>>>> 719e2ffb43d0373782b56be3e2e960809b571222
