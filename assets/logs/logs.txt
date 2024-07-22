@@ -920,3 +920,8 @@
 2024-07-22 18:05:27 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-07-22 18:05:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA ADOBO 155G Barcode #:748485700014 
 2024-07-22 18:28:59 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 20:44:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 20:51:47 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: 24/7 MANGO 40G From: -1.00 To: 20 
+2024-07-22 20:54:50 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000005 Amount:₱ 100.00 
+2024-07-22 20:55:52 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000005 Supplier: UNILIVER 
+2024-07-22 21:01:58 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000004 Date: Jul 22 24 Total Amount₱ 45.50 
