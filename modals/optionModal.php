@@ -1364,31 +1364,34 @@ input[type="text"] {
             loadingImage.removeAttribute("hidden");
             var pdfFile= document.getElementById("pdfFile");
             pdfFile.setAttribute('hidden',true);
+
+            var url = $("#paidSwitch").prop("checked") ? './toprint/purchaseorder_print.php' : './toprint/unpaid_purchaseorder_print.php';
+
             $.ajax({
-                url: './toprint/purchaseorder_print.php',
-                type: 'GET',
-                xhrFields: {
-                    responseType: 'blob'
-                },
-                data: {
-                    order_id: $("#_order_id").val(),
-                    po_number: $("#pcs_no").val(),
-                },
-                success: function(response) {
-                loadingImage.setAttribute("hidden",true);
-                var pdfFile = document.getElementById("pdfFile");
-                pdfFile.removeAttribute('hidden')
-                if( loadingImage.hasAttribute('hidden')) {
-                    var newBlob = new Blob([response], { type: 'application/pdf' });
-                    var blobURL = URL.createObjectURL(newBlob);
-                    
-                    $('#pdfViewer').attr('src', blobURL);
-                }
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
+                    url: url,
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    data: {
+                        order_id: $("#_order_id").val(),
+                        po_number: $("#pcs_no").val(),
+                    },
+                    success: function(response) {
+                    loadingImage.setAttribute("hidden",true);
+                    var pdfFile = document.getElementById("pdfFile");
+                    pdfFile.removeAttribute('hidden')
+                    if( loadingImage.hasAttribute('hidden')) {
+                        var newBlob = new Blob([response], { type: 'application/pdf' });
+                        var blobURL = URL.createObjectURL(newBlob);
+                        
+                        $('#pdfViewer').attr('src', blobURL);
+                    }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
         }
     })
     $("#print_po").click(function(){
