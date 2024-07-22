@@ -141,11 +141,11 @@ if (isset($_SESSION['user_id'])) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
                         <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
                     </svg>
-
+                    <input type="hidden" id="search_product_id" class="w-100 search_product me-2 ms-2">
                     <input type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product me-2 ms-2">
 
                     <div class="btn-container">
-                        <button class="btn btn-secondary">
+                        <button class="btn btn-secondary" id= "btn_addProduct">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -165,16 +165,14 @@ if (isset($_SESSION['user_id'])) {
         </div>
         
       </div>
-      <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
 
 <?php 
 
     include("layout/footer.php");
     include('./modals/datePickerModal.php');
+    include('./modals/promotionModal.php');
 
 ?>
 
@@ -251,3 +249,155 @@ if (isset($_SESSION['user_id'])) {
         color: var(--primary-color)
     }
 </style>
+
+
+<script>
+    var products = [];
+    let productsCache = [];
+    show_allProducts();
+
+    $("#btn_addProduct").click(function (e) {
+        e.preventDefault();
+        var prod_id = $("#search_product_id").val();
+        var barcode = $("#barcode_value").val();
+        if(prod_id !== "" && prod_id !== "0")
+        {
+            if (!isDataExistInTable(prod_id)) 
+            {
+              open_modal("Product");
+            }
+            else
+            {
+              show_errorResponse("Product is already in the table.");
+            }
+            $("#search_product").val("");
+            $("#search_product_id").val("0");
+        }
+        else
+        {
+          show_errorResponse("Product is not found.");
+        }
+    })
+        function show_allProducts() 
+        {
+            $.ajax({
+            type: 'GET',
+            url: 'api.php?action=get_allProducts',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) 
+                {
+                    var row = 
+                    {
+                        product_id: data[i].id,
+                        product: data[i].prod_desc,
+                        barcode: data[i].barcode,
+                    };
+                    productsCache.push(row);
+                }
+            }
+            });
+        }
+        function filterProducts(term) {
+            return productsCache.filter(function(row) {
+                var lowercaseTerm = term.toLowerCase();
+                return row.product.toLowerCase().includes(lowercaseTerm) ||
+                    row.barcode.includes(lowercaseTerm) ||
+                    (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
+                    (!row.brand && lowercaseTerm === "");
+            }).map(function(row) {
+                var brand = row.brand === null ? " " : "( " + row.brand + " )";
+                return {
+                    label: row.product + " (" + row.barcode + ")",
+                    value: row.product,
+                    id: row.product_id,
+                };
+            });
+        }
+        function show_errorResponse(message) 
+        {
+            if (toastDisplayed) {
+                return; 
+            }
+
+            toastDisplayed = true; 
+
+            toastr.options = {
+                "onShown": function () {
+                    $('.custom-toast').css({
+                        "opacity": 1,
+                        "width": "600px",
+                        "text-align": "center",
+                        "border": "2px solid #1E1C11",
+                    });
+                },
+                "onHidden": function () {
+                    toastDisplayed = false; 
+                },
+                "closeButton": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "progressBar": true,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false,
+                "toastClass": "custom-toast",
+                "onclick": function () { 
+                    toastr.clear();
+                    toastDisplayed = false;
+                 }
+            };
+
+            toastr.error(message);
+        }
+
+        $("#search_product").autocomplete({
+            minLength: 2,
+            source: function (request, response) {
+                var term = request.term;
+                var filteredProducts = filterProducts(term);
+                var slicedProducts = filteredProducts.slice(0, 5);
+                response(slicedProducts);
+                if (slicedProducts.length > 0) {
+                    $('#filters').show();
+                    var slicedProductsLength = slicedProducts.length - 1;
+                    var selectedProductId = slicedProducts[slicedProductsLength].id;
+                } else {
+                    $('#filters').hide();
+                }
+            },
+            select: function (event, ui) {
+                var selectedProductId = ui.item.id;
+                $("#search_product_id").val(selectedProductId);
+                var product_name = ui.item.value;
+                if(selectedProductId !== "" && selectedProductId !== "0")
+                {
+                    if (!isDataExistInTable(selectedProductId)) 
+                    {
+                        open_modal(product_name);
+                    }
+                    else
+                    {
+                        show_errorResponse("Product is already in the table.");
+                    }
+                    $("#search_product").val("");
+                    $("#search_product_id").val("0");
+                }
+                return false;
+            },
+        });
+     
+        function isDataExistInTable(data) 
+        {
+            var $matchingRow = $('#tbl_priceTags tbody td[data-id="' + data + '"]').closest('tr');
+            return $matchingRow.length > 0;
+        }
+        function open_modal(product_name)
+        {
+            $("#product_name").html(product_name);
+            $("#promotionModal").show();
+        }
+
+</script>

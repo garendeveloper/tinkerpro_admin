@@ -907,3 +907,6 @@
 2024-07-22 17:14:03 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-22 17:14:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-22 17:14:43 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 17:47:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 17:48:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CHIPPY BBQ RED 110G Barcode #:55807 
+2024-07-22 17:50:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added CHIPPY  Barcode #:677943201281 
