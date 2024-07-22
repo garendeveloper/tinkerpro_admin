@@ -2455,7 +2455,7 @@ function generatePdf(id)
       }
 
       var e = "";
-              if(id === 55) e = 1;
+          if(id === 55) e = 1;
         if(id === 50) e = 2;
         if(id === 51) e = 3;
         if(id === 52) e = 4;
@@ -5484,7 +5484,7 @@ error: function(xhr, status, error) {
 }
 
 function printDocuments(id){
-  if(id==50 || id == 51 || id == 52 || id == 53 ){
+  if(id==50 || id == 51 || id == 52 || id == 53 || id == 55){
       $('#printDocu').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
@@ -5525,6 +5525,7 @@ function printDocuments(id){
         if(id === 51) e = 3;
         if(id === 52) e = 4;
         if(id === 53) e = 5;
+        if(id === 55) e = 1;
 
         $.ajax({
             url: './reports/generate_birE'+e+'Report_pdf.php',

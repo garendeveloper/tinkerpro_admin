@@ -322,29 +322,6 @@ $sheet->getStyle('A2:AF2')->applyFromArray($headerStyleAtoAF);
 $sheet->getStyle('A3:AF3')->applyFromArray($headerStyleAtoAF);
 $sheet->getStyle('A12:AF12')->applyFromArray($headerStyle);
 $sheet->getStyle('A16:AF16')->applyFromArray($headerStyleData);
-$products = new ProductFacade();
-
-$searchQuery = $_GET['searchQuery'] ?? null;
-$selectedProduct = $_GET['selectedProduct'] ?? null;
-$selectedCategories = $_GET['selectedCategories'] ?? null;
-$selectedSubCategories = $_GET['selectedSubCategories'] ?? null;
-$singleDateData = $_GET['singleDateData'] ?? null;
-$startDate = $_GET['startDate'] ?? null;
-$endDate = $_GET['endDate'] ?? null;
-
-$count = $products->getTotalProductsCount();
-
-$recordsPerPage = $count;
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-$offset = ($page - 1) * $recordsPerPage;
-
-
-$fetchProducts = $products->fetchProducts($searchQuery, $selectedProduct, $singleDateData, $startDate, $endDate, $selectedCategories, $selectedSubCategories, $offset, $recordsPerPage);
-$counter = 1; 
-
-while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {
- 
-}
 
 
 foreach (range('A', 'K') as $column) {
