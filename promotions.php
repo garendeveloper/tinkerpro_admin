@@ -73,7 +73,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="row">
             <label class="titeClass mb-2">PROMOTION & ACTION</label>
 
-            <div class="col-3 h-100">
+            <div class="col-3 h-100 ps-2 pb-2 p-0">
 
                 <div class="promotion-container ">
 
@@ -89,7 +89,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
-                            <label for="">Promo Period</label>
+                            <label class="promoLabel" for="">Promo Period</label>
                             <input class="text-center" readonly type="text" id="date_picker_buy1" placeholder="SELEC DATE">
                         </div>
                     </div>
@@ -106,7 +106,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
-                            <label for="">Promo Period</label>
+                            <label class="promoLabel" for="">Promo Period</label>
                             <input class="text-center" readonly type="text" id="date_picker_bundle" placeholder="SELEC DATE">
                         </div>
                     </div>
@@ -124,7 +124,7 @@ if (isset($_SESSION['user_id'])) {
 
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
-                            <label for="">Promo Period</label>
+                            <label class="promoLabel" for="">Promo Period</label>
                             <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELEC DATE">
                         </div>
                     </div>
@@ -136,13 +136,35 @@ if (isset($_SESSION['user_id'])) {
 
             <div class="col-9">
 
-                <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="table-cotainers p-2">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                    <div class="d-flex justify-content-between align-items-center">
+
+                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
                         <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
                     </svg>
 
-                    <input type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product me-2 ms-2">
+                    <input type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
+
+                    <div class="btn-container">
+                        <button class="btn btn-secondary clearInput d-none">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="btn-container">
+                        <button class="btn btn-secondary searchIcon">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
 
                     <div class="btn-container">
                         <button class="btn btn-secondary">
@@ -150,13 +172,11 @@ if (isset($_SESSION['user_id'])) {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
                                 </svg>
-                            </span> Add
+                            </span>
                         </button>
                     </div>
 
-                </div>
-
-                <div class="table-cotainers">
+                    </div>
 
                 </div>
 
@@ -182,18 +202,56 @@ if (isset($_SESSION['user_id'])) {
 
 
 
-
-
  $("#promotions").addClass('active');
  $("#pointer").html("Promotion & Action");
 
 
  $(document).ready(function() {
     $('#search_product').focus();
+    var isClick = false;
 
-    $('#date_picker_buy1, #date_picker_bundle, #date_picker_bundle').off('click').on('click', function() {
-        $('#dateTimeModal').show();
+    $('#search_product').on('input', function() {
+        if ($(this).val() != '') {
+            $('.clearInput').removeClass('d-none');
+        } else {
+            $('.clearInput').addClass('d-none');
+        }
     })
+
+    $('.clearInput').off('click').on('click', function() {
+        $('#search_product').val('').focus();
+        $('.clearInput').addClass('d-none');
+    })
+
+
+    $('.editBtns').click(function() {
+        isClick = true;
+        if (isClick) {
+            $(this).css('background-color', 'var(--primary-color)')
+            $('#date_picker_buy1, #date_picker_bundle, #date_picker_bundle').off('click').on('click', function() {
+                $('#dateTimeModal').show();
+            })
+        }
+        
+    })
+
+  
+    $('.buy-to-take-one, .bundle-sale, .whole-sale').off('click').on('click', function() {
+        
+        $('.buy-to-take-one, .bundle-sale, .whole-sale').removeClass('selected-promo').css('border-color', 'var(--border-color)');
+        $('.titleBtn').css('color', '#757575');
+        $('.promoLabel').css('color', '#757575');
+        
+        // if () {
+            isClick = false;
+            // $('.editBtns').css('background-color', '')
+        // }
+
+        $(this).addClass('selected-promo').css('border-color', 'transparent');
+        $(this).find('.titleBtn').css('color', 'var(--primary-color)');
+        $(this).find('.promoLabel').css('color', '#fff');
+    });
+
  })
 
 
@@ -203,23 +261,60 @@ if (isset($_SESSION['user_id'])) {
 
 <style>
 
+
+    .selected-promo {
+        background: #10253F;
+       
+    }
+
     .editBtns {
         background: none;
         border: none;
         box-shadow: none;
     }
-    .titleBtn {
+
+
+
+    .titleBtn, .promoLabel {
         font-weight: bold;
+        color: #757575;
     }
 
     .btn-container {
-        max-width: 90px;
-        width: 100%;
+        width: auto;
     }
 
     .btn-container button {
-        background: var(--primary-color);
-        border: transparent;
+        background: transparent;
+        box-shadow: none;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+
+        border-left: none;
+        border-right: 1px solid var(--border-color);
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+        height: 40px;
+    }
+
+
+    .btn-container .clearInput, .btn-container .searchIcon {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-right: none;
+    }
+
+
+    .btn-container .clearInput:hover, .btn-container .searchIcon:hover {
+
+        background: none;
+        box-shadow: none;
     }
 
     .btn-container button:hover {
@@ -227,17 +322,27 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .search_product {
-        border: 1px solid var(--border-color) !important;
+        height: 40px;
+
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+
+
+        border-left: 1px solid var(--border-color) !important;
+        border-top: 1px solid var(--border-color) !important;
+        border-bottom: 1px solid var(--border-color) !important;
+    
         padding-left: 10px;
     }
     .table-cotainers {
-        border: 1px solid var(--primary-color);
+     
         width: 100%;
-        height: 100%;
+        height: 85vh;
+        background: #10253F;
     }
 
     .buy-to-take-one, .bundle-sale, .whole-sale {
-        border: 1px solid var(--primary-color);
+        border: 1px solid var(--border-color);
         height: auto;
         width: 100%;
         border-radius: 10px;
