@@ -156,7 +156,7 @@ $html = '<style>
                 text-align: left;
             }
             #mainTable thead th{
-                border: 0.1px solid black;
+                border: 0.5px solid rgba(0, 0, 0, 0.1);
                 word-wrap: break-word;
                 text-align: center;       
                 vertical-align: middle;
@@ -258,8 +258,8 @@ $html .= '<table border = "0" cellpadding="2" style = "font-size: 9px;">
             <thead>
                 <tr>
                     <th style = "width: 70.6%"></th>
-                    <th style = "width: 16%; border: 1px solid black;">Subtotal</th>
-                    <th style = "width: 20%; border: 1px solid black; text-align: right">P'.number_format($overall_price,2).'</th>
+                    <th style = "width: 16%; border: 1px solid rgba(0, 0, 0, 0.2);">Subtotal</th>
+                    <th style = "width: 20%; border: 1px solid rgba(0, 0, 0, 0.2); text-align: right">P'.number_format($overall_price,2).'</th>
                 </tr>
                 <tr>
                     <th style = "width: 70.6%"></th>
