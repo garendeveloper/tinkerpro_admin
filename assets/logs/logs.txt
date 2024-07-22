@@ -815,3 +815,73 @@
 2024-07-20 17:07:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-20 17:29:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-20 17:46:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 09:04:03 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 09:06:20 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 09:10:18 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 09:22:40 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 09:23:13 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 09:28:01 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 09:31:52 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 24/7 PNEAPL 40G 1T Barcode #:508539862695 
+2024-07-22 09:37:50 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 09:43:08 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 09:48:14 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 09:52:40 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated ALBATROS DEO W/ HOLDER Barcode #:401865 
+2024-07-22 09:53:05 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 09:58:40 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 10:08:26 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 10:14:17 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 10:23:41 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 10:29:35 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 10:33:07 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 10:44:21 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 10:44:22 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 10:44:42 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 10:59:29 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 11:00:49 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 11:01:00 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 555 TUNA SPICY PAKSIW 155G Barcode #:256183425071 
+2024-07-22 11:14:37 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 11:15:56 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 11:28:13 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 11:29:51 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 11:31:15 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 11:40:45 | Alexander Caones | 1 | 2 | Login | User Alexander Caones 2 
+2024-07-22 12:52:17 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 12:52:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 12:54:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 13:07:58 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 13:09:26 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 13:23:26 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 13:24:32 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 13:39:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 13:50:33 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 13:56:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 14:11:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 14:28:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 14:30:38 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 14:34:56 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-22 14:37:17 | Zeus Baculio | 50 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000003 Date: Jul 22 24 
+2024-07-22 14:38:05 | Zeus Baculio | 50 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000003 Date: Jul 22 24 Total Amount₱ 456.00 
+2024-07-22 14:44:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 14:45:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 14:59:25 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-22 14:59:41 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-22 14:59:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 15:01:01 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 15:02:08 | Zeus Baculio | 50 | 2 | P.O Created | Zeus Baculio P.0 # 10-000000004 Amount:₱ 3,675.00 
+2024-07-22 15:11:14 | Zeus Baculio | 50 | 2 | Received Items | Tender received items, PO Number: 10-000000004 Supplier: Jason 
+2024-07-22 15:15:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 15:16:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 15:30:31 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 15:31:23 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 15:45:44 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 15:46:35 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 16:01:07 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 16:09:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 16:16:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 16:25:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 16:32:06 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 16:46:05 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 16:47:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 17:14:03 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 17:14:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-22 17:14:43 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 

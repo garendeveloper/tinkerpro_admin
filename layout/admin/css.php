@@ -15,7 +15,7 @@
   background-color:#262626
 }
 body{
-  font-family: 'Calibri', sans-serif;
+    font-family: Century Gothic;
     font-size: 16px;
     font-weight: 400; /* Regular weight */
     line-height: 1.5;

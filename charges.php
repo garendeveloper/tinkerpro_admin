@@ -68,49 +68,179 @@ if (isset($_SESSION['user_id'])) {
     <!-- partial:partials/_navbar.html -->
     <?php include 'layout/admin/sidebar.php' ?>
       <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div style="display: flex; margin-bottom: 20px;justify-content:center;">
-          <img style="width: 40%" src="./assets/img/tinkerpro-t.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+      <div class="main-panel ms-2 h-100">
+         
+        <div class="row">
+          <div class="col-4 justify-content-between titleCharges mb-4 flex-column">
+              <label class="labelTitle mb-2">CHARGES</label>
 
-            </div>
-          <div>
-          <div class="row">
-            <div>
-              <div class="card chargesCards" style="height:700px; width: 100%">
-                <div class="card-body">
-                    <div>
-                        <h1 style="color: #fefefe">Service and Other Charges</h1>
+              <div class="d-flex mb-4">
+                <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
+
+                </span>
+                <div class="charges-container">
+                    <div class="inner-border p-2 d-flex">
+                      <div class="col-8 charges-label pe-5">
+                          <label for="">Tax (Value Added Tax)</label>
+                          <select name="" id="" class="mt-3 selectTypeAmount">
+                            <option value="">Percentage</option>
+                            <option value="">Fixed</option>
+                          </select>     
+                      </div>
+
+                      <div class="col-4 charges-input">
+                          <input type="number" id="tax_value" value="12" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                      </div>
                     </div>
-                    <div style="margin-top: 50px">
-                        <h3 style="font-size: 20px;color: #fefefe">Service Charge (%)</h3>
-                        <div style="display: flex">
-                        <input id="serviceCharges" type="text" class="form-control serviceCharges" placeholder="Input Service Charge" placeholder="Input Other Charge" pattern="[0-9]{1,3}"  maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 7)" required/>
-                        <button  class="serviceSaveBtn" style="width: 100px; margin-left: 10px; height: 50px; border-radius: 5px; outline: none">Save</button>
-                        <input hidden id="idService"/>
-                    </div>
-                      
-                     
-                    </div>
-                    <div style="margin-top: 50px">
-                        <h3 style="font-size: 20px;color: #fefefe">Other Charge (%)</h3>
-                        <div style="display: flex">
-                        <input id="otherCharges" type="text" class="form-control serviceCharges" placeholder="Input Other Charge" pattern="[0-9]{1,3}"  maxlength="5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').slice(0, 7)" required>
-                        <button class="othersSaveBtn" style="width: 100px; margin-left: 10px; height: 50px; border-radius: 5px; outline: none">Save</button>
-                        <input hidden id="idOthers"/>
-                    </div>
-                      
-                    </div>
-               </div>
-                  <?php include('errors.php'); ?>
-    
-            
                 </div>
               </div>
-  
+
+              <div class="d-flex mb-4">
+                <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
+                
+                </span>
+                <div class="charges-container">
+                  <div class="inner-border p-2 d-flex">
+                    <div class="col-8 charges-label pe-5">
+                        <label for="">Service Charge</label>
+                        <select name="" id="" class="mt-3 selectTypeAmount">
+                          <option value="">Percentage</option>
+                          <option value="">Fixed</option>
+                        </select>     
+                    </div>
+
+                    <div class="col-4 charges-input">
+                        <input type="number" id="serviceCharge" value="12" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex mb-4">
+                <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
+                  
+                </span>
+                <div class="charges-container" style="float: right">
+                  <div class="inner-border p-2 d-flex">
+                    <div class="col-8 charges-label pe-5">
+                        <label for="">Other Charages</label>
+                        <select name="" id="" class="mt-3 selectTypeAmount">
+                          <option value="">Percentage</option>
+                          <option value="">Fixed</option>
+                        </select>     
+                    </div>
+
+                    <div class="col-4 charges-input">
+                        <input disabled type="number" id="other_charges" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+
+          <div class="col-4 justify-content-between titleCharges mb-4 flex-column">
+              <label class="labelTitle mb-2">DISCOUNT</label>
+
+              <div class="d-flex mb-4">
+                <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
+                  
+                </span>
+                <div class="charges-container" style="float: right">
+                  <div class="inner-border p-2 d-flex">
+                    <div class="col-8 charges-label pe-5">
+                        <label for="">Senior Citizen/PWD/SP</label>
+                        <select name="" id="" class="mt-3 selectTypeAmount">
+                          <option value="">Percentage</option>
+                          <option value="">Fixed</option>
+                        </select>     
+                    </div>
+
+                    <div class="col-4 charges-input">
+                        <input type="number" id="sc_pwd_sp_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            <div class="d-flex mb-4">
+              <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
+               
+              </span>
+
+              <div class="charges-container" style="float: right">
+                <div class="inner-border p-2 d-flex">
+                  <div class="col-8 charges-label pe-5">
+                      <label for="">Default Discount</label>
+                      <select name="" id="" class="mt-3 selectTypeAmount">
+                        <option value="">Percentage</option>
+                        <option value="">Fixed</option>
+                      </select>     
+                  </div>
+
+                  <div class="col-4 charges-input">
+                      <input disabled type="number" id="default_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                  </div>
+                </div>
+              </div>
             </div>
+          
+          </div>
+
+
+          <div class="col-4 justify-content-between titleCharges mb-4 flex-column">
+            <label class="labelTitle mb-2">LOYALTY POINTS</label>
+
+            <div class="d-flex mb-4">
+              <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
+               
+              </span>
+
+              <div class="loyalty_points" style="float: right;">
+                <div class="inner-border p-2 d-flex" style="height: 100%">
+
+                  <div class="col-12 charges-label">
+
+                    <div class="d-flex align-items-center justify-content-between w-100">
+                      <label for="" style="color: var(--primary-color); font-weight: bold">EARNINGS</label>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between w-100">
+                      <label for="" style="font-style: italic">Minimum Purchase (Php)</label> 
+                      <input type="number" id="minPurchase" class="loyalty_inputs text-end mb-2" style="border: 1px solid var(--primary-color)">
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between w-100">
+                      <label for="" class="mb-2" style="font-style: italic">Equivalent</label>  
+                      <input type="number" id="minPurchase" class="loyalty_inputs text-end mb-2" style="border: 1px solid var(--primary-color)">
+                    </div>
+
+
+                    <div class="d-flex align-items-center justify-content-between w-100 mt-2">
+                      <label for="" style="color: var(--primary-color); font-weight: bold">CONVERSION</label>
+                    </div>
+
+
+                    <div class="d-flex align-items-center justify-content-between w-100">
+                      <label for="" style="font-style: italic">Points</label>  
+                      <input type="number" id="minPurchase" class="loyalty_inputs text-end mb-2" style="border: 1px solid var(--primary-color)">
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between w-100">
+                      <label for="" class="mb-2" style="font-style: italic">Conversion Amount (Php)</label>
+                      <input type="number" id="minPurchase" class="loyalty_inputs text-end mb-2" style="border: 1px solid var(--primary-color)">
+                    </div>
+                    
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+              
           </div>
         </div>
+
       </div>
       <!-- main-panel ends -->
     </div>
@@ -119,7 +249,272 @@ if (isset($_SESSION['user_id'])) {
   <!-- container-scroller -->
 
 <?php include("layout/footer.php") ?>
+
+
+<script>
+$(document).ready(function() {
+
+
+  var checkIcon = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="green" class="bi bi-check2-circle" viewBox="0 0 16 16">
+      <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
+      <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+    </svg>
+  `;
+
+  var exIcon = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="red" class="bi bi-x-circle" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+    </svg>
+  `;
+
+
+
+  var inputSelectors = ['#other_charges', '#serviceCharge', '#default_discount', '#sc_pwd_sp_discount', '#tax_value'];
+  var inputNames = ['Other Charge', 'Service Charge', 'Default Discount', 'SC/PWD Discount', 'Tax Charge'];
+
+  for (var i = 0; i < inputSelectors.length; i++) {
+      var input = $(inputSelectors[i]);
+      var isDisabled = input.is(':disabled');
+      
+
+      $(inputSelectors[i]).each(function() {
+        if (isDisabled) {
+          $('.svgIcon').html(exIcon);
+        } else {
+          $('.svgIcon').html(checkIcon);
+        }
+      });
+    
+  }
+
+
+})
+
+
+ $("#charges").addClass('active');
+ $("#pointer").html("Charges");
+  function getSRate(){
+      axios.get('api.php?action=getServiceCharge').then(function(response){
+      serviceCharge = response.data.result[0].rate
+      var id = response.data.result[0].id
+      var displayRate = parseFloat(serviceCharge) *100;
+      $('#serviceCharges').val(displayRate.toFixed(2));
+      $('#idService').val(id)
+      $('#serviceCharges').focus()
+      $('#serviceCharges').select()
+    }).catch(function(error){
+      console.log(error)
+    })
+  }
+
+
+  getSRate()
+  function getORate(){
+      axios.get('api.php?action=getOtherCharges').then(function(response){
+      otherCharge = response.data.result[0].rate
+      var id = response.data.result[0].id
+      var displayRate = parseFloat(otherCharge) *  100;
+      $('#otherCharges').val(displayRate.toFixed(2));
+      $('#idOthers').val(id)
+    }).catch(function(error){
+      console.log(error)
+    })
+  }
+
+  getORate()
+
+$('.serviceSaveBtn').on('click', function(){
+    var serviceValue = $('#serviceCharges').val();
+    console.log(serviceValue)
+    var idValue = $('#idService').val()
+    if(idValue){
+     axios.post('api.php?action=updateServiceCharge',{
+        serviceValue: serviceValue,
+        idValue: idValue
+     }).then(function(response){
+          var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+          var firstName = userInfo.firstName;
+          var lastName = userInfo.lastName;
+          var cid = userInfo.userId;
+          var role_id = userInfo.roleId; 
+      
+         insertLogs('Charges',firstName + ' ' + lastName + ' '+ 'Updated service charges to' + ' ' + serviceValue + '%' )
+        getSRate()
+        Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Service Charge Rate Saved!',
+                timer: 1000, 
+                timerProgressBar: true, 
+                showConfirmButton: false 
+        })
+     }).catch(function(error){
+        Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Error!',
+                timer: 1000, 
+                timerProgressBar: true, 
+                showConfirmButton: false 
+        })
+     })
+    }
+  
+})
+$('.othersSaveBtn').on('click', function(){
+    var othersValue = $('#otherCharges').val();
+    var idValue = $('#idOthers').val()
+    console.log(idValue)
+    if(idValue){
+        axios.post('api.php?action=updateOtherCharge',{
+        othersValue: othersValue,
+        idValue: idValue
+     }).then(function(response){
+          var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+          var firstName = userInfo.firstName;
+          var lastName = userInfo.lastName;
+          var cid = userInfo.userId;
+          var role_id = userInfo.roleId; 
+      
+         insertLogs('Charges',firstName + ' ' + lastName + ' '+ 'Updated Other charges to' + ' ' +  othersValue + '%' )
+        getORate()
+        Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Other Charge Rate Saved!',
+                timer: 1000, 
+                timerProgressBar: true, 
+                showConfirmButton: false 
+        })
+     }).catch(function(error){
+        Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Error!',
+                timer: 1000, 
+                timerProgressBar: true, 
+                showConfirmButton: false 
+        })
+     })
+    }
+  
+})
+
+    
+    $('#otherCharges').on('keydown', function(e) {
+        switch (e.which) {
+            case 13:
+                $('.othersSaveBtn').click(); 
+                break;
+            default:
+                break;
+        }
+    });
+
+    $('#serviceCharges').on('keydown', function(e) {
+        switch (e.which) {
+            case 13:
+                $('.serviceSaveBtn').click(); 
+                break;
+            default:
+                break;
+        }
+    });
+
+
+    var $inputs = $('#otherCharges, #serviceCharges');
+      $inputs.keydown(function(e) {
+          var index = $inputs.index(this),
+              nextIndex = 0;
+          switch(e.which) {
+              case 38: 
+                  nextIndex = (index > 0) ? index - 1 : 0;
+                  break;
+              case 40: 
+                  nextIndex = (index < $inputs.length - 1) ? index + 1 : $inputs.length - 1;
+                  break;
+              default: return; 
+          }
+          
+          $inputs.eq(nextIndex).focus();
+          $inputs.eq(nextIndex).select()
+          e.preventDefault(); 
+});
+
+</script>
+
+
+
 <style>
+
+
+.loyalty_inputs {
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.charges-label, .charges-input {
+  height: 100%;
+  color: var(--text-color)
+}
+
+
+.selectTypeAmount {
+  background: none;
+  color: var(--text-color);
+  border: none;
+  width: 100%;
+}
+
+.taxVal {
+  border: 1px solid var(--primary-color);
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+.inner-border {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box; /* Ensure border is included in the element's total width and height */
+}
+
+
+.titleCharges .labelTitle{
+ 
+  color: var(--primary-color);
+  min-width: 30%;
+  /* width: 95%; */
+  font-size: 35px;
+}
+
+.charge-container {
+  width: 95%;
+}
+
+
+
+
+
+.charges-container {
+  padding: 5px;
+  border: 1px solid var(--primary-color);
+  height: 10vh;
+  width: 25vw;
+  border-radius: 20px;
+}
+
+.loyalty_points {
+  padding: 5px;
+  border: 1px solid var(--primary-color);
+  height: auto;
+  width: 25vw;
+  border-radius: 20px;
+}
+
 .serviceCharges{
     width: 30%;
     height: 50px
@@ -321,155 +716,4 @@ height: 40px;
 .highlightedCoupon {
     border: 2px solid #00B050 !important; 
 }
-
-
 </style>
-<script>
- $("#charges").addClass('active');
- $("#pointer").html("Charges");
-function getSRate(){
-    axios.get('api.php?action=getServiceCharge').then(function(response){
-     serviceCharge = response.data.result[0].rate
-     var id = response.data.result[0].id
-     var displayRate = parseFloat(serviceCharge) *100;
-     $('#serviceCharges').val(displayRate.toFixed(2));
-     $('#idService').val(id)
-     $('#serviceCharges').focus()
-     $('#serviceCharges').select()
-  }).catch(function(error){
-    console.log(error)
-  })
-}
-getSRate()
-function getORate(){
-    axios.get('api.php?action=getOtherCharges').then(function(response){
-    otherCharge = response.data.result[0].rate
-    var id = response.data.result[0].id
-    var displayRate = parseFloat(otherCharge) *  100;
-    $('#otherCharges').val(displayRate.toFixed(2));
-    $('#idOthers').val(id)
-  }).catch(function(error){
-    console.log(error)
-  })
-}
-getORate()
-
-$('.serviceSaveBtn').on('click', function(){
-    var serviceValue = $('#serviceCharges').val();
-    console.log(serviceValue)
-    var idValue = $('#idService').val()
-    if(idValue){
-     axios.post('api.php?action=updateServiceCharge',{
-        serviceValue: serviceValue,
-        idValue: idValue
-     }).then(function(response){
-          var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-          var firstName = userInfo.firstName;
-          var lastName = userInfo.lastName;
-          var cid = userInfo.userId;
-          var role_id = userInfo.roleId; 
-      
-         insertLogs('Charges',firstName + ' ' + lastName + ' '+ 'Updated service charges to' + ' ' + serviceValue + '%' )
-        getSRate()
-        Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Service Charge Rate Saved!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-        })
-     }).catch(function(error){
-        Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Error!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-        })
-     })
-    }
-  
-})
-$('.othersSaveBtn').on('click', function(){
-    var othersValue = $('#otherCharges').val();
-    var idValue = $('#idOthers').val()
-    console.log(idValue)
-    if(idValue){
-        axios.post('api.php?action=updateOtherCharge',{
-        othersValue: othersValue,
-        idValue: idValue
-     }).then(function(response){
-          var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-          var firstName = userInfo.firstName;
-          var lastName = userInfo.lastName;
-          var cid = userInfo.userId;
-          var role_id = userInfo.roleId; 
-      
-         insertLogs('Charges',firstName + ' ' + lastName + ' '+ 'Updated Other charges to' + ' ' +  othersValue + '%' )
-        getORate()
-        Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Other Charge Rate Saved!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-        })
-     }).catch(function(error){
-        Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Error!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-        })
-     })
-    }
-  
-})
-
-    
-    $('#otherCharges').on('keydown', function(e) {
-        switch (e.which) {
-            case 13:
-                $('.othersSaveBtn').click(); 
-                break;
-            default:
-                break;
-        }
-    });
-
-    $('#serviceCharges').on('keydown', function(e) {
-        switch (e.which) {
-            case 13:
-                $('.serviceSaveBtn').click(); 
-                break;
-            default:
-                break;
-        }
-    });
-
-
-    var $inputs = $('#otherCharges, #serviceCharges');
-      $inputs.keydown(function(e) {
-          var index = $inputs.index(this),
-              nextIndex = 0;
-          switch(e.which) {
-              case 38: 
-                  nextIndex = (index > 0) ? index - 1 : 0;
-                  break;
-              case 40: 
-                  nextIndex = (index < $inputs.length - 1) ? index + 1 : $inputs.length - 1;
-                  break;
-              default: return; 
-          }
-          
-          $inputs.eq(nextIndex).focus();
-          $inputs.eq(nextIndex).select()
-          e.preventDefault(); 
-});
-
-</script>

@@ -61,7 +61,7 @@
     min-height: 420px;
     max-height: 420px;
     margin-left: 2em;
-    border: 2px solid #4B413E;
+    border: 1px solid #4B413E;
     border-radius: 0;
     padding: 1.5vw;
     box-sizing: border-box;
@@ -180,7 +180,7 @@
               <path fill="#131212" d="M0 0c0 1.302.961 2.108 2.232 2.108 1.241 0 2.233-.837 2.233-2.108v-11.938c0-1.271-.992-2.108-2.233-2.108-1.271 0-2.232.807-2.232 2.108V0Zm-.187-18.293a2.422 2.422 0 0 0 2.419 2.418 2.422 2.422 0 0 0 2.419-2.418 2.422 2.422 0 0 0-2.419-2.419 2.422 2.422 0 0 0-2.419 2.419" transform="translate(16.769 26.34)" class="color231f20 svgShape"></path>
             </g>
           </svg>
-          <p class="warning-title"><b>SELECT DATES</b></p>&nbsp;
+          <h4>SELECT DATES</h4>&nbsp;
           <p hidden class="warning-title selectedDates" style="color:#FF6900"><b>[<span id="dateFrom"></span>-<span id="dateTo"></span></span>]</b></p>
           <p hidden class="warning-title selectedsDates" style="color:#FF6900"><b>[<span id="dateSlcted"></span>]</b></p>
         </div>
