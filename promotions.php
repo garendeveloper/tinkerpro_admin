@@ -62,6 +62,62 @@ if (isset($_SESSION['user_id'])) {
 	}
 
 ?>
+<style>
+    .inputAmount{
+        border: 1px solid #757575 !important;
+        height: 35px;
+        border-radius: 5px;
+    }
+    .form-error{
+        border: 2px solid red;
+    }
+    .table-cotainer{
+        padding: 10px 10px;
+    }
+    #tbl_promotions thead tr th{
+        color: var(--primary-color);
+        background-color: #10253F;
+        border-color: #10253F;
+    }
+    #tbl_promotions tbody tr td{
+        color: #ffff;
+        font-style: italic;
+        background-color: #10253F;
+        border-color: #10253F;
+        height: 20px; 
+        line-height: 0.5; 
+        font-size: 12px;
+    }
+    .barcode-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .generate-button {
+        position: absolute;
+        right: 5px; 
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #333; 
+    }
+
+    .generate-button i {
+        font-size: 24px; 
+        background-color: #333333;
+        color: white;
+    }
+    .generate-button i:hover {
+        color: var(--primary-color);
+    }
+</style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
@@ -83,8 +139,8 @@ if (isset($_SESSION['user_id'])) {
             <div class="col-3 h-100 ps-2 pb-2 p-0" id="promotions_title">
 
                 <div class="promotion-container">
-
-                    <div class="buy-to-take-one d-none" data-id="1">
+                    <input type="hidden" id = "promotion_type" value = "0">
+                    <div class="buy-to-take-one promotionType"  data-id="1 d-none" data-id="1">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Buy 1 Take 1</label>
                             <button class="btn btn-secondary editBtns">
@@ -97,14 +153,14 @@ if (isset($_SESSION['user_id'])) {
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center" readonly type="text" id="date_picker_buy1" placeholder="SELEC DATE">
+                            <input class="text-center" readonly type="text" id="date_picker_buy1" placeholder="SELECT DATE">
                         </div>
                     </div>
 
-                    <div class="bundle-sale mt-2 d-none" data-id="2">
+                    <div class="bundle-sale mt-2 promotionType" data-id="2 d-none" data-id="2">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Bundle Sale</label>
-                            <button class="btn btn-secondary editBtns">
+                            <button class="btn btn-secondary editBtns" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -114,21 +170,20 @@ if (isset($_SESSION['user_id'])) {
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center" readonly type="text" id="date_picker_bundle" placeholder="SELEC DATE">
+                            <input class="text-center" readonly type="text" id="date_picker_bundle" placeholder="SELECT DATE">
                         </div>
                     </div>
 
-                    <div class="whole-sale mt-2 d-none" data-id="3">
+                    <div class="whole-sale mt-2 promotionType" data-id="3 d-none" data-id="3">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Wholesale</label>
-                            <button class="btn btn-secondary editBtns">
+                            <button class="btn btn-secondary editBtns" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
                                 </svg>
                             </button>
                         </div>
-
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <label class="promoLabel" for="">Promo Period</label>
@@ -168,7 +223,7 @@ if (isset($_SESSION['user_id'])) {
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELEC DATE">
+                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELECT DATE">
                         </div>
                     </div>
                     
@@ -181,9 +236,9 @@ if (isset($_SESSION['user_id'])) {
 
                 <div class="table-cotainers p-2">
                     <div class="d-flex justify-content-between align-items-center">
-                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
-                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
-                    </svg>
+                        <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                            <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                        </svg>
                     <input type="hidden" id="search_product_id" class="w-100 search_product me-2 ms-2">
                     <input disabled type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
 
@@ -219,11 +274,14 @@ if (isset($_SESSION['user_id'])) {
 
                     </div>
 
-                </div>
 
+                    <table id = "tbl_promotions" >
+                      
+                    </table>
+                </div>
+                
             </div>
         </div>
-        
       </div>
     </div>
   </div>
@@ -233,6 +291,8 @@ if (isset($_SESSION['user_id'])) {
     include("layout/footer.php");
     include('./modals/datePickerModal.php');
     include('./modals/promotionModal.php');
+    include('./modals/wholesaleModal.php');
+    include('./modals/buy1Take1Modal.php');
 
 ?>
 
@@ -536,23 +596,43 @@ if (isset($_SESSION['user_id'])) {
         font-size: 35px;
         color: var(--primary-color)
     }
+    .ui-autocomplete {
+        background-color: var(--primary-color); 
+        border-radius: 4px; 
+        border: 1px solid #262626;
+    }
+
+    .ui-menu-item {
+        background-color: #262626; 
+        color: #ffffff; 
+        padding: 5px 10px; 
+    }
+
+    .ui-state-hover {
+        background-color: var(--primary-color); 
+        color: #ffffff; 
+    }
+    .form-error{
+        border: 2px solid red;
+    }
 </style>
 
 
 <script>
     var products = [];
     let productsCache = [];
+    var toastDisplayed = false;
     show_allProducts();
-
     $("#btn_addProduct").click(function (e) {
         e.preventDefault();
         var prod_id = $("#search_product_id").val();
         var barcode = $("#barcode_value").val();
+
         if(prod_id !== "" && prod_id !== "0")
         {
             if (!isDataExistInTable(prod_id)) 
             {
-              open_modal("Product");
+              open_modal("Product", prod_id);
             }
             else
             {
@@ -566,126 +646,261 @@ if (isset($_SESSION['user_id'])) {
           show_errorResponse("Product is not found.");
         }
     })
-        function show_allProducts() 
-        {
-            $.ajax({
-            type: 'GET',
-            url: 'api.php?action=get_allProducts',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) 
+    function show_allProducts() 
+    {
+        $.ajax({
+        type: 'GET',
+        url: 'api.php?action=get_allProducts',
+        success: function (data) {
+            for (var i = 0; i < data.length; i++) 
+            {
+                var row = 
                 {
-                    var row = 
-                    {
-                        product_id: data[i].id,
-                        product: data[i].prod_desc,
-                        barcode: data[i].barcode,
-                    };
-                    productsCache.push(row);
-                }
-            }
-            });
-        }
-        function filterProducts(term) {
-            return productsCache.filter(function(row) {
-                var lowercaseTerm = term.toLowerCase();
-                return row.product.toLowerCase().includes(lowercaseTerm) ||
-                    row.barcode.includes(lowercaseTerm) ||
-                    (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
-                    (!row.brand && lowercaseTerm === "");
-            }).map(function(row) {
-                var brand = row.brand === null ? " " : "( " + row.brand + " )";
-                return {
-                    label: row.product + " (" + row.barcode + ")",
-                    value: row.product,
-                    id: row.product_id,
+                    product_id: data[i].id,
+                    product: data[i].prod_desc,
+                    barcode: data[i].barcode,
                 };
-            });
-        }
-        function show_errorResponse(message) 
-        {
-            if (toastDisplayed) {
-                return; 
+                productsCache.push(row);
             }
-
-            toastDisplayed = true; 
-
-            toastr.options = {
-                "onShown": function () {
-                    $('.custom-toast').css({
-                        "opacity": 1,
-                        "width": "600px",
-                        "text-align": "center",
-                        "border": "2px solid #1E1C11",
-                    });
-                },
-                "onHidden": function () {
-                    toastDisplayed = false; 
-                },
-                "closeButton": true,
-                "positionClass": "toast-top-right",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "progressBar": true,
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut",
-                "tapToDismiss": false,
-                "toastClass": "custom-toast",
-                "onclick": function () { 
-                    toastr.clear();
-                    toastDisplayed = false;
-                 }
-            };
-
-            toastr.error(message);
         }
-
-        $("#search_product").autocomplete({
-            minLength: 2,
-            source: function (request, response) {
-                var term = request.term;
-                var filteredProducts = filterProducts(term);
-                var slicedProducts = filteredProducts.slice(0, 5);
-                response(slicedProducts);
-                if (slicedProducts.length > 0) {
-                    $('#filters').show();
-                    var slicedProductsLength = slicedProducts.length - 1;
-                    var selectedProductId = slicedProducts[slicedProductsLength].id;
-                } else {
-                    $('#filters').hide();
-                }
-            },
-            select: function (event, ui) {
-                var selectedProductId = ui.item.id;
-                $("#search_product_id").val(selectedProductId);
-                var product_name = ui.item.value;
-                if(selectedProductId !== "" && selectedProductId !== "0")
-                {
-                    if (!isDataExistInTable(selectedProductId)) 
-                    {
-                        open_modal(product_name);
-                    }
-                    else
-                    {
-                        show_errorResponse("Product is already in the table.");
-                    }
-                    $("#search_product").val("");
-                    $("#search_product_id").val("0");
-                }
-                return false;
-            },
         });
-     
-        function isDataExistInTable(data) 
-        {
-            var $matchingRow = $('#tbl_priceTags tbody td[data-id="' + data + '"]').closest('tr');
-            return $matchingRow.length > 0;
-        }
-        function open_modal(product_name)
-        {
-            $("#product_name").html(product_name);
-            $("#promotionModal").show();
+    }
+
+    function filterProducts(term) {
+        return productsCache.filter(function(row) {
+            var lowercaseTerm = term.toLowerCase();
+            return row.product.toLowerCase().includes(lowercaseTerm) ||
+                row.barcode.includes(lowercaseTerm) ||
+                (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
+                (!row.brand && lowercaseTerm === "");
+        }).map(function(row) {
+            var brand = row.brand === null ? " " : "( " + row.brand + " )";
+            return {
+                label: row.product + " (" + row.barcode + ")",
+                value: row.product,
+                id: row.product_id,
+            };
+        });
+    }
+    function show_errorResponse(message) 
+    {
+        if (toastDisplayed) {
+            return; 
         }
 
+        toastDisplayed = true; 
+
+        toastr.options = {
+            "onShown": function () {
+                $('.custom-toast').css({
+                    "opacity": 1,
+                    "width": "600px",
+                    "text-align": "center",
+                    "border": "1px solid #1E1C11",
+                });
+            },
+            "onHidden": function () {
+                toastDisplayed = false; 
+            },
+            "closeButton": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3500",
+            "extendedTimeOut": "1000",
+            "progressBar": true,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "tapToDismiss": false,
+            "toastClass": "custom-toast",
+            "onclick": function () { 
+                toastr.clear();
+                toastDisplayed = false;
+                }
+        };
+
+        toastr.error(message);
+    }
+
+    $("#search_product").autocomplete({
+        minLength: 2,
+        source: function (request, response) {
+            var term = request.term;
+            var filteredProducts = filterProducts(term);
+            var slicedProducts = filteredProducts.slice(0, 5);
+            response(slicedProducts);
+            if (slicedProducts.length > 0) {
+                $('#filters').show();
+                var slicedProductsLength = slicedProducts.length - 1;
+                var selectedProductId = slicedProducts[slicedProductsLength].id;
+                
+            } else {
+                $('#filters').hide();
+            }
+        },
+        select: function (event, ui) {
+            var selectedProductId = ui.item.id;
+            $("#search_product_id").val(selectedProductId);
+            var product_name = ui.item.value;
+            if(selectedProductId !== "" && selectedProductId !== "0")
+            {
+                if (!isDataExistInTable(selectedProductId)) 
+                {
+            
+                    open_modal(product_name, selectedProductId);
+                }
+                else
+                {
+                    show_errorResponse("Product is already in the table.");
+                }
+                $("#search_product").val("");
+                $("#search_product_id").val("0");
+            }
+            return false;
+        },
+    });
+    
+    function isDataExistInTable(data) 
+    {
+        var $matchingRow = $('#tbl_priceTags tbody td[data-id="' + data + '"]').closest('tr');
+        return $matchingRow.length > 0;
+    }
+    
+    function showPromotionContent(promotionType) 
+    {
+        $("#tbl_promotions").html("");
+        switch (promotionType) {
+          case 1:
+            show_allBuy1Take1();
+            break;
+          case 2:
+    
+            break;
+          case 3:
+            break;
+          default:
+          $("#tbl_promotions").html("");
+            break;
+        }
+      }
+      $('.promotionType').off('click').on('click', function() {
+            var id = $(this).data('id');
+            console.log(id)
+            $("#promotion_type").val(id);
+            $('.promotionType').removeClass('selected-promo').css('border-color', 'var(--border-color)');
+            $('.titleBtn').css('color', '#757575');
+            $('.promoLabel').css('color', '#757575');
+ 
+            $(this).addClass('selected-promo').css('border-color', 'transparent');
+            $(this).find('.titleBtn').css('color', 'var(--primary-color)');
+            $(this).find('.promoLabel').css('color', '#fff');
+
+
+            showPromotionContent(id);
+        });
+
+    function open_modal(product_name, product_id)
+    {
+        var promotion_type = $("#promotion_type").val();
+
+        if(promotion_type === "0") show_errorResponse("Please choose a promotion type!");
+        if(promotion_type === "1")
+        {
+            $("#buy1Take1Modal").show();
+            $("#buy1Take1Modal #newprice").focus();
+        }
+        if(promotion_type === "2") $("#promotionModal").show();
+        if(promotion_type === "3") $("#wholesaleModal").show();
+
+        $("#qty").focus();
+        $(".product_name").html(product_name);
+        $(".product_id").val(product_id);
+    }
+
+
+    $("#buy1Take1Form").on("submit", function(e){
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type: 'post',
+            url: 'api.php?action=save_promotion',
+            data: formData,
+            success: function(response)
+            {
+                if (!response.success) 
+                {
+                    $.each(response.errors, function(key, error) {
+                        $('#buy1Take1Form #' + key + '').addClass("error-highlight");
+                    });
+                }
+                else
+                {
+                    $("#buy1Take1Modal").fadeOut(300);
+                    $("#buy1Take1Form")[0].reset();
+                    show_allBuy1Take1();
+                }
+            },
+            error: function(error)
+            {
+                console.log("error");
+            }
+        })
+    })
+    
+    function show_allBuy1Take1()
+    {
+        $.ajax({
+            type: 'get',
+            url: 'api.php?action=get_allPromotions',
+            success: function(data)
+            {
+                var html = " <thead>";
+                html += "<tr>";
+                html += "<th>SN</th>";
+                html += "<th>PRODUCTS</th>";
+                html += "<th>BARCODE</th>";
+                html += "<th style = 'text-align: right'>APPLY TO QTY</th>";
+                html += "<th style = 'text-align: right'>PRICE</th>"
+                html += "</tr>";
+                html += "</thead>";
+                for(var i = 0; i<data.length; i++)
+                {
+                    html += "<tr>";
+                    html += "<td>"+data[i].sku+"</td>";
+                    html += "<td>"+data[i].prod_desc+"</td>";
+                    html += "<td>"+data[i].promotion_barcode+"</td>";
+                    html += "<td style = 'text-align: right'>"+data[i].qty+"</td>";
+                    html += "<td style = 'text-align: right'>"+data[i].newprice+"</td>";
+                    html += "</tr>";
+                }
+                $("#tbl_promotions").html(html);
+            }
+        })
+    }
+    $(".generate-button").on("click", function(){
+        generateEAN();
+    })
+    function generateEAN() 
+    {
+      let eanBase = Math.floor(100000000000 + Math.random() * 900000000000).toString();
+      let checkDigit = calculateCheckDigit(eanBase);
+      let fullEAN = eanBase + checkDigit;
+      $(".displayBarcode").val(fullEAN);
+    }
+
+    function calculateCheckDigit(eanBase) 
+    {
+      let sum = 0;
+      for (let i = 0; i < eanBase.length; i++) {
+        let digit = parseInt(eanBase.charAt(i));
+        if (i % 2 === 0) {
+          sum += digit;
+        } else {
+          sum += digit * 3;
+        }
+      }
+      let checkDigit = (10 - (sum % 10)) % 10;
+      return checkDigit;
+    }
+        
 </script>

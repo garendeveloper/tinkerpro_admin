@@ -13,6 +13,7 @@
     include( __DIR__ . '/utils/models/expense-facade.php');
     include( __DIR__ . '/utils/models/sales-history-facade.php');
     include( __DIR__ . '/utils/models/bir-facade.php');
+    include( __DIR__ . '/utils/models/promotion-facade.php');
    
     $userFacade = new UserFacade();
     $products = new ProductFacade();
@@ -23,6 +24,7 @@
     $expense_facade = new ExpenseFacade();
     $salesHistory = new SalesHistoyFacade;
     $bir = new BirFacade();
+    $promotionFacade = new PromotionFacade();
 
     include( __DIR__ . '/utils/models/ingredients-facade.php');
    
@@ -76,7 +78,15 @@
            $role = $userFacade->checkUsersIdentificationNumber($roleId);
            echo json_encode(["success" => true,'role_id' => $role]);
             break;
-          
+        
+        case 'get_allPromotions':
+            echo json_encode($promotionFacade->get_allData());
+            break;
+        case 'save_promotion':
+            echo json_encode($promotionFacade->save($_POST));
+            break;
+
+
         case 'addUsersData': 
             $formData = $_POST;
             $result = $userFacade->addNewUsers($formData);
@@ -153,6 +163,8 @@
             $product = $_GET['data'];
             echo json_encode($inventory->get_productInfo($product));
             break;
+
+            
         // case 'get_allInventoryCounts':
         //     echo json_encode($inventory_count->get_allData());
         //     break;

@@ -12,10 +12,10 @@
     }
 
     #promotionModal .modal-content {
-        background-color: #1E1C11;
+        background-color: #333333;
         margin: 10% auto;
-        max-width: 400px;
-        height: 520px;
+        max-width: 430px;
+        height: 500px;
         max-height: 100%;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -62,7 +62,7 @@
         border: 1px solid #ccc;
         height: 30px;
         width: 70px;
-        background-color: #1E1C11;
+        background-color: #333333;
     }
 
     #promotionModal #btn_cancel:hover {
@@ -182,10 +182,7 @@ textarea::placeholder{
     color: #fff;
     transform: translateY(-50%);
 }
-#promotionForm input{
-  border: 1px solid #ccc;
-  height: 25px;
-}
+
 .col-md-12{
   margin-bottom: 10px;
 }
@@ -211,43 +208,53 @@ textarea::placeholder{
 
 <div id="promotionModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
-            <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" id = "product_name"></h6>
-            <span>
-                <button id="close-modal">X</button>
+        <div class="modal-header" style = "background-color: #333333;padding: 20px; ">
+            <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name"></h6>
+            <span id="close-modal">
+              <i class="bi bi-x" aria-hidden="true" style = "font-size: 30px; font-weight: bold"></i>
             </span>
         </div>
         <form id = "promotionForm">
+          <input type="hidden" name = "product_id" class = "product_id">
           <div class="modal-body" style = "padding: 10px;">
             <div class="row">
               <div class="col-md-12">
-                  <label class = "tinker_label" for=""  style = "margin-right: 80px;">Apply to QTY</label>
-                  <input  type="number" name = "qty" id = "qty" autocomplete="off">
+                  <label class = "tinker_label" for=""  style = "margin-right: 110px;">Apply to QTY</label>
+                  <input  type="number" name = "qty" id = "qty" class = "inputAmount" autocomplete="off">
               </div>
               <div class="col-md-12" >
-                  <label class = "tinker_label" for="" style = "margin-right: 10px;">New price per bundle</label>
+                  <label class = "tinker_label" for="" style = "margin-right: 42px;">New price per bundle</label>
                   <input type="text" name = "newprice" id = "newprice" class = "inputAmount" autocomplete="off"/>  
               </div>
             </div>
             <div class = "row" style = "padding: 10px;">
               <button class = "button" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">Add Bundled Product</button>
             </div>
-            <div class="row" style = "padding: 10px; margin-top: -15px;">
-                <table style="width: 100%; border: collapse; border: 3px solid #262626">
+            <div class="row" style = "margin-top: -5px; border: 2px solid #262626; margin-left: 3px; margin-right: 3px; ">
+                <table style="width: 100%; border: collapse;  font-size: 11px;">
                     <thead>
                       <tr>
-                        <th style = "background-color: #1E1C11; border: 1px solid #1E1C11">BUNDLES</th>
-                        <th style = "background-color: #1E1C11; border: 1px solid #1E1C11">QTY</th>
-                        <th style = "background-color: #1E1C11; border: 1px solid #1E1C11">ACTION</th>
+                        <th style = "background-color: #333333; border: 1px solid #333333">BUNDLES</th>
+                        <th style = "background-color: #333333; border: 1px solid #333333">QTY</th>
+                        <th style = "background-color: #333333; border: 1px solid #333333">ACTION</th>
                       </tr>
                     </thead>
                     <tbody style = "height: 120px;"></tbody>
                 </table>
             </div>
-            <div class="row">
+            <div class="row" style = "margin-top: 10px;">
               <div class="col-md-12" >
-                  <label class = "tinker_label" for="">Generate New Barcode</label>
-                  <input type="text" name = "newbarcode" id = "newbarcode" class = "inputAmount" autocomplete="off"/> 
+                  <!-- <label class = "tinker_label" for="">Generate New Barcode</label>
+                  <input type="text" name = "newbarcode" id = "newbarcode" class = "inputAmount" autocomplete="off"/>  -->
+                  <div class="barcode-container">
+                    <label class="tinker_label" for="newbarcode" style="margin-right: 24px;">Generate New Barcode</label>
+                    <div class="input-icon-wrapper">
+                      <input type="text" name="newbarcode" id="newbarcode" style = "text-align: left" class="inputAmount displayBarcode"  autocomplete="off"/>
+                      <div class="generate-button">
+                        <i class="bi bi-upc"></i>
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
             <div class="row">

@@ -933,6 +933,14 @@
 2024-07-22 21:01:58 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000004 Date: Jul 22 24 Total Amount₱ 45.50 
 =======
 >>>>>>> 719e2ffb43d0373782b56be3e2e960809b571222
+2024-07-23 09:10:20 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 09:53:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 11:05:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 13:06:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 13:46:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 14:06:48 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 15:51:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 16:37:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 >>>>>>> e7597c0ffde7417d7db59f6f9fd67f4047b71bfc
 2024-07-22 21:07:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-23 09:10:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

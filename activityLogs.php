@@ -274,11 +274,11 @@ tbody td {
                     <div class="tableCard" style = " width: 100%; background-color: #262626;  ">
                       <table  class="text-color " style="margin-top: -3px; ">
                         <thead id = "searchHead" class = "th-noborder">
-                          <tr >
-                            <th colspan = "4" class = "inputGray th-noborder">
-                              <input  class="text-color " style="width: 100%; height: 20px;" id = "search_log" placeholder="Search Logs [Date&Time,User,Module,Activity]" autocomplete = "off" autofocus="autofocus"/>
+                          <tr style = "margin-bottom: 10px;">
+                            <th colspan = "4" class = "inputGray th-noborder" style = "border-radius: 30px; ">
+                              <input  class="text-color " style="width: 100%; height: 20px; " id = "search_log" placeholder="Search Logs [Date&Time,User,Module,Activity]" autocomplete = "off" autofocus="autofocus"/>
                             </th>
-                            <th class = "otherinput th-noborder">
+                            <th class = "otherinput th-noborder" >
                             
                             <button  id="searchBtn" name="productSearch"  class="btn-control" style="margin-right:10px; width:100%; border-radius: none "><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                                 viewBox="0 0 491.52 491.52" xml:space="preserve">
