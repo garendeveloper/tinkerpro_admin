@@ -481,6 +481,18 @@
             $productId = isset($data->productId) ? $data->productId : null;
             $products->updateStatusProduct($productId);
             break;
+        case 'getPromotionSet' :
+            $products->getPromoSet();
+            break;
+
+        case 'updatePromo' :
+            $bundle = isset($data->bundle) ? $data->bundle : 0;
+            $take1 = isset($data->take1) ? $data->take1 : 0;
+            $point_promo = isset($data->point_promo) ? $data->point_promo : 0;
+            $wholesale = isset($data->wholesale) ? $data->wholesale : 0;
+            $stamp_promo = isset($data->stamp_promo) ? $data->stamp_promo : 0;
+            $products->updatePromo($bundle, $take1, $point_promo, $wholesale, $stamp_promo);
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

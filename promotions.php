@@ -7,7 +7,6 @@
 
 
   $userId = 0;
-  
   $abilityFacade = new AbilityFacade;
 
 if (isset($_SESSION['user_id'])) {
@@ -67,17 +66,25 @@ if (isset($_SESSION['user_id'])) {
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <?php include 'layout/admin/sidebar.php' ?>
+
+
       <!-- partial -->
       <div class="main-panel ms-2 h-100">
-         
         <div class="row">
-            <label class="titeClass mb-2">PROMOTION & ACTION</label>
+            <div class="d-flex justify-content-between">
+                <label class="titeClass mb-2">PROMOTION & ACTION</label>
+                <button class="btn btn-secondary" id="addPromotion" style="background-color: var(--primary-color);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                    </svg> ADD NEW PROMOTION
+                </button>
+            </div>
+            
+            <div class="col-3 h-100 ps-2 pb-2 p-0" id="promotions_title">
 
-            <div class="col-3 h-100 ps-2 pb-2 p-0">
+                <div class="promotion-container">
 
-                <div class="promotion-container ">
-
-                    <div class="buy-to-take-one">
+                    <div class="buy-to-take-one d-none" data-id="1">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Buy 1 Take 1</label>
                             <button class="btn btn-secondary editBtns">
@@ -94,7 +101,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="bundle-sale mt-2">
+                    <div class="bundle-sale mt-2 d-none" data-id="2">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Bundle Sale</label>
                             <button class="btn btn-secondary editBtns">
@@ -111,9 +118,45 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="whole-sale mt-2">
+                    <div class="whole-sale mt-2 d-none" data-id="3">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Wholesale</label>
+                            <button class="btn btn-secondary editBtns">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+
+                        <div class="d-flex align-items-center justify-content-between mt-2">
+                            <label class="promoLabel" for="">Promo Period</label>
+                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELEC DATE">
+                        </div>
+                    </div>
+
+                    <div class="point_promo mt-2 d-none" data-id="4">
+                        <div class="d-flex justify-content-between">
+                            <label for="" class="titleBtn">Point Promo</label>
+                            <button class="btn btn-secondary editBtns">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+
+                        <div class="d-flex align-items-center justify-content-between mt-2">
+                            <label class="promoLabel" for="">Promo Period</label>
+                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELEC DATE">
+                        </div>
+                    </div>
+
+                    <div class="stamp_promo mt-2 d-none" data-id="5">
+                        <div class="d-flex justify-content-between">
+                            <label for="" class="titleBtn">Stamp Card Promo</label>
                             <button class="btn btn-secondary editBtns">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -134,17 +177,15 @@ if (isset($_SESSION['user_id'])) {
             </div>
 
 
-            <div class="col-9">
+            <div class="col-9 d-none promotions_table">
 
                 <div class="table-cotainers p-2">
-
                     <div class="d-flex justify-content-between align-items-center">
-
                     <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
                         <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
                     </svg>
-
-                    <input type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
+                    <input type="hidden" id="search_product_id" class="w-100 search_product me-2 ms-2">
+                    <input disabled type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
 
                     <div class="btn-container">
                         <button class="btn btn-secondary clearInput d-none">
@@ -167,7 +208,7 @@ if (isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="btn-container">
-                        <button class="btn btn-secondary">
+                        <button class="btn btn-secondary" id= "btn_addProduct">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -180,21 +221,18 @@ if (isset($_SESSION['user_id'])) {
 
                 </div>
 
-
             </div>
         </div>
         
       </div>
-      <!-- main-panel ends -->
     </div>
-    <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
 
 <?php 
 
     include("layout/footer.php");
     include('./modals/datePickerModal.php');
+    include('./modals/promotionModal.php');
 
 ?>
 
@@ -206,9 +244,122 @@ if (isset($_SESSION['user_id'])) {
  $("#pointer").html("Promotion & Action");
 
 
+
+ function getPromoSet() {
+    axios.get('api.php?action=getPromotionSet')
+    .then(function(response) {
+        var promotionSet = response.data.data.promotions;
+        var promos = JSON.parse(promotionSet);
+
+     
+        function allValuesZero(obj) {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key) && obj[key] !== 0) {
+                    console.log('Hello world');
+                    $('.promotions_table').addClass('d-none');
+                    return false;
+                }
+            }
+            return true; 
+        }
+
+        var allZero = true;
+        $.each(promos, function(index, promo) {
+            if (!allValuesZero(promo)) {
+                allZero = false;
+                $('.promotions_table').removeClass('d-none');
+            }
+        });
+
+
+        
+        if (promos[0].buy_1_take_1 == 1) {
+            $('#buy_1_take_1').prop('checked', true);
+            $('.buy-to-take-one').removeClass('d-none');
+            
+        } else {
+            $('#buy_1_take_1').prop('checked', false);
+            $('.buy-to-take-one').addClass('d-none');
+        }
+
+        if (promos[0].bundle_sale == 1) {
+            $('#bundle_sale').prop('checked', true);
+            $('.bundle-sale').removeClass('d-none');
+           
+        } else {
+            $('#bundle_sale').prop('checked', false);
+            $('.bundle-sale').addClass('d-none');
+        }
+
+        if (promos[0].whole_sale == 1) {
+            $('#whole_sale').prop('checked', true);
+            $('.whole-sale').removeClass('d-none');
+           
+        } else {
+            $('#whole_sale').prop('checked', false);
+            $('.whole-sale').addClass('d-none');
+        }
+
+        if (promos[0].point_promo == 1) {
+            $('#point_promo').prop('checked', true);
+            $('.point_promo').removeClass('d-none');
+           
+        } else {
+            $('#point_promo').prop('checked', false);
+            $('.point_promo').addClass('d-none');
+        }
+
+
+        if (promos[0].stamp_promo == 1) {
+            $('#stam_card').prop('checked', true);
+            $('.stamp_promo').removeClass('d-none');
+        } else {
+            $('#stam_card').prop('checked', false);
+            $('.stamp_promo').addClass('d-none');
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+ }
+
+
+ function toUpdatePromo() {
+    var take1 = $('#buy_1_take_1').prop('checked') ? 1 : 0;
+    var bundle = $('#bundle_sale').prop('checked') ? 1 : 0;
+    var wholesale = $('#whole_sale').prop('checked') ? 1 : 0;
+    var point_promo = $('#point_promo').prop('checked') ? 1 : 0;
+    var stamp_promo = $('#stam_card').prop('checked') ? 1 : 0;
+
+    axios.post('api.php?action=updatePromo', {
+        'bundle' : bundle,
+        'take1' : take1,
+        'point_promo' : point_promo,
+        'wholesale' : wholesale,
+        'stamp_promo' : stamp_promo,
+    })
+    .then(function(response) {
+        console.log(response.data)
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+ }
+
+
  $(document).ready(function() {
+    getPromoSet();
+
     $('#search_product').focus();
     var isClick = false;
+
+
+    $('#updatePromotion').off('click').on('click', function() {
+        toUpdatePromo();
+        getPromoSet();
+        $('.closeModalPromotion').click();
+    })
 
     $('#search_product').on('input', function() {
         if ($(this).val() != '') {
@@ -222,6 +373,7 @@ if (isset($_SESSION['user_id'])) {
         $('#search_product').val('').focus();
         $('.clearInput').addClass('d-none');
     })
+    
 
 
     $('.editBtns').click(function() {
@@ -235,10 +387,24 @@ if (isset($_SESSION['user_id'])) {
         
     })
 
-  
-    $('.buy-to-take-one, .bundle-sale, .whole-sale').off('click').on('click', function() {
-        
-        $('.buy-to-take-one, .bundle-sale, .whole-sale').removeClass('selected-promo').css('border-color', 'var(--border-color)');
+
+    $('#addPromotion').on('click', function() {
+        $('#promoteModal').fadeIn();
+        if ($('#promoteModal').is(':visible')) {
+
+           
+        }
+    });
+
+    // Close modal handler
+    $('.closeModalPromotion').click(function() {
+        $('#promoteModal').fadeOut();
+    });
+
+
+    $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').off('click').on('click', function() {
+        $('#search_product').prop('disabled', false)
+        $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').removeClass('selected-promo').css('border-color', 'var(--border-color)');
         $('.titleBtn').css('color', '#757575');
         $('.promoLabel').css('color', '#757575');
         
@@ -250,6 +416,8 @@ if (isset($_SESSION['user_id'])) {
         $(this).addClass('selected-promo').css('border-color', 'transparent');
         $(this).find('.titleBtn').css('color', 'var(--primary-color)');
         $(this).find('.promoLabel').css('color', '#fff');
+
+        console.log($(this).data('id'));
     });
 
  })
@@ -261,6 +429,19 @@ if (isset($_SESSION['user_id'])) {
 
 <style>
 
+    .main-panel {
+        -webkit-user-select: none; 
+        -moz-user-select: none;   
+        -ms-user-select: none;  
+        user-select: none;   
+    }
+
+    #addPromotion {
+        border: none; 
+        outline: none;
+        cursor: pointer;
+        height: 50px;
+    }
 
     .selected-promo {
         background: #10253F;
@@ -335,13 +516,13 @@ if (isset($_SESSION['user_id'])) {
         padding-left: 10px;
     }
     .table-cotainers {
-     
+        border-radius: 10px;
         width: 100%;
         height: 85vh;
         background: #10253F;
     }
 
-    .buy-to-take-one, .bundle-sale, .whole-sale {
+    .buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo {
         border: 1px solid var(--border-color);
         height: auto;
         width: 100%;
@@ -356,3 +537,155 @@ if (isset($_SESSION['user_id'])) {
         color: var(--primary-color)
     }
 </style>
+
+
+<script>
+    var products = [];
+    let productsCache = [];
+    show_allProducts();
+
+    $("#btn_addProduct").click(function (e) {
+        e.preventDefault();
+        var prod_id = $("#search_product_id").val();
+        var barcode = $("#barcode_value").val();
+        if(prod_id !== "" && prod_id !== "0")
+        {
+            if (!isDataExistInTable(prod_id)) 
+            {
+              open_modal("Product");
+            }
+            else
+            {
+              show_errorResponse("Product is already in the table.");
+            }
+            $("#search_product").val("");
+            $("#search_product_id").val("0");
+        }
+        else
+        {
+          show_errorResponse("Product is not found.");
+        }
+    })
+        function show_allProducts() 
+        {
+            $.ajax({
+            type: 'GET',
+            url: 'api.php?action=get_allProducts',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) 
+                {
+                    var row = 
+                    {
+                        product_id: data[i].id,
+                        product: data[i].prod_desc,
+                        barcode: data[i].barcode,
+                    };
+                    productsCache.push(row);
+                }
+            }
+            });
+        }
+        function filterProducts(term) {
+            return productsCache.filter(function(row) {
+                var lowercaseTerm = term.toLowerCase();
+                return row.product.toLowerCase().includes(lowercaseTerm) ||
+                    row.barcode.includes(lowercaseTerm) ||
+                    (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
+                    (!row.brand && lowercaseTerm === "");
+            }).map(function(row) {
+                var brand = row.brand === null ? " " : "( " + row.brand + " )";
+                return {
+                    label: row.product + " (" + row.barcode + ")",
+                    value: row.product,
+                    id: row.product_id,
+                };
+            });
+        }
+        function show_errorResponse(message) 
+        {
+            if (toastDisplayed) {
+                return; 
+            }
+
+            toastDisplayed = true; 
+
+            toastr.options = {
+                "onShown": function () {
+                    $('.custom-toast').css({
+                        "opacity": 1,
+                        "width": "600px",
+                        "text-align": "center",
+                        "border": "2px solid #1E1C11",
+                    });
+                },
+                "onHidden": function () {
+                    toastDisplayed = false; 
+                },
+                "closeButton": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "progressBar": true,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false,
+                "toastClass": "custom-toast",
+                "onclick": function () { 
+                    toastr.clear();
+                    toastDisplayed = false;
+                 }
+            };
+
+            toastr.error(message);
+        }
+
+        $("#search_product").autocomplete({
+            minLength: 2,
+            source: function (request, response) {
+                var term = request.term;
+                var filteredProducts = filterProducts(term);
+                var slicedProducts = filteredProducts.slice(0, 5);
+                response(slicedProducts);
+                if (slicedProducts.length > 0) {
+                    $('#filters').show();
+                    var slicedProductsLength = slicedProducts.length - 1;
+                    var selectedProductId = slicedProducts[slicedProductsLength].id;
+                } else {
+                    $('#filters').hide();
+                }
+            },
+            select: function (event, ui) {
+                var selectedProductId = ui.item.id;
+                $("#search_product_id").val(selectedProductId);
+                var product_name = ui.item.value;
+                if(selectedProductId !== "" && selectedProductId !== "0")
+                {
+                    if (!isDataExistInTable(selectedProductId)) 
+                    {
+                        open_modal(product_name);
+                    }
+                    else
+                    {
+                        show_errorResponse("Product is already in the table.");
+                    }
+                    $("#search_product").val("");
+                    $("#search_product_id").val("0");
+                }
+                return false;
+            },
+        });
+     
+        function isDataExistInTable(data) 
+        {
+            var $matchingRow = $('#tbl_priceTags tbody td[data-id="' + data + '"]').closest('tr');
+            return $matchingRow.length > 0;
+        }
+        function open_modal(product_name)
+        {
+            $("#product_name").html(product_name);
+            $("#promotionModal").show();
+        }
+
+</script>
