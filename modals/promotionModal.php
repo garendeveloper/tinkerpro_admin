@@ -1,5 +1,5 @@
 <style>
-    #promotionModal {
+    .promotionModal {
         display: none;
         position: fixed;
         z-index: 9999;
@@ -187,6 +187,23 @@ textarea::placeholder{
   margin-bottom: 10px;
 }
 
+
+.myModalBody, .myContent {
+  background: #333333;
+  border-radius: 10px;
+}
+
+.my-content label{
+  font-size: 14px;
+}
+
+
+.promotionList {
+  border: 1px solid var(--border-color); 
+  padding: 8px; 
+  border-radius: 5px;
+}
+
 </style>
 
 <div id="promotionModal" class="modal">
@@ -249,6 +266,65 @@ textarea::placeholder{
             </div>
         </div>
       </form>
+    </div>
+</div>
+
+
+
+<div id="promoteModal" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content myContent">
+          <div class="modal-body myModalBody" >
+
+            <!-- My temporar header -->
+            <div class="d-flex justify-content-between text-light">
+              <label for="">ADD PREDEFINED PROMOTION</label>
+              <label class="closeModalPromotion" style="cursor: pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+              </label>
+            </div>
+
+
+            <div class="my-content mt-2 text-light">
+
+              <div class="d-flex justify-content-between mb-2 promotionList">
+                  <label for="">Wholesale Promo</label>
+                  <input type="checkbox" class="my-checkbox" id="whole_sale">
+              
+              </div>
+
+              <div class="d-flex justify-content-between mb-2 promotionList">
+                  <label for="">Point Promo</label>
+                  <input type="checkbox" class="my-checkbox" id="point_promo">
+              </div>
+
+              <div class="d-flex justify-content-between mb-2 promotionList">
+                  <label for="">Stamp Card Promo</label>
+                  <input type="checkbox" class="my-checkbox" id="stam_card">
+              </div>
+
+              <div class="d-flex justify-content-between mb-2 promotionList">
+                  <label for="">Buy 1 take 1</label>
+                  <input type="checkbox" class="my-checkbox" id="buy_1_take_1">
+              </div>
+
+              <div class="d-flex justify-content-between mb-2 promotionList">
+                  <label for="">Bundled Promo</label>
+                  <input type="checkbox" class="my-checkbox" id="bundle_sale">
+              </div>
+
+              <button class="btn btn-secondary w-100" id="updatePromotion" style="background: var(--primary-color); border: none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+              </svg> Add Promotion
+              </button>
+
+            </div>
+
+          </div>
+      </div>
     </div>
 </div>
 

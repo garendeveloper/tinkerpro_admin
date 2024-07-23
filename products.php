@@ -449,20 +449,21 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
 
 $(document).ready(function() {
 
-  var editCliked = false;
+  var editClicked = false;
 
   $('#recentusers').click(function() {
-    if($('#add_products_modal').is(':visible')) {
-      // if (editCliked) {
+    if (!$(event.target).closest('.editProductBtn').length) { // Excluded the button
+      editClicked = false;
+      if ($('#add_products_modal').is(':visible') && !editClicked) {
         $('.cancelAddProducts').click();
-      // }
+      }
     }
+  
   });
 
-  // $('.editProductBtn').on('click', function() {
-  //   editCliked = true;
-  //   console.log(editCliked)
-  // });
+  $('.editProductBtn').on('click', function() {
+      openModal($(this).closest('tr'));
+  });
 
 
   $('.searchProducts').on('input', function() {

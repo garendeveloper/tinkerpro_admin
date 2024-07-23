@@ -1008,5 +1008,26 @@ $dataValue =  $serviceValue/100;
   }
 
 
+  public function getPromoSet() {
+    $pdo = $this->connect();
+    $sql = $pdo->prepare("SELECT `promotions` FROM `pos_settings` LIMIT 1");
+    $sql->execute();
+    $response = $sql->fetch(PDO::FETCH_ASSOC);
+    
+    echo json_encode([
+      'data' => $response,
+    ]);
+
+  } 
+
+  public function updatePromo($bundle, $take1, $point_promo, $wholesale, $stamp_promo) {
+    $pdo = $this->connect();
+    $sql = $pdo->prepare("UPDATE `pos_settings` SET `promotions`= ?");
+
+    $stingJson = '[{"buy_1_take_1":'.$take1.',"bundle_sale":'.$bundle.',"whole_sale":'.$wholesale.',"point_promo":'.$point_promo.', "stamp_promo":'.$stamp_promo.'}]';
+    $sql->execute([$stingJson]);
+    echo json_encode('Success');
+  }
+
   }  
 ?>

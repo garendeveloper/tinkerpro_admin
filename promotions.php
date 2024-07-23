@@ -7,7 +7,6 @@
 
 
   $userId = 0;
-  
   $abilityFacade = new AbilityFacade;
 
 if (isset($_SESSION['user_id'])) {
@@ -123,17 +122,25 @@ if (isset($_SESSION['user_id'])) {
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <?php include 'layout/admin/sidebar.php' ?>
+
+
       <!-- partial -->
       <div class="main-panel ms-2 h-100">
-         
         <div class="row">
-            <label class="titeClass mb-2">PROMOTION & ACTION</label>
+            <div class="d-flex justify-content-between">
+                <label class="titeClass mb-2">PROMOTION & ACTION</label>
+                <button class="btn btn-secondary" id="addPromotion" style="background-color: var(--primary-color);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+                    </svg> ADD NEW PROMOTION
+                </button>
+            </div>
+            
+            <div class="col-3 h-100 ps-2 pb-2 p-0" id="promotions_title">
 
-            <div class="col-3 h-100 ps-2 pb-2 p-0">
-
-                <div class="promotion-container ">
+                <div class="promotion-container">
                     <input type="hidden" id = "promotion_type" value = "0">
-                    <div class="buy-to-take-one promotionType"  data-id="1">
+                    <div class="buy-to-take-one promotionType"  data-id="1 d-none" data-id="1">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Buy 1 Take 1</label>
                             <button class="btn btn-secondary editBtns">
@@ -150,7 +157,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="bundle-sale mt-2 promotionType" data-id="2">
+                    <div class="bundle-sale mt-2 promotionType" data-id="2 d-none" data-id="2">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Bundle Sale</label>
                             <button class="btn btn-secondary editBtns" >
@@ -167,7 +174,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="whole-sale mt-2 promotionType" data-id="3">
+                    <div class="whole-sale mt-2 promotionType" data-id="3 d-none" data-id="3">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Wholesale</label>
                             <button class="btn btn-secondary editBtns" >
@@ -180,6 +187,42 @@ if (isset($_SESSION['user_id'])) {
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <label class="promoLabel" for="">Promo Period</label>
+                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELEC DATE">
+                        </div>
+                    </div>
+
+                    <div class="point_promo mt-2 d-none" data-id="4">
+                        <div class="d-flex justify-content-between">
+                            <label for="" class="titleBtn">Point Promo</label>
+                            <button class="btn btn-secondary editBtns">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+
+                        <div class="d-flex align-items-center justify-content-between mt-2">
+                            <label class="promoLabel" for="">Promo Period</label>
+                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELEC DATE">
+                        </div>
+                    </div>
+
+                    <div class="stamp_promo mt-2 d-none" data-id="5">
+                        <div class="d-flex justify-content-between">
+                            <label for="" class="titleBtn">Stamp Card Promo</label>
+                            <button class="btn btn-secondary editBtns">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+
+                        <div class="d-flex align-items-center justify-content-between mt-2">
+                            <label class="promoLabel" for="">Promo Period</label>
                             <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELECT DATE">
                         </div>
                     </div>
@@ -189,7 +232,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
 
 
-            <div class="col-9">
+            <div class="col-9 d-none promotions_table">
 
                 <div class="table-cotainers p-2">
                     <div class="d-flex justify-content-between align-items-center">
@@ -197,7 +240,7 @@ if (isset($_SESSION['user_id'])) {
                             <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
                         </svg>
                     <input type="hidden" id="search_product_id" class="w-100 search_product me-2 ms-2">
-                    <input type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
+                    <input disabled type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
 
                     <div class="btn-container">
                         <button class="btn btn-secondary clearInput d-none">
@@ -261,9 +304,122 @@ if (isset($_SESSION['user_id'])) {
  $("#pointer").html("Promotion & Action");
 
 
+
+ function getPromoSet() {
+    axios.get('api.php?action=getPromotionSet')
+    .then(function(response) {
+        var promotionSet = response.data.data.promotions;
+        var promos = JSON.parse(promotionSet);
+
+     
+        function allValuesZero(obj) {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key) && obj[key] !== 0) {
+                    console.log('Hello world');
+                    $('.promotions_table').addClass('d-none');
+                    return false;
+                }
+            }
+            return true; 
+        }
+
+        var allZero = true;
+        $.each(promos, function(index, promo) {
+            if (!allValuesZero(promo)) {
+                allZero = false;
+                $('.promotions_table').removeClass('d-none');
+            }
+        });
+
+
+        
+        if (promos[0].buy_1_take_1 == 1) {
+            $('#buy_1_take_1').prop('checked', true);
+            $('.buy-to-take-one').removeClass('d-none');
+            
+        } else {
+            $('#buy_1_take_1').prop('checked', false);
+            $('.buy-to-take-one').addClass('d-none');
+        }
+
+        if (promos[0].bundle_sale == 1) {
+            $('#bundle_sale').prop('checked', true);
+            $('.bundle-sale').removeClass('d-none');
+           
+        } else {
+            $('#bundle_sale').prop('checked', false);
+            $('.bundle-sale').addClass('d-none');
+        }
+
+        if (promos[0].whole_sale == 1) {
+            $('#whole_sale').prop('checked', true);
+            $('.whole-sale').removeClass('d-none');
+           
+        } else {
+            $('#whole_sale').prop('checked', false);
+            $('.whole-sale').addClass('d-none');
+        }
+
+        if (promos[0].point_promo == 1) {
+            $('#point_promo').prop('checked', true);
+            $('.point_promo').removeClass('d-none');
+           
+        } else {
+            $('#point_promo').prop('checked', false);
+            $('.point_promo').addClass('d-none');
+        }
+
+
+        if (promos[0].stamp_promo == 1) {
+            $('#stam_card').prop('checked', true);
+            $('.stamp_promo').removeClass('d-none');
+        } else {
+            $('#stam_card').prop('checked', false);
+            $('.stamp_promo').addClass('d-none');
+        }
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+ }
+
+
+ function toUpdatePromo() {
+    var take1 = $('#buy_1_take_1').prop('checked') ? 1 : 0;
+    var bundle = $('#bundle_sale').prop('checked') ? 1 : 0;
+    var wholesale = $('#whole_sale').prop('checked') ? 1 : 0;
+    var point_promo = $('#point_promo').prop('checked') ? 1 : 0;
+    var stamp_promo = $('#stam_card').prop('checked') ? 1 : 0;
+
+    axios.post('api.php?action=updatePromo', {
+        'bundle' : bundle,
+        'take1' : take1,
+        'point_promo' : point_promo,
+        'wholesale' : wholesale,
+        'stamp_promo' : stamp_promo,
+    })
+    .then(function(response) {
+        console.log(response.data)
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
+
+ }
+
+
  $(document).ready(function() {
+    getPromoSet();
+
     $('#search_product').focus();
     var isClick = false;
+
+
+    $('#updatePromotion').off('click').on('click', function() {
+        toUpdatePromo();
+        getPromoSet();
+        $('.closeModalPromotion').click();
+    })
 
     $('#search_product').on('input', function() {
         if ($(this).val() != '') {
@@ -277,6 +433,7 @@ if (isset($_SESSION['user_id'])) {
         $('#search_product').val('').focus();
         $('.clearInput').addClass('d-none');
     })
+    
 
 
     $('.editBtns').click(function() {
@@ -290,8 +447,38 @@ if (isset($_SESSION['user_id'])) {
         
     })
 
-  
-   
+
+    $('#addPromotion').on('click', function() {
+        $('#promoteModal').fadeIn();
+        if ($('#promoteModal').is(':visible')) {
+
+           
+        }
+    });
+
+    // Close modal handler
+    $('.closeModalPromotion').click(function() {
+        $('#promoteModal').fadeOut();
+    });
+
+
+    $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').off('click').on('click', function() {
+        $('#search_product').prop('disabled', false)
+        $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').removeClass('selected-promo').css('border-color', 'var(--border-color)');
+        $('.titleBtn').css('color', '#757575');
+        $('.promoLabel').css('color', '#757575');
+        
+        // if () {
+            isClick = false;
+            // $('.editBtns').css('background-color', '')
+        // }
+
+        $(this).addClass('selected-promo').css('border-color', 'transparent');
+        $(this).find('.titleBtn').css('color', 'var(--primary-color)');
+        $(this).find('.promoLabel').css('color', '#fff');
+
+        console.log($(this).data('id'));
+    });
 
  })
 
@@ -302,6 +489,19 @@ if (isset($_SESSION['user_id'])) {
 
 <style>
 
+    .main-panel {
+        -webkit-user-select: none; 
+        -moz-user-select: none;   
+        -ms-user-select: none;  
+        user-select: none;   
+    }
+
+    #addPromotion {
+        border: none; 
+        outline: none;
+        cursor: pointer;
+        height: 50px;
+    }
 
     .selected-promo {
         background: #10253F;
@@ -376,13 +576,13 @@ if (isset($_SESSION['user_id'])) {
         padding-left: 10px;
     }
     .table-cotainers {
-     
+        border-radius: 10px;
         width: 100%;
         height: 85vh;
         background: #10253F;
     }
 
-    .buy-to-take-one, .bundle-sale, .whole-sale {
+    .buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo {
         border: 1px solid var(--border-color);
         height: auto;
         width: 100%;
