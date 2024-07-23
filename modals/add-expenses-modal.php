@@ -763,6 +763,7 @@ input:checked + .discountSpan:before {
 .dropdown {
     position: relative;
     display: inline-block;
+    overflow: y;
   }
 
   .dropdown-content {
@@ -771,7 +772,7 @@ input:checked + .discountSpan:before {
     background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    z-index: 5;
+    z-index: 9999;
     overflow-y: auto;
   }
 
@@ -1350,7 +1351,7 @@ label{
       <!-- <div id="scrollable-data"> -->
       <div class="modal-title">
         <div style="margin-top: 30px; margin-left: 20px">
-           <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">EXPENSES</h5>
+           <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color: var(--primary-color)">EXPENSES</h5>
         </div>
         <form id = "expense_form" enctype="multipart/form-data">
         <div class="warning-container">
@@ -1385,7 +1386,7 @@ label{
                                 </g>
                             </svg>
                             </button>
-                            <div class="dropdown-content" id="expense_type_dropdown" style = "overflow-auto: y">
+                            <div class="dropdown-content" id="expense_type_dropdown" style = "overflow: auto">
                                 <a href="#" data-value="inventory">Inventory</a>
                                 <a href="#" data-value="rent">Rent</a>
                                 <a href="#" data-value="utilities">Utilities</a>

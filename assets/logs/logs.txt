@@ -926,3 +926,11 @@
 2024-07-22 18:05:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA ADOBO 155G Barcode #:748485700014 
 2024-07-22 18:28:59 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 >>>>>>> 719e2ffb43d0373782b56be3e2e960809b571222
+2024-07-23 09:10:20 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 09:53:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 11:05:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 13:06:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 13:46:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 14:06:48 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 15:51:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-23 16:37:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
