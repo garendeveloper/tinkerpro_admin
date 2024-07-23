@@ -140,7 +140,7 @@ if (isset($_SESSION['user_id'])) {
 
                 <div class="promotion-container">
                     <input type="hidden" id = "promotion_type" value = "0">
-                    <div class="buy-to-take-one promotionType"  data-id="1 d-none" data-id="1">
+                    <div class="buy-to-take-one promotionType d-none"  data-id="1">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Buy 1 Take 1</label>
                             <button class="btn btn-secondary editBtns">
@@ -157,7 +157,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="bundle-sale mt-2 promotionType" data-id="2 d-none" data-id="2">
+                    <div class="bundle-sale mt-2 promotionType d-none" data-id="2">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Bundle Sale</label>
                             <button class="btn btn-secondary editBtns" >
@@ -174,7 +174,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="whole-sale mt-2 promotionType" data-id="3 d-none" data-id="3">
+                    <div class="whole-sale mt-2 promotionType d-none" data-id="3">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Wholesale</label>
                             <button class="btn btn-secondary editBtns" >
@@ -191,7 +191,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="point_promo mt-2 d-none" data-id="4">
+                    <div class="point_promo mt-2 promotionType d-none" data-id="4">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Point Promo</label>
                             <button class="btn btn-secondary editBtns">
@@ -205,11 +205,11 @@ if (isset($_SESSION['user_id'])) {
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELEC DATE">
+                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELECT DATE">
                         </div>
                     </div>
 
-                    <div class="stamp_promo mt-2 d-none" data-id="5">
+                    <div class="stamp_promo mt-2 promotionType d-none" data-id="5">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Stamp Card Promo</label>
                             <button class="btn btn-secondary editBtns">
@@ -462,23 +462,23 @@ if (isset($_SESSION['user_id'])) {
     });
 
 
-    $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').off('click').on('click', function() {
-        $('#search_product').prop('disabled', false)
-        $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').removeClass('selected-promo').css('border-color', 'var(--border-color)');
-        $('.titleBtn').css('color', '#757575');
-        $('.promoLabel').css('color', '#757575');
+    // $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').off('click').on('click', function() {
+    //     $('#search_product').prop('disabled', false)
+    //     $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').removeClass('selected-promo').css('border-color', 'var(--border-color)');
+    //     $('.titleBtn').css('color', '#757575');
+    //     $('.promoLabel').css('color', '#757575');
         
-        // if () {
-            isClick = false;
-            // $('.editBtns').css('background-color', '')
-        // }
+    //     // if () {
+    //         isClick = false;
+    //         // $('.editBtns').css('background-color', '')
+    //     // }
 
-        $(this).addClass('selected-promo').css('border-color', 'transparent');
-        $(this).find('.titleBtn').css('color', 'var(--primary-color)');
-        $(this).find('.promoLabel').css('color', '#fff');
+    //     $(this).addClass('selected-promo').css('border-color', 'transparent');
+    //     $(this).find('.titleBtn').css('color', 'var(--primary-color)');
+    //     $(this).find('.promoLabel').css('color', '#fff');
 
-        console.log($(this).data('id'));
-    });
+    //     console.log($(this).data('id'));
+    // });
 
  })
 
@@ -784,6 +784,7 @@ if (isset($_SESSION['user_id'])) {
         }
       }
       $('.promotionType').off('click').on('click', function() {
+            $('#search_product').prop('disabled', false)
             var id = $(this).data('id');
             console.log(id)
             $("#promotion_type").val(id);
