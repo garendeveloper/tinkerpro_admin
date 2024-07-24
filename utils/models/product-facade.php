@@ -948,11 +948,35 @@ public function getTotalProductsCount() {
 }
 
 public function getServiceCharge(){
-  $sql = 'SELECT * FROM charges WHERE charges = "Service Charge"';
-  $stmt = $this->connect()->query($sql);
-  $serviceCharge =  $stmt->fetchAll(PDO::FETCH_ASSOC);
-  return $serviceCharge;
+
+  $pdo = $this->connect();
+
+  $sql = 'SELECT * FROM charges';
+  $stmt = $pdo->query($sql);
+  $serviceCharge = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  $getTax = $pdo->prepare('SELECT `tax` FROM `shop` LIMIT 1');
+  $getTax->execute();
+  $tax = $getTax->fetch(PDO::FETCH_ASSOC);
+
+
+  $getCustomerDis = $pdo->prepare('SELECT discount_amount FROM discounts WHERE name = "SC" LIMIT 1');
+  $getCustomerDis->execute();
+  $discount = $getCustomerDis->fetch(PDO::FETCH_ASSOC);
+
+  $lastId = $pdo->prepare("SELECT * FROM point_system ORDER BY id DESC LIMIT 1");
+  $lastId->execute();
+  $loyaltyPoits = $lastId->fetch(PDO::FETCH_ASSOC);
+
+  
+  echo json_encode([
+    'data' => $serviceCharge,
+    'tax' => $tax,
+    'cusDiscount' => $discount,
+    'loyaltyPoits' => $loyaltyPoits,
+  ]);
 }
+
 public function getOtherCharge(){
   $sql = 'SELECT * FROM charges WHERE charges = "Other Charges"';
   $stmt = $this->connect()->query($sql);
@@ -1028,6 +1052,51 @@ $dataValue =  $serviceValue/100;
     $sql->execute([$stingJson]);
     echo json_encode('Success');
   }
+
+
+  public function updateSettings($returnValues) {
+    $pdo = $this->connect();
+    $valusToUpdate = json_decode($returnValues);
+
+    $lastId = $pdo->prepare("SELECT * FROM point_system ORDER BY id DESC LIMIT 1");
+    $lastId->execute();
+    $idLast = $lastId->fetch(PDO::FETCH_ASSOC);
+
+    $sql = $pdo->prepare("UPDATE `point_system` SET `min_amount`= ?,`equivalent_point`= ?,`points`= ?,`converted_amount`= ? WHERE id = 1");
+    $sql->execute([$valusToUpdate->min_purchase, $valusToUpdate->equivalent, $valusToUpdate->points, $valusToUpdate->conver_points]);
+
+
+    $update_sc_pwd_sp = $pdo->prepare("UPDATE `discounts`
+    SET `discount_amount` = ?
+    WHERE `name` IN ('SP', 'SC', 'PWD');");
+    $update_sc_pwd_sp->execute([$valusToUpdate->sc_pwd_sp]);
+
+    $update_tax = $pdo->prepare("UPDATE `shop` SET `tax`= ? WHERE 1");
+    $update_tax->execute([$valusToUpdate->tax]);
+
+    if ($valusToUpdate->other_charge) {
+      $updateCharges = $pdo->prepare("UPDATE `charges` SET `rate`= (? / 100) WHERE `charges` = 'Other Charges';");
+      $updateCharges->execute([$valusToUpdate->other_charge]);
+    }
+
+    if ($valusToUpdate->service_charge) {
+      $updateCharges = $pdo->prepare("UPDATE `charges` SET `rate`= (? / 100) WHERE `charges` = 'Service Charge';");
+      $updateCharges->execute([$valusToUpdate->service_charge]);
+    }
+
+    echo json_encode([
+      'data' => "SUCCESS",
+    ]);
+  }
+
+
+
+
+
+
+
+
+
 
   }  
 ?>

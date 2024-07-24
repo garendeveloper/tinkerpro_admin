@@ -422,12 +422,7 @@
             }
             break;
         case 'getServiceCharge':
-            $result = $products->getServiceCharge();
-            if ($result) {
-                echo json_encode(['success' => true, 'result' => $result]); 
-            } else {
-                echo json_encode(['success' => false]); 
-            }
+            $products->getServiceCharge();
             break;
         case 'getOtherCharges':
             $result = $products->getOtherCharge();
@@ -504,6 +499,11 @@
             $wholesale = isset($data->wholesale) ? $data->wholesale : 0;
             $stamp_promo = isset($data->stamp_promo) ? $data->stamp_promo : 0;
             $products->updatePromo($bundle, $take1, $point_promo, $wholesale, $stamp_promo);
+            break;
+
+        case 'postSettings' :
+            $returnVal = isset($data->returnVal) ? $data->returnVal : null;
+            $products->updateSettings(json_encode($returnVal));
             break;
         default:
             header("HTTP/1.0 400 Bad Request");

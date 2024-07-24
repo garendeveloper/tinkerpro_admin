@@ -348,8 +348,8 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
                 <div class="card-body" style="max-height: 80vh; border-radius: 0;">
                   <?php include('errors.php'); ?>
                   <div id="responsive-data" style="height: 100%">
-                  <table id="recentusers" class="text-color table-border">
-                  <thead class="productHeader">
+                    <table id="recentusers" class="text-color table-border">
+                      <thead class="productHeader">
                         <tr>
                           <th class="text-center font-size" style="width: 2%;">No.</th>
                           <th class="text-center font-size"  style="width: 350px">Name</th>
