@@ -15,7 +15,7 @@
         background-color: #333333;
         margin: 10% auto;
         max-width: 430px;
-        height: 300px;
+        height: 240px;
         max-height: 100%;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -207,35 +207,33 @@ button{
               <i class="bi bi-x" aria-hidden="true" style = "font-size: 30px; font-weight: bold"></i>
             </span>
         </div>
-        <form id = "buy1Take1Form">
-          <input type="hidden" name = "type" value = "1">
-          <input type="hidden" name = "product_id" class = "product_id">
+        <form class = "promotionForm">
+          <input type="hidden" name = "promotion_type" value = "1" class = "_promotionType">
+          <input type="hidden" name = "product_id" class = "product_id" value = "0">
+          <input type="hidden" name = "promotion_id" class = "promotion_id" value = "">
           <div class="modal-body" style = "padding: 10px;">
             <div class="row">
               <div class="col-md-12">
                   <label class = "tinker_label" for=""  style = "margin-right: 110px;">Apply to QTY</label>
-                  <input  type="number" name = "qty" id = "qty" class = "inputAmount"  autocomplete="off" value = "1" readonly>
+                  <input  type="number" name = "qty" id = "qty" class = "inputAmount qty"  autocomplete="off" value = "1" readonly style = "height: 35px; background-color: #262626">
               </div>
               <div class="col-md-12" >
                   <label class = "tinker_label" for="" style = "margin-right: 50px;">New price per piece</label>
-                  <input type="text" name = "newprice" id = "newprice" class = "inputAmount" autocomplete="off"/>  
+                  <input type="text" name = "newprice" id = "newprice" class = "inputAmount"  style = "height: 35px" autocomplete="off"/>  
               </div>
               <div class="barcode-container">
-                <label class="tinker_label" for="newbarcode" style="margin-right: 24px;">Generate New Barcode</label>
+                <label class="tinker_label" for="newbarcode" style="margin-right: 26px;">Generate New Barcode</label>
                 <div class="input-icon-wrapper">
-                  <input type="text" name="newbarcode" id="newbarcode" style = "text-align: left" class="inputAmount displayBarcode"  autocomplete="off"/>
+                  <input type="text" name="newbarcode" id="newbarcode" style = "text-align: center; height: 35px" class="inputAmount displayBarcode"  autocomplete="off"/>
                   <div class="generate-button">
-                    <i class="bi bi-upc"></i>
+                    <i class="bi bi-arrow-down-circle"></i>
                   </div>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-md-12" style = "margin-bottom: 10px; padding: 10px">
-                  <button class = "button" type="button" style = "width: 100%; background-color: #333333;border-radius: 5px; margin-bottom:5px;" disabled>EDIT</button>
-                  <button class = "button" type="button" style = "width: 100%; background-color: #333333; border-radius: 5px; margin-bottom:5px;" disabled>DELETE</button>
-                  <button class = "button" type="submit" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
-
+                  <button class = "button submitPromotion" type="submit" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">ADD</button>
               </div>
             </div>
         </div>
@@ -244,7 +242,7 @@ button{
 </div>
 
 <script>
-    $("#buy1Take1Modal #close-modal, #btn_unpaidCancel").on("click", function () {
+    $("#buy1Take1Modal #close-modal").on("click", function () {
         $("#buy1Take1Modal").hide();
     })
    

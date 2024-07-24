@@ -1400,7 +1400,7 @@ class InventoryFacade extends DBConnection
                         {
                             $mark_up = $this->get_productInfo($product_id)['markup']; 
                             $interest = $price * ($mark_up/100);
-                            $new_selling_price = $new_cost_price + $interest;
+                            $new_selling_price = (float) $new_cost_price + $interest;
                             $new_selling_price = number_format($new_selling_price, 2, '.', '');
                         }
                         else
@@ -1496,7 +1496,7 @@ class InventoryFacade extends DBConnection
                         {
                             $mark_up = $this->get_productInfo($product_id)['markup']; 
                             $interest = $price * ($mark_up/100);
-                            $new_selling_price = $new_cost_price + $interest;
+                            $new_selling_price = (float) $new_cost_price + $interest;
                             $new_selling_price = number_format($new_selling_price, 2, '.', '');
                         }
                         else

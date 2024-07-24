@@ -1135,6 +1135,10 @@
 2024-07-23 17:43:11 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-23 17:44:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CAL CHEESE 48G. Barcode #:8996001350584 
 2024-07-23 17:49:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CALDERETA MIX 50G Barcode #:25407803603 
+2024-07-23 17:54:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-24 11:47:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-24 13:02:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-24 15:39:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-24 09:09:09 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-24 09:09:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-24 09:12:33 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

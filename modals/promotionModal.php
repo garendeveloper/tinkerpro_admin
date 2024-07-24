@@ -2,7 +2,7 @@
     .promotionModal {
         display: none;
         position: fixed;
-        z-index: 9999;
+        z-index: 99;
         left: 0;
         top: 0;
         width: 100%;
@@ -15,7 +15,7 @@
         background-color: #333333;
         margin: 10% auto;
         max-width: 430px;
-        height: 500px;
+        height: 490px;
         max-height: 100%;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -161,6 +161,7 @@ textarea::placeholder{
 }
 .inputAmount{
   text-align: right;
+  height: 50px;
 }
 .custom-select {
     position: relative;
@@ -204,6 +205,13 @@ textarea::placeholder{
   border-radius: 5px;
 }
 
+#tbl_bundled tbody td{
+  border: 1px solid #333333;
+  color: white;
+  line-height: 0.5;
+  height: 5px;
+  padding: 2px 2px;
+}
 </style>
 
 <div id="promotionModal" class="modal">
@@ -214,54 +222,71 @@ textarea::placeholder{
               <i class="bi bi-x" aria-hidden="true" style = "font-size: 30px; font-weight: bold"></i>
             </span>
         </div>
-        <form id = "promotionForm">
+        <form class = "promotionForm">
           <input type="hidden" name = "product_id" class = "product_id">
+          <input type="hidden" name = "promotion_id" class = "promotion_id" value = "">
+          <input type="hidden" name = "promotion_type" value = "2" class = "_promotionType">
           <div class="modal-body" style = "padding: 10px;">
             <div class="row">
               <div class="col-md-12">
                   <label class = "tinker_label" for=""  style = "margin-right: 110px;">Apply to QTY</label>
-                  <input  type="number" name = "qty" id = "qty" class = "inputAmount" autocomplete="off">
+                  <input  type="number" name = "qty" id = "qty" class = "inputAmount"  style ="height: 40px;" autocomplete="off">
               </div>
               <div class="col-md-12" >
                   <label class = "tinker_label" for="" style = "margin-right: 42px;">New price per bundle</label>
-                  <input type="text" name = "newprice" id = "newprice" class = "inputAmount" autocomplete="off"/>  
+                  <input type="text" name = "newprice" id = "newprice" class = "inputAmount" style ="height: 40px;"  autocomplete="off"/>  
               </div>
             </div>
             <div class = "row" style = "padding: 10px;">
-              <button class = "button" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">Add Bundled Product</button>
+              <div class="table-cotainer p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                    </svg>
+                    <input type="hidden" class="w-100 search_product_b_id me-2 ms-2">
+                    <input type="text"  placeholder="SEARCH BARCODE/CODE/NAME" style = "height: 40px" class="w-100 search_product_b ">
+                    <div class="btn-container">
+                        <button class="btn btn-secondary" id= "btn_addBProduct">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                  </div>
+                </div>
             </div>
-            <div class="row" style = "margin-top: -5px; border: 2px solid #262626; margin-left: 3px; margin-right: 3px; ">
-                <table style="width: 100%; border: collapse;  font-size: 11px;">
-                    <thead>
+            <div class="row bundledDiv" style = "margin-top: -5px; border: 1px solid #757575 !important; margin-left: 3px; margin-right: 3px; height: 150px;overflow: auto; ">
+              <div class = "table-responsive" >
+                <table  style="width: 100%; border: collapse;  font-size: 12px;" id = "tbl_bundled">
+                    <thead style = "font-weight: bold">
                       <tr>
                         <th style = "background-color: #333333; border: 1px solid #333333">BUNDLES</th>
-                        <th style = "background-color: #333333; border: 1px solid #333333">QTY</th>
-                        <th style = "background-color: #333333; border: 1px solid #333333">ACTION</th>
+                        <th style = "background-color: #333333; border: 1px solid #333333; text-align: center;">QTY</th>
+                        <th style = "background-color: #333333; border: 1px solid #333333; text-align: center">ACTION</th>
                       </tr>
                     </thead>
-                    <tbody style = "height: 120px;"></tbody>
+                    <tbody></tbody>
                 </table>
+              </div>
             </div>
             <div class="row" style = "margin-top: 10px;">
               <div class="col-md-12" >
-                  <!-- <label class = "tinker_label" for="">Generate New Barcode</label>
-                  <input type="text" name = "newbarcode" id = "newbarcode" class = "inputAmount" autocomplete="off"/>  -->
                   <div class="barcode-container">
                     <label class="tinker_label" for="newbarcode" style="margin-right: 24px;">Generate New Barcode</label>
                     <div class="input-icon-wrapper">
-                      <input type="text" name="newbarcode" id="newbarcode" style = "text-align: left" class="inputAmount displayBarcode"  autocomplete="off"/>
+                      <input type="text" name="newbarcode" id="newbarcode" style = "text-align: center; height: 40px;" class="inputAmount displayBarcode"  autocomplete="off"/>
                       <div class="generate-button">
-                        <i class="bi bi-upc"></i>
+                        <i class="bi bi-arrow-down-circle"></i>
                       </div>
                     </div>
                   </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12" style = "margin-bottom: 10px; padding: 10px">
-                  <button class = "button" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">EDIT</button>
-                  <button class = "button" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">DELETE</button>
-                  <button class = "button" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
+              <div class="col-md-12" style = "padding: 10px; bottom: 0px;">
+                  <button class = "button submitPromotion" type = "submit" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
               </div>
             </div>
         </div>
@@ -328,52 +353,174 @@ textarea::placeholder{
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-      show_allPaymentMethods();
-        function show_allPaymentMethods()
-        {
-          $.ajax({
-            type: 'get',
-            url: 'api.php?action=get_allPaymentMethods',
-            success: function(data){
-              var option = "<option value = '0'>Select Here</option>";
-              for(var i = 0; i<data.length; i++)
-              {
-                option += "<option value = "+data[i].id+">"+data[i].method+"</option>";
-              }
-              option += "<option value = '0'>None</option>";
-              $("#payment_method").html(option);
-            }
-          })
-        }
-        $("#promotionModal #close-modal, #btn_unpaidCancel").on("click", function () {
-            $("#promotionModal").hide();
-        })
-        $('#unpaid_dueDate').datepicker({
-          changeMonth: true,
-          changeYear: true,
-          dateFormat: 'M dd y',
-          altFormat: 'M dd y',
-          altField: '#unpaid_dueDate',
-          minDate: 0,
-          onSelect: function (dateText, inst) { }
-        });
-        $('#btn_unpaidDueDate').click(function () {
-          $('#unpaid_dueDate').datepicker('show');
-        });
 
-        $('#date_paid').datepicker({
-          changeMonth: true,
-          changeYear: true,
-          dateFormat: 'M dd y',
-          altFormat: 'M dd y',
-          altField: '#date_paid',
-          minDate: 0,
-          onSelect: function (dateText, inst) { }
-        });
-        $('#btn_datePaid').click(function () {
-          $('#btn_datePaid').datepicker('show');
-        });
-    });
+
+<script>
+    $("#promotionModal #close-modal, #btn_unpaidCancel").on("click", function () {
+        $("#promotionModal").hide();
+    })
+    show_allBProducts();
+  $("#btn_addBProduct").click(function (e) {
+      e.preventDefault();
+      var prod_id = $(".search_product_b_id").val();
+
+      if(prod_id !== "" && prod_id !== "0")
+      {
+          if (!isExist(prod_id)) 
+          {
+            appendRow();
+          }
+          else
+          {
+            show_response("Product is already in the table.", 2);
+          }
+          $(".search_product_b").val("");
+          $(".search_product_b_id").val("0");
+      }
+      else
+      {
+        show_response("Product is not found.", 2);
+      }
+  })
+  function show_allBProducts() 
+  {
+      $.ajax({
+      type: 'GET',
+      url: 'api.php?action=get_allProducts',
+      success: function (data) {
+          for (var i = 0; i < data.length; i++) 
+          {
+              var row = 
+              {
+                  product_id: data[i].id,
+                  product: data[i].prod_desc,
+                  barcode: data[i].barcode,
+              };
+              productsCache.push(row);
+          }
+      }
+      });
+  }
+
+  function filterProducts(term) {
+      return productsCache.filter(function(row) {
+          var lowercaseTerm = term.toLowerCase();
+          return row.product.toLowerCase().includes(lowercaseTerm) ||
+              row.barcode.includes(lowercaseTerm) ||
+              (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
+              (!row.brand && lowercaseTerm === "");
+      }).map(function(row) {
+          var brand = row.brand === null ? " " : "( " + row.brand + " )";
+          return {
+              label: row.product + " (" + row.barcode + ")",
+              value: row.product,
+              id: row.product_id,
+          };
+      });
+  }
+  function show_response(message, type) 
+  {
+      if (toastDisplayed) {
+          return; 
+      }
+
+      toastDisplayed = true; 
+
+      toastr.options = {
+          "onShown": function () {
+              $('.custom-toast').css({
+                  "opacity": 1,
+                  "width": "600px",
+                  "text-align": "center",
+                  "border": "1px solid #1E1C11",
+              });
+          },
+          "onHidden": function () {
+              toastDisplayed = false; 
+          },
+          "closeButton": true,
+          "positionClass": "toast-top-right",
+          "timeOut": "3500",
+          "extendedTimeOut": "1000",
+          "progressBar": true,
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut",
+          "tapToDismiss": false,
+          "toastClass": "custom-toast",
+          "onclick": function () { 
+              toastr.clear();
+              toastDisplayed = false;
+           }
+      };
+
+      type === 1 ? toastr.success(message) : toastr.error(message);
+  }
+
+  $(".search_product_b").autocomplete({
+      minLength: 2,
+      source: function (request, response) {
+          var term = request.term;
+          var filteredProducts = filterProducts(term);
+          var slicedProducts = filteredProducts.slice(0, 5);
+          response(slicedProducts);
+          if (slicedProducts.length > 0) {
+              $('#filters').show();
+              var slicedProductsLength = slicedProducts.length - 1;
+              var selectedProductId = slicedProducts[slicedProductsLength].id;
+              
+          } else {
+              $('#filters').hide();
+          }
+      },
+      select: function (event, ui) {
+          var selectedProductId = ui.item.id;
+          $(".search_product_b_id").val(selectedProductId);
+          var product_name = ui.item.value;
+          if(selectedProductId !== "" && selectedProductId !== "0")
+          {
+              if (!isExist(selectedProductId)) 
+              {
+                appendRow();
+              }
+              else
+              {
+                show_response("Product is already in the table.",2);
+              }
+              $(".search_product_b").val("");
+              $(".search_product_b_id").val("0");
+          }
+          return false;
+      },
+  });
+
+  
+  function isExist(data) 
+  {
+      var $matchingRow = $('#tbl_bundled tbody tr[data-id="' + data + '"]');
+      return $matchingRow.length > 0;
+  }
+  function removeItem()
+  {
+    $(this).closest('tr').remove();
+  }
+  function appendRow()
+  {
+      var product_id = $(".search_product_b_id").val();
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_productInfo',
+        data: { data: product_id },
+        success: function (data) {
+            var row = "";
+            row += "<tr data-id = " + data['id'] + ">";
+            row += "<td>" + data['prod_desc'] + "</td>";
+            row += "<td style = 'text-align:center'>1</td>";
+            row += "<td style = 'text-align:center' ><i class = 'bi bi-trash3 delete' onclick='removeItem.call(this)'></i></td>";
+            row += "</tr>";
+            $("#tbl_bundled tbody").append(row);
+        }
+      })
+    }
 </script>
