@@ -82,6 +82,12 @@
         case 'get_allPromotions':
             echo json_encode($promotionFacade->get_allData());
             break;
+        case 'get_promotionDetails':
+            echo json_encode($promotionFacade->get_promotionDetails($_GET['promotion_id']));
+            break;
+        case 'deletePromotion':
+            echo json_encode($promotionFacade->deletePromotion($_GET['promotion_id']));
+            break;
         case 'save_promotion':
             echo json_encode($promotionFacade->save($_POST));
             break;

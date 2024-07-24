@@ -86,7 +86,7 @@ if (isset($_SESSION['user_id'])) {
         border-color: #10253F;
         height: 20px; 
         line-height: 0.5; 
-        font-size: 12px;
+        font-size: 14px;
     }
     .barcode-container {
         position: relative;
@@ -117,6 +117,33 @@ if (isset($_SESSION['user_id'])) {
     .generate-button i:hover {
         color: var(--primary-color);
     }
+    table .edit:hover{
+        color: var(--primary-color);
+    }
+    table .delete:hover{
+        color: red;
+    }
+    .submitPromotion{
+        height: 40px;
+        margin-bottom: -20px;
+    }
+    
+    .bundledDiv::-webkit-scrollbar {
+        width: 6px; 
+    }
+    .bundledDiv::-webkit-scrollbar-track {
+        background: #151515;
+    }
+    .bundledDiv::-webkit-scrollbar-thumb {
+        background: #888; 
+        border-radius: 20px; 
+    }
+    .displayBarcode{
+        text-align: center;
+    }
+    body{
+        font-family: Century Gothic;
+    }
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -139,8 +166,8 @@ if (isset($_SESSION['user_id'])) {
             <div class="col-3 h-100 ps-2 pb-2 p-0" id="promotions_title">
 
                 <div class="promotion-container">
-                    <input type="hidden" id = "promotion_type" value = "0">
-                    <div class="buy-to-take-one promotionType"  data-id="1 d-none" data-id="1">
+                    <input type="hidden" class = "promotion_type" value = "0">
+                    <div class="buy-to-take-one promotionType d-none"  data-id="1">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Buy 1 Take 1</label>
                             <button class="btn btn-secondary editBtns">
@@ -157,7 +184,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="bundle-sale mt-2 promotionType" data-id="2 d-none" data-id="2">
+                    <div class="bundle-sale mt-2 promotionType d-none" data-id="2">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Bundle Sale</label>
                             <button class="btn btn-secondary editBtns" >
@@ -174,7 +201,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="whole-sale mt-2 promotionType" data-id="3 d-none" data-id="3">
+                    <div class="whole-sale mt-2 promotionType d-none" data-id="3">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Wholesale</label>
                             <button class="btn btn-secondary editBtns" >
@@ -191,7 +218,7 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
 
-                    <div class="point_promo mt-2 d-none" data-id="4">
+                    <div class="point_promo mt-2 promotionType d-none" data-id="4">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Point Promo</label>
                             <button class="btn btn-secondary editBtns">
@@ -205,11 +232,11 @@ if (isset($_SESSION['user_id'])) {
 
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELEC DATE">
+                            <input class="text-center" readonly type="text" id="date_picker_wholeSale" placeholder="SELECT DATE">
                         </div>
                     </div>
 
-                    <div class="stamp_promo mt-2 d-none" data-id="5">
+                    <div class="stamp_promo mt-2 promotionType d-none" data-id="5">
                         <div class="d-flex justify-content-between">
                             <label for="" class="titleBtn">Stamp Card Promo</label>
                             <button class="btn btn-secondary editBtns">
@@ -239,8 +266,8 @@ if (isset($_SESSION['user_id'])) {
                         <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
                             <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
                         </svg>
-                    <input type="hidden" id="search_product_id" class="w-100 search_product me-2 ms-2">
-                    <input disabled type="text" id="search_product" placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
+                    <input type="hidden" class="w-100 search_product_id me-2 ms-2">
+                    <input disabled type="text"  placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
 
                     <div class="btn-container">
                         <button class="btn btn-secondary clearInput d-none">
@@ -293,6 +320,7 @@ if (isset($_SESSION['user_id'])) {
     include('./modals/promotionModal.php');
     include('./modals/wholesaleModal.php');
     include('./modals/buy1Take1Modal.php');
+    include('./modals/delete_modal.php');
 
 ?>
 
@@ -411,7 +439,7 @@ if (isset($_SESSION['user_id'])) {
  $(document).ready(function() {
     getPromoSet();
 
-    $('#search_product').focus();
+    $('.search_product').focus();
     var isClick = false;
 
 
@@ -421,7 +449,7 @@ if (isset($_SESSION['user_id'])) {
         $('.closeModalPromotion').click();
     })
 
-    $('#search_product').on('input', function() {
+    $('.search_product').on('input', function() {
         if ($(this).val() != '') {
             $('.clearInput').removeClass('d-none');
         } else {
@@ -430,7 +458,7 @@ if (isset($_SESSION['user_id'])) {
     })
 
     $('.clearInput').off('click').on('click', function() {
-        $('#search_product').val('').focus();
+        $('.search_product').val('').focus();
         $('.clearInput').addClass('d-none');
     })
     
@@ -456,30 +484,9 @@ if (isset($_SESSION['user_id'])) {
         }
     });
 
-    // Close modal handler
     $('.closeModalPromotion').click(function() {
         $('#promoteModal').fadeOut();
     });
-
-
-    $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').off('click').on('click', function() {
-        $('#search_product').prop('disabled', false)
-        $('.buy-to-take-one, .bundle-sale, .whole-sale, .point_promo, .stamp_promo').removeClass('selected-promo').css('border-color', 'var(--border-color)');
-        $('.titleBtn').css('color', '#757575');
-        $('.promoLabel').css('color', '#757575');
-        
-        // if () {
-            isClick = false;
-            // $('.editBtns').css('background-color', '')
-        // }
-
-        $(this).addClass('selected-promo').css('border-color', 'transparent');
-        $(this).find('.titleBtn').css('color', 'var(--primary-color)');
-        $(this).find('.promoLabel').css('color', '#fff');
-
-        console.log($(this).data('id'));
-    });
-
  })
 
 
@@ -562,7 +569,7 @@ if (isset($_SESSION['user_id'])) {
         background: var(--primary-color);
     }
 
-    .search_product {
+    .search_product, .search_product_b {
         height: 40px;
 
         border-top-left-radius: 10px;
@@ -596,16 +603,27 @@ if (isset($_SESSION['user_id'])) {
         font-size: 35px;
         color: var(--primary-color)
     }
+    /* .
     .ui-autocomplete {
         background-color: var(--primary-color); 
         border-radius: 4px; 
         border: 1px solid #262626;
+        font-family: Century Gothic;
+        z-index: 999;
+    } */
+    .ui-menu {
+        background-color: var(--primary-color);
+        border-radius: 4px;
+        border: 1px solid #262626;
+        font-family: Century Gothic;
+        z-index: 2999; /* Ensure this is higher than your modal's z-index */
     }
 
     .ui-menu-item {
         background-color: #262626; 
         color: #ffffff; 
-        padding: 5px 10px; 
+        padding: 2px 2px; 
+        line-height: 0.7;
     }
 
     .ui-state-hover {
@@ -622,11 +640,11 @@ if (isset($_SESSION['user_id'])) {
     var products = [];
     let productsCache = [];
     var toastDisplayed = false;
+    var promoType = 0;
     show_allProducts();
     $("#btn_addProduct").click(function (e) {
         e.preventDefault();
-        var prod_id = $("#search_product_id").val();
-        var barcode = $("#barcode_value").val();
+        var prod_id = $(".search_product_id").val();
 
         if(prod_id !== "" && prod_id !== "0")
         {
@@ -636,14 +654,14 @@ if (isset($_SESSION['user_id'])) {
             }
             else
             {
-              show_errorResponse("Product is already in the table.");
+              show_response("Product is already in the table.", 2);
             }
-            $("#search_product").val("");
-            $("#search_product_id").val("0");
+            $(".search_product").val("");
+            $(".search_product_id").val("0");
         }
         else
         {
-          show_errorResponse("Product is not found.");
+          show_response("Product is not found.", 2);
         }
     })
     function show_allProducts() 
@@ -682,7 +700,7 @@ if (isset($_SESSION['user_id'])) {
             };
         });
     }
-    function show_errorResponse(message) 
+    function show_response(message, type) 
     {
         if (toastDisplayed) {
             return; 
@@ -719,10 +737,10 @@ if (isset($_SESSION['user_id'])) {
                 }
         };
 
-        toastr.error(message);
+        type === 1 ? toastr.success(message) : toastr.error(message);
     }
 
-    $("#search_product").autocomplete({
+    $(".search_product").autocomplete({
         minLength: 2,
         source: function (request, response) {
             var term = request.term;
@@ -740,10 +758,11 @@ if (isset($_SESSION['user_id'])) {
         },
         select: function (event, ui) {
             var selectedProductId = ui.item.id;
-            $("#search_product_id").val(selectedProductId);
+            $(".search_product_id").val(selectedProductId);
             var product_name = ui.item.value;
             if(selectedProductId !== "" && selectedProductId !== "0")
             {
+                console.log(isDataExistInTable(selectedProductId))
                 if (!isDataExistInTable(selectedProductId)) 
                 {
             
@@ -751,10 +770,10 @@ if (isset($_SESSION['user_id'])) {
                 }
                 else
                 {
-                    show_errorResponse("Product is already in the table.");
+                    show_response("Product is already in the table.",2);
                 }
-                $("#search_product").val("");
-                $("#search_product_id").val("0");
+                $(".search_product").val("");
+                $(".search_product_id").val("0");
             }
             return false;
         },
@@ -762,50 +781,44 @@ if (isset($_SESSION['user_id'])) {
     
     function isDataExistInTable(data) 
     {
-        var $matchingRow = $('#tbl_priceTags tbody td[data-id="' + data + '"]').closest('tr');
+        var $matchingRow = $('#tbl_promotions tbody tr[data-product_id="' + data + '"]');
         return $matchingRow.length > 0;
     }
-    
-    function showPromotionContent(promotionType) 
-    {
-        $("#tbl_promotions").html("");
-        switch (promotionType) {
-          case 1:
-            show_allBuy1Take1();
-            break;
-          case 2:
-    
-            break;
-          case 3:
-            break;
-          default:
-          $("#tbl_promotions").html("");
-            break;
-        }
-      }
+
       $('.promotionType').off('click').on('click', function() {
-            var id = $(this).data('id');
-            console.log(id)
-            $("#promotion_type").val(id);
-            $('.promotionType').removeClass('selected-promo').css('border-color', 'var(--border-color)');
-            $('.titleBtn').css('color', '#757575');
-            $('.promoLabel').css('color', '#757575');
- 
-            $(this).addClass('selected-promo').css('border-color', 'transparent');
-            $(this).find('.titleBtn').css('color', 'var(--primary-color)');
-            $(this).find('.promoLabel').css('color', '#fff');
+        $('.search_product').prop('disabled', false)
+        var id = $(this).data('id');
+        promoType = id;
+        $(".promotion_type").val(id);
+        $("._promotionType").val(id);
+        $('.promotionType').removeClass('selected-promo').css('border-color', 'var(--border-color)');
+        $('.titleBtn').css('color', '#757575');
+        $('.promoLabel').css('color', '#757575');
 
+        $(this).addClass('selected-promo').css('border-color', 'transparent');
+        $(this).find('.titleBtn').css('color', 'var(--primary-color)');
+        $(this).find('.promoLabel').css('color', '#fff');
 
-            showPromotionContent(id);
-        });
-
+        show_promotionByType(id)
+    });
+    function reset_form()
+    {
+        $(".promotion_id").val("");
+        $(".product_id").val("");
+        $(".promotionForm input").val("");
+        $("body").find(".error-highlight").removeClass("error-highlight");
+        $("#tbl_bundled tbody").html("");
+    }
     function open_modal(product_name, product_id)
     {
-        var promotion_type = $("#promotion_type").val();
-
-        if(promotion_type === "0") show_errorResponse("Please choose a promotion type!");
+        reset_form();
+        var promotion_type = $(".promotion_type").val();
+        $("._promotionType").val(promotion_type);
+        $(".submitPromotion").text("ADD");
+        if(promotion_type === "0") show_response("Please choose a promotion type!");
         if(promotion_type === "1")
         {
+            $(".qty").val("1");
             $("#buy1Take1Modal").show();
             $("#buy1Take1Modal #newprice").focus();
         }
@@ -818,26 +831,40 @@ if (isset($_SESSION['user_id'])) {
     }
 
 
-    $("#buy1Take1Form").on("submit", function(e){
+    $(".promotionForm").on("submit", function(e){
         e.preventDefault();
+        var type = $("._promotionType").val();
         var formData = $(this).serialize();
+        var tbl_data = [];
+        $("#tbl_bundled tbody tr").each(function () {
+            var rowData = {};
+            rowData['product_id'] = $(this).data('id');
+            rowData['product_name'] = $(this).find("td:nth-child(1)").text();
+            rowData['qty'] = $(this).find("td:nth-child(2)").text();
+            tbl_data.push(rowData);
+        })
+    
         $.ajax({
             type: 'post',
             url: 'api.php?action=save_promotion',
-            data: formData,
+            data: {
+                formData: formData,
+                bundledData: JSON.stringify(tbl_data),
+            },
             success: function(response)
             {
                 if (!response.success) 
                 {
                     $.each(response.errors, function(key, error) {
-                        $('#buy1Take1Form #' + key + '').addClass("error-highlight");
+                        $('.promotionForm #' + key + '').addClass("error-highlight");
                     });
                 }
                 else
                 {
-                    $("#buy1Take1Modal").fadeOut(300);
-                    $("#buy1Take1Form")[0].reset();
-                    show_allBuy1Take1();
+                    reset_form();
+                    show_promotionByType(promoType);
+                    $('.modal').fadeOut(300);
+                    show_response(response.message, 1);
                 }
             },
             error: function(error)
@@ -847,36 +874,188 @@ if (isset($_SESSION['user_id'])) {
         })
     })
     
-    function show_allBuy1Take1()
+    function show_promotionByType(type)
     {
+        $("#tbl_promotions").html("");
         $.ajax({
             type: 'get',
             url: 'api.php?action=get_allPromotions',
             success: function(data)
             {
-                var html = " <thead>";
-                html += "<tr>";
-                html += "<th>SN</th>";
-                html += "<th>PRODUCTS</th>";
-                html += "<th>BARCODE</th>";
-                html += "<th style = 'text-align: right'>APPLY TO QTY</th>";
-                html += "<th style = 'text-align: right'>PRICE</th>"
-                html += "</tr>";
-                html += "</thead>";
-                for(var i = 0; i<data.length; i++)
+                var html = "";
+                switch(type)
                 {
-                    html += "<tr>";
-                    html += "<td>"+data[i].sku+"</td>";
-                    html += "<td>"+data[i].prod_desc+"</td>";
-                    html += "<td>"+data[i].promotion_barcode+"</td>";
-                    html += "<td style = 'text-align: right'>"+data[i].qty+"</td>";
-                    html += "<td style = 'text-align: right'>"+data[i].newprice+"</td>";
-                    html += "</tr>";
+                    case 1:
+                        html = " <thead>";
+                        html += "<tr>";
+                        html += "<th>SN</th>";
+                        html += "<th>PRODUCTS</th>";
+                        html += "<th>BARCODE</th>";
+                        html += "<th style = 'text-align: right'>APPLY TO QTY</th>";
+                        html += "<th style = 'text-align: right'>PRICE</th>"
+                        html += "<th style = 'text-align: center; width: 1%;'>ACTION</th>"
+                        html += "</tr>";
+                        html += "</thead>";
+                        for(var i = 0; i<data.length; i++)
+                        {
+                            if(data[i].promotion_type === 1)
+                            {
+                                html += "<tr data-product_id = "+data[i].product_id+">";
+                                html += "<td>"+data[i].sku+"</td>";
+                                html += "<td>"+data[i].prod_desc+"</td>";
+                                html += "<td>"+data[i].promotion_barcode+"</td>";
+                                html += "<td style = 'text-align: right'>"+data[i].qty+"</td>";
+                                html += "<td style = 'text-align: right'>"+data[i].newprice+"</td>";
+                                html += "<td style = 'text-align: center;'><i class='bi bi-pencil-square edit' onclick='editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")' data-id = "+data[i].promotion_id+"></i>&nbsp;<i class='bi bi-trash3 delete' onclick='deleteItem("+data[i].promotion_id+", "+data[i].promotion_type+")' data-id="+data[i].promotion_id+" ></i></td>";
+                                html += "</tr>";   
+                            }
+                        }
+                        break;
+                    case 2:
+                        html = " <thead>";
+                        html += "<tr>";
+                        html += "<th>SN</th>";
+                        html += "<th>PRODUCTS</th>";
+                        html += "<th>BARCODE</th>";
+                        html += "<th style = 'text-align: right'>APPLY TO QTY</th>";
+                        html += "<th style = 'text-align: right'>PRICE</th>"
+                        html += "<th style = 'text-align: center; width: 1%;'>ACTION</th>"
+                        html += "</tr>";
+                        html += "</thead>";
+                        for(var i = 0; i<data.length; i++)
+                        {
+                            if(data[i].promotion_type === 2)
+                            {
+                                html += "<tr data-product_id = "+data[i].product_id+">";
+                                html += "<td>"+data[i].sku+"</td>";
+                                html += "<td>"+data[i].prod_desc+"</td>";
+                                html += "<td>"+data[i].promotion_barcode+"</td>";
+                                html += "<td style = 'text-align: right'>"+data[i].qty+"</td>";
+                                html += "<td style = 'text-align: right'>"+data[i].newprice+"</td>";
+                                html += "<td style = 'text-align: center;'><i class='bi bi-pencil-square edit' onclick='editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")' data-id = "+data[i].promotion_id+"></i>&nbsp;<i class='bi bi-trash3 delete' onclick='deleteItem("+data[i].promotion_id+", "+data[i].promotion_type+")' data-id="+data[i].promotion_id+" ></i></td>";
+                                html += "</tr>";   
+                            }
+                        }
+                        break;
+                    default: break;
                 }
+              
                 $("#tbl_promotions").html(html);
             }
         })
     }
+    function editItem(id, promotion_type)
+    { 
+        reset_form();
+        $("._promotionType").val(promotion_type)
+        $(".promotion_id").val(id);
+        $.ajax({
+            type: 'get',
+            url: 'api.php?action=get_promotionDetails',
+            data: {
+                promotion_id: id,
+            },
+            success: function(responseData)
+            {
+                $(".product_id").val(responseData['product_id']);
+                $(".submitPromotion").text("UPDATE");
+                $(".product_name").text(responseData['prod_desc']);
+                switch(promotion_type)
+                {
+                    case 1:
+                        $("#buy1Take1Modal #qty").val(responseData['qty']);
+                        $("#buy1Take1Modal #newprice").val(responseData['newprice']);
+                        $("#buy1Take1Modal #newbarcode").val(responseData['promotion_barcode']);
+                        $("#buy1Take1Modal").fadeIn(200);
+                        break;
+                    case 2:
+                        $("#promotionModal #qty").val(responseData['qty']);
+                        $("#promotionModal #newprice").val(responseData['newprice']);
+                        $("#promotionModal #newbarcode").val(responseData['promotion_barcode']);
+                        var bundleData = JSON.parse(responseData['promotion_items']);
+                        var row = "";
+                        for(var i = 0; i<bundleData.length; i++)
+                        {
+                            row += "<tr data-id = " + bundleData[i].product_id + ">";
+                            row += "<td>" + bundleData[i].product_name + "</td>";
+                            row += "<td style = 'text-align:center'>1</td>";
+                            row += "<td style = 'text-align:center' ><i class = 'bi bi-trash3 delete' onclick='removeItem.call(this)'></i></td>";
+                            row += "</tr>";
+                        }
+                        $("#tbl_bundled tbody").html(row);
+                        $("#promotionModal").fadeIn(200);
+                        break;
+                    default:
+                        break;
+                }
+              
+            }
+        });
+    }
+    function deleteItem(id, promotion_type)
+    { 
+        $(".promotion_id").val(id);
+        $.ajax({
+            type: 'get',
+            url: 'api.php?action=get_promotionDetails',
+            data: {
+                promotion_id: id,
+            },
+            success: function(responseData)
+            {
+                $(".product_id").val(responseData['product_id']);
+                $(".ProdName").text(responseData['prod_desc']);
+             
+                var info = "";
+                switch(promotion_type)
+                {
+                    case 1:
+                        info += `<div class="d-flex justify-content-center text-center align-items-center w-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+                                </svg>
+                                </div>
+                                <div class="d-flex align-items-center justify-content text-center mt-2">
+                                <h4 class="w-100">Are you sure you want to delete this item in the Buy 1 Take 1 promotion?</h4>
+                                </div>`;
+                        break;
+                    case 2:
+                    info += `<div class="d-flex justify-content-center text-center align-items-center w-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+                            </svg>
+                            </div>
+                            <div class="d-flex align-items-center justify-content text-center mt-2">
+                            <h4 class="w-100">Are you sure you want to delete this item in the Bundle Sale?</h4>
+                            </div>`;
+                     break;
+                    default: break;
+                }
+                $(".show_product_info").html(info);
+                $("#deleteProdModal").fadeIn(200);
+            }
+        });
+    }
+    $(".deleteProductItem").on("click", function(){
+        var id = $(".promotion_id").val();
+        var type = $(".promotion_type").val();
+        $.ajax({
+            type: 'get',
+            url: 'api.php?action=deletePromotion',
+            data: {
+                promotion_id: id,
+            },
+            success: function(response)
+            {
+                if(response.success)
+                {
+                    $("#deleteProdModal").hide();
+                    show_promotionByType(promoType);
+                    show_response(response.message, 1);
+                }
+            }
+        })
+    })
     $(".generate-button").on("click", function(){
         generateEAN();
     })
@@ -902,5 +1081,7 @@ if (isset($_SESSION['user_id'])) {
       let checkDigit = (10 - (sum % 10)) % 10;
       return checkDigit;
     }
-        
+    $("input").on("input", function(){
+        $(this).removeClass('error-highlight');
+    })
 </script>
