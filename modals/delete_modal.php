@@ -44,7 +44,7 @@
 .card {
   background-color: #151515;
   border-color: #242424;
-  height: 200px;
+  height: fit-content;
   overflow-x: auto; 
   overflow-y: hidden;
   border-radius: 8px;

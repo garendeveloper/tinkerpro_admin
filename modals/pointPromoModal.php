@@ -1,5 +1,5 @@
 <style>
-    #wholesaleModal {
+    #pointPromoModal {
         display: none;
         position: fixed;
         z-index: 9999;
@@ -11,7 +11,7 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
 
-    #wholesaleModal .modal-content {
+    #pointPromoModal .modal-content {
         background-color: #333333;
         margin: 15% auto;
         max-width: 430px;
@@ -22,31 +22,31 @@
     }
 
     @media screen and (max-width: 768px) {
-        #wholesaleModal .modal-content {
+        #pointPromoModal .modal-content {
             margin: 30% auto;
         }
     }
 
-    #wholesaleModal .modal-header {
+    #pointPromoModal .modal-header {
         background-color: black;
         height: 20px;
         font-size: 11px;
         color: #FF6900;
     }
 
-    #wholesaleModal .modal-header,
+    #pointPromoModal .modal-header,
     .modal-body {
         border: none;
     }
 
-    /* #wholesaleModal .modal-body {
+    /* #pointPromoModal .modal-body {
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 15px;
         position: relative;
     } */
 
-    #wholesaleModal p {
+    #pointPromoModal p {
         font-size: 10px;
     }
 
@@ -56,7 +56,7 @@
         border: 1px solid #ccc;
     }
 
-    #wholesaleModal #btn_cancel,
+    #pointPromoModal #btn_cancel,
     #btn_print {
         border-radius: 3px;
         border: 1px solid #ccc;
@@ -65,25 +65,25 @@
         background-color: #1E1C11;
     }
 
-    #wholesaleModal #btn_cancel:hover {
+    #pointPromoModal #btn_cancel:hover {
         background-color: red;
     }
 
-    #wholesaleModal #btn_print:hover {
+    #pointPromoModal #btn_print:hover {
         background-color: green;
     }
 
-    #wholesaleModal .action-button {
+    #pointPromoModal .action-button {
         position: absolute;
         right: 180px;
     }
 
-    #wholesaleModal .firstCard button h6,
+    #pointPromoModal .firstCard button h6,
     button p {
         margin-bottom: 0;
     }
 
-    #wholesaleModal p {
+    #pointPromoModal p {
         font-weight: normal;
     }
     .tinker_label{
@@ -188,7 +188,7 @@ textarea::placeholder{
 }
 </style>
 
-<div id="wholesaleModal" class="modal">
+<div id="pointPromoModal" class="modal">
     <div class="modal-content">
         <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
             <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name"></h6>
@@ -200,24 +200,23 @@ textarea::placeholder{
           <input type="hidden" name = "product_id" class = "product_id">
           <input type="hidden" name = "promotion_id" class = "promotion_id" value = "">
           <input type="hidden" name = "promotion_type" value = "3" class = "_promotionType">
-          <!-- <input type="hidden" name="newbarcode" style = "text-align: center; " class="inputAmount w-barcode"  autocomplete="off"/> -->
           <div class="modal-body" style = "padding: 10px;">
             <div class="row">
               <div class="col-md-12">
-                  <label class = "tinker_label" for=""  style = "margin-right: 110px;">Apply to QTY</label>
+                  <label class = "tinker_label" for=""  style = "margin-right: 113px;">Apply to QTY</label>
                   <input  type="number" name = "qty" id = "qty"  class = "inputAmount appQty"   autocomplete="off">
               </div>
+              <div class="col-md-12">
+                  <label class = "tinker_label" for=""  style = "margin-right: 110px;">Points to earn</label>
+                  <input  type="number" name = "points" id = "points"  class = "inputAmount"  autocomplete="off">
+              </div>
               <div class="col-md-12" >
-                  <label class = "tinker_label" for="" style = "margin-right: 51px;">New price per piece</label>
+                  <label class = "tinker_label" for="" style = "margin-right: 55px;">New price per piece</label>
                   <input type="text" name = "newprice" id = "newprice" class = "inputAmount"  autocomplete="off"/>  
               </div>
               <div class="col-md-12" >
-                  <label class = "tinker_label" for="" style = "margin-right: 48px;">Total Wholesale Price</label>
-                  <input type="text" name = "totalPrice" id = "totalPrice"  class = "inputAmount"  autocomplete="off" style="background-color: #262626" readonly/>  
-              </div>
-              <div class="col-md-12" >
                   <div class="barcode-container">
-                    <label class="tinker_label" for="newbarcode" style="margin-right: 28px;">Generate New Barcode</label>
+                    <label class="tinker_label" for="newbarcode" style="margin-right: 32px;">Generate New Barcode</label>
                     <div class="input-icon-wrapper">
                       <input type="text" name="newbarcode" id="newbarcode" style = "text-align: center; " class="inputAmount displayBarcode w-barcode"  autocomplete="off"/>
                       <div class="generate-button">
@@ -229,8 +228,6 @@ textarea::placeholder{
             </div>
             <div class="row">
               <div class="col-md-12" style = "margin-bottom: 10px; padding: 10px">
-                  <!-- <button class = "button" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">EDIT</button>
-                  <button class = "button" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">DELETE</button> -->
                   <button class = "button submitPromotion" type = "submit" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
               </div>
             </div>
@@ -241,14 +238,14 @@ textarea::placeholder{
 
 <script>
     $(document).ready(function () {
-        $("#wholesaleModal #close-modal, #btn_unpaidCancel").on("click", function () {
-            $("#wholesaleModal").hide();
+        $("#pointPromoModal #close-modal, #btn_unpaidCancel").on("click", function () {
+            $("#pointPromoModal").hide();
         })
-        $("#wholesaleModal #qty, #wholesaleModal #newprice").on('input', function(){
-            var qty = $("#wholesaleModal #qty").val();
-            var newprice = $("#wholesaleModal #newprice").val();
+        $("#pointPromoModal #qty, #pointPromoModal #newprice").on('input', function(){
+            var qty = $("#pointPromoModal #qty").val();
+            var newprice = $("#pointPromoModal #newprice").val();
             var total = qty * newprice;
-            $("#wholesaleModal #totalPrice").val(total);
+            $("#pointPromoModal #totalPrice").val(total);
         })
     });
 </script>

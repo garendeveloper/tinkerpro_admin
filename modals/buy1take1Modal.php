@@ -13,7 +13,7 @@
 
     #buy1Take1Modal .modal-content {
         background-color: #333333;
-        margin: 10% auto;
+        margin: 15% auto;
         max-width: 430px;
         height: 240px;
         max-height: 100%;
@@ -201,7 +201,7 @@ button{
 
 <div id="buy1Take1Modal" class="modal">
     <div class="modal-content">
-        <div class="modal-header" style = "background-color: #333333;padding: 20px; ">
+        <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
             <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name"></h6>
             <span id="close-modal">
               <i class="bi bi-x" aria-hidden="true" style = "font-size: 30px; font-weight: bold"></i>

@@ -335,10 +335,10 @@ button:hover {
         "foot foot foot";
       grid-template-columns: 10px auto 10px;
     }
-    header{  grid-area: head; }
+    /* header{  grid-area: head; }
     .main-panel {grid-area: content; }
     .sidebar { grid-area: side;}
-    footer { grid-area: foot;},
+    footer { grid-area: foot;}, */
     .dataTables_filter {
             display: none; /* Hide the default search box */
         }
@@ -418,7 +418,6 @@ button:hover{
   background-color: var(--hover-bg-color);
 }
 
-
 .scrollable::-webkit-scrollbar {
     width: 6px; 
 }
@@ -429,6 +428,43 @@ button:hover{
     background: #888; 
     border-radius: 20px; 
 }
+.close-button{
+  background-color: var(--primary-color);
+}
+  /* .scrollable thead{
+    position: fixed;
+    width: calc(70% - 135px); 
+  } */
+  /* .scrollable thead th:nth-child(1),
+.scrollable tbody td:nth-child(1) {
+    width: 10%;
+}
+
+.scrollable thead th:nth-child(2),
+.scrollable tbody td:nth-child(2) {
+    width: 30%;
+}
+
+.scrollable thead th:nth-child(3),
+.scrollable tbody td:nth-child(3) {
+    width: 30%;
+}
+
+.scrollable thead th:nth-child(4),
+.scrollable tbody td:nth-child(4) {
+    width: 10%;
+}
+
+.scrollable thead th:nth-child(5),
+.scrollable tbody td:nth-child(5) {
+    width: 10%;
+}
+
+.scrollable thead th:nth-child(6),
+.scrollable tbody td:nth-child(6) {
+    width: 10%;
+} */
+
 .close-button{
   background-color: var(--primary-color);
 }
