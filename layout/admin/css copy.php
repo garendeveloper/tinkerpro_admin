@@ -335,20 +335,16 @@ button:hover {
         "foot foot foot";
       grid-template-columns: 10px auto 10px;
     }
-    header{  grid-area: head; }
+    /* header{  grid-area: head; }
     .main-panel {grid-area: content; }
     .sidebar { grid-area: side;}
-    footer { grid-area: foot;},
+    footer { grid-area: foot;}, */
     .dataTables_filter {
             display: none; /* Hide the default search box */
         }
      
-  .highlighteds{
-    background: var(--primary-color);
-  }
-
-  .table-row:hover {
-    background: #292928;
+.highlighteds{
+     border: 2px solid #00B050 !important; 
   }
   .highlighted-row {
     border: 2px solid green !important;
@@ -422,62 +418,6 @@ button:hover{
   background-color: var(--hover-bg-color);
 }
 
-
-
-
-.paginactionClass{
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-  }
-
-
-  .paginationTag {
-    text-decoration: none; 
-    border: 1px solid #fefefe;
-    margin-right: 1px; 
-    width: 40px;
-    height: 40px;
-    display: inline-flex; 
-    justify-content: center;
-    align-items: center; 
-    background-color: #888888;
-    color: #fefefe;
-  }
-
-  .paginationTag:hover{
-    color: #FF6900;
-  }
-
-
-  .clear-button {
-    height: 35px;
-    width: 35px; 
-    cursor: pointer;
-    color: var(--primary-color);
-    font-size: 25px;
-    background: #7C7C7C;
-  }
-
-
-
-  .searchAdd {
-    height: 35px; 
-    border: 1px solid transparent; 
-    box-shadow: none; 
-    background: #7C7C7C; 
-  }
-
-  .searchInputs {
-    height: 35px; 
-    border-radius: 20px 0 0 20px;
-    font-style: italic;
-  }
-
-
 .scrollable::-webkit-scrollbar {
     width: 6px; 
 }
@@ -488,6 +428,43 @@ button:hover{
     background: #888; 
     border-radius: 20px; 
 }
+.close-button{
+  background-color: var(--primary-color);
+}
+  /* .scrollable thead{
+    position: fixed;
+    width: calc(70% - 135px); 
+  } */
+  /* .scrollable thead th:nth-child(1),
+.scrollable tbody td:nth-child(1) {
+    width: 10%;
+}
+
+.scrollable thead th:nth-child(2),
+.scrollable tbody td:nth-child(2) {
+    width: 30%;
+}
+
+.scrollable thead th:nth-child(3),
+.scrollable tbody td:nth-child(3) {
+    width: 30%;
+}
+
+.scrollable thead th:nth-child(4),
+.scrollable tbody td:nth-child(4) {
+    width: 10%;
+}
+
+.scrollable thead th:nth-child(5),
+.scrollable tbody td:nth-child(5) {
+    width: 10%;
+}
+
+.scrollable thead th:nth-child(6),
+.scrollable tbody td:nth-child(6) {
+    width: 10%;
+} */
+
 .close-button{
   background-color: var(--primary-color);
 }

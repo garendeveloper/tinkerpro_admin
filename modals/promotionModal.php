@@ -13,9 +13,9 @@
 
     #promotionModal .modal-content {
         background-color: #333333;
-        margin: 10% auto;
+        margin: 15% auto;
         max-width: 430px;
-        height: 490px;
+        height: 480px;
         max-height: 100%;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -216,7 +216,7 @@ textarea::placeholder{
 
 <div id="promotionModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header" style = "background-color: #333333;padding: 20px; ">
+        <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
             <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name"></h6>
             <span id="close-modal">
               <i class="bi bi-x" aria-hidden="true" style = "font-size: 30px; font-weight: bold"></i>
@@ -230,11 +230,11 @@ textarea::placeholder{
             <div class="row">
               <div class="col-md-12">
                   <label class = "tinker_label" for=""  style = "margin-right: 110px;">Apply to QTY</label>
-                  <input  type="number" name = "qty" id = "qty" class = "inputAmount"  style ="height: 40px;" autocomplete="off">
+                  <input  type="number" name = "qty" id = "qty" class = "inputAmount appQty"  autocomplete="off">
               </div>
               <div class="col-md-12" >
                   <label class = "tinker_label" for="" style = "margin-right: 42px;">New price per bundle</label>
-                  <input type="text" name = "newprice" id = "newprice" class = "inputAmount" style ="height: 40px;"  autocomplete="off"/>  
+                  <input type="text" name = "newprice" id = "newprice" class = "inputAmount"   autocomplete="off"/>  
               </div>
             </div>
             <div class = "row" style = "padding: 10px;">
@@ -244,9 +244,9 @@ textarea::placeholder{
                         <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
                     </svg>
                     <input type="hidden" class="w-100 search_product_b_id me-2 ms-2">
-                    <input type="text"  placeholder="SEARCH BARCODE/CODE/NAME" style = "height: 40px" class="w-100 search_product_b ">
-                    <div class="btn-container">
-                        <button class="btn btn-secondary" id= "btn_addBProduct">
+                    <input type="text"  placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product_b ">
+                    <div class="btn-container b-addbutton" >
+                        <button class="btn btn-secondary" id= "btn_addBProduct" style = "height: 35px;">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
                                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -276,7 +276,7 @@ textarea::placeholder{
                   <div class="barcode-container">
                     <label class="tinker_label" for="newbarcode" style="margin-right: 24px;">Generate New Barcode</label>
                     <div class="input-icon-wrapper">
-                      <input type="text" name="newbarcode" id="newbarcode" style = "text-align: center; height: 40px;" class="inputAmount displayBarcode"  autocomplete="off"/>
+                      <input type="text" name="newbarcode" id="newbarcode" style = "text-align: center; " class="inputAmount displayBarcode"  autocomplete="off"/>
                       <div class="generate-button">
                         <i class="bi bi-arrow-down-circle"></i>
                       </div>

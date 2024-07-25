@@ -16,19 +16,28 @@
 
 
   #period_reports .modal-content {
-    color: #ffff;
+    /* color: #ffff;
     background: #262625;
     border-radius: 0;
     height: fit-content;
     position: relative;
-    width: 100%;
+    width: fit-content; */
+    color: #fff; /* Changed from #ffff to #fff for correct hex color format */
+    background: #262625;
+    border-radius: 0;
+    height: fit-content;
+    position: absolute; /* Change position to absolute */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Centering trick */
+    width: fit-content;
   }
 
   #period_reports .close-button {
     position: absolute;
     right: 1.6em;
     top: 10px;
-    background: #FF6900;
+    background: var(--primary-color);
     color: #fff;
     border: none;
     width: 40px;
@@ -103,13 +112,15 @@
   .twoCard,
   .thirdCard {
     width: 33%;
-    padding: 20px;
+    padding: 10px;
+    margin-top: -20px;
   }
 
   .oneCard {
     width: 33%;
     display: inline-block;
-    padding: 20px;
+    padding: 10px;
+    margin-top: -20px;
   }
 
 
@@ -184,7 +195,7 @@
   }
 </style>
 
-<div class="modal period_reports" id="period_reports" tabindex="0">
+<div class="modal period_reports" id="period_reports" tabindex="0" style="background-color: rgba(0, 0, 0, 0.7); overflow: hidden; z-index: 2000;">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <button id="datePickerClose" name="datePickerClose" class="close-button"
@@ -215,7 +226,7 @@
         </div>
       </div>
 
-      <div class="warningCard" style="dsiplay: flex;">
+      <div class="warningCard" style="display: flex;">
         <div class="oneCard" style="width: 33%">
           <div style="text-align: center;margin-bottom: 10px">Start</div>
           <input type="text" hidden id="datepickerDiv" style="text-align: center;">
@@ -226,19 +237,19 @@
         </div>
         <div class="thirdCard" style="width: 33%">
           <div style="text-align: center;margin-bottom: 30px">Predefined Period</div>
-          <div style="display: flex; align-text: center; justify-content: center; margin-bottom: 20px ">
+          <div style="display: flex; text-align: center; justify-content: center; margin-bottom: 20px ">
             <button class="custom_btns" style="margin-right: 10px">Today</button>
             <button class="custom_btns">Yesterday</button>
           </div>
-          <div style="display: flex; align-text: center; justify-content: center;margin-bottom: 20px ">
+          <div style="display: flex; text-align: center; justify-content: center;margin-bottom: 20px ">
             <button class="custom_btns" style="margin-right: 10px">This week</button>
             <button class="custom_btns">Last week</button>
           </div>
-          <div style="display: flex; align-text: center; justify-content: center;margin-bottom: 20px ">
+          <div style="display: flex; text-align: center; justify-content: center;margin-bottom: 20px ">
             <button class="custom_btns" style="margin-right: 10px">This month</button>
             <button class="custom_btns">Last Month</button>
           </div>
-          <div style="display: flex; align-text: center; justify-content: center; ">
+          <div style="display: flex; text-align: center; justify-content: center; ">
             <button class="custom_btns" style="margin-right: 10px">This year</button>
             <button class="custom_btns">Last Year</button>
           </div>
@@ -251,3 +262,4 @@
     </div>
   </div>
 </div>
+

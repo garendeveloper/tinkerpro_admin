@@ -1354,6 +1354,7 @@
 2024-07-24 17:57:26 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 WEEK 
 2024-07-24 18:07:45 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 YEAR 
 2024-07-24 18:07:52 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 WEEK 
+<<<<<<< HEAD
 2024-07-25 09:16:38 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-25 09:17:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-25 09:18:33 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
@@ -1805,3 +1806,14 @@
 2024-07-25 17:44:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GC W/MOIST 70% 500ML Barcode #:4800047820182 
 2024-07-25 17:45:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GC W/MOIST 70% 60ML Barcode #:4800047820250 
 2024-07-25 17:47:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GILAS PAPER PLATE Barcode #:4800189003160 
+=======
+2024-07-25 09:16:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-25 09:19:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA PANCIT CANTON 1/4KG Barcode #:4807770273698 
+2024-07-25 10:17:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-25 11:21:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-25 11:29:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-25 11:44:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-25 12:00:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-25 12:14:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-25 13:50:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+>>>>>>> f2e77acbf63a1b3f5d6ecce33938ed344d2d9ada

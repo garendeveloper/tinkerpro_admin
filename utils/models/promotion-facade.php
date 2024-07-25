@@ -29,9 +29,27 @@ class PromotionFacade extends DBConnection
             'message'=>'Item has been successfully deleted.'
         ];
     }
+    public function verify_barcode($barcode, $promotion_id)
+    {
+        if(empty($promotion_id))
+        {
+            $sql = $this->connect()->prepare("SELECT * FROM promotions WHERE barcode = :barcode");
+            $sql->execute([':barcode'=>$barcode]);
+            return $sql->rowCount() > 0;
+        }
+        else
+        {
+            $sql = $this->connect()->prepare("SELECT * FROM promotions WHERE barcode = :barcode AND id != :exclude_id");
+            $sql->execute([':barcode' => $barcode, ':exclude_id' => $promotion_id]);
+            return $sql->rowCount() > 0;
+        }
+      
+    }
     public function save($formData)
     {
         $bundledData = $formData['bundledData'];
+        $promo_datePeriod = $formData['promo_datePeriod'];
+
         $serializedFormData = $formData['formData'];
         $formdata = [];
         parse_str($serializedFormData, $formdata);
@@ -63,62 +81,123 @@ class PromotionFacade extends DBConnection
         {
             $promotion_id = $formdata['promotion_id'];
             $promotion_type = $formdata['promotion_type'];
-            switch($promotion_type)
+
+            $response['success'] = 405;
+            $response['message'] = "Cannot create the same barcode";
+
+            if(!$this->verify_barcode($response['data']['newbarcode'], $promotion_id))
             {
-                case 1:
-                    if(empty($promotion_id))
-                    {
-                        $sql = $this->connect()->prepare("INSERT INTO promotions (product_id, promotion_type, qty, newprice, barcode, promo_period)
-                        VALUES (?, ?, ?, ?, ?, ?)");
-                        $sql->execute([$response['data']['product_id'], $promotion_type, $response['data']['qty'], $response['data']['newprice'], $response['data']['newbarcode'], "2024-07-31" ]);
-                        $response['success'] = true;
-                        $response['message'] = "Data has been successfully saved";
-                    }
-                    else
-                    {
-                        $sql = $this->connect()->prepare("UPDATE promotions SET qty = :qty, newprice = :newprice, barcode = :newbarcode WHERE id = :promotion_id");
-                        $sql->execute([
-                            ':qty' => $response['data']['qty'],
-                            ':newprice' => $response['data']['newprice'],
-                            ':newbarcode' => $response['data']['newbarcode'],
-                            ':promotion_id' => $promotion_id,
-                        ]);
-                        $response['success'] = true;
-                        $response['message'] = "Data has been successfully saved";
-                    }
-                    break;
-                case 2: 
-                    if(empty($promotion_id))
-                    {
-                        $sql = $this->connect()->prepare("INSERT INTO promotions (product_id, promotion_type, qty, newprice, barcode, promo_period, promotion_items)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)");
-                        $sql->execute([
-                            $response['data']['product_id'], 
-                            $promotion_type, 
-                            $response['data']['qty'], 
-                            $response['data']['newprice'], 
-                            $response['data']['newbarcode'], 
-                            "2024-07-31",
-                            $bundledData, 
-                        ]);
-                        $response['success'] = true;
-                        $response['message'] = "Data has been successfully saved";
-                    }
-                    else
-                    {
-                        $sql = $this->connect()->prepare("UPDATE promotions SET qty = :qty, newprice = :newprice, barcode = :newbarcode, promotion_items = :promotion_items WHERE id = :promotion_id");
-                        $sql->execute([
-                            ':qty' => $response['data']['qty'],
-                            ':newprice' => $response['data']['newprice'],
-                            ':newbarcode' => $response['data']['newbarcode'],
-                            ':promotion_items' => $bundledData,
-                            ':promotion_id' => $promotion_id,
-                        ]);
-                        $response['success'] = true;
-                        $response['message'] = "Data has been successfully saved";
-                    }
-                    break;
-                default: break;
+                switch($promotion_type)
+                {
+                    case 1:
+                        if(empty($promotion_id))
+                        {
+                            $sql = $this->connect()->prepare("INSERT INTO promotions (product_id, promotion_type, qty, newprice, barcode, promo_period)
+                            VALUES (?, ?, ?, ?, ?, ?)");
+                            $sql->execute([$response['data']['product_id'], $promotion_type, $response['data']['qty'], $response['data']['newprice'], $response['data']['newbarcode'], $promo_datePeriod]);
+                            $response['success'] = true;
+                            $response['message'] = "Data has been successfully saved";
+                        }
+                        else
+                        {
+                            $sql = $this->connect()->prepare("UPDATE promotions SET qty = :qty, newprice = :newprice, barcode = :newbarcode, promo_period = :promo_period WHERE id = :promotion_id");
+                            $sql->execute([
+                                ':qty' => $response['data']['qty'],
+                                ':newprice' => $response['data']['newprice'],
+                                ':newbarcode' => $response['data']['newbarcode'],
+                                ':promo_period' => $promo_datePeriod,
+                                ':promotion_id' => $promotion_id,
+                            ]);
+                        }
+                        break;
+                    case 2: 
+                        if(empty($promotion_id))
+                        {
+                            $sql = $this->connect()->prepare("INSERT INTO promotions (product_id, promotion_type, qty, newprice, barcode, promo_period, promotion_items)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)");
+                            $sql->execute([
+                                $response['data']['product_id'], 
+                                $promotion_type, 
+                                $response['data']['qty'], 
+                                $response['data']['newprice'], 
+                                $response['data']['newbarcode'], 
+                                $promo_datePeriod,
+                                $bundledData, 
+                            ]);
+                        }
+                        else
+                        {
+                            $sql = $this->connect()->prepare("UPDATE promotions SET qty = :qty, newprice = :newprice, barcode = :newbarcode, promotion_items = :promotion_items, promo_period = :promo_period WHERE id = :promotion_id");
+                            $sql->execute([
+                                ':qty' => $response['data']['qty'],
+                                ':newprice' => $response['data']['newprice'],
+                                ':newbarcode' => $response['data']['newbarcode'],
+                                ':promotion_items' => $bundledData,
+                                ':promo_period' => $promo_datePeriod,
+                                ':promotion_id' => $promotion_id,
+                            ]);
+                        }
+                        break;
+                    case 3: 
+                            if(empty($promotion_id))
+                            {
+                                $sql = $this->connect()->prepare("INSERT INTO promotions (product_id, promotion_type, qty, newprice, barcode, promo_period, totalPrice)
+                                VALUES (?, ?, ?, ?, ?, ?, ?)");
+                                $sql->execute([
+                                    $response['data']['product_id'], 
+                                    $promotion_type, 
+                                    $response['data']['qty'], 
+                                    $response['data']['newprice'], 
+                                    $response['data']['newbarcode'], 
+                                    $promo_datePeriod,
+                                    $formdata['totalPrice'], 
+                                ]);
+                            }
+                            else
+                            {
+                                $sql = $this->connect()->prepare("UPDATE promotions SET qty = :qty, newprice = :newprice, barcode = :newbarcode, totalPrice = :totalPrice, promo_period = :promo_period WHERE id = :promotion_id");
+                                $sql->execute([
+                                    ':qty' => $response['data']['qty'],
+                                    ':newprice' => $response['data']['newprice'],
+                                    ':newbarcode' => $response['data']['newbarcode'],
+                                    ':totalPrice' => $formdata['totalPrice'],
+                                    ':promo_period' => $promo_datePeriod,
+                                    ':promotion_id' => $promotion_id,
+                                ]);
+                            }
+                            break;
+                    case 4: 
+                            if(empty($promotion_id))
+                            {
+                                $sql = $this->connect()->prepare("INSERT INTO promotions (product_id, promotion_type, qty, newprice, barcode, promo_period, points)
+                                VALUES (?, ?, ?, ?, ?, ?, ?)");
+                                $sql->execute([
+                                    $response['data']['product_id'], 
+                                    $promotion_type, 
+                                    $response['data']['qty'], 
+                                    $response['data']['newprice'], 
+                                    $response['data']['newbarcode'], 
+                                    $promo_datePeriod,
+                                    $formdata['points'], 
+                                ]);
+                            }
+                            else
+                            {
+                                $sql = $this->connect()->prepare("UPDATE promotions SET qty = :qty, newprice = :newprice, barcode = :newbarcode, points = :points, promo_period = :promo_period WHERE id = :promotion_id");
+                                $sql->execute([
+                                    ':qty' => $response['data']['qty'],
+                                    ':newprice' => $response['data']['newprice'],
+                                    ':newbarcode' => $response['data']['newbarcode'],
+                                    ':points' => $formdata['points'],
+                                    ':promo_period' => $promo_datePeriod,
+                                    ':promotion_id' => $promotion_id,
+                                ]);
+                            }
+                            break;
+                    default: break;
+                }
+                $response['success'] = true;
+                $response['message'] = "Data has been successfully saved";
             }
         }
         return $response;
