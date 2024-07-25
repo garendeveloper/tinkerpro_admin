@@ -166,6 +166,7 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
   .highlighteds{
      border: 2px solid #00B050 !important; 
   }
+
   .paginationTag {
     text-decoration: none; 
     border: 1px solid #fefefe;
@@ -177,13 +178,13 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
     align-items: center; 
     background-color: #888888;
     color: #fefefe;
-}
+  }
 
 .paginationTag:hover{
   color: #FF6900;
 }
 
-    #paginationDiv{
+    .paginactionClass{
       margin-top: 20px;
       margin-bottom: 20px;
       display: flex;
@@ -292,14 +293,7 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
 }
 
 
-.clear-button {
-  height: 35px;
-  width: 35px; 
-  cursor: pointer;
-  color: var(--primary-color);
-  font-size: 25px;
-  background: #7C7C7C;
-}
+
 
 
 
@@ -344,11 +338,17 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
           <div>
           <div class="row">
             <div>
-              <div class="card" style="height: 78vh; width: 100%; border-radius: 0;">
-                <div class="card-body" style="max-height: 80vh; border-radius: 0;">
+              <div class="card p-0" style="height: 78vh; width: 100%;">
+                <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
-                  <div id="responsive-data" style="height: 100%">
+
+                  <!-- <table class="text-color table-border p-0">
+                    
+                  </table> -->
+
+                  <div id="responsive-data" style="height: 100%; ">
                     <table id="recentusers" class="text-color table-border">
+
                       <thead class="productHeader">
                         <tr>
                           <th class="text-center font-size" style="width: 2%;">No.</th>
@@ -367,7 +367,7 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
                           <th class="text-center font-size"  style="width: 200px" >Action</th>
                         </tr>
                       </thead> 
-        
+
                       <tbody id="productTable">
 
                       </tbody> 
@@ -376,9 +376,9 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
                    
                     </div>
 
-                </div>
+                <!-- </div> -->
               </div>
-              <div id="paginationDiv" style="position: absolute; bottom: 33px;">
+              <div id="paginationDiv" class="paginactionClass" style="position: absolute; bottom: 33px;">
 
               </div >
               <div class="d-flex w-100 text-center justify-content-center" style="position: absolute; bottom: 0;">
@@ -608,21 +608,8 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
     });
 }
 
-function showPaginationBtn(){
-    $.ajax({
-        url: './fetch-data/pagination-data.php', 
-        type: 'GET',
-        success: function(response) {
-            $('#paginationDiv').html(response)
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText); 
-        }
-    });
 
-}
-
-showPaginationBtn()
+showPaginationBtn('products')
 
 
 function searchProducts(){

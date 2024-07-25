@@ -343,8 +343,12 @@ button:hover {
             display: none; /* Hide the default search box */
         }
      
-.highlighteds{
-     border: 2px solid #00B050 !important; 
+  .highlighteds{
+    background: var(--primary-color);
+  }
+
+  .table-row:hover {
+    background: #292928;
   }
   .highlighted-row {
     border: 2px solid green !important;
@@ -417,4 +421,63 @@ button.active{
 button:hover{
   background-color: var(--hover-bg-color);
 }
+
+
+
+
+.paginactionClass{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+
+  .paginationTag {
+    text-decoration: none; 
+    border: 1px solid #fefefe;
+    margin-right: 1px; 
+    width: 40px;
+    height: 40px;
+    display: inline-flex; 
+    justify-content: center;
+    align-items: center; 
+    background-color: #888888;
+    color: #fefefe;
+  }
+
+  .paginationTag:hover{
+    color: #FF6900;
+  }
+
+
+  .clear-button {
+    height: 35px;
+    width: 35px; 
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: 25px;
+    background: #7C7C7C;
+  }
+
+
+
+  .searchAdd {
+    height: 35px; 
+    border: 1px solid transparent; 
+    box-shadow: none; 
+    background: #7C7C7C; 
+  }
+
+  .searchInputs {
+    height: 35px; 
+    border-radius: 20px 0 0 20px;
+    font-style: italic;
+  }
   </style>
+
+
+
+

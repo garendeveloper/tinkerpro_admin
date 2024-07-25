@@ -203,27 +203,65 @@ tbody td {
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+.search-logs {
+  width: 100%; 
+  height: auto; 
+  border-radius: 20px 0 0 20px; 
+  border-top: 1px solid var(--border-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  border-right: 1px solid var(--border-color) !important;
+  border-right: 1px solid transparent !important;
+  padding-left: 15px;
+  font-style: italic;
+  border-right: none;
+}
+
+.searcBtn-log {
+  margin-right:10px; 
+  width:55px; 
+  border-radius: 0 20px 20px 0; 
+  border-left: none;
+  padding-left: 10px;
+}
+
+.select-app {
+  background-color: transparent; 
+  color: #ffff; 
+  width: 100%; 
+  border: 1px solid var(--border-color); 
+  font-size: 14px;
+  height: 35px;
+  border-radius: 10px;
+}
+/* 
+.datePick {
+  border: 1px solid var(--border-color) !important;
+  height: 35px;
+  width: auto;
+} */
+
 </style>
   <div class="container-scroller">
     <?php include 'layout/admin/sidebar.php' ?>
-      <div class="main-panel" style = "overflow: hidden">
+      <div class="main-panel h-100" style = "overflow: hidden">
         <div class="content-wrapper">
           <div class="row not_scrollable" style = "margin-bottom: 10px; ">
             <div class="col-md-12" >
-              <div id="title" class = "text-custom">
-                <h1 style = "font-weight: bold">ACTIVITY LOGS</h1>
-
+              <div id="title" class = "text-custom ms-2">
+                <label for="" style="font-size: 35px;">ACTIVITY LOGS</label>
               </div>
             </div>
             <div class = "row">
-                <div class = "" style = "background-color: #151515; border-color: white; width: 15%">
+
+                <div style = "background-color: #151515; border-color: white; width: 15%; border-radius: 10px;">
                   <div class="mainDiv" style = "margin-left: 15px; height: 90vh">
                   <br>
                     <div class="row">
                       <h6 class = "text-custom">Select Date</h6>
                       <div class="custom-select">
-                        <a  href="#"  class="custom-input" id="btn_datePicker" style="margin-top: 5px">
-                            <input readonly type="text" id="datepicker" style="padding-left: 35px; flex: 1; text-align: center; height: 30px; font-size: 11px;">
+                        <a  href="#"  class="custom-input mt-1" id="btn_datePicker" >
+                            <input readonly type="text" id="datepicker" style="padding-left: 35px; background: transparent !important; border-radius: 10px; text-align: center; height: 35px; border: 1px solid var(--border-color) !important;">
                             <svg class="calendar-icon" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -238,8 +276,7 @@ tbody td {
                     <div class = "row">
                         <h6 class = "text-custom">Choose Application</h6>
                         <div class="custom-select" style="margin-right: 0px; ">
-                            <select name="application" id = "application"
-                                style=" background-color: #1E1C11; color: #ffff; width: 100%; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                            <select name="application" id = "application" class="select-app">
                                 <option value="1">Cashiering App</option>
                                 <option value="2">BackOffice App</option>
                             </select>
@@ -249,8 +286,7 @@ tbody td {
                     <div class = "row">
                         <h6 class = "text-custom">Select User</h6>
                         <div class="custom-select" style="margin-right: 0px; ">
-                            <select name="user" id = "user"
-                                style=" background-color: #1E1C11; color: #ffff; width: 100%; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                            <select name="user" id = "user" class="select-app">
                                 <option value="">-- Select Here --</option>
                                 <?php
                                   $userFacade = new UserFacade;
@@ -265,41 +301,25 @@ tbody td {
                     <br>
                     <div class = "row">
                         <div class="custom-select" style="margin-right: 0px; ">
-                             <button style = "height: 30px; border-radius: 10px; font-size: 0.9rem; width: 100%" id = "btn_reload"><i class = "bi bi-arrow-clockwise"></i> Reload</button>
+                             <button style = "height: 35px; border-radius: 10px; font-size: 0.9rem; width: 100%" id = "btn_reload"><i class = "bi bi-arrow-clockwise"></i> Reload</button>
                         </div>
                      </div>
                   </div>
                 </div>
-                <div class = "col-md-11" style = "background-color: #262626; width: 85%"  >
+                
+                <div class = "col-md-11" style = "background-color: #262626; width: 85%" >
+
+                    <div class="d-flex justify-content-between mb-2">
+                      <input  class="text-color search-logs" id = "search_log" placeholder="Search Logs [Date&Time,User,Module,Activity]" autocomplete = "off" autofocus="autofocus"/>
+                      <button  id="searchBtn" name="productSearch"  class="searcBtn-log">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                      </button>
+                    </div>
+
                     <div class="tableCard" style = " width: 100%; background-color: #262626;  ">
-                      <table  class="text-color " style="margin-top: -3px; ">
-                        <thead id = "searchHead" class = "th-noborder">
-                          <tr style = "margin-bottom: 10px;">
-                            <th colspan = "4" class = "inputGray th-noborder" style = "border-radius: 30px; ">
-                              <input  class="text-color " style="width: 100%; height: 20px; " id = "search_log" placeholder="Search Logs [Date&Time,User,Module,Activity]" autocomplete = "off" autofocus="autofocus"/>
-                            </th>
-                            <th class = "otherinput th-noborder" >
-                            
-                            <button  id="searchBtn" name="productSearch"  class="btn-control" style="margin-right:10px; width:100%; border-radius: none "><svg width="30px"version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                viewBox="0 0 491.52 491.52" xml:space="preserve">
-                              <ellipse style="opacity:0.5;fill:#27A2DB;enable-background:new    ;" cx="158.537" cy="158.536" rx="129.777" ry="129.777"/>
-                              <path style="opacity:0.5;fill:#FFFFFF;enable-background:new    ;" d="M98.081,234.62c-43.316-43.315-43.882-112.979-1.264-155.595
-                                c9.509-9.511,20.41-16.745,32.021-21.96c-16.497,4.812-32.056,13.702-45.064,26.71c-41.288,41.289-41.289,108.231,0,149.521
-                                c18.282,18.281,41.596,28.431,65.483,30.523C130.561,258.986,112.79,249.33,98.081,234.62z"/>
-                              <path style="fill:#3A556A;" d="M270.636,46.433c-61.912-61.912-162.291-61.911-224.202,0.001s-61.912,162.291-0.001,224.202
-                                c57.054,57.054,146.703,61.394,208.884,13.294l14.18,14.182l28.615-28.613l-14.182-14.182
-                                C332.029,193.137,327.69,103.487,270.636,46.433z M250.301,250.302c-50.681,50.681-132.852,50.681-183.534,0
-                                c-50.68-50.681-50.68-132.852,0.002-183.533s132.85-50.681,183.531,0C300.982,117.45,300.982,199.621,250.301,250.302z"/>
-                              <path style="fill:#E56353;" d="M305.823,258.865l-46.959,46.958c-2.669,2.67-2.669,6.996,0,9.665l174.339,174.338
-                                c12.132,12.133,68.755-44.49,56.623-56.623L315.488,258.865C312.819,256.196,308.493,256.196,305.823,258.865z"/>
-                              <g>
-                              <rect x="409.379" y="442.628" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 1084.9951 449.4294)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
-                              <rect x="260.671" y="293.889" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 725.9606 300.6683)" style="fill:#EBF0F3;" width="80.077" height="13.594"/>
-                                  </g>
-                                  </svg>&nbsp;Search</button>
-                            </th>
-                          </tr>
-                        </thead>
+                      <table  class="text-color mb-2">
                         <thead id = "logHead">
                             <tr style = "border: 1px solid var(--primary-color); " >
                                 <th class = "th-noborder" style="background-color: none;  border: none; width: 15%; font-size: 12px; text-align: left">DATE & TIME</th>
@@ -310,7 +330,7 @@ tbody td {
                             </tr>
                         </thead>
                       </table>
-                      <div class="fcontainer"  >
+                      <div class="fcontainer">
                           <table id="logTable" class="text-color " style="margin-top: -3px; height: 300px; padding:10px;">
                               <tbody style="border-collapse: collapse; border: none">
                                 <img id="noRecords" src ="./assets/img/tinkerpro-t.png" style="display: none;">
