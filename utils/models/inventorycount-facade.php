@@ -1,5 +1,5 @@
 <?php
-use Xendit\PaymentMethod\GetAllPaymentMethodsDefaultResponse;
+// use Xendit\PaymentMethod\GetAllPaymentMethodsDefaultResponse;
     class InventoryCountFacade extends DBConnection
     {
         public function check_inventorycountinfo_exist($reference_no)
@@ -43,13 +43,17 @@ use Xendit\PaymentMethod\GetAllPaymentMethodsDefaultResponse;
             $tbl_data = json_decode($formData["tbl_data"], true);
             $reference_no = $formData['reference_no'];
             $inventory_count_info_id = $formData['refer_id'];
+          
             $date_counted = date('Y-m-d', strtotime($formData['date_counted']));
 
            
-            $inventory_count_info_id = 0;
-            if($this->check_inventorycountinfo_exist($reference_no) !== 0)
+            if(isset($inventory_count_info_id) && !empty($inventory_count_info_id))
             {
-                $inventory_count_info_id = $this->check_inventorycountinfo_exist($reference_no);
+                $sql = $this->connect()->prepare("UPDATE inventory_count_info SET date_counted = :date_counted WHERE id = :id");
+                $sql->execute([
+                    ':date_counted' => $date_counted,
+                    ':id' => $inventory_count_info_id,
+                ]);
             }
             else
             {
@@ -62,51 +66,105 @@ use Xendit\PaymentMethod\GetAllPaymentMethodsDefaultResponse;
                 $inventory_count_info_id = $this->get_last_id();
             }
             $currentDate = date("Y-m-d");
-            foreach($tbl_data as $row)
+
+            if(!isset($inventory_count_info_id) && empty($inventory_count_info_id))
             {
-                $inventory_id = $row['inventory_id'];
-                $qty = $row['qty'];
-                $counted = $row['counted'];
-                $difference = $this->clean_number($row['difference']);
-
-                if(!empty($counted))
+                foreach($tbl_data as $row)
                 {
-                    $stmt = $this->connect()->prepare("INSERT INTO inventory_count_items (inventory_id, inventory_count_info_id, qty, counted, difference)
-                                                        VALUES (?,?, ?, ?, ?)");
-                    $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                    $stmt->bindParam(2, $inventory_count_info_id, PDO::PARAM_STR);
-                    $stmt->bindParam(3, $qty, PDO::PARAM_STR);
-                    $stmt->bindParam(4, $counted, PDO::PARAM_STR);
-                    $stmt->bindParam(5, $difference, PDO::PARAM_STR);
-                    $stmt->execute();
-
-                    $stmt2 = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
-                    $stmt2->bindParam(":new_stock", $counted); 
-                    $stmt2->bindParam(":id", $inventory_id); 
-                    $stmt2->execute();
-
-                    $currentStock = $this->get_productDataById($inventory_id)['product_stock'];
-                    date_default_timezone_set('Asia/Manila');
-                    $currentDate = date('Y-m-d h:i:s');
-                    $stock_customer = $formData['user_name'];
-                    $document_number = $reference_no;
-                    $transaction_type = "Inventory Count";
-                    $difference = $difference > 0 ? "+".$difference : $difference;
-                    $stmt1 = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
-                                        VALUES (?, ?, ?, ?, ?, ?, ?)");
-
-                    $stmt1->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                    $stmt1->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-                    $stmt1->bindParam(3, $difference, PDO::PARAM_STR); 
-                    $stmt1->bindParam(4, $counted, PDO::PARAM_STR); 
-                    $stmt1->bindParam(5, $document_number, PDO::PARAM_STR); 
-                    $stmt1->bindParam(6, $transaction_type, PDO::PARAM_STR); 
-                    $stmt1->bindParam(7, $currentDate, PDO::PARAM_STR); 
-                    $stmt1->execute();
+                    $inventory_id = $row['inventory_id'];
+                    $qty = $row['qty'];
+                    $counted = $row['counted'];
+                    $difference = $this->clean_number($row['difference']);
+    
+                    if(!empty($counted))
+                    {
+                        $stmt = $this->connect()->prepare("INSERT INTO inventory_count_items (inventory_id, inventory_count_info_id, qty, counted, difference)
+                                                            VALUES (?,?, ?, ?, ?)");
+                        $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                        $stmt->bindParam(2, $inventory_count_info_id, PDO::PARAM_STR);
+                        $stmt->bindParam(3, $qty, PDO::PARAM_STR);
+                        $stmt->bindParam(4, $counted, PDO::PARAM_STR);
+                        $stmt->bindParam(5, $difference, PDO::PARAM_STR);
+                        $stmt->execute();
+    
+                        $stmt2 = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
+                        $stmt2->bindParam(":new_stock", $counted); 
+                        $stmt2->bindParam(":id", $inventory_id); 
+                        $stmt2->execute();
+    
+                        $currentStock = $this->get_productDataById($inventory_id)['product_stock'];
+                        date_default_timezone_set('Asia/Manila');
+                        $currentDate = date('Y-m-d h:i:s');
+                        $stock_customer = $formData['user_name'];
+                        $document_number = $reference_no;
+                        $transaction_type = "Inventory Count";
+                        $difference = $difference > 0 ? "+".$difference : $difference;
+                        $stmt1 = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                            VALUES (?, ?, ?, ?, ?, ?, ?)");
+    
+                        $stmt1->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                        $stmt1->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+                        $stmt1->bindParam(3, $difference, PDO::PARAM_STR); 
+                        $stmt1->bindParam(4, $counted, PDO::PARAM_STR); 
+                        $stmt1->bindParam(5, $document_number, PDO::PARAM_STR); 
+                        $stmt1->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+                        $stmt1->bindParam(7, $currentDate, PDO::PARAM_STR); 
+                        $stmt1->execute();
+                    }
+                    
                 }
-                
             }
-           
+            else
+            {
+                foreach($tbl_data as $row)
+                {
+                    $inventory_id = $row['inventory_id'];
+                    $inventory_count_item_id = $row['inventory_count_item_id'];
+                    $qty = $row['qty'];
+                    $counted = $row['counted'];
+                    $difference = $this->clean_number($row['difference']);
+    
+                    if(!empty($counted))
+                    {
+                        $stmt = $this->connect()->prepare("UPDATE inventory_count_items SET inventory_id = :inventory_id,  qty = :qty, counted = :counted, difference = :difference WHERE id = :id ");
+                      
+                        $stmt->execute([
+                            ':inventory_id' => $inventory_id,
+                            ':qty' => $qty,
+                            ':counted' => $counted,
+                            ':difference' => $difference,
+                            ':id' => $inventory_count_item_id
+                        ]);
+    
+                        $stmt2 = $this->connect()->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
+                        $stmt2->bindParam(":new_stock", $counted); 
+                        $stmt2->bindParam(":id", $inventory_id); 
+                        $stmt2->execute();
+    
+                        $currentStock = $this->get_productDataById($inventory_id)['product_stock'];
+                        date_default_timezone_set('Asia/Manila');
+                        $currentDate = date('Y-m-d h:i:s');
+                        $stock_customer = $formData['user_name'];
+                        $document_number = $reference_no;
+                        $transaction_type = "Inventory Count";
+                        $difference = $difference > 0 ? "+".$difference : $difference;
+                        $stmt1 = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                            VALUES (?, ?, ?, ?, ?, ?, ?)");
+    
+                        $stmt1->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                        $stmt1->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+                        $stmt1->bindParam(3, $difference, PDO::PARAM_STR); 
+                        $stmt1->bindParam(4, $counted, PDO::PARAM_STR); 
+                        $stmt1->bindParam(5, $document_number, PDO::PARAM_STR); 
+                        $stmt1->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+                        $stmt1->bindParam(7, $currentDate, PDO::PARAM_STR); 
+                        $stmt1->execute();
+                    }
+                    
+                }
+               
+            }
+            
             return [
                 'status'=>true,
                 'msg'=>'Inventory count has been successfully recorded.'

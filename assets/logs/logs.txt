@@ -1826,3 +1826,11 @@
 2024-07-26 13:09:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-26 13:32:36 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000004 Amount:₱ 354.66 
 2024-07-26 14:04:08 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000002 Supplier: GAISANO 
+2024-07-26 17:32:53 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000005 Amount:₱ 3,835.00 
+2024-07-26 17:33:39 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000006 Amount:₱ 32,636.00 
+2024-07-26 17:34:19 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000006 Amount:₱ 32,636.00 
+2024-07-26 17:34:35 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000005 Amount:₱ 3,835.00 
+2024-07-26 17:39:51 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000001 Date: Jul 18 2024 
+2024-07-26 18:01:33 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000001 Date: Jul 18 2024 
+2024-07-26 18:06:15 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000001 Date: Jul 18 2024 
+2024-07-26 18:06:32 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000003 Date: Jul 26 24 

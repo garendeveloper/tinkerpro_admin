@@ -72,7 +72,7 @@ if (isset($_SESSION['user_id'])) {
 	}
 
   include('./modals/loading-modal.php');
-  include('./modals/logDatePickerModal.php');
+  include('./modals/period-reports-modal.php');
 ?>
 
 
@@ -132,7 +132,7 @@ tbody td {
 }
 
 .f-container::-webkit-scrollbar-track {
-    background: #151515;
+    background: #1e1e1e;
 }
 
 </style>
@@ -158,7 +158,7 @@ tbody td {
 #calendar-btn {
     border-radius: 3px;
     cursor: pointer;
-    border-color: #FF6900;
+    border-color: var(--primary-color);
     font-size: 10px;
 }
 .highlighted {
@@ -233,13 +233,19 @@ tbody td {
   font-size: 14px;
   height: 35px;
   border-radius: 10px;
+  padding: 5px 5px;
 }
-/* 
-.datePick {
-  border: 1px solid var(--border-color) !important;
-  height: 35px;
-  width: auto;
-} */
+
+select::-webkit-scrollbar {
+    width: 6px; 
+}
+select::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+select::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 20px; 
+}
 
 </style>
   <div class="container-scroller">
@@ -254,7 +260,7 @@ tbody td {
             </div>
             <div class = "row">
 
-                <div style = "background-color: #151515; border-color: white; width: 15%; border-radius: 10px;">
+                <div style = "background-color: #1e1e1e; border-color: white; width: 15%; border-radius: 10px;">
                   <div class="mainDiv" style = "margin-left: 15px; height: 90vh">
                   <br>
                     <div class="row">
@@ -353,21 +359,36 @@ tbody td {
   include("layout/footer.php");
 ?>
 <script>
-  
 
-  $(document).ready(function(){
+    var toastDisplayed = false;
     $("#activity_logs").addClass('active');
     $("#pointer").html("Activity Logs");
 
     var initialApplicationValue = $("#application").val();
-  
+    function getPHTDateTime() 
+    {
+      const now = new Date();
+      const options = {
+        timeZone: 'Asia/Manila',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false 
+      };
+      const formatter = new Intl.DateTimeFormat('en-PH', options);
+      return formatter.format(now).replace(/[/\s:]/g, '_');
+    }
+
     function display_settings()
     {
       $.ajax({
         type: 'get',
         url: 'api.php?action=pos_settings',
         success:function(response){
-          var defaultColor = "#FF6900";
+          var defaultColor = "var(--primary-color)";
           if(!$.isEmptyObject(response)){
             $(".highlighted").css("--active-bg-color", response)
           
@@ -382,7 +403,7 @@ tbody td {
       $(this).addClass('highlighted');
     });
     $('#downloadFile').on('click', function() {
-      var applicationType = $("#application").val() === "1" ? "Cashiering_Logs" : "Back_Office_Logs";
+      var applicationType = $("#application").val() === "1" ? "Cashiering_Logs_"+getPHTDateTime() : "Back_Office_Logs_"+getPHTDateTime();
       var tableData = '';
       $('#logTable tbody tr:visible').each(function(index, row) {
           $(row).find('td').each(function(index, col) {
@@ -403,82 +424,81 @@ tbody td {
 
       $(link).remove();
       window.URL.revokeObjectURL(url);
+
+      show_response(`File "${applicationType}.txt" has been downloaded. Check your Downloads folder.`, 1)
     });
 
     $("#btn_datePicker").off("click").on("click", function(){
-      $('#dateTimeModal').show()
-      $('.predefinedDates').val("");
+      $('#period_reports').fadeIn(200)
    })
+  function formatDates(dateStr) 
+  {
+    const parts = dateStr.split('/');
+    const date = new Date(parts[2], parts[1] - 1, parts[0]);
+    const options = {
+      timeZone: 'Asia/Manila',
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit'
+    };
+    return new Intl.DateTimeFormat('en-PH', options).format(date);
+  }
+  function convertDateRange(dateRange) 
+  {
+    const [startDateStr, endDateStr] = dateRange.split(' - ');
+    const startFormatted = formatDates(startDateStr);
+    const endFormatted = formatDates(endDateStr);
+    return `${startFormatted} - ${endFormatted}`;
+  }
+  $("#btn_datePeriodSelected").on("click", function(){
+    var date_selected = $("#date_selected").text();
+    $("#date_range").val(date_selected);
+    $("#period_reports").hide();
+    $("#datepicker").val(convertDateRange(date_selected))
+    var selectedDate = $("#datepicker").val();
+    var selectedUser = $('#user').val();
+    filterTable(selectedDate, selectedUser);
+  })
 
-   $('.okBtnDates').off('click').on('click', function() {
-      var selectedDatePre = document.getElementById("predefinedDates").value;
-      var predefinedDouble = document.getElementById("predefinedDouble").value;
-
-      var dateFrom = document.getElementById("datepickerDiv").value;
-      var dateTo = document.getElementById("datepickerDiv2").value;
-
-      if (selectedDatePre !== "" || predefinedDouble !== "" || dateFrom !== "" || dateTo !== "") {
-          if (selectedDatePre !== "" && predefinedDouble === "") {
-              var date = new Date(selectedDatePre);
-              const formattedDateSelected = date.toLocaleDateString("en-PH", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit"
-              });
-              document.getElementById('datepicker').value = formattedDateSelected;
-          } else if (selectedDatePre === "" && predefinedDouble !== "") {
-              var dates = predefinedDouble.split(" - ");
-              var startDateString = dates[0];
-              var endDateString = dates[1];
-
-              var startDate = new Date(startDateString);
-              var formattedStartDate = startDate.toLocaleDateString("en-PH", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit"
-              });
-
-              var endDate = new Date(endDateString);
-              var formattedEndDate = endDate.toLocaleDateString("en-PH", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit"
-              });
-
-              var formattedDates = formattedStartDate + " - " + formattedEndDate;
-              document.getElementById('datepicker').value = formattedDates;
-          } else {
-            var dateFrom = new Date(document.getElementById("datepickerDiv").value);
-            var dateTo = new Date(document.getElementById("datepickerDiv2").value);
-              const formattedDateFrom = dateFrom.toLocaleDateString("en-PH", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit"
-              });
-              const formattedDateTo = dateTo.toLocaleDateString("en-PH", {
-                  year: "numeric",
-                  month: "short",
-                  day: "2-digit"
-              });
-
-              var selectedDates = formattedDateFrom + " - " + formattedDateTo;
-              document.getElementById('datepicker').value = selectedDates;
-          }
-      } else {
-          document.getElementById('datepicker').value = "";
+  function show_response(message, type) 
+  {
+      if (toastDisplayed) {
+          return; 
       }
 
-      $('#dateTimeModal').hide();
-      $('.predefinedDates').val("");
-      $('.predefinedDouble').val("");
-      clearFields();
+      toastDisplayed = true; 
 
-      var selectedDate = $("#datepicker").val();
-      var selectedUser = $('#user').val();
-      filterTable(selectedDate, selectedUser);
+      toastr.options = {
+          "onShown": function () {
+              $('.custom-toast').css({
+                  "opacity": 1,
+                  "width": "600px",
+                  "text-align": "center",
+                  "border": "1px solid #1E1C11",
+              });
+          },
+          "onHidden": function () {
+              toastDisplayed = false; 
+          },
+          "closeButton": true,
+          "positionClass": "toast-top-right",
+          "timeOut": "3500",
+          "extendedTimeOut": "1000",
+          "progressBar": true,
+          "showEasing": "swing",
+          "hideEasing": "linear",
+          "showMethod": "fadeIn",
+          "hideMethod": "fadeOut",
+          "tapToDismiss": false,
+          "toastClass": "custom-toast",
+          "onclick": function () { 
+              toastr.clear();
+              toastDisplayed = false;
+              }
+      };
 
-  });
-
+      type === 1 ? toastr.success(message) : toastr.error(message);
+  }
 
 
     $("#user").on("change", function(){
@@ -696,5 +716,5 @@ tbody td {
         $("#user").val();
         fetchData(applicationValue);
     });
-  })
+  
 </script>

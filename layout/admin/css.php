@@ -136,7 +136,7 @@ td, th {
     animation: slideOutRightss 0.5s forwards;
   }
   footer {
-    background-color: #151515; /* Change the background color as needed */
+    background-color: #1e1e1e; /* Change the background color as needed */
     padding: 20px; /* Adjust the padding as needed */
   }
 
@@ -338,7 +338,7 @@ button:hover {
     header{  grid-area: head; }
     .main-panel {grid-area: content; }
     .sidebar { grid-area: side;}
-    footer { grid-area: foot;},
+    footer { grid-area: foot;}
     .dataTables_filter {
             display: none; /* Hide the default search box */
         }
@@ -354,7 +354,7 @@ button:hover {
     border: 2px solid green !important;
 }
 .card {
-  background-color: #151515;
+  background-color: #1e1e1e;
   border-color: #242424;
   height: 200px;
   /* overflow-x: auto; 
@@ -482,7 +482,7 @@ button:hover{
     width: 6px; 
 }
 .scrollable::-webkit-scrollbar-track {
-    background: #151515;
+    background: #1e1e1e;
 }
 .scrollable::-webkit-scrollbar-thumb {
     background: #888; 

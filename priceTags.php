@@ -355,7 +355,7 @@ body{
     margin-top: 0px;
     margin-bottom: 15px;
     height: 85vh;
-    background-color: #151515;
+    background-color: #1e1e1e;
   }
   table thead th{
     font-size: 14px;
@@ -363,7 +363,7 @@ body{
   tbody {
     display: block;
     overflow: auto;
-    border: 1px solid #151515;
+    border: 1px solid #1e1e1e;
 }
 thead, tbody tr {
     display: table;
@@ -373,7 +373,7 @@ thead, tbody tr {
 }
 tbody td {
     /* border: 1px solid #dddddd;  */
-    border: 1px solid #151515;
+    border: 1px solid #1e1e1e;
     padding: 5px 5px; 
     height: 2px; 
     line-height:1;
@@ -385,7 +385,7 @@ input{
 }
 
 .mainDiv {
-    background: #151515;
+    background: #1e1e1e;
     padding: 5px;
     margin-top: 0px;
     height: 85vh;
@@ -554,31 +554,53 @@ h4 {
 	</script>
 
 <?php include "layout/admin/css.php"?> 
-<?php include "layout/admin/barcodeassets.php"?> 
+
 <style>
   body{
     font-family: "Century Gothic"
   }
+  .ui-menu {
+    border: 1px solid #333333 !important;
+    font-family: Century Gothic;
+    z-index: 2999; 
+}
+
+.ui-menu-item {
+    background-color: #333333 !important;
+    color: #ffffff; 
+    padding: 2px 2px; 
+    line-height: 0.7;
+}
+
+.ui-state-hover {
+    background-color: var(--primary-color) !important; 
+    color: #ffffff; 
+}
 </style>
-  <div class="container-scroller">
+  <div class="container-scroller" style = "background-color: #262626;">
     <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row not_scrollable" style = "margin-bottom: 10px; margin-top: -20px;">
+        <div class="content-wrapper" >
+          <div class="row not_scrollable" style = "margin-bottom: 10px; background-color: #262626">
             <div class="col-md-12">
-              <div id="title" class = "text-custom">
-                <h1 style = "font-weight: bold">PRICE TAGS AND BARCODES</h1>
+              <div  class = "text-custom">
+                <h1 style = " margin-left: 20px">PRICE TAGS AND BARCODES</h1>
 
               </div>
             </div>
             <div class = "row">
-                <div  style = "width:600px; background-color: #151515;">
-                  <div class="mainDiv" style = "margin-left: 25px;">
+                <div  style = "width:600px; background-color: #262626; ;">
+                  <div class="mainDiv" style = "margin-left: 10px;">
                     <div class="tableCard" >
                         <div class="fcontainer"  >
                             <form id="priceTagForm" >
                                 <div class="fieldContainer" style="margin-top: -3px; width: 100%">
-                                    <label style = "margin-left: -10px;"><img src="assets/img/barcode.png" style="color: white; height: 70px; width: 50px;"></label>
+                                    <!-- <label style = "margin-left: -10px;"><img src="assets/img/barcode.png" style="color: white; height: 70px; width: 50px;"></label> -->
+                                    <label>
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="50" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                                      </svg>
+                                    </label>
                                     <div class="search-container">
                                         <input type="hidden" id="searchInput_id" value="0">
                                         <input type="hidden" id="barcode_value" value = "0">
@@ -586,21 +608,21 @@ h4 {
                                         <input type="hidden" id="product_price" value = "0">
                                         <input type="hidden" id="sku" value = "0">
                                         <input type="hidden" id="uom" value = "0">
-                                        <input type="text" style="width: 360px; height: 40px; font-size: 14px; border: 1px solid white;"
+                                        <input type="text" style="width: 340px; height: 40px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px"
                                             class="search-input italic-placeholder" placeholder="Search Product,[Name, Barcode, Brand]" name="searchInput"
                                             onkeyup="$(this).removeClass('has-error')" id="searchInput" autocomplete="off">
                                           
                                     </div>
-                                    <button style="font-size: 1.5rem; height: 40px; width: 230px; border-radius: 4px;" id="btn_searchInputProduct">
-                                        Add Product</button>
+                                    <button style="font-size: 12px; height: 40px; width: 150px; border-radius: 4px; margin-right: 10px" id="btn_searchInputProduct">
+                                        Product</button>
                                 </div>
                             </form>
                         
-                            <table id="tbl_priceTags" class="text-color table-border " style="margin-top: -3px; border: none; width: 100%;">
+                            <table id="tbl_priceTags" class="text-color table-border " style="margin-top: -3px; border: none; width: 100%; overflow: hidden">
                                 <thead>
                                     <tr>
-                                        <th class = "otherinput" style="background-color: #1E1C11; width: 80%; font-size: 12px;">ITEM DESCRIPTION</th>
-                                        <th class = "otherinput" style="background-color: #1E1C11; text-align:left; width: 20%; font-size: 12px;">BARCODE</th>
+                                        <th class = "otherinput" style="background-color: #1E1C11; width: 40%; font-size: 12px;">ITEM DESCRIPTION</th>
+                                        <th class = "otherinput" style="background-color: #1E1C11; text-align:left; width: 30%; font-size: 12px;">BARCODE</th>
                                     </tr>
                                 </thead>
                                 <tbody style="border-collapse: collapse; border: none">
@@ -618,7 +640,7 @@ h4 {
                     </div>
                   </div>
                   <div style = "position: absolute; bottom: 0; right: 20px; margin-right: 4vh;">
-                      <button class="button" style="width: 200px; background-color: #151515; border: 1px solid red; color: white; height: 40px; " id="btnPrintBarcode">Print Barcode</button>
+                      <button class="button" style="width: 200px; background-color: #1e1e1e; border: 1px solid red; color: white; height: 40px; " id="btnPrintBarcode">Print Barcode</button>
                     </div>
                 </div>
             </div>

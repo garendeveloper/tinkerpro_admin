@@ -32,7 +32,7 @@
         color: #fff'
     }
     #responsive-data thead tr th{
-        background-color: #151515;
+        background-color: #1e1e1e;
         border: 2px solid #262626;
         height: 5px;
         padding: 10px 10px;
