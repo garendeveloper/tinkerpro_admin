@@ -41,6 +41,15 @@
         -moz-appearance: none;
         padding-right: 25px;
         text-indent: 0.5em;
+        padding: 5px 5px;
+        
+    }
+    .custom-select select option{
+      padding: 10px 10px;
+    }
+
+    .custom-select select option:hover{
+      background-color: var(--primary-color);
     }
 
     .custom-select i {
@@ -66,6 +75,32 @@
     #tbl_purchaseOrders {
         border: none;
     }
+
+    .date-input-container {
+      position: relative;
+      display: inline-block;
+      width: 250px; 
+  }
+.date-input-container input {
+    width: 100%;
+    height: 45px;
+    padding-right: 30px; 
+    box-sizing: border-box; 
+    text-align: center;
+    font-size: 16px; 
+}
+.calendar-icon {
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(-50%); 
+    cursor: pointer;
+    font-size: 2em; 
+    color: #ffffff; 
+}
+table thead th{
+    color: #ffffff;
+}
 </style>
 <div class="fcontainer" id = "purchaseItems_div" style = "display: none">
     <form id="po_form">
@@ -83,9 +118,7 @@
             </div>
             <div class="date-input-container">
                 <input type="text" name="date_purchased" id="date_purchased" placeholder="Select date" readonly>
-                <button id="calendar-btn" class="button">
-                    <i class="bi bi-calendar" aria-hidden="true"></i>
-                </button>
+                <i id="calendar-btn" class="bi bi-calendar3 calendar-icon"   aria-hidden="true"></i>
             </div>
         </div>
         <div class="fieldContainer" style = "margin-top: 2px;">
@@ -118,10 +151,10 @@
     <table id="tbl_purchaseOrders" class="text-color table-border" style = "margin-top: -3px;">
         <thead>
             <tr>
-                <th style="background-color: #1E1C11; width: 50%">ITEM DESCRIPTION</th>
-                <th style="background-color: #1E1C11;  ">QTY</th>
-                <th style="background-color: #1E1C11; ">PRICE</th>
-                <th style="background-color: #1E1C11;" colspan = "2">TOTAL</th>
+                <th style="background-color: #1E1C11; width: 50%; color: #ffffff">ITEM DESCRIPTION</th>
+                <th style="background-color: #1E1C11; color: #ffffff ">QTY</th>
+                <th style="background-color: #1E1C11; color: #ffffff">PRICE</th>
+                <th style="background-color: #1E1C11; color: #ffffff" colspan = "2">TOTAL</th>
             </tr>
         </thead>
         <tbody id="po_body" style="border-collapse: collapse; border: none">
@@ -131,14 +164,14 @@
     <table id = "tbl_purchaseOrders_footer" class="text-color table-border" style="position: absolute; bottom: 5px; padding: 10px;">
         <thead>
             <tr>
-                <th style="background-color: #1E1C11;  text-align: left; width: 50%"
+                <th style="background-color: #1E1C11;  text-align: left; width: 50%; color: #ffffff"
                     id="totalTax">Tax: 0.00</th>
-                <th style="background-color: #1E1C11;  text-align: right" id="totalQty">0</th>
-                <th style="background-color: #1E1C11; text-align: right" id="totalPrice">
+                <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="totalQty">0</th>
+                <th style="background-color: #1E1C11; text-align: right; color: #ffffff" id="totalPrice">
                     &#x20B1;&nbsp;0.00</th>
-                <th style="background-color: #1E1C11;  text-align: right" id="overallTotal">
+                <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="overallTotal">
                     &#x20B1;&nbsp;0.00</th>
-                <th style="background-color: #1E1C11;  text-align: right" id="overallTotal">
+                <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="overallTotal">
                </th>
             </tr>
         </thead>
@@ -313,11 +346,11 @@
         $('#calendar-btn').prop('disabled', true);
         $("#p_qty").focus();
       }
-    //   $('#product').on('keypress', function(event) {
-    //     if (event.keyCode === 13 || event.keyCode === 27) { 
-    //     hidePopups();
-    //     }
-    // });
+      $('#product').on('keypress', function(event) {
+        if (event.keyCode === 13 || event.keyCode === 27) { 
+        hidePopups();
+        }
+    });
     function updateTotal() {
         var totalQty = 0;
         var totalPrice = 0;

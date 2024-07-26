@@ -66,7 +66,7 @@
         max-width: 100%;
     }
 
-    /* #FF6900; */
+    /* var(--primary-color); */
     .tableCard {
         height: auto;
         max-height: none;
@@ -142,7 +142,7 @@
 .btnCustom {
     font-size: 11px;
     font-family: Century Gothic;
-    color: #FF6900;
+    color: var(--primary-color);
     border-radius: 5px;
 }
 
@@ -239,7 +239,7 @@ input:checked+.slider:before {
 }
 
 input:checked+.sliderOtherCharges {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 input:focus+.sliderOtherCharges {
@@ -261,7 +261,7 @@ input:checked+.sliderOtherCharges:before {
 }
 
 .sliderOtherCharges.active {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 .displayReceipt {
@@ -306,7 +306,7 @@ input:checked+.sliderOtherCharges:before {
 }
 
 input:checked+.spanDisplayReceipt {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 input:focus+.spanDisplayReceipt {
@@ -328,7 +328,7 @@ input:checked+.spanDisplayReceipt:before {
 }
 
 .spanDisplayReceipt.active {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 .serviceCharge {
@@ -373,7 +373,7 @@ input:checked+.spanDisplayReceipt:before {
 }
 
 input:checked+.sliderServiceCharges {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 input:focus+.sliderServiceCharges {
@@ -395,7 +395,7 @@ input:checked+.sliderServiceCharges:before {
 }
 
 .sliderServiceCharges.active {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 /* new */
@@ -441,7 +441,7 @@ input:checked+.sliderServiceCharges:before {
 }
 
 input:checked+.spanDisplayServiceChargeReceipt {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 input:focus+.spanDisplayServiceChargeReceipt {
@@ -463,7 +463,7 @@ input:checked+.spanDisplayServiceChargeReceipt:before {
 }
 
 .spanDisplayServiceChargeReceipt.active {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 /* new */
@@ -509,7 +509,7 @@ input:checked+.spanDisplayServiceChargeReceipt:before {
 }
 
 input:checked+.taxVatSpan {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 input:focus+.taxVatSpan {
@@ -531,7 +531,7 @@ input:checked+.taxVatSpan:before {
 }
 
 .taxVatSpan.active {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 /* new */
@@ -577,7 +577,7 @@ input:checked+.taxVatSpan:before {
 }
 
 input:checked+.spanTaxVat {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 input:focus+.spanTaxVat {
@@ -599,7 +599,7 @@ input:checked+.spanTaxVat:before {
 }
 
 .spanTaxVat.active {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 /* new */
@@ -645,7 +645,7 @@ input:checked+.spanTaxVat:before {
 }
 
 input:checked+.spanShowTaxVat {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 input:focus+.spanShowTaxVat {
@@ -667,7 +667,7 @@ input:checked+.spanShowTaxVat:before {
 }
 
 .spanShowTaxVat.active {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 /* new */
@@ -713,7 +713,7 @@ input:checked+.spanShowTaxVat:before {
 }
 
 input:checked+.discountSpan {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 input:focus+.discountSpan {
@@ -735,7 +735,7 @@ input:checked+.discountSpan:before {
 }
 
 .discountSpan.active {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 
 /* new */
@@ -815,12 +815,12 @@ input:checked+.discountSpan:before {
 }
 
 .generate:hover {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
     color: #fefefe;
 }
 
 .btnCustom:hover {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
     color: #fefefe;
 
 }
@@ -833,7 +833,7 @@ input:checked+.discountSpan:before {
 }
 
 .addCategory:hover {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
     color: #fefefe;
 }
 
@@ -991,7 +991,7 @@ input {
 }
 
 .search-dropdown-item:hover {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
 }
 </style>
 <style>
@@ -1012,7 +1012,7 @@ input {
     border-radius: 3px;
     padding: 5px;
     cursor: pointer;
-    border-color: #FF6900;
+    border-color: var(--primary-color);
     font-size: 10px;
     height: 25px;
 }
@@ -1104,7 +1104,7 @@ input {
 table {
     width: calc(100% - 20px);
     table-layout: auto;
-    border: 1px solid #FF6900;
+    border: 1px solid var(--primary-color);
     color: white;
     font-size: 10px;
     margin-top: 10px;
@@ -1112,12 +1112,12 @@ table {
 
 table th {
     background-color: #1E1C11;
-    border: 1px solid #FF6900;
+    border: 1px solid var(--primary-color);
 }
 
 table:nth-child(2) tfoot th {
     background-color: #1E1C11;
-    border: 1px solid #FF6900;
+    border: 1px solid var(--primary-color);
     text-align: right;
 }
 
@@ -1131,6 +1131,24 @@ input[type="text"] {
     box-sizing: border-box;
     height: 25px;
 }
+.ui-menu {
+    border: 1px solid #333333 !important;
+    font-family: Century Gothic;
+    z-index: 2999; 
+}
+
+.ui-menu-item {
+    background-color: #333333 !important;
+    color: #ffffff; 
+    padding: 2px 2px; 
+    line-height: 0.7;
+}
+
+.ui-state-hover {
+    background-color: var(--primary-color) !important; 
+    color: #ffffff; 
+}
+
 </style>
 <?php include "layout/admin/slider.php"?>
 
@@ -1140,7 +1158,7 @@ input[type="text"] {
             <div class="modal-title">
                 <div
                     style="margin-top: 10px; margin-left: 20px; display: flex; align-items: center; justify-content: space-between;">
-                    <h2 class="text-custom" style="color:#FF6900; margin-right: 10px;">Option</h2>
+                    <h2 class="text-custom" style="color:var(--primary-color); margin-right: 10px;">Option</h2>
                     <button style="margin-right: 20px; " id="btn_minimizeModal" type="button"> <i
                             class="mdi mdi-close"></i></button>
                 </div>

@@ -76,7 +76,7 @@
         max-width: 100%; 
     }
     
-    /* #FF6900; */
+    /* var(--primary-color); */
 .tableCard{
     height: auto; 
     max-height: none; 
@@ -140,7 +140,7 @@
 .btnCustom{
   font-size: 11px;
   font-family: Century Gothic;
-  color:#FF6900;
+  color:var(--primary-color);
   border-radius: 5px;
 }
 
@@ -265,7 +265,7 @@ input:checked + .slider:before {
 }
 
 input:checked + .sliderOtherCharges {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .sliderOtherCharges {
@@ -287,7 +287,7 @@ input:checked + .sliderOtherCharges:before {
 }
 
 .sliderOtherCharges.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 .displayReceipt {
   position: relative;
@@ -331,7 +331,7 @@ input:checked + .sliderOtherCharges:before {
 }
 
 input:checked + .spanDisplayReceipt {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .spanDisplayReceipt {
@@ -353,7 +353,7 @@ input:checked + .spanDisplayReceipt:before {
 }
 
 .spanDisplayReceipt.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 .serviceCharge {
@@ -398,7 +398,7 @@ input:checked + .spanDisplayReceipt:before {
 }
 
 input:checked + .sliderServiceCharges {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .sliderServiceCharges {
@@ -420,7 +420,7 @@ input:checked + .sliderServiceCharges:before {
 }
 
 .sliderServiceCharges.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 /* new */
@@ -466,7 +466,7 @@ input:checked + .sliderServiceCharges:before {
 }
 
 input:checked + .spanDisplayServiceChargeReceipt {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .spanDisplayServiceChargeReceipt {
@@ -488,7 +488,7 @@ input:checked + .spanDisplayServiceChargeReceipt:before {
 }
 
 .spanDisplayServiceChargeReceipt.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .taxVat {
@@ -533,7 +533,7 @@ input:checked + .spanDisplayServiceChargeReceipt:before {
 }
 
 input:checked + .taxVatSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .taxVatSpan {
@@ -555,7 +555,7 @@ input:checked + .taxVatSpan:before {
 }
 
 .taxVatSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .includesTaxVat {
@@ -600,7 +600,7 @@ input:checked + .taxVatSpan:before {
 }
 
 input:checked + .spanTaxVat {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .spanTaxVat {
@@ -622,7 +622,7 @@ input:checked + .spanTaxVat:before {
 }
 
 .spanTaxVat.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .showIncludesTaxVat {
@@ -667,7 +667,7 @@ input:checked + .spanTaxVat:before {
 }
 
 input:checked + .spanShowTaxVat {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .spanShowTaxVat {
@@ -689,7 +689,7 @@ input:checked + .spanShowTaxVat:before {
 }
 
 .spanShowTaxVat.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .discount {
@@ -734,7 +734,7 @@ input:checked + .spanShowTaxVat:before {
 }
 
 input:checked + .discountSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .discountSpan {
@@ -756,17 +756,17 @@ input:checked + .discountSpan:before {
 }
 
 .discountSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 /* new */
 .dropdown {
     position: relative;
     display: inline-block;
-    overflow: y;
+    
   }
 
-  .dropdown-content {
+  /* .dropdown-content {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -782,6 +782,7 @@ input:checked + .discountSpan:before {
     width: 100%;
     padding: 10px;
     min-width: 210px;
+ 
     border: none; 
     background-color: transparent;
     color: #000000; 
@@ -796,7 +797,37 @@ input:checked + .discountSpan:before {
 
   .dropdown-content a:hover {
     background-color: #ddd;
+  } */
+  .dropdown-content {
+    display: none;
+    position: absolute; 
+    background-color: #262626;
+    min-width: 160px;
+    max-height: 200px; 
+    overflow-y: auto; 
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 9999;
   }
+
+.dropdown-content a {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  min-width: 210px;
+  border: none;
+  background-color: #262626;
+  color: #f9f9f9;
+  text-decoration: none;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+  color: #000000;
+}
 
 
   .custom-btn {
@@ -813,21 +844,23 @@ input:checked + .discountSpan:before {
 text-align: right;
 }
 
-#uom_dropdown {
+/* #uom_dropdown {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #262626;
     min-width: 160px;
+    color: #f9f9f9;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
     top: 25px; 
     left: 82px; 
     
-}
+} */
 .dropdown-content{
   display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #262626;
+    color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 5;
@@ -848,11 +881,11 @@ font-weight: bold;
   border-color: #595959;
 }
 .generate:hover{
-  background-color: #FF6900;
+  background-color: var(--primary-color);
   color: #fefefe;
 }
 .btnCustom:hover {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
     color: #fefefe;
 
 }
@@ -863,7 +896,7 @@ font-weight: bold;
   border-color: #595959;
 }
 .addCategory:hover{
-  background-color: #FF6900;
+  background-color: var(--primary-color);
   color: #fefefe;
          
 }.button-container {
@@ -968,7 +1001,7 @@ input:checked + .sliderbom:before {
   margin-top: 20px
 }
 .btns-bom:hover{
-  background-color: #FF6900;
+  background-color: var(--primary-color);
   outline: 0;
 }
 #myTable {
@@ -1064,7 +1097,7 @@ input:checked + .sliderbom:before {
 }
 
 input:checked + .warrantySpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .warrantySpan {
@@ -1086,7 +1119,7 @@ input:checked + .warrantySpan:before {
 }
 
 .warrantySpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 /* new */
@@ -1132,7 +1165,7 @@ input:checked + .warrantySpan:before {
 }
 
 input:checked + .multipleSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .multipleSpan {
@@ -1154,7 +1187,7 @@ input:checked + .multipleSpan:before {
 }
 
 .multipleSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .stockeable {
@@ -1199,7 +1232,7 @@ input:checked + .multipleSpan:before {
 }
 
 input:checked + .stockeableSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .stockeableSpan {
@@ -1221,7 +1254,7 @@ input:checked + .stockeableSpan:before {
 }
 
 .stockeableSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 
@@ -1267,7 +1300,7 @@ input:checked + .stockeableSpan:before {
 }
 
 input:checked + .warningSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .warningSpan {
@@ -1289,7 +1322,7 @@ input:checked + .warningSpan:before {
 }
 
 .warningSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 .imageButtonDiv{
@@ -1311,7 +1344,10 @@ input:checked + .warningSpan:before {
     height: 120px;
 }
 
-.show {display: block;}
+.show {
+  display: block;
+  overflow: auto;
+}
 .form-error{
   border: 1px solid red;
 }
@@ -1319,7 +1355,7 @@ input:checked + .warningSpan:before {
     animation: slideOutRightss 0.5s forwards;
   }
   #uomType::placeholder {
-    color: #FF6700;
+    color: var(--primary-color);
     font-family: Century Gothic;
     font-weight: normal;
     font-style: italic;
@@ -1357,7 +1393,7 @@ label{
         <div class="warning-container">
           <div class="tableCard">
           <div style="margin-left: 20px;margin-right: 20px">
-            <table id="tbl_createExpense" class="text-color table-border"> 
+            <table id="tbl_createExpense" class="text-color table-border" > 
               <input type="hidden" name = "expense_id" id = "expense_id" value = "">
                 <tbody>
                     <tr>
@@ -1386,23 +1422,33 @@ label{
                                 </g>
                             </svg>
                             </button>
-                            <div class="dropdown-content" id="expense_type_dropdown" style = "overflow: auto">
-                                <a href="#" data-value="inventory">Inventory</a>
+                            <div class="dropdown-content" id="expense_type_dropdown" >
                                 <a href="#" data-value="rent">Rent</a>
                                 <a href="#" data-value="utilities">Utilities</a>
                                 <a href="#" data-value="salaries wages">Salaries and Wages</a>
-                                <a href="#" data-value="marketing advertising">Marketing and Advertising</a>
-                                <a href="#" data-value="office supplies">Office Supplies</a>
                                 <a href="#" data-value="maintenance repairs">Maintenance and Repairs</a>
-                                <a href="#" data-value="insurance">Insurance</a>
-                                <a href="#" data-value="taxes">Taxes</a>
+                                <a href="#" data-value="promotions">Promotions</a>
+                                <a href="#" data-value="advertising">Advertising</a>
+                                <a href="#" data-value="public relations">Public Relations</a>
+                                <a href="#" data-value="office supplies">Office Supplies</a>
                                 <a href="#" data-value="professional services">Professional Services</a>
-                                <a href="#" data-value="travel expenses">Travel Expenses</a>
-                                <a href="#" data-value="depreciation">Depreciation</a>
+                                <a href="#" data-value="software subsciptions">Software Subscriptions</a>
+                                <a href="#" data-value="interest">Interest</a>
                                 <a href="#" data-value="bank fees">Bank Fees</a>
+                                <a href="#" data-value="insurance">Insurance</a>
+                                <a href="#" data-value="travel expenses">Travel Expenses</a>
+                                <a href="#" data-value="client entertainment">Client Entertainment</a>
+                                <a href="#" data-value="taxes">Taxes</a>
+                                <a href="#" data-value="income tax">Income Tax</a>
+                                <a href="#" data-value="Property Tax">Property Tax</a>
+                                <a href="#" data-value="depreciation">Depreciation</a>
+                                <a href="#" data-value="amortization">Amortization</a>
                                 <a href="#" data-value="miscellaneous">Miscellaneous</a>
+                                <a href="#" data-value="charitable donations">Charitable Donations</a>
+                                <a href="#" data-value="employee training">Employee Training</a>
+                                <a href="#" data-value="unplanned expenses">Unplanned Expenses / Others</a>
                             </div>
-                        </div></td>
+                        </td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Quantity</td>
@@ -1425,11 +1471,11 @@ label{
                                  $productFacade = new ProductFacade;
                                  $uom = $productFacade->getUOM();
                                 while ($row =  $uom->fetch(PDO::FETCH_ASSOC)) {
-                                    echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['uom_name']) . '</a>';
+                                    echo '<a href="#" style=" text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['uom_name']) . '</a>';
                                 }
                                 ?>
                             </div>
-                        </div></td>
+                          </td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Supplier</td>
@@ -1451,11 +1497,10 @@ label{
                                  $supplierFacade = new SupplierFacade;
                                  $suppliers = $supplierFacade->get_allSuppliers();
                                 while ($row =  $suppliers->fetch(PDO::FETCH_ASSOC)) {
-                                    echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['supplier']) . '</a>';
+                                    echo '<a href="#" style=" text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['supplier']) . '</a>';
                                 }
                                 ?>
-                            </div>
-                        </div></td>
+                            </div></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Invoice Number</td>
@@ -1488,7 +1533,7 @@ label{
             </table>
           </div>
           <div style="margin-top: 10px; margin-left: 20px">
-            <label class="text-custom"  style="color:#FF6900;">Description</label><br>
+            <label class="text-custom"  style="color:var(--primary-color);">Description</label><br>
             <textarea id="description" name = "description" class="item_description"></textarea>
           </div>
           <div id="scrollable-div">

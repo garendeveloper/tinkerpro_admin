@@ -40,11 +40,11 @@
 
     #tbl_inventory_count thead th {
         border: none;
-        color: #FF6900;
+        color: var(--primary-color);
     }
 
     #tbl_inventory_count thead {
-        border: 1px solid #FF6900;
+        border: 1px solid var(--primary-color);
     }
 
     #tbl_inventory_count tbody td {
@@ -70,12 +70,16 @@
             <label>REF# </label>
             <input type="text" name="ref" id="ic_reference" name="ic_reference"
                 style="width: 250px; height: 30px; font-size: 14px;" readonly>
-            <div class="date-input-container">
+            <!-- <div class="date-input-container">
                 <input type="text" name="date_counted" value = "" oninput="$(this).removeClass('has-error')" id="date_counted"
                     style="height: 30px;  text-align: center" >
                 <button id="btn_dateCounted" class="button" type="button" style="height: 30px;">
                     <i class="bi bi-calendar2" aria-hidden="true"></i>
                 </button>
+            </div> -->
+            <div class="date-input-container">
+                <input type="text" name="date_counted" id="date_counted" style="height: 30px;  text-align: center" placeholder="Select date" oninput="$(this).removeClass('has-error')" readonly>
+                <i id="calendar-btn" class="bi bi-calendar3 calendar-icon"   aria-hidden="true"></i>
             </div>
         </div>
         <div class="fieldContainer">
@@ -119,7 +123,7 @@
                     class="search-input italic-placeholder" placeholder="Search Product [barcode,name,brand]"
                     name="invc_product" onkeyup="$(this).removeClass('has-error')" id="invc_product" autocomplete="off">
             </div>
-            <button type = "button" style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;"
+            <button type = "button" style="font-size: 12px; height: 30px; width: 120px; border: 1px solid var(--primary-color); border-radius: 5px;"
                 id="btn_invcSearch">
                 Search</button>
         </div>
@@ -127,10 +131,10 @@
     <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh; margin-top: -5px;">
         <thead>
             <tr>
-                <th  style="background-color: #1E1C11; width: 50%">ITEM DESCRIPTION</th>
-                <th  style="background-color: #1E1C11; text-align:center">QTY</th>
-                <th style="background-color: #1E1C11; text-align:center">COUNTED</th>
-                <th  style="background-color: #1E1C11; text-align:right">DIF.</th>
+                <th  style="background-color: #1E1C11; color: #ffffff; width: 50%">ITEM DESCRIPTION</th>
+                <th  style="background-color: #1E1C11; color: #ffffff;text-align:center">QTY</th>
+                <th style="background-color: #1E1C11; color: #ffffff;text-align:center">COUNTED</th>
+                <th  style="background-color: #1E1C11; color: #ffffff; text-align:right">DIF.</th>
             </tr>
         </thead>
         <tbody style="border-collapse: collapse; border: none">

@@ -68,7 +68,7 @@ if (isset($_SESSION['user_id'])) {
         width: 200px;
         background-color: #151515;
         position: fixed;
-        top: 30px;
+        top: 40px;
         left: 0;
         overflow-x: auto;
         overflow-y: auto;
@@ -108,6 +108,7 @@ if (isset($_SESSION['user_id'])) {
         display: flex;
         align-items: center;
         margin-left: 5px;
+        line-height: 0;
     }
 
     .sidebar nav ul li a .icon {
@@ -131,6 +132,7 @@ if (isset($_SESSION['user_id'])) {
 
     .sidebar nav ul li:hover {
         background-color: #262626;
+        color: #000000;
     }
 
     .logo {

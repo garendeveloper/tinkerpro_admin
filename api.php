@@ -69,7 +69,6 @@
         case 'get_allExpenses':
             echo json_encode($expense_facade->get_allExpenses($_POST['start_date'], $_POST['end_date']));
             break;
-        //
         case 'get_allPaymentMethods':
             echo json_encode($inventory->get_allPaymentMethods());
             break;

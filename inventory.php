@@ -325,6 +325,7 @@ include ('./layout/admin/table-pagination-css.php');
   padding: 2px 2px; 
   height: 10px; 
   line-height: 0.5; 
+  font-size: 14px;
   border: 1px solid #292928;
 }
 #tbl_preview{
@@ -394,9 +395,9 @@ i:hover{
       style="display: grid; grid-template-columns: 4.5rem auto auto; align-items: center;background-color:#292928">
       <div class="content-wrapper" >
         <div
-          style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-left: -5px; margin-bottom: 5px; margin-top: -10px;">
+          style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-left: -5px; margin-bottom: 20px; margin-top: -10px;">
            <div class="horizontal-container" style="display: flex; align-items: center;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="60" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="40" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
               <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
             </svg>
             <input id = "searchInput" class="text-color searchProducts" style="width: 100%; height: 45px; margin-left: 10px; margin-right: 10px; font-size: 14px;" placeholder="Search Product,[code, barcode, name, brand]" autocomplete="off" autofocus/>
@@ -1672,6 +1673,9 @@ i:hover{
       function validateTableInputs(table_id) {
         var isValid = true;
         $('#' + table_id + ' tbody tr:not(.sub-row) input').each(function () {
+          if ($(this).attr('id') === 'date_expired') {
+            return; 
+          }
           if (!$(this).val().trim()) {
             isValid = false;
             $(this).addClass('has-error');
@@ -2061,16 +2065,6 @@ i:hover{
           var received_items_length = $("#tbl_receivedItems tbody tr").length;
           if (received_items_length > 0) {
             if (validateTableInputs(table_id)) {
-              // $("#received_payment_confirmation").slideDown({
-              //   backdrop: 'static',
-              //   keyboard: false,
-              // });
-              // $("#received_payment_confirmation #paid_title").html("Before proceeding, would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>");
-              // $("#received_payment_confirmation #total_paid").html($("#overallTotal").text());
-              // $("#received_payment_confirmation #paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color: #FF6700;'>ATTENTION REQUIRED!</strong> ");
-              // $("#received_payment_confirmation #btn_confirmPayment").on("click", function (e) {
-
-              //   e.preventDefault();
                 if (isSaving) return;
                 isSaving = true;
                 var tbl_data = [];

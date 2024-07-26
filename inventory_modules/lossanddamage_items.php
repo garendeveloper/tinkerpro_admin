@@ -125,12 +125,16 @@
             <label>REF# </label>
             <input type="text" name="ref" id="ld_reference" name="ld_reference"
                 style="width: 250px; height: 30px; font-size: 14px;" readonly>
-            <div class="date-input-container">
+            <!-- <div class="date-input-container">
                 <input type="text" name="date_damage" oninput="$(this).removeClass('has-error')" id="date_damage"
                     style="height: 30px;  text-align: center" placeholder="Select date" readonly>
                 <button id="btn_dateDamage" class="button" type="button" style="height: 30px;">
                     <i class="bi bi-calendar2" aria-hidden="true"></i>
                 </button>
+            </div> -->
+            <div class="date-input-container" id="btn_dateDamage">
+                <input type="text" name="date_damage" id="date_damage" style="height: 30px;  text-align: center" placeholder="Select date" oninput="$(this).removeClass('has-error')" readonly>
+                <i id="calendar-btn" class="bi bi-calendar3 calendar-icon"   aria-hidden="true"></i>
             </div>
         </div>
         <div class="fieldContainer">
@@ -179,10 +183,10 @@
     <table id="tbl_lossand_damages" class="text-color table-border" style="margin-top: -3px; margin-bottom: 30vh">
         <thead>
             <tr>
-                <th style="background-color: #1E1C11; width: 50%">ITEM DESCRIPTION</th>
-                <th style="background-color: #1E1C11; text-align:center">QTY</th>
-                <th style="background-color: #1E1C11; text-align:right">COST</th>
-                <th style="background-color: #1E1C11; text-align:right">TOTAL COST</th>
+                <th style="background-color: #1E1C11; color:#ffffff; width: 50%">ITEM DESCRIPTION</th>
+                <th style="background-color: #1E1C11; color:#ffffff; text-align:center">QTY</th>
+                <th style="background-color: #1E1C11; color:#ffffff; text-align:right">COST</th>
+                <th style="background-color: #1E1C11; color:#ffffff; text-align:right">TOTAL COST</th>
             </tr>
         </thead>
         <tbody style="border-collapse: collapse; border: none">
@@ -195,10 +199,10 @@
         <table id="footer_lossand_damages" class="text-color table-border">
             <thead style="border: none;">
                 <tr>
-                    <th style="background-color: #1E1C11; width: 50%;">TOTAL</th>
-                    <th style="background-color: #1E1C11; width: 50px; text-align:center;" id="total_qty">0</th>
-                    <th style="background-color: #1E1C11; text-align: right;" id="total_cost">₱ 0.00</th>
-                    <th style="background-color: #1E1C11; text-align: right;" id="overall_total_cost">₱ 0.00</th>
+                    <th style="background-color: #1E1C11; color:#ffffff; width: 50%;">TOTAL</th>
+                    <th style="background-color: #1E1C11; color:#ffffff; width: 50px; text-align:center;" id="total_qty">0</th>
+                    <th style="background-color: #1E1C11; color:#ffffff; text-align: right;" id="total_cost">₱ 0.00</th>
+                    <th style="background-color: #1E1C11; color:#ffffff; text-align: right;" id="overall_total_cost">₱ 0.00</th>
                 </tr>
                 <thead>
         </table>
@@ -312,21 +316,6 @@
 
             toastr.error(message);
         }
-        // function filterProducts(term) {
-        //     return productsCache.filter(function (row) {
-        //     return row.product.toLowerCase().includes(term) ||
-        //         row.barcode.includes(term) ||
-        //         (row.brand && row.brand.toLowerCase().includes(term)) ||
-        //         (!row.brand && term === "");
-        //     }).map(function (row) {
-        //     var brand = row.brand === null ? " " : row.brand;
-        //     return {
-        //         label: row.product + " (" + row.barcode + ")" + " (" + brand + ")",
-        //         value: row.barcode ?? row.product,
-        //         id: row.product_id
-        //     };
-        //     });
-        // }
         function filterProducts(term) {
             return productsCache.filter(function(row) {
                 var lowercaseTerm = term.toLowerCase();

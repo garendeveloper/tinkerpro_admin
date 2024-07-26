@@ -10,7 +10,7 @@
     }
 
     strong {
-        color: #FF6900;
+        color: var(--primary-color);
     }
 
     #tbl_receivedItems {
@@ -18,9 +18,9 @@
     }
 
     #tbl_receivedItems thead {
-        color: #FF6900;
+        color: var(--primary-color);
         border-collapse: collapse;
-        border: 1px solid #FF6900;
+        border: 1px solid var(--primary-color);
     }
 
     #tbl_receivedItems tbody td,
@@ -51,7 +51,7 @@
     }
 
     .checked {
-        background-color: #FF6900;
+        background-color: var(--primary-color);
     }
 
     .switch {
@@ -151,11 +151,11 @@
 
     #tbl_receivedItems thead th {
         border: none;
-        color: #FF6900;
+        color: var(--primary-color);
     }
 
     #tbl_receivedItems thead {
-        border: 1px solid #FF6900;
+        border: 1px solid var(--primary-color);
     }
 
     #tbl_receivedItems tbody td {
@@ -188,6 +188,15 @@
         right: 5px;
         transform: translateY(-50%);
 
+    }
+    #tbl_receivedItems tbody th,
+    #tbl_receivedItems tbody td {
+        padding: 5px 5px; 
+        height: 20px; 
+        line-height: 1; 
+    }
+    #tbl_receivedItems {
+        border: none;
     }
 </style>
 <div class="fcontainer" id="received_div" style="display: none;">
@@ -235,6 +244,9 @@
                 .right-aligned {
                     margin-left: auto;
                 }
+                th{
+                    color: #ffffff;
+                }
             </style>
             <div class="fieldContainer" id="f_receive">
                 <div class="group left-aligned">
@@ -251,14 +263,14 @@
             <table id="tbl_receivedItems" class="text-color" >
                 <thead>
                     <tr>
-                        <th style="background-color: #1E1C11; width: 40%" colspan="2">ITEM DESCRIPTION</th>
-                        <th style="background-color: #1E1C11;">QTY</th>
-                        <th style="background-color: #1E1C11;">RECEIVED</th>
-                        <th style="background-color: #1E1C11; text-align: center">EXP. DATE</th>
+                        <th style="background-color: #1E1C11; color: #ffffff;  width: 40%" colspan="2">ITEM DESCRIPTION</th>
+                        <th style="background-color: #1E1C11; color: #ffffff">QTY</th>
+                        <th style="background-color: #1E1C11; color: #ffffff">RECEIVED</th>
+                        <th style="background-color: #1E1C11; color: #ffffff; text-align: center">EXP. DATE</th>
                         <!-- <th style="background-color: #1E1C11;">SER.</th> -->
                     </tr>
                 </thead>
-                <tbody style="border-collapse: collapse; border: none">
+                <tbody style="border-collapse: collapse; border: 1px solid #1E1C11">
 
                 </tbody>
             </table>
@@ -363,9 +375,16 @@
             var isChecked = $(this).prop("checked");
             if (isChecked) {
                 $("#tbl_receivedItems #receive_item").prop("checked", true);
+                $('#tbl_receivedItems tbody tr').each(function() {
+                    var qty_on_hand = $(this).find('td').eq(2).text();
+                    $(this).find('td').eq(3).find('#qty_received').val(qty_on_hand); 
+                });
             }
             else {
                 $("#tbl_receivedItems #receive_item").prop("checked", false);
+                $('#tbl_receivedItems tbody tr').each(function() {
+                    $(this).find('td').eq(3).find('#qty_received').val('');
+                });
             }
         })
 
@@ -432,7 +451,7 @@
                                 }
                                 else
                                 {
-                                    table += "<td style = 'text-align: center; background-color: #262626; '  ><input id = 'qty_received'  placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
+                                    table += "<td style = 'text-align: center; background-color: #262626; '  ><input id = 'qty_received'  placeholder='QTY' value = "+data[i].qty_purchased+" style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
 
                                     table +=
                                             "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
