@@ -151,11 +151,11 @@ td, th {
     margin-right: 10px; /* Adjust the margin between buttons as needed */
   }
   .btn-control:hover{
-    border-color: #FF6700; 
+    border-color: var(--primary-color); 
     color: #fff; 
   }
   /* .btn-control:hover, button:hover {
-    background-color: #FF6700; 
+    background-color: var(--primary-color); 
     color: #ffff; 
   } */
   /*
@@ -168,7 +168,7 @@ button:active {
  
 }
 button:hover {
-    background-color: #FF6700; 
+    background-color: var(--primary-color); 
     color: #ffff; 
 }
 .active {
@@ -372,7 +372,7 @@ button:hover {
   gap: -50px;
 }
 .icon-button:hover{
-  color: #FF6700;
+  color: var(--primary-color);
 
 }
 .text-right{

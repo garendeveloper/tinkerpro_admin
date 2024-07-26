@@ -85,7 +85,7 @@ if (isset($_SESSION['user_id'])) {
         border-color: #10253F;
         height: 15px; 
         line-height: 0.3; 
-        font-size: 14px;
+        /* font-size: 14px; */
         padding: 2px 2px;
     }
     .barcode-container {

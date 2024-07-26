@@ -50,6 +50,9 @@
     input{
       height: 30px;
     }
+    strong{
+      color: var(--primary-color);
+    }
 </style>
 <div class="modal" id = "purchaseQty_modal" tabindex="-1" role="dialog" style = "display:none">
   <div class="modal-dialog" role="document" >
@@ -67,16 +70,16 @@
           <div style = "border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,1); margin: 0 8px; ">
               <p></p>
             <div style = "text-align:center">
-              <h5>Enter <b style = 'color: #FF6900'>QUANTITY</b> and supplier <b style = 'color: #FF6900'>RATE</b></h5>
+              <h5>Enter <b style = 'color: var(--primary-color)'>QUANTITY</b> and supplier <b style = 'color: var(--primary-color)'>RATE</b></h5>
               <h5 id = "product_name"></h5>
             </div>
             <div class="fieldContainer" style = "display:flex; margin-bottom: 2px;">
                 <div class="form-group" >
-                    <label for="p_qty" id="lbl_pqty" class="l_input" style="color: #FF6900;"><strong>QTY:</strong></label>
+                    <label for="p_qty" id="lbl_pqty" class="l_input" style="color: var(--primary-color);"><strong>QTY:</strong></label>
                     <input type="text" class="p_input" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right" autofocus="autofocus ">
                 </div>
                 <div class="form-group" >
-                    <label for="price" id="lbl_price" class="l_input" style="color: #FF6900; "><strong>RATE:</strong></label>
+                    <label for="price" id="lbl_price" class="l_input" style="color: var(--primary-color); "><strong>RATE:</strong></label>
                     <input type="text" class="p_input" pattern="\d+(\.\d{1,2})?" name="price" id="price" oninput="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right">
                 </div>
             </div>

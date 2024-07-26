@@ -1363,3 +1363,12 @@
 2024-07-25 12:00:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-25 12:14:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-25 13:50:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-25 18:23:01 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-26 09:22:35 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-26 10:10:34 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 24/7 MANGO 40G, Amount: 1120.00, Invoice#: 10-00000001 
+2024-07-26 10:15:54 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: BALLPEN, Amount: 98.00, Invoice#: SSS3 
+2024-07-26 10:48:08 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: BAKING SODA A&H 227G, Amount: 1475.00, Invoice#: 50-000000002 
+2024-07-26 10:48:52 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: BALLPEN, Amount: 98.00, Invoice#: SSS3 
+2024-07-26 13:09:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-26 13:32:36 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000004 Amount:₱ 354.66 
+2024-07-26 14:04:08 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000002 Supplier: GAISANO 

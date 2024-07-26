@@ -170,74 +170,24 @@ class ExpenseFacade extends DBConnection
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function get_allExpenses($start_date, $end_date, $searchInput, $offset, $recordsPerPage)
+    public function get_allExpenses($start_date, $end_date)
     {
-        if(!empty($searchInput))
-        {
-            $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, products.prod_desc as product,
-                            COUNT(*) OVER() as total_count 
-                            FROM expenses
-                            LEFT JOIN supplier ON supplier.id = expenses.supplier
-                            LEFT JOIN products ON products.id = expenses.product_id
-                            LEFT JOIN uom ON uom.id = expenses.uom_id
-                    WHERE 
-                        expenses.item_name LIKE :search_value
-                        OR products.prod_desc LIKE :search_value
-                        OR supplier.supplier LIKE :search_value
-                        OR uom.uom_name LIKE :search_value
-                        OR expenses.billable_receipt_no LIKE :search_value
-                        OR expenses.expense_type LIKE :search_value
-                        OR expenses.invoice_number LIKE :search_value";
+        $requestData = $_REQUEST;
+        $data = $this->get_allExpensesDatatable($requestData, $start_date, $end_date);
+    
+        $totalData = $totalFiltered = 0;
+        if (count($data) > 0) {
+            $totalData = $totalFiltered = $data[0]['total_count'];
+        }
 
-            $searchParam = "%" . $searchInput . "%";
-            $stmt = $this->connect()->prepare($sql);
-            $stmt->execute([
-                ':search_value' => $searchParam,
-            ]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        else if(!empty($start_date) && !empty($end_date))
-        {
-            $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, products.prod_desc as product,
-                    COUNT(*) OVER() as total_count 
-                    FROM expenses
-                    LEFT JOIN supplier ON supplier.id = expenses.supplier
-                    LEFT JOIN products ON products.id = expenses.product_id
-                    LEFT JOIN uom ON uom.id = expenses.uom_id 
-                    WHERE expenses.date_of_transaction BETWEEN :start_date AND :end_date
-                    ORDER BY expenses.id ASC LIMIT  $offset, $recordsPerPage";
-            $stmt = $this->connect()->prepare($sql);
-            $stmt->execute([
-                ':start_date' => $start_date,
-                ':end_date' => $end_date,
-            ]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        else
-        {
-            $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, products.prod_desc as product,
-                    COUNT(*) OVER() as total_count 
-                    FROM expenses
-                    LEFT JOIN supplier ON supplier.id = expenses.supplier
-                    LEFT JOIN products ON products.id = expenses.product_id
-                    LEFT JOIN uom ON uom.id = expenses.uom_id 
-                    ORDER BY expenses.id ASC LIMIT  $offset, $recordsPerPage";
-            $stmt = $this->connect()->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-    }
-    public function total_expensesRows()
-    {
-        $sql = "SELECT expenses.*, uom.uom_name, supplier.supplier, products.prod_desc as product,
-                COUNT(*) OVER() as total_count 
-                FROM expenses
-                LEFT JOIN supplier ON supplier.id = expenses.supplier
-                LEFT JOIN products ON products.id = expenses.product_id
-                LEFT JOIN uom ON uom.id = expenses.uom_id";
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->execute();
-        return  $stmt->rowCount();
+        $json_data = array(
+            "draw" => intval($requestData['draw']),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data
+        );
+    
+        return $json_data;
     }
     public function get_expenseDataById($expense_id)
     {

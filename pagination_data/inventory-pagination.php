@@ -199,7 +199,7 @@
                 display_records();
             },
             error: function (xhr, status, error) {
-            console.error(xhr.responseText);
+                console.error(xhr.responseText);
             }
         });
         updatePaginationButtons();

@@ -36,11 +36,11 @@
 
     #tbl_quickInventories thead th {
         border: none;
-        color: #FF6900;
+        color: var(--primary-color);
     }
 
     #tbl_quickInventories thead {
-        border: 1px solid #FF6900;
+        border: 1px solid var(--primary-color);
     }
 
     #tbl_quickInventories tbody td {
@@ -80,17 +80,18 @@
                     class="search-input italic-placeholder" placeholder="Search Product [barcode,name,brand]"
                     name="q_product" onkeyup="$(this).removeClass('has-error')" id="q_product" autocomplete="off">
             </div>
-            <button style="font-size: 12px; height: 30px; width: 120px; border: 1px solid #FF6900; border-radius: 5px;"
+            <button style="font-size: 12px; height: 30px; width: 120px; border: 1px solid var(--primary-color); border-radius: 5px;"
                 id="btn_searchQProduct">
+                <i class = "bi bi-search"></i>
                 Search</button>
         </div>
     </form>
     <table id="tbl_quickInventories" class="text-color table-border" style="margin-top: -3px;">
         <thead>
             <tr>
-                <th style="background-color: #1E1C11;  width: 50%">ITEM DESCRIPTION</th>
-                <th style="background-color: #1E1C11;  ">QTY ON HAND</th>
-                <th style="background-color: #1E1C11;  ">NEW QTY</th>
+                <th style="background-color: #1E1C11; color: #ffffff; width: 50%">ITEM DESCRIPTION</th>
+                <th style="background-color: #1E1C11;  color: #ffffff; ">QTY ON HAND</th>
+                <th style="background-color: #1E1C11;   color: #ffffff; ">NEW QTY</th>
             </tr>
         </thead>
         <tbody style="border-collapse: collapse; border: none">

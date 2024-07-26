@@ -30,21 +30,13 @@
         background-color: black;
         height: 20px;
         font-size: 11px;
-        color: #FF6900;
+        color: var(--primary-color);
     }
 
     #unpaid_purchase_modal .modal-header,
     .modal-body {
         border: none;
     }
-
-    /* #unpaid_purchase_modal .modal-body {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 15px;
-        position: relative;
-    } */
-
     #unpaid_purchase_modal p {
         font-size: 10px;
     }
@@ -131,7 +123,7 @@
 }
 
 input:checked + .stockeableSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .stockeableSpan {
@@ -153,7 +145,7 @@ input:checked + .stockeableSpan:before {
 }
 
 .stockeableSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 textarea::placeholder{
   font-size: 12px;
@@ -181,12 +173,15 @@ textarea::placeholder{
     color: #fff;
     transform: translateY(-50%);
 }
+.calendar-icon1{
+  color: #fff;
+}
 </style>
 
 <div id="unpaid_purchase_modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h6 style = "color: #FF6900; font-weight: bold">UPDATE PAYMENT TERMS </h6>
+            <h6 style = "color: var(--primary-color); font-weight: bold">UPDATE PAYMENT TERMS </h6>
             <span>
                 <button id="close-modal">X</button>
             </span>
@@ -214,7 +209,7 @@ textarea::placeholder{
                   <label class="tinker_label">Date Paid</label>
                   <div style="display: flex; margin-top: 20px; width: 100%;">
                     <input type="text" id="date_paid" name = "date_paid" style="text-align: center; width: 100%; margin-right: 5px;" placeholder="Choose date" readonly autocomplete="off">
-                    <a href="#" id = "btn_datePaid"><i class="bi bi-calendar" style = "font-size: 20px;"></i></a>
+                    <a href="#" id = "btn_datePaid"><i class="bi bi-calendar3 calendar-icon1" style = "font-size: 20px;"></i></a>
                   </div>
               </div>
               <div class="col-md-6">
@@ -235,7 +230,7 @@ textarea::placeholder{
                   <label class="tinker_label">Due Date</label>
                   <div style="display: flex; margin-top: 20px; width: 100%;">
                     <input type="text" id="unpaid_dueDate" name = "unpaid_dueDate" style="text-align: center; width: 100%; margin-right: 5px;" placeholder="Choose date" readonly autocomplete="off">
-                    <a href="#" id = "btn_unpaidDueDate"><i class="bi bi-calendar" style = "font-size: 20px;"></i></a>
+                    <a href="#" id = "btn_unpaidDueDate"><i class="bi bi-calendar3 calendar-icon1" style = "font-size: 20px;"></i></a>
                   </div>
               </div>
               <div class="col-md-6">
@@ -262,7 +257,7 @@ textarea::placeholder{
               </div>
             </div>
             <div class="row" id = "unpaid_hide3">
-              <textarea name="unpaid_note" id="unpaid_note" cols="60" rows="5" placeholder="Note" style="background-color: #1E1C11; color: #ffff; width: 95%; margin-left: 15px; font-size: 12px;">
+              <textarea name="unpaid_note" id="unpaid_note" cols="60" rows="5" placeholder="Note" style="background-color: #1E1C11; color: #ffff; width: 95%; margin-left: 15px; margin-top: 5px; font-size: 12px;">
               </textarea>
             </div>
         </div>
