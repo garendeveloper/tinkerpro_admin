@@ -49,7 +49,57 @@ if (isset($_GET["delete_user"])) {
 </script>
 
 <script>
+
+document.documentElement.style.setProperty('--primary-color', localStorage.colorPallete);
+
 $(document).ready(function() {
+
+
+  $('.highlight').css('background-color', localStorage.colorPallete)
+  $(".sidebar nav ul li").css("--hover-bg-color", localStorage.colorPallete)
+  $(".pos-setting").css("--hover-bg-color", localStorage.colorPallete)
+  $(".pos-setting").css("--active-bg-color", localStorage.colorPallete)
+
+  $(".purchase-grid-item").css("--hover-bg-color", localStorage.colorPallete)
+  $(".purchase-grid-item").css("--active-bg-color", localStorage.colorPallete)
+  $("button").css("--hover-bg-color", localStorage.colorPallete)
+  $("button").css("--active-bg-color", localStorage.colorPallete)
+  // $("button").css("border-color", localStorage.colorPallete)
+
+  $(".pos-setting:active").css("background-color", localStorage.colorPallete);
+  // $(".inventoryCard table thead tr th").css("background-color", "#292928");
+  // $(".inventoryCard table th").css("background-color", "#292928");
+
+  $(".productHeader tr th").css({
+    'border-color': '#292928',
+    'color': localStorage.colorPallete
+  });
+
+
+  // $("table tr").css("--active-bg-color", localStorage.colorPallete)
+  // $("table thead tr th").css("background-color", '');
+  // $("table th").css("background-color", '');
+
+
+  $(".font-size").css('color', localStorage.colorPallete)
+
+  // $("table th").css("color", "#ffffff");
+  $("table thead").css("border-color", localStorage.colorPallete);
+  // $("table").css("border-color", localStorage.colorPallete);
+  $("#pointer").css("color", localStorage.colorPallete);
+  $(".text-custom").css('color', localStorage.colorPallete);
+  $("span:not(.dynamic-color)").css('color', localStorage.colorPallete);
+  $(".dt-column-title").css('color', "#FFFFF");
+  $(".title_div").css('color', localStorage.colorPallete);
+  $(".title_div span").css('color', "#FFFFF");
+  $(".otherinput").css('background-color', "#262626");
+  $(".otherinput").css('border', "1px solid "+localStorage.colorPallete);
+  $(".inputGray").css('background-color', "#7C7C7C");
+  $(".inputGray").css('border', "1px solid "+localStorage.colorPallete);
+  $(".th-noborder").css('border', 'none')
+  $(".highlighted").css("--hover-bg-color", localStorage.colorPallete)
+
+  
     $('#toggle-sidebar').click(function() {
         $('#sidebar').toggleClass('collapsed');
         $('.main-panel').toggleClass('expanded');
@@ -71,50 +121,7 @@ $(document).ready(function() {
           
           if(!$.isEmptyObject(response))
           {
-            document.documentElement.style.setProperty('--primary-color', response);
-            $('.highlight').css('background-color', response)
-            $(".sidebar nav ul li").css("--hover-bg-color", response)
-            $(".pos-setting").css("--hover-bg-color", response)
-            $(".pos-setting").css("--active-bg-color", response)
-          
-            $(".purchase-grid-item").css("--hover-bg-color", response)
-            $(".purchase-grid-item").css("--active-bg-color", response)
-            $("button").css("--hover-bg-color", response)
-            $("button").css("--active-bg-color", response)
-            // $("button").css("border-color", response)
-
-            $(".pos-setting:active").css("background-color", response);
-            // $(".inventoryCard table thead tr th").css("background-color", "#292928");
-            // $(".inventoryCard table th").css("background-color", "#292928");
-
-            $(".productHeader tr th").css({
-              'border-color': '#292928',
-              'color': response
-            });
-
-
-            // $("table tr").css("--active-bg-color", response)
-            // $("table thead tr th").css("background-color", '');
-            // $("table th").css("background-color", '');
-
-         
-            $(".font-size").css('color', response)
-         
-            // $("table th").css("color", "#ffffff");
-            $("table thead").css("border-color", response);
-            // $("table").css("border-color", response);
-            $("#pointer").css("color", response);
-            $(".text-custom").css('color', response);
-            $("span:not(.dynamic-color)").css('color', response);
-            $(".dt-column-title").css('color', "#FFFFF");
-            $(".title_div").css('color', response);
-            $(".title_div span").css('color', "#FFFFF");
-            $(".otherinput").css('background-color', "#262626");
-            $(".otherinput").css('border', "1px solid "+response);
-            $(".inputGray").css('background-color', "#7C7C7C");
-            $(".inputGray").css('border', "1px solid "+response);
-            $(".th-noborder").css('border', 'none')
-            $(".highlighted").css("--hover-bg-color", response)
+            localStorage.setItem('colorPallete', response);
           }
           else
           {
@@ -167,6 +174,24 @@ let deleteValidation = "false";
         displayImage(defaultImageUrl);
     }
 }
+
+
+  function showPaginationBtn(table){
+    $.ajax({
+        url: './fetch-data/pagination-data.php', 
+        type: 'GET',
+        data: {pageType : table},
+        success: function(response) {
+            $('.paginactionClass').html(response)
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText); 
+        }
+    });
+  }
+
+
+
   function addProduct() {
     //products
     var productname = document.getElementById('productname').value;

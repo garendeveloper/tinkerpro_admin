@@ -130,5 +130,21 @@
     
         return $stmt;
     }
+
+
+
+    public function getTotalSupplier() {
+        try {
+            $pdo = $this->connect(); 
+      
+            $query = "SELECT COUNT(*) AS total_count FROM supplier;";
+            $stmt = $pdo->query($query);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+      
+            return $result['total_count'];
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
      
 }

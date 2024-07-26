@@ -20,7 +20,7 @@
   margin: 0 auto; 
   border: none;
   width: 100%;
-  height: 1200px; 
+  height: 100%; 
   animation: slideInRight 0.5s; 
   border-radius: 0;
   margin-top: -28px;
@@ -211,10 +211,10 @@
 </style>
 
 <div class="modal" id="add_users_modal" tabindex="0">
-  <div class="modal-dialog ">
-    <div class="modal-content user-modal">
+  <div class="modal-dialog h-100">
+    <div class="modal-content user-modal h-100">
       <div class="modal-title">
-        <div class="warning-container">
+        <div class="warning-container h-100">
             <div style="display: flex; margin-top: 30px">
                 <h2 style="margin-left: 20px;" class="text-custom firstName">Unknown<span>&nbsp;</span><h2 class="text-custom lastName">Unknown</h2></h2></h2>
             </div>
@@ -311,26 +311,27 @@
                         </div></td>
                     </tr>
                     <tr>
-    <td id="passWORD" class="td-height text-custom td-style td-bg">Password&nbsp;<sup>*</sup></td>
-    <td class="td-height text-custom">
-        <div class="password-container">
-            <input type="password" name="password" id="password" class="custom-input password" />
-            <span class="toggle-password pswrd" onclick="togglePasswordVisibility('password', this)">&#128065;</span>
-        </div>
-    </td>
-</tr>
-<tr>
-    <td id="confirmPassword" class="td-height text-custom td-style td-bg">Confirm Password&nbsp;<sup>*</sup></td>
-    <td class="td-height text-custom">
-        <div class="password-container">
-            <input id="confirmPass" name="confirmPass" type="password" class="custom-input confirmPass"/>
-            <span class="toggle-password cpswrd" onclick="togglePasswordVisibility('confirmPass', this)">&#128065;</span>
-        </div>
-    </td> 
-</tr>
+                    <td id="passWORD" class="td-height text-custom td-style td-bg">Password&nbsp;<sup>*</sup></td>
+                        <td class="td-height text-custom">
+                            <div class="password-container">
+                                <input type="password" name="password" id="password" class="custom-input password" />
+                                <span class="toggle-password pswrd" onclick="togglePasswordVisibility('password', this)">&#128065;</span>
+                            </div>
+                        </td>
+                    </tr>
 
-                                </tbody>
-            </table>
+                    <tr>
+                        <td id="confirmPassword" class="td-height text-custom td-style td-bg">Confirm Password&nbsp;<sup>*</sup></td>
+                        <td class="td-height text-custom">
+                            <div class="password-container">
+                                <input id="confirmPass" name="confirmPass" type="password" class="custom-input confirmPass"/>
+                                <span class="toggle-password cpswrd" onclick="togglePasswordVisibility('confirmPass', this)">&#128065;</span>
+                            </div>
+                        </td> 
+                    </tr>
+
+                </tbody>
+                </table>
 
                 </div>
           
@@ -413,7 +414,7 @@
                     </div>
              </div>
             </div>
-            <div class="button-container" style="display:flex;justify-content: right">
+            <div class="button-container position-absolute d-flex justify-content-end w-100" style="bottom: 10px;">
                 <button onclick="addUsers()"  class="btn-success-custom saveBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
                 <button hidden onclick="updateDataUser()" class="btn-success-custom updateBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
                 <button onclick="closeAddUserModal()" class="cancelAddUser btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>

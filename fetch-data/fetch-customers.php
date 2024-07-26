@@ -16,10 +16,10 @@ if ($customer->rowCount() > 0) {
 while ($row = $customer->fetch(PDO::FETCH_ASSOC)) {
 //   var_dump( $row)
     ?>
-    <tr>
-    <td class='text-center td-h'><?= $counter?></td>
+    <tr class="table-row customer-row">
+    <td class='text-center td-h' style="border-left: 1px solid transparent !important"><?= $counter?></td>
     <td hidden class='text-center action-td td-h'><span class="userId"><?= $row['id'] ?? null ?></span><span class="customerId"><?= $row['customerId'] ?? null ?></span></td>
-    <td class='text-center action-td td-h '><span class="firstName"><?= $row['firstname'] ?? null ?></span>&nbsp;<span class="lastName"><?= $row['lastname'] ?? null ?></span></td>
+    <td class='text-center text-light'><span class="firstName text-light"><?= $row['firstname'] ?? null ?></span>&nbsp;<span class="lastName text-light"><?= $row['lastname'] ?? null ?></span></td>
     <td class='text-center action-td td-h customerContact'><?= $row['contact'] ?? null ?></td>
     <td class='text-center action-td td-h customerCode'><?= $row['code'] ?? null ?></td>
     <td class='text-center action-td td-h '>
@@ -32,19 +32,23 @@ while ($row = $customer->fetch(PDO::FETCH_ASSOC)) {
     <td hidden class='text-center action-td td-h customerType'><?= $row['type'] ?? null ?></td>
     <td class='text-center action-td td-h customerEmail'><?= $row['email'] ?? null ?></td>
     <td class='text-center action-td td-h customerAddress'><?= $row['address'] ?? null ?></td>
-    <td class='text-center action-td td-h'>
-               <a class='text-success editCustomer' style='text-decoration: none;'><svg width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="edit"> <g> <path d="M20,16v4a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V6A2,2,0,0,1,4,4H8" fill="none" stroke=" #FF6900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path> <polygon fill="none" points="12.5 15.8 22 6.2 17.8 2 8.3 11.5 8 16 12.5 15.8" stroke=" #FF6900" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polygon> </g> </g> </g> </g></svg></a>
-            <?php 
-            ?>
-        </td>
+    <td class='text-center action-td td-h' style="border-right: 1px solid transparent !important">
+        <a class='text-success editCustomer' style='text-decoration: none;'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+        </a>
+        <?php ?>
+    </td>
     <?php
     $counter++;
 }
 } else {
     ?>
-    <tr>
-        <td colspan="100%" style="text-align: center; padding: 20px;">
-            <img src="./assets/img/tinkerpro-t.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+    <tr style="border: none">
+        <td colspan="100%" rowspan="100%" style="text-align: center; padding: 20px; border: 1px solid transparent !important">
+            <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
             No Data Found!
         </td>
     </tr>

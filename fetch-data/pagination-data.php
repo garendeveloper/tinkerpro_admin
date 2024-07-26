@@ -2,27 +2,52 @@
     include(__DIR__ . '/../utils/db/connector.php');
     include(__DIR__ . '/../utils/models/product-facade.php');
     include(__DIR__ . '/../utils/models/user-facade.php');
+    include(__DIR__ . '/../utils/models/supplier-facade.php');
+
 
     $productFacade = new ProductFacade;
+    $supplierFacade = new SupplierFacade;
 
-    $totalRecords = $productFacade->getTotalProductsCount();
+
+    if (isset ($_GET["pageType"])) {
+        $pagination = $_GET["pageType"];
+    }
+
+    if ($pagination == 'products') {
+        $totalRecords = $productFacade->getTotalProductsCount();
+    } else if ($pagination == 'supplier') {
+        $totalRecords = $supplierFacade->getTotalSupplier();
+    } else if ($pagination == 'customer') {
+        $totalRecords = 1;
+    } else {
+        $totalRecords = 1;
+    }   
+
+   
     $totalPages = ceil($totalRecords / 100);
 
-    echo "<div id='paginationBtns'>";
-    echo "<a  class='paginationButtons paginationTag prev' href='javascript:void(0)' onclick='changePage(\"prev\")'>Prev</a>";
+    if ($totalPages > 1) {
+        echo "<div id='paginationBtns'>";
+        echo "<a  class='paginationButtons paginationTag prev' href='javascript:void(0)' onclick='changePage(\"prev\")'>Prev</a>";
+    
+        for ($i = 1; $i <= min(20, $totalPages); $i++) {
+            $activeClass = ($i == 1) ? 'active' : '';
+            echo "<a  class='paginationButtons paginationTag $activeClass' href='javascript:void(0)' onclick='refreshProductsTable($i)'>$i</a> ";
+        }
+    
+        if ($totalPages > 20) {
+            echo "<a  class='paginationButtons paginationTag dots' href='javascript:void(0)' onclick='changePageGroup(1)'>...</a>";
+            echo "<a  class='paginationButtons paginationTag' href='javascript:void(0)' onclick='refreshProductsTable($totalPages)'>$totalPages</a> ";
+        }
+    
+        echo "<a  class='paginationButtons paginationTag next' href='javascript:void(0)' onclick='changePage(\"next\")'>Next</a>";
+        echo "</div>";
+    } else {
+        echo "<div id='paginationBtns' class='d-none'>";
 
-    for ($i = 1; $i <= min(20, $totalPages); $i++) {
-        $activeClass = ($i == 1) ? 'active' : '';
-        echo "<a  class='paginationButtons paginationTag $activeClass' href='javascript:void(0)' onclick='refreshProductsTable($i)'>$i</a> ";
+        echo "</div>";
     }
 
-    if ($totalPages > 20) {
-        echo "<a  class='paginationButtons paginationTag dots' href='javascript:void(0)' onclick='changePageGroup(1)'>...</a>";
-        echo "<a  class='paginationButtons paginationTag' href='javascript:void(0)' onclick='refreshProductsTable($totalPages)'>$totalPages</a> ";
-    }
-
-    echo "<a  class='paginationButtons paginationTag next' href='javascript:void(0)' onclick='changePage(\"next\")'>Next</a>";
-    echo "</div>";
 ?>
 
 
