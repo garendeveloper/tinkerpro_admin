@@ -1879,3 +1879,4 @@
 2024-07-27 16:52:55 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000007 Date: Jul 27 2024 
 2024-07-27 17:29:50 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
 2024-07-27 17:29:58 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-27 17:52:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

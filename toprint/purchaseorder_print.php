@@ -60,7 +60,7 @@ class MYPDF extends TCPDF {
         $this->Ln();
 
         $barcodeValue = $_GET['po_number']; 
-        $barcodeFormat = 'C39';
+        $barcodeFormat = 'C128';
         $barcodeWidth = 10;
         $barcodeHeight= 10; 
         $barcodePosX = $this->getPageWidth() - 70; 
@@ -84,9 +84,17 @@ class MYPDF extends TCPDF {
         
         $this->Line(10, 52, 200, 52);
 
-        $imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
-        $imageWidth = 45; 
-        $imageHeight = 15; 
+        // $imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
+        // $imageWidth = 45; 
+        // $imageHeight = 15; 
+        // $imageX = 150; 
+        // $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+
+        $ipAddress = gethostbyname(gethostname());
+        $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
+
+        $imageWidth = 35; 
+        $imageHeight = 25; 
         $imageX = 150; 
         $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
      
