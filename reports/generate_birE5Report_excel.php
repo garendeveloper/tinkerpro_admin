@@ -107,6 +107,7 @@ if(count($items) > 0)
         $sheet->setCellValue('H' . $rowIndex, number_format($item['totalAmount'], 2)); 
         $sheet->setCellValue('I' . $rowIndex, number_format($item['overAllDiscounts'], 2)); 
         $sheet->setCellValue('J' . $rowIndex, number_format($item['netSales'], 2));
+        $rowIndex++;
     }
 }
 $headerStyle = [
@@ -229,7 +230,7 @@ $sheet->getStyle('H13')->applyFromArray($headerStyleH);
 $sheet->getStyle('I13')->applyFromArray($headerStyleI);
 $sheet->getStyle('J13')->applyFromArray($headerStyleJ);
 
-$sheet->getStyle('A16:J16')->applyFromArray($headerStyleData);
+$sheet->getStyle('A'.$rowIndex.':J'.$rowIndex)->applyFromArray($headerStyleData);
 
 foreach (range('A', 'J') as $column) {
     $sheet->getColumnDimension($column)->setWidth(17);

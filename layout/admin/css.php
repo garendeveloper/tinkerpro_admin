@@ -194,12 +194,6 @@ button:hover {
     flex-wrap: wrap;
   }
 
-/* .fContainer_bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    margin-right: 10px;
-} */
   @media (max-width: 100%) {
       .sidebar {
           width: 100px;
@@ -491,4 +485,7 @@ button:hover{
 .close-button{
   background-color: var(--primary-color);
 }
-  </style>
+.container-scroller{
+  background-color: #262626;
+}
+</style>

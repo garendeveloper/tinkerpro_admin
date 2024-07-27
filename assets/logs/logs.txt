@@ -1857,3 +1857,19 @@
 2024-07-27 10:47:22 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000008 Amount:₱ 2,772.00 
 2024-07-27 11:11:56 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: ACE CHOCO 1PACK-REB From: 63.00 To:  
 2024-07-27 11:21:19 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: ACE CHOCO 1PACK-REB From: 0.00 To: 96 
+2024-07-27 11:59:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 12:35:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:08:03 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:23:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:39:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:43:54 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:53:54 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 14:01:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 14:35:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 14:47:07 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 14:53:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:02:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:04:31 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:17:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:25:04 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:29:10 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: FIESTA PANCIT CANTON 1/4KG From: 0.00 To: 20 
