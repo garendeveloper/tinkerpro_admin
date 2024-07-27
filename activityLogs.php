@@ -246,6 +246,9 @@ select::-webkit-scrollbar-thumb {
     background: #888; 
     border-radius: 20px; 
 }
+#logTable tbody tr:hover{
+  background-color: #333333;
+}
 
 </style>
   <div class="container-scroller">
@@ -640,7 +643,7 @@ select::-webkit-scrollbar-thumb {
                 row.append($('<td style = "width: 15%">').text(columns[4].trim() || ''));
                 row.append($('<td style = "width: 50%">').text(columns[5].trim() || '')); 
 
-                tableBody.append(row);
+                tableBody.prepend(row);
               } else {
                   console.error('Line does not have enough columns:', line);
               }

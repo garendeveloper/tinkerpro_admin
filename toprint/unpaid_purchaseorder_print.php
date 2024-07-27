@@ -56,10 +56,17 @@ class MYPDF extends TCPDF {
         $this->Ln();
         $this->Cell(0, 1, "{$shop['shop_name']}", 0, false, 'L', 0, '', 0, false, 'L', 'M');
         $this->Ln();
-    
-        $this->SetFont('helvetica', '', 11);
-        $this->Cell(0, 10, "{$shop['shop_address']}", 0, false, 'L');
         $this->Ln();
+        $this->Ln();
+
+        $barcodeValue = $_GET['po_number']; 
+        $barcodeFormat = 'C128';
+        $barcodeWidth = 10;
+        $barcodeHeight= 10; 
+        $barcodePosX = $this->getPageWidth() - 70; 
+        $barcodePosY = 3; 
+        $this->write1DBarcode($barcodeValue, $barcodeFormat, $barcodePosX, $barcodePosY, '', $barcodeWidth, $barcodeHeight, null, 'R');
+
         $this->SetFont('helvetica', '', 11);
         $this->Cell(0, 10, "{$shop['shop_address']}", 0, false, 'L');
         $this->Ln(-5);
@@ -81,7 +88,7 @@ class MYPDF extends TCPDF {
         $imageWidth = 45; 
         $imageHeight = 15; 
         $imageX = 150; 
-        $this->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+        $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
      
     }
     public function Footer() 

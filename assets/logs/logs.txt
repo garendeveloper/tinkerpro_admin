@@ -2254,6 +2254,12 @@
 2024-07-27 15:17:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-27 15:25:04 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-27 15:29:10 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: FIESTA PANCIT CANTON 1/4KG From: 0.00 To: 20 
+2024-07-27 15:39:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:57:14 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:22:31 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 WEEK 
+2024-07-27 16:52:55 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000007 Date: Jul 27 2024 
+2024-07-27 17:29:50 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-27 17:29:58 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
 >>>>>>> 1bd925a740beeaf418f9a8362aed873d7fa18fdd
 2024-07-27 09:07:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-27 09:07:33 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
@@ -2648,3 +2654,4 @@
 2024-07-27 17:40:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CARLO ROSSI SWEET RED 750ML-EMPE Barcode #:85000019849 
 2024-07-27 17:41:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CARNATION CONDENSADA 388G Barcode #:4800361419307 
 2024-07-27 17:46:08 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 18:05:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

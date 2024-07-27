@@ -64,63 +64,7 @@ class OrderFacade extends DBConnection
     
     //     return $response;
     // }
-    public function get_allOrdersDatatable($requestData)
-    {
-        $columns = array(
-            0 => 'orders.po_number',
-            1 => 'supplier.supplier',
-            2 => 'orders.date_purchased',
-            3 => 'orders.due_date',
-            4 => 'orders.totalQty',
-            5 => 'orders.totalPrice',
-            6 => 'orders.price',
-            7 => 'orders.isPaid',
-            8 => 'orders.is_received'
-        );
-
-        $sql = "SELECT 
-                    orders.*, supplier.*, orders.id as order_id
-                FROM 
-                    orders
-                INNER JOIN supplier ON supplier.id = orders.supplier_id
-                WHERE orders.is_received = 0";
-
-        if (!empty($requestData['search']['value'])) {
-            $sql .= " AND (orders.po_number LIKE '%" . $requestData['search']['value'] . "%'
-                    OR supplier.supplier LIKE '%" . $requestData['search']['value'] . "%'
-                    OR orders.due_date LIKE '%" . $requestData['search']['value'] . "%' )";
-        }
-
-        $sql .= " GROUP BY orders.id, supplier.supplier";
-
-        if (!empty($requestData['order'])) {
-            $sql .= " ORDER BY " . $columns[$requestData['order'][0]['column']] . " " . $requestData['order'][0]['dir'];
-        } else {
-            $sql .= " ORDER BY orders.id ASC";
-        }
-
-        $sql .= " LIMIT :limit OFFSET :offset";
-
-        $stmt = $this->connect()->prepare($sql);
-        $stmt->bindParam(':limit', $requestData['length'], PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $requestData['start'], PDO::PARAM_INT);
-        $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $totalSql = "SELECT COUNT(*) as total FROM orders INNER JOIN supplier ON supplier.id = orders.supplier_id WHERE orders.is_received = 0";
-        $totalStmt = $this->connect()->prepare($totalSql);
-        $totalStmt->execute();
-        $totalData = $totalStmt->fetch(PDO::FETCH_ASSOC);
-
-        $response = [
-            'draw' => intval($requestData['draw']),
-            'recordsTotal' => intval($totalData['total']),
-            'recordsFiltered' => intval($totalData['total']), 
-            'data' => $data,
-        ];
-
-        return $response;
-    }
+    
     public function get_totalOrders()
     {
         $sql = $this->connect()->prepare("SELECT 
@@ -143,9 +87,7 @@ class OrderFacade extends DBConnection
                                             FROM 
                                                 orders
                                             INNER JOIN supplier ON supplier.id = orders.supplier_id
-                                            WHERE orders.is_received = 0
-                                            AND
-                                                orders.po_number LIKE :searchQuery OR 
+                                            WHERE orders.po_number LIKE :searchQuery OR 
                                                 supplier.supplier LIKE :searchQuery OR 
                                                 orders.due_date LIKE :searchQuery
                                             GROUP BY orders.id, supplier.supplier
@@ -163,7 +105,6 @@ class OrderFacade extends DBConnection
                                                 FROM 
                                                     orders
                                                 INNER JOIN supplier ON supplier.id = orders.supplier_id
-                                                WHERE orders.is_received = 0
                                                 GROUP BY orders.id, supplier.supplier");
 
             $sql->execute();

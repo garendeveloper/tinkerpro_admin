@@ -45,7 +45,7 @@
                                 </svg>
                             </a>
                         </div>';
-            if($row['isPaid'] === 1)
+            if($row['isPaid'] === 1 && $row['is_received'] === 0)
             {
                 $buttons = '<div >
                                 <a id="btn_editOrder" data-id='.$row['order_id'].' class="text-success productAnch " style="text-decoration: none;">
@@ -61,8 +61,17 @@
                                 </a>
                             </div>';
             }
+
+            if($row['is_received'] === 1  && $row['is_received'] === 1)
+            {
+                $buttons = '<div >
+                                <a   class="text-success productAnch " style="text-decoration: none;" >
+                                    <i class="bi bi-node-minus" style = "font-size: 16px;"></i>
+                                </a>
+                            </div>';
+            }
             ?> 
-                <tr  data-id = '<?= $row['order_id'] ?>'>
+                <tr  data-id = '<?= $row['order_id'] ?>' data-is_received = '<?= $row['is_received']?>' data-po_number = '<?= $row['po_number']?>'>
                     <td class = "text-center"><?= $row['po_number']?></td>
                     <td><?= $row['supplier']?></td>
                     <td class = "text-center"><?= $date_purchased ?></td>
@@ -70,8 +79,8 @@
                     <td class = "text-right"><?= number_format($row['totalQty'], 2)?></td>
                     <td class = "text-right"><?= number_format($row['totalPrice'], 2)?></td>
                     <td class = "text-right"><?= number_format($row['price'], 2)?></td>
-                    <td class = "text-right"><?= $isPaid?></td>
-                    <td class = "text-right"><?= $is_received?></td>
+                    <td class = "text-center"><?= $isPaid?></td>
+                    <td class = "text-center"><?= $is_received?></td>
                     <td class='text-center'  style="padding: 2px" ><?= $buttons?></td>
                     <?php 
                     ?>

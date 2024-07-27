@@ -11,10 +11,10 @@
     }
     #tbl_purchaseOrders thead th{
        border: none;
-       color: #FF6900;
+       color: var(--primary-color);
     }
     #tbl_purchaseOrders thead{
-       border: 1px solid #FF6900;
+       border: 1px solid var(--primary-color);
     }
     #tbl_purchaseOrders tbody td{
         border: none;
@@ -25,10 +25,10 @@
     }
     #tbl_purchaseOrders_footer thead th{
        border: none;
-       color: #FF6900;
+       color: var(--primary-color);
     }
     #tbl_purchaseOrders_footer thead{
-       border: 1px solid #FF6900;
+       border: 1px solid var(--primary-color);
     }
     .custom-select {
         position: relative;
@@ -59,16 +59,16 @@
         transform: translateY(-50%);
     }
     #date_purchased {
-        outline: none; /* Remove default focus outline (optional) */
+        outline: none; 
     }
 
     #date_purchased:focus {
-        outline: none; /* Remove focus outline when element is focused (optional) */
+        outline: none;
     }
 
     #tbl_purchaseOrders tbody th,
     #tbl_purchaseOrders tbody td {
-        padding: 5px 5px; 
+        padding: 7px 7px; 
         height: 20px; 
         line-height: 0.5; 
     }
@@ -107,8 +107,8 @@ table thead th{
     }
     .f1 {
         display: flex;
-        align-items: center; /* Vertically center items */
-        gap: 20px; /* Space between items */
+        align-items: center; 
+        gap: 20px; 
     }
 
     .f1 .group {
@@ -122,7 +122,7 @@ table thead th{
     }
 
     .f1label {
-        margin: 0 10px 0 0; /* Adjust spacing between label and input */
+        margin: 0 10px 0 0;
     }
 
     .f1 input[type="text"] {
@@ -145,6 +145,22 @@ table thead th{
       font-size: 40px; 
       margin-left: 5px;
   }
+  .bottom-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    }
+
+    .bottom-area {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    }
 </style>
 <div class="fcontainer" id = "purchaseItems_div" style = "display: none">
     <form id="po_form">
@@ -179,7 +195,6 @@ table thead th{
         </div>
         <div class="fieldContainer" style = "margin-top: -3px;">
             <input type = "hidden" id = "selected_product_id" value = "0" >
-            <!-- <label><img src="assets/img/barcode.png" style="color: white; height: 50px; width: 40px;"></label> -->
              <label>
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
                 <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
@@ -207,21 +222,23 @@ table thead th{
 
         </tbody>
     </table>
-    <table id = "tbl_purchaseOrders_footer" class="text-color table-border" style="position: absolute; bottom: 5px; padding: 10px;">
-        <thead>
-            <tr>
-                <th style="background-color: #1E1C11;  text-align: left; width: 50%; color: #ffffff"
-                    id="totalTax">Tax: 0.00</th>
-                <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="totalQty">0</th>
-                <th style="background-color: #1E1C11; text-align: right; color: #ffffff" id="totalPrice">
-                    &#x20B1;&nbsp;0.00</th>
-                <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="overallTotal">
-                    &#x20B1;&nbsp;0.00</th>
-                <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="overallTotal">
-               </th>
-            </tr>
-        </thead>
-    </table>
+    <div style="position: absolute;padding: 3px; width: 100%;" class = "bottom-area">
+      <table id = "tbl_purchaseOrders_footer" class="text-color table-border" >
+          <thead>
+              <tr>
+                  <th style="background-color: #1E1C11;  text-align: left; width: 50%; color: #ffffff"
+                      id="totalTax">Tax: 0.00</th>
+                  <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="totalQty">0</th>
+                  <th style="background-color: #1E1C11; text-align: right; color: #ffffff" id="totalPrice">
+                      &#x20B1;&nbsp;0.00</th>
+                  <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="overallTotal">
+                      &#x20B1;&nbsp;0.00</th>
+                  <th style="background-color: #1E1C11;  text-align: right; color: #ffffff" id="overallTotal">
+                </th>
+              </tr>
+          </thead>
+      </table>
+    </div>
 </div>
 
 
