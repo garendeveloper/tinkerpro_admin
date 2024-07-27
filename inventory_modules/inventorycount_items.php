@@ -210,7 +210,7 @@
                         row += "<tr  data-id = "+data[i].product_id+">";
                         row += "<td data-id = " +data[i].product_id+ ">" + data[i].prod_desc + "</td>";
                         row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
-                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  required></input></td>";
+                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  autocomplete = 'off' required></input></td>";
                         row += "<td style = 'text-align: right'></td>";
                         row += "</tr>";
                     }
@@ -284,8 +284,8 @@
             }).map(function(row) {
                 var brand = row.brand === null ? " " : "( " + row.brand + " )";
                 return {
-                    label: row.product + " (" + row.barcode + ")",
-                    value: row.barcode ?? row.product,
+                    label: row.product,
+                    value: row.product,
                     id: row.product_id
                 };
             });
@@ -447,10 +447,10 @@
                 data: { data: product_id },
                 success: function (data) {
                     var row = "";
-                    row += "<tr data-id = " + data['id'] + " data-ic_id = '0'>";
+                    row += "<tr data-id = " + data['id'] + " data-ic_id = ''>";
                     row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
                     row += "<td style = 'text-align:center'>" + data['product_stock'] + "</td>";
-                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'counted' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'counted' style = 'width: 60px; text-align: center; height:20px;' autocomplete = 'off'></input></td>";
                     row += "<td style = 'text-align: right'></td>";
                     row += "</tr>";
                     $("#tbl_inventory_count tbody").append(row);

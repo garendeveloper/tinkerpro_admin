@@ -123,8 +123,8 @@
     <form id="lossanddamage_form">
         <div class="fieldContainer">
             <label>REF# </label>
-            <input type="text" name="ref" id="ld_reference" name="ld_reference"
-                style="width: 250px; height: 30px; font-size: 14px;" readonly>
+            <input type="text" name="ref" id="ld_reference" name="ld_reference" style="width: 250px; height: 30px; font-size: 14px;" readonly />
+            <input type = "hidden" name ="lossDamageInfoID" id = "lossDamageInfoID" value = ""/>
             <!-- <div class="date-input-container">
                 <input type="text" name="date_damage" oninput="$(this).removeClass('has-error')" id="date_damage"
                     style="height: 30px;  text-align: center" placeholder="Select date" readonly>
@@ -326,8 +326,8 @@
             }).map(function(row) {
                 var brand = row.brand === null ? " " : "( " + row.brand + " )";
                 return {
-                    label: row.product + " (" + row.barcode + ")",
-                    value: row.barcode ?? row.product,
+                    label: row.product,
+                    value: row.product,
                     id: row.product_id
                 };
             });
@@ -341,9 +341,9 @@
                 data: { data: product_id },
                 success: function (data) {
                     var row = "";
-                    row += "<tr data-id = " + data['id'] + ">";
+                    row += "<tr data-id = " + data['id'] + " data-ld_id = ''>";
                     row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
-                    row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' ></input></td>";
+                    row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' autocomplete = 'off'></input></td>";
                     row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
                     row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
                     row += "</tr>";

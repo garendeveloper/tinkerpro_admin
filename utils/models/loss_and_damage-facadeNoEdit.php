@@ -186,27 +186,15 @@
             $date_transact = date('Y-m-d', strtotime($loss_and_damage_form['date_damage']));
             $reason = $loss_and_damage_form['ld_reason'];
             $other_reason = "N/A";
-            $lossDamageInfoID = $loss_and_damage_form['lossDamageInfoID'];
-
+            
             $total_qty = $this->remove_nonBreakingSpace($this->clean_number($formData["total_qty"])) ;
             $total_cost = $this->remove_nonBreakingSpace($this->clean_number($formData["total_cost"]));
             $over_all_total_cost = $this->remove_nonBreakingSpace($this->clean_number($formData['over_all_total_cost']));
             $currentDate = date("Y-m-d");
-
-            if(!empty($lossDamageInfoID) && isset($lossDamageInfoID))
+            $loss_and_damage_info_id = 0;
+            if($this->check_lossanddamageinfo_exist($reference_no))
             {
-                $stmt = $this->connect()->prepare("UPDATE loss_and_damage_info SET reason = :reason, other_reason = :other_reason, date_transact = :date_transact, total_qty = :total_qty, total_cost = :total_cost, over_all_total_cost = :over_all_total_cost, note = :note WHERE id = :id");
-                $stmt->execute([
-                    ':reason' => $reason,
-                    ':other_reason' => $other_reason,
-                    ':date_transact' => $date_transact,
-                    ':total_qty' => $total_qty,
-                    ':total_cost' => $total_cost,
-                    ':over_all_total_cost' => $over_all_total_cost,
-                    ':note' => $note,
-                    ':id' => $lossDamageInfoID,
-                ]); 
-                
+                $loss_and_damage_info_id = $this->check_lossanddamageinfo_exist($reference_no);
             }
             else
             {
@@ -222,37 +210,23 @@
                 $stmt->bindParam(8, $note, PDO::PARAM_STR);
                 $stmt->execute();
     
-                $lossDamageInfoID  = $this->get_last_lostanddamageinfo_id();
+                $loss_and_damage_info_id = $this->get_last_lostanddamageinfo_id();
             }
             foreach($tbl_data as $row)
             {
-                $lossDamageID = $row['damageID'];
                 $inventory_id = $row['inventory_id'];
                 $qty_damage = $row['qty_damage'];
                 $cost = $this->remove_nonBreakingSpace($this->clean_number($row['col_3']));
                 $sub_total = $this->remove_nonBreakingSpace($this->clean_number($row['col_4']));
 
-                if(!empty($lossDamageID) && isset($lossDamageID))
-                {
-                    $stmt = $this->connect()->prepare('UPDATE loss_and_damages SET qty_damage = :qty_damage, cost = :cost, total_cost = :total_cost WHERE id = :id');
-                    $stmt->execute([
-                        ':qty_damage' => $qty_damage,
-                        ':cost' => $cost,
-                        ':total_cost' => $sub_total,
-                        ':id' => $lossDamageID
-                    ]);
-                }
-               else
-               {
-                    $stmt = $this->connect()->prepare("INSERT INTO loss_and_damages (inventory_id, loss_and_damage_info_id, qty_damage, cost, total_cost)
-                                                            VALUES (?,?, ?, ?, ?)");
-                    $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
-                    $stmt->bindParam(2, $lossDamageInfoID , PDO::PARAM_STR);
-                    $stmt->bindParam(3, $qty_damage, PDO::PARAM_STR);
-                    $stmt->bindParam(4, $cost, PDO::PARAM_STR);
-                    $stmt->bindParam(5, $sub_total, PDO::PARAM_STR);
-                    $stmt->execute();
-               }
+                $stmt = $this->connect()->prepare("INSERT INTO loss_and_damages (inventory_id, loss_and_damage_info_id, qty_damage, cost, total_cost)
+                                                    VALUES (?,?, ?, ?, ?)");
+                $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+                $stmt->bindParam(2, $loss_and_damage_info_id, PDO::PARAM_STR);
+                $stmt->bindParam(3, $qty_damage, PDO::PARAM_STR);
+                $stmt->bindParam(4, $cost, PDO::PARAM_STR);
+                $stmt->bindParam(5, $sub_total, PDO::PARAM_STR);
+                $stmt->execute();
 
                 $loss_and_damage_id = $this->get_last_lossanddamages_id();
 

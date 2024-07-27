@@ -9,7 +9,7 @@ $inventoryfacade = new InventoryFacade;
 
 $searchInput = $_GET['searchInput'] ?? null;
 
-$recordsPerPage = 100;
+$recordsPerPage = 50;
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($page - 1) * $recordsPerPage;
 
