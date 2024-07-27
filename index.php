@@ -273,6 +273,17 @@ body, div, h1, h2, h3, h4, h5, p{
     overflow-y: auto; 
 }
 
+#top_products_data::-webkit-scrollbar {
+    width: 6px; 
+}
+#top_products_data::-webkit-scrollbar-track {
+    background: #151515;
+}
+#top_products_data::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 20px; 
+}
+
 #top_products_data table {
     width: 100%;
     border-collapse: collapse;
@@ -354,17 +365,41 @@ body, div, h1, h2, h3, h4, h5, p{
   height: 10px;
 }
 .dashboard-button:hover{
-  color: #FF6700;
+  color: var(--primary-color);
 }
 .table-responsive{
   overflow: auto;
 }
+.p-icon:hover{
+  color: var(--primary-color);
+}
+.main-panel::-webkit-scrollbar {
+    width: 6px; 
+}
+.main-panel::-webkit-scrollbar-track {
+    background: #151515;
+}
+.main-panel::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 20px; 
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 6px; 
+}
+.table-responsive::-webkit-scrollbar-track {
+    background: #151515;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 20px; 
+}
 </style>
 <?php include "layout/admin/css.php" ?>
-<div class="container-scroller">
-  <div class="main">
+<div class="container-scroller" style = "background-color: #262626">
+  <div class="main" >
     <?php include "layout/admin/sidebar.php" ?>
-    <div class="main-panel">
+    <div class="main-panel" >
       <div class="content-wrapper" id = "dashboard_content">
       <input hidden type="text" id="userId" value="<?php echo isset($userId) ? htmlspecialchars($userId) : ''; ?>">
       <input hidden type="text" id="firstName" value="<?php echo isset($firstName) ? htmlspecialchars($firstName) : ''; ?>">
@@ -376,13 +411,9 @@ body, div, h1, h2, h3, h4, h5, p{
             <div class="col-12 col-md-8">
               <div class="border p-3 col">
                 <div class="sales-chart-header">
-                  <h4>Monthly Sales | Expenses - <span id="d_year" style="color: #FF6700"></span></h4>
+                  <h4>Monthly Sales | Expenses - <span id="d_year" style="color: var(--primary-color)"></span></h4>
                   <div class="button-container">
                     <i class="bi bi-arrow-clockwise dashboard-button" id = "btn_refresh_dashboard"></i>
-
-                    <!-- <button id="toggle-theme">
-                      <i class="bi bi-toggle-on"></i>
-                    </button> -->
                     <i class="bi bi-chevron-left dashboard-button" id="prevYear"></i>
                     <i class="bi bi-chevron-right dashboard-button" id="nextYear"></i>
                   </div>
@@ -418,13 +449,13 @@ body, div, h1, h2, h3, h4, h5, p{
           <div class="row exclude">
 
             <div class="col-12 col-md-8 ">
-              <h5 style="color: #ffff">Periodic Reports &nbsp;&nbsp; <span id="period_date" style="color: #FF6700; font-weight: bold">
+              <h5 style="color: #ffff">Periodic Reports &nbsp;&nbsp; <span id="period_date" style="color: var(--primary-color); font-weight: bold">
               </span>
               <input type = "hidden" id = "per_start_date" ></input>
               <input type = "hidden" id = "per_end_date" ></input>
-                <button id="btn_period" class="button">
-                  <i class="bi bi-calendar" aria-hidden="true"></i>
-                </button>
+                
+                  <i class="bi bi-calendar3 p-icon" id="btn_period" aria-hidden="true"></i>
+             
               </h5>
             </div>
             <div class="col-12 col-md-4 ">
@@ -437,9 +468,9 @@ body, div, h1, h2, h3, h4, h5, p{
           <div class="row">
             <div class="col-12 col-md-4 ">
               <div class="border p-3 col1">
-                <div class="header-container">
+                <div class="header-container" style = "background-color: #262626; border: 1px solid #262626">
                   <h5>Top Products</h5>
-                  <select name="top_products" id="top_products" class = "trigger_reports" style=" color: #ffff; width: 50px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
+                  <select name="top_products" id="top_products" class = "trigger_reports" style="color: #ffff; width: 50px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
                     <option>5</option>
                     <option>10</option>
                     <option>20</option>
@@ -452,7 +483,7 @@ body, div, h1, h2, h3, h4, h5, p{
             </div>
             <div class="col-12 col-md-4">
               <div class="border p-3 col1">
-                <div class="header-container" id = "hs_data">
+                <div class="header-container" id = "hs_data" style = "background-color: #262626; border: 1px solid #262626">
                   <h5>Hourly Sales</h5>
                   <select name="hourly_sales" id="hourly_sales" class = "trigger_reports" style=" color: #ffff; width: 100px; border: 1px solid #ffff; font-size: 14px; height: 30px;">
                     <option>Amount</option>
@@ -487,14 +518,17 @@ body, div, h1, h2, h3, h4, h5, p{
               <div class="border p-3 col1">
                 <h5>Top Products </h5>
                 <p class="sub-title">Lead products in selected period (top <span id = 'topitem_identifier'>5</span>)</p>
-                <div class = "table-responsive" id = "tbl_dashboard" style = "display: none">
-                  <table id = "tbl_top_products"  class = "text-color table-border" style = "width: 50%">
+                  <table   class = "text-color table-border tbl_dashboard" >
                     <thead>
                       <tr>
                         <th style = "background-color: #343a40; text-align: left">Product</th>
                         <th style = "background-color: #343a40">Amount</th>
                       </tr>
                     </thead>
+                  </table>
+                  <div class = "table-responsive" id = "tbl_dashboard" style = "width: 100%">
+                
+                  <table id = "tbl_top_products"  class = "text-color table-border tbl_dashboard" >
                     <tbody>
 
                     </tbody>
@@ -520,16 +554,20 @@ body, div, h1, h2, h3, h4, h5, p{
 
   function printDiv() 
   {  
-    $("#dashboard_content").css('background-color', 'white');
+    $("#dashboard_content").css('background-color', 'transparent');
+    $(".header-container").css({
+      'background-color': 'transparent',
+      'border': 'transparent'
+    });
     $('#dashboard_content *').each(function() {
         var $this = $(this);
        
-        if ($this.css('color') === 'rgb(255, 255, 255)' || $this.css('color') === '#ffffff') {
+        if ($this.css('color') === 'rgb(255, 255, 255)' || $this.css('color') === '#ffffff'  ) {
             $this.css('color', 'black');
-            $this.css('background-color', 'white');
+            $this.css('background-color', 'transparent');
         }
-        if ($this.css('color') === 'rgb(38, 38, 38)' || $this.css('color') === '#262626') {
-          $this.css('background-color', 'white');
+        if ($this.css('color') === 'rgb(38, 38, 38)' || $this.css('color') === '#262626' ) {
+          $this.css('background-color', 'transparent');
         }
     });
     html2canvas(document.querySelector("#dashboard_content"), {
@@ -538,10 +576,7 @@ body, div, h1, h2, h3, h4, h5, p{
       },
     }).then(canvas => {
       const dataURL = canvas.toDataURL();
-      $("#dashboard_modal").slideDown({
-        backdrop: 'static',
-        keyboard: false
-      });
+      $("#dashboard_modal").fadeIn('show')
       const iframe = document.createElement('iframe');
       iframe.style.width = '100%';
       iframe.style.height = '700px';
@@ -673,7 +708,7 @@ body, div, h1, h2, h3, h4, h5, p{
             }
   
             $("#top_products_in_table").hide();
-            $("#tbl_dashboard").show();
+            $(".tbl_dashboard").show();
           
             $("#tbl_top_products tbody").html(html);
           
@@ -708,7 +743,7 @@ body, div, h1, h2, h3, h4, h5, p{
           else
           {
             $("#top_products_in_table").show();
-            $("#tbl_dashboard").hide();    
+            $(".tbl_dashboard").hide();    
             $("#top_products_data").html('<p>No data to display</p>');
             $("#net_income").html("<h1>0.00</h1>");
             if(responseData['top_expensive_by_period'] === 0)
@@ -753,9 +788,6 @@ body, div, h1, h2, h3, h4, h5, p{
     {
       var start_date = $("#per_start_date").val();
       var end_date = $("#per_end_date").val();
-
-      // $("#hourly_sales_data").hide();
-      // $("#hs_data").show();
       axios.get('api.php?action=get_salesDataByHour&start_date=' + start_date + '&end_date='+end_date)
           .then(function (response) {
               const salesData = response.data.salesData;
@@ -792,7 +824,7 @@ body, div, h1, h2, h3, h4, h5, p{
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Sales (₱)',
+                            label: '',
                             data: salesData,
                             backgroundColor: colors, 
                             borderColor: colors.map(color => color.replace('0.6', '1')), 
@@ -865,72 +897,6 @@ body, div, h1, h2, h3, h4, h5, p{
     function formatNumberWithCommas(number) {
         return number !==0 ? number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0;
     }
-    // function updateChart(year) 
-    // {
-    //   $("#d_year").html(year);
-    //   axios.get('api.php?action=get_salesData&year=' + year)
-    //       .then(function (response) {
-    //           const salesData = response.data.salesData;
-    //           const months = response.data.months;
-    //           const annual_sales = response.data.annual_sales;
-    //           const top_month = annual_sales === 0 ? "---" : response.data.top_month;
-    //           const top_month_value = response.data.top_month_value;
-
-    //           $(".annual_total_sales").html("<h3 style='font-family: Century Gothic;'>" + formatAmount(annual_sales) + "</h3>");
-    //           $(".top_performing_month").html("<h4 style='color: #d9f500; font-size: 1rem'>Top Performing Month</h4>" +
-    //               "<h4>" + top_month + "</h4>" +
-    //               "<h4>" + formatNumberWithCommas(top_month_value) + "</h4>");
-
-    //           const ctx = document.getElementById('salesChart').getContext('2d');
-
-    //           const colors = [
-    //               'rgba(255, 99, 132, 0.6)',  
-    //               'rgba(54, 162, 235, 0.6)',  
-    //               'rgba(255, 206, 86, 0.6)',  
-    //               'rgba(75, 192, 192, 0.6)',  
-    //               'rgba(153, 102, 255, 0.6)', 
-    //               'rgba(255, 159, 64, 0.6)',  
-    //               'rgba(199, 199, 199, 0.6)', 
-    //               'rgba(83, 102, 255, 0.6)',  
-    //               'rgba(99, 255, 132, 0.6)',  
-    //               'rgba(235, 54, 162, 0.6)',  
-    //               'rgba(206, 255, 86, 0.6)',  
-    //               'rgba(192, 192, 75, 0.6)'   
-    //           ];
-
-    //           const chart = new Chart(ctx, {
-    //               type: 'bar',
-    //               data: {
-    //                   labels: months,
-    //                   datasets: [{
-    //                       label: 'Sales (₱)',
-    //                       data: salesData,
-    //                       backgroundColor: colors, 
-    //                       borderColor: colors.map(color => color.replace('0.6', '1')), 
-    //                       borderWidth: 1
-    //                   }]
-    //               },
-    //               options: {
-    //                   scales: {
-    //                       x: {
-    //                           grid: {
-    //                               display: false
-    //                           }
-    //                       },
-    //                       y: {
-    //                           grid: {
-    //                               color: 'blue',
-    //                           }
-    //                       }
-    //                   }
-    //               }
-    //           });
-    //       })
-    //       .catch(function (error) {
-    //           console.error('Error fetching sales data:', error);
-    //       });
-    // }
-
     function formatNumberWithCommasAndDecimals(number) {
       return number !== 0 ? number.toFixed(2).replace(/\d(?=(\d{3})+.)/g, '$&,') : 0;
     }
@@ -1022,10 +988,7 @@ body, div, h1, h2, h3, h4, h5, p{
     }
     $("#btn_period").click(function (e) {
       e.preventDefault();
-      $("#period_reports").slideDown({
-        backdrop: 'static',
-        keyboard: false,
-      });
+      $("#period_reports").fadeIn(200)
     })
   });
 

@@ -155,46 +155,121 @@ class BirFacade extends DBConnection {
         $pdo = $this->connect();
 
         // Base query for e_reports
-        $e_reports_query = "SELECT 
-            users.first_name,
-            users.last_name,
-            customer.scOrPwdTIN,
-            customer.pwdOrScId,
-            customer.child_name,
-            customer.child_birth,
-            customer.child_age,
-            users.discount_id,
-            transactions.user_id, 
-            transactions.discount_amount, 
-            transactions.prod_price, 
-            transactions.is_paid,
-            transactions.is_transact,
-            transactions.is_void,
-            ROUND(SUM(transactions.prod_price), 2) AS totalPayment,
-            ROUND(SUM(transactions.discount_amount), 2) AS itemDiscount,
-            ROUND(SUM(payments.payment_amount + payments.cart_discount + payments.sc_pwd_discount + transactions.discount_amount), 2) AS totalAmount,
-            payments.cart_discount AS cart_discount,
-            payments.sc_pwd_discount AS customerDiscount,
-            transactions.payment_id AS paymentIds,
-            transactions.receipt_id AS receiptIds,
-            (payments.payment_amount - payments.change_amount) AS paymentAmount,
-            payments.creditTotal AS totalCredit,
-            payments.payment_details,
-            payments.date_time_of_payment,
-            payments.vatable_sales,
-            ROUND((payments.vatable_sales * 0.12), 2) AS vat_amount,
-            payments.change_amount, 
-            receipt.barcode
-        FROM transactions
-        INNER JOIN payments ON payments.id = transactions.payment_id
-        INNER JOIN users ON users.id = transactions.user_id
-        INNER JOIN customer ON users.id = customer.user_id
-        INNER JOIN receipt ON receipt.id = transactions.receipt_id
-        WHERE transactions.is_paid = 1 AND users.discount_id = ?";
-        
+        $e_reports_query = 'SELECT
+        first_name,
+        last_name,
+        scOrPwdTIN,
+        pwdOrScId,
+        child_name,
+        child_age,
+        child_birth,
+        discount_id,
+        user_id,
+        discount_amount,
+        prod_price,
+        is_paid,
+        is_transact,
+        is_void,
+        totalPayment,
+        itemDiscount,
+        totalAmount,
+        cart_discount,
+        customerDiscount,
+        paymentIds,
+        receiptIds,
+        paymentAmount,
+        totalCredit,
+        payment_details,
+        date_time_of_payment,
+        VAT_EXEMPT,
+        vatable_price,
+            CASE
+                WHEN ROUND((vatable_price / 1.12), 2) >= 2500 THEN
+                    ROUND((vatable_price / 1.12) - 2500, 2)
+                ELSE 
+                    0
+                END AS VAT_SALES,
+            CASE 
+                WHEN ROUND((vatable_price / 1.12), 2) >= 2500 THEN
+                    ROUND(ROUND((vatable_price / 1.12) - 2500, 2) * 0.12, 2)
+                ELSE 
+                    0
+                END AS VAT_AMOUNT,
+            CASE 
+                WHEN ROUND((vatable_price / 1.12), 2) >= 2500 THEN
+                    ROUND((2500 / 1.12), 2)
+                ELSE
+                    ROUND((vatable_price / 1.12), 2)
+                END AS VAT_EXEMPT,
+                
+            CASE 
+                WHEN ROUND(((vatDiscounted) / 1.12), 2) >= 2500 THEN
+                    (2500) * ROUND((customer_discount / 100), 2)
+                ELSE 
+                    ROUND((vatable_price / 1.12),2) * ROUND((customer_discount / 100), 2)
+                END AS CUSTOMER_DIS,
+                
+        change_amount,
+        barcode
+        FROM (
+            SELECT 
+                    users.first_name,
+                    users.last_name,
+                    customer.scOrPwdTIN,
+                    customer.pwdOrScId,
+                    customer.child_name,
+                    customer.child_birth,
+                    customer.child_age,
+                    users.discount_id,
+                    transactions.user_id, 
+                    transactions.discount_amount, 
+                    transactions.prod_price, 
+                    transactions.is_paid,
+                    transactions.is_transact,
+                    transactions.is_void,
+                    ROUND(SUM(transactions.prod_price), 2) AS totalPayment,
+                    ROUND(SUM(transactions.discount_amount), 2) AS itemDiscount,
+                    ROUND(SUM(payments.payment_amount + payments.cart_discount + payments.sc_pwd_discount + transactions.discount_amount), 2) AS totalAmount,
+                    payments.cart_discount AS cart_discount,
+                    payments.sc_pwd_discount AS customerDiscount,
+                    transactions.payment_id AS paymentIds,
+                    transactions.receipt_id AS receiptIds,
+                    (payments.payment_amount - payments.change_amount) AS paymentAmount,
+                    payments.creditTotal AS totalCredit,
+                    payments.payment_details,
+                    payments.date_time_of_payment,
+                    discounts.discount_amount AS customer_discount,
+                    payments.vatable_sales AS VAT_EXEMPT,
+            
+                    CASE 
+                        WHEN products.isVAT = 1 AND products.is_discounted = 1 THEN
+                            ROUND((SUM(transactions.subtotal)),2)
+                        ELSE 0
+                        END AS vatDiscounted,
+            
+                    CASE 
+                        WHEN products.isVAT = 0 AND products.is_discounted = 1 THEN
+                            ROUND((SUM(transactions.subtotal)),2)
+                        ELSE 0
+                        END AS nonVatDiscounted,
+                    CASE 
+                        WHEN products.isVAT = 1 THEN
+                            ROUND((SUM(transactions.subtotal)),2)
+                        END AS vatable_price,
+                    payments.change_amount, 
+                    receipt.barcode
+                FROM transactions
+                INNER JOIN products ON products.id = transactions.prod_id
+                INNER JOIN payments ON payments.id = transactions.payment_id
+                INNER JOIN users ON users.id = transactions.user_id
+                INNER JOIN discounts ON discounts.id = users.discount_id
+                INNER JOIN customer ON users.id = customer.user_id
+                INNER JOIN receipt ON receipt.id = transactions.receipt_id
+                WHERE transactions.is_paid = 1 AND users.discount_id = ?';
         // Append WHERE clause for date range if specified
         $whereClause = " AND DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
-        $groupBy = " GROUP BY transactions.payment_id ORDER BY receipt.barcode DESC";
+        $groupBy = " GROUP BY transactions.payment_id ORDER BY receipt.barcode DESC
+		) AS subquery";
         
         if ($startDate == '' && $endDate == '') {
             $e_reports = $pdo->prepare($e_reports_query . $groupBy);
@@ -271,10 +346,12 @@ class BirFacade extends DBConnection {
         foreach ($e_reports_data as $payments) {
             $payment_id = $payments['paymentIds'];
             $totalPaymentAmount = (float)$payments['paymentAmount'];
-            $netSales = (float)$payments['paymentAmount'];
-            $totalVatSales = (float)$payments['vatable_sales'];
-            $totalVat = (float)$payments['vat_amount'];
-          
+            
+            $totalVatExempt = (float)$payments['VAT_EXEMPT'];
+            $totalVat = (float)$payments['VAT_AMOUNT'];
+            $totalVatSales = (float)$payments['VAT_SALES'];
+
+            $netSales = (float)$payments['paymentAmount'] - $totalVat;
             if (isset($refunded_map[$payment_id])) {
                 $totalPaymentAmount -= (floatval($refunded_map[$payment_id]['totalRefAmount']));
                 // $totalVatSales -= floatval($refunded_map[$payment_id]['VatExempt']);
@@ -316,10 +393,12 @@ class BirFacade extends DBConnection {
                     'totalCredit' => (float)number_format($payments['totalCredit'],2, '.', ''),
                     'payment_details' => $payments['payment_details'],
                     'date_time_of_payment' => $payments['date_time_of_payment'],
-                    'vatable_sales' => (float)number_format($totalVatSales, 2, '.', ''),
+                    'vat_sales' => (float)number_format($totalVatSales, 2, '.', ''),
+                    'vatExempt' => (float)number_format($totalVatExempt, 2, '.', ''),
                     'vat_amount' => (float)number_format($totalVat, 2, '.', ''),
-                    'change_amount' => $payments['change_amount'],
+                    'change_amount' => $payments['change_amount'],  
                     'barcode' => $payments['barcode'],
+                    'customer_discount' => $payments['CUSTOMER_DIS'], // Temporary Change
                     'totalRefAmount' => $refunded_map[$payment_id]['totalRefAmount'] ?? 0,
                     'overAllDiscounts' => $refunded_map[$payment_id]['overAllDiscounts'] ?? 0,
                     'credits' => $refunded_map[$payment_id]['credits'] ?? 0,

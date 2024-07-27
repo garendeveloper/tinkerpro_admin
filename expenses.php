@@ -100,7 +100,7 @@ if (isset($_SESSION['user_id'])) {
   background-color: red;
 }
 .btn-control:hover {
-    border-color: #FF6900; 
+    border-color: var(--primary-color); 
     color: #fefefe !important; 
 }
 .productTable{
@@ -121,7 +121,7 @@ if (isset($_SESSION['user_id'])) {
   padding: 8px;
 }
 .table-border th{
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 .text-color{
     color: #ffff;
@@ -138,7 +138,7 @@ if (isset($_SESSION['user_id'])) {
     border-collapse: collapse;
 }
 .card {
-  background-color: #151515;
+  background-color: #1e1e1e;
   border-color: #242424;
   height: 200px;
   /* overflow-x: auto; 
@@ -164,7 +164,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 .paginationTag:hover{
-  color: #FF6900;
+  color: var(--primary-color);
 }
 
     #paginationDiv{
@@ -202,7 +202,7 @@ if (isset($_SESSION['user_id'])) {
     width: 6px; 
 }
 #responsive-data::-webkit-scrollbar-track {
-    background: #151515;
+    background: #1e1e1e;
 }
 #responsive-data::-webkit-scrollbar-thumb {
     background: #888; 
@@ -248,7 +248,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 .dt-paging:hover{
-  color: #FF6900;
+  color: var(--primary-color);
 }
   .dt-paging{
     margin-top: 20px;
@@ -259,7 +259,7 @@ if (isset($_SESSION['user_id'])) {
   }
 
 .dt-paging-button:hover{
-  color: #FF6900;
+  color: var(--primary-color);
 }
 .first{
   display: none;
@@ -582,131 +582,6 @@ h1, label, textarea, input, table,h5{
     function setFormattedDate(date) {
       return moment(date).format('MM-DD-YYYY');
     }
-    // function show_allExpenses() 
-    // {
-    //   if ($.fn.DataTable.isDataTable("#responsive-data #tbl_expenses")) {
-    //         $("#responsive-data #tbl_expenses").DataTable().destroy();
-    //     }
-    //     $("#paginationDiv").empty().hide();
-    //     $("#searchInput").focus();
-
-    //     var tblData = `
-    //         <table id='tbl_expenses' class='text-color table-border display' style='font-size: 12px;'>
-    //             <thead>
-    //                 <tr>
-    //                     <th class='text-center auto-fit'>No.</th>
-    //                     <th class='auto-fit'>Item Name</th>
-    //                     <th class='auto-fit'>Date</th>
-    //                     <th class='auto-fit text-center'>Billable</th>
-    //                     <th class='auto-fit text-center'>Type</th>
-    //                     <th class='auto-fit text-center'>Quantity</th>
-    //                     <th class='auto-fit text-center'>UOM</th>
-    //                     <th class='auto-fit text-center'>Supplier</th>
-    //                     <th class='auto-fit'>Invoice Number</th>
-    //                     <th class='auto-fit text-center'>Price (Php)</th>
-    //                     <th class='auto-fit text-center'>Discount</th>
-    //                     <th class='auto-fit text-center'>Total Amount(Php)</th>
-    //                     <th class='auto-fit text-center'>Actions</th>
-    //                 </tr>
-    //             </thead>
-    //             <tbody></tbody>
-    //         </table>`;
-
-    //     $("#responsive-data").html(tblData);
-
-    //     var table = $('#responsive-data #tbl_expenses').DataTable({
-    //         serverSide: true,
-    //         processing: true,
-    //         ajax: {
-    //             url: 'api.php?action=get_allExpenses',
-    //             type: 'POST',
-    //             data: {
-    //               start_date: start_date,
-    //               end_date: end_date,
-    //             },
-    //         },
-    //         columns: [
-    //             { data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1, className: 'text-center', },
-    //             { 
-    //                 data: 'item_name',
-    //                 render: (data, type, row) => {
-    //                     if (data === null || data === '') {
-    //                         return row.product ;
-    //                     } else {
-    //                         return data;
-    //                     }
-    //                 }
-    //             },
-    //             { data: 'date_of_transaction', className: 'text-center', render: data => setFormattedDate(data) },
-    //             { data: 'billable_receipt_no', className: 'text-center' },
-    //             { data: 'expense_type' },
-    //             { data: 'quantity', className: 'text-center' },
-    //             { data: 'uom_name', className: 'text-center' },
-    //             { data: 'supplier', className: 'text-center' },
-    //             { data: 'invoice_number', className: 'text-center' },
-    //             { data: 'price', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
-    //             { data: 'discount', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
-    //             { data: 'total_amount', render: data => `<span style="text-align: right; display: block;">&#x20B1; ${addCommasToNumber(data)}</span>` },
-    //             // { data: null, render: data => `<button style='border-radius: 5px; height: 25px; margin: 0;' data-id='${data.id}' id='btn_removeExpense'><i class='bi bi-trash'></i></button>`, className: 'text-center' }
-    //             {
-    //               data: null,
-    //               render: (data, type, row) => {
-    //                 if (data.product_id !== 0) {
-    //                   return `<button style='border-radius: 5px; height: 25px; margin: 0;'  >NO DELETE</button>`;
-    //                 } else {
-    //                   return `<button style='border-radius: 5px; height: 25px; margin: 0;' data-id='${data.id}' id='btn_removeExpense'><i class='bi bi-trash'></i></button>`;
-    //                 }
-    //               }, className: 'text-center',
-    //             }
-    //         ],
-    //         ordering: true,
-    //         order: [[0, 'DESC']],
-    //         pageLength: 25,
-    //         pagingType: 'full_numbers',
-    //         dom: '<"row view-filter"<"col-sm-12"<"clearfix">>>t<"row"<"col-sm-12"p>>',
-    //         fnDrawCallback: function (oSettings) {
-    //           if (oSettings.aoData.length === 0) {
-    //               $("#paginationDiv").hide();
-    //           } else {
-    //               $("#paginationDiv").show();
-    //           }
-    //           var totalSum = table
-    //               .column(11, { page: 'current' }) 
-    //               .data()
-    //               .reduce(function (acc, val) {
-    //                   return acc + parseFloat(val);
-    //               }, 0);
-
-    //           $('#overall_total_expenses').text(addCommasToNumber(totalSum));
-
-    //           var uniqueInvoiceNumbers = new Set();
-    //           var rows = table.rows({ page: 'current' }).nodes();
-
-    //           $(rows).each(function () {
-    //               var invoiceNumber = $(this).find('td:eq(8)').text().trim(); 
-    //               if (invoiceNumber !== "") { 
-    //                   uniqueInvoiceNumbers.add(invoiceNumber);
-    //               }
-    //           });
-
-    //           $('#total_invoice_numbers').text(uniqueInvoiceNumbers.size);
-    //         },
-    //         createdRow: function (row, data, dataIndex) {
-    //           $(row).attr('data-id', data.id);
-    //         }
-    //     });
-    //     table;
-
-    //     $("#paginationDiv").html($(".dt-paging")).show();
-
-    //     var debounceTimeout;
-    //     $('#searchInput').on('keyup', function () {
-    //         clearTimeout(debounceTimeout);
-    //         debounceTimeout = setTimeout(() => {
-    //             table.search($('#searchInput').val()).draw();
-    //         }, 100);
-    //     });
-    // }
     $("#responsive-data").on("click", "#btn_removeExpense", function(){
       var id = $(this).data('id');
       $.ajax({

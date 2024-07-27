@@ -27,7 +27,7 @@
   position: absolute;
   right: 1.6em;
   top: 10px;
-  background: #FF6900;
+  background: var(--primary-color);
   color: #fff;
   border: none;
   width: 40px;
@@ -106,7 +106,7 @@
         </div>
       </div>
       <div hidden id="loadingImage" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 800px; position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.8); z-index: 9999;">
-            <h3 style="color: #FF6900"><b></b>LOADING PLEASE WAIT</b></h3><br>
+            <h3 style="color: var(--primary-color)"><b></b>LOADING PLEASE WAIT</b></h3><br>
             <img src="assets/img/globe.png" alt="Globe Image" style="width:75px; height: 75px; animation: rotate 2s linear infinite;" />
         </div>
     <div hidden id="pdfFile"class="pdf-viewer-container">

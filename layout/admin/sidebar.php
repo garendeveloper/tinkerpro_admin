@@ -55,6 +55,8 @@ if (isset($_SESSION['user_id'])) {
         color: #fff;
         padding: 10px 0;
         background-color: #151515;
+        border: 1px solid #151515;
+        border-top: 1px solid #151515;
     }
 
 
@@ -66,7 +68,9 @@ if (isset($_SESSION['user_id'])) {
     .sidebar {
         height: 100%;
         width: 200px;
-        background-color: #151515;
+        background-color: #1e1e1e;
+        border: 1px solid #151515;
+        border-top: 1px solid #151515;
         position: fixed;
         top: 40px;
         left: 0;
@@ -89,6 +93,9 @@ if (isset($_SESSION['user_id'])) {
 
     .sidebar.collapsed {
         width: 60px;
+        background-color: #1e1e1e;
+        border: 1px solid #151515;
+        border-top: 1px solid #151515;
     }
 
     .sidebar nav ul {
@@ -128,6 +135,8 @@ if (isset($_SESSION['user_id'])) {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        background-color: #151515;
+        border: 1px solid #151515;
     }
 
     .sidebar nav ul li:hover {
@@ -171,6 +180,16 @@ if (isset($_SESSION['user_id'])) {
         right: 20px; 
         color: white;
         font-family: "Century Gothic";
+    }
+
+    #toggle-sidebar {
+        position: absolute;
+        bottom: 50px;
+        width: 100%;
+        background-color: #1e1e1e; 
+        border-top: 1px solid #292928; 
+        padding: 10px;
+        text-align: center;
     }
 </style>
 <header class="site-header">
@@ -279,104 +298,17 @@ if (isset($_SESSION['user_id'])) {
 
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Logout</span></a></li>
-            <li><a href="#" id="toggle-sidebar" class="d-flex justify-content-end"><i
-                        class="bi bi-chevron-double-left"></i>&nbsp;&nbsp; <span class="text dynamic-color"></span></a></li>
+            
         </ul>
         <input hidden class="userId" id="userId" value="<?php echo $userId; ?>" />
     </nav>
-    <!-- for v2 -->
-    <!-- <a href="company" id="company"><i class="bi bi-building"></i>&nbsp; Company</a>
-    <a href="machine-details" id="machine-details"><i class="bi bi-tools"></i>&nbsp; Machine Details</a>
-    <a href="backup-restore" id="backup-restore"><i class="bi bi-cloud-arrow-up-fill"></i>&nbsp; Backup & Restore</a> -->
-    <!-- <a href="ingredients" id="ingredients"><i class="bi bi-egg bi-3x "></i>&nbsp; Ingredients</a> -->
-        <!-- <li><a href="ingredients" id="ingredients"><i class="bi bi-egg"></i>&nbsp;&nbsp; <span
-                        class="text dynamic-color">Ingredients</span></a></li> --> 
-
+    <a href="#" id="toggle-sidebar" >
+        <i class="bi bi-chevron-double-left" style = "color: white;"></i>&nbsp;&nbsp; <span class="text dynamic-color"></span>
+    </a>
 </div>
 <script>
     let productSValidate = false;
     let reportingsValidate = false;
     let inventoryValidate = false;
     let userValidate = false;
-    // $('#products').on('click', function () {
-    //     $('#toChangeText').text("Products")
-    //     var forUser = document.getElementById('forUser')
-    //     forUser.setAttribute('hidden', true)
-    //     var forInventory = document.getElementById('forInventory')
-    //     forInventory.setAttribute('hidden', true);
-    //     var forProducts = document.getElementById('forProducts')
-    //     forProducts.removeAttribute('hidden');
-    //     var forUsers = document.getElementById('forUsers')
-    //     forUsers.setAttribute('hidden', true)
-    //     var forReportings = document.getElementById('forReportings')
-    //     forReportings.setAttribute('hidden', true);
-    //     userSValidate = false;
-    //     productSValidate = true;
-    //     reportingsValidate = false;
-    //     inventoryValidate = false;
-    //     userValidate = false;
-    //     permModals()
-    // })
-
-
-    // $('#reporting').on('click', function () {
-    //     $('#toChangeText').text("Reports")
-    //     var forUser = document.getElementById('forUser')
-    //     forUser.setAttribute('hidden', true)
-    //     var forInventory = document.getElementById('forInventory')
-    //     forInventory.setAttribute('hidden', true);
-    //     var forReportings = document.getElementById('forReportings')
-    //     forReportings.removeAttribute('hidden');
-    //     var forProducts = document.getElementById('forProducts')
-    //     forProducts.setAttribute('hidden', true);
-    //     var forUsers = document.getElementById('forUsers')
-    //     forUsers.setAttribute('hidden', true)
-    //     userSValidate = false;
-    //     productSValidate = false;
-    //     reportingsValidate = true;
-    //     inventoryValidate = false;
-    //     userValidate = false;
-    //     permModals()
-    // })
-
-    // $('#inventory').on('click', function () {
-    //     $('#toChangeText').text("Inventory")
-    //     var forUser = document.getElementById('forUser')
-    //     forUser.setAttribute('hidden', true)
-    //     var forInventory = document.getElementById('forInventory')
-    //     forInventory.removeAttribute('hidden');
-    //     var forReportings = document.getElementById('forReportings')
-    //     forReportings.setAttribute('hidden', true);
-    //     var forProducts = document.getElementById('forProducts')
-    //     forProducts.setAttribute('hidden', true);
-    //     var forUsers = document.getElementById('forUsers')
-    //     forUsers.setAttribute('hidden', true)
-    //     userSValidate = false;
-    //     productSValidate = false;
-    //     reportingsValidate = false;
-    //     inventoryValidate = true;
-    //     userValidate = false;
-    //     permModals()
-    // })
-    // $('#users').on('click', function () {
-    //     $('#toChangeText').text("Users")
-    //     var forUser = document.getElementById('forUser')
-    //     forUser.removeAttribute('hidden')
-    //     var forInventory = document.getElementById('forInventory')
-    //     forInventory.setAttribute('hidden', true);
-    //     var forReportings = document.getElementById('forReportings')
-    //     forReportings.setAttribute('hidden', true);
-    //     var forProducts = document.getElementById('forProducts')
-    //     forProducts.setAttribute('hidden', true);
-    //     var forUsers = document.getElementById('forUsers')
-    //     forUsers.setAttribute('hidden', true)
-    //     userSValidate = false;
-    //     productSValidate = false;
-    //     reportingsValidate = false;
-    //     inventoryValidate = false;
-    //     userValidate = true;
-    //     permModals()
-    // })
-
-
 </script>

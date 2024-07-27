@@ -182,54 +182,7 @@ include ('./layout/admin/table-pagination-css.php');
 .inventoryCard tbody tr:hover{
   background-color: #292928;
 }
-  /* .dt-paging-button {
-    text-decoration: none; 
-    border: 1px solid #fefefe;
-    margin-right: 1px; 
-    width: 40px;
-    height: 40px;
-    display: inline-flex; 
-    justify-content: center;
-    align-items: center; 
-    background-color: #888888;
-    color: #fefefe;
-}
 
-.dt-paging:hover{
-  color: #FF6900;
-}
-  .dt-paging{
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-.dt-paging-button:hover{
-  color: #FF6900;
-}
-.first{
-  display: none;
-}
-.last{
-  display: none;
-}
-.dt-paging-button {
-    text-decoration: none;
-    padding: 5px 10px;
-    margin: 2px;
-    border: 1px solid #ddd;
-    color: #000;
-}
-.dt-paging-button:hover {
-    background-color: #f0f0f0;
-}
-.dt-paging-button.active {
-    background-color: #00B050;
-    color: white;
-    outline: none;
-} */
 #main-content {
     overflow: hidden;
 }
@@ -239,20 +192,6 @@ include ('./layout/admin/table-pagination-css.php');
     overflow-y: auto; 
     overflow-x: auto; 
   }
-  /* .inventoryCard {
-    width: 100%;
-    max-height: 700px;
-} */
-
-
-/* .inventoryCard table{
-  overflow-y: auto; 
-  overflow-x: auto; 
-} */
-
-
-
-/* Fixed header styles */
 
 .inventoryCard::-webkit-scrollbar {
     width: 6px; 
@@ -476,7 +415,7 @@ i:hover{
           <!-- <div class="inventoryHeader" style="width: 100%;background-color: #151515; height: 10vh; margin-top: -20px; margin-left: 4px; padding: 10px;">
           
           </div> -->
-          <div class="card inventoryCard" style="width: 100%;background-color: #151515; height: 64vh; margin-top: -10px; margin-left: -10px;">
+          <div class="card inventoryCard" style="width: 100%;background-color: #1e1e1e; height: 64vh; margin-top: -10px; margin-left: 5px;">
 
           </div>   
           <div id="paginationDiv" ></div>
@@ -1299,9 +1238,9 @@ i:hover{
             {
               var inventory = inventoryData[i];
               var row = "<tr data-id=" + inventory.inventory_id + " data-ic_id = " + inventory.inventory_count_item_id + ">";
-              row += "<td>" + inventory.prod_desc + "</td>";
+              row += "<td data-id=" + inventory.inventory_id + ">" + inventory.prod_desc + "</td>";
               row += "<td style='text-align:center'>" + inventory.counted_qty + "</td>";
-              row += "<td class='text-center'><input placeholder='QTY' style='text-align:center; width: 60px; height: 20px; font-size: 12px;' class='counted-input' value = " + inventory.counted + " disabled></input></td>";
+              row += "<td class='text-center'><input placeholder='QTY' id = 'counted' style='text-align:center; width: 60px; height: 20px; font-size: 12px;' class='counted-input' value = " + inventory.counted + " ></input></td>";
               var difference = inventory.difference;
               var differenceDisplay = difference > 0 ? "+" + difference : difference;
               row += "<td style='text-align: right'>" + differenceDisplay + "</td>";
@@ -2828,6 +2767,7 @@ i:hover{
         $("#unpaid_purchase_modal #unpaid_hide2").show();
         $("#unpaid_purchase_modal #unpaid_hide3").show();
         $("#unpaid_purchase_modal #unpaid_hide4").hide();
+        $("#btn_savePO").attr('disabled', false);
         $("#unpaid_purchase_modal #btn_saveUnpaid").html('<i class = "bi bi-printer"></i>&nbsp; Save & Print');
         show_allSuppliers();
       })
@@ -2846,6 +2786,7 @@ i:hover{
         $("#open_po_report").hide();
         $("#receive_form #r_PONumbers").focus();
         $("#btn_omPayTerms").hide();
+        $("#btn_savePO").attr('disabled', false);
       })
       $("#btn_stockTransfer").click(function (e) {
         e.preventDefault();
@@ -2872,6 +2813,7 @@ i:hover{
         $("#inventorycount_div").hide();
         $("#expiration_div").show();
         $("#btn_omPayTerms").hide();
+        $("#btn_savePO").attr('disabled', false);
       })
       $("#btn_quickInventory").click(function (e) {
         e.preventDefault();
@@ -2885,6 +2827,7 @@ i:hover{
         $("#inventorycount_div").hide();
         $("#quickinventory_div").show();
         $("#quickinventory_form #q_product").focus();
+        $("#btn_savePO").attr('disabled', false);
       })
       $("#btn_lossDamage").click(function (e) {
         e.preventDefault();
@@ -2916,6 +2859,7 @@ i:hover{
         $('#date_damage').val(formattedDate);
         $("#lossanddamage_form #loss_and_damage_input").focus();
         $("#btn_omPayTerms").hide();
+        $("#btn_savePO").attr('disabled', false);
       })
       $("#btn_inventoryCount").click(function (e) {
         e.preventDefault();
@@ -2941,6 +2885,7 @@ i:hover{
         $("#lossanddamage_div").hide();
         $("#inventorycount_div").show();
         $("#btn_omPayTerms").hide();
+        $("#btn_savePO").attr('disabled', false);
       })
       function openOptionModal() {
         resetPurchaseOrderForm();
@@ -2953,6 +2898,7 @@ i:hover{
           $(".optionmodal-content").show();
         }, 100);
         $("#po_form #product").focus();
+        $("#btn_savePO").attr('disabled', false);
       }
   </script>
   <script>

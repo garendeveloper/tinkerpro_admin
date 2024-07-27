@@ -1,7 +1,7 @@
 <style>
  #dashboard_modal  .modal-dialog {
   max-width: 1000px; 
-  min-width: 500px; 
+  min-width: 700px; 
   
 }
 
@@ -13,11 +13,11 @@
 
 #dashboard_modal .modal-content {
   color: #ffff;
-  background: #262625;
+  background: transparent;
   border-radius: 0;
   position: relative;
   height: 900px;
-  width: 1000px
+  width: 1200px
 
 }
 
@@ -27,7 +27,7 @@
   position: absolute;
   right: 1.6em;
   top: 10px;
-  background: #FF6900;
+  background: var(--primary-color);
   color: #fff;
   border: none;
   width: 40px;
@@ -89,8 +89,9 @@
   font-size: 14px;
   cursor: pointer;
   display: flex;
-  justify-content: center; /* Horizontally center items */
-  align-items: center; /* Vertically center items */
+  justify-content: center; 
+  align-items: center; 
+  width: 100%;
 }
 .footerButton:hover{
   background-color: darkgreen;
@@ -100,10 +101,10 @@
 
 <div class="modal" id="dashboard_modal"  tabindex="0" style="background-color: rgba(0, 0, 0, 0.7); overflow: hidden; z-index: 2199;">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div class="modal-content" style = "background-color:rgba(0, 0, 0, 0.7)">
       <button id="reportsClose"  name="reportsClose" class="close-button" style="font-size: larger;">&times;</button>
-      <div class="modal-title">
-      <div class="warning-container" >
+      <div class="modal-title" >
+        <div class="warning-container" >
           <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 47.5 47.5" viewBox="0 0 47.5 47.5" id="Warning">
             <defs>
               <clipPath id="a">
@@ -119,7 +120,7 @@
         </div>
       </div>
       <div hidden id="loadingImage1" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 800px; position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.8); z-index: 9999;">
-        <h3 style="color: #FF6900"><b></b>LOADING PLEASE WAIT</b></h3><br>
+        <h3 style="color: var(--primary-color)"><b></b>LOADING PLEASE WAIT</b></h3><br>
         <img src="assets/img/globe.png" alt="Globe Image" style="width:75px; height: 75px; animation: rotate 2s linear infinite;" />
       </div>
       
