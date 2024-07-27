@@ -93,7 +93,7 @@
                     </select>
                     <i class="bi bi-chevron-double-down"></i>
                 </div>
-                <button type = "button" style="font-size: 12px; height: 30px; border-radius: 4px;" id="btn_go_inventory">
+                <button type = "button" style="font-size: 12px; height:30px; border-radius: 4px;" id="btn_go_inventory">
                     DISPLAY ALL</button>
                 <!-- <div class="custom-select">
                     <select name="select_category" id = "select_category"
@@ -106,7 +106,7 @@
                 </div> -->
             </div>
             <div class="group right-aligned" style="display: flex; align-items: center;">
-                <button style="font-size: 12px; height: 30px; border-radius: 4px; width: 200px; " id="btn_open_print_count_modal" type = "button">
+                <button style="font-size: 12px; height: 30px; border-radius: 4px; width: 180px; " id="btn_open_print_count_modal" type = "button">
                    <i class = "bi bi-printer"></i>&nbsp;&nbsp; Print Count Sheet</button>
             </div>
             
@@ -194,11 +194,13 @@
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        $("#btn_go_inventory").off().on("click", function (e) {
+        $("#btn_go_inventory").off("click").on("click", function (e) {
             e.preventDefault();
             var search_value = $("#qi_inventory_type").val();
+            if(search_value === "0") $("#qi_inventory_type").css('border', '1px solid red')
             $("#inventory_count_info_id").val("");
             $('#modalCashPrint').show();
+            $("#tbl_inventory_count tbody").html("");
             $.ajax({
                 type: 'get',
                 url: 'api.php?action=get_allProductByInventoryType&type='+search_value,
@@ -210,7 +212,7 @@
                         row += "<tr  data-id = "+data[i].product_id+">";
                         row += "<td data-id = " +data[i].product_id+ ">" + data[i].prod_desc + "</td>";
                         row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
-                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  required></input></td>";
+                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  autocomplete = 'off' required></input></td>";
                         row += "<td style = 'text-align: right'></td>";
                         row += "</tr>";
                     }
@@ -284,8 +286,8 @@
             }).map(function(row) {
                 var brand = row.brand === null ? " " : "( " + row.brand + " )";
                 return {
-                    label: row.product + " (" + row.barcode + ")",
-                    value: row.barcode ?? row.product,
+                    label: row.product,
+                    value: row.product,
                     id: row.product_id
                 };
             });
@@ -447,10 +449,10 @@
                 data: { data: product_id },
                 success: function (data) {
                     var row = "";
-                    row += "<tr data-id = " + data['id'] + " data-ic_id = '0'>";
+                    row += "<tr data-id = " + data['id'] + " data-ic_id = ''>";
                     row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
                     row += "<td style = 'text-align:center'>" + data['product_stock'] + "</td>";
-                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'counted' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'counted' style = 'width: 60px; text-align: center; height:20px;' autocomplete = 'off'></input></td>";
                     row += "<td style = 'text-align: right'></td>";
                     row += "</tr>";
                     $("#tbl_inventory_count tbody").append(row);

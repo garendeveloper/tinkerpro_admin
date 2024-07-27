@@ -1174,6 +1174,7 @@ i:hover{
             var ld_data = data.data;
             var tbody = $("#tbl_lossand_damages tbody");
             $("#ld_reference").val(infoData['reference_no']);
+            $("#lossDamageInfoID").val(infoData['id']);
             $("#date_damage").val(date_format(infoData['date_transact']));
             $("#ld_reason").val(infoData['reason']);
             $("#footer_lossand_damages #total_qty").html(infoData['total_qty']);
@@ -1183,18 +1184,18 @@ i:hover{
             var rows = [];
             for (var i = 0; i < ld_data.length; i++) {
               var inventory = ld_data[i];
-              var row = "<tr data-id=" + inventory.inventory_id + ">";
-              row += "<td>" + inventory.prod_desc + "</td>";
-              row += "<td style='text-align:center'>" + inventory.qty_damage + "</td>";
-              row += "<td style='text-align:right'>₱ " + addCommasToNumber(inventory.cost) + "</td>";
-              row += "<td style='text-align:right'>₱ " + addCommasToNumber(inventory.total_cost) + "</td>";
+              var row = "<tr data-id=" + inventory.inventory_id + " data-ld_id = "+inventory.loss_and_damage_id+">";
+              row += "<td data-id = "+inventory.inventory_id+">" + inventory.prod_desc + "</td>";
+              row += "<td style='text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' value = "+inventory.qty_damage+" ></input></td>";
+              row += "<td style='text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + addCommasToNumber(inventory.cost) + "</td>";
+              row += "<td style='text-align:right' id = 'total_row_cost'>₱ " + addCommasToNumber(inventory.total_cost) + "</td>";
               rows.push(row);
             }
             tbody.html(rows.join(''));
           }
         })
-        $("#loss_and_damage_input").attr('disabled', true);
-        $("#btn_searchLDProduct").attr('disabled', true);
+        // $("#loss_and_damage_input").attr('disabled', true);
+        // $("#btn_searchLDProduct").attr('disabled', true);
         $("#stocktransfer_div").hide();
         $("#received_div").hide()
         $("#quickinventory_div").hide()
@@ -1205,7 +1206,7 @@ i:hover{
         $("#purchaseItems_div").hide();
         $("#inventorycount_div").hide();
         $("#open_po_report").hide();
-        $("#btn_savePO").attr("disabled", true);
+        // $("#btn_savePO").attr("disabled", true);
         $("#btn_omPayTerms").hide();
         // $("#btn_omCancel").attr("disabled", true);
         $("#lossanddamage_form").find('input').removeClass('has-error');
@@ -1258,9 +1259,9 @@ i:hover{
             $("#purchaseItems_div").hide();
             $("#inventorycount_div").show();
             $("#open_po_report").hide();
-            $("#qi_inventory_type").attr("disabled", true);
-            $("#btn_go_inventory").attr("disabled", true);
-            $("#btn_savePO").attr("disabled", true);
+            // $("#qi_inventory_type").attr("disabled", true);
+            // $("#btn_go_inventory").attr("disabled", true);
+            // $("#btn_savePO").attr("disabled", true);
             // $("#btn_omCancel").attr("disabled", true);
             $("#btn_omPayTerms").hide();
             $("#inventorycount_form").find('input').removeClass('has-error');
@@ -1804,103 +1805,118 @@ i:hover{
           })
         }
         if (activeModuleId === "btn_quickInventory") {
-          var formData = $("#quickinventory_form").serialize();
-          var tbl_data = [];
-          $("#tbl_quickInventories tbody tr").each(function () {
-            var rowData = {};
-            rowData['inventory_id'] = $(this).data('id');
-            $(this).find("td").each(function (index, cell) {
-              if (index === 2)
-                rowData['newqty'] = $(cell).find("#qty").val();
-              rowData['col_' + (index + 1)] = $(cell).text();
-            })
-            tbl_data.push(rowData);
-          })
-       
-          $.ajax({
-            type: 'POST',
-            url: 'api.php?action=save_quickInventory',
-            data: {
-              tbl_data: JSON.stringify(tbl_data),
-              user_name: $("#first_name").val()+" "+$("#last_name").val(),
-            },
-            success: function (response) {
-              if (response.status) 
-              {
-                show_sweetReponse(response.msg);
-                var po_number = $("#q_product").val();
-                $("#tbl_quickInventories tbody").empty();
-                hideModals();
-
-                $(".inventoryCard").html("");
-                $(".grid-container button").removeClass('active');
-                $("#stocks").addClass('active');
-                show_allStocks();
-
-                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                var firstName = userInfo.firstName;
-                var lastName = userInfo.lastName;
-                var cid = userInfo.userId;
-                var role_id = userInfo.roleId; 
-
-                $.each(tbl_data, function(index, item){
-                  insertLogs('Quick Inventory', "Quick inventory: "+item.col_1 + " From: "+item.col_2 + " To: "+item.newqty);
+          var rowCount = $("#tbl_quickInventories tbody tr").length;
+          if(rowCount > 0)
+          {
+            if(validateTableInputs("tbl_quickInventories"))
+            {
+              var formData = $("#quickinventory_form").serialize();
+              var tbl_data = [];
+              $("#tbl_quickInventories tbody tr").each(function () {
+                var rowData = {};
+                rowData['inventory_id'] = $(this).data('id');
+                $(this).find("td").each(function (index, cell) {
+                  if (index === 2)
+                    rowData['newqty'] = $(cell).find("#qty").val();
+                  rowData['col_' + (index + 1)] = $(cell).text();
                 })
-              }
+                tbl_data.push(rowData);
+              })
+          
+              $.ajax({
+                type: 'POST',
+                url: 'api.php?action=save_quickInventory',
+                data: {
+                  tbl_data: JSON.stringify(tbl_data),
+                  user_name: $("#first_name").val()+" "+$("#last_name").val(),
+                },
+                success: function (response) {
+                  if (response.status) 
+                  {
+                    show_sweetReponse(response.msg);
+                    var po_number = $("#q_product").val();
+                    $("#tbl_quickInventories tbody").empty();
+                    hideModals();
+
+                    $(".inventoryCard").html("");
+                    $(".grid-container button").removeClass('active');
+                    $("#stocks").addClass('active');
+                    show_allStocks();
+
+                    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                    var firstName = userInfo.firstName;
+                    var lastName = userInfo.lastName;
+                    var cid = userInfo.userId;
+                    var role_id = userInfo.roleId; 
+
+                    $.each(tbl_data, function(index, item){
+                      insertLogs('Quick Inventory', "Quick inventory: "+item.col_1 + " From: "+item.col_2 + " To: "+item.newqty);
+                    })
+                  }
+                }
+              })
             }
-          })
+          }
+          else
+          {
+            $("#q_product").addClass('has-error');
+            $("select[name='inventory_type']").addClass('has-error');
+          }
         }
         if (activeModuleId === "btn_inventoryCount") {
           var rowCount = $("#tbl_inventory_count tbody tr").length;
           if(rowCount > 0)
           {
-            var tbl_data = [];
-            $("#tbl_inventory_count tbody tr").each(function () {
-              var rowData = {};
-              rowData['inventory_id'] = $(this).data('id');
-              rowData['inventory_count_item_id'] = $(this).data('ic_id');
-              rowData['qty'] = $(this).find("td:nth-child(2)").text();
-              rowData['counted'] = $(this).find("#counted").val();
-              rowData['difference'] = $(this).find("td:nth-child(4)").text();
+            if(validateTableInputs("tbl_inventory_count"))
+            {
+              var tbl_data = [];
+              $("#tbl_inventory_count tbody tr").each(function () {
+                var rowData = {};
+                rowData['inventory_id'] = $(this).data('id');
+                rowData['inventory_count_item_id'] = $(this).data('ic_id');
+                rowData['qty'] = $(this).find("td:nth-child(2)").text();
+                rowData['counted'] = $(this).find("#counted").val();
+                rowData['difference'] = $(this).find("td:nth-child(4)").text();
 
-              tbl_data.push(rowData);
-            });
-            var reference_no = $("#ic_reference").val();
-            var date_counted = $("#date_counted").val();
-            $.ajax({
-              type: 'post',
-              url: 'api.php?action=save_inventory_count',
-              data: {
-                tbl_data: JSON.stringify(tbl_data),
-                reference_no: $("#ic_reference").val(),
-                date_counted: $("#date_counted").val(),
-                refer_id: $("#inventory_count_info_id").val(),
-                user_name: $("#first_name").val()+" "+$("#last_name").val(),
-              },
-              success: function (response) {
-                if (response.status) {
-                  show_sweetReponse(response.msg);
-                  $("#tbl_inventory_count tbody").empty();
-                  $("#inventorycount_form")[0].reset();
-                  show_inventory_count_reference_no();
-                  hideModals();
+                tbl_data.push(rowData);
+              });
+              var reference_no = $("#ic_reference").val();
+              var date_counted = $("#date_counted").val();
+              $.ajax({
+                type: 'post',
+                url: 'api.php?action=save_inventory_count',
+                data: {
+                  tbl_data: JSON.stringify(tbl_data),
+                  reference_no: $("#ic_reference").val(),
+                  date_counted: $("#date_counted").val(),
+                  refer_id: $("#inventory_count_info_id").val(),
+                  user_name: $("#first_name").val()+" "+$("#last_name").val(),
+                },
+                success: function (response) {
+                  if (response.status) {
+                    show_sweetReponse(response.msg);
+                    $("#tbl_inventory_count tbody").empty();
+                    $("#inventorycount_form")[0].reset();
+                    show_inventory_count_reference_no();
+                    hideModals();
 
-                  $(".inventoryCard").html("");
-                  $(".grid-container button").removeClass('active');
-                  $("#inventory-count").addClass('active');
-                  show_allInventoryCounts();
+                    $(".inventoryCard").html("");
+                    $(".grid-container button").removeClass('active');
+                    $("#inventory-count").addClass('active');
+                    show_allInventoryCounts();
 
-                  var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                  var firstName = userInfo.firstName;
-                  var lastName = userInfo.lastName;
-                  var cid = userInfo.userId;
-                  var role_id = userInfo.roleId; 
-                  
-                  insertLogs('Inventory Count', "Successfully inventory count with reference #: "+reference_no + " Date: "+date_counted);
-              
+                    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                    var firstName = userInfo.firstName;
+                    var lastName = userInfo.lastName;
+                    var cid = userInfo.userId;
+                    var role_id = userInfo.roleId; 
+                    
+                    insertLogs('Inventory Count', "Successfully inventory count with reference #: "+reference_no + " Date: "+date_counted);
+                
+                  }
                 }
-              }
-            })
+              })
+            }
           }
           else
           {
@@ -1927,6 +1943,7 @@ i:hover{
                 $("#tbl_lossand_damages tbody tr:not(.sub-row)").each(function () {
                   var row_data = {};
                   row_data['inventory_id'] = $(this).data('id');
+                  row_data['damageID'] = $(this).data('ld_id');
                   $(this).find("td").each(function (index, cell) {
                     if (index === 1) {
                       row_data['qty_damage'] = $(cell).find("#qty_damage").val();
@@ -2835,6 +2852,7 @@ i:hover{
         $("#loss_and_damage_input").attr('disabled', false);
         $("#btn_searchLDProduct").attr('disabled', false);
         $("#lossanddamage_form")[0].reset();
+        $("#lossDamageInfoID").val("");
         $("#footer_lossand_damages #total_qty").html("0");
         $("#footer_lossand_damages #total_cost").html("₱ 0.0");
         $("#footer_lossand_damages #overall_total_cost").html("₱ 0.0");

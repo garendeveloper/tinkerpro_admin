@@ -367,7 +367,7 @@ class BirFacade extends DBConnection {
             }
             
 
-            if (max(0, (float)number_format($totalPaymentAmount,2, '.', '')) != 0) {
+            if (max(0, (float)number_format($totalPaymentAmount, 2, '.', '')) != 0) {
                 $result[] = [
                     'first_name' => $payments['first_name'],
                     'last_name' => $payments['last_name'],
@@ -411,7 +411,6 @@ class BirFacade extends DBConnection {
                     'netSales' => max(0, (float)number_format($netSales,2, '.', '')),
                 ];
             }
-
             
         }
         return $result;

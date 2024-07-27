@@ -35,6 +35,7 @@ if (isset($_SESSION['user_id'])) {
 } else {
     header("Location: login.php");
     exit;
+
 }
   if (isset($_SESSION["user_id"])){
     $userId = $_SESSION["user_id"];
@@ -65,8 +66,6 @@ if (isset($_SESSION['user_id'])) {
 	}
     include('./modals/datePickerModal.php');
     include('./modals/showReportsModal.php');
-    include('./modals/sales_history.php');
-
 ?>
 <style>
 .headerReport{
@@ -103,13 +102,9 @@ if (isset($_SESSION['user_id'])) {
 .allAnchrBtn:hover {
     color: white;
 }
-
 .highlight {
-  background-color: var(--primary-color);
+  background-color:   #FF6900;
 }
-/* .allAnchrBtn.active{
-  background-color: var(--active-bg-color);
-} */
 .anchor-container{
     padding:0;
     margin: 0;
@@ -277,273 +272,170 @@ input:not(:checked) + .sliderStatusExcludes {
   background-color: white; 
 }
 
-body, html {
-  overflow: hidden;
-}
-.bi-folder2-open{
-  font-size: 25px;
-}
-.anchor-container a:hover{
-  background-color: #333333;
-}
 </style>
 
  <?php include "layout/admin/css.php"?> 
  <div class="container-scroller">
+  <!-- partial:partials/_navbar.html -->
   <?php include 'layout/admin/sidebar.php' ?>
-    <div class="main-panel" style= "overflow: hidden; ">
-      <div class="content-wrapper" >
-        <div style="display:flex; ">
-          <div class="cardLeft" style="height: 95vh; width: 170vh; border: 1px solid #464646; background-color: #262626; border-radius: 0; overflow-y: auto;">
-            <div class="card-body " >
-              <h5 class="headerReport text-color" style = "overflow: hidden">Select report to view or print</h5>
+    <!-- partial -->
+    <div class="main-panel">
+      <div class="content-wrapper" style="width:100%">
+
+        <div style="display:flex; width: 100%; height: 100%">
+          <div class="cardLeft" style="height:1200px; width: 170vh; border: 1px solid #464646; background-color: #262626; border-radius: 0;">
+            <div class="card-body ">
+              <h5 class="headerReport text-color">Select report to view or print</h5>
               <h5 class="headerReport text-color" style="margin-top: 5px; display: flex;align-items: center;">Sales<span  class="line"></span></h5>
                <div class="anchor-container">
-                  <div id="highlightDiv1" style="width: 100%">
-                      <a href="#" onclick="highlightDiv(1)" class="text-color customerAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                        <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Customers</span>
-                      </a>
-                  </div>
-                  <div id="highlightDiv2" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(2)" class="text-color usersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Users</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv3" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(3)" class="text-color productssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Products</span>
-                    </a>
-                  </div>
-                  <div hidden id="highlightDiv4" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(4)" class="text-color ingredientsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Ingredients</span>
-                    </a>
-                  </div>
-                  <div hidden id="highlightDiv31" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(31)" class="text-color bomAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Bill of Materials (B.O.M)</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv5" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(5)" class="text-color refundAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Refund by Products</span>
-                    </a>
-                  </div>
-                  <div hidden id="highlightDiv28" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(28)" class="text-color refundCustomersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Refund by Types & Customers</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv29" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(29)" class="text-color retAndExAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Return and Exchange by Products</span>
-                    </a>
-                  </div>
-                  <div hidden id="highlightDiv30" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(30)" class="text-color retAndExByCustomerAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Return and Exchange by Customers</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv6" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(6)" class="text-color taxRatesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Tax Rates</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv7" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(7)" class="text-color paymentTypesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Payment Types</span>
-                    </a>
-                  </div>
-                  <div hidden id="highlightDiv8" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(8)" class="text-color paymentTypesUsersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Payment Types by users</span>
-                    </a>
-                  </div>
-                  <div  hidden id="highlightDiv9" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(9)" class="text-color paymentTypesCustomersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Payment Types by customers</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv10" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(10)" class="text-color profitAndMarginAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Profit & margin</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv11" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(11)" class="text-color profitAndLossAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Income Statement</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv12" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(12)" class="text-color unpaidSalesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Unpaid Sales</span>
-                    </a>
-                  </div>
-                  <div hidden id="highlightDiv32" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(32)" class="text-color unpaidSalesByCashierAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Unpaid Sales by Cashier</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv13" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(13)" class="text-color startingCashEntriesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Cash In and Cash Out Entries</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv14" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(14)" class="text-color voidedItemssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Voided Items</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv15" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(15)" class="text-color discountsGrantedAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Discounts Granted</span>
-                    </a>
-                  </div>
-                  <div id="highlightDiv16" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(16)" class="text-color itemsDiscountssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Items Discounts</span>
-                    </a>
-                  </div>
-                  <div hidden id="highlightDiv17" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(17)" class="text-color stocksMovementsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Stock movement</span>
-                    </a>
-                  </div>
-                  <div  id="highlightDiv36" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(36)" class="text-color invoiceAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Invoice</span>
-                    </a>
-                  </div>
+                  <div id="highlightDiv1" style="width: 100%"><a href="#" onclick="highlightDiv(1)" class="text-color customerAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Customers</span></a></div>
+                  <div id="highlightDiv2" style="width: 100%"><a href="#" onclick="highlightDiv(2)" class="text-color usersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Users</span></a></div>
+                  <div id="highlightDiv3" style="width: 100%"><a href="#" onclick="highlightDiv(3)" class="text-color productssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Products</span></a></div>
+                  <div hidden id="highlightDiv4" style="width: 100%"><a href="#" onclick="highlightDiv(4)" class="text-color ingredientsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Ingredients</span></a></div>
+                  <div hidden id="highlightDiv31" style="width: 100%"><a href="#" onclick="highlightDiv(31)" class="text-color bomAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Bill of Materials (B.O.M)</span></a></div>
+                  <div id="highlightDiv5" style="width: 100%"><a href="#" onclick="highlightDiv(5)" class="text-color refundAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Refund by Products</span></a></div>
+                  <div hidden id="highlightDiv28" style="width: 100%"><a href="#" onclick="highlightDiv(28)" class="text-color refundCustomersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Refund by Types & Customers</span></a></div>
+                  <div id="highlightDiv29" style="width: 100%"><a href="#" onclick="highlightDiv(29)" class="text-color retAndExAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Return and Exchange by Products</span></a></div>
+                  <div hidden id="highlightDiv30" style="width: 100%"><a href="#" onclick="highlightDiv(30)" class="text-color retAndExByCustomerAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Return and Exchange by Customers</span></a></div>
+                  <div id="highlightDiv6" style="width: 100%"><a href="#" onclick="highlightDiv(6)" class="text-color taxRatesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Tax Rates</span></a></div>
+                  <div id="highlightDiv7" style="width: 100%"><a href="#" onclick="highlightDiv(7)" class="text-color paymentTypesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Payment Types</span></a></div>
+                  <div id="highlightDiv8" style="width: 100%"><a href="#" onclick="highlightDiv(8)" class="text-color paymentTypesUsersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Payment Types by users</span></a></div>
+                  <div id="highlightDiv9" style="width: 100%"><a href="#" onclick="highlightDiv(9)" class="text-color paymentTypesCustomersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Payment Types by customers</span></a></div>
+                  <div id="highlightDiv10" style="width: 100%"><a href="#" onclick="highlightDiv(10)" class="text-color profitAndMarginAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Profit & margin</span></a></div>
+                  <div hidden id="highlightDiv11" style="width: 100%"><a href="#" onclick=" highlightDiv(11)" class="text-color profitAndLossAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Profit & loss</span></a></div>
+                  <div id="highlightDiv12" style="width: 100%"><a href="#" onclick=" highlightDiv(12)" class="text-color unpaidSalesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Unpaid Sales</span></a></div>
+                  <div hidden id="highlightDiv32" style="width: 100%"><a href="#" onclick=" highlightDiv(32)" class="text-color unpaidSalesByCashierAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Unpaid Sales by Cashier</span></a></div>
+                  <div id="highlightDiv13" style="width: 100%"><a href="#" onclick=" highlightDiv(13)" class="text-color startingCashEntriesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Starting Cash Entries</span></a></div>
+                  <div id="highlightDiv14" style="width: 100%"><a href="#" onclick=" highlightDiv(14)" class="text-color voidedItemssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Voided Items</span></a></div>
+                  <div id="highlightDiv15" style="width: 100%"><a href="#" onclick=" highlightDiv(15)" class="text-color discountsGrantedAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Discounts Granted</span></a></div>
+                  <div id="highlightDiv16" style="width: 100%"><a href="#" onclick=" highlightDiv(16)" class="text-color itemsDiscountssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Items Discounts</span></a></div>
+                  <div hidden id="highlightDiv17" style="width: 100%"><a href="#" onclick=" highlightDiv(17)" class="text-color stocksMovementsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Stock movement</span></a></div>
                </div>
                <!-- <h5 class="headerReport text-color" style="margin-top: 15px; display: flex;align-items: center;">Purchase<span  class="line"></span></h5>
                <div class="anchor-container">
                   <div id="highlightDiv18" style="width: 100%"><a href="#" onclick=" highlightDiv(18)" class="text-color purchaseProductsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Products</span></a></div>
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Products</span></a></div>
                   <div id="highlightDiv19" style="width: 100%"><a href="#" onclick=" highlightDiv(19)" class="text-color suppliersAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Suppliers</span></a></div>
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Suppliers</span></a></div>
                   <div id="highlightDiv20" style="width: 100%"><a href="#" onclick=" highlightDiv(20)" class="text-color unpaidPurchaseAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Unpaid purchase</span></a></div>
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Unpaid purchase</span></a></div>
                   <div id="highlightDiv21" style="width: 100%"><a href="#" onclick=" highlightDiv(21)" class="text-color pDiscountsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Purchase Discounts</span></a></div>
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Purchase Discounts</span></a></div>
                   <div id="highlightDiv22" style="width: 100%"><a href="#" onclick=" highlightDiv(22)" class="text-color pItemsDiscountsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Purchased items discounts</span></a></div>
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Purchased items discounts</span></a></div>
                   <div id="highlightDiv23" style="width: 100%"><a href="#" onclick=" highlightDiv(23)" class="text-color purchaseInvoiceRatesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Purchase invoice lits</span></a></div>
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Purchase invoice lits</span></a></div>
                   <div id="highlightDiv24" style="width: 100%"><a href="#" onclick=" highlightDiv(24)" class="text-color taxRatesSuppAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Tax Rates</span></a></div>
-              </div> -->
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Tax Rates</span></a></div>
+            </div> -->
 
-              <!-- <h5 class="headerReport text-color" style="margin-top: 15px; display: flex; align-items: center;">Loss&nbsp;and&nbsp;damage<span class="line"></span></h5>
+            <!-- <h5 class="headerReport text-color" style="margin-top: 15px; display: flex; align-items: center;">Loss&nbsp;and&nbsp;damage<span class="line"></span></h5>
                <div class="anchor-container">
                   <div id="highlightDiv25" style="width: 100%"><a href="#" onclick=" highlightDiv(25)" class="text-color lossAndDamageAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Products</span></a></div>    
-              </div> 
-                <h5 class="headerReport text-color" style="margin-top: 15px; display: flex; align-items: center;">Loss&nbsp;Control<span class="line"></span></h5>
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Products</span></a></div>    
+            </div> -->
+            <!-- <h5 class="headerReport text-color" style="margin-top: 15px; display: flex; align-items: center;">Loss&nbsp;Control<span class="line"></span></h5>
                <div class="anchor-container">
                   <div id="highlightDiv26" style="width: 100%"><a href="#" onclick=" highlightDiv(26)" class="text-color reorderAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Reorder product list</span></a></div>  
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Reorder product list</span></a></div>  
                   <div id="highlightDiv27" style="width: 100%"><a href="#" onclick=" highlightDiv(27)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Low stock warning</span></a></div>      
-              </div> -->
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Low stock warning</span></a></div>      
+            </div> -->
             <h5 class="headerReport text-color" style="margin-top: 15px; display: flex; align-items: center;">BIR<span class="line"></span></h5>
                <div class="anchor-container">
-                  <div id="highlightDiv33" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(33)" class="text-color reorderAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class = "bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Z-Reading</span>
-                    </a>
-                  </div>  
-                  <div id="highlightDiv34" style="width: 100%">
-                    <a href="#" onclick="highlightDiv(34)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                      <i class = "bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Sales Report</span>
-                    </a>
-                  </div> 
-                  <!-- <div id="highlightDiv33" style="width: 100%"><a href="#" onclick=" highlightDiv(33)" class="text-color reorderAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Z-Reading</span></a></div>   -->
-                  <div id="highlightDiv55" style="width: 100%"><a href="#" onclick=" highlightDiv(55)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-1 (Summary)</span></a></div>      
-                  <div id="highlightDiv50" style="width: 100%"><a href="#" onclick=" highlightDiv(50)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-2 (Senior Citizen)</span></a></div>      
-                  <div id="highlightDiv51" style="width: 100%"><a href="#" onclick=" highlightDiv(51)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-3 (PWD)</span></a></div>      
-                  <div id="highlightDiv52" style="width: 100%"><a href="#" onclick=" highlightDiv(52)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-4 (National Athletes and Coaches )</span></a></div>      
-                  <div id="highlightDiv53" style="width: 100%"><a href="#" onclick=" highlightDiv(53)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-5 (Solo Parent)</span></a></div>      
-                  <!-- <div id="highlightDiv54" style="width: 100%">
-                    <a href="#" onclick=" highlightDiv(54)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                </div> -->
-              </div>
+                  <div id="highlightDiv33" style="width: 100%"><a href="#" onclick=" highlightDiv(33)" class="text-color reorderAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Z-Reading</span></a></div>  
+                  <div id="highlightDiv34" style="width: 100%"><a href="#" onclick=" highlightDiv(34)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 8.2C3 7.07989 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H9.67452C10.1637 5 10.4083 5 10.6385 5.05526C10.8425 5.10425 11.0376 5.18506 11.2166 5.29472C11.4184 5.4184 11.5914 5.59135 11.9373 5.93726L12.0627 6.06274C12.4086 6.40865 12.5816 6.5816 12.7834 6.70528C12.9624 6.81494 13.1575 6.89575 13.3615 6.94474C13.5917 7 13.8363 7 14.3255 7H17.8C18.9201 7 19.4802 7 19.908 7.21799C20.2843 7.40973 20.5903 7.71569 20.782 8.09202C21 8.51984 21 9.0799 21 10.2V15.8C21 16.9201 21 17.4802 20.782 17.908C20.5903 18.2843 20.2843 18.5903 19.908 18.782C19.4802 19 18.9201 19 17.8 19H6.2C5.07989 19 4.51984 19 4.09202 18.782C3.71569 18.5903 3.40973 18.2843 3.21799 17.908C3 17.4802 3 16.9201 3 15.8V8.2Z" stroke="#ffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><span style="margin-top:5px; margin-left: 3px">Sales Report</span></a></div>      
+            </div>
             </div>
           </div>
-          <div class="cardRight" style="height:1200px; width: 60vh; border: 1px solid #464646; background-color: #262626; border-radius: 0; overflow: hidden">
+          <div class="cardRight" style="height:1200px; width: 60vh; border: 1px solid #464646; background-color: #262626; border-radius: 0;">
             <div class="card-body" style="margin-left: 20px;margin-right: 20px" >
             <h5 class="headerReport text-color" style="margin-left: -20px">Filter</h5>
-          <!-- <div class="cardRight" style="height:1200px; width: 60vh; border: 1px solid #464646; background-color: #262626; border-radius: 0; overflow: hidden">
-            <div class="card-body" style="padding: 10px 10px; width: 100%; " >
-              <h5 class="headerReport text-color" style="margin-left: -20px;  ">Filter</h5>
-              <br>    -->
-
-              <div hidden class="custom-select" id="customerDIV">
-                  <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px;">Select Customers</label>
-                  <div  class="select-container">
-                      <select id="customersSelect">
-                      <option value="" selected>All Customers</option>
-                      <?php
-                          $userFacade = new UserFacade;
-                          $users = $userFacade->getCustomersData();
-                          while ($row = $users->fetch(PDO::FETCH_ASSOC)) {
-                              echo '<option value="' . $row['id'] . '">' . $row['first_name'] .' ' . $row['last_name'] . '</option>';
-                          }
-                          ?>
-                      </select>
-                      <div class="select-arrow"></div>
-                  </div>
-              </div>
-              <div hidden class="custom-select" id="suppliersDIV">
-                  <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Suppliers</label>
-                  <div class="select-container">
-                      <select id="suppliersSelect">
-                      <option value="" selected disabled>All Suppliers</option>
-                      <?php
-                          $productFacade = new ProductFacade;
-                          $products =  $productFacade->getSuppliersData();
-                          while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
-                              echo '<option value="' . $row['id'] . '">' . $row['supplier'] .' </option>';
-                          }
-                          ?>
-                      </select>
-                      <div class="select-arrow"></div>
-                  </div>
-              </div>
-              <div hidden class="custom-select" id="usersDIV">
-                  <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Users</label>
-                  <div class="select-container">
-                      <select id="usersSelect">
-                          <option value="" selected >All Users</option>
-                          <?php
-                          $userFacade = new UserFacade;
-                          $users = $userFacade->getUsersData();
-                          while ($row = $users->fetch(PDO::FETCH_ASSOC)) {
-                              echo '<option value="' . $row['id'] . '">' . $row['first_name'] .' ' . $row['last_name'] . '</option>';
-                          }
-                          ?>
-                      </select>
-                      <div class="select-arrow"></div>
-                  </div>
-              </div>
-              <div hidden class="custom-select" id="cashRegisterDIV">
-                  <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Cash Register</label>
-                  <div class="select-container">
-                      <select id="cashRegisterSelect">
-                      <option value="" selected disabled>All Cash Register</option>
-                      <option value="1">Option 1</option>
-                      <option value="2">Option 2</option>
-                      <option value="3">Option 3</option>
-                      </select>
-                      <div class="select-arrow"></div>
-                  </div>
-              </div>
-              <div hidden class="custom-select" id="productsDIV">
+            <div hidden class="custom-select" id="customerDIV">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px;">Select Customers</label>
+                <div  class="select-container">
+                    <select id="customersSelect">
+                    <option value="" selected>All Customers</option>
+                    <?php
+                        $userFacade = new UserFacade;
+                        $users = $userFacade->getCustomersData();
+                        while ($row = $users->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['first_name'] .' ' . $row['last_name'] . '</option>';
+                        }
+                        ?>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+            </div>
+            <div hidden class="custom-select" id="suppliersDIV">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Suppliers</label>
+                <div class="select-container">
+                    <select id="suppliersSelect">
+                    <option value="" selected disabled>All Suppliers</option>
+                    <?php
+                        $productFacade = new ProductFacade;
+                        $products =  $productFacade->getSuppliersData();
+                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['supplier'] .' </option>';
+                        }
+                        ?>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+            </div>
+            <div hidden class="custom-select" id="usersDIV">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Users</label>
+                <div class="select-container">
+                    <select id="usersSelect">
+                        <option value="" selected >All Users</option>
+                        <?php
+                        $userFacade = new UserFacade;
+                        $users = $userFacade->getUsersData();
+                        while ($row = $users->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['first_name'] .' ' . $row['last_name'] . '</option>';
+                        }
+                        ?>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+            </div>
+            <div hidden class="custom-select" id="cashRegisterDIV">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Cash Register</label>
+                <div class="select-container">
+                    <select id="cashRegisterSelect">
+                    <option value="" selected disabled>All Cash Register</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    </select>
+                    <div class="select-arrow"></div>
+                </div>
+            </div>
+            <div hidden class="custom-select" id="productsDIV">
                 <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Products</label>
                 <div class="select-container">
                     <select id="selectProducts" >
@@ -559,38 +451,25 @@ body, html {
                     <div class="select-arrow"></div>
                 </div>
             </div>
-              
-              <div hidden class="custom-select" id="entries">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Options</label>
-                <div class="select-container">
-                    <select id="entriesSelect">
-                    <option value="in" selected >Cash In Entries</option>
-                    <option value="out">Cash Out Entries</option>
+            <div hidden class="custom-select" id="categoriesDiv">
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Product Categories</label>
+                <div class="select-container" >
+                    <select id="categoreisSelect">
+                    <option value="" selected>ALL Product Categories</option>
+                    <?php
+                        $productFacade = new ProductFacade;
+                        $products =  $productFacade->getCategoriesData();
+                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['id'] . '">' . $row['category_name'] .' </option>';
+                        }
+                        ?>
+                    </select>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
             </div>
-
-              <div hidden class="custom-select" id="categoriesDiv">
-                  <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Product Categories</label>
-                  <div class="select-container" >
-                      <select id="categoreisSelect">
-                      <option value="" selected>ALL Product Categories</option>
-                      <?php
-                          $productFacade = new ProductFacade;
-                          $products =  $productFacade->getCategoriesData();
-                          while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
-                              echo '<option value="' . $row['id'] . '">' . $row['category_name'] .' </option>';
-                          }
-                          ?>
-                      </select>
-                    
-                      <div class="select-arrow"></div>
-                  </div>
-              </div>
-           
             <div hidden class="custom-select" id="subCategoriesDIV">
-                <label class="text-color" style="display: inline-block; margin-bottom: 5px; margin-top: 10px">Select Product Sub-categories</label>
+                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Product Sub-categories</label>
                 <div class="select-container">
                     <select id="subCategoreisSelect">
                     <option value="" selected >All Product Sub-categories</option>
@@ -682,7 +561,7 @@ body, html {
                     <div class="select-arrow"></div>
                 </div>
             </div>
-
+           
             <a hidden href="#" onclick="openModalDatePicker()"class="custom-input" id="dateTimeAnchor" style="margin-top: 20px">
                 <input readonly type="text" id="datepicker" style="padding-left: 35px; flex: 1; text-align: center;">
                 <svg class="calendar-icon" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -715,16 +594,6 @@ body, html {
                     <div class="select-arrow"></div>
                 </div>
             </div>
-            <div hidden class="custom-select" id="entries">
-                <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Options</label>
-                <div class="select-container">
-                    <select id="entriesSelect">
-                    <option value="in" selected >Cash In Entries</option>
-                    <option value="out">Cash Out Entries</option>
-                    </select>
-                    <div class="select-arrow"></div>
-                </div>
-            </div>
                 <div class="divider"></div>
                 <div style="display:flex;justify-content:center" class="topDiv">
                  <button id="showReport" class="custom_btn" style="margin-right: 10px;"><svg height="30px" width="30px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#fefefe" d="M20.921,31.898c2.758,0,5.367-0.956,7.458-2.704l1.077,1.077l-0.358,0.358 c-0.188,0.188-0.293,0.442-0.293,0.707s0.105,0.52,0.293,0.707l8.257,8.256c0.195,0.195,0.451,0.293,0.707,0.293 s0.512-0.098,0.707-0.293l2.208-2.208c0.188-0.188,0.293-0.442,0.293-0.707s-0.105-0.52-0.293-0.707l-8.257-8.256 c-0.391-0.391-1.023-0.391-1.414,0l-0.436,0.436l-1.073-1.073c1.793-2.104,2.777-4.743,2.777-7.537c0-3.112-1.212-6.038-3.413-8.239 s-5.127-3.413-8.239-3.413s-6.038,1.212-8.238,3.413c-2.201,2.201-3.413,5.126-3.413,8.239c0,3.112,1.212,6.038,3.413,8.238 C14.883,30.687,17.809,31.898,20.921,31.898z M38.855,37.385l-0.794,0.793l-6.843-6.842l0.794-0.793L38.855,37.385z M14.097,13.423 c1.823-1.823,4.246-2.827,6.824-2.827s5.002,1.004,6.825,2.827c1.823,1.823,2.827,4.247,2.827,6.825 c0,2.578-1.004,5.001-2.827,6.824c-1.823,1.823-4.247,2.827-6.825,2.827s-5.001-1.004-6.824-2.827 c-1.823-1.823-2.827-4.247-2.827-6.824C11.27,17.669,12.273,15.246,14.097,13.423z"></path> </g></svg>&nbsp;Show Report</button>
@@ -733,261 +602,25 @@ body, html {
                 <div style="display:flex;justify-content:center" >
                   <button id="EXCELBtn" class="custom_btn" style="margin-right: 10px"><svg height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 26 26" xml:space="preserve" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#ffff;" d="M25.162,3H16v2.984h3.031v2.031H16V10h3v2h-3v2h3v2h-3v2h3v2h-3v3h9.162 C25.623,23,26,22.609,26,22.13V3.87C26,3.391,25.623,3,25.162,3z M24,20h-4v-2h4V20z M24,16h-4v-2h4V16z M24,12h-4v-2h4V12z M24,8 h-4V6h4V8z"></path> <path style="fill:#ffff;" d="M0,2.889v20.223L15,26V0L0,2.889z M9.488,18.08l-1.745-3.299c-0.066-0.123-0.134-0.349-0.205-0.678 H7.511C7.478,14.258,7.4,14.494,7.277,14.81l-1.751,3.27H2.807l3.228-5.064L3.082,7.951h2.776l1.448,3.037 c0.113,0.24,0.214,0.525,0.304,0.854h0.028c0.057-0.198,0.163-0.492,0.318-0.883l1.61-3.009h2.542l-3.037,5.022l3.122,5.107 L9.488,18.08L9.488,18.08z"></path> </g> </g></svg>&nbsp;Excel</button>
                  <button id="PDFBtn" class="custom_btn"><svg width="25px" height="25px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2.5 6.5V6H2V6.5H2.5ZM6.5 6.5V6H6V6.5H6.5ZM6.5 10.5H6V11H6.5V10.5ZM13.5 3.5H14V3.29289L13.8536 3.14645L13.5 3.5ZM10.5 0.5L10.8536 0.146447L10.7071 0H10.5V0.5ZM2.5 7H3.5V6H2.5V7ZM3 11V8.5H2V11H3ZM3 8.5V6.5H2V8.5H3ZM3.5 8H2.5V9H3.5V8ZM4 7.5C4 7.77614 3.77614 8 3.5 8V9C4.32843 9 5 8.32843 5 7.5H4ZM3.5 7C3.77614 7 4 7.22386 4 7.5H5C5 6.67157 4.32843 6 3.5 6V7ZM6 6.5V10.5H7V6.5H6ZM6.5 11H7.5V10H6.5V11ZM9 9.5V7.5H8V9.5H9ZM7.5 6H6.5V7H7.5V6ZM9 7.5C9 6.67157 8.32843 6 7.5 6V7C7.77614 7 8 7.22386 8 7.5H9ZM7.5 11C8.32843 11 9 10.3284 9 9.5H8C8 9.77614 7.77614 10 7.5 10V11ZM10 6V11H11V6H10ZM10.5 7H13V6H10.5V7ZM10.5 9H12V8H10.5V9ZM2 5V1.5H1V5H2ZM13 3.5V5H14V3.5H13ZM2.5 1H10.5V0H2.5V1ZM10.1464 0.853553L13.1464 3.85355L13.8536 3.14645L10.8536 0.146447L10.1464 0.853553ZM2 1.5C2 1.22386 2.22386 1 2.5 1V0C1.67157 0 1 0.671573 1 1.5H2ZM1 12V13.5H2V12H1ZM2.5 15H12.5V14H2.5V15ZM14 13.5V12H13V13.5H14ZM12.5 15C13.3284 15 14 14.3284 14 13.5H13C13 13.7761 12.7761 14 12.5 14V15ZM1 13.5C1 14.3284 1.67157 15 2.5 15V14C2.22386 14 2 13.7761 2 13.5H1Z" fill="#ffff"></path> </g></svg>&nbsp;Pdf</button>
-               </div>
-               <div tyle="display:flex;justify-content:center">
-               <button hidden class="custom_btn" id="e-portal" style="margin-top: 12px; width: 100%">B.I.R E-SALES PORTAL</button>
-               </div>
-               <div tyle="display:flex;justify-content:center">
-                <button hidden class="custom_btn" id="download-e1" style="margin-top: 12px; width: 100%">DOWNLOAD REPORT CSV</button>
-               </div>
+             </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- main-panel ends -->
 </div>
+<!-- container-scroller -->
 <?php include("layout/footer.php") ?>
 
 <script>
-document.getElementById('selectProducts').addEventListener('click', function() {
-    document.getElementById('dropdownContent').style.display = 'block';
-    $('#searchInput').focus()
-});
-
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.custom-dropdown')) {
-        document.getElementById('dropdownContent').style.display = 'none';
-    }
-});
-
-// document.addEventListener('keydown', function(e) {
-//     var searchInput = document.getElementById('searchInput');
-//     var isFilterInputActive = searchInput === document.activeElement && searchInput.value.trim() !== '';
-//     if (isFilterInputActive) {
-//         filterOptions();
-//         var visibleOptions = document.querySelectorAll('.dropdown-option:not([style*="none"])');
-//         var selectedIndex = -1;
-//         for (var i = 0; i < visibleOptions.length; i++) {
-//             if (visibleOptions[i].classList.contains('selected')) {
-//                 selectedIndex = i;
-//                 visibleOptions[i].classList.remove('selected');
-//                 break;
-//             }
-//         }
-
-//         if (e.keyCode === 40) {
-//             selectedIndex = (selectedIndex + 1) % visibleOptions.length;
-//         } else if (e.keyCode === 38) { 
-//             selectedIndex = (selectedIndex - 1 + visibleOptions.length) % visibleOptions.length;
-//         }
-
-//         if (selectedIndex >= 0) {
-//             visibleOptions[selectedIndex].classList.add('selected');
-//         }
-//     }
-// });
-// document.addEventListener('keydown', function(e) {
-//     var searchInput = document.getElementById('searchInput');
-//     var isFilterInputActive = searchInput === document.activeElement && searchInput.value.trim() !== '';
-
-//     if (isFilterInputActive && (e.keyCode === 40 || e.keyCode === 38)) {
-//         var visibleOptions = document.querySelectorAll('.dropdown-option:not([style*="none"])');
-//         var selectedIndex = -1;
-        
-//         for (var i = 0; i < visibleOptions.length; i++) {
-//             if (visibleOptions[i].classList.contains('selected')) {
-//                 selectedIndex = i;
-//                 visibleOptions[i].classList.remove('selected');
-//                 break;
-//             }
-//         }
-
-//         if (e.keyCode === 40) {
-//             selectedIndex = (selectedIndex + 1) % visibleOptions.length;
-//         } else if (e.keyCode === 38) { 
-//             selectedIndex = (selectedIndex - 1 + visibleOptions.length) % visibleOptions.length;
-//         }
-
-//         if (selectedIndex >= 0) {
-//             visibleOptions[selectedIndex].classList.add('selected');
-//         }
-//     } else if (e.keyCode === 13) {
-//         var selectedOption = document.querySelector('.dropdown-option.selected');
-//         if (selectedOption) {
-//           document.getElementById('selectProducts').textContent = selectedOption.textContent;
-//           document.getElementById('searchInput').value = "";
-//           document.getElementById('dropdownContent').style.display = 'none';
-//         }
-//     }
-// });
-
-
-
-
-document.querySelectorAll('.dropdown-option').forEach(option => {
-    option.addEventListener('click', function() {
-        document.getElementById('selectProducts').textContent = this.textContent;
-        document.getElementById('selectProducts').setAttribute('data-value', this.getAttribute('data-value'));
-        document.getElementById('searchInput').value = "";
-
-        document.getElementById('dropdownContent').style.display = 'none';
-    });
-});
-
-function filterOptions() {
-    var input, filter, options, i;
-    input = document.getElementById('searchInput');
-    filter = input.value.toUpperCase();
-    options = document.querySelectorAll('.dropdown-option');
-    for (i = 0; i < options.length; i++) {
-        if (options[i].textContent.toUpperCase().indexOf(filter) > -1) {
-            options[i].style.display = "";
-        } else {
-            options[i].style.display = "none";
-        }
-    }
-}
-function getSelectedProductValue() {
-    var selectedProduct = document.getElementById('selectProducts').getAttribute('data-value');
-    return selectedProduct;
-}
-
 $("#reporting").addClass('active');
-$("#pointer").html("Reporting");
-  // display_settings();
-  // function display_settings()
-  // {
-  //   $.ajax({
-  //     type: 'get',
-  //     url: 'api.php?action=pos_settings',
-  //     success:function(response){
-  //       var defaultColor = "#FF6900";
-  //       if(!$.isEmptyObject(response)){
-  //         $(".anchor-container div").each(function() {
-  //           if ($(this).hasClass("highlight")) {
-  //             $(this).toggleClass("highlight").css('background-color', response);
-  //           }
-  //           else
-  //           {
-  //             $(".anchor-container highlight").css("background-color","white");
-  //           }
-  //         });
-  //       }
-  //       else $(".anchor-container highlight").css("background-color", defaultColor);
-  //     }
-  //   })
-  // }
-
-
-  function contentTest(id) {
-
-    if (id == 50) {
-      getEReports(1)
-    } else if(id == 51) {
-      getEReports(6)
-    } else if(id == 52) {
-      getEReports(7)
-    } else if(id == 53) {
-      getEReports(4)
-    }
- 
-    generatePdf(id)
-    generateExcel(id)
-    printDocuments(id)
-    showReports(id)
-     
-      
-    
-      var eportal = document.getElementById('e-portal');
-      eportal.setAttribute('hidden',true);
-
-      var entriesDiv = document.getElementById('entries');
-      entriesDiv.setAttribute('hidden',true);
-
-      var soldDiv = document.getElementById('soldDiv');
-      soldDiv.setAttribute('hidden',true);
-
-      var ingredientsDIV = document.getElementById('ingredientsDIV');
-      ingredientsDIV.setAttribute('hidden', true);
-
-      var usersSelect = document.getElementById('usersDIV');
-      usersSelect.setAttribute('hidden',true);
-
-      var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-      dateTimeAnchor.removeAttribute('hidden');
-
-      var customerDIV = document.getElementById('customerDIV');
-      customerDIV.setAttribute('hidden',true);
-
-      var suppliersDIV = document.getElementById('suppliersDIV');
-      suppliersDIV.setAttribute('hidden',true);
-
-      var cashRegisterDIV = document.getElementById('cashRegisterDIV');
-      cashRegisterDIV.setAttribute('hidden',true);
-
-      var productsDIV = document.getElementById('productsDIV');
-      productsDIV.setAttribute('hidden', true);
-
-      var subCategoriesDIV = document.getElementById('subCategoriesDIV');
-      subCategoriesDIV.setAttribute('hidden',true);
-
-      var categoriesDiv = document.getElementById('categoriesDiv');
-      categoriesDiv.setAttribute('hidden',true);
-
-      var methodDIV = document.getElementById('methodDIV');
-      methodDIV.setAttribute('hidden',true);
-
-      var discountDIV = document.getElementById('discountDIV');
-      discountDIV.setAttribute('hidden',true);
-
-      var paymentMethodDIV = document.getElementById('paymentMethodDIV');
-      paymentMethodDIV.setAttribute('hidden',true);
-
-      var toggleDivExcludes = document.getElementById('toggleDivExcludes');
-      toggleDivExcludes.setAttribute('hidden',true);
-
-      var toggleDivExcludes = document.getElementById('statusExcludes');
-      toggleDivExcludes.checked = false
-  
-  }
-
-
-
-  function getAllZread() {
-    // axios.post('api.php?action=e_summary', {
-    //   'startDate' : '2024-07-15',
-    //   'endDate' : '2024-07-17',
-    // })
-    // .then(function(response) {
-    //   console.log(response.data)
-    // })
-    // .catch(function(error) {
-    //   console.log(error);
-    // })
-  }
-
-
-  function getEReports(cusType) {
-    // axios.post('api.php?action=e_reports', {
-    //   'customerType' : cusType,
-    //   'startDate' : '2024-07-01',
-    //   'endDate' : '2024-',
-    // })
-    // .then(function(response) {
-    //   console.log(response.data)
-    // })
-    // .catch(function(error) {
-    //   console.log(error)
-    // })
-  }
-
-
+  $("#pointer").html("Reporting");
 function highlightDiv(id) {
   console.log(id)
   document.querySelectorAll('.anchor-container div').forEach(div => {
     div.classList.remove('highlight');
   });
-
   $('#PDFBtn').off('click');
   $('#EXCELBtn').off('click')
   $('#showReport').off('click')
@@ -999,11 +632,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
 
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
@@ -1057,20 +685,14 @@ function highlightDiv(id) {
           printDocuments(id)
           showReports(id)
 
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
-          soldDiv.setAttribute('hidden',true);
+          soldDiv.removeAttribute('hidden');
 
           var usersSelect = document.getElementById('usersDIV');
           usersSelect.setAttribute('hidden',true);
 
           var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-          dateTimeAnchor.removeAttribute('hidden');
+          dateTimeAnchor.setAttribute('hidden',true);
 
           var customerDIV = document.getElementById('customerDIV');
           customerDIV.setAttribute('hidden',true);
@@ -1085,10 +707,10 @@ function highlightDiv(id) {
           productsDIV.removeAttribute('hidden');
 
           var subCategoriesDIV = document.getElementById('subCategoriesDIV');
-          subCategoriesDIV.setAttribute('hidden',true);
+          subCategoriesDIV.removeAttribute('hidden',true);
 
           var categoriesDiv = document.getElementById('categoriesDiv');
-          categoriesDiv.setAttribute('hidden',true);
+          categoriesDiv.removeAttribute('hidden');
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
@@ -1107,75 +729,11 @@ function highlightDiv(id) {
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
-        }
-        else if(id == 11){
+        }else if (id == 6){
           generatePdf(id)
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
-          var soldDiv = document.getElementById('soldDiv');
-          soldDiv.setAttribute('hidden',true);
-
-          var usersSelect = document.getElementById('usersDIV');
-          usersSelect.setAttribute('hidden',true);
-
-          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-          dateTimeAnchor.removeAttribute('hidden');
-
-          var customerDIV = document.getElementById('customerDIV');
-          customerDIV.setAttribute('hidden',true);
-
-          var suppliersDIV = document.getElementById('suppliersDIV');
-          suppliersDIV.setAttribute('hidden',true);
-
-          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
-          cashRegisterDIV.setAttribute('hidden',true);
-
-          var productsDIV = document.getElementById('productsDIV');
-          productsDIV.setAttribute('hidden', true)
-
-          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
-          subCategoriesDIV.setAttribute('hidden',true);
-
-          var categoriesDiv = document.getElementById('categoriesDiv');
-          categoriesDiv.setAttribute('hidden',true);
-
-          var ingredientsDIV = document.getElementById('ingredientsDIV');
-          ingredientsDIV.setAttribute('hidden',true);
-
-          var methodDIV = document.getElementById('methodDIV');
-          methodDIV.setAttribute('hidden',true);
-
-          var discountDIV = document.getElementById('discountDIV');
-          discountDIV.setAttribute('hidden',true);
-
-          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
-          paymentMethodDIV.setAttribute('hidden',true);
-
-          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
-          toggleDivExcludes.setAttribute('hidden',true);
-
-          var toggleDivExcludes = document.getElementById('statusExcludes');
-          toggleDivExcludes.checked = false
-        }
-        else if (id == 6){
-          generatePdf(id)
-          generateExcel(id)
-          printDocuments(id)
-          showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
 
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
@@ -1229,20 +787,14 @@ function highlightDiv(id) {
           printDocuments(id)
           showReports(id)
 
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
-          soldDiv.setAttribute('hidden',true);
+          soldDiv.removeAttribute('hidden');
 
           var usersSelect = document.getElementById('usersDIV');
           usersSelect.setAttribute('hidden',true);
 
           var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-          dateTimeAnchor.removeAttribute('hidden');
+          dateTimeAnchor.setAttribute('hidden',true);
 
           var customerDIV = document.getElementById('customerDIV');
           customerDIV.setAttribute('hidden',true);
@@ -1285,13 +837,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1344,12 +889,6 @@ function highlightDiv(id) {
           printDocuments(id)
           showReports(id)
 
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1400,13 +939,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1456,13 +988,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1512,13 +1037,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1568,13 +1086,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1619,22 +1130,11 @@ function highlightDiv(id) {
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
-        }
-        else if(id === 50 || id === 55 || id === 51 || id === 52 || id === 53 ){
-          contentTest(id)
-        }
-        else if(id == 1){
+        }else if(id == 1){
           generatePdf(id)
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1645,7 +1145,7 @@ function highlightDiv(id) {
           usersSelect.setAttribute('hidden',true);
 
           var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-          dateTimeAnchor.removeAttribute('hidden');
+          dateTimeAnchor.setAttribute('hidden', true);
 
           var customerDIV = document.getElementById('customerDIV');
           customerDIV.removeAttribute('hidden');
@@ -1684,12 +1184,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.removeAttribute('hidden');
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1739,13 +1233,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1798,13 +1285,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1857,14 +1337,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1917,13 +1389,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -1976,13 +1441,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -2026,7 +1484,7 @@ function highlightDiv(id) {
           paymentMethodDIV.setAttribute('hidden', true);
 
           var toggleDivExcludes = document.getElementById('toggleDivExcludes');
-          toggleDivExcludes.setAttribute('hidden',true);
+          toggleDivExcludes.removeAttribute('hidden');
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
@@ -2036,13 +1494,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -2096,13 +1547,6 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
@@ -2156,19 +1600,15 @@ function highlightDiv(id) {
           generateExcel(id)
           printDocuments(id)
           showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
 
           var ingredientsDIV = document.getElementById('ingredientsDIV');
           ingredientsDIV.setAttribute('hidden',true);
-          
+
+          var usersSelect = document.getElementById('usersDIV');
+          usersSelect.removeAttribute('hidden');
+
           var dateTimeAnchor = document.getElementById('dateTimeAnchor');
           dateTimeAnchor.removeAttribute('hidden');
 
@@ -2207,66 +1647,7 @@ function highlightDiv(id) {
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
-        }
-        else if (id == 20) {
-          generatePdf(id)
-          generateExcel(id)
-          printDocuments(id)
-          showReports(id)
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
-          var soldDiv = document.getElementById('soldDiv');
-          soldDiv.setAttribute('hidden',true);
-
-          var usersSelect = document.getElementById('usersDIV');
-          usersSelect.setAttribute('hidden',true);
-
-          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-          dateTimeAnchor.removeAttribute('hidden');
-          
-          var customerDIV = document.getElementById('customerDIV');
-          customerDIV.setAttribute('hidden',true);
-
-          var suppliersDIV = document.getElementById('suppliersDIV');
-          suppliersDIV.removeAttribute('hidden')
-
-          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
-          cashRegisterDIV.setAttribute('hidden',true);
-
-          var productsDIV = document.getElementById('productsDIV');
-          productsDIV.setAttribute('hidden',true);
-
-          var categoriesDiv = document.getElementById('categoriesDiv');
-          categoriesDiv.setAttribute('hidden',true);
-
-          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
-          subCategoriesDIV.setAttribute('hidden',true);
-          
-          var ingredientsDIV = document.getElementById('ingredientsDIV');
-          ingredientsDIV.setAttribute('hidden',true);
-
-          var methodDIV = document.getElementById('methodDIV');
-          methodDIV.setAttribute('hidden',true);
-          
-          var discountDIV = document.getElementById('discountDIV');
-          discountDIV.setAttribute('hidden',true);
-
-          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
-          paymentMethodDIV.setAttribute('hidden',true);
-
-          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
-          toggleDivExcludes.setAttribute('hidden',true);
-
-          
-          var toggleDivExcludes = document.getElementById('statusExcludes');
-          toggleDivExcludes.checked = false
-
-        }
-        else if(id == 33){
+        }else if(id == 33){
           generatePdf(id)
           generateExcel(id)
           printDocuments(id)
@@ -2370,77 +1751,8 @@ function highlightDiv(id) {
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
-        }else if(id == 55){
-
-
-          getAllZread();
-          
-          generatePdf(id)
-          generateExcel(id)
-          printDocuments(id)
-          showReports(id)
-
-          var eportal = document.getElementById('e-portal');
-          eportal.removeAttribute('hidden');
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
-
-          var soldDiv = document.getElementById('soldDiv');
-          soldDiv.setAttribute('hidden',true);
-
-          var ingredientsDIV = document.getElementById('ingredientsDIV');
-          ingredientsDIV.setAttribute('hidden',true);
-
-          var usersSelect = document.getElementById('usersDIV');
-          usersSelect.setAttribute('hidden',true);
-
-          var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-          dateTimeAnchor.removeAttribute('hidden');
-
-          var customerDIV = document.getElementById('customerDIV');
-          customerDIV.setAttribute('hidden', true);
-
-          document.getElementById("customersSelect").value = "";
-          document.getElementById('datepicker').value =""
-
-          var suppliersDIV = document.getElementById('suppliersDIV');
-          suppliersDIV.setAttribute('hidden',true);
-
-          var cashRegisterDIV = document.getElementById('cashRegisterDIV');
-          cashRegisterDIV.setAttribute('hidden',true);
-
-          var productsDIV = document.getElementById('productsDIV');
-          productsDIV.setAttribute('hidden', true);
-
-          var subCategoriesDIV = document.getElementById('subCategoriesDIV');
-          subCategoriesDIV.setAttribute('hidden',true);
-
-          var categoriesDiv = document.getElementById('categoriesDiv');
-          categoriesDiv.setAttribute('hidden',true);
-
-          var methodDIV = document.getElementById('methodDIV');
-          methodDIV.setAttribute('hidden',true);
-
-          var discountDIV = document.getElementById('discountDIV');
-          discountDIV.setAttribute('hidden',true);
-
-          var paymentMethodDIV = document.getElementById('paymentMethodDIV');
-          paymentMethodDIV.setAttribute('hidden', true);
-
-          var toggleDivExcludes = document.getElementById('toggleDivExcludes');
-          toggleDivExcludes.setAttribute('hidden',true);
-
-          var toggleDivExcludes = document.getElementById('statusExcludes');
-          toggleDivExcludes.checked = false
-
-        } else{
-
-          var eportal = document.getElementById('e-portal');
-          eportal.setAttribute('hidden',true);
-
-          var entriesDiv = document.getElementById('entries');
-          entriesDiv.setAttribute('hidden',true);
+        }
+        else{
 
           var soldDiv = document.getElementById('soldDiv');
           soldDiv.setAttribute('hidden',true);
@@ -2508,99 +1820,24 @@ function openModalDatePicker(){
 }
 
 // USERS
-function generatePdf(id)
-{
-  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 55)
-  {
-    $('#PDFBtn').off('click').on('click',function() {
-      var usersSelect = document.getElementById("usersSelect");
-      var selectedUser = usersSelect.value;
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
-      var startDates;
-      var endDate;
-      if (datepicker.includes('-')) {
-        var dateRange = datepicker.split(' - ');
-        var startDate = new Date(dateRange[0].trim());
-        var endDate = new Date(dateRange[1].trim());
-
-        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
-        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-        startDates = formattedStartDate;
-        endDate = formattedEndDate;
-      } else {
-        var singleDate = datepicker.trim();
-        var singleDate = datepicker.trim();
-        var dateObj = new Date(singleDate);
-        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-        singleDateData =  formattedDate
-       
-      }
-      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-        singleDateData = ""
-      }
-      if(startDate == "" || startDate == null){
-        startDates = ""
-      }
-        if(endDate == "" || endDate == null){
-        endDate = ""
-      }
-
-      var e = "";
-          if(id === 55) e = 1;
-        if(id === 50) e = 2;
-        if(id === 51) e = 3;
-        if(id === 52) e = 4;
-        if(id === 53) e = 5;
-        $.ajax({
-            url: './reports/generate_birE'+e+'Report_pdf.php',
-            type: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            data: {
-                selectedUser: selectedUser,
-                singleDateData: singleDateData,
-                startDate: startDates,
-                endDate: endDate
-            },
-            success: function(response) {
-                var blob = new Blob([response], { type: 'application/pdf' });
-                var url = window.URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = 'E'+e+'.pdf';
-                document.body.appendChild(a);
-                a.click();
-
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                console.log(searchData)
-            }
-        });
-    });
-  }
+function generatePdf(id){
   if(id == 2){
     $('#PDFBtn').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
-      var startDates;
+      var startDate;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
-        var startDate = new Date(dateRange[0].trim());
+        var startDates = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
 
-        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
+        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDates = formattedStartDate;
+        startDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -2614,13 +1851,13 @@ function generatePdf(id)
         singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDates = ""
+        startDate = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
       }
         $.ajax({
-            url: './reports/users-sales-pdf.php',
+            url: './reports/generate_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -2628,7 +1865,7 @@ function generatePdf(id)
             data: {
                 selectedUser: selectedUser,
                 singleDateData: singleDateData,
-                startDate: startDates,
+                startDate: startDate,
                 endDate: endDate
             },
             success: function(response) {
@@ -2636,7 +1873,7 @@ function generatePdf(id)
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
                 a.href = url;
-                a.download = 'usersSales.pdf';
+                a.download = 'usersList.pdf';
                 document.body.appendChild(a);
                 a.click();
 
@@ -2653,8 +1890,8 @@ function generatePdf(id)
     $('#PDFBtn').off('click').on('click',function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var selectedProduct =  getSelectedProductValue()
-    
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
       var subCategoreisSelect = document.getElementById('subCategoreisSelect')
@@ -2757,7 +1994,8 @@ function generatePdf(id)
     });
   }else if(id == 5){
     $('#PDFBtn').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -2819,72 +2057,7 @@ function generatePdf(id)
           }
           });
     });
-  }
-  else if(id == 11){
-    $('#PDFBtn').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
-      var startDate;
-      var endDate;
-      if (datepicker.includes('-')) {
-        var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
-        var endDate = new Date(dateRange[1].trim());
-
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-        startDate = formattedStartDate;
-        endDate = formattedEndDate;
-      } else {
-        var singleDate = datepicker.trim();
-        var singleDate = datepicker.trim();
-        var dateObj = new Date(singleDate);
-        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-        singleDateData =  formattedDate
-       
-      }
-      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-        singleDateData = ""
-      }
-      if(startDate == "" || startDate == null){
-        startDate = ""
-      }
-        if(endDate == "" || endDate == null){
-        endDate = ""
-      }
-      $.ajax({
-          url: './reports/generate_income_statement_pdf.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob'
-          },
-           data: {
-                singleDateData: singleDateData,
-                startDate: startDate,
-                endDate: endDate
-            },
-          success: function(response) {
-              var blob = new Blob([response], { type: 'application/pdf' });
-              var url = window.URL.createObjectURL(blob);
-              var a = document.createElement('a');
-              a.href = url;
-              a.download = 'income_statement.pdf';
-              document.body.appendChild(a);
-              a.click();
-
-              window.URL.revokeObjectURL(url);
-              document.body.removeChild(a);
-          },
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-              console.log(searchData)
-          }
-          });
-    });
-  }
-  else if (id == 28){
+  }else if (id == 28){
     $('#PDFBtn').off('click').on('click',function() {
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
@@ -2954,7 +2127,8 @@ function generatePdf(id)
     });
   }else if(id == 29){
     $('#PDFBtn').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -3083,7 +2257,8 @@ function generatePdf(id)
     });
   }else if(id == 31){
     $('#PDFBtn').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var ingredientsSelect = document.getElementById('ingredientsSelect')
       var selectedIngredients = ingredientsSelect.value;
       $.ajax({
@@ -3114,62 +2289,25 @@ function generatePdf(id)
           }
           });
     });
-  }else if(id == 1){//customers
+  }else if(id == 1){
     $('#PDFBtn').off('click').on('click',function() {
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
-
-
-      var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-        } else {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
       $.ajax({
-          url: './reports/customers-sales-pdf.php',
+          url: './reports/generate_customers_pdf.php',
           type: 'GET',
           xhrFields: {
               responseType: 'blob'
           },
            data: {
-            customerId: selectedCustomers,
-            singleDateData: singleDateData,
-            startDate: startDate,
-            endDate: endDate
-
+            customerId: selectedCustomers
             },
           success: function(response) {
               var blob = new Blob([response], { type: 'application/pdf' });
               var url = window.URL.createObjectURL(blob);
               var a = document.createElement('a');
               a.href = url;
-              a.download = 'customerSales.pdf';
+              a.download = 'customerList.pdf';
               document.body.appendChild(a);
               a.click();
 
@@ -3453,7 +2591,8 @@ function generatePdf(id)
     });
   }else if(id == 16){
     $('#PDFBtn').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -3558,6 +2697,7 @@ function generatePdf(id)
               responseType: 'blob'
           },
            data: {
+                exclude :toggleDivExcludes,
                 selectedMethod: paymentMethod,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -3715,7 +2855,8 @@ function generatePdf(id)
     });
   }else if(id == 14){//pdf14
     $('#PDFBtn').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -3970,7 +3111,12 @@ function generatePdf(id)
     $('#PDFBtn').off('click').on('click',function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -4009,7 +3155,10 @@ function generatePdf(id)
                 responseType: 'blob'
             },
             data: {
+                selectedOption: selectedOption,
                 selectedProduct: selectedProduct,
+                selectedCategories: selectedCategories,
+                selectedSubCategories:  selectedSubCategories,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -4034,114 +3183,15 @@ function generatePdf(id)
     });
   }
 }
-function show_sweetReponse(message) 
-{
-    toastr.options = {
-      "onShown": function () {
-        $('.custom-toast').css({
-          "opacity": 1,
-          "width": "600px",
-          "text-align": "center",
-        });
-      },
-      "closeButton": true,
-      "positionClass": "toast-top-right",
-      "timeOut": "5000",
-      "extendedTimeOut": "1000",
-      "progressBar": true,
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut",
-      "tapToDismiss": false,
-      "toastClass": "custom-toast",
-      "onclick": function () {  }
-
-    };
-    toastr.success(message);
-  }
 
 function generateExcel(id){
-  if(id == 55 || id == 50 || id == 51 || id == 52 || id == 53){
-    $('#EXCELBtn').off('click').on('click', function(){
-        var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) 
-        {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-
-        } 
-        else 
-        {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
-        var e = "";
-        if(id === 55) e = 1;
-        if(id === 50) e = 2;
-        if(id === 51) e = 3;
-        if(id === 52) e = 4;
-        if(id === 53) e = 5;
-      $.ajax({
-          url: './reports/generate_birE'+e+'Report_excel.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob' 
-          },
-          data: {
-              singleDateData: singleDateData,
-              startDate: startDate,
-              endDate: endDate
-          },
-          success: function(response) {
-              var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-              var link = document.createElement('a');
-              link.href = window.URL.createObjectURL(blob);
-              link.download = 'e'+e+'.xlsx'; 
-
-              document.body.appendChild(link);
-              link.click();
-
-              document.body.removeChild(link);
-              show_sweetReponse('E'+e+'.xlsx has been downloaded successfully!');
-          },
-          error: function(xhr, status, error) {
-              console.error('Error fetching Excel file:', error);
-          }
-      });
-    })
-  }
-  else if(id == 2){
+  if(id == 2){
     $('#EXCELBtn').off('click').on('click',function() {
-      $('#modalCashPrint').show();
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDates;
+      var startDate;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
@@ -4151,7 +3201,7 @@ function generateExcel(id){
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDates = formattedStartDate;
+        singleDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -4166,13 +3216,13 @@ function generateExcel(id){
       singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDates = ""
+        startDate = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
       }
       $.ajax({
-            url: './reports/users-sales-excel.php',
+            url: './reports/generate_excel.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -4180,19 +3230,21 @@ function generateExcel(id){
             data: {
                 selectedUser: selectedUser,
                 singleDateData: singleDateData,
-                startDate: startDates,
+                startDate: startDate,
                 endDate: endDate
             },
             success: function(response) {
-              $('#modalCashPrint').hide();
-              var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-              var link = document.createElement('a');
-              link.href = window.URL.createObjectURL(blob);
-              link.download = 'usersSales.xlsx'; 
-              document.body.appendChild(link);
-              link.click();
+            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'usersList.xlsx'; 
 
-              document.body.removeChild(link);
+            
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            document.body.removeChild(link);
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -4204,7 +3256,8 @@ function generateExcel(id){
     $('#EXCELBtn').click(function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
       var subCategoreisSelect = document.getElementById('subCategoreisSelect')
@@ -4303,7 +3356,8 @@ function generateExcel(id){
 });
 }else if(id == 5){
   $('#EXCELBtn').click(function() {
-      var selectedProduct =  getSelectedProductValue()
+    var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -4363,68 +3417,7 @@ function generateExcel(id){
         }
     });
 });
-}
-else if(id == 11){
-  $('#EXCELBtn').click(function() {
-      var selectedProduct =  getSelectedProductValue()
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
-      var startDate;
-      var endDate;
-      if (datepicker.includes('-')) {
-        var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
-        var endDate = new Date(dateRange[1].trim());
-
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-        startDate = formattedStartDate;
-        endDate = formattedEndDate;
-      } else {
-        var singleDate = datepicker.trim();
-        var singleDate = datepicker.trim();
-        var dateObj = new Date(singleDate);
-        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-        singleDateData =  formattedDate
-       
-      }
-      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-        singleDateData = ""
-      }
-      if(startDate == "" || startDate == null){
-        startDate = ""
-      }
-        if(endDate == "" || endDate == null){
-        endDate = ""
-      }
-      $.ajax({
-        url: './reports/generate_income_statement_excel.php',
-        type: 'GET',
-        xhrFields: {
-          responseType: 'blob'
-        },
-        data: {
-            singleDateData: singleDateData,
-            startDate: startDate,
-            endDate: endDate
-        },
-       success: function(response) {
-            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'income_statement.xlsx'; 
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-});
-}
-else if(id == 28){
+}else if(id == 28){
   $('#EXCELBtn').click(function() {
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
@@ -4492,8 +3485,9 @@ else if(id == 28){
 });
 }else if(id == 29){
   $('#EXCELBtn').click(function() {
-      var selectedProduct =  getSelectedProductValue()
-       var datepicker = document.getElementById('datepicker').value
+    var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
       var endDate;
@@ -4617,7 +3611,8 @@ else if(id == 28){
 });
 }else if(id==31){
   $('#EXCELBtn').click(function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var ingredientsSelect = document.getElementById('ingredientsSelect')
       var selectedIngredients = ingredientsSelect.value;
       $.ajax({
@@ -4646,164 +3641,24 @@ else if(id == 28){
         }
     });
 });
-}
-
-else if(id==55)
-{
-    $('#EXCELBtn').click(function() {
-      var customerSelect = document.getElementById('customersSelect')
-      var selectedCustomers = customerSelect.value;
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
-      var startDate;
-      var endDate;
-      if (datepicker.includes('-')) {
-        var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
-        var endDate = new Date(dateRange[1].trim());
-
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-        startDate = formattedStartDate;
-        endDate = formattedEndDate;
-      } else {
-        var singleDate = datepicker.trim();
-        var singleDate = datepicker.trim();
-        var dateObj = new Date(singleDate);
-        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-        singleDateData =  formattedDate
-       
-      }
-      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-        singleDateData = ""
-      }
-      if(startDate == "" || startDate == null){
-        startDate = ""
-      }
-        if(endDate == "" || endDate == null){
-        endDate = ""
-      }
-      $.ajax({
-        url: './reports/generate_birE1Report_excel.php',
-        type: 'GET',
-        xhrFields: {
-            responseType: 'blob'
-        },
-           data: {
-                selectedCustomers: selectedCustomers,
-                singleDateData: singleDateData,
-                startDate: startDate,
-                endDate: endDate
-            },
-       success: function(response) {
-            var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            var link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'returnAndExchangeList.xlsx'; 
-            document.body.appendChild(link);
-            link.click();
-
-            // Clean up
-            document.body.removeChild(link);
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-  });
-}
-
-
-else if(id==50)
-{
-    $('#EXCELBtn').click(function() {
-        var selectedProduct =  getSelectedProductValue()
-        var ingredientsSelect = document.getElementById('ingredientsSelect')
-        var selectedIngredients = ingredientsSelect.value;
-        $.ajax({
-          url: './reports/generate_excel_bom.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob'
-          },
-            data: {
-                selectedProduct: selectedProduct,
-                selectedIngredients: selectedIngredients 
-              },
-        success: function(response) {
-              var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-              var link = document.createElement('a');
-              link.href = window.URL.createObjectURL(blob);
-              link.download = 'bomList.xlsx'; 
-              document.body.appendChild(link);
-              link.click();
-
-              // Clean up
-              document.body.removeChild(link);
-          },
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-          }
-      });
-  });
-}
-
-
-
-else if(id == 1){
+}else if(id == 1){
   $('#EXCELBtn').click(function() {
         var customerSelect = document.getElementById('customersSelect')
         var selectedCustomers = customerSelect.value;
-
-        var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-        } else {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
       $.ajax({
-        url: './reports/customers-sales-excel.php',
+        url: './reports/generate_excel_customers.php',
         type: 'GET',
         xhrFields: {
             responseType: 'blob'
         },
            data: {
-             customerId: selectedCustomers,
-             singleDateData: singleDateData,
-             startDate: startDate,
-             endDate: endDate
+             customerId: selectedCustomers
             },
        success: function(response) {
             var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
             var link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
-            link.download = 'customerSales.xlsx'; 
+            link.download = 'customerList.xlsx'; 
             document.body.appendChild(link);
             link.click();
 
@@ -5078,7 +3933,8 @@ else if(id == 1){
 });
 }else if(id == 16){
   $('#EXCELBtn').click(function() {
-        var selectedProduct =  getSelectedProductValue()
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -5179,6 +4035,7 @@ else if(id == 1){
             responseType: 'blob'
         },
            data: {
+                exclude :toggleDivExcludes,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -5331,7 +4188,8 @@ else if(id == 1){
 });
 }else if(id == 14){//excel14
   $('#EXCELBtn').click(function() {
-       var selectedProduct =  getSelectedProductValue()
+       var productSelect = document.getElementById('selectProducts')
+       var selectedProduct = productSelect.value;
        var usersSelect = document.getElementById("usersSelect");
        var selectedUser = usersSelect.value;
         var datepicker = document.getElementById('datepicker').value
@@ -5577,89 +4435,13 @@ error: function(xhr, status, error) {
 }
 
 function printDocuments(id){
-  if(id==50 || id == 51 || id == 52 || id == 53 || id == 55){
-      $('#printDocu').off('click').on('click',function() {
-      var usersSelect = document.getElementById("usersSelect");
-      var selectedUser = usersSelect.value;
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData;
-      var startDates;
-      var endDate;
-      if (datepicker.includes('-')) {
-        var dateRange = datepicker.split(' - ');
-        var startDate = new Date(dateRange[0].trim());
-        var endDate = new Date(dateRange[1].trim());
-
-        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
-        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-        startDates = formattedStartDate;
-        endDate = formattedEndDate;
-      } else {
-        var singleDate = datepicker.trim();
-        var singleDate = datepicker.trim();
-        var dateObj = new Date(singleDate);
-        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-        singleDateData =  formattedDate
-       
-      }
-
-      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-      singleDateData = ""
-      }
-      if(startDate == "" || startDate == null){
-        startDates = ""
-      }
-        if(endDate == "" || endDate == null){
-        endDate = ""
-      }
-        var e = "";
-        if(id === 50) e = 2;
-        if(id === 51) e = 3;
-        if(id === 52) e = 4;
-        if(id === 53) e = 5;
-        if(id === 55) e = 1;
-
-        $.ajax({
-            url: './reports/generate_birE'+e+'Report_pdf.php',
-            type: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            data: {
-                selectedUser: selectedUser,
-                singleDateData: singleDateData,
-                startDate: startDates,
-                endDate: endDate
-            },
-            success: function(response) {
-              var blob = new Blob([response], { type: 'application/pdf' });
-              var url = window.URL.createObjectURL(blob);
-              var win = window.open(url);
-              win.onload = function() {
-                  win.print();
-                  win.onafterprint = function() {
-                      window.focus(); 
-                      win.close();
-                  }
-              }
-
-              window.URL.revokeObjectURL(url);
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                console.log(searchData)
-            }
-        });
-    });
-  }
     if(id==2){
       $('#printDocu').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDates;
+      var startDate;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
@@ -5669,7 +4451,7 @@ function printDocuments(id){
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDates = formattedStartDate;
+        singleDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -5684,14 +4466,14 @@ function printDocuments(id){
       singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDates = ""
+        startDate = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
       }
 
         $.ajax({
-            url: './reports/users-sales-pdf.php',
+            url: './reports/generate_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -5699,7 +4481,7 @@ function printDocuments(id){
             data: {
                 selectedUser: selectedUser,
                 singleDateData: singleDateData,
-                startDate: startDates,
+                startDate: startDate,
                 endDate: endDate
             },
             success: function(response) {
@@ -5726,14 +4508,15 @@ function printDocuments(id){
       $('#printDocu').off('click').on('click',function() {
         var soldSelect = document.getElementById('soldSelect')
         var selectedOption = soldSelect.value;
-        var selectedProduct =  getSelectedProductValue()
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
         var categoriesSelect = document.getElementById('categoreisSelect')
         var selectedCategories = categoriesSelect.value
         var subCategoreisSelect = document.getElementById('subCategoreisSelect')
         var selectedSubCategories = subCategoreisSelect.value 
         var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDates;
+      var startDate;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
@@ -5743,7 +4526,7 @@ function printDocuments(id){
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDates = formattedStartDate;
+        singleDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -5758,7 +4541,7 @@ function printDocuments(id){
       singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDates = ""
+        startDate = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
@@ -5775,7 +4558,7 @@ function printDocuments(id){
             selectedCategories: selectedCategories,
             selectedSubCategories:  selectedSubCategories,
             singleDateData: singleDateData,
-            startDate: startDates,
+            startDate: startDate,
             endDate: endDate
             },
        
@@ -5834,7 +4617,8 @@ function printDocuments(id){
   });
   }else if(id == 5){
     $('#printDocu').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -5898,73 +4682,7 @@ function printDocuments(id){
           }
           });
   });
-  }else if(id == 11){
-    $('#printDocu').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
-      var startDate;
-      var endDate;
-      if (datepicker.includes('-')) {
-        var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
-        var endDate = new Date(dateRange[1].trim());
-
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-        startDate = formattedStartDate;
-        endDate = formattedEndDate;
-      } else {
-        var singleDate = datepicker.trim();
-        var singleDate = datepicker.trim();
-        var dateObj = new Date(singleDate);
-        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-        singleDateData =  formattedDate
-       
-      }
-      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-        singleDateData = ""
-      }
-      if(startDate == "" || startDate == null){
-        startDate = ""
-      }
-        if(endDate == "" || endDate == null){
-        endDate = ""
-      }
-      $.ajax({
-          url: './reports/generate_income_statement_pdf.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob'
-          },
-           data: {
-                singleDateData: singleDateData,
-                startDate: startDate,
-                endDate: endDate
-            },
-          success: function(response) {
-            var blob = new Blob([response], { type: 'application/pdf' });
-            var url = window.URL.createObjectURL(blob);
-            var win = window.open(url);
-            win.onload = function() {
-                win.print();
-                win.onafterprint = function() {
-                    window.focus(); 
-                    win.close();
-                }
-            }
-
-            window.URL.revokeObjectURL(url);
-          },
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-              console.log(searchData)
-          }
-          });
-  });
-  }
-  else if(id == 28){
+  }else if(id == 28){
     $('#printDocu').off('click').on('click',function() {
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
@@ -6036,7 +4754,8 @@ function printDocuments(id){
   });
   }else if(id == 29){
     $('#printDocu').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -6169,7 +4888,8 @@ function printDocuments(id){
   });
   }else if(id==31){
     $('#printDocu').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var ingredientsSelect = document.getElementById('ingredientsSelect')
       var selectedIngredients = ingredientsSelect.value;
       $.ajax({
@@ -6206,51 +4926,14 @@ function printDocuments(id){
     $('#printDocu').off('click').on('click',function() {
       var customerSelect = document.getElementById('customersSelect')
       var selectedCustomers = customerSelect.value;
-
-      
-        var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-        } else {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
       $.ajax({
-          url: './reports/customers-sales-pdf.php',
+          url: './reports/generate_customers_pdf.php',
           type: 'GET',
           xhrFields: {
               responseType: 'blob'
           },
            data: {
-             customerId: selectedCustomers,
-             singleDateData: singleDateData,
-            startDate: startDate,
-            endDate: endDate
-
+             customerId: selectedCustomers
             },
           success: function(response) {
             var blob = new Blob([response], { type: 'application/pdf' });
@@ -6551,7 +5234,8 @@ function printDocuments(id){
   });
   }else if(id == 16){
     $('#printDocu').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -6658,6 +5342,7 @@ function printDocuments(id){
               responseType: 'blob'
           },
            data: {
+                 exclude :toggleDivExcludes,
                 selectedMethod: paymentMethod,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -6823,7 +5508,8 @@ function printDocuments(id){
   });
   }else if(id == 14){
     $('#printDocu').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
@@ -6890,8 +5576,7 @@ function printDocuments(id){
           }
           });
   });
-  }
-  else if(id == 33){
+  }else if(id == 33){
     $('#printDocu').off('click').on('click',function() {
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
@@ -6955,8 +5640,7 @@ function printDocuments(id){
           }
           });
   });
-  }
-  else if(id == 34){
+  }else if(id == 34){
     $('#printDocu').off('click').on('click',function() {
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
@@ -7086,7 +5770,14 @@ function printDocuments(id){
   });
   }else if(id==10){//printprofit
     $('#printDocu').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var soldSelect = document.getElementById('soldSelect')
+      var selectedOption = soldSelect.value;
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -7125,7 +5816,10 @@ function printDocuments(id){
               responseType: 'blob'
           },
            data: {
+                selectedOption: selectedOption,
                 selectedProduct: selectedProduct,
+                selectedCategories: selectedCategories,
+                selectedSubCategories:  selectedSubCategories,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
@@ -7153,8 +5847,7 @@ function printDocuments(id){
   }
  }
 
-function showReports(id) {
-
+function showReports(id){
   if(id == 2){
     $('#showReport').off('click').on('click', function(){
        $('#showReportsModal').show()
@@ -7167,7 +5860,7 @@ function showReports(id) {
       var selectedUser = usersSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDates;
+      var startDate;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
@@ -7177,7 +5870,7 @@ function showReports(id) {
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDates = formattedStartDate;
+        singleDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -7199,7 +5892,7 @@ function showReports(id) {
       }
 
         $.ajax({
-            url: './reports/users-sales-pdf.php',
+            url: './reports/generate_pdf.php',
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -7207,24 +5900,22 @@ function showReports(id) {
             data: {
                 selectedUser: selectedUser,
                 singleDateData: singleDateData,
-                startDate: startDates,
+                startDate: startDate,
                 endDate: endDate
             },
             success: function(response) {
-              if(response){
               loadingImage.setAttribute("hidden",true);
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
                 var timestamp = new Date().getTime(); 
-                var pdfUrl = './assets/pdf/users/usersSales.pdf?t=' + timestamp; 
+                var pdfUrl = './assets/pdf/users/usersList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
-            }
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
-                
+                console.log(searchData)
             }
         });
      }
@@ -7239,25 +5930,25 @@ function showReports(id) {
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
         var categoriesSelect = document.getElementById('categoreisSelect')
         var selectedCategories = categoriesSelect.value
         var subCategoreisSelect = document.getElementById('subCategoreisSelect')
         var selectedSubCategories = subCategoreisSelect.value 
         var datepicker = document.getElementById('datepicker').value
       var singleDateData;
-      var startDates;
+      var startDate;
       var endDate;
       if (datepicker.includes('-')) {
         var dateRange = datepicker.split(' - ');
         var startDate = new Date(dateRange[0].trim());
         var endDate = new Date(dateRange[1].trim());
 
-
         var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth()+1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
         var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
 
-        startDates = formattedStartDate;
+        singleDate = formattedStartDate;
         endDate = formattedEndDate;
       } else {
         var singleDate = datepicker.trim();
@@ -7272,12 +5963,11 @@ function showReports(id) {
       singleDateData = ""
       }
       if(startDate == "" || startDate == null){
-        startDates = ""
+        startDate = ""
       }
         if(endDate == "" || endDate == null){
         endDate = ""
       }
-   
         $.ajax({
             url: './reports/generate-products-data-inventory.php',
             type: 'GET',
@@ -7285,11 +5975,12 @@ function showReports(id) {
                 responseType: 'blob'
             },
             data: {
+              selectedOption: selectedOption,
               selectedProduct: selectedProduct,
               selectedCategories: selectedCategories,
               selectedSubCategories:  selectedSubCategories,
               singleDateData: singleDateData,
-              startDate: startDates,
+              startDate: startDate,
               endDate: endDate
             },
             success: function(response) {
@@ -7304,7 +5995,7 @@ function showReports(id) {
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
-              
+                console.log(searchData)
             }
         });
      }
@@ -7354,7 +6045,8 @@ function showReports(id) {
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
+        var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -7399,17 +6091,14 @@ function showReports(id) {
                 endDate: endDate
             },
           success: function(response) {
-           
-            if (response) {
-            loadingImage.setAttribute("hidden", true);
-            var pdfFile = document.getElementById("pdfFile");
-            pdfFile.removeAttribute('hidden');
-            
-            var timestamp = new Date().getTime();
-            var pdfUrl = './assets/pdf/refund/refundList.pdf?t=' + timestamp;
-            
-            $('#pdfViewer').attr('src', pdfUrl);
-          } 
+            loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) {
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/refund/refundList.pdf?t=' + timestamp; 
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
           },
           error: function(xhr, status, error) {
               console.error(xhr.responseText);
@@ -7418,159 +6107,7 @@ function showReports(id) {
           });
      }
     })
-    
-  }
-  else if(id == 11)
-  {
-      $('#showReport').off('click').on('click', function(){
-       $('#showReportsModal').show()
-    if($('#showReportsModal').is(":visible")){
-        var loadingImage = document.getElementById("loadingImage");
-        loadingImage.removeAttribute("hidden");
-        var pdfFile= document.getElementById("pdfFile");
-        pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
-      var startDate;
-      var endDate;
-      if (datepicker.includes('-')) {
-        var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
-        var endDate = new Date(dateRange[1].trim());
-
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-        startDate = formattedStartDate;
-        endDate = formattedEndDate;
-      } else {
-        var singleDate = datepicker.trim();
-        var singleDate = datepicker.trim();
-        var dateObj = new Date(singleDate);
-        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-        singleDateData =  formattedDate
-       
-      }
-      if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-        singleDateData = ""
-      }
-      if(startDate == "" || startDate == null){
-        startDate = ""
-      }
-        if(endDate == "" || endDate == null){
-        endDate = ""
-      }
-      $.ajax({
-          url: './reports/generate_income_statement_pdf.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob'
-          },
-           data: {
-                singleDateData: singleDateData,
-                startDate: startDate,
-                endDate: endDate
-            },
-          success: function(response) {
-            if (response) {
-            loadingImage.setAttribute("hidden", true);
-            var pdfFile = document.getElementById("pdfFile");
-            pdfFile.removeAttribute('hidden');
-            
-            var timestamp = new Date().getTime();
-            var pdfUrl = './assets/pdf/income_statement/income_statement.pdf?t=' + timestamp;
-            
-            $('#pdfViewer').attr('src', pdfUrl);
-          } 
-          },
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-              console.log(searchData)
-          }
-          });
-     }
-    });
-  }
-  else if(id == 20)
-    {
-      $("#showReport").off('click').on('click', function(){
-        $('#showReportsModal').show()
-        if($('#showReportsModal').is(":visible"))
-        {
-          var loadingImage = document.getElementById("loadingImage");
-          loadingImage.removeAttribute("hidden");
-          var pdfFile= document.getElementById("pdfFile");
-          pdfFile.setAttribute('hidden',true)
-          var supplierSelect = document.getElementById('suppliersSelect')
-          var supplier = supplierSelect.value;
-          var datepicker = document.getElementById('datepicker').value
-          var singleDateData = null;
-          var startDate;
-          var endDate;
-          if (datepicker.includes('-')) {
-            var dateRange = datepicker.split(' - ');
-            var startDates = new Date(dateRange[0].trim());
-            var endDate = new Date(dateRange[1].trim());
-
-            var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-            var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-            startDate = formattedStartDate;
-            endDate = formattedEndDate;
-          } else {
-            var singleDate = datepicker.trim();
-            var singleDate = datepicker.trim();
-            var dateObj = new Date(singleDate);
-            var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-            singleDateData =  formattedDate
-          
-          }
-          if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-            singleDateData = ""
-          }
-          if(startDate == "" || startDate == null){
-            startDate = ""
-          }
-            if(endDate == "" || endDate == null){
-            endDate = ""
-          }
-          $.ajax({
-            url: './reports/generate_unpaid_purchases.php',
-            type: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            data: {
-              startDate: startDate,
-              endDate: endDate,
-              supplier: supplier, 
-            },
-            success: function(response) 
-            {
-              if (response) 
-              {
-                loadingImage.setAttribute("hidden", true);
-                var pdfFile = document.getElementById("pdfFile");
-                pdfFile.removeAttribute('hidden');
-                
-                var timestamp = new Date().getTime();
-                var pdfUrl = './assets/pdf/purchase_reports/unpaid_purchases.pdf?t=' + timestamp;
-                
-                $('#pdfViewer').attr('src', pdfUrl);
-              } 
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                console.log(searchData)
-            }
-          });
-
-        }
-      })
-      
-    }
-  else if(id == 28){
+  }else if(id == 28){
     $('#showReport').off('click').on('click', function(){
        $('#showReportsModal').show()
     if($('#showReportsModal').is(":visible")){
@@ -7651,7 +6188,8 @@ function showReports(id) {
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -7790,7 +6328,8 @@ function showReports(id) {
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
         var ingredientsSelect = document.getElementById('ingredientsSelect')
         var selectedIngredients = ingredientsSelect.value;
       $.ajax({
@@ -7820,335 +6359,7 @@ function showReports(id) {
           });
      }
     })
-  }
-  else if(id == 50 || id == 55){
-    $('#showReport').off('click').on('click', function(){
-      $('#showReportsModal').show()
-      if($('#showReportsModal').is(":visible"))
-      {
-        var loadingImage = document.getElementById("loadingImage");
-        loadingImage.removeAttribute("hidden");
-        var pdfFile= document.getElementById("pdfFile");
-        pdfFile.setAttribute('hidden',true)
-        var customerSelect = document.getElementById('customersSelect')
-        var selectedCustomers = customerSelect.value;
-
-        var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) 
-        {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-        } 
-        else 
-        {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
-        var e = "";
-        if(id === 55) e = 1;
-        if(id === 50) e = 2;
-      $.ajax({
-          url: './reports/generate_birE'+e+'Report_pdf.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob'
-          },
-          data: {
-            singleDateData: singleDateData,
-            startDate: startDate,
-            endDate: endDate
-          },
-          success: function(response) 
-          {
-            if(response)
-            {
-              loadingImage.setAttribute("hidden",true);
-              var pdfFile= document.getElementById("pdfFile");
-              pdfFile.removeAttribute('hidden')
-              if( loadingImage.hasAttribute('hidden')) 
-              {
-                var timestamp = new Date().getTime(); 
-                var pdfUrl = './assets/pdf/bir/e'+e+'.pdf?t=' + timestamp; 
-                  $('#pdfViewer').attr('src', pdfUrl);
-              }
-            }
-          },
-        
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-              console.log(searchData)
-          }
-        });
-     }
-    })
-  }
-  else if(id == 51){
-    $('#showReport').off('click').on('click', function(){
-      $('#showReportsModal').show()
-      if($('#showReportsModal').is(":visible"))
-      {
-        var loadingImage = document.getElementById("loadingImage");
-        loadingImage.removeAttribute("hidden");
-        var pdfFile= document.getElementById("pdfFile");
-        pdfFile.setAttribute('hidden',true)
-        var customerSelect = document.getElementById('customersSelect')
-        var selectedCustomers = customerSelect.value;
-
-        var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) 
-        {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-        } 
-        else 
-        {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
-      $.ajax({
-          url: './reports/generate_birE3Report_pdf.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob'
-          },
-          data: {
-            singleDateData: singleDateData,
-            startDate: startDate,
-            endDate: endDate
-          },
-          success: function(response) 
-          {
-            if(response)
-            {
-              loadingImage.setAttribute("hidden",true);
-              var pdfFile= document.getElementById("pdfFile");
-              pdfFile.removeAttribute('hidden')
-              if( loadingImage.hasAttribute('hidden')) 
-              {
-                var timestamp = new Date().getTime(); 
-                var pdfUrl = './assets/pdf/bir/e3.pdf?t=' + timestamp; 
-                  $('#pdfViewer').attr('src', pdfUrl);
-              }
-            }
-          },
-        
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-              console.log(searchData)
-          }
-        });
-     }
-    })
-  }
-  else if(id == 52){
-    $('#showReport').off('click').on('click', function(){
-      $('#showReportsModal').show()
-      if($('#showReportsModal').is(":visible"))
-      {
-        var loadingImage = document.getElementById("loadingImage");
-        loadingImage.removeAttribute("hidden");
-        var pdfFile= document.getElementById("pdfFile");
-        pdfFile.setAttribute('hidden',true)
-        var customerSelect = document.getElementById('customersSelect')
-        var selectedCustomers = customerSelect.value;
-
-        var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) 
-        {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-        } 
-        else 
-        {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
-      $.ajax({
-          url: './reports/generate_birE4Report_pdf.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob'
-          },
-          data: {
-            singleDateData: singleDateData,
-            startDate: startDate,
-            endDate: endDate
-          },
-          success: function(response) 
-          {
-            if(response)
-            {
-              loadingImage.setAttribute("hidden",true);
-              var pdfFile= document.getElementById("pdfFile");
-              pdfFile.removeAttribute('hidden')
-              if( loadingImage.hasAttribute('hidden')) 
-              {
-                var timestamp = new Date().getTime(); 
-                var pdfUrl = './assets/pdf/bir/e4.pdf?t=' + timestamp; 
-                  $('#pdfViewer').attr('src', pdfUrl);
-              }
-            }
-          },
-        
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-              console.log(searchData)
-          }
-        });
-     }
-    })
-  }
-  else if(id == 53){
-    $('#showReport').off('click').on('click', function(){
-      $('#showReportsModal').show()
-      if($('#showReportsModal').is(":visible"))
-      {
-        var loadingImage = document.getElementById("loadingImage");
-        loadingImage.removeAttribute("hidden");
-        var pdfFile= document.getElementById("pdfFile");
-        pdfFile.setAttribute('hidden',true)
-        var customerSelect = document.getElementById('customersSelect')
-        var selectedCustomers = customerSelect.value;
-
-        var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) 
-        {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-        } 
-        else 
-        {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
-      $.ajax({
-          url: './reports/generate_birE5Report_pdf.php',
-          type: 'GET',
-          xhrFields: {
-              responseType: 'blob'
-          },
-          data: {
-            singleDateData: singleDateData,
-            startDate: startDate,
-            endDate: endDate
-          },
-          success: function(response) 
-          {
-            if(response)
-            {
-              loadingImage.setAttribute("hidden",true);
-              var pdfFile= document.getElementById("pdfFile");
-              pdfFile.removeAttribute('hidden')
-              if( loadingImage.hasAttribute('hidden')) 
-              {
-                var timestamp = new Date().getTime(); 
-                var pdfUrl = './assets/pdf/bir/e5.pdf?t=' + timestamp; 
-                  $('#pdfViewer').attr('src', pdfUrl);
-              }
-            }
-          },
-        
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-              console.log(searchData)
-          }
-        });
-     }
-    })
-  }
-  else if(id == 1){
+  }else if(id == 1){
     $('#showReport').off('click').on('click', function(){
        $('#showReportsModal').show()
     if($('#showReportsModal').is(":visible")){
@@ -8158,63 +6369,25 @@ function showReports(id) {
         pdfFile.setAttribute('hidden',true)
         var customerSelect = document.getElementById('customersSelect')
         var selectedCustomers = customerSelect.value;
-
-        var datepicker = document.getElementById('datepicker').value
-        var singleDateData = null;
-        var startDate;
-        var endDate;
-        if (datepicker.includes('-')) {
-          var dateRange = datepicker.split(' - ');
-          var startDates = new Date(dateRange[0].trim());
-          var endDate = new Date(dateRange[1].trim());
-
-          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-          startDate = formattedStartDate;
-          endDate = formattedEndDate;
-        } else {
-          var singleDate = datepicker.trim();
-          var singleDate = datepicker.trim();
-          var dateObj = new Date(singleDate);
-          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-          singleDateData =  formattedDate
-        
-        }
-        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
-          singleDateData = ""
-        }
-        if(startDate == "" || startDate == null){
-          startDate = ""
-        }
-          if(endDate == "" || endDate == null){
-          endDate = ""
-        }
       $.ajax({
-          url: './reports/customers-sales-pdf.php',
+          url: './reports/generate_customers_pdf.php',
           type: 'GET',
           xhrFields: {
               responseType: 'blob'
           },
           data: {
-            customerId: selectedCustomers,
-            singleDateData: singleDateData,
-          startDate: startDate,
-          endDate: endDate
+            customerId: selectedCustomers
             },
           success: function(response) {
-            if(response){
             loadingImage.setAttribute("hidden",true);
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
               if( loadingImage.hasAttribute('hidden')) {
                 var timestamp = new Date().getTime(); 
-                var pdfUrl = './assets/pdf/customer/customerSales.pdf?t=' + timestamp; 
+                var pdfUrl = './assets/pdf/customer/customerList.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
-            }
           },
-        
           error: function(xhr, status, error) {
               console.error(xhr.responseText);
               console.log(searchData)
@@ -8232,10 +6405,6 @@ function showReports(id) {
         pdfFile.setAttribute('hidden',true)
         var usersSelect = document.getElementById("usersSelect");
         var selectedUser = usersSelect.value;
-  
-        var entriesSelect = document.getElementById("entriesSelect");
-        var entries = entriesSelect.value
-
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -8277,8 +6446,7 @@ function showReports(id) {
                 userId: selectedUser,
                 singleDateData: singleDateData,
                 startDate: startDate,
-                endDate: endDate,
-                entries:entries
+                endDate: endDate
             },
           success: function(response) {
             loadingImage.setAttribute("hidden",true);
@@ -8524,7 +6692,8 @@ function showReports(id) {
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
         var startDate;
@@ -8634,6 +6803,7 @@ function showReports(id) {
               responseType: 'blob'
           },
           data: {
+                exclude:toggleDivExcludes,
                 selectedMethod: paymentMethod,
                 singleDateData: singleDateData,
                 startDate: startDate,
@@ -8808,7 +6978,8 @@ function showReports(id) {
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
+        var productSelect = document.getElementById('selectProducts')
+        var selectedProduct = productSelect.value;
         var usersSelect = document.getElementById("usersSelect");
         var selectedUser = usersSelect.value;
         var datepicker = document.getElementById('datepicker').value
@@ -9057,7 +7228,6 @@ function showReports(id) {
                 endDate: endDate
             },
           success: function(response) {
-           
             loadingImage.setAttribute("hidden",true);
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
@@ -9082,7 +7252,14 @@ function showReports(id) {
         loadingImage.removeAttribute("hidden");
         var pdfFile= document.getElementById("pdfFile");
         pdfFile.setAttribute('hidden',true)
-      var selectedProduct =  getSelectedProductValue()
+        var soldSelect = document.getElementById('soldSelect')
+      var selectedOption = soldSelect.value;
+      var productSelect = document.getElementById('selectProducts')
+      var selectedProduct = productSelect.value;
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -9121,13 +7298,15 @@ function showReports(id) {
               responseType: 'blob'
           },
           data: {
+                selectedOption: selectedOption,
                 selectedProduct: selectedProduct,
+                selectedCategories: selectedCategories,
+                selectedSubCategories:  selectedSubCategories,
                 singleDateData: singleDateData,
                 startDate: startDate,
                 endDate: endDate
             },
           success: function(response) {
-            console.log(response)
             loadingImage.setAttribute("hidden",true);
               var pdfFile= document.getElementById("pdfFile");
               pdfFile.removeAttribute('hidden')
@@ -9143,37 +7322,6 @@ function showReports(id) {
           }
           });
      }
-    })
-  } else if (id == 40) {
-    $('#showReport').off('click').on('click', function(){
-      $('#showReportsModal').show();
-      var loadingImage = document.getElementById("loadingImage");
-      loadingImage.removeAttribute("hidden");
-      var pdfFile= document.getElementById("pdfFile");
-      pdfFile.setAttribute('hidden',true)
-
-      var datepicker = document.getElementById('datepicker').value
-      var singleDateData = null;
-      var startDate;
-      var endDate;
-      if (datepicker.includes('-')) {
-        var dateRange = datepicker.split(' - ');
-        var startDates = new Date(dateRange[0].trim());
-        var endDate = new Date(dateRange[1].trim());
-
-        var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
-        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
-
-        startDate = formattedStartDate;
-        endDate = formattedEndDate;
-      } else {
-        var singleDate = datepicker.trim();
-        var singleDate = datepicker.trim();
-        var dateObj = new Date(singleDate);
-        var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
-        singleDateData =  formattedDate
-       
-      }
     })
   }
 }

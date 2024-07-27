@@ -112,7 +112,6 @@ if(count($items) > 0)
         $sheet->setCellValue('I' . $rowIndex, number_format($item['customer_discount'], 2)); 
         $sheet->setCellValue('J' . $rowIndex, number_format($discount20percent, 2)); 
         $sheet->setCellValue('K' . $rowIndex, number_format($item['netSales'], 2));
-
         $rowIndex++;
     }
 }
@@ -251,7 +250,7 @@ $sheet->getStyle('I14')->applyFromArray($headerStyleIJ);
 $sheet->getStyle('J14')->applyFromArray($headerStyleIJ);
 $sheet->getStyle('K13')->applyFromArray($headerStyleK);
 
-$sheet->getStyle('A15:K15')->applyFromArray($headerStyleData);
+$sheet->getStyle('A'.$rowIndex.':K'.$rowIndex)->applyFromArray($headerStyleData);
 
 foreach (range('A', 'K') as $column) {
     $sheet->getColumnDimension($column)->setWidth(17);

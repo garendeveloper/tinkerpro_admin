@@ -1027,9 +1027,9 @@ class InventoryFacade extends DBConnection
                 if($isPaid === 1)
                 {
                     $sql = "INSERT INTO orders 
-                            (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice) 
+                            (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice, due_date) 
                             VALUES 
-                            (:isPaid, :supplier_id, :date_purchased, :po_number, :price, :order_type, :totalTax, :totalQty, :totalPrice)";
+                            (:isPaid, :supplier_id, :date_purchased, :po_number, :price, :order_type, :totalTax, :totalQty, :totalPrice, :due_date)";
 
                     $sqlStatement = $this->connect()->prepare($sql);
                     $params = [
@@ -1042,6 +1042,7 @@ class InventoryFacade extends DBConnection
                         ':totalTax' => $totalTax,
                         ':totalQty' => $totalQty,
                         ':totalPrice' => $totalPrice,
+                        ':due_date' => "",
                     ];
 
                     $sqlStatement->execute($params);

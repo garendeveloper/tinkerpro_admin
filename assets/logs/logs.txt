@@ -2215,6 +2215,45 @@
 2024-07-26 18:01:33 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000001 Date: Jul 18 2024 
 2024-07-26 18:06:15 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000001 Date: Jul 18 2024 
 2024-07-26 18:06:32 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000003 Date: Jul 26 24 
+2024-07-27 09:10:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 09:12:49 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000004 Date: Jul 27 24 
+2024-07-27 09:12:57 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000004 Date: Jul 27 2024 
+2024-07-27 09:13:04 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000004 Date: Jul 27 2024 
+2024-07-27 09:14:48 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000005 Date: Jul 27 24 
+2024-07-27 09:20:29 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000006 Date: Jul 27 24 
+2024-07-27 09:20:35 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000006 Date: Jul 27 2024 
+2024-07-27 09:20:55 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000007 Amount:₱ 979.20 
+2024-07-27 09:47:29 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000003 Date: Jul 27 24 Total Amount₱ 2,520.00 
+2024-07-27 09:51:36 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000003 Date: Jul 27 2024 Total Amount₱ 6,370.00 
+2024-07-27 09:51:44 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000003 Date: Jul 27 2024 Total Amount₱ 9,408.00 
+2024-07-27 09:53:05 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000004 Date: Jul 27 24 Total Amount₱ 3,360.00 
+2024-07-27 09:53:52 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000004 Date: Jul 27 24 Total Amount₱ 65.88 
+2024-07-27 09:58:11 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000004 Date: Jul 27 24 Total Amount₱ 342.00 
+2024-07-27 09:58:26 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000004 Date: Jul 27 2024 Total Amount₱ 598.50 
+2024-07-27 10:00:09 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000007 Date: Jul 27 24 
+2024-07-27 10:00:50 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000007 Date: Jul 27 2024 
+2024-07-27 10:01:08 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000008 Date: Jul 27 24 
+2024-07-27 10:01:25 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000008 Date: Jul 27 2024 
+2024-07-27 10:02:32 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000008 Date: Jul 27 2024 
+2024-07-27 10:47:22 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000008 Amount:₱ 2,772.00 
+2024-07-27 11:11:56 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: ACE CHOCO 1PACK-REB From: 63.00 To:  
+2024-07-27 11:21:19 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: ACE CHOCO 1PACK-REB From: 0.00 To: 96 
+2024-07-27 11:59:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 12:35:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:08:03 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:23:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:39:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:43:54 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 13:53:54 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 14:01:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 14:35:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 14:47:07 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 14:53:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:02:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:04:31 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:17:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:25:04 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:29:10 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: FIESTA PANCIT CANTON 1/4KG From: 0.00 To: 20 
 >>>>>>> 1bd925a740beeaf418f9a8362aed873d7fa18fdd
 2024-07-27 09:07:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-27 09:07:33 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
@@ -2504,3 +2543,108 @@
 2024-07-27 15:30:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-27 15:37:06 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-27 15:37:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB COLOGNE SLIDE 50ML Barcode #:4801010120124 
+2024-07-27 15:39:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PALMOLIVE S/STRAIGHT 90ML Barcode #:4808888431444 
+2024-07-27 15:39:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT MILK 500ML Barcode #:8850007090281 
+2024-07-27 15:40:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PALMOLIVE S/STRAIGHT 90ML Barcode #:278505 
+2024-07-27 15:40:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PALMOLIVE S/STRAIGHT 180ML Barcode #:4808888431444 
+2024-07-27 15:40:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT MILK+RICE 100ML Barcode #:9556006060346 
+2024-07-27 15:40:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT MILK+RICE 200ML Barcode #:9556006060353 
+2024-07-27 15:41:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT PINK 100ML Barcode #:8850007030744 
+2024-07-27 15:41:53 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:42:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT PINK 200ML Barcode #:8850007031307 
+2024-07-27 15:57:17 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:06:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:06:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:10:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARLBORO GOLD 20S Barcode #:4806504616213 
+2024-07-27 16:11:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARLBORO ICE BLAST 20S Barcode #:4806504616213 
+2024-07-27 16:11:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARLBORO GOLD 20S Barcode #:590734594541 
+2024-07-27 16:12:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POCARI SWEAT 350ML Barcode #:8997035600010 
+2024-07-27 16:12:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POCARI SWEAT 500ML Barcode #:8997035600027 
+2024-07-27 16:13:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS CHEESE 170G Barcode #:4800016635724 
+2024-07-27 16:13:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS CHEESE 40G Barcode #:4800016644801 
+2024-07-27 16:14:26 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:14:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS CHEESE 85G Barcode #:4800016644504 
+2024-07-27 16:15:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS NACHO PIZZA 40G Barcode #:4800016633621 
+2024-07-27 16:16:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS NACHO PIZZA 85G Barcode #:4800016633614 
+2024-07-27 16:16:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS ROADHOUSE BBQ 85G Barcode #:4800016633799 
+2024-07-27 16:18:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS ROADHOUSE BBQ 40G Barcode #:4800016633782 
+2024-07-27 16:19:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS ROAST BEEF 40G Barcode #:4800016665271 
+2024-07-27 16:20:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS ROAST BEEF 85G Barcode #:4800016665288 
+2024-07-27 16:21:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS SOUR & CREAM 40G Barcode #:4800016671807 
+2024-07-27 16:21:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARSHIES STRAWBERRY 250G Barcode #:4800519183036 
+2024-07-27 16:23:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS SOUR & CREAM 85G Barcode #:4800016671500 
+2024-07-27 16:24:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIC A SNACK MIX 90G Barcode #:4800016635243 
+2024-07-27 16:24:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARSHMALLOW Barcode #:4800029017494 
+2024-07-27 16:25:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS CHOCO 38G Barcode #:4800194116466 
+2024-07-27 16:25:22 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:25:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS CHOCO 24G Barcode #:4800194117463 
+2024-07-27 16:26:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS UBE 24G Barcode #:4800194153324 
+2024-07-27 16:27:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS UBE 38G Barcode #:4800194152327 
+2024-07-27 16:27:48 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:28:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PONDS CRM DETOX 12G-ECSI Barcode #:4800888143839 
+2024-07-27 16:29:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARTYS BLUE 26G Barcode #:4800194152884 
+2024-07-27 16:32:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARTYS BROWN SPICY 26G L 1BAG-MEL Barcode #:4800194152891 
+2024-07-27 16:32:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARTYS BROWN SPICY 26G L 1BAG-MEL Barcode #:757870 
+2024-07-27 16:32:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARTYS BROWN SPICY 26G Barcode #:4800194152891 
+2024-07-27 16:33:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SUPER CRUNCH GREEN 55G Barcode #:4800365101208 
+2024-07-27 16:38:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARTYS BROWN SPICY 90G Barcode #:4800194179836 
+2024-07-27 16:38:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MARTYS GREEN 26G Barcode #:4800194152839 
+2024-07-27 16:40:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:42:14 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:42:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PONS WASH MEN ENERGY 10G Barcode #:4800888192882 
+2024-07-27 16:43:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:44:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MASTER ACTIVE WHITENING 5G Barcode #:4806789448714 
+2024-07-27 16:47:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POPSICLE STICKS COLORED 1PCK Barcode #:7137976 
+2024-07-27 16:49:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MASTER FW COOL RUSH 10G Barcode #:4800888214249 
+2024-07-27 16:49:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BINGO GOLD COIN 100S Barcode #:4806507620200 
+2024-07-27 16:49:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POTATO CHIPS BBQ 22G Barcode #:4800016677809 
+2024-07-27 16:50:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POTATO CHIPS BBQ-FAMILY Barcode #:4800016622526 
+2024-07-27 16:50:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MASTER GULAMAN GREEN 24G Barcode #:4809013526967 
+2024-07-27 16:50:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POTATO FRIES BBQ 50G Barcode #:4800194106771 
+2024-07-27 16:51:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POTATO FRIES CHEESE 21G Barcode #:4800194104777 
+2024-07-27 16:51:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MASTER HYBRIDZ HAIR WAX 5ML Barcode #:4806515160675 
+2024-07-27 16:52:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POTATO FRIES KETCHUP 50G Barcode #:4800194106030 
+2024-07-27 16:53:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POTCHI GUMMY WORMS Barcode #:4800818807497 
+2024-07-27 16:54:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated POTCHI STRABERRY CREAM-VM Barcode #:4800818808906 
+2024-07-27 16:55:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:56:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAMIL 6-12 MONTHS 350G-SUL Barcode #:4800153151248 
+2024-07-27 16:57:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 17:02:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAXX CHERRY Barcode #:4800016304019 
+2024-07-27 17:04:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAXX DALANDAN ORANGE 50PCS Barcode #:4800016303081 
+2024-07-27 17:08:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAXX EXTRA STRENGTH 50PCS Barcode #:4800016303159 
+2024-07-27 17:08:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAXX EUCALYPTUS CANDY 50PCS Barcode #:4800016307010 
+2024-07-27 17:10:48 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 17:10:55 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 17:11:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAXX HONEY LEMON Barcode #:4800016306013 
+2024-07-27 17:11:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAXX HONEY LEMON Barcode #:4800016306013 
+2024-07-27 17:11:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAXX HONEY LEMON Barcode #:4800016306013 
+2024-07-27 17:12:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 17:17:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BUTTER COCONUT BISCUIT 12X14G Barcode #:4807770122170 
+2024-07-27 17:18:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BUTTER COCONUT BISCUITS 90G Barcode #:4807770101694 
+2024-07-27 17:19:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PRESTO CHOCO P/BUTTER 10S Barcode #:4800010075922 
+2024-07-27 17:20:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PRESTO CREAM PEANUT BUTTER 10S Barcode #:4800010075922 
+2024-07-27 17:20:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PRESTO CHOCO P/BUTTER 10S Barcode #:587249378884 
+2024-07-27 17:23:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MC CORMICK BANANA 20ML Barcode #:52100088952 
+2024-07-27 17:24:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PRESTO DOUBLE CHOCO 10S Barcode #:4800016076947 
+2024-07-27 17:25:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated C2 SOLO APPLE 230ML 1BX Barcode #:3399224 
+2024-07-27 17:26:32 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 17:26:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 17:27:50 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 17:28:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MC CORMICK BLUE 20ML Barcode #:52100089119 
+2024-07-27 17:29:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PRIDE POWDER 2KG. Barcode #:4800045310265 
+2024-07-27 17:29:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MC CORMICK BUCO 20ML Barcode #:52100089034 
+2024-07-27 17:30:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CALLA POW KAL 1/2DZ Barcode #:4806501709239 
+2024-07-27 17:30:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PRIDE POWDER ANTI BACTERIAL 500G Barcode #:4800045310289 
+2024-07-27 17:31:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MC CORMICK FOOD COLOR RED 20ML Barcode #:52100089294 
+2024-07-27 17:32:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CALLA POW FLORAL 1/2DZ Barcode #:4806501709123 
+2024-07-27 17:32:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MC CORMICK GREEN 20ML Barcode #:52100089317 
+2024-07-27 17:33:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CALLA DETERGENT BAR 400G Barcode #:4806501709208 
+2024-07-27 17:34:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CALIFORNIA SWEET RED 750ML Barcode #:85000001882 
+2024-07-27 17:34:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MC CORMICK YELLOW 20ML Barcode #:52100089355 
+2024-07-27 17:36:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CALLA POW ROSE 1/2DZ Barcode #:4806501709352 
+2024-07-27 17:37:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MC CORMICK PANDAN 20ML Barcode #:52100089010 
+2024-07-27 17:38:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CARLO ROSSI MOSCATO 750ML-EMPE Barcode #:85000023211 
+2024-07-27 17:40:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CARLO ROSSI SANGRIA 750ML-EMPE Barcode #:85000016695 
+2024-07-27 17:40:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CARLO ROSSI SWEET RED 750ML-EMPE Barcode #:85000019849 
+2024-07-27 17:41:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CARNATION CONDENSADA 388G Barcode #:4800361419307 
+2024-07-27 17:46:08 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

@@ -101,24 +101,70 @@
 table thead th{
     color: #ffffff;
 }
+.group {
+        display: inline-block;
+        margin-right: 3px;
+    }
+    .f1 {
+        display: flex;
+        align-items: center; /* Vertically center items */
+        gap: 20px; /* Space between items */
+    }
+
+    .f1 .group {
+        display: flex;
+        align-items: center;
+    }
+
+    .f1 .date-input-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .f1label {
+        margin: 0 10px 0 0; /* Adjust spacing between label and input */
+    }
+
+    .f1 input[type="text"] {
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    .f1.date-input-container input[type="text"] {
+        height: 30px;
+        margin-right: 5px;
+    }
+
+  .switch {
+      display: flex;
+      align-items: center;
+      margin-left: 10px; 
+  }
+
+  .calendar-icon {
+      font-size: 40px; 
+      margin-left: 5px;
+  }
 </style>
 <div class="fcontainer" id = "purchaseItems_div" style = "display: none">
     <form id="po_form">
         <input type="hidden" name="order_id" id="_order_id" value="0">
         <input type="hidden" name="inventory_id" id="_inventory_id" value="0">
-        <div class="fieldContainer" >
-            <label>PO#</label>
-            <input type="text" name="po_number" id="pcs_no" onkeyup="$(this).removeClass('has-error')" style="height: 30px;" value=""
-                readonly />
-            <div class="toggle-switch-container">
-                <label for="paidSwitch" class="switch-label" style="color: #28a745; ">Paid</label>
-                <div class="form-check form-switch" style="margin-left: 15px; ">
-                    <input class="form-check-input" type="checkbox" id="paidSwitch" name="isPaid" style="height: 15px;">
-                </div>
+        <div class="fieldContainer f1">
+            <label for="pcs_no">PO#</label>
+            <input type="text" name="po_number" id="pcs_no" onkeyup="$(this).removeClass('has-error')" readonly />
+
+            <div class="group">
+                <label for="negative_inventory" style="margin-right: 10px;"><strong style="color: #ffff; font-size: 12px;">Paid</strong></label>
+                <label class="switch">
+                    <input type="checkbox" id="paidSwitch" name="isPaid"  checked>
+                    <span class="slider round"></span>
+                </label>
             </div>
+
             <div class="date-input-container">
                 <input type="text" name="date_purchased" id="date_purchased" placeholder="Select date" readonly>
-                <i id="calendar-btn" class="bi bi-calendar3 calendar-icon"   aria-hidden="true"></i>
+                <i id="calendar-btn" class="bi bi-calendar3 calendar-icon" aria-hidden="true"></i>
             </div>
         </div>
         <div class="fieldContainer" style = "margin-top: 2px;">
@@ -274,8 +320,8 @@ table thead th{
           }).map(function(row) {
               var brand = row.brand === null ? " " : "( " + row.brand + " )";
               return {
-                  label: row.product + " (" + row.barcode + ")",
-                  value: row.barcode ?? row.product,
+                  label: row.product,
+                  value: row.product,
                   inventory_id: row.inventory_id,
                   id: row.product_id
               };
@@ -287,6 +333,7 @@ table thead th{
           $('#date_purchased').attr('readonly', true);
           $('#calendar-btn').attr('readonly', true);
           hidePopups();
+          $(".pqty").focus();
           var product_id = $("#selected_product_id").val();
           if(product_id !== "" && product_id !== "0")
           {
@@ -343,12 +390,13 @@ table thead th{
         return searchDataExists;
       }
       function hidePopups() {
+        $('#date_purchased').attr('readonly', true);
         $('#calendar-btn').prop('disabled', true);
-        $("#p_qty").focus();
+        $(".pqty").focus();
       }
       $('#product').on('keypress', function(event) {
         if (event.keyCode === 13 || event.keyCode === 27) { 
-        hidePopups();
+          hidePopups();
         }
     });
     function updateTotal() {
@@ -378,10 +426,7 @@ table thead th{
         if(product_id !== "" && product_id !== "0")
         {
           $("#selected_product_id").val(product_id);
-          $("#purchaseQty_modal").slideDown({
-            backdrop: 'static',
-            keyboard: false,
-          });
+          $("#purchaseQty_modal").fadeIn(200);
           $.ajax({
             type: 'get',
             url: 'api.php?action=get_productInfo',

@@ -59,9 +59,7 @@
     <div class="modal-content" id = "purchaseQty_content" style = "width: 550px; box-shadow: 0 4px 8px rgba(0,0,0,2); margin: 0 auto;">
       <div class="modal-header" style = "border: none">
         <h3 class="modal-title" id = "pqty_modalTitle"></h3>
-        <button type="button" class="close" data-dismiss="modal" id = "btn_pqtyClose" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <span aria-hidden="true"  id = "btn_pqtyClose" style = "font-size: 30px; font-weight: bold">&times;</span>
       </div>
       <form id = "prod_form">
         <input type="hidden" id = "pqty_inventoryId" value = "0">
@@ -76,7 +74,7 @@
             <div class="fieldContainer" style = "display:flex; margin-bottom: 2px;">
                 <div class="form-group" >
                     <label for="p_qty" id="lbl_pqty" class="l_input" style="color: var(--primary-color);"><strong>QTY:</strong></label>
-                    <input type="text" class="p_input" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right" autofocus="autofocus ">
+                    <input type="text" class="p_input pqty" name="p_qty" id="p_qty" onkeyup="$(this).removeClass('has-error')" autocomplete="off" style = "text-align: right" autofocus="autofocus ">
                 </div>
                 <div class="form-group" >
                     <label for="price" id="lbl_price" class="l_input" style="color: var(--primary-color); "><strong>RATE:</strong></label>

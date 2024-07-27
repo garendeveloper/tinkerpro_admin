@@ -156,11 +156,7 @@ if (isset($_SESSION['user_id'])) {
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
-    <!-- partial:partials/_navbar.html -->
     <?php include 'layout/admin/sidebar.php' ?>
-
-
-      <!-- partial -->
       <div class="main-panel ms-2 h-100" style = "overflow: hidden">
         <div class="row">
             <div class="d-flex justify-content-between">
@@ -700,7 +696,7 @@ if (isset($_SESSION['user_id'])) {
         }).map(function(row) {
             var brand = row.brand === null ? " " : "( " + row.brand + " )";
             return {
-                label: row.product + " (" + row.barcode + ")",
+                label: row.product,
                 value: row.product,
                 id: row.product_id,
                 barcode: row.barcode,

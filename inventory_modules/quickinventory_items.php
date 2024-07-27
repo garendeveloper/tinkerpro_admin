@@ -197,8 +197,8 @@
             }).map(function(row) {
                 var brand = row.brand === null ? " " : "( " + row.brand + " )";
                 return {
-                    label: row.product + " (" + row.barcode + ")",
-                    value: row.barcode ?? row.product,
+                    label: row.product,
+                    value: row.product,
                     id: row.product_id
                 };
             });

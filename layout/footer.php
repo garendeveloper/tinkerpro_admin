@@ -99,7 +99,7 @@ $(document).ready(function() {
   $(".th-noborder").css('border', 'none')
   $(".highlighted").css("--hover-bg-color", localStorage.colorPallete)
 
-  
+    
     $('#toggle-sidebar').click(function() {
         $('#sidebar').toggleClass('collapsed');
         $('.main-panel').toggleClass('expanded');
