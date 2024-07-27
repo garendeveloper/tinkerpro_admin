@@ -698,6 +698,7 @@ body, div, h1, h2, h3, h4, h5, p{
               html += "<tr>";
               html += "<td style = 'text-align: left'>"+currentItem.product+"</td>";
               html += "<td style = 'text-align: right'>"+currentItem.total_paid_amount+"</td>"
+              html += "</tr>";
 
 
               productsName.push(currentItem.product);
@@ -712,7 +713,7 @@ body, div, h1, h2, h3, h4, h5, p{
           
             $("#tbl_top_products tbody").html(html);
           
-            $("#top_products_data").html('<canvas id="myDoughnutChart"></canvas>');
+            $("#top_products_data").html('<canvas id="myDoughnutChart" ></canvas>');
             const backgroundColors = productsAmount.map(() => getRandomColor());
 
             const data = {

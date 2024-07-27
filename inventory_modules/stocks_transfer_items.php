@@ -66,7 +66,7 @@
                 </select>
                 <i class="bi bi-chevron-double-down"></i>
             </div>
-            <div class="custom-select" s>
+            <div class="custom-select">
                 <select name="stock_to"
                     style=" background-color: #1E1C11; color: #ffff; width: 220px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
                     <option value="">Transfer Stock to?</option>

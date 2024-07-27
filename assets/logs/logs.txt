@@ -1873,3 +1873,9 @@
 2024-07-27 15:17:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-27 15:25:04 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-27 15:29:10 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: FIESTA PANCIT CANTON 1/4KG From: 0.00 To: 20 
+2024-07-27 15:39:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 15:57:14 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-27 16:22:31 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 WEEK 
+2024-07-27 16:52:55 | Talkosoy Admin | 1 | 2 | Inventory Count | Successfully inventory count with reference #: 30-000000007 Date: Jul 27 2024 
+2024-07-27 17:29:50 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-27 17:29:58 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 

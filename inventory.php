@@ -994,10 +994,7 @@ i:hover{
             var info = data.inventoryInfo;
             var stocks = data.stocks;
             var tbl_rows = [];
-            $("#stockhistory_modal").slideDown({
-              backdrop: 'static',
-              keyboard: false,
-            });
+            $("#stockhistory_modal").fadeIn('show');
             $("#stockhistory_modal").find(".modal-title").html("<span style = 'font-weight: bold' class = 'text-custom'> "+info.prod_desc + "</span>&nbsp; - STOCK HISTORY")
             var tbl_rows = [];
 
@@ -1088,7 +1085,19 @@ i:hover{
             show_lossanddamage_details(id);
             break;
           case 'tbl_orders':
-            orderdata(id);
+            var is_received = $(this).data('is_received');
+            var po_number = $(this).data('po_number');
+            if(is_received === 0)
+            {
+              openOptionModal();
+              openReceivedItems();
+              $("#r_PONumbers").val(po_number);
+              $("#btn_searchPO").click();
+            }
+            else
+            {
+              orderdata(id);
+            }
             break;
           default:
             break;
@@ -2707,6 +2716,24 @@ i:hover{
           }
         });
       }
+      function openReceivedItems()
+      {
+        $(".purchase-grid-container button").removeClass('active');
+        $("#btn_receiveItems").addClass('active');
+        $("#po_data_div").hide();
+        $("#expiration_div").hide();
+        $("#purchaseItems_div").hide();
+        $("#received_div").show();
+        $("#quickinventory_div").hide();
+        $("#stocktransfer_div").hide();
+        $("#lossanddamage_div").hide()
+        $("#inventorycount_div").hide();
+        $("#open_po_report").hide();
+        $("#receive_form #r_PONumbers").focus();
+        $("#receive_form #r_PONumbers").val("");
+        $("#btn_omPayTerms").hide();
+        $("#btn_savePO").attr('disabled', false);
+      }
       function hideModals() {
         $("#optionModal").addClass('slideOutRight');
         $(".optionmodal-content").addClass('slideOutRight');
@@ -2790,20 +2817,7 @@ i:hover{
       })
       $("#btn_receiveItems").click(function (e) {
         e.preventDefault();
-        $(".purchase-grid-container button").removeClass('active');
-        $(this).addClass('active');
-        $("#po_data_div").hide();
-        $("#expiration_div").hide();
-        $("#purchaseItems_div").hide();
-        $("#received_div").show();
-        $("#quickinventory_div").hide();
-        $("#stocktransfer_div").hide();
-        $("#lossanddamage_div").hide()
-        $("#inventorycount_div").hide();
-        $("#open_po_report").hide();
-        $("#receive_form #r_PONumbers").focus();
-        $("#btn_omPayTerms").hide();
-        $("#btn_savePO").attr('disabled', false);
+        openReceivedItems();
       })
       $("#btn_stockTransfer").click(function (e) {
         e.preventDefault();

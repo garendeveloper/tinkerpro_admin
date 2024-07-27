@@ -103,21 +103,21 @@
         position: relative;
     }
     .bottom-area {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 10px;
-  border-top: 1px solid #ccc;
-}
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    }
 
-.bottom-area {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-}
+    .bottom-area {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    }
 </style>
 <div class="fcontainer" id="lossanddamage_div" style="display: none">
     <form id="lossanddamage_form">
