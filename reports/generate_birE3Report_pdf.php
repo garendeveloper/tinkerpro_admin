@@ -220,8 +220,8 @@ if(count($items) > 0)
 {
     foreach ($items as $key =>$item) 
     {
-        $vat_amount = number_format(0.00, 2);
-        $sales_vat = number_format(0.00, 2);
+        $vat_amount = number_format($item['vat_amount'], 2);
+        $sales_vat = number_format($item['vat_sales'], 2);
         $discount20percent = number_format(0.00, 2);
     
         $customerID = $item['customerID'] ?? '---';
@@ -245,10 +245,10 @@ if(count($items) > 0)
         $pdf->Cell($headerWidths[5], $maxCellHeight, $sales_vat, 1, 0, 'R');
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $vat_amount, $headerWidths[6]));
         $pdf->Cell($headerWidths[6], $maxCellHeight, $vat_amount, 1, 0, 'R');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['vatable_sales'], 2), $headerWidths[7]));
-        $pdf->Cell($headerWidths[7], $maxCellHeight, number_format($item['vatable_sales'], 2), 1, 0, 'R');
-        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['customerDiscount'], 2), 15));
-        $pdf->Cell(15, $maxCellHeight, number_format($item['customerDiscount'], 2), 1, 0, 'R');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['vatExempt'], 2), $headerWidths[7]));
+        $pdf->Cell($headerWidths[7], $maxCellHeight, number_format($item['vatExempt'], 2), 1, 0, 'R');
+        $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['customer_discount'], 2), 15));
+        $pdf->Cell(15, $maxCellHeight, number_format($item['customer_discount'], 2), 1, 0, 'R');
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $discount20percent, 15));
         $pdf->Cell(15, $maxCellHeight, number_format($discount20percent, 2), 1, 0, 'R');
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($item['netSales'], 2), $headerWidths[9]));

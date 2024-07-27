@@ -90,8 +90,8 @@ if(count($items) > 0)
 {
     foreach($items as $item)
     {
-        $vat_amount = number_format(0.00, 2);
-        $sales_vat = number_format(0.00, 2);
+        $vat_amount = number_format($item['vat_amount'], 2);
+        $sales_vat = number_format($item['vat_sales'], 2);
         $discount20percent = number_format(0.00, 2);
     
         $customerID = $item['customerID'] ?? '---';
@@ -108,8 +108,8 @@ if(count($items) > 0)
         $sheet->setCellValue('E' . $rowIndex, $item['barcode']);
         $sheet->setCellValue('F' . $rowIndex, $sales_vat); 
         $sheet->setCellValue('G' . $rowIndex, $vat_amount);
-        $sheet->setCellValue('H' . $rowIndex, number_format($item['vatable_sales'], 2)); 
-        $sheet->setCellValue('I' . $rowIndex, number_format($item['customerDiscount'], 2)); 
+        $sheet->setCellValue('H' . $rowIndex, number_format($item['vatExempt'], 2)); 
+        $sheet->setCellValue('I' . $rowIndex, number_format($item['customer_discount'], 2)); 
         $sheet->setCellValue('J' . $rowIndex, number_format($discount20percent, 2)); 
         $sheet->setCellValue('K' . $rowIndex, number_format($item['netSales'], 2));
         $rowIndex++;
