@@ -236,6 +236,19 @@ class OrderFacade extends DBConnection
         }
         return $tbl_data;
     }
+    public function get_realtime_orderExpirations()
+    {
+        $sql = $this->connect()->prepare('
+                                            SELECT *
+                                            FROM orders 
+                                            WHERE due_date BETWEEN CURDATE() AND CURDATE() + INTERVAL orders.term DAY
+                                            AND orders.isReccurring = 1
+                                            AND orders.isPaid = 0
+                                            AND orders.isNotification = 1');
+        $sql->execute();
+        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
     public function get_orderData($order_id)
     {
         $sql = "SELECT orders.*, products.*, supplier.*, inventory.*, inventory.id as inventory_id

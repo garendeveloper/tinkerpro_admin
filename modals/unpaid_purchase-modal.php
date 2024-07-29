@@ -201,7 +201,7 @@ textarea::placeholder{
               </div>
               <div class="col-md-6"  id = "unpaid_hide1">
                   <label class = "tinker_label" for="">Term (No. of Days)</label>
-                  <input type="number" name = "unpaid_term" id = "unpaid_term" class = "inputAmount" autocomplete="off"/> 
+                  <input type="number" name = "unpaid_term" id = "unpaid_term" class = "inputAmount" style = "width: 100%" autocomplete="off"/> 
               </div>
             </div>
             <div class="row" id = "unpaid_toHide1">

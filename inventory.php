@@ -320,7 +320,9 @@ i:hover{
   table tbody td {
       border: 1px solid #292928;
   }
-
+ .expiring{
+  color: #FF7F7F
+ }
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -377,14 +379,15 @@ i:hover{
                 <button id="stocks" class="grid-item pos-setting text-color button"><i class="bi bi-graph-up"></i>&nbsp;
                   Stocks</button>
                 <button id="purchase-order" class="grid-item pos-setting text-color button"><i class="bi bi-cart-check"></i>&nbsp;
-                  Purchase Orders</button>
+                  Purchase Orders <span id="unpaidExpirations" class="badge badge-danger"
+                  style="font-size: 11px; background-color: red; color: fff; "></span></button>
                 <button id="inventory-count" class="grid-item pos-setting text-color button"><i class="bi bi-archive"></i>&nbsp;
                   Inventory Count</button>
                 <button id="loss-damage" class="grid-item pos-setting text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss &
                   Damage</button>
                 <button id="expiration" class="grid-item pos-setting text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp;
                   Expiration <span id="expirationNotification" class="badge badge-danger"
-                    style="font-size: 11px; background-color: red; color: white; "></span></button>
+                    style="font-size: 11px; background-color: red; color: fff; "></span></button>
 
                 <!-- <button id="bom" class="grid-item pos-setting text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button> -->
                 <!-- <button id="low-stocks" class="grid-item pos-setting text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
@@ -2091,7 +2094,8 @@ i:hover{
                       $("#po_data_div").hide();
                       $("#received_payment_confirmation").hide();
                       show_allReceivedItems_PurchaseOrders();
-                      show_allInventories();
+                      $("#purchase-order").addClass('active');
+                      show_allOrders();
                       isSaving = false;
                       hideModals();
 

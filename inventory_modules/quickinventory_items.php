@@ -86,7 +86,7 @@
                 Search</button>
         </div>
     </form>
-    <table id="tbl_quickInventories" class="text-color table-border" style="margin-top: -3px;">
+    <table  class="text-color table-border tableHead" style="margin-top: -3px;">
         <thead>
             <tr>
                 <th style="background-color: #1E1C11; color: #ffffff; width: 50%">ITEM DESCRIPTION</th>
@@ -94,10 +94,14 @@
                 <th style="background-color: #1E1C11;   color: #ffffff; ">NEW QTY</th>
             </tr>
         </thead>
-        <tbody style="border-collapse: collapse; border: none">
-
-        </tbody>
     </table>
+    <div class = "scrollable">
+        <table id="tbl_quickInventories" class="text-color table-border" style="margin-top: -3px;">
+            <tbody style="border-collapse: collapse; border: none">
+
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
@@ -107,15 +111,25 @@
         var products_forquickInventory = [];
         var toastDisplayed = false;
         var products = [];
+        var productsCache = [];
         $("select[name='inventory_type']").on("change", function (e) {
             e.preventDefault();
+            productsCache = [];
             var value = $(this).val();
+            var isNegativeInventoryChecked = $("#negative_inventory").prop("checked") ? 1 : 0;
             $("#quickinventory_input_inventory_id").val("");
             $("#q_product").val("");
             $(this).css("border", '1px solid #ffff')
-            show_allProducts();
+            show_allProducts(isNegativeInventoryChecked);
             $("#quickinventory_form #q_product").focus();
         })
+        $("#negative_inventory").change(function() {
+            productsCache = [];
+            var inventory_type = $("select[name='inventory_type']").val();
+            var isNegativeInventoryChecked = $(this).prop("checked") ? 1 : 0;
+            if(inventory_type !== "" && inventory_type) show_allProducts(isNegativeInventoryChecked);
+            else $("select[name='inventory_type']").css('border', '1px solid red')
+        });
         $("#btn_searchQProduct").click(function (e) {
             e.preventDefault();
             var inventory_id = $("#quickinventory_input_inventory_id").val();
@@ -143,12 +157,15 @@
             $("#quickinventory_input_inventory_id").val("0");
             $("#q_product").val("");
         })
-        var productsCache = [];
-        function show_allProducts() 
+     
+        function show_allProducts(isNegativeInventoryChecked) 
         {
             $.ajax({
             type: 'GET',
             url: 'api.php?action=get_allProducts',
+            data: {
+                isNegativeInventoryChecked: isNegativeInventoryChecked
+            },  
             success: function (data) {
                 for (var i = 0; i < data.length; i++) 
                 {
@@ -299,9 +316,9 @@
                 success: function (data) {
                     var row = "";
                     row += "<tr data-id = " + data['id'] + ">";
-                    row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
-                    row += "<td style = 'text-align:center'>" + data['product_stock'] + "</td>";
-                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                    row += "<td data-id = " + data['id'] + " style = 'width: 50%'>" + data['prod_desc'] + "</td>";
+                    row += "<td style = 'text-align:center; width: 30%' '>" + data['product_stock'] + "</td>";
+                    row += "<td class = 'text-right'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
                     row += "</tr>";
                     $("#tbl_quickInventories tbody").append(row);
                 }

@@ -90,8 +90,6 @@
         case 'save_promotion':
             echo json_encode($promotionFacade->save($_POST));
             break;
-
-
         case 'addUsersData': 
             $formData = $_POST;
             $result = $userFacade->addNewUsers($formData);
@@ -173,6 +171,10 @@
         // case 'get_allInventoryCounts':
         //     echo json_encode($inventory_count->get_allData());
         //     break;
+        case 'get_realtime_orderExpirations':
+            echo json_encode($order->get_realtime_orderExpirations());
+            break;
+
         case 'get_realtime_notifications':
             echo json_encode($inventory->get_realtime_notifications());
             break;

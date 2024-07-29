@@ -2667,3 +2667,11 @@
 2024-07-29 10:41:00 | Talkosoy Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000006 
 2024-07-29 13:01:24 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000009 Amount:₱ 3,164.00 
 2024-07-29 13:01:36 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-07-29 13:52:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-29 14:40:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-29 15:58:10 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000005 Supplier: GAISANO 
+2024-07-29 16:00:46 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000005 Supplier: GAISANO 
+2024-07-29 16:01:46 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000004 Supplier: GAISANO 
+2024-07-29 16:26:50 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-29 17:03:28 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000010 Amount:₱ 1,400.00 
+2024-07-29 17:14:18 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000011 Amount:₱ 2,121.75 

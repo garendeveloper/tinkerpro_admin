@@ -209,7 +209,7 @@ table thead th{
                     Add Product</button>
         </div>
     </form>
-    <table id="tbl_purchaseOrders" class="text-color table-border" style = "margin-top: -3px;">
+    <table  class="text-color table-border tableHead" style = "margin-top: -3px;">
         <thead>
             <tr>
                 <th style="background-color: #1E1C11; width: 50%; color: #ffffff">ITEM DESCRIPTION</th>
@@ -218,10 +218,14 @@ table thead th{
                 <th style="background-color: #1E1C11; color: #ffffff" colspan = "2">TOTAL</th>
             </tr>
         </thead>
-        <tbody id="po_body" style="border-collapse: collapse; border: none">
-
-        </tbody>
     </table>
+    <div class = "scrollable">
+      <table id="tbl_purchaseOrders" class="text-color table-border" style = "margin-top: -3px;">
+          <tbody id="po_body" style="border-collapse: collapse; border: none">
+
+          </tbody>
+      </table>
+    </div>
     <div style="position: absolute;padding: 3px; width: 100%;" class = "bottom-area">
       <table id = "tbl_purchaseOrders_footer" class="text-color table-border" >
           <thead>

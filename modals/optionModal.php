@@ -914,7 +914,7 @@ input {
     margin-left: 10px;
     margin-right: 10px;
     height: 80vh;
-    overflow: auto;
+    overflow: hidden;
     position: relative;
 }
 
@@ -1055,19 +1055,7 @@ input {
     color: #ffffff;
 }
 
-/* #tbl_purchaseOrders tbody tr td:first-child:hover::before {
-    content: attr(title);
-    position: absolute;
-    background: none;
-    color: #fff;
-    border: 1px solid #fff;
-    padding: 5px;
-    border-radius: 5px;
-    white-space: nowrap;
-    z-index: 1000;
-    left: -150px;
-    top: 0;
-} */
+
 .optionmodal-content{
     height: auto;
     max-height: auto;
@@ -1147,6 +1135,19 @@ input[type="text"] {
 .ui-state-hover {
     background-color: var(--primary-color) !important; 
     color: #ffffff; 
+}
+
+
+.tableHead thead th {
+    border: none;
+    color: var(--primary-color);
+}
+
+.tableHead thead {
+    border: 1px solid var(--primary-color);
+}
+.scrollable{
+    overflow: auto;
 }
 
 </style>

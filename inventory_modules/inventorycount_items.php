@@ -47,6 +47,7 @@
         border: 1px solid var(--primary-color);
     }
 
+
     #tbl_inventory_count tbody td {
         border: none;
     }
@@ -62,6 +63,7 @@
     #btn_open_print_count_modal:hover{
         background-color: #046c04;
     }
+    
 </style>
 <div class="fcontainer" id="inventorycount_div" style="display: none">
     <form id="inventorycount_form">
@@ -128,19 +130,23 @@
                 Search</button>
         </div>
     </form>
-    <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh; margin-top: -5px;">
-        <thead>
-            <tr>
-                <th  style="background-color: #1E1C11; color: #ffffff; width: 50%">ITEM DESCRIPTION</th>
-                <th  style="background-color: #1E1C11; color: #ffffff;text-align:center">QTY</th>
-                <th style="background-color: #1E1C11; color: #ffffff;text-align:center">COUNTED</th>
-                <th  style="background-color: #1E1C11; color: #ffffff; text-align:right">DIF.</th>
-            </tr>
-        </thead>
-        <tbody style="border-collapse: collapse; border: none">
+    <table  class="text-color table-border tableHead" style="margin-top: -5px;">
+            <thead>
+                <tr style = "border: 1px solid var(--primary-color)">
+                    <th style="background-color: #1E1C11; color: #ffffff; width: 50%; ">ITEM DESCRIPTION</th>
+                    <th style="background-color: #1E1C11; color: #ffffff;text-align:center">QTY</th>
+                    <th style="background-color: #1E1C11; color: #ffffff;text-align:center">COUNTED</th>
+                    <th style="background-color: #1E1C11; color: #ffffff; text-align:right">DIF.</th>
+                </tr>
+            </thead>
+        </table>
+    <div class = "scrollable">
+        <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh; margin-top: -5px;">
+            <tbody style="border-collapse: collapse; border: none">
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <?php include("./modals/print-counts-modal.php")?>
@@ -210,10 +216,10 @@
                     for(var i =0 ;i<data.length; i++)
                     {
                         row += "<tr  data-id = "+data[i].product_id+">";
-                        row += "<td data-id = " +data[i].product_id+ ">" + data[i].prod_desc + "</td>";
-                        row += "<td style = 'text-align:center'>"+data[i].product_stock+"</td>";
-                        row += "<td class = 'text-center'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  autocomplete = 'off' required></input></td>";
-                        row += "<td style = 'text-align: right'></td>";
+                        row += "<td data-id = " +data[i].product_id+ " style = 'width: 50% '>" + data[i].prod_desc + "</td>";
+                        row += "<td style = 'text-align:center; width: 50px;'>"+data[i].product_stock+"</td>";
+                        row += "<td class = 'text-center; width: 50px;'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  autocomplete = 'off' required></input></td>";
+                        row += "<td style = 'text-align: right; width: 50px;'></td>";
                         row += "</tr>";
                     }
                     $("#tbl_inventory_count tbody").html(row);
