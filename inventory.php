@@ -59,7 +59,6 @@ if (isset($_GET["delete_product"])) {
   array_push($info, $error);
 }
 include ('./modals/optionModal.php');
-include ('./layout/admin/table-pagination-css.php');
 
 ?>
 <style>
@@ -566,21 +565,21 @@ i:hover{
           $('#paidSwitch').css('background-color', '');
         }
       });
-    $('#calendar-btn').off('click').on('click', function () {
-      if (!$("#date_purchased").hasClass("flatpickr-open")) {
-        if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
-            $("#date_purchased").flatpickr({
-                dateFormat: "M d y",
-                onClose: function(selectedDates) {
-                }
-            });
-            $("#date_purchased").addClass("flatpickr-initialized");
-        }
-        if ($("#date_purchased").flatpickr()) {
-            $("#date_purchased").flatpickr().open();
-        }
-      }
-    });
+    // $('#calendar-btn').off('click').on('click', function () {
+    //   if (!$("#date_purchased").hasClass("flatpickr-open")) {
+    //     if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
+    //         $("#date_purchased").flatpickr({
+    //             dateFormat: "M d y",
+    //             onClose: function(selectedDates) {
+    //             }
+    //         });
+    //         $("#date_purchased").addClass("flatpickr-initialized");
+    //     }
+    //     if ($("#date_purchased").flatpickr()) {
+    //         $("#date_purchased").flatpickr().open();
+    //     }
+    //   }
+    // });
 
       $('#s_due').datepicker({
         changeMonth: true,
@@ -1284,11 +1283,25 @@ i:hover{
         var id = $(this).data('id');
         show_inventoryCountDetails();
       })
-      function display_datePurchased() {
+      function display_datePurchased() 
+      {
         var currentDate = new Date();
         var formattedDate = formatDate(currentDate);
         $('#date_purchased').val(formattedDate);
       }
+      $('#date_purchased').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'M dd y',
+        altFormat: 'M dd y',
+        altField: '#date_purchased',
+        onSelect: function (dateText, inst) { }
+      });
+      $('#calendar-btn').on('click', function (e) {
+          e.preventDefault();
+          $('#date_purchased').datepicker('show');
+      });
+
       function formatDate(date) {
         var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -2135,20 +2148,11 @@ i:hover{
                 $("#unpaid_amount").on("input", function() {
                     var enteredValue = $(this).val().replace(/,/g, '');
                     if (parseFloat(enteredValue) > parseFloat(amount)) {
-                        $(this).val(amount);
+                      $(this).val(amount);
                     }
                 });
               }
               else {
-                // $("#paid_purchase_modal").slideDown({
-                //   backdrop: 'static',
-                //   keyboard: false,
-                // });
-                // $("#total_paid").html($("#overallTotal").text());
-                // $("#paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
-                // $("#btn_confirmPayment").click(function () {
-              
-                // })
                 submit_purchaseOrder();
               }
             }
@@ -2262,17 +2266,6 @@ i:hover{
       //     $(this).val(inputValue);
       //   });
       // });
-      $('#prod_form input').on('keypress', function(event) {
-          if (event.keyCode === 13) {
-            $(this).submit();
-            $("#product").focus();
-            $('#calendar-btn').prop('disabled', false);
-          }
-      });
-      // $('#date_purchased').on('focus click', function(event) {
-      //           event.preventDefault();
-      //         hidePopups();
-      //       });
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
         
@@ -2327,8 +2320,13 @@ i:hover{
               $("#prod_form")[0].reset();
               $("#product").val("");
               $("#item_verifier").val("");
+            
             }
           })
+
+          
+          $("#product").val('');
+            $("#selected_product_id").val("0");
         }
       })
       $('#po_form').submit(function (e) {
@@ -2346,20 +2344,6 @@ i:hover{
           }
         });
       });
-
-      // function show_allSuppliers() {
-      //   $.ajax({
-      //     type: 'GET',
-      //     url: 'api.php?action=get_allSuppliers',
-      //     success: function (data) {
-      //       var suppliers = [];
-      //       for (var i = 0; i < data.length; i++) {
-      //         suppliers.push(data[i].supplier)
-      //       }
-      //       autocomplete(document.getElementById("supplier"), suppliers);
-      //     }
-      //   })
-      // }
       function show_allSuppliers() {
         $.ajax({
           type: 'GET',
@@ -2374,86 +2358,17 @@ i:hover{
           }
         })
       }
-      function autocomplete(inp, arr) {
-        var currentFocus;
-        inp.addEventListener("input", function (e) {
-          var a, b, i, val = this.value;
-          closeAllLists();
-          if (!val) { return false; }
-          currentFocus = -1;
-          a = document.createElement("DIV");
-          a.setAttribute("id", this.id + "autocomplete-list");
-          a.setAttribute("class", "autocomplete-items");
-          this.parentNode.appendChild(a);
-          for (i = 0; i < arr.length; i++) {
-            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-              b = document.createElement("DIV");
-              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-              b.innerHTML += arr[i].substr(val.length);
-              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-              b.addEventListener("click", function (e) {
-                inp.value = this.getElementsByTagName("input")[0].value;
-                closeAllLists();
-              });
-              a.appendChild(b);
-            }
-          }
-        });
-        inp.addEventListener("keydown", function (e) {
-          var x = document.getElementById(this.id + "autocomplete-list");
-          if (x) x = x.getElementsByTagName("div");
-          if (e.keyCode == 40) {
-            currentFocus++;
-            addActive(x);
-          }
-          else if (e.keyCode == 38) {
-            currentFocus--;
-            addActive(x);
-          }
-          else if (e.keyCode == 13) {
-            e.preventDefault();
-            if (currentFocus > -1) {
-              if (x) x[currentFocus].click();
-            }
-          }
-        });
-        function addActive(x) {
-          if (!x) return false;
-          removeActive(x);
-          if (currentFocus >= x.length) currentFocus = 0;
-          if (currentFocus < 0) currentFocus = (x.length - 1);
-          x[currentFocus].classList.add("autocomplete-active");
-        }
-        function removeActive(x) {
-          for (var i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
-          }
-        }
-        function closeAllLists(elmnt) {
-          var x = document.getElementsByClassName("autocomplete-items");
-          for (var i = 0; i < x.length; i++) {
-            if (elmnt != x[i] && elmnt != inp) {
-              x[i].parentNode.removeChild(x[i]);
-            }
-          }
-        }
-        document.addEventListener("click", function (e) {
-          closeAllLists(e.target);
-        });
-      }
+      
 
       var finish = 0;
      
-        $('#product').on('keypress', function(event) {
-          if (event.keyCode === 13 || event.keyCode === 27) { 
-            hidePopups();
-          }
-        });
-        function date_format(date) {
-          var date = new Date(date);
-          var formattedDate = $.datepicker.formatDate("M dd yy", date);
-          return formattedDate;
-        }
+      
+      function date_format(date) 
+      {
+        var date = new Date(date);
+        var formattedDate = $.datepicker.formatDate("M dd yy", date);
+        return formattedDate;
+      }
         $(".inventoryCard").on("click", "#btn_removeOrder", function(e){
           e.preventDefault();
           var is_received = $(this).data('isreceived');
@@ -2519,14 +2434,7 @@ i:hover{
         })
       })
      
-      $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
-          var productId = $(this).find("td[data-id]").data("id");
-          var qty_purchased = $(this).find("td:nth-child(2)").text();
-          var price = clean_number($(this).find("td:nth-child(3)").text());
-
-          $("#selected_product_id").val(productId);
-          show_purchaseQtyModal(productId, qty_purchased, price);
-      });
+     
       function maskPONumber(poNumber) 
       {
           if (poNumber.length > 10) 

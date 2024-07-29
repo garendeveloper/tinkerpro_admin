@@ -22,7 +22,7 @@
     position: absolute;
     right: 1.6em;
     top: 10px;
-    background: #FF6900;
+    background: var(--primary-color);
     color: #fff;
     border: none;
     width: 40px;
@@ -104,7 +104,7 @@
             </g>
           </svg>
           <p class="warning-title"><b>ATTENTION</b></p>&nbsp;
-          <p style="font-family: Century Gothic; color: #FF6900;"><b>[PERMISSION REQUIRED]</b></p>
+          <p style="font-family: Century Gothic; color: var(--primary-color);"><b>[PERMISSION REQUIRED]</b></p>
         </div>
       </div>
       <div class="warningCard1">
@@ -114,7 +114,7 @@
    
             <div style="display: flex; align-items: center; width: 75%; justify-content: center; flex-direction: column;">
               <h5>ACCESS GRANTED BY:</h5>
-              <h5 id="adminName" style="font-family: Century Gothic;color:#FF6900">ADMIN</h5>
+              <h5 id="adminName" style="font-family: Century Gothic;color:var(--primary-color)">ADMIN</h5>
             </div>
       </div>
 

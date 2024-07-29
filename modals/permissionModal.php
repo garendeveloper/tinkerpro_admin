@@ -22,12 +22,12 @@
             </g>
           </svg>
             <p class="warning-title"><b>ATTENTION</b></p>
-            <p style="font-family: Century Gothic; color: #FF6900;"><b>[PERMISSION REQUIRED]</b></p>
+            <p style="font-family: Century Gothic; color: var(--primary-color);"><b>[PERMISSION REQUIRED]</b></p>
           </div>
         </h5>
         <div class="warningCards">
         <div style="width: 100%">
-          <h6 style="display: flex; align-items: center; justify-content: center; margin-bottom: 0;">To grant access to&nbsp;<span style="color: #FF6900" id="toChangeText">Refund</span>&nbsp;,enter</h6>
+          <h6 style="display: flex; align-items: center; justify-content: center; margin-bottom: 0;">To grant access to&nbsp;<span style="color: var(--primary-color)" id="toChangeText">Refund</span>&nbsp;,enter</h6>
           <h6 style="display: flex; align-items: center; justify-content: center; margin-top: 0;">access code or scan ID</h6>
         </div>
         <div style="display: flex; align-items: center; justify-content: center;">

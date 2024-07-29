@@ -13,28 +13,22 @@ if (isset($_SESSION['user_id'])) {
     $accessProducts = false;
     $accessReporting = false;
     $accessUsers = false;
+    $accessPromotions = false;
     foreach ($permissions as $permission) {
         if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
             $accessInventory = true;
-            break;
         }
-    }
-    foreach ($permissions as $permission) {
         if (isset($permission['Products']) && $permission['Products'] == "Access Granted") {
             $accessProducts = true;
-            break;
         }
-    }
-    foreach ($permissions as $permission) {
         if (isset($permission['Reports']) && $permission['Reports'] == "Access Granted") {
             $accessReporting = true;
-            break;
         }
-    }
-    foreach ($permissions as $permission) {
         if (isset($permission['Users']) && $permission['Users'] == "Access Granted") {
             $accessUsers = true;
-            break;
+        }
+        if (isset($permission['Promotions']) && $permission['Promotions'] == "Access Granted") {
+            $accessPromotions = true;
         }
     }
 }
@@ -237,13 +231,13 @@ if (isset($_SESSION['user_id'])) {
             </style>
             <div>
                 <?php
-                    $products = new ProductFacade();
-                    $fetchShop = $products->getShopDetails();
-                    $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
-                    $ipAddress = gethostbyname(gethostname());
-                    $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
+                    // $products = new ProductFacade();
+                    // $fetchShop = $products->getShopDetails();
+                    // $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
+                    // $ipAddress = gethostbyname(gethostname());
+                    // $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
                 ?>
-                <img src="<?= $imageFile ?>" alt="" style="height: 100px; width: 250px;">
+                <img src="" alt="" style="height: 100px; width: 250px;">
             </div>
             
         </div>
@@ -283,10 +277,10 @@ if (isset($_SESSION['user_id'])) {
             <li><a href="charges" id="charges"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Charges</span></a></li>
 
-
+            <?php if ($accessPromotions): ?>
             <li><a href="promotions" id="promotions"><i class="bi bi-megaphone"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Promotion & Action</span></a></li>
-
+            <?php endif ?>
 
             <li><a href="priceTags" id="price_tags"><i class="bi bi-tag fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price Tags</span></a>

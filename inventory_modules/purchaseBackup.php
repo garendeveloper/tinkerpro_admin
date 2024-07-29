@@ -312,8 +312,15 @@ table thead th{
             updateTotal();
         });
     function isDataExistInTables(data) {
-      var $matchingRow = $('#tbl_purchaseOrders tbody td[data-rowid="' + data + '"]').closest('tr');
-      return $matchingRow.length > 0;
+        var data = data;
+        var isExist = false;
+        $('#tbl_purchaseOrders tbody').each(function () {
+          var rowData = $(this).find('tr').data('rowid');
+          if (rowData == data) {
+            isExist = true;
+          }
+        });
+        return isExist;
       }
         function show_allProducts() 
         {
@@ -391,13 +398,8 @@ table thead th{
               };
           });
       }
-      $("#product").on("input", function(e) {
-        e.preventDefault();
-          var term = $(this).val();
-          $(this).autocomplete('search', term);
-      });
         $("#product").on("keypress", function(event){
-        if(event.which === 13 ){
+        if(event.which === 13 || event.keyCode === 27 || event.keyCode === 13){
           var product_id = $("#selected_product_id").val();
           if(validatePurchaseQtyModal())
           {
@@ -418,6 +420,8 @@ table thead th{
             {
               show_errorResponse("Product not found1.")
             }
+            $("#product").val('');
+            $("#selected_product_id").val("");
           }
         }
       
