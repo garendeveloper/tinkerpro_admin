@@ -2270,9 +2270,16 @@ i:hover{
       //     $(this).val(inputValue);
       //   });
       // });
+      function reset_poFooter()
+      {
+        $("#totalTax").html("Tax: 0.0");
+        $("#totalQty").html("0.0");
+        $("#totalPrice").html("0.0");
+        $("#overallTotal").html("0.0");
+      }
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
-        
+        reset_poFooter();
         if (validateProductForm()) {
           var p_qty = parseFloat($("#p_qty").val());
           var price = parseFloat($("#price").val());
@@ -2667,7 +2674,7 @@ i:hover{
       })
       $("#btn_openOption").click(function (e) {
         e.preventDefault();
-        
+        reset_poFooter();
         $(".purchase-grid-container button").removeClass('active');
         $("#btn_createPO").addClass('active');
         $("#expiration_div").hide();
@@ -2699,6 +2706,7 @@ i:hover{
       })
       $("#btn_createPO").click(function (e) {
         e.preventDefault();
+        reset_poFooter();
         $(".purchase-grid-container button").removeClass('active');
         $(this).addClass('active');
         $("#expiration_div").hide();

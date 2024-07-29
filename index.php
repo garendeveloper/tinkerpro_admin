@@ -697,12 +697,12 @@ body, div, h1, h2, h3, h4, h5, p{
 
               html += "<tr>";
               html += "<td style = 'text-align: left'>"+currentItem.product+"</td>";
-              html += "<td style = 'text-align: right'>"+currentItem.total_paid_amount+"</td>"
+              html += "<td style = 'text-align: right'>"+currentItem.total_paid_amount.toFixed(2)+"</td>"
               html += "</tr>";
 
 
               productsName.push(currentItem.product);
-              productsAmount.push(currentItem.total_paid_amount);
+              productsAmount.push(currentItem.total_paid_amount.toFixed(2));
               // totalSales += currentItem.total_sales_amount;
               totalCount = i+1;
               

@@ -310,7 +310,7 @@ $top_products = $sql->fetchAll(PDO::FETCH_ASSOC);
 
             $tp_array[] = [
                 'product' => $row['product'],
-                'total_paid_amount' => number_format($grossAmount, 2),
+                'total_paid_amount' => $grossAmount, 2,
                 'total_sales_amount' => $grossAmount, 
             ];  
         }
