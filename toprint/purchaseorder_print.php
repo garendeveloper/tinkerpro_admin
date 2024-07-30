@@ -106,28 +106,7 @@ class MYPDF extends TCPDF {
         $this->Cell(0, 10, 'Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 }
-function ordinalSuffix($number) 
-{
-    $suffix = 'th'; 
 
-    if (in_array($number % 100, [11, 12, 13])) {
-        $suffix = 'th';
-    } else {
-        switch ($number % 10) {
-            case 1:
-                $suffix = 'st';
-                break;
-            case 2:
-                $suffix = 'nd';
-                break;
-            case 3:
-                $suffix = 'rd';
-                break;
-        }
-    }
-
-    return $number . $suffix;
-}
 
 $products = new ProductFacade();
 $fetchShop = $products->getShopDetails();

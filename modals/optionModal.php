@@ -1376,41 +1376,96 @@ input[type="text"] {
     }, 'tr');
 
     $("#open_po_report").click(function(){
+        var active_div = $(".purchase-grid-container");
+        var active_button = active_div.find("button.active");
+        var button_id = active_button.attr('id');
+
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true);
+
         $('#show_purchasePrintModal').show()
         if($('#show_purchasePrintModal').is(":visible"))
         {
-            var loadingImage = document.getElementById("loadingImage");
-            loadingImage.removeAttribute("hidden");
-            var pdfFile= document.getElementById("pdfFile");
-            pdfFile.setAttribute('hidden',true);
-
-            var url = $("#paidSwitch").prop("checked") ? './toprint/purchaseorder_print.php' : './toprint/unpaid_purchaseorder_print.php';
+            var data = {};
+            var url = '';
+            switch(button_id)
+            {
+                case 'btn_createPO':
+                    url = $("#paidSwitch").prop("checked") ? './toprint/purchaseorder_print.php' : './toprint/unpaid_purchaseorder_print.php';
+                    data = {
+                            order_id: $("#_order_id").val(),
+                            po_number: $("#pcs_no").val(),
+                        };
+                    break;
+                case 'btn_inventoryCount':
+                    var tableData = [];
+                    $('#tbl_inventory_count tbody tr').each(function() {
+                        var rowData = [];
+                        $(this).find('td').each(function(index) {
+                            if(index == 2)
+                                rowData.push($(this).find("#counted").val());
+                            else rowData.push($(this).text().trim()); 
+                        });
+                        tableData.push(rowData);
+                    });
+                    data = {
+                        tableData: JSON.stringify(tableData),
+                        reference: $("#ic_reference").val(),
+                        date_counted: $("#date_counted").val(),
+                    }
+                    url = './toprint/inventorycount_print.php'
+                    break;
+                case 'btn_lossDamage':
+                    var tableData = [];
+                    $('#tbl_lossand_damages tbody tr').each(function() {
+                        var rowData = [];
+                        $(this).find('td').each(function(index) {
+                            if(index == 1)
+                                rowData.push($(this).find("#qty_damage").val());
+                            else if(index == 2 || index == 3)
+                                rowData.push(clean_number($(this).text().trim()));
+                            else rowData.push($(this).text().trim()); 
+                        });
+                        tableData.push(rowData);
+                    });
+                    data = {
+                        tableData: JSON.stringify(tableData),
+                        reference: $("#ld_reference").val(),
+                        date_damage: $("#date_damage").val(),
+                        ld_reason: $("#ld_reason").val(),
+                        total_qty: clean_number($("#total_qty").text().trim()),
+                        total_cost: clean_number($("#total_cost").text().trim()),
+                        overalltotal_cost: clean_number($("#overall_total_cost").text().trim()),
+                    }
+                    url = './toprint/lossanddamage_print.php'
+                    break;
+                default: break;
+            }
 
             $.ajax({
-                    url: url,
-                    type: 'GET',
-                    xhrFields: {
-                        responseType: 'blob'
-                    },
-                    data: {
-                        order_id: $("#_order_id").val(),
-                        po_number: $("#pcs_no").val(),
-                    },
-                    success: function(response) {
-                    loadingImage.setAttribute("hidden",true);
-                    var pdfFile = document.getElementById("pdfFile");
-                    pdfFile.removeAttribute('hidden')
-                    if( loadingImage.hasAttribute('hidden')) {
-                        var newBlob = new Blob([response], { type: 'application/pdf' });
-                        var blobURL = URL.createObjectURL(newBlob);
-                        
-                        $('#pdfViewer').attr('src', blobURL);
-                    }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
+                url: url,
+                type: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                data: data,
+                success: function(response) {
+                loadingImage.setAttribute("hidden",true);
+                var pdfFile = document.getElementById("pdfFile");
+                pdfFile.removeAttribute('hidden')
+                if( loadingImage.hasAttribute('hidden')) 
+                {
+                    var newBlob = new Blob([response], { type: 'application/pdf' });
+                    var blobURL = URL.createObjectURL(newBlob);
+                    $('#pdfViewer').attr('src', blobURL);
+                }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
         }
     })
     $("#print_po").click(function(){

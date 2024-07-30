@@ -1216,7 +1216,7 @@ i:hover{
         $("#btn_lossDamage").addClass('active');
         $("#purchaseItems_div").hide();
         $("#inventorycount_div").hide();
-        $("#open_po_report").hide();
+        $("#open_po_report").show();
         // $("#btn_savePO").attr("disabled", true);
         $("#btn_omPayTerms").hide();
         // $("#btn_omCancel").attr("disabled", true);
@@ -1269,7 +1269,7 @@ i:hover{
             $("#btn_inventoryCount").addClass('active');
             $("#purchaseItems_div").hide();
             $("#inventorycount_div").show();
-            $("#open_po_report").hide();
+            $("#open_po_report").show();
             // $("#qi_inventory_type").attr("disabled", true);
             // $("#btn_go_inventory").attr("disabled", true);
             // $("#btn_savePO").attr("disabled", true);
@@ -2119,21 +2119,12 @@ i:hover{
             show_errorResponse("Please find a purchase number first!");
           }
         }
-        else {
+        if (activeModuleId === "btn_createPO")
+        {
           var tbl_poL = $("#po_body tr").length;
           if (tbl_poL > 0) {
             var order_id = $("#_order_id").val();
             if (order_id > 0) {
-              // $("#paid_purchase_modal").slideDown({
-              //   backdrop: 'static',
-              //   keyboard: false,
-              // });
-              // $("#paid_title").html("Would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>Please <b style = 'color: #FF6900'>CONFIRM</b> your <b style = 'color: #FF6900'>PAYMENT: </b>");
-              // $("#total_paid").html($("#overallTotal").text());
-              // $("#paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
-              // $("#btn_confirmPayment").click(function () {
-              //   submit_purchaseOrder();
-              // })
               submit_purchaseOrder();
             }
             else {

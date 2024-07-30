@@ -2675,3 +2675,13 @@
 2024-07-29 16:26:50 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-29 17:03:28 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000010 Amount:₱ 1,400.00 
 2024-07-29 17:14:18 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000011 Amount:₱ 2,121.75 
+2024-07-30 09:09:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 09:43:30 | Talkosoy Admin | 1 | 2 | Expense | Created expense: SAMPLE, Amount: 7343.00, Invoice#: 253 
+2024-07-30 10:49:22 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 11:09:31 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 11:21:31 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000011 Amount:₱ 2,121.75 
+2024-07-30 11:22:01 | Talkosoy Admin | 1 | 2 | Denied | Tries to delete P.O order id #: 10-000000011 
+2024-07-30 11:22:41 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000011 Amount:₱ 2,121.75 
+2024-07-30 11:28:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 11:28:34 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
+2024-07-30 11:28:42 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000011 Amount:₱ 2,121.75 

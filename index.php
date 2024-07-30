@@ -737,7 +737,7 @@ body, div, h1, h2, h3, h4, h5, p{
             if(responseData['top_expensive_by_period'] !== 0)
             {
               var total_net_income = totalSales - responseData['total_expense_by_period'];
-              total_net_income = total_net_income < 0 ? formatAmount(total_net_income) : formatAmount(total_net_income);
+              total_net_income = formatAmount(total_net_income);
               $("#net_income").html("<h1>"+total_net_income+"</h1>");
             }
           }
