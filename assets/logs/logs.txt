@@ -2685,3 +2685,57 @@
 2024-07-30 11:28:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-07-30 11:28:34 | Talkosoy Admin | 1 | 2 | Expiration | Updated inventory expiration settings 
 2024-07-30 11:28:42 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000011 Amount:₱ 2,121.75 
+2024-07-30 11:45:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 13:02:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 14:04:38 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:19:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA CALDRTA 155G Barcode #:591457 
+2024-07-30 15:20:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA ADOBO 155G Barcode #:838124 
+2024-07-30 15:20:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA ADOBO 155G Barcode #:838124 
+2024-07-30 15:27:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA HOT&SPC 155G Barcode #:694572 
+2024-07-30 15:28:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA CALDRTA 155G Barcode #:591457 
+2024-07-30 15:29:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 15:33:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated A BONNE SPA MILK SALT 350G Barcode #:650572 
+2024-07-30 15:57:45 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:19:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 SRDNS RED 155G Barcode #:4806504710126 
+2024-07-30 16:20:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:22:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:3538616594578 
+2024-07-30 16:25:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:2108310831548 
+2024-07-30 16:33:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:7622300601768 
+2024-07-30 16:35:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:38:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:38:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:39:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PNEAPL 40G 1/2T Barcode #:759247 
+2024-07-30 16:40:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:2108310831548 
+2024-07-30 16:46:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:46:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:46:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:47:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:2108310831548 
+2024-07-30 16:47:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDOs Barcode #:2108310831548 
+2024-07-30 16:47:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:49:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:49:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:51:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:54:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:54:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:56:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:56:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:58:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 16:59:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:7622300601768 
+2024-07-30 16:59:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:00:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:03:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:04:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:07:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:09:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:09:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:09:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:10:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:12:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:13:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:15:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:16:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:17:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-07-30 17:17:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 3M ELECTRICAL TAPE BLACK BIG Barcode #:126548 
+2024-07-30 17:17:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALASKA CONDENSED 40G Barcode #:471590 
+2024-07-30 17:18:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PNEAPL 40G 1T Barcode #:236133 
+2024-07-30 17:18:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PNEAPL 40G 1T Barcode #:236133 

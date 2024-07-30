@@ -26,17 +26,17 @@ ob_start();
 if ($fetchProduct->rowCount() > 0) {
     while ($row = $fetchProduct->fetch(PDO::FETCH_ASSOC)) {
         ?>
-        <tr class="hoverRow" href="#" onclick="highlightBorder(this)" ondblclick="openModal(this)">
-        <td hidden class='text-center td-h'><span class="stock_status"><?= $row['stock_status'] ?></span><span class="stock_count"><?= $row['stock_count'] ?></span></td>
+        <tr class="hoverRow" href="#" onclick="highlightBorder(this)" ondblclick="openModal(this)" >
+        <td hidden class='text-center td-h'><span class="stock_status" ><?= $row['stock_status'] ?></span><span class="stock_count"><?= $row['stock_count'] ?></span></td>
         <td hidden class='text-center td-h'><span class="isBOM"><?= $row['is_BOM'] ?></span><span class="isWarranty"><?= $row['is_warranty'] ?></span><span class="is_stockable"><?= $row['is_stockable'] ?></span></td>
         <td hidden class='text-center td-h'><span class="categoryDetails"><?= $row['category_details'] ?? null ?></span><span class="categoryid"><?= $row['category_id'] ?? null ?></span></span><span class="variantid"><?= $row['variant_id'] ?? null ?></span></td> 
         <td hidden class='text-center td-h'><span class="isTaxIncluded"><?= $row['taxIncluded'] ?></td> 
-        <td hidden class='text-center td-h'><span class="description"><?= $row['description'] ?></span><span class="statusData"><?= $row['status'] ?></span><span class="productImgs"><?= $row['image'] ?></span></td> 
+        <td hidden class='text-center td-h previewImg'><span class="description"><?= $row['description'] ?></span><span class="statusData"><?= $row['status'] ?></span><span class="productImgs"><?= $row['image'] ?></span></td> 
         <td hidden class='text-center td-h'><span class="other"><?= $row['otherCharges'] ?></span><span class="displayOthers"><?= $row['displayOthers'] ?></span></td> 
         <td hidden class='text-center td-h'><span class="service"><?= $row['serviceCharge'] ?></span><span class="displayService"><?= $row['displayService'] ?></span></td>
         <td hidden class='text-center td-h'><span hidden class="isDiscounted"><?= $row['discounted'] ?></span><span hidden class="isTax"><?= $row['isVAT'] ?></span></td>
         <td class='text-center td-h' style="width: 46px"><?= $counter?><span hidden class="productsId"><?= $row['id'] ?></span><span hidden class="oumId"><?= $row['uom_id'] ?></span></td>
-        <td class='productsName text-left td-h' style='padding-left: 10px;width: 350px'><?= $row['prod_desc']?></td>
+        <td class='productsName text-left td-h' style='padding-left: 10px;width: 350px' ><?= $row['prod_desc']?></td>
         <td class='barcode text-center td-h' style="width: 100px"><?= $row['barcode']?></td>
         <td class='sku text-center td-h'   style="width: 100px" ><?= $row['sku']?></td>
         <td class='code text-center td-h'   style="width: 100px" ><?= $row['code']?></td>

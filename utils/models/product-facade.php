@@ -470,7 +470,8 @@
 }
 
 
-public function updateProduct($formData) {
+public function updateProduct($formData) 
+{
   $productname = $formData['productname'] ?? null;
   $barcode = $formData['barcode'] ?? null;
   $brand = $formData['brand'] ?? null;
@@ -499,10 +500,9 @@ public function updateProduct($formData) {
   $stockable = $formData['stockable'] ?? null;
   $warning = $formData['warning'] ?? null;
   $stockQuantity = $formData['stockQuantity'] ?? null;
-  $deleteValidation = $formData['deleteValidation'];
 
-  if($deleteValidation === "false"){
-  if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) {
+  if ($uploadedFile !== null && $uploadedFile['error'] === UPLOAD_ERR_OK) 
+  {
       $tempPath = $uploadedFile['tmp_name'];
       $fileName = $uploadedFile['name'];
   
@@ -546,7 +546,9 @@ public function updateProduct($formData) {
       }
   
       imagedestroy($image); 
-  }else {
+  }
+  else 
+  {
       $query = "SELECT productImage FROM products WHERE id = ?";
       $statement = $this->connect()->prepare($query);
       $statement->execute([$id]);
@@ -555,13 +557,8 @@ public function updateProduct($formData) {
           $fileName = $result['productImage'];
      } else{
       $fileName = null;
+    }
   }
-}
-
-  }else{
-    $fileName = null;
-  }
-
   $sql = 'UPDATE products SET 
           prod_desc = ?,
           barcode = ?,

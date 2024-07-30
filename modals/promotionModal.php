@@ -212,6 +212,17 @@ textarea::placeholder{
   height: 5px;
   padding: 2px 2px;
 }
+
+td[contenteditable="true"]:focus {
+      outline: none; 
+  }
+.editable {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+.editing {
+    background-color: #262626;
+}
 </style>
 
 <div id="promotionModal" class="modal">
@@ -516,11 +527,28 @@ textarea::placeholder{
             var row = "";
             row += "<tr data-id = " + data['id'] + ">";
             row += "<td>" + data['prod_desc'] + "</td>";
-            row += "<td style = 'text-align:center'>1</td>";
+            row += "<td style = 'text-align:center' contenteditable='true'>1</td>";
             row += "<td style = 'text-align:center' ><i class = 'bi bi-trash3 delete' onclick='removeItem.call(this)'></i></td>";
             row += "</tr>";
             $("#tbl_bundled tbody").append(row);
         }
       })
     }
+
+    $('#tbl_bundled tbody').on('focus', 'td[contenteditable="true"]', function() {
+        $(this).addClass('editing');
+    });
+    
+    // Remove highlight when cell loses focus
+    $('#tbl_bundled tbody').on('blur', 'td[contenteditable="true"]', function() {
+        $(this).removeClass('editing');
+    });
+
+    // Optional: Handle Enter key press to blur the cell
+    $('#tbl_bundled tbody').on('keypress', 'td[contenteditable="true"]', function(e) {
+        if (e.which === 13) { // Enter key
+            e.preventDefault(); // Prevent newline in the cell
+            $(this).blur(); // Trigger blur event to save changes
+        }
+    });
 </script>

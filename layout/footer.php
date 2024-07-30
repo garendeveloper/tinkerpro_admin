@@ -340,7 +340,7 @@ let deleteValidation = "false";
     productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable,
     stock_status,stock_count) {
     $('#add_products_modal').show();
-
+      console.log(image)
     productId ? document.getElementById('productid').value = productId : null;
     productName ? document.getElementById("productname").value = productName : null;
 
@@ -549,7 +549,15 @@ let deleteValidation = "false";
     var stockQuantity = document.getElementById('quantity').value;
 
     //productImage
-    var file = document.getElementById("fileInputs").files[0];
+    var file = '';
+    var filename = '';
+    var fileInput = document.getElementById('fileInputs');
+    if(fileInput.files.length>0)
+    {
+      file = fileInput.files[0];
+      filename = file.name;
+    }
+
     var description = document.getElementById('description').value
 
     var nameLabel = document.querySelector('.nameTd');
@@ -643,8 +651,8 @@ let deleteValidation = "false";
         deleteValidation = "false";
         // refreshProductsTable()
         closeAddProductsModal()
-
         if (currentRow) {
+          currentRow.querySelector('.previewImg .productImgs').textContent = filename;
           currentRow.querySelector('.productsName').innerText = productname;
           currentRow.querySelector('.sku').innerText = sku;
           currentRow.querySelector('.code').innerText = code;
@@ -657,7 +665,6 @@ let deleteValidation = "false";
           currentRow.querySelector('.status').innerText = status ? "Active" : "Inactive";
           currentRow.querySelector('.status').style.color = status ? "green" : "red";
           currentRow.querySelector('.description').innerText = description;
-
           // Update hidden fields
           currentRow.querySelector('.stock_status').innerText = stockable ? 1 : 0;
           currentRow.querySelector('.stock_count').innerText = stockQuantity;
@@ -669,10 +676,10 @@ let deleteValidation = "false";
           currentRow.querySelector('.variantid').innerText = varID;
           currentRow.querySelector('.isTaxIncluded').innerText = display_tax;
           currentRow.querySelector('.other').innerText = other_charges;
-          currentRow.querySelector('.discount').innerText = discount;
+          // currentRow.querySelector('.discount').innerText = discount;
           currentRow.querySelector('.service_charge').innerText = service_charge;
-
           currentRow.querySelector('.statusData').innerText = status ? 1 : 0;
+   
         }
         // show_allProducts()
       }).catch(function (error) {
