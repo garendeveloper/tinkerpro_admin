@@ -1677,7 +1677,7 @@ document.addEventListener('DOMContentLoaded', function() {
    
 });
 $('#addIngredients').off('click').on('click',function(){
-  if( $('#add_category_modal').is(":visible")){
+  if( $('#add_category_modal').is(":visible")) {
     closeModal()
   }
   var checkbox = document.getElementById('bomToggle');

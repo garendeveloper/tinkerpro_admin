@@ -3402,3 +3402,19 @@
 2024-07-30 17:21:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA MECHADO 155G Barcode #:748485700045 
 2024-07-30 17:21:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA SPICY CALDERETA Barcode #:748485701370 
 2024-07-30 17:21:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA SPICY PAKSIW Barcode #:748485701387 
+2024-07-30 17:23:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA SPICY PAKSIW 155G Barcode #:2131644570623 
+2024-07-30 17:23:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 7 UP LEMON LIME 1.5L Barcode #:4801981116270 
+2024-07-30 17:23:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 7 UP LEMON LIME 330ML Barcode #:786585 
+2024-07-30 17:23:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated A BONNE SPA MILK SALT 350G Barcode #:650572 
+2024-07-30 17:25:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ACCESSORY NOTEBOOK 40LVS Barcode #:586578 
+2024-07-30 17:25:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AFICIONADO ASSTD 85ML Barcode #:297171 
+2024-07-30 17:25:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AGUA OXINADA 120ML Barcode #:62570 
+2024-07-30 17:25:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 17:25:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AHOS Barcode #:411323 
+2024-07-30 17:26:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO 100G-AJI Barcode #:4801958240007 
+2024-07-30 17:26:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ABC ERASER Barcode #:969228 
+2024-07-30 17:26:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ABSOLUTE 1.5L Barcode #:4800014146086 
+2024-07-30 17:27:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ABSOLUTE 1L Barcode #:4800014145089 
+2024-07-30 17:29:32 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 17:46:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 17:59:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
