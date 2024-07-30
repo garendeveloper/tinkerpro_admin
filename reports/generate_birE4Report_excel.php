@@ -89,7 +89,7 @@ if(count($items) > 0)
         $sheet->setCellValue('C' . $rowIndex, $customerID); 
         $sheet->setCellValue('D' . $rowIndex, $item['barcode']);
         $sheet->setCellValue('E' . $rowIndex, number_format($item['totalAmount'], 2)); 
-        $sheet->setCellValue('F' . $rowIndex, number_format($item['overAllDiscounts'], 2));
+        $sheet->setCellValue('F' . $rowIndex, number_format($item['customer_discount'], 2));
         $sheet->setCellValue('G' . $rowIndex, number_format($item['netSales'], 2)); 
         $rowIndex++;
     }

@@ -105,7 +105,7 @@ if(count($items) > 0)
         $sheet->setCellValue('F' . $rowIndex, $child_age); 
         $sheet->setCellValue('G' . $rowIndex, $item['barcode'],); 
         $sheet->setCellValue('H' . $rowIndex, number_format($item['totalAmount'], 2)); 
-        $sheet->setCellValue('I' . $rowIndex, number_format($item['overAllDiscounts'], 2)); 
+        $sheet->setCellValue('I' . $rowIndex, number_format($item['customer_discount'], 2)); 
         $sheet->setCellValue('J' . $rowIndex, number_format($item['netSales'], 2));
         $rowIndex++;
     }

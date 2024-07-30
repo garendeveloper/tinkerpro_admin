@@ -229,7 +229,7 @@ class BirFacade extends DBConnection {
                     transactions.is_void,
                     ROUND(SUM(transactions.prod_price), 2) AS totalPayment,
                     ROUND(SUM(transactions.discount_amount), 2) AS itemDiscount,
-                    ROUND(SUM(payments.payment_amount + payments.cart_discount + payments.sc_pwd_discount + transactions.discount_amount), 2) AS totalAmount,
+                    ROUND(SUM(transactions.subtotal), 2) AS totalAmount,
                     payments.cart_discount AS cart_discount,
                     payments.sc_pwd_discount AS customerDiscount,
                     transactions.payment_id AS paymentIds,
@@ -265,7 +265,7 @@ class BirFacade extends DBConnection {
                 INNER JOIN discounts ON discounts.id = users.discount_id
                 INNER JOIN customer ON users.id = customer.user_id
                 INNER JOIN receipt ON receipt.id = transactions.receipt_id
-                WHERE transactions.is_paid = 1 AND users.discount_id = ?';
+                WHERE transactions.is_paid = 1 AND transactions.is_void NOT IN (1, 2) AND users.discount_id = ?';
         // Append WHERE clause for date range if specified
         $whereClause = " AND DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
         $groupBy = " GROUP BY transactions.payment_id ORDER BY receipt.barcode DESC
@@ -290,7 +290,7 @@ class BirFacade extends DBConnection {
             payment_id, 
             refunded_qty, 
             reference_num, 
-            SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) as lessDiscount,
+            SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) as OriginalAmountRef,
             ROUND(((SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12) * 0.12 ,2) AS vat_amount,
             ROUND((SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12 ,2) VatExempt,
             ROUND(SUM(refunded_amt) - (SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * refunded_qty) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))), 2) AS totalRefAmount,
@@ -351,12 +351,16 @@ class BirFacade extends DBConnection {
             $totalVat = (float)$payments['VAT_AMOUNT'];
             $totalVatSales = (float)$payments['VAT_SALES'];
 
-            $netSales = (float)$payments['paymentAmount'] - $totalVat;
+            // $netSales = (float)$payments['paymentAmount'] - $totalVat;
+            $netSales = (float)$payments['paymentAmount'];
+
             if (isset($refunded_map[$payment_id])) {
                 $totalPaymentAmount -= (floatval($refunded_map[$payment_id]['totalRefAmount']));
                 // $totalVatSales -= floatval($refunded_map[$payment_id]['VatExempt']);
                 // $totalVat -= floatval($refunded_map[$payment_id]['vat_amount']);
-                $netSales -= floatval($refunded_map[$payment_id]['totalRefAmount']) + floatval($refunded_map[$payment_id]['vat_amount']);
+                // $netSales -= floatval($refunded_map[$payment_id]['totalRefAmount']) + floatval($refunded_map[$payment_id]['vat_amount']);
+                $netSales -= floatval($refunded_map[$payment_id]['totalRefAmount']);
+
             }
 
             if (isset($returned_map[$payment_id])) {
@@ -378,7 +382,7 @@ class BirFacade extends DBConnection {
                     'customerID' => $payments['pwdOrScId'],
                     'discount_id' => $payments['discount_id'],
                     'user_id' => $payments['user_id'],
-                    'totalAmount' => (float)number_format($payments['totalAmount'],2, '.', ''),
+                    'totalAmount' => (float)(number_format($payments['totalAmount'],2, '.', '') - $refunded_map[$payment_id]['OriginalAmountRef']),
                     'discount_amount' => $payments['discount_amount'],
                     'prod_price' => (float)number_format($payments['prod_price'],2, '.', ''),
                     'is_paid' => $payments['is_paid'],
@@ -398,7 +402,7 @@ class BirFacade extends DBConnection {
                     'vat_amount' => (float)number_format($totalVat, 2, '.', ''),
                     'change_amount' => $payments['change_amount'],  
                     'barcode' => $payments['barcode'],
-                    'customer_discount' => $payments['CUSTOMER_DIS'], // Temporary Change
+                    'customer_discount' => (float)($payments['CUSTOMER_DIS'] - $refunded_map[$payment_id]['customerDiscount']), // Temporary Change
                     'totalRefAmount' => $refunded_map[$payment_id]['totalRefAmount'] ?? 0,
                     'overAllDiscounts' => $refunded_map[$payment_id]['overAllDiscounts'] ?? 0,
                     'credits' => $refunded_map[$payment_id]['credits'] ?? 0,
@@ -413,6 +417,10 @@ class BirFacade extends DBConnection {
             }
             
         }
+
+
+        
+
         return $result;
     }
 

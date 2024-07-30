@@ -3259,3 +3259,57 @@
 2024-07-30 14:29:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH EIGHT 75ML Barcode #:4800417005225 
 2024-07-30 14:31:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated UFC CATSUP BUDGET PACK 100G Barcode #:14285002789 
 2024-07-30 14:32:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 14:32:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 14:34:21 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 14:37:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated UFC GOLDEN FIESTA CANOLA OIL 1L Barcode #:4801668601235 
+2024-07-30 14:37:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 14:37:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA CUPS CHOCO 100ML Barcode #:4800086050120 
+2024-07-30 14:38:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated UFC HOT SAUCE 100G Barcode #:14285003229 
+2024-07-30 14:39:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH BS RASPBERRY 100ML Barcode #:4800417003740 
+2024-07-30 14:45:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated UFC SPAG SUPREME PACK Barcode #:4801668607619 
+2024-07-30 14:48:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 14:51:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated UFC SWEET CHILI SAUCE 340G Barcode #:14285000891 
+2024-07-30 14:53:48 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 14:55:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated VCUT CHEESE 25G Barcode #:4800016603259 
+2024-07-30 14:56:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated VCUT CHEESE 60G Barcode #:4800016603266 
+2024-07-30 14:58:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated VCUT SPICY BBQ 155G Barcode #:4800016106132 
+2024-07-30 14:59:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated VCUT SPICY BBQ 25G Barcode #:4800016622533 
+2024-07-30 15:01:01 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:01:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated VCUT SPICY BBQ 60G Barcode #:4800016625534 
+2024-07-30 15:06:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:07:40 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-30 15:08:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA CALDRTA 155G Barcode #:748485700038 
+2024-07-30 15:08:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:08:54 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:14:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SENSODYNE FRESH MINT 100G Barcode #:9556019236134 
+2024-07-30 15:15:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SENSODYNE GUM CARE 100G Barcode #:9556019236141 
+2024-07-30 15:16:23 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:18:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SENSODYNE REPAIR & PROTECT 100G Barcode #:8888008107011 
+2024-07-30 15:23:31 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:26:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SEVILLA PICKLE 270G Barcode #:4800017925206 
+2024-07-30 15:28:04 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:32:09 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:33:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SEVILLA RAISINS 100G Barcode #:4800017928009 
+2024-07-30 15:38:31 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-07-30 15:38:42 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:38:53 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-07-30 15:39:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SHRIMP CRACKERS 200G YELLOW Barcode #:4804888555326 
+2024-07-30 15:42:48 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:48:06 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 15:59:10 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:05:59 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:10:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:22:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:27:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated XSAKTO 1BAG-MEL Barcode #:4806511011087 
+2024-07-30 16:27:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:30:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated XSAKTO SWEET CORN 1PCK Barcode #:4806511014118 
+2024-07-30 16:38:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:45:44 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:50:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated YUMMY GUMMY RINGS Barcode #:4806521796219 
+2024-07-30 16:53:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 16:55:23 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 17:07:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 17:09:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 17:15:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 17:18:54 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-30 17:19:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:7622300601768 
