@@ -10,7 +10,7 @@ include('../utils/models/supplier-facade.php');
 include('../utils/models/inventorycount-facade.php');
 
 
-function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 8)
+function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 6)
 {
     $pdf->SetFont('dejavusans', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {

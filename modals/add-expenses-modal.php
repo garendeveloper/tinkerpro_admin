@@ -1379,6 +1379,14 @@ label{
 #remove_image:hover{
   background-color: red;
 }
+
+.flatpickr-innerContainer, .flatpickr-months{
+  background-color: #262626 !important;
+}
+.flatpickr-calendar{
+  background-color: #262626 !important;;
+  width:  fit-content !important;;
+}
 </style>
 
 <div class="modal" id="add_expense_modal" tabindex="0">
@@ -1714,6 +1722,18 @@ $(document).ready(function(){
     onClose: function(selectedDates) {
     }
   });
+  // $('#date_of_transaction').datepicker({
+  //     changeMonth: true,
+  //     changeYear: true,
+  //     dateFormat: 'm-d-Y',
+  //     altFormat: 'm-d-Y',
+  //     altField: '#date_of_transaction',
+  //     onSelect: function (dateText, inst) { }
+  // });
+  // $('#date_of_transaction').on('click', function (e) {
+  //     e.preventDefault();
+  //     $('#date_of_transaction').datepicker('show');
+  // });
 
   $("#qty, #price, #discount").on("input", function() {
     var price = parseFloat($("#price").val()) || 0;

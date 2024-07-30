@@ -488,4 +488,45 @@ button:hover{
 .container-scroller{
   background-color: #262626;
 }
+
+.ui-datepicker {
+    background: #262626;
+    border: 1px solid #292928;
+}
+
+.ui-datepicker-header {
+    background: #333;
+    color: #fff;
+}
+
+.ui-datepicker-calendar .ui-state-default {
+    background: #262626;
+    color: #fff;
+}
+
+.ui-datepicker-calendar .ui-state-active {
+    background: #555;
+    color: #fff;
+}
+
+.ui-datepicker-calendar .ui-state-hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* Change the background color of navigation buttons */
+.ui-datepicker-prev, .ui-datepicker-next {
+    background: #333;
+    color: #fff;
+}
+
+.ui-datepicker-calendar thead  tr th{
+    background-color: #262626 !important;
+}
+.ui-datepicker-calendar tbody td{
+  border: 1px solid #292928;
+}
+.ui-datepicker-calendar thead th {
+    color: #fff;
+}
 </style>

@@ -94,7 +94,7 @@ if (isset($_SESSION['user_id'])) {
   background-color: red;
 }
 .btn-control:hover {
-    border-color: #FF6900; 
+    border-color: var(--primary-color); 
     color: #fefefe !important; 
 }
 .productTable{
@@ -309,7 +309,7 @@ $(document).ready(function() {
     $('#dropdownContent a').click(function() {
         var roleId = $(this).data('value');
         selectedRole(roleId)
-        $('#roleNAME').css('color', (roleId !== "" && roleId !== null) ? "#FF6900" : "");
+        $('#roleNAME').css('color', (roleId !== "" && roleId !== null) ? "var(--primary-color)" : "");
         $.ajax({
         url: './api.php',
         method: 'GET',

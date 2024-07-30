@@ -43,8 +43,6 @@ if (isset($_SESSION['user_id'])) {
   if (isset($_SESSION["last_name"])){
     $lastName = $_SESSION["last_name"];
   }
-
-  // Redirect to login page if user has not been logged in
   if ($userId == 0) {
     header("Location: login");
   }
@@ -854,8 +852,8 @@ if (isset($_SESSION['user_id'])) {
         $("#tbl_bundled tbody tr").each(function () {
             var rowData = {};
             rowData['product_id'] = $(this).data('id');
-            rowData['product_name'] = $(this).find("td:nth-child(1)").text();
-            rowData['qty'] = $(this).find("td:nth-child(2)").text();
+            rowData['product_name'] = $(this).find("td:nth-child(1)").text().trim();
+            rowData['qty'] = $(this).find("td:nth-child(2)").text().trim();
             tbl_data.push(rowData);
         })
     
@@ -1058,7 +1056,7 @@ if (isset($_SESSION['user_id'])) {
                         {
                             row += "<tr data-id = " + bundleData[i].product_id + ">";
                             row += "<td>" + bundleData[i].product_name + "</td>";
-                            row += "<td style = 'text-align:center'>1</td>";
+                            row += "<td style = 'text-align:center' contenteditable='true'>"+bundleData[i].qty+"</td>";
                             row += "<td style = 'text-align:center' ><i class = 'bi bi-trash3 delete' onclick='removeItem.call(this)'></i></td>";
                             row += "</tr>";
                         }

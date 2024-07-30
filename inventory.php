@@ -59,7 +59,6 @@ if (isset($_GET["delete_product"])) {
   array_push($info, $error);
 }
 include ('./modals/optionModal.php');
-include ('./layout/admin/table-pagination-css.php');
 
 ?>
 <style>
@@ -321,7 +320,9 @@ i:hover{
   table tbody td {
       border: 1px solid #292928;
   }
-
+ .expiring{
+  color: #FF7F7F
+ }
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -378,14 +379,15 @@ i:hover{
                 <button id="stocks" class="grid-item pos-setting text-color button"><i class="bi bi-graph-up"></i>&nbsp;
                   Stocks</button>
                 <button id="purchase-order" class="grid-item pos-setting text-color button"><i class="bi bi-cart-check"></i>&nbsp;
-                  Purchase Orders</button>
+                  Purchase Orders <span id="unpaidExpirations" class="badge badge-danger"
+                  style="font-size: 11px; background-color: red; color: fff; "></span></button>
                 <button id="inventory-count" class="grid-item pos-setting text-color button"><i class="bi bi-archive"></i>&nbsp;
                   Inventory Count</button>
                 <button id="loss-damage" class="grid-item pos-setting text-color button"><i class="bi bi-bug-fill"></i>&nbsp; Loss &
                   Damage</button>
                 <button id="expiration" class="grid-item pos-setting text-color button"><i class="bi bi-calendar-x-fill"></i>&nbsp;
                   Expiration <span id="expirationNotification" class="badge badge-danger"
-                    style="font-size: 11px; background-color: red; color: white; "></span></button>
+                    style="font-size: 11px; background-color: red; color: fff; "></span></button>
 
                 <!-- <button id="bom" class="grid-item pos-setting text-color button"><i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;  B.O.M</button> -->
                 <!-- <button id="low-stocks" class="grid-item pos-setting text-color button"><i class="bi bi-exclamation-triangle-fill"></i>&nbsp; Low Stocks</button>
@@ -566,21 +568,21 @@ i:hover{
           $('#paidSwitch').css('background-color', '');
         }
       });
-    $('#calendar-btn').off('click').on('click', function () {
-      if (!$("#date_purchased").hasClass("flatpickr-open")) {
-        if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
-            $("#date_purchased").flatpickr({
-                dateFormat: "M d y",
-                onClose: function(selectedDates) {
-                }
-            });
-            $("#date_purchased").addClass("flatpickr-initialized");
-        }
-        if ($("#date_purchased").flatpickr()) {
-            $("#date_purchased").flatpickr().open();
-        }
-      }
-    });
+    // $('#calendar-btn').off('click').on('click', function () {
+    //   if (!$("#date_purchased").hasClass("flatpickr-open")) {
+    //     if (!$("#date_purchased").hasClass("flatpickr-initialized")) {
+    //         $("#date_purchased").flatpickr({
+    //             dateFormat: "M d y",
+    //             onClose: function(selectedDates) {
+    //             }
+    //         });
+    //         $("#date_purchased").addClass("flatpickr-initialized");
+    //     }
+    //     if ($("#date_purchased").flatpickr()) {
+    //         $("#date_purchased").flatpickr().open();
+    //     }
+    //   }
+    // });
 
       $('#s_due').datepicker({
         changeMonth: true,
@@ -1214,7 +1216,7 @@ i:hover{
         $("#btn_lossDamage").addClass('active');
         $("#purchaseItems_div").hide();
         $("#inventorycount_div").hide();
-        $("#open_po_report").hide();
+        $("#open_po_report").show();
         // $("#btn_savePO").attr("disabled", true);
         $("#btn_omPayTerms").hide();
         // $("#btn_omCancel").attr("disabled", true);
@@ -1267,7 +1269,7 @@ i:hover{
             $("#btn_inventoryCount").addClass('active');
             $("#purchaseItems_div").hide();
             $("#inventorycount_div").show();
-            $("#open_po_report").hide();
+            $("#open_po_report").show();
             // $("#qi_inventory_type").attr("disabled", true);
             // $("#btn_go_inventory").attr("disabled", true);
             // $("#btn_savePO").attr("disabled", true);
@@ -1284,11 +1286,25 @@ i:hover{
         var id = $(this).data('id');
         show_inventoryCountDetails();
       })
-      function display_datePurchased() {
+      function display_datePurchased() 
+      {
         var currentDate = new Date();
         var formattedDate = formatDate(currentDate);
         $('#date_purchased').val(formattedDate);
       }
+      $('#date_purchased').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'M dd y',
+        altFormat: 'M dd y',
+        altField: '#date_purchased',
+        onSelect: function (dateText, inst) { }
+      });
+      $('#calendar-btn').on('click', function (e) {
+          e.preventDefault();
+          $('#date_purchased').datepicker('show');
+      });
+
       function formatDate(date) {
         var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -2078,7 +2094,8 @@ i:hover{
                       $("#po_data_div").hide();
                       $("#received_payment_confirmation").hide();
                       show_allReceivedItems_PurchaseOrders();
-                      show_allInventories();
+                      $("#purchase-order").addClass('active');
+                      show_allOrders();
                       isSaving = false;
                       hideModals();
 
@@ -2102,21 +2119,12 @@ i:hover{
             show_errorResponse("Please find a purchase number first!");
           }
         }
-        else {
+        if (activeModuleId === "btn_createPO")
+        {
           var tbl_poL = $("#po_body tr").length;
           if (tbl_poL > 0) {
             var order_id = $("#_order_id").val();
             if (order_id > 0) {
-              // $("#paid_purchase_modal").slideDown({
-              //   backdrop: 'static',
-              //   keyboard: false,
-              // });
-              // $("#paid_title").html("Would you like to <b style = 'color: #FF6900'>UPDATE</b> the data for these <b style = 'color: #FF6900'>ITEMS?</b><br><br>Please <b style = 'color: #FF6900'>CONFIRM</b> your <b style = 'color: #FF6900'>PAYMENT: </b>");
-              // $("#total_paid").html($("#overallTotal").text());
-              // $("#paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
-              // $("#btn_confirmPayment").click(function () {
-              //   submit_purchaseOrder();
-              // })
               submit_purchaseOrder();
             }
             else {
@@ -2135,20 +2143,11 @@ i:hover{
                 $("#unpaid_amount").on("input", function() {
                     var enteredValue = $(this).val().replace(/,/g, '');
                     if (parseFloat(enteredValue) > parseFloat(amount)) {
-                        $(this).val(amount);
+                      $(this).val(amount);
                     }
                 });
               }
               else {
-                // $("#paid_purchase_modal").slideDown({
-                //   backdrop: 'static',
-                //   keyboard: false,
-                // });
-                // $("#total_paid").html($("#overallTotal").text());
-                // $("#paid_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;' '></i>&nbsp; <strong>ATTENTION REQUIRED!</strong> ");
-                // $("#btn_confirmPayment").click(function () {
-              
-                // })
                 submit_purchaseOrder();
               }
             }
@@ -2262,20 +2261,16 @@ i:hover{
       //     $(this).val(inputValue);
       //   });
       // });
-      $('#prod_form input').on('keypress', function(event) {
-          if (event.keyCode === 13) {
-            $(this).submit();
-            $("#product").focus();
-            $('#calendar-btn').prop('disabled', false);
-          }
-      });
-      // $('#date_purchased').on('focus click', function(event) {
-      //           event.preventDefault();
-      //         hidePopups();
-      //       });
+      function reset_poFooter()
+      {
+        $("#totalTax").html("Tax: 0.0");
+        $("#totalQty").html("0.0");
+        $("#totalPrice").html("0.0");
+        $("#overallTotal").html("0.0");
+      }
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
-        
+        reset_poFooter();
         if (validateProductForm()) {
           var p_qty = parseFloat($("#p_qty").val());
           var price = parseFloat($("#price").val());
@@ -2327,8 +2322,13 @@ i:hover{
               $("#prod_form")[0].reset();
               $("#product").val("");
               $("#item_verifier").val("");
+            
             }
           })
+
+          
+          $("#product").val('');
+            $("#selected_product_id").val("0");
         }
       })
       $('#po_form').submit(function (e) {
@@ -2346,20 +2346,6 @@ i:hover{
           }
         });
       });
-
-      // function show_allSuppliers() {
-      //   $.ajax({
-      //     type: 'GET',
-      //     url: 'api.php?action=get_allSuppliers',
-      //     success: function (data) {
-      //       var suppliers = [];
-      //       for (var i = 0; i < data.length; i++) {
-      //         suppliers.push(data[i].supplier)
-      //       }
-      //       autocomplete(document.getElementById("supplier"), suppliers);
-      //     }
-      //   })
-      // }
       function show_allSuppliers() {
         $.ajax({
           type: 'GET',
@@ -2374,86 +2360,17 @@ i:hover{
           }
         })
       }
-      function autocomplete(inp, arr) {
-        var currentFocus;
-        inp.addEventListener("input", function (e) {
-          var a, b, i, val = this.value;
-          closeAllLists();
-          if (!val) { return false; }
-          currentFocus = -1;
-          a = document.createElement("DIV");
-          a.setAttribute("id", this.id + "autocomplete-list");
-          a.setAttribute("class", "autocomplete-items");
-          this.parentNode.appendChild(a);
-          for (i = 0; i < arr.length; i++) {
-            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-              b = document.createElement("DIV");
-              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-              b.innerHTML += arr[i].substr(val.length);
-              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-              b.addEventListener("click", function (e) {
-                inp.value = this.getElementsByTagName("input")[0].value;
-                closeAllLists();
-              });
-              a.appendChild(b);
-            }
-          }
-        });
-        inp.addEventListener("keydown", function (e) {
-          var x = document.getElementById(this.id + "autocomplete-list");
-          if (x) x = x.getElementsByTagName("div");
-          if (e.keyCode == 40) {
-            currentFocus++;
-            addActive(x);
-          }
-          else if (e.keyCode == 38) {
-            currentFocus--;
-            addActive(x);
-          }
-          else if (e.keyCode == 13) {
-            e.preventDefault();
-            if (currentFocus > -1) {
-              if (x) x[currentFocus].click();
-            }
-          }
-        });
-        function addActive(x) {
-          if (!x) return false;
-          removeActive(x);
-          if (currentFocus >= x.length) currentFocus = 0;
-          if (currentFocus < 0) currentFocus = (x.length - 1);
-          x[currentFocus].classList.add("autocomplete-active");
-        }
-        function removeActive(x) {
-          for (var i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
-          }
-        }
-        function closeAllLists(elmnt) {
-          var x = document.getElementsByClassName("autocomplete-items");
-          for (var i = 0; i < x.length; i++) {
-            if (elmnt != x[i] && elmnt != inp) {
-              x[i].parentNode.removeChild(x[i]);
-            }
-          }
-        }
-        document.addEventListener("click", function (e) {
-          closeAllLists(e.target);
-        });
-      }
+      
 
       var finish = 0;
      
-        $('#product').on('keypress', function(event) {
-          if (event.keyCode === 13 || event.keyCode === 27) { 
-            hidePopups();
-          }
-        });
-        function date_format(date) {
-          var date = new Date(date);
-          var formattedDate = $.datepicker.formatDate("M dd yy", date);
-          return formattedDate;
-        }
+      
+      function date_format(date) 
+      {
+        var date = new Date(date);
+        var formattedDate = $.datepicker.formatDate("M dd yy", date);
+        return formattedDate;
+      }
         $(".inventoryCard").on("click", "#btn_removeOrder", function(e){
           e.preventDefault();
           var is_received = $(this).data('isreceived');
@@ -2519,14 +2436,7 @@ i:hover{
         })
       })
      
-      $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
-          var productId = $(this).find("td[data-id]").data("id");
-          var qty_purchased = $(this).find("td:nth-child(2)").text();
-          var price = clean_number($(this).find("td:nth-child(3)").text());
-
-          $("#selected_product_id").val(productId);
-          show_purchaseQtyModal(productId, qty_purchased, price);
-      });
+     
       function maskPONumber(poNumber) 
       {
           if (poNumber.length > 10) 
@@ -2755,7 +2665,7 @@ i:hover{
       })
       $("#btn_openOption").click(function (e) {
         e.preventDefault();
-        
+        reset_poFooter();
         $(".purchase-grid-container button").removeClass('active');
         $("#btn_createPO").addClass('active');
         $("#expiration_div").hide();
@@ -2787,6 +2697,7 @@ i:hover{
       })
       $("#btn_createPO").click(function (e) {
         e.preventDefault();
+        reset_poFooter();
         $(".purchase-grid-container button").removeClass('active');
         $(this).addClass('active');
         $("#expiration_div").hide();

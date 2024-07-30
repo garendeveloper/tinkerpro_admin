@@ -14,7 +14,7 @@
        color: #FF6900;
     }
     #tbl_purchaseOrders thead{
-       border: 1px solid #FF6900;className: 'text-center',
+       border: 1px solid #FF6900;
     }
     #tbl_purchaseOrders tbody td{
         border: none;

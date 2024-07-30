@@ -209,7 +209,7 @@ table thead th{
                     Add Product</button>
         </div>
     </form>
-    <table id="tbl_purchaseOrders" class="text-color table-border" style = "margin-top: -3px;">
+    <table  class="text-color table-border tableHead" style = "margin-top: -3px;">
         <thead>
             <tr>
                 <th style="background-color: #1E1C11; width: 50%; color: #ffffff">ITEM DESCRIPTION</th>
@@ -218,10 +218,14 @@ table thead th{
                 <th style="background-color: #1E1C11; color: #ffffff" colspan = "2">TOTAL</th>
             </tr>
         </thead>
-        <tbody id="po_body" style="border-collapse: collapse; border: none">
-
-        </tbody>
     </table>
+    <div class = "scrollable">
+      <table id="tbl_purchaseOrders" class="text-color table-border" style = "margin-top: -3px;">
+          <tbody id="po_body" style="border-collapse: collapse; border: none">
+
+          </tbody>
+      </table>
+    </div>
     <div style="position: absolute;padding: 3px; width: 100%;" class = "bottom-area">
       <table id = "tbl_purchaseOrders_footer" class="text-color table-border" >
           <thead>
@@ -247,26 +251,73 @@ table thead th{
         var productsCache = [];
         $("#btn_omPayTerms").off('click').on("click", function(e){
         e.preventDefault();
-        $("#unpaid_purchase_modal").slideDown({
-            backdrop: 'static',
-            keyboard: false,
-        });
+        $("#unpaid_purchase_modal").fadeIn(200);
       })
+   
       show_allProducts();
+      $('#prod_form input').on('keypress', function(event) {
+          if (event.keyCode === 13) {
+            $(this).submit();
+            $("#product").focus();
+            $('#calendar-btn').prop('disabled', false);
+          }
+      });
+      function validatePurchaseQtyModal() {
+        var isValid = true;
+        $('#po_form input[type=text], #po_form input[type=date]').each(function () {
+          if ($(this).val() === '') {
+            isValid = false;
+            $(this).addClass('has-error');
+          }
+          else {
+            $(this).removeClass('has-error');
+          }
+        });
+
+        return isValid;
+      }
+      $("#btn_addPO").off("click").on("click",function (e) {
+        e.preventDefault();
+        var product = $("#product").val();
+        var product_id = $("#selected_product_id").val();
+
+        if (validatePurchaseQtyModal())
+        {
+          if(product_id !== "0" && product_id !== "")
+          {
+            if (!isDataExistInTables(product_id)) {
+          
+                var qty = 0;
+                var price = 0;
+                hidePopups();
+                show_purchaseQtyModal(product_id, qty, price);
+            
+            }
+            else {
+              show_errorResponse("Item is already in the table");
+            }
+          }
+          else {
+              show_errorResponse("Product not found.");
+          }
+        }
+      })
+      $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
+          $("#prod_form #p_qty").focus();
+          var productId = $(this).find("td[data-id]").data("id");
+          var qty_purchased = $(this).find("td:nth-child(2)").text();
+          var price = clean_number($(this).find("td:nth-child(3)").text());
+
+          $("#selected_product_id").val(productId);
+          show_purchaseQtyModal(productId, qty_purchased, price);
+      });
       $("#tbl_purchaseOrders tbody").off('click').on("click", "#removeOrder", function(){
             $(this).closest('tr').remove();
             updateTotal();
         });
     function isDataExistInTables(data) {
-        var data = data;
-        var isExist = false;
-        $('#tbl_purchaseOrders tbody').each(function () {
-          var rowData = $(this).find('td:first').data('rowid');
-          if (rowData == data) {
-            isExist = true;
-          }
-        });
-        return isExist;
+      var $matchingRow = $('#tbl_purchaseOrders tbody td[data-rowid="' + data + '"]').closest('tr');
+      return $matchingRow.length > 0;
       }
         function show_allProducts() 
         {
@@ -344,55 +395,57 @@ table thead th{
               };
           });
       }
-
+      $("#product").on("input", function(e) {
+        e.preventDefault();
+          var term = $(this).val();
+          $(this).autocomplete('search', term);
+      });
         $("#product").on("keypress", function(event){
-        if(event.which === 13){
-          $('#date_purchased').attr('readonly', true);
-          $('#calendar-btn').attr('readonly', true);
-          hidePopups();
-          $(".pqty").focus();
+        if(event.which === 13 ){
           var product_id = $("#selected_product_id").val();
-          if(product_id !== "" && product_id !== "0")
+          if(validatePurchaseQtyModal())
           {
-            if (!isDataExistInTables(product_id)) {
-              var qty = 0;
-              var price = 0;
-              show_purchaseQtyModal(product_id, qty, price);
+            if(product_id !== "" && product_id !== "0")
+            {
+              if (!isDataExistInTables(product_id)) {
+                var qty = 0;
+                var price = 0;
+                hidePopups();
+                show_purchaseQtyModal(product_id, qty, price);
+              }
+              else
+              {
+                show_errorResponse("Product already exists in the purchase table")
+              }
             }
             else
             {
-              show_errorResponse("Product already exists in the purchase table")
+              show_errorResponse("Product not found1.")
             }
           }
-          else
-          {
-            show_errorResponse("Product not found.")
-          }
-          $("#product").val('');
-          $("#selected_product_id").val();
         }
       
       })
 
-    //   $("#product").on("autocompletechange", function(event, ui) {
-    //     var product_id = $("#selected_product_id").val();
-    //     hidePopups();
-    //     if(product_id !== "" || product_id !== "0")
-    //     {
+      // $("#product").on("autocompletechange", function(event, ui) {
+      //   var product_id = $("#selected_product_id").val();
+      //   hidePopups();
+      //   if(product_id !== "" || product_id !== "0")
+      //   {
           
-    //       if (!isDataExistInTables(product_id)) {
-    //         var qty = 0;
-    //         var price = 0;
-    //         show_purchaseQtyModal(product_id, qty, price);
-    //       }
-    //       else
-    //       {
-    //         show_errorResponse("Product already exists in the purchase table")
-    //       }
-    //     }
-    //     $("#selected_product_id").val("0");
-    //     $("#product").val("");
-    //   });
+      //     if (!isDataExistInTables(product_id)) {
+      //       var qty = 0;
+      //       var price = 0;
+      //       show_purchaseQtyModal(product_id, qty, price);
+      //     }
+      //     else
+      //     {
+      //       show_errorResponse("Product already exists in the purchase table")
+      //     }
+      //   }
+      //   $("#selected_product_id").val("0");
+      //   $("#product").val("");
+      // });
     
       function check_ifProductCacheExists(product_id)
       {
@@ -409,13 +462,12 @@ table thead th{
       function hidePopups() {
         $('#date_purchased').attr('readonly', true);
         $('#calendar-btn').prop('disabled', true);
-        $(".pqty").focus();
       }
-      $('#product').on('keypress', function(event) {
-        if (event.keyCode === 13 || event.keyCode === 27) { 
-          hidePopups();
-        }
-    });
+    //   $('#product').on('keypress', function(event) {
+    //     if (event.keyCode === 13 || event.keyCode === 27) { 
+    //       hidePopups();
+    //     }
+    // });
     function updateTotal() {
         var totalQty = 0;
         var totalPrice = 0;
@@ -438,10 +490,10 @@ table thead th{
       }
       function show_purchaseQtyModal(product_id, qty, price )
       {
-        hidePopups();
-        $("#p_qty").focus();
         if(product_id !== "" && product_id !== "0")
         {
+          hidePopups();
+          
           $("#selected_product_id").val(product_id);
           $("#purchaseQty_modal").fadeIn(200);
           $.ajax({
@@ -458,6 +510,8 @@ table thead th{
               $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color:  #ffff'>ATTENTION REQUIRED!</strong> ");
             }
           });
+          
+          $("#prod_form #p_qty").focus();
         }
         else
         {
@@ -466,7 +520,7 @@ table thead th{
       }
       
       $("#product").autocomplete({
-        minLength: 2,
+        minLength: 1,
         source: function (request, response) {
           var term = request.term;
           var filteredProducts = filterProducts(term);
@@ -478,55 +532,36 @@ table thead th{
               $('#filters').hide();
           }
           hidePopups();
-          var slicedProductsLength = slicedProducts.length - 1;
-          var selectedProductId = slicedProducts[slicedProductsLength].id;
+            var slicedProductsLength = slicedProducts.length - 1;
+            var selectedProductId = slicedProducts[slicedProductsLength].id;
             $("#selected_product_id").val(selectedProductId);
           },
           select: function (event, ui) {
-            hidePopups();
             var selectedProductId = ui.item.id;
             $("#selected_product_id").val(selectedProductId);
-            if(selectedProductId !== "" && selectedProductId !== "0")
+            if(validatePurchaseQtyModal())
             {
-                $("#prod_form #p_qty").focus();
-              if (!isDataExistInTables(selectedProductId)) {
-                var qty = 0;
-                var price = 0;
-                show_purchaseQtyModal(selectedProductId, qty, price);
-              }
-              else
+              hidePopups();
+              if(selectedProductId !== "" && selectedProductId !== "0")
               {
-                show_errorResponse("Product already exists in the purchase table")
+                  $("#prod_form .pqty").focus();
+                if (!isDataExistInTables(selectedProductId)) {
+                  var qty = 0;
+                  var price = 0;
+                  show_purchaseQtyModal(selectedProductId, qty, price);
+                }
+                else
+                {
+                  show_errorResponse("Product already exists in the purchase table")
+                }
               }
+              return false;
             }
-            return false;
+           
           },
       });
      
      
-      $("#btn_addPO").click(function (e) {
-        e.preventDefault();
-        var product = $("#product").val();
-        var product_id = $("#selected_product_id").val();
-        if(product_id !== "0" && product_id !== "")
-        {
-          if (!isDataExistInTables(product_id)) {
-            if (validatePOForm()) {
-              var qty = 0;
-              var price = 0;
-              hidePopups();
-              show_purchaseQtyModal(product_id, qty, price);
-            }
-          }
-          else {
-            show_errorResponse("Item is already in the table");
-          }
-        }
-        else {
-            show_errorResponse("Product not found.");
-        }
-        $("#product").val("");
-        $("#selected_product_id").val("0");
-      })
+    
     })
 </script>

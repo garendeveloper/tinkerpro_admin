@@ -378,6 +378,10 @@
                               <input id="reportingPermission" name="reportingPermission" type="checkbox" class="reportingPermission form-check-input" value="1" style="margin-right: 4px;">
                               <label for="reportingPermission" class="reportingLbl text-color form-check-label">Reporting</label>
                           </div>
+                          <div style="display: flex;">
+                              <input id="promotionsPermission" name="promotionPermission" type="checkbox" class="promotionPermission form-check-input" value="1" style="margin-right: 4px;">
+                              <label for="promotionPermission" class="promotionLbl text-color form-check-label">Promotions & Actions</label>
+                          </div>
                 </div>
                 <div style="width: 50%">
                     <div style="display: flex;">
@@ -589,21 +593,21 @@ var lname = document.getElementById('lastN');
 
 passwordField.addEventListener('input', function(event) {
     var inputValue = event.target.value;
-    document.getElementById("passWORD").style.color = (inputValue !== "" && inputValue !== null) ? "#FF6900" : "";
+    document.getElementById("passWORD").style.color = (inputValue !== "" && inputValue !== null) ? "var(--primary-color)" : "";
 })
 
 confirmPassword.addEventListener('input', function(event){
     var inputValue = event.target.value;
-    document.getElementById("confirmPassword").style.color = (inputValue !== "" && inputValue !== null) ? "#FF6900" : "";
+    document.getElementById("confirmPassword").style.color = (inputValue !== "" && inputValue !== null) ? "var(--primary-color)" : "";
 })
 
 fname.addEventListener('input', function(event){
     var inputValue = event.target.value;
-    document.getElementById("firstNAME").style.color = (inputValue !== "" && inputValue !== null) ? "#FF6900" : "";
+    document.getElementById("firstNAME").style.color = (inputValue !== "" && inputValue !== null) ? "var(--primary-color)" : "";
 })
 lname.addEventListener('input', function(event){
     var inputValue = event.target.value;
-    document.getElementById("lastNAME").style.color = (inputValue !== "" && inputValue !== null) ? "#FF6900" : "";
+    document.getElementById("lastNAME").style.color = (inputValue !== "" && inputValue !== null) ? "var(--primary-color)" : "";
 })
 
 
@@ -739,12 +743,15 @@ function addUsers() {
     //users
     var checkbox = document.getElementById("usersPermission");
     var userPermissionValue = checkbox.checked ? checkbox.value : "0";
+    //users
+    var checkbox = document.getElementById("promotionPermission");
+    var promotionPermissionValue = checkbox.checked ? checkbox.value : "0";
 
-    document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "#FF6900";
-    document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "#FF6900";
-    document.getElementById('roleNAME').style.color = (role_id == "" || role_id == null) ? "red" : "#FF6900";
-    document.getElementById('passWORD').style.color = (pass == "" || pass == null) ? "red" : "#FF6900";
-    document.getElementById('confirmPassword').style.color = (cpass == "" || cpass == null) ? "red" : "#FF6900";
+    document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "var(--primary-color)";
+    document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "var(--primary-color)";
+    document.getElementById('roleNAME').style.color = (role_id == "" || role_id == null) ? "red" : "var(--primary-color)";
+    document.getElementById('passWORD').style.color = (pass == "" || pass == null) ? "red" : "var(--primary-color)";
+    document.getElementById('confirmPassword').style.color = (cpass == "" || cpass == null) ? "red" : "var(--primary-color)";
 
     var formData = new FormData();
     formData.append("uploadedImage", file); 
@@ -773,6 +780,7 @@ function addUsers() {
     formData.append("voidcart", voidCartPermissionValue);
     formData.append("cancelreceipt", cancelReceiptPermissionValue);
     formData.append("users", userPermissionValue);
+    formData.append("promotions", promotionPermissionValue);
 
     
     if(role_id && lastname && firstname && pass && cpass){
@@ -1042,12 +1050,15 @@ function updateDataUser(){
     //users
     var checkbox = document.getElementById("usersPermission");
     var userPermissionValue = checkbox.checked ? checkbox.value : "0";
+
+    var checkbox = document.getElementById("usersPermission");
+    var promotionPermissionValue = checkbox.checked ? checkbox.value : "0";
     
-    document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "#FF6900";
-    document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "#FF6900";
-    document.getElementById('roleNAME').style.color = (role_id == "" || role_id == null) ? "red" : "#FF6900";
-    document.getElementById('passWORD').style.color = (pass == "" || pass == null) ? "red" : "#FF6900";
-    document.getElementById('confirmPassword').style.color = (cpass == "" || cpass == null) ? "red" : "#FF6900";
+    document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "var(--primary-color)";
+    document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "var(--primary-color)";
+    document.getElementById('roleNAME').style.color = (role_id == "" || role_id == null) ? "red" : "var(--primary-color)";
+    document.getElementById('passWORD').style.color = (pass == "" || pass == null) ? "red" : "var(--primary-color)";
+    document.getElementById('confirmPassword').style.color = (cpass == "" || cpass == null) ? "red" : "var(--primary-color)";
 
     var formData = new FormData();
     formData.append("uploadedImage", file); 
@@ -1076,6 +1087,7 @@ function updateDataUser(){
     formData.append("voidcart", voidCartPermissionValue);
     formData.append("cancelreceipt", cancelReceiptPermissionValue);
     formData.append("users", userPermissionValue);
+    formData.append("promotions", promotionPermissionValue);
     formData.append("id",u_id);
 
    

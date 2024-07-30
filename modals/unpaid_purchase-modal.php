@@ -193,7 +193,7 @@ textarea::placeholder{
             <div class="row">
               <div class="col-md-6">
                   <label class = "tinker_label" for="">Amount (Php)</label>
-                  <input  type="number" name = "partialPayment" id = "unpaid_amount" class = "inputAmount" autocomplete="off">
+                  <input  type="text" name = "partialPayment" id = "unpaid_amount" class = "inputAmount" autocomplete="off">
               </div>
               <div class="col-md-6" id = "unpaid_hide4">
                   <label class = "tinker_label" for="">Balance (Php)</label>
@@ -201,7 +201,7 @@ textarea::placeholder{
               </div>
               <div class="col-md-6"  id = "unpaid_hide1">
                   <label class = "tinker_label" for="">Term (No. of Days)</label>
-                  <input type="number" name = "unpaid_term" id = "unpaid_term" class = "inputAmount" autocomplete="off"/> 
+                  <input type="number" name = "unpaid_term" id = "unpaid_term" class = "inputAmount" style = "width: 100%" autocomplete="off"/> 
               </div>
             </div>
             <div class="row" id = "unpaid_toHide1">
@@ -289,6 +289,24 @@ textarea::placeholder{
             }
           })
         }
+        $("#unpaid_purchase_modal #unpaid_amount").on("input", function() {
+            var inputValue = $(this).val();
+            
+            inputValue = inputValue.replace(/[^0-9.]/g, '');
+            
+            var parts = inputValue.split('.');
+            if (parts.length > 2) 
+            {
+               inputValue = parts[0] + '.' + parts.slice(1).join('');
+            }
+            
+            if (parts.length === 2) 
+            {
+              inputValue = parts[0] + '.' + parts[1].slice(0, 2);
+            }
+            
+            $(this).val(inputValue);
+        });
         $("#unpaid_purchase_modal #close-modal, #btn_unpaidCancel").on("click", function () {
             $("#unpaid_purchase_modal").hide();
         })

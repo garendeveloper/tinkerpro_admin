@@ -260,20 +260,25 @@
                     <label>RECEIVED STATUS: <strong id="received_status">RECEIVED</strong></label>
                 </div>
             </div>
-            <table id="tbl_receivedItems" class="text-color" >
+            <table  class="text-color tableHead" style = "width: 100%">
                 <thead>
                     <tr>
-                        <th style="background-color: #1E1C11; color: #ffffff;  width: 40%" colspan="2">ITEM DESCRIPTION</th>
-                        <th style="background-color: #1E1C11; color: #ffffff">QTY</th>
-                        <th style="background-color: #1E1C11; color: #ffffff">RECEIVED</th>
-                        <th style="background-color: #1E1C11; color: #ffffff; text-align: center">EXP. DATE</th>
+                            <th style="background-color: #1E1C11; color: #ffffff;  " ></th>
+                        <th style="background-color: #1E1C11; color: #ffffff;  width: 40%" >ITEM DESCRIPTION</th>
+                        <th style="background-color: #1E1C11; color: #ffffff; text-align:center">QTY</th>
+                        <th style="background-color: #1E1C11; color: #ffffff; ">RECEIVED</th>
+                        <th style="background-color: #1E1C11; color: #ffffff; ">EXP. DATE</th>
                         <!-- <th style="background-color: #1E1C11;">SER.</th> -->
                     </tr>
                 </thead>
-                <tbody style="border-collapse: collapse; border: 1px solid #1E1C11">
-
-                </tbody>
             </table>
+            <div class = "scrollable">
+                <table id="tbl_receivedItems" class="text-color" >
+                    <tbody style="border-collapse: collapse; border: 1px solid #1E1C11">
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </form>
 </div>
@@ -440,7 +445,7 @@
                                 else
                                 {
                                     table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
-                                    table += "<td data-id = " + data[i].inventory_id + ">" + data[i].prod_desc + "</td>";
+                                    table += "<td data-id = " + data[i].inventory_id + " style = 'width: 45%'>" + data[i].prod_desc + "</td>";
                                 }
 
                                 table += "<td style = 'text-align: center; '>" + data[i].qty_purchased + "</td>";
@@ -451,7 +456,7 @@
                                 }
                                 else
                                 {
-                                    table += "<td style = 'text-align: center; background-color: #262626; '  ><input id = 'qty_received'  placeholder='QTY' value = "+data[i].qty_purchased+" style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
+                                    table += "<td style = 'text-align: center; background-color: #262626;'  ><input id = 'qty_received'  placeholder='QTY' value = "+data[i].qty_purchased+" style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
 
                                     table +=
                                             "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";

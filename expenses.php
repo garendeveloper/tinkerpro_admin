@@ -53,8 +53,6 @@ if (isset($_SESSION['user_id'])) {
     $lastName = $_SESSION["last_name"];
   }
 
-
-  // Redirect to login page if user has not been logged in
   if ($userId == 0) {
     header("Location: login");
   }

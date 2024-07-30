@@ -180,7 +180,7 @@
                 Add Product</button>
         </div>
     </form>
-    <table id="tbl_lossand_damages" class="text-color table-border" style="margin-top: -3px; margin-bottom: 30vh">
+    <table  class="text-color table-border tableHead" style="margin-top: -3px; ">
         <thead>
             <tr>
                 <th style="background-color: #1E1C11; color:#ffffff; width: 50%">ITEM DESCRIPTION</th>
@@ -189,11 +189,14 @@
                 <th style="background-color: #1E1C11; color:#ffffff; text-align:right">TOTAL COST</th>
             </tr>
         </thead>
-        <tbody style="border-collapse: collapse; border: none">
-
-        </tbody>
-
     </table>
+   <div class="scrollable">
+    <table id="tbl_lossand_damages" class="text-color table-border" style="margin-top: -3px; margin-bottom: 30vh">
+            <tbody style="border-collapse: collapse; border: none">
+
+            </tbody>
+        </table>
+   </div>
 
     <div style="position: absolute;padding: 10px; width: 100%;" class = "bottom-area">
         <table id="footer_lossand_damages" class="text-color table-border">
@@ -342,8 +345,8 @@
                 success: function (data) {
                     var row = "";
                     row += "<tr data-id = " + data['id'] + " data-ld_id = ''>";
-                    row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
-                    row += "<td style = 'text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' autocomplete = 'off'></input></td>";
+                    row += "<td data-id = " + data['id'] + " style = 'width: 50%'>" + data['prod_desc'] + "</td>";
+                    row += "<td style = 'text-align:center; width: 50px' ><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' autocomplete = 'off'></input></td>";
                     row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
                     row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
                     row += "</tr>";

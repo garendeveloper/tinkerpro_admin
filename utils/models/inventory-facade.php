@@ -493,6 +493,7 @@ class InventoryFacade extends DBConnection
                         FROM inventory
                         INNER JOIN products ON products.id = inventory.product_id
                         INNER JOIN received_items ON received_items.inventory_id = inventory.id
+                        WHERE received_items.date_expired IS NOT NULL
                         ORDER BY products.id ASC LIMIT $offset, $recordsPerPage";
             
             $stmt = $this->connect()->prepare($query);
@@ -557,7 +558,7 @@ class InventoryFacade extends DBConnection
         
             $interval = $now->diff($expiration_date);
             $days_remaining = $interval->days;
-            if ($expiration_date > $now) {
+            if ($expiration_date >= $now) {
                 $days_remaining++;
             }
             else {
@@ -718,22 +719,39 @@ class InventoryFacade extends DBConnection
     }
     public function get_allProducts()
     {
-        // $sql = $this->connect()->prepare("SELECT A.*, B.id as inventory_id
-        //                                 FROM products A
-        //                                 LEFT JOIN  inventory B ON A.ID = B.product_id
-        //                                 WHERE B.product_id IS NULL");
-        $sql = $this->connect()->prepare("SELECT products.*,
-                                        CASE 
-                                           WHEN uom.uom_name IS null THEN ''
-                                           ELSE uom.uom_name
-                                        END AS uom
-                                        FROM PRODUCTS 
-                                        LEFT JOIN uom ON products.uom_id = uom.id
-                                        order by products.prod_desc asc");
-        $sql->execute();
-        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-        return $data;
+        $isNegativeInventoryChecked = isset($_GET['isNegativeInventoryChecked']);
+        if($isNegativeInventoryChecked)
+        {
+            $where = $_GET['isNegativeInventoryChecked'] === "1" ? 'WHERE products.product_stock < 0' : 'WHERE products.product_stock >= 1  OR products.product_stock = 0';
+            $sql = $this->connect()->prepare("SELECT products.*,
+                        CASE 
+                        WHEN uom.uom_name IS null THEN ''
+                        ELSE uom.uom_name
+                        END AS uom
+                        FROM PRODUCTS 
+                        LEFT JOIN uom ON products.uom_id = uom.id
+                        $where
+                        order by products.prod_desc asc");
+            $sql->execute();
+            $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        }
+        else
+        {
+            $sql = $this->connect()->prepare("SELECT products.*,
+                        CASE 
+                        WHEN uom.uom_name IS null THEN ''
+                        ELSE uom.uom_name
+                        END AS uom
+                        FROM PRODUCTS 
+                        LEFT JOIN uom ON products.uom_id = uom.id
+                        order by products.prod_desc asc");
+            $sql->execute();
+            $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        }
+        
+      
     }
     public function get_allSuppliers()
     {
@@ -892,7 +910,7 @@ class InventoryFacade extends DBConnection
         $unpaid_form = [];
         parse_str($serializedFormData, $unpaid_form);
 
-        $sql = "UPDATE orders SET isNotification = :isNotification, isReccurring = :isReccurring, term = :term, due_date = :due_date, note = :note, unpaid_amount = :unpaid_amount";
+        $sql = "UPDATE orders SET isNotification = :isNotification, isReccurring = :isReccurring, term = :term, due_date = :due_date, note = :note, unpaid_amount = :unpaid_amount WHERE id = :id";
         
         $unpaid_amount = floatval($unpaid_form['partialPayment']);
         $isNotification = isset($unpaid_form['notification_unpaid']) && $unpaid_form['notification_unpaid'] == 'on' ? 1 : 0;
@@ -908,6 +926,7 @@ class InventoryFacade extends DBConnection
             ':due_date'=>$dueDate,
             ':note' => $unpaid_note,
             ':unpaid_amount' => $unpaid_amount,
+            ':id' => $order_id
         ];
         $sqlStatement->execute($params);
         

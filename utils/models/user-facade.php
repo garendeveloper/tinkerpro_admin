@@ -330,6 +330,7 @@ class UserFacade extends DBConnection {
                         'VoidCart' => ($formData["voidcart"] == 1) ? 'Access Granted' : 'No Access',
                         'CancelReceipt' => ($formData["cancelreceipt"] == 1) ? 'Access Granted' : 'No Access',
                         'Users' => ($formData["users"] == 1) ? 'Access Granted' : 'No Access',
+                        'Promotions' => ($formData["users"] == 1) ? 'Access Granted' : 'No Access',
             );
         
                     $jsonData = json_encode($permissionData);
@@ -412,6 +413,7 @@ public function updateDataUsers($formData) {
                 'VoidCart' => ($formData["voidcart"] == 1) ? 'Access Granted' : 'No Access',
                 'CancelReceipt' => ($formData["cancelreceipt"] == 1) ? 'Access Granted' : 'No Access',
                 'Users' => ($formData["users"] == 1) ? 'Access Granted' : 'No Access',
+                'Promotions' => ($formData["promotions"] == 1) ? 'Access Granted' : 'No Access',
     );
 
     $jsonData = json_encode($permissionData);

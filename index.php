@@ -697,12 +697,12 @@ body, div, h1, h2, h3, h4, h5, p{
 
               html += "<tr>";
               html += "<td style = 'text-align: left'>"+currentItem.product+"</td>";
-              html += "<td style = 'text-align: right'>"+currentItem.total_paid_amount+"</td>"
+              html += "<td style = 'text-align: right'>"+currentItem.total_paid_amount.toFixed(2)+"</td>"
               html += "</tr>";
 
 
               productsName.push(currentItem.product);
-              productsAmount.push(currentItem.total_paid_amount);
+              productsAmount.push(currentItem.total_paid_amount.toFixed(2));
               // totalSales += currentItem.total_sales_amount;
               totalCount = i+1;
               
@@ -737,7 +737,7 @@ body, div, h1, h2, h3, h4, h5, p{
             if(responseData['top_expensive_by_period'] !== 0)
             {
               var total_net_income = totalSales - responseData['total_expense_by_period'];
-              total_net_income = total_net_income < 0 ? formatAmount(total_net_income) : formatAmount(total_net_income);
+              total_net_income = formatAmount(total_net_income);
               $("#net_income").html("<h1>"+total_net_income+"</h1>");
             }
           }

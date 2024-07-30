@@ -19,29 +19,31 @@
                         { active: isActive(notifications[2].is_active), min: 1, max: 5 },
                         { active: isActive(notifications[3].is_active), min: -365, max: 0 }
                     ];
+           
 
                     totalExpired = products.reduce(function (total, product) {
                         var daysRemaining = product.days_remaining;
-                        var isReceived = product.is_received === 1;
-
-                        if (isReceived) {
-                            thresholds.forEach(function (threshold) {
-                                if (threshold.active && daysRemaining >= threshold.min && daysRemaining <= threshold.max) {
-                                    total++;
-                                }
-                            });
-                        }
-
+                        thresholds.forEach(function (threshold) 
+                        {
+                            if (threshold.active && daysRemaining >= threshold.min && daysRemaining <= threshold.max) 
+                            {
+                                total++;
+                            }
+                        });
                         return total;
                     }, 0);
 
-                    $("#expirationNotification").css('display', totalExpired > 0 ? 'inline-block' : 'none');
-                    $("#expirationNotification").text(totalExpired.toString());
+                    if(totalExpired > 0)
+                    {
+                        $("#expirationNotification").css('display', 'inline-block');
+                        $("#expirationNotification").text(totalExpired.toString());
+                    }
+                   
                    
                 }   
             });
         }
-    setInterval(expiration, 3000);
+    setInterval(expiration, 2000);
     expiration();
 });
 </script>
