@@ -99,7 +99,7 @@
 
 </style>
 <div class="modal" id="purchaseQty_modal" tabindex="0" style="background-color: rgba(0, 0, 0, 0.5); display: none">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 30vw; ">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 35vw; ">
     <div class="modal-content" style = "background: #262626;">
       <div class="modal-header">
           <h6 style = "font-size: 18px; font-weight: bold"> <i class="bi bi-exclamation-triangle" style = "color: red; font-size: 18px; font-weight: bold"></i> ATTENTION REQUIRED</h6>
@@ -123,8 +123,8 @@
              </div>
             </div>
 
-            <div class="col-6 itemImage" style = "border: 1px solid #262626">
-                <img src="" alt="productImage" class = "productImage">
+            <div class="col-6 itemImage" style = "border: 1px solid #262626; text-align: center; vertical-align: middle;">
+                <img src="" alt="productImage" class = "productImage" style = "margin-right: 2px;">
             </div>
           </div>
 

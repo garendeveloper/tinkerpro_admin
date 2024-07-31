@@ -35,7 +35,8 @@
         products.is_warranty as is_warranty,
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
-        products.stock_count as stock_count
+        products.stock_count as stock_count,
+        products.product_stock as product_stock
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.prod_desc LIKE :searchQuery OR 
@@ -84,7 +85,8 @@
         products.is_warranty as is_warranty,
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
-        products.stock_count as stock_count
+        products.stock_count as stock_count,
+        products.product_stock as product_stock
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id = :selectedProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -125,7 +127,8 @@
         products.is_warranty as is_warranty,
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
-        products.stock_count as stock_count
+        products.stock_count as stock_count,
+        products.product_stock as product_stock
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.category_id= :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -165,7 +168,8 @@
         products.is_warranty as is_warranty,
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
-        products.stock_count as stock_count
+         products.stock_count as stock_count,
+        products.product_stock as product_stock
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.variant_id= :selectedVariantroduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -205,7 +209,8 @@
         products.is_warranty as is_warranty,
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
-        products.stock_count as stock_count
+        products.stock_count as stock_count,
+        products.product_stock as product_stock
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -246,7 +251,8 @@
         products.is_warranty as is_warranty,
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
-        products.stock_count as stock_count
+         products.stock_count as stock_count,
+        products.product_stock as product_stock
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -287,7 +293,8 @@
         products.is_warranty as is_warranty,
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
-        products.stock_count as stock_count
+        products.stock_count as stock_count,
+        products.product_stock as product_stock
     FROM products
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -329,7 +336,8 @@
         products.is_warranty as is_warranty,
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
-        products.stock_count as stock_count
+         products.stock_count as stock_count,
+        products.product_stock as product_stock
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
@@ -343,6 +351,9 @@
   
  
   public function addProduct($formData) {
+    date_default_timezone_set('Asia/Manila');
+    $currentDate = date('Y-m-d h:i:s');
+
     $productname = $formData['productname'];
     $barcode = $formData['barcode'];
     $brand = $formData['brand'] ?? null;
@@ -429,6 +440,24 @@
     $sqlInventory = 'INSERT INTO inventory(product_id) VALUES (?)';
     $stmtInventory = $this->connect()->prepare($sqlInventory);
     $stmtInventory->execute([$lastInsertId]);
+
+    $currentStock = 0;
+    $newqty = 0;
+    $movement = 0;
+    $stock_customer = 'User';
+    $document_number = "---";
+    $transaction_type = "Beginning Stock";
+    $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                        VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+    $stmt->bindParam(1, $lastInsertId, PDO::PARAM_INT);
+    $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+    $stmt->bindParam(3, $movement, PDO::PARAM_STR); 
+    $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
+    $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+    $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+    $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
+    $stmt->execute();
 
   
     if ($bomStat == 1) {
@@ -882,12 +911,13 @@ public function importProducts($fileData) {
   $csvData = array_map('str_getcsv', file($file));
   $headers = array_shift($csvData);
 
-  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable,uom_id) 
-              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable,:uom_id)";
+  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable,uom_id, product_stock, stock_count) 
+              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable,:uom_id, :product_stock, :stock_count)";
   
   $conn = $this->connect();
   $conn->beginTransaction(); 
-
+  date_default_timezone_set('Asia/Manila');
+  $currentDate = date('Y-m-d h:i:s');
   try {
       $stmt = $conn->prepare($query);
     
@@ -910,10 +940,34 @@ public function importProducts($fileData) {
           $stmt->bindParam(':isDiscounted', $product['isDiscounted']);
           $stmt->bindParam(':is_stockable', $product['Stockable']);
           $stmt->bindParam(':uom_id', $product['UOM']);
+          $stmt->bindParam(':product_stock', $product['Store Qty']);
+          $stmt->bindParam(':stock_count', $product['Low stock warning']);
 
           $stmt->execute();
-          $lastInsertIds[] = $conn->lastInsertId();
+          $productId = $conn->lastInsertId();
+        
+       
+          $currentStock = 0;
+          $newqty = $product['Store Qty'];
+          $movement = $product['Store Qty'];
+          $stock_customer = 'User';
+          $document_number = "---";
+          $transaction_type = "Beginning Stock";
+          $stmt = $conn->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                              VALUES (?, ?, ?, ?, ?, ?, ?)");
+  
+          $stmt->bindParam(1, $productId, PDO::PARAM_INT);
+          $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+          $stmt->bindParam(3, $movement, PDO::PARAM_STR); 
+          $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
+          $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+          $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+          $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
+          $stmt->execute();
+
+          $lastInsertIds[] = $productId;
       }
+
 
       $conn->commit(); 
       foreach ($lastInsertIds as $productId) {
@@ -921,6 +975,8 @@ public function importProducts($fileData) {
         $stmtInventory = $conn->prepare($sqlInventory);
         $stmtInventory->bindParam(':product_id', $productId);
         $stmtInventory->execute();
+
+      
       }
       return true;
   } catch (PDOException $e) {

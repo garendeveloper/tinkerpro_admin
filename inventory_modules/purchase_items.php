@@ -219,7 +219,7 @@ table thead th{
             </tr>
         </thead>
     </table>
-    <div class = "scrollable">
+    <div class = "scrollable" style = "height: 52vh">
       <table id="tbl_purchaseOrders" class="text-color table-border" style = "margin-top: -3px;">
           <tbody id="po_body" style="border-collapse: collapse; border: none">
 

@@ -272,7 +272,7 @@
                     </tr>
                 </thead>
             </table>
-            <div class = "scrollable">
+            <div class = "scrollable" style = "height: 52vh">
                 <table id="tbl_receivedItems" class="text-color" >
                     <tbody style="border-collapse: collapse; border: 1px solid #1E1C11">
 
@@ -459,7 +459,7 @@
                                     table += "<td style = 'text-align: center; background-color: #262626;'  ><input id = 'qty_received'  placeholder='QTY' value = "+data[i].qty_purchased+" style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
 
                                     table +=
-                                            "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Date Expired' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
+                                            "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Expiry Date' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";
                                  
                                     // if (data[i].isSerialized === 1) {
                                     //     table +=

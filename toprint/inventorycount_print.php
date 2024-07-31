@@ -43,7 +43,14 @@
     $imageWidth = 30; 
     $imageHeight = 30; 
     $imageX = 10; 
-    $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+    $serverFilePath = $_SERVER['DOCUMENT_ROOT'] . "/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
+
+    // if (file_exists($serverFilePath)) {
+    //     $this->Image($serverFilePath, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight);
+    // } else {
+    //     echo "File does not exist.";
+    // }
+    $pdf->Image($serverFilePath, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
     $pdf->SetFont('', 'I', 8);
 
     $pdf->SetFont('', 'B', 10);
