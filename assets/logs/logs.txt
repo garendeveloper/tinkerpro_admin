@@ -3587,3 +3587,6 @@
 2024-07-31 09:51:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALPINE EVAPORATED MILK 370ML Barcode #:4800575884007 
 2024-07-31 09:53:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SILKA SOAP PAPAYA 45G Barcode #:4806507833358 
 2024-07-31 09:53:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SILKA SOAP PAPAYA 65G Barcode #:4806507832481 
+2024-07-31 09:58:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SILVER SWAN PATIS 1L Barcode #:4800344010620 
+2024-07-31 09:58:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-07-31 09:59:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SILVER SWAN PATIS 200ML Barcode #:4800344001949 
