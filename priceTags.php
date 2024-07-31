@@ -621,8 +621,9 @@ h4 {
                             <table id="tbl_priceTags" class="text-color table-border " style="margin-top: -3px; border: none; width: 100%; overflow: hidden">
                                 <thead>
                                     <tr>
-                                        <th class = "otherinput" style="background-color: #1E1C11; width: 40%; font-size: 12px;">ITEM DESCRIPTION</th>
-                                        <th class = "otherinput" style="background-color: #1E1C11; text-align:left; width: 30%; font-size: 12px;">BARCODE</th>
+                                        <th class = "otherinput" style="background-color: #1E1C11; width: 60%; font-size: 12px;">ITEM DESCRIPTION</th>
+                                        <th class = "otherinput" style="background-color: #1E1C11; text-align:center; width: 25%; font-size: 12px;">BARCODE</th>
+                                        <th class = "otherinput" style="background-color: #1E1C11; text-align:center; width: 15%; font-size: 12px;">ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody style="border-collapse: collapse; border: none">
@@ -633,12 +634,11 @@ h4 {
                     </div>
                   </div>
                 </div>
-                <div  style = "width: 1100px;" >
-                  <div class="printable-area"  style = "width: 100%;  ">
-                  <iframe src="./assets/pdf/barcode/barcode.pdf" style="height:80vh; width:100%" id = "barcodeViewer" title="Barcode"></iframe>
-                    <!-- <div class="row" id = "barcodeContainer" style = "margin-left: 20px;  ">
-                     
-                    </div> -->
+                <div class = "scrollable" style = "width: 1100px; height: 80vh; overflow: auto;" >
+                  <div class="printable-area"  id = "printable-area" style = "width: 100%;  ">
+                    <div class="row" id = "barcodeContainer" style = "margin-left: 20px;  ">
+                 
+                    </div>
                   </div>
                   <div style = "position: absolute; bottom: 0; right: 20px; margin-right: 4vh;">
                       <button class="button" style="width: 200px; background-color: #1e1e1e; border: 1px solid red; color: white; height: 40px; " id="btnPrintBarcode">Print Barcode</button>
@@ -658,14 +658,27 @@ h4 {
     var toastDisplayed = false;
     var products = [];
     let productsCache = [];
-    const barcodeArray = [];
     show_allProducts();
 
     $("#price_tags").addClass('active');
     $("#pointer").html("Price Tags");
 
     $("#btnPrintBarcode").off("click").on("click", function(){
-      window.print();
+      html2canvas(document.getElementById('printable-area')).then(canvas => {
+                // Create a data URL from the canvas
+                const img = canvas.toDataURL('image/png');
+                
+                // Optionally, open the image in a new window/tab
+                window.open(img);
+                
+                // Or, create a download link
+                const link = document.createElement('a');
+                link.href = img;
+                link.download = 'screenshot.png';
+                link.click();
+            }).catch(err => {
+                console.error('Error capturing the div:', err);
+            });
     })
     $("#btn_searchInputProduct").click(function (e) {
         e.preventDefault();
@@ -780,70 +793,45 @@ h4 {
 
             toastr.error(message);
         }
-        function generateBarcode(barcode, productName, price, sku, uom)
+
+        function generateBarcode(barcode, productName, price, sku, uom) 
         {
-          var newProduct  = {
-                barcode: barcode,
-                productName: productName,
-                price: price,
-                sku: sku,
-                uom: uom,
-              };
-              barcodeArray.push(newProduct);
-          $.ajax({
-              url: './toprint/printBarcode.php',
-              type: 'GET',
-              xhrFields: {
-                  responseType: 'blob'
-              },
-              data: {
-                data: JSON.stringify(barcodeArray),
-              },
-              success: function(response) {
-               
-                  var newBlob = new Blob([response], { type: 'application/pdf' });
-                  var blobURL = URL.createObjectURL(newBlob);
-                  $('#barcodeViewer').attr('src', blobURL);
-              
-              },
-              error: function(xhr, status, error) {
-                  console.error(xhr.responseText);
-              }
-          });
-        }
-      //   function generateBarcode(barcode, productName, price, sku, uom) 
-      //   {
-      //     try {
-      //         var barcodeContainer = $("<div>").addClass("barcode-container");
+          try {
+              var barcodeContainer = $("<div>").addClass("barcode-container "+barcode+"");
 
-      //         var productInfoElement = $("<div>").addClass("product-info").css({
-      //             'margin-bottom': '2px'
-      //         });
+              var productInfoElement = $("<div>").addClass("product-info").css({
+                  'margin-bottom': '2px'
+              });
 
-      //         productInfoElement.html(`
-      //             <div style = 'font-weight: bold'>${productName}&nbsp;${uom} <br></div>
-      //             <div>${price}</div>
-      //             <div>SKU:${sku}</div>
-      //         `);
+              productInfoElement.html(`
+                  <div style = 'font-weight: bold'>${productName}&nbsp;${uom} <br></div>
+                  <div>${price}</div>
+                  <div>SKU:${sku}</div>
+              `);
 
-      //         var barcodeElement = $("<img>").addClass("generated-barcode");
-      //         JsBarcode(barcodeElement[0], barcode, {
-      //             format: "EAN13",
-      //             displayValue: true,
-      //             fontSize: 20,
-      //             height: 40,
-      //             width: 2,
-      //             textAlign: "center"
-      //         });
+              var barcodeElement = $("<img>").addClass("generated-barcode");
+          
+              var barcodeFormat = "CODE39";
+              if(barcode.length === 11) barcodeFormat = "code11";
+              if(barcode.length === 12) barcodeFormat = "upc";
+              if(barcode.length === 13) barcodeFormat = "EAN13";
 
-      //         barcodeContainer.append(productInfoElement);
-      //         barcodeContainer.append(barcodeElement);
+              JsBarcode(barcodeElement[0], barcode, {
+                format: barcodeFormat,
+                displayValue: true,
+                fontSize: 20,
+                height: 40,
+                width: 2,
+                textAlign: "center"
+              });
+              barcodeContainer.append(productInfoElement);
+              barcodeContainer.append(barcodeElement);
 
-      //         $("#barcodeContainer").append(barcodeContainer);
-      //     } catch (error) {
-      //         console.error("Error in generateBarcode:", error);
-      //     }
-      // }
+              $("#barcodeContainer").append(barcodeContainer);
+          } catch (error) {
+              console.error("Error in generateBarcode:", error);
+          }
+      }
 
       
         $("#searchInput").autocomplete({
@@ -917,14 +905,22 @@ h4 {
                 success: function (data) {
                     var row = "";
                     row += "<tr data-id = " + data['id'] + ">";
-                    row += "<td style= 'width: 80%' data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
-                    row += "<td style= 'width: 20%'>" + data['barcode'] + "</td>";
+                    row += "<td style= 'width: 60%' data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
+                    row += "<td style= 'width: 25%; text-align: center'>" + data['barcode'] + "</td>";
+                    row += "<td style= 'width: 15%; text-align: center' class = 'removeItem' data-barcode = "+data['barcode']+"><i class = 'bi bi-trash3'></i></td>";
                     row += "</tr>";
                     $("#tbl_priceTags tbody").append(row);
                 }
             })
         }
 
+    $("#tbl_priceTags tbody").on("click", ".removeItem", function(){
+      var barcode = $(this).data('barcode');
+      $("#barcodeContainer").each(function(){
+         $(this).find(barcode).remove();
+      })
+      $(this).closest('tr').remove();
+    })
     $("#priceTagsModal").addClass('slideInRight');
     $(".priceTagsContent").addClass('slideInRight');
     setTimeout(function () {

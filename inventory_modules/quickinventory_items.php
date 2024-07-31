@@ -61,7 +61,7 @@
                 <i class="bi bi-chevron-double-down"></i>
             </div>
             <div class="group" style="margin-right: -22px;">
-                <label for=""><strong style="color: #ffff; font-size: 12px;">Negative Inventory: </label>
+                <label for=""><strong style="color: #ffff; font-size: 12px;">All Inventory: </label>
                 <label class="switch">
                     <input type="checkbox" name="negative_inventory" id="negative_inventory" checked>
                     <span class="slider round"></span>
@@ -92,6 +92,7 @@
                 <th style="background-color: #1E1C11; color: #ffffff; width: 50%">ITEM DESCRIPTION</th>
                 <th style="background-color: #1E1C11;  color: #ffffff; ">QTY ON HAND</th>
                 <th style="background-color: #1E1C11;   color: #ffffff; ">NEW QTY</th>
+                <th style="background-color: #1E1C11;   color: #ffffff; "></th>
             </tr>
         </thead>
     </table>
@@ -116,20 +117,19 @@
             e.preventDefault();
             productsCache = [];
             var value = $(this).val();
-            var isNegativeInventoryChecked = $("#negative_inventory").prop("checked") ? 1 : 0;
             $("#quickinventory_input_inventory_id").val("");
             $("#q_product").val("");
             $(this).css("border", '1px solid #ffff')
-            show_allProducts(isNegativeInventoryChecked);
+            show_allProducts();
             $("#quickinventory_form #q_product").focus();
         })
-        $("#negative_inventory").change(function() {
-            productsCache = [];
-            var inventory_type = $("select[name='inventory_type']").val();
-            var isNegativeInventoryChecked = $(this).prop("checked") ? 1 : 0;
-            if(inventory_type !== "" && inventory_type) show_allProducts(isNegativeInventoryChecked);
-            else $("select[name='inventory_type']").css('border', '1px solid red')
-        });
+        // $("#negative_inventory").change(function() {
+        //     productsCache = [];
+        //     var inventory_type = $("select[name='inventory_type']").val();
+        //     var isNegativeInventoryChecked = $(this).prop("checked") ? 1 : 0;
+        //     if(inventory_type !== "" && inventory_type) show_allProducts(isNegativeInventoryChecked);
+        //     else $("select[name='inventory_type']").css('border', '1px solid red')
+        // });
         $("#btn_searchQProduct").click(function (e) {
             e.preventDefault();
             var inventory_id = $("#quickinventory_input_inventory_id").val();
@@ -301,7 +301,9 @@
                 return false;
             },
         });
-
+        $("#tbl_quickInventories tbody").off('click').on("click", ".removeItem", function(){
+            $(this).closest('tr').remove();
+        });
         function isDataExistInTable(data) 
         {
             var $matchingRow = $('#tbl_quickInventories tbody td[data-id="' + data + '"]').closest('tr');
@@ -319,6 +321,7 @@
                     row += "<td data-id = " + data['id'] + " style = 'width: 50%'>" + data['prod_desc'] + "</td>";
                     row += "<td style = 'text-align:center; width: 30%' '>" + data['product_stock'] + "</td>";
                     row += "<td class = 'text-right'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
+                    row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";
                     row += "</tr>";
                     $("#tbl_quickInventories tbody").append(row);
                 }

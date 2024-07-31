@@ -635,9 +635,10 @@ h4 {
                 </div>
                 <div  style = "width: 1100px;" >
                   <div class="printable-area"  style = "width: 100%;  ">
-                    <div class="row" id = "barcodeContainer" style = "margin-left: 20px;  ">
-                 
-                    </div>
+                  <iframe src="./assets/pdf/barcode/barcode.pdf" style="height:80vh; width:100%" id = "barcodeViewer" title="Barcode"></iframe>
+                    <!-- <div class="row" id = "barcodeContainer" style = "margin-left: 20px;  ">
+                     
+                    </div> -->
                   </div>
                   <div style = "position: absolute; bottom: 0; right: 20px; margin-right: 4vh;">
                       <button class="button" style="width: 200px; background-color: #1e1e1e; border: 1px solid red; color: white; height: 40px; " id="btnPrintBarcode">Print Barcode</button>
@@ -657,6 +658,7 @@ h4 {
     var toastDisplayed = false;
     var products = [];
     let productsCache = [];
+    const barcodeArray = [];
     show_allProducts();
 
     $("#price_tags").addClass('active');
@@ -778,40 +780,70 @@ h4 {
 
             toastr.error(message);
         }
-
-        function generateBarcode(barcode, productName, price, sku, uom) 
+        function generateBarcode(barcode, productName, price, sku, uom)
         {
-          try {
-              var barcodeContainer = $("<div>").addClass("barcode-container");
+          var newProduct  = {
+                barcode: barcode,
+                productName: productName,
+                price: price,
+                sku: sku,
+                uom: uom,
+              };
+              barcodeArray.push(newProduct);
+          $.ajax({
+              url: './toprint/printBarcode.php',
+              type: 'GET',
+              xhrFields: {
+                  responseType: 'blob'
+              },
+              data: {
+                data: JSON.stringify(barcodeArray),
+              },
+              success: function(response) {
+               
+                  var newBlob = new Blob([response], { type: 'application/pdf' });
+                  var blobURL = URL.createObjectURL(newBlob);
+                  $('#barcodeViewer').attr('src', blobURL);
+              
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText);
+              }
+          });
+        }
+      //   function generateBarcode(barcode, productName, price, sku, uom) 
+      //   {
+      //     try {
+      //         var barcodeContainer = $("<div>").addClass("barcode-container");
 
-              var productInfoElement = $("<div>").addClass("product-info").css({
-                  'margin-bottom': '2px'
-              });
+      //         var productInfoElement = $("<div>").addClass("product-info").css({
+      //             'margin-bottom': '2px'
+      //         });
 
-              productInfoElement.html(`
-                  <div style = 'font-weight: bold'>${productName}&nbsp;${uom} <br></div>
-                  <div>${price}</div>
-                  <div>SKU:${sku}</div>
-              `);
+      //         productInfoElement.html(`
+      //             <div style = 'font-weight: bold'>${productName}&nbsp;${uom} <br></div>
+      //             <div>${price}</div>
+      //             <div>SKU:${sku}</div>
+      //         `);
 
-              var barcodeElement = $("<img>").addClass("generated-barcode");
-              JsBarcode(barcodeElement[0], barcode, {
-                  format: "EAN13",
-                  displayValue: true,
-                  fontSize: 20,
-                  height: 40,
-                  width: 2,
-                  textAlign: "center"
-              });
+      //         var barcodeElement = $("<img>").addClass("generated-barcode");
+      //         JsBarcode(barcodeElement[0], barcode, {
+      //             format: "EAN13",
+      //             displayValue: true,
+      //             fontSize: 20,
+      //             height: 40,
+      //             width: 2,
+      //             textAlign: "center"
+      //         });
 
-              barcodeContainer.append(productInfoElement);
-              barcodeContainer.append(barcodeElement);
+      //         barcodeContainer.append(productInfoElement);
+      //         barcodeContainer.append(barcodeElement);
 
-              $("#barcodeContainer").append(barcodeContainer);
-          } catch (error) {
-              console.error("Error in generateBarcode:", error);
-          }
-      }
+      //         $("#barcodeContainer").append(barcodeContainer);
+      //     } catch (error) {
+      //         console.error("Error in generateBarcode:", error);
+      //     }
+      // }
 
       
         $("#searchInput").autocomplete({

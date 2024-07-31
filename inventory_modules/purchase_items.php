@@ -504,10 +504,12 @@ table thead th{
          
               var _price = price === 0 ? data['cost'] : price;
               var _qty = qty === 0 ? data['qty_purchased'] : qty;
-              $("#product_name").text(data['prod_desc'] + " : " + data['barcode']);
-              $("#purchaseQty_modal #p_qty").val(_qty);
+              $(".product_name").text('"'+data['prod_desc']+'"');
+              $(".barcode_val").text('"'+data['barcode']+'"');
               $("#purchaseQty_modal #price").val(_price);
-              $("#pqty_modalTitle").html("<i class = 'bi bi-exclamation-triangle style = 'color: red;'></i>&nbsp; <strong style = 'color:  #ffff'>ATTENTION REQUIRED!</strong> ");
+              var src = "./assets/img/no-image.png";
+              if(data['productImage'] !== null && data['productImage'] !== "") src  = "./assets/products/"+data['productImage'] 
+              $(".productImage").attr("src", src);
             }
           });
           
