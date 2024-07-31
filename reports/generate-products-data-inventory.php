@@ -155,7 +155,9 @@ $totalCost = 0;
 $totalTax = 0;
 $totalPrice = 0;
 $totalAmount = 0;
+$t_amount = 0;
 $totalCart = 0;
+$totalCustomerDiscount = 0;
 $pdf->SetFont('', '', 10); 
 
 while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
@@ -163,25 +165,30 @@ while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
     $totalCost += $row['cost'];
     $totalTax += $row['totalVat'];
     $totalPrice += $row['prod_price'];
-    $grossAmount = number_format($row['grossAmount'],2) - number_format($row['itemDiscount'],2) - number_format($row['overallDiscounts'],2);
+    $totalCustomerDiscount += (float)$row['overallDiscounts'];
 
-    $totalAmount += number_format($grossAmount,2);
+    $grossAmount = ((float)$row['grossAmount'] - (float)$row['itemDiscount']);
+    
+    
+    $totalAmount += $grossAmount;
+    // $t_amount += (($grossAmount - $totalCart) - $totalCustomerDiscount);
+    $t_amount += (($grossAmount - $totalCart));
   
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
-     $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sku'], $headerWidths[1]));   
-     $pdf->Cell($headerWidths[1], $maxCellHeight, $row['sku'], 1, 0, 'C');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $row['newQty'], $headerWidths[2]));   
-     $pdf->Cell($headerWidths[2], $maxCellHeight,  $row['newQty'], 1, 0, 'C');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['cost'],2), $headerWidths[3]));   
-     $pdf->Cell($headerWidths[3], $maxCellHeight, $row['cost'], 1, 0, 'R');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalVat'],2), $headerWidths[4]));   
-     $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['totalVat'],2), 1, 0, 'R');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['prod_price'],2), $headerWidths[5]));   
-     $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['prod_price'],2), 1, 0, 'R');
-     $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $grossAmount,2), $headerWidths[6]));   
-     $pdf->Cell($headerWidths[6], $maxCellHeight, number_format( $grossAmount,2), 1, 0, 'R');
-     $pdf->Ln(); 
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['prod_desc'], $headerWidths[0]));   
+    $pdf->Cell($headerWidths[0], $maxCellHeight, $row['prod_desc'], 1, 0, 'L');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['sku'], $headerWidths[1]));   
+    $pdf->Cell($headerWidths[1], $maxCellHeight, $row['sku'], 1, 0, 'C');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf,  $row['newQty'], $headerWidths[2]));   
+    $pdf->Cell($headerWidths[2], $maxCellHeight,  $row['newQty'], 1, 0, 'C');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['cost'],2), $headerWidths[3]));   
+    $pdf->Cell($headerWidths[3], $maxCellHeight, $row['cost'], 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['totalVat'],2), $headerWidths[4]));   
+    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['totalVat'],2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $row['prod_price'],2), $headerWidths[5]));   
+    $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($row['prod_price'],2), 1, 0, 'R');
+    $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format( $grossAmount,2), $headerWidths[6]));   
+    $pdf->Cell($headerWidths[6], $maxCellHeight, number_format( $grossAmount,2), 1, 0, 'R');
+    $pdf->Ln(); 
      
 }
 
@@ -191,7 +198,7 @@ $pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight,
 $pdf->Cell( $headerWidths[3], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
 $pdf->Cell( $headerWidths[4], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
 $pdf->Cell( $headerWidths[5], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
-$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format(  $totalAmount , 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($t_amount, 2), 1, 0, 'R'); 
 $pdf->Ln(); 
 
 $pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight, 'Total Cart Discounts', 1, 0, 'L'); 
@@ -203,11 +210,21 @@ $pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalCart, 2), 1, 0
 $pdf->SetTextColor(0);
 $pdf->Ln();
 
+
+$pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight, 'Total Customer Discount', 1, 0, 'L'); 
+$pdf->Cell( $headerWidths[3], $maxCellHeight, '', 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[4], $maxCellHeight, '', 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[5], $maxCellHeight, '', 1, 0, 'R');
+$pdf->SetTextColor(255, 0, 0); 
+$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalCustomerDiscount, 2), 1, 0, 'R'); 
+$pdf->SetTextColor(0);
+$pdf->Ln();
+
 $pdf->Cell($headerWidths[0]+$headerWidths[1] + $headerWidths[2], $maxCellHeight, 'Grand Total', 1, 0, 'L'); 
 $pdf->Cell( $headerWidths[3], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'R'); 
 $pdf->Cell( $headerWidths[4], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'R'); 
 $pdf->Cell( $headerWidths[5], $maxCellHeight, number_format($totalPrice, 2), 1, 0, 'R'); 
-$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($totalAmount-$totalCart, 2), 1, 0, 'R'); 
+$pdf->Cell( $headerWidths[6], $maxCellHeight, number_format($t_amount, 2), 1, 0, 'R'); 
 $pdf->SetFont('', 'I', 12); 
 $pdf->Ln(); 
 $pdf->Cell(0, 12, "NOTE: The total amount in this report has deductions applied for all discounts, including cart, item, and other discounts.***", 0, 'L');

@@ -97,6 +97,8 @@ $endDate = $_GET['endDate'] ?? null;
 if((empty($singleDateData) && empty($startDate) && empty($endDate)) || (!empty($singleDateData) && empty($startDate) && empty($endDate)))
 {
     $singleDateData = date('Y-m-d');
+    $startDate = $singleDateData;
+    $endDate = $singleDateData;
 }
 if($singleDateData !== null && ($startDate === null && $endDate === null))
 {
@@ -139,6 +141,7 @@ $pdf->SetDrawColor(0,0,0);
 $pdf->SetLineWidth(0.1); 
 
 $pdf->SetMargins(10, 10, 20); 
+
 
 $html = '<style>
              table {

@@ -795,7 +795,7 @@ body, div, h1, h2, h3, h4, h5, p{
               const db_totalSales = response.data.totalSales;
               const labels = response.data.labels;
               var allZeros = salesData.every(function(element) {
-                  return element === "0.00";
+                  return element === 0;
               });
          
               if(!allZeros)

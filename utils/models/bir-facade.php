@@ -6,10 +6,6 @@ class BirFacade extends DBConnection {
     public function getAllZread($startDate, $endDate) {
         $pdo = $this->connect();
 
-        if ($startDate == null && $endDate == null) {
-            return;
-        } 
-
         if(empty($startDate) && empty($endDate))
         {
             return;
@@ -18,6 +14,7 @@ class BirFacade extends DBConnection {
         $lastRowDate = "SELECT business_date.*, payments.business_date_id FROM `business_date` 
                     LEFT JOIN payments ON business_date.id = payments.business_date_id
                     ORDER BY `id` DESC LIMIT 1";
+
         $beginingOfBusiness = $pdo->prepare($lastRowDate);
         $beginingOfBusiness->execute();
         $lastDate = $beginingOfBusiness->fetch(PDO::FETCH_ASSOC);
@@ -50,6 +47,7 @@ class BirFacade extends DBConnection {
 
         $z_record = "SELECT * FROM `z_read`
                      WHERE DATE(`date_time`) BETWEEN ? AND ?";
+                     
         $z_all_reports = $pdo->prepare($z_record);
         $z_all_reports->execute([$startDate, $endDate]);
         $z_reports_data = $z_all_reports->fetchAll(PDO::FETCH_ASSOC);
@@ -147,6 +145,12 @@ class BirFacade extends DBConnection {
             'resetCount' => $resetCount,
             'z_counter' => $z_counter,
         ];
+
+
+        // echo json_encode([
+        //     'data' => $result,
+        // ]);
+
         return $result;
     }
   

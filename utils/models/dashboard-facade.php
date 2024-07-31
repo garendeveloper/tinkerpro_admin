@@ -632,7 +632,7 @@ $top_products = $sql->fetchAll(PDO::FETCH_ASSOC);
             }
             
             $chart_labels[] = $label;
-            $salesData[] = number_format($sales, 2);
+            $salesData[] = $sales;
             $totalSales += $sales;
         }
         
