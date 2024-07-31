@@ -372,6 +372,8 @@ class BirFacade extends DBConnection {
             
 
             if (max(0, (float)number_format($totalPaymentAmount, 2, '.', '')) != 0) {
+                $customerDisRef = $refunded_map[$payment_id]['customerDiscount'] ?? 0;
+                $totalRef = $refunded_map[$payment_id]['OriginalAmountRef'] ?? 0;
                 $result[] = [
                     'first_name' => $payments['first_name'],
                     'last_name' => $payments['last_name'],
@@ -382,7 +384,7 @@ class BirFacade extends DBConnection {
                     'customerID' => $payments['pwdOrScId'],
                     'discount_id' => $payments['discount_id'],
                     'user_id' => $payments['user_id'],
-                    'totalAmount' => (float)(number_format($payments['totalAmount'],2, '.', '') - $refunded_map[$payment_id]['OriginalAmountRef']),
+                    'totalAmount' => (float)(number_format($payments['totalAmount'] - $totalRef,2, '.', '')),
                     'discount_amount' => $payments['discount_amount'],
                     'prod_price' => (float)number_format($payments['prod_price'],2, '.', ''),
                     'is_paid' => $payments['is_paid'],
@@ -402,12 +404,12 @@ class BirFacade extends DBConnection {
                     'vat_amount' => (float)number_format($totalVat, 2, '.', ''),
                     'change_amount' => $payments['change_amount'],  
                     'barcode' => $payments['barcode'],
-                    'customer_discount' => (float)($payments['CUSTOMER_DIS'] - $refunded_map[$payment_id]['customerDiscount']), // Temporary Change
+                    'customer_discount' => (float)($payments['CUSTOMER_DIS'] - $customerDisRef), // Temporary Change
                     'totalRefAmount' => $refunded_map[$payment_id]['totalRefAmount'] ?? 0,
                     'overAllDiscounts' => $refunded_map[$payment_id]['overAllDiscounts'] ?? 0,
                     'credits' => $refunded_map[$payment_id]['credits'] ?? 0,
                     'cartDiscount' => $refunded_map[$payment_id]['cartDiscount'] ?? 0,
-                    'customerDiscount' => $refunded_map[$payment_id]['customerDiscount'] ?? 0,
+                    'customerDiscount' => $customerDis,
                     'itemDiscount_refunded' => $refunded_map[$payment_id]['itemDiscount'] ?? 0,
                     'date_refunded' => $refunded_map[$payment_id]['date'] ?? 0,
                     'vatRef' => $refunded_map[$payment_id]['vat_amount'] ?? 0,
