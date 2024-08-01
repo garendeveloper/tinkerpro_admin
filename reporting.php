@@ -107,6 +107,9 @@ if (isset($_SESSION['user_id'])) {
 .highlight {
   background-color: var(--primary-color);
 }
+.highlight:hover {
+  background-color: var(--primary-color) !important;
+}
 /* .allAnchrBtn.active{
   background-color: var(--active-bg-color);
 } */

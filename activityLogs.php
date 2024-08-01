@@ -385,25 +385,12 @@ select::-webkit-scrollbar-thumb {
       return formatter.format(now).replace(/[/\s:]/g, '_');
     }
 
-    function display_settings()
-    {
-      $.ajax({
-        type: 'get',
-        url: 'api.php?action=pos_settings',
-        success:function(response){
-          var defaultColor = "var(--primary-color)";
-          if(!$.isEmptyObject(response)){
-            $(".highlighted").css("--active-bg-color", response)
-          
-          }
-        }
-      })
-    }
+   
 
     $("#logTable tbody").on("click", "tr", function() {
-        $("#logTable tbody tr").removeClass('highlighted');
-        display_settings();
-      $(this).addClass('highlighted');
+        $("#logTable tbody tr").removeClass('highlighted-row');
+
+      $(this).addClass('highlighted-row');
     });
     $('#downloadFile').on('click', function() {
       var applicationType = $("#application").val() === "1" ? "Cashiering_Logs_"+getPHTDateTime() : "Back_Office_Logs_"+getPHTDateTime();

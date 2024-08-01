@@ -80,14 +80,14 @@
                 </button>
             </div> -->
             <div class="date-input-container">
-                <input type="text" name="date_counted" id="date_counted" style="height: 30px;  text-align: center" placeholder="Select date" oninput="$(this).removeClass('has-error')" readonly>
+                <input type="text" class = "toLock" name="date_counted" id="date_counted" style="height: 30px;  text-align: center" placeholder="Select date" oninput="$(this).removeClass('has-error')" readonly>
                 <i id="calendar-btn" class="bi bi-calendar3 calendar-icon"   aria-hidden="true"></i>
             </div>
         </div>
         <div class="fieldContainer">
             <div class="group left-aligned">
                 <div class="custom-select">
-                    <select name="qi_inventory_type" id = "qi_inventory_type"
+                    <select class = "toLock" name="qi_inventory_type" id = "qi_inventory_type"
                         style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
                         <option value="0">Select inventory type</option>
                         <!-- <option value="1">B.O.M Inventory</option> -->
@@ -95,7 +95,7 @@
                     </select>
                     <i class="bi bi-chevron-double-down"></i>
                 </div>
-                <button type = "button" style="font-size: 12px; height:30px; border-radius: 4px;" id="btn_go_inventory">
+                <button class = "toLock" type = "button" style="font-size: 12px; height:30px; border-radius: 4px;" id="btn_go_inventory">
                     DISPLAY ALL</button>
                 <!-- <div class="custom-select">
                     <select name="select_category" id = "select_category"
@@ -108,7 +108,7 @@
                 </div> -->
             </div>
             <div class="group right-aligned" style="display: flex; align-items: center;">
-                <button style="font-size: 12px; height: 30px; border-radius: 4px; width: 180px; " id="btn_open_print_count_modal" type = "button">
+                <button class = "toLock" style="font-size: 12px; height: 30px; border-radius: 4px; width: 180px; " id="btn_open_print_count_modal" type = "button">
                    <i class = "bi bi-printer"></i>&nbsp;&nbsp; Print Count Sheet</button>
             </div>
             
@@ -122,10 +122,10 @@
             <div class="search-container">
                 <input type="text" style = "display: none" id="invc_product_id" value="0">
                 <input type="text" style="width: 280px; height: 30px; font-size: 14px;"
-                    class="search-input italic-placeholder" placeholder="Search Product [barcode,name,brand]"
+                    class="search-input italic-placeholder toLock" placeholder="Search Product [barcode,name,brand]"
                     name="invc_product" onkeyup="$(this).removeClass('has-error')" id="invc_product" autocomplete="off">
             </div>
-            <button type = "button" style="font-size: 12px; height: 30px; width: 120px; border: 1px solid var(--primary-color); border-radius: 5px;"
+            <button class = "toLock" type = "button" style="font-size: 12px; height: 30px; width: 120px; border: 1px solid var(--primary-color); border-radius: 5px;"
                 id="btn_invcSearch">
                 Search</button>
         </div>
@@ -141,7 +141,7 @@
                 </tr>
             </thead>
         </table>
-    <div class = "scrollable">
+    <div class = "scrollable hasLockImage" style = "height: 52vh;" >
         <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh; margin-top: -5px;">
             <tbody style="border-collapse: collapse; border: none">
 

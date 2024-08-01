@@ -191,9 +191,9 @@
             </tr>
         </thead>
     </table>
-   <div class="scrollable">
-    <table id="tbl_lossand_damages" class="text-color table-border" style="margin-top: -3px; margin-bottom: 30vh">
-            <tbody style="border-collapse: collapse; border: none">
+   <div class="scrollable " style = "height: 40vh">
+        <table id="tbl_lossand_damages" class="text-color table-border " style="margin-top: -3px; margin-bottom: 30vh">
+            <tbody  style="border-collapse: collapse; border: none">
 
             </tbody>
         </table>

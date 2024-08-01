@@ -110,11 +110,7 @@ echo $html;
     height: auto; 
 }
 
-.highlightedss {
-    background: var(--primary-color);
-    color: #fff;
-    font-weight: bold;
-}
+
 
 table tbody td {
     border: 1px solid #292928;

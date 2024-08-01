@@ -25,7 +25,10 @@
             $date_purchased = date('F j, Y', strtotime($row['date_purchased']));
             $due_date = date('F j, Y', strtotime($row['due_date']));
             $isPaid = $row['isPaid'] === 1 ? "<span class='text-center badge-success'>Paid</span>" : "<span class='text-center badge-danger'>Unpaid</span>";
-            $is_received = $row['is_received'] === 1 ? "<span class='text-center badge-success' >Received</span>" : "<span class='text-center badge-warning' style = 'color: yellow;'>To Receive</span>";
+            $is_received = "<span class='text-center badge-warning' style = 'color: violet;'>To Receive</span>";
+            if($row['totalReceived'] == $row['totalQty']) $is_received = "<span class='text-center badge-success'>Received</span>";
+            if($row['totalReceived'] > 0 && ($row['totalReceived'] < $row['totalQty'])) $is_received = "<span class='text-center badge-warning' style = 'color: yellow;'>Partially Received</span>";
+
             $buttons = '<div >
                             <a id="btn_openUnpaidPayment" data-id='.$row['order_id'].' class="text-success productAnch " style="text-decoration: none;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-cash-stack" viewBox="0 0 16 16">
@@ -45,7 +48,7 @@
                                 </svg>
                             </a>
                         </div>';
-            if($row['isPaid'] === 1 && $row['is_received'] === 0)
+            if($row['isPaid'] === 1 && $row['totalReceived'] > 0 && ($row['totalReceived'] < $row['totalQty']))
             {
                 $buttons = '<div >
                                 <a id="btn_editOrder" data-id='.$row['order_id'].' class="text-success productAnch " style="text-decoration: none;">
@@ -62,11 +65,11 @@
                             </div>';
             }
 
-            if($row['is_received'] === 1  && $row['is_received'] === 1)
+            if($row['totalReceived'] == $row['totalQty'])
             {
                 $buttons = '<div >
                                 <a   class="text-success productAnch " style="text-decoration: none;" >
-                                    <i class="bi bi-node-minus" style = "font-size: 16px;"></i>
+                                     <i class="bi bi-lock" style = "color: red; font-size: 16px;"></i>
                                 </a>
                             </div>';
             }
@@ -77,6 +80,7 @@
                     <td data-id = '<?= $row['order_id'] ?>' class = "text-center unpaid_datePurchased"><?= $date_purchased ?></td>
                     <td class = "text-center"><?= $due_date ?></td>
                     <td class = "text-right "><?= number_format($row['totalQty'], 2)?></td>
+                    <td class = "text-right "><?= number_format($row['totalReceived'], 2)?></td>
                     <td class = "text-right"><?= number_format($row['totalPrice'], 2)?></td>
                     <td class = "text-right"><?= number_format($row['price'], 2)?></td>
                     <td class = "text-center"><?= $isPaid?></td>

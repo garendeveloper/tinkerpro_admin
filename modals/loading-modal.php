@@ -113,7 +113,7 @@
         <div class="modal-body">
             <div class="spinner"></div>
             <p id="animated-text" style="margin-top: 20px">
-                <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span> <span>P</span><span>l</span><span>e</span><span>a</span><span>s</span><span>e</span> <span>W</span><span>a</span><span>i</span><span>t</span><span>...</span>
+                <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span> <span>P</span><span>l</span><span>e</span><span>a</span><span>s</span><span>e</span> <span>W</span><span>a</span><span>i</span><span>t</span><span>&nbsp;&nbsp;<span class="progressText">0%</span></span>
             </p>
         </div>
     </div>
