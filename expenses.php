@@ -145,9 +145,7 @@ if (isset($_SESSION['user_id'])) {
   padding: 16px;
 }
 
-  .highlighteds{
-     border: 2px solid var(--primary-color) !important; 
-  }
+
   .paginationTag {
     text-decoration: none; 
     border: 1px solid #fefefe;
@@ -605,8 +603,8 @@ h1, label, textarea, input, table,h5{
     $("#responsive-data").on("click", "tr", function() {
       var expense_id = $(this).data("id");
       var product_id = $(this).data('product_id');
-      $("#tbl_expenses tbody").find("tr").removeClass('highlighted-row1')
-      $(this).toggleClass('highlighted-row1');
+      $("#tbl_expenses tbody").find("tr").removeClass('highlighted-row')
+      $(this).toggleClass('highlighted-row');
       if(product_id == 0)
       {
         $("#add_expense_modal").find(".modalHeaderTxt").html("Edit Expense");

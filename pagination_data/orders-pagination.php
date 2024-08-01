@@ -57,7 +57,8 @@
                           <th style='width: 4%;'>Supplier</th>
                           <th style='width: 2%;'>Date Purchased</th>
                           <th style='width: 2%;'>Due Date</th>
-                          <th style='width: 2%;'>Qty</th>
+                          <th style='width: 2%;'>Quantity Purchased</th>
+                          <th style='width: 2%;'>Quantity  Received</th>
                           <th style='width: 2%;'>Price</th>
                           <th style='width: 2%;'>Total</th>
                           <th style='width: 2%;'>Payment Status</th>

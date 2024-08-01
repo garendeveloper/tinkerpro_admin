@@ -1157,11 +1157,13 @@ class InventoryFacade extends DBConnection
         $po_number = $formData["po_number"];
         $isPaid = $formData["isPaid"];
         $order_id = $this->get_orderDataByPONumber($po_number)['id'];
+        $total_received = 0;
         foreach ($tbl_data as $row) 
         {
             $inventory_id = $row["inventory_id"];
             $qty_received = $row["qty_received"];
-    
+            $total_received += (float) $qty_received;
+
             $expired_date = null;
             if(isset($row["date_expired"]) && $row["date_expired"] !== "")
             {
@@ -1175,12 +1177,6 @@ class InventoryFacade extends DBConnection
             {
                 $is_serialized = $isSerialized ? 1 : 0;
                 $is_received_val = 1;
-
-                $sql = $this->connect()->prepare("UPDATE orders SET is_received = :is_received
-                    WHERE po_number = :po_number");
-                $sql->bindParam(":is_received", $is_received_val, PDO::PARAM_INT);
-                $sql->bindParam(":po_number", $po_number, PDO::PARAM_STR);
-                $sql->execute();
 
                 $product_info = $this->get_productInfoByInventoryId($inventory_id);
                 $product_id = $product_info['prod_id'];
@@ -1253,8 +1249,8 @@ class InventoryFacade extends DBConnection
                                                         VALUES (?, ?, ?, ?, ?, ?, ?)");
         
                     $stmt->bindParam(1, $product_id, PDO::PARAM_INT);
-                    $stmt->bindParam(2, $qty_received, PDO::PARAM_STR); 
-                    $stmt->bindParam(3, $stock_customer, PDO::PARAM_STR); 
+                    $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+                    $stmt->bindParam(3, $qty_received, PDO::PARAM_STR); 
                     $stmt->bindParam(4, $currentStock, PDO::PARAM_STR); 
                     $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
                     $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
@@ -1311,8 +1307,8 @@ class InventoryFacade extends DBConnection
         
                     $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
                     $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-                    $stmt->bindParam(3, $currentStock, PDO::PARAM_STR); 
-                    $stmt->bindParam(4, $qty_received, PDO::PARAM_STR); 
+                    $stmt->bindParam(3, $qty_received, PDO::PARAM_STR); 
+                    $stmt->bindParam(4, $currentStock, PDO::PARAM_STR); 
                     $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
                     $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
                     $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
@@ -1336,6 +1332,13 @@ class InventoryFacade extends DBConnection
                 }
             }
         }
+        $is_received = 1;
+        $sql = $this->connect()->prepare("UPDATE orders SET is_received = :is_received, totalReceived = totalReceived + :totalReceived
+                                        WHERE id = :id");
+        $sql->bindParam(":is_received", $is_received, PDO::PARAM_INT);
+        $sql->bindParam(":totalReceived", $total_received, PDO::PARAM_INT);
+        $sql->bindParam(":id", $order_id, PDO::PARAM_STR);
+        $sql->execute();
         return ['status' => true, 'msg' => 'Items has been successfully saved'];
     }
     

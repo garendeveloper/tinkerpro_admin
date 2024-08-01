@@ -1619,10 +1619,10 @@ input:checked + .warningSpan:before {
             <textarea  id="description" style="width: 92%; height: 120px; background-color: transparent; color:#fefefe" name="description"  class="description"></textarea>
           </div>
             <div class="button-container" style="display:flex;justify-content: right;">
-                <button onclick="addProduct()" class="btn-success-custom saveProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
-                <button hidden onclick="updateProducts()" class="btn-success-custom updateProductsBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
-                <button onclick="closeAddProductsModal()" class="cancelAddProducts btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
-            </div>
+                <button onclick="closeAddProductsModal()" class="cancelAddProducts btn-error-custom" style="margin-right: 10px; width: 100px; height: 40px">Cancel</button>
+                <button onclick="addProduct()" class="btn-success-custom saveProductsBtn" style="margin-right: 20px; width: 100px; height: 40px">Save</button>
+                <button hidden onclick="updateProducts()" class="btn-success-custom updateProductsBtn" style="margin-right: 20px; width: 100px; height: 40px">Update</button>
+              </div>
           </div>
           </div>
         </div>
