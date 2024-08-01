@@ -550,6 +550,21 @@ body, div, h1, h2, h3, h4, h5, p{
 <?php include "modals/dashboard_modal.php" ?>
 <?php include ("layout/footer.php") ?>
 <script>
+
+  function getSales() {
+    axios.post('api.php?action=getSales', {
+      'startDate' : '2024-08-01',
+      'endDate' : '2024-08-01'
+    })
+    .then(function(response) {
+      console.log(response.data)
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
+  }
+
+
   var originalColors = [];
 
   function printDiv() 
@@ -622,6 +637,9 @@ body, div, h1, h2, h3, h4, h5, p{
     }
 
   $(document).ready(function () {
+
+    getSales()
+
     var totalSales = 0;
     var totalCount = 0;
     setPredefinedPeriod("Today");  

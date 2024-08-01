@@ -187,6 +187,7 @@
                 <th style="background-color: #1E1C11; color:#ffffff; text-align:center">QTY</th>
                 <th style="background-color: #1E1C11; color:#ffffff; text-align:right">COST</th>
                 <th style="background-color: #1E1C11; color:#ffffff; text-align:right">TOTAL COST</th>
+                <th style="background-color: #1E1C11; color:#ffffff; text-align:right"></th>
             </tr>
         </thead>
     </table>
@@ -335,6 +336,10 @@
                 };
             });
         }
+        $("#tbl_lossand_damages tbody").off('click').on("click", ".removeItem", function(){
+            $(this).closest('tr').remove();
+            updateTotal();
+        });
         function append_to_table()
         {
             var product_id = $("#loss_and_damage_input_inventory_id").val();
@@ -349,6 +354,7 @@
                     row += "<td style = 'text-align:center; width: 50px' ><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' autocomplete = 'off'></input></td>";
                     row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
                     row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
+                    row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";
                     row += "</tr>";
                     // if (data["isSerialized"] === 1) {
                     //     var sub_row = data["sub_row"];
@@ -568,18 +574,6 @@
       
       })
 
-    //   $("#loss_and_damage_input").on("autocompletechange", function(event, ui) {
-    //     var product_id = $("#loss_and_damage_input_inventory_id").val();
-        
-    //     if (!isDataExistInTable(product_id)) {
-    //         append_to_table();
-    //     }
-    //     else
-    //     {
-    //       show_errorResponse("Product already in the table");
-    //     }
-    //       $(this).val('');
-    //   });
         function show_reference_no() {
             $.ajax({
                 type: 'get',

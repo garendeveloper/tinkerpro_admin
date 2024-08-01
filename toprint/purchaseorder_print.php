@@ -85,19 +85,54 @@ class MYPDF extends TCPDF {
         $this->Line(10, 52, 200, 52);
 
         // $imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
-        // $imageWidth = 45; 
-        // $imageHeight = 15; 
-        // $imageX = 150; 
+        $imageWidth = 45; 
+        $imageHeight = 15; 
+        $imageX = 150; 
         // $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
 
-        $ipAddress = gethostbyname(gethostname());
-        $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
+//         $ipAddress = gethostbyname(gethostname());
+//         $imageFile = "http://{$ipAddress}/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
+    
+//         $imageWidth = 35; 
+// $imageHeight = 25; 
+// $imageX = 150; 
 
-        $imageWidth = 35; 
-        $imageHeight = 25; 
-        $imageX = 150; 
-        $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+// // Check if the URL is correct
+// if (file_exists($imageFile)) {
+//     $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight);
+// } else {
+//     echo "File does not exist.";
+// }
+// $ipAddress = gethostbyname(gethostname());
+// $imageFileUrl = "http://{$ipAddress}/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
+
+// if ($this->fileExistsViaHttp($imageFileUrl)) {
+//     $this->Image($imageFileUrl, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight);
+// } else {
+//     echo "File does not exist.";
+// }
+        $serverFilePath = $_SERVER['DOCUMENT_ROOT'] . "/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
+
+        if (file_exists($serverFilePath)) {
+            $this->Image($serverFilePath, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight);
+        } else {
+            echo "File does not exist.";
+        }
+        // $imageWidth = 35; 
+        // $imageHeight = 25; 
+        // $imageX = 150; 
+        // $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
      
+    }
+    public function fileExistsViaHttp($url) {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_exec($ch);
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return $statusCode == 200;
     }
     public function Footer() 
     {

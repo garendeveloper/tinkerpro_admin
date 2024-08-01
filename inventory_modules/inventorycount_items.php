@@ -136,7 +136,8 @@
                     <th style="background-color: #1E1C11; color: #ffffff; width: 50%; ">ITEM DESCRIPTION</th>
                     <th style="background-color: #1E1C11; color: #ffffff;text-align:center">QTY</th>
                     <th style="background-color: #1E1C11; color: #ffffff;text-align:center">COUNTED</th>
-                    <th style="background-color: #1E1C11; color: #ffffff; text-align:right">DIF.</th>
+                    <th style="background-color: #1E1C11; color: #ffffff; text-align:center">DIF.</th>
+                    <th style="background-color: #1E1C11; color: #ffffff; text-align:right"></th>
                 </tr>
             </thead>
         </table>
@@ -199,7 +200,9 @@
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-
+        $("#tbl_inventory_count tbody").off('click').on("click", ".removeItem", function(){
+            $(this).closest('tr').remove();
+        });
         $("#btn_go_inventory").off("click").on("click", function (e) {
             e.preventDefault();
             var search_value = $("#qi_inventory_type").val();
@@ -220,6 +223,7 @@
                         row += "<td style = 'text-align:center; width: 50px;'>"+data[i].product_stock+"</td>";
                         row += "<td class = 'text-center; width: 50px;'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  autocomplete = 'off' required></input></td>";
                         row += "<td style = 'text-align: right; width: 50px;'></td>";
+                        row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";
                         row += "</tr>";
                     }
                     $("#tbl_inventory_count tbody").html(row);
@@ -460,6 +464,7 @@
                     row += "<td style = 'text-align:center'>" + data['product_stock'] + "</td>";
                     row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'counted' style = 'width: 60px; text-align: center; height:20px;' autocomplete = 'off'></input></td>";
                     row += "<td style = 'text-align: right'></td>";
+                    row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";
                     row += "</tr>";
                     $("#tbl_inventory_count tbody").append(row);
                 }

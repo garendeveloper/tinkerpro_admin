@@ -28,7 +28,7 @@ try {
     $headers = [
         'Name', 'SKU', 'Barcode', 'Cost', 'Markup', 'Price', 'Tax',
         'IsTaxInclusivePrice', 'IsPriceChangeAllowed', 'IsUsingDefaultQuantity',
-        'IsService', 'IsEnabled', 'isDiscounted', 'Stockable','UOM'
+        'IsService', 'IsEnabled', 'isDiscounted', 'Stockable','UOM','Stock Qty', 'Low Stock Warning'
     ];
 
     header('Content-Type: text/csv');
@@ -59,6 +59,8 @@ try {
             $row['is_discounted'] ?? 0,
             $row['is_stockable'] ?? 0,
             $row['uom_id'] ?? 0,
+            $row['product_stock'] ?? 0,
+            $row['stock_count'] ?? 0,
         ];
 
         if (fputcsv($output, $data) === false) {
