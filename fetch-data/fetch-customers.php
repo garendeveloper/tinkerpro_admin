@@ -19,9 +19,9 @@ while ($row = $customer->fetch(PDO::FETCH_ASSOC)) {
     <tr class="table-row customer-row">
     <td class='text-center td-h' style="border-left: 1px solid transparent !important"><?= $counter?></td>
     <td hidden class='text-center action-td td-h'><span class="userId"><?= $row['id'] ?? null ?></span><span class="customerId"><?= $row['customerId'] ?? null ?></span></td>
-    <td class='text-center text-light'><span class="firstName text-light"><?= $row['firstname'] ?? null ?></span>&nbsp;<span class="lastName text-light"><?= $row['lastname'] ?? null ?></span></td>
-    <td class='text-center action-td td-h customerContact'><?= $row['contact'] ?? null ?></td>
-    <td class='text-center action-td td-h customerCode'><?= $row['code'] ?? null ?></td>
+    <td class='text-light'><span class="firstName text-light"><?= $row['firstname'] ?? null ?></span>&nbsp;<span class="lastName text-light"><?= $row['lastname'] ?? null ?></span></td>
+    <td class='action-td td-h customerContact'><?= $row['contact'] ?? null ?></td>
+    <td class='action-td td-h customerCode'><?= $row['code'] ?? null ?></td>
     <td class='text-center action-td td-h '>
     <?= ($row['type'] ?? null) == 0 ? 'customer' : 'employee' ?>
     </td>
@@ -30,8 +30,8 @@ while ($row = $customer->fetch(PDO::FETCH_ASSOC)) {
     <td hidden class='text-center action-td td-h dueDate'><?= $row['dueDateInterval'] ?? null ?></td>
     <td hidden class='text-center action-td td-h taxExempt'><?= $row['is_tax_exempt'] ?? null ?></td>
     <td hidden class='text-center action-td td-h customerType'><?= $row['type'] ?? null ?></td>
-    <td class='text-center action-td td-h customerEmail'><?= $row['email'] ?? null ?></td>
-    <td class='text-center action-td td-h customerAddress'><?= $row['address'] ?? null ?></td>
+    <td class='action-td td-h customerEmail'><?= $row['email'] ?? null ?></td>
+    <td class='action-td td-h customerAddress'><?= $row['address'] ?? null ?></td>
     <td class='text-center action-td td-h' style="border-right: 1px solid transparent !important">
         <a class='text-success editCustomer' style='text-decoration: none;'>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-square" viewBox="0 0 16 16">
