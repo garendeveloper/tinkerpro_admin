@@ -340,13 +340,24 @@ button:hover {
   .highlighteds{
     background: var(--primary-color);
   }
-
+  .highlighteds:hover{
+    background: var(--primary-color) !important;
+  }
+  .highlightedss {
+      background: var(--primary-color);
+  }
+  .highlightedss:hover {
+      background: var(--primary-color) !important;
+  }
   .table-row:hover {
     background: #292928;
   }
-  .highlighted-row {
-    border: 2px solid green !important;
-}
+  .highlighted-row{
+    background-color: var(--primary-color);
+  }
+  .highlighted-row:hover {
+      background-color: var(--primary-color) !important;
+  }
 .card {
   background-color: #1e1e1e;
   border-color: #242424;
@@ -530,6 +541,19 @@ button:hover{
     color: #fff;
 }
 
+
+/* 
+.progress-text {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      color: #333;
+  } */
 
 
 </style>

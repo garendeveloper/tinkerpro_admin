@@ -123,9 +123,11 @@
             echo json_encode($order->delete_purchaseOrder($_GET["id"]));
             break;
         case 'get_allInventories':
-            $currentPage = isset($_GET['pageSize']) ? $_GET['pageSize'] : 1;
-            $page = isset($_GET['page']) ? $_GET['page'] : 300;
-            echo json_encode($inventory->get_allInventories($page, $currentPage));
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $itemsPerPage = 100;
+            $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+            $offset = ($page - 1) * $itemsPerPage;
+            echo json_encode($inventory->get_allInventories($searchTerm, $offset, $itemsPerPage));
             break;
         case 'get_allStocksData':
             echo json_encode($inventory->get_allStocksData($_GET['inventory_id']));

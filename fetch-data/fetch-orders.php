@@ -66,7 +66,7 @@
             {
                 $buttons = '<div >
                                 <a   class="text-success productAnch " style="text-decoration: none;" >
-                                    <i class="bi bi-node-minus" style = "font-size: 16px;"></i>
+                                     <i class="bi bi-lock" style = "color: red; font-size: 16px;"></i>
                                 </a>
                             </div>';
             }

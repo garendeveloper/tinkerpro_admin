@@ -52,7 +52,7 @@ class MYPDF extends TCPDF {
        
         $this->Ln(8);
         $this->SetFont('helvetica', 'B', 12);
-        $this->Cell(0, 1, "DELIVERY RECEIPT", 0, false, 'L', 0, '', 0, false, 'L', 'M');
+        $this->Cell(0, 1, "PURCHASE ORDER RECEIPT", 0, false, 'L', 0, '', 0, false, 'L', 'M');
         $this->Ln();
         $this->Cell(0, 1, "{$shop['shop_name']}", 0, false, 'L', 0, '', 0, false, 'L', 'M');
         $this->Ln();
@@ -151,7 +151,7 @@ $pdf = new MYPDF('P', 'mm', 'A4');
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor("{$shop['shop_name']}");
 $pdf->SetTitle('PURCHASE ORDER');   
-$pdf->SetSubject('UNPAID PURCHASE ORDER');
+$pdf->SetSubject('PURCHASE ORDER');
 $pdf->SetKeywords('TCPDF, PDF, PURCHASES, Summary, guide');
 $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
 
@@ -207,7 +207,7 @@ $html .= '<table border = "0" cellpadding="2" id = "tblHeader">
             <thead>
                 <tr>
                     <th style = "width: 65%">Bill to</th>
-                    <th style = "width: 25%">DR No.: </th>
+                    <th style = "width: 25%">PO No.: </th>
                     <th style = "width: 25%">'.$items[0]['po_number'].'</th>
                 </tr>
                 <tr>

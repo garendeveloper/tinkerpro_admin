@@ -418,14 +418,11 @@ i:hover{
           </div>
         </div>
      
-        <div class="row" >
+        <div class="row mainData" >
           <!-- <div class="inventoryHeader" style="width: 100%;background-color: #151515; height: 10vh; margin-top: -20px; margin-left: 4px; padding: 10px;">
           
           </div> -->
-          <div class="card inventoryCard" style="width: 100%;background-color: #1e1e1e; height: 64vh; margin-top: -10px; margin-left: 5px;">
-
-          </div>   
-          <div id="paginationDiv" ></div>
+         
           <!-- <div style="display: flex; ">
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg
                 version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg"
@@ -502,7 +499,7 @@ i:hover{
               }
 
             </style>
-            <div id = "preview_records"></div>
+        
             <!-- <table class = "" style = "background-color: none" id = "tbl_preview">
               <tbody>
           
@@ -693,8 +690,7 @@ i:hover{
               url: './pagination_data/inventory-pagination.php', 
               type: 'GET',
               success: function(response) {
-                  $('#paginationDiv').html(response)
-                  $("#searchInput").val("");
+                  $('.mainData').html(response)
               },
               error: function(xhr, status, error) {
                   console.error(xhr.responseText); 
@@ -1072,15 +1068,15 @@ i:hover{
         $("#stockhistory_modal #inventory_id").val(id);
         display_allStocksData(id);
       })
-      $(".inventoryCard").on("dblclick", "tr", function(){
-
+      $(".inventoryCard tbody").on("dblclick", "tr", function(e){
+        e.preventDefault();
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
-
         var id = $(this).data('id');
         var active_tbl_id = $(".inventoryCard table").attr('id');
+
         switch(active_tbl_id)
         {
           case 'tbl_products':

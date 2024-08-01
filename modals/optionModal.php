@@ -1150,6 +1150,32 @@ input[type="text"] {
     overflow: auto;
 }
 
+.hasLockImage {
+    background-image: url("./assets/img/lock-image.png");
+    background-size: cover; 
+    background-repeat: no-repeat;
+}
+
+.lock{
+    pointer-events: none; 
+    opacity: 0.6; 
+    color: gray; 
+    background-color: #262626;
+    user-select: none; 
+}
+
+.lock input {
+    background-color: #262626;
+    cursor: not-allowed; 
+}
+
+.lockButton{
+    background-color: red;
+    opacity: 0.7;
+    cursor: not-allowed; 
+    pointer-events: none; 
+}
+        
 </style>
 <?php include "layout/admin/slider.php"?>
 

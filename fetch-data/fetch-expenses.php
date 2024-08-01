@@ -21,7 +21,7 @@
         foreach($data as $row)
         {
             ?> 
-                <tr  data-id = '<?= $row['id'] ?>'>
+                <tr  data-id = '<?= $row['id'] ?>' data-product_id = '<?= $row['product_id']?>'>
                     <td class = "text-center"><?= $counter?></td>
                     <td><?= $row['item_name'] === "" ? $row['product'] : $row['item_name']?></td>
                     <td class = "text-center"><?= $row['date_of_transaction']?></td>
@@ -37,7 +37,7 @@
                     <td class='text-center'  style="padding: 2px" >
                         <?php if($row['product_id'] !== 0) {?>
                         <a   class="text-success productAnch " style="text-decoration: none;" >
-                            <i class="bi bi-node-minus"></i>
+                            <i class="bi bi-lock" style = "color: red; font-size: 16px;"></i>
                         </a>
                         <?php }?>
                         <?php if($row['product_id'] == 0) {?>

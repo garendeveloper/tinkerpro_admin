@@ -249,11 +249,16 @@ table thead th{
 <script>
     $(document).ready(function(){
         var productsCache = [];
+        var totalQty = 0;
+        var totalPrice = 0;
+        var total = 0;
+        var totalTax = 0;
+
         $("#btn_omPayTerms").off('click').on("click", function(e){
         e.preventDefault();
         $("#unpaid_purchase_modal").fadeIn(200);
       })
-   
+      
       show_allProducts();
       $('#prod_form input').on('keypress', function(event) {
           if (event.keyCode === 13) {
@@ -304,7 +309,7 @@ table thead th{
       })
       $("#tbl_purchaseOrders tbody").on("dblclick", "tr", function() {
           $("#prod_form #p_qty").focus();
-          var productId = $(this).find("td[data-id]").data("id");
+          var productId = $(this).data("rowid");
           var qty_purchased = $(this).find("td:nth-child(2)").text();
           var price = clean_number($(this).find("td:nth-child(3)").text());
 
@@ -420,32 +425,12 @@ table thead th{
             }
             else
             {
-              show_errorResponse("Product not found1.")
+              show_errorResponse("Product not found.")
             }
           }
         }
       
       })
-
-      // $("#product").on("autocompletechange", function(event, ui) {
-      //   var product_id = $("#selected_product_id").val();
-      //   hidePopups();
-      //   if(product_id !== "" || product_id !== "0")
-      //   {
-          
-      //     if (!isDataExistInTables(product_id)) {
-      //       var qty = 0;
-      //       var price = 0;
-      //       show_purchaseQtyModal(product_id, qty, price);
-      //     }
-      //     else
-      //     {
-      //       show_errorResponse("Product already exists in the purchase table")
-      //     }
-      //   }
-      //   $("#selected_product_id").val("0");
-      //   $("#product").val("");
-      // });
     
       function check_ifProductCacheExists(product_id)
       {
@@ -469,7 +454,8 @@ table thead th{
     //     }
     // });
     function updateTotal() {
-        var totalQty = 0;
+    
+      var totalQty = 0;
         var totalPrice = 0;
         var total = 0;
         var totalTax = 0;
@@ -563,7 +549,82 @@ table thead th{
           },
       });
      
-     
+      function reset_poFooter()
+      {
+        $("#totalTax").html("Tax: 0.0");
+        $("#totalQty").html("0.0");
+        $("#totalPrice").html("0.0");
+        $("#overallTotal").html("0.0");
+      }
+      $("#prod_form").on("submit", function (event) {
+        event.preventDefault();
+        // reset_poFooter();
+        if (validateProductForm()) {
+          var p_qty = parseFloat($("#p_qty").val());
+          var price = parseFloat($("#price").val());
+          var product_id = $("#selected_product_id").val();
+          var total = (price * p_qty);
+          $.ajax({
+            type: 'get',
+            url: 'api.php?action=get_productInfo',
+            data: { data: product_id },
+            success: function (data) {
+              var tax = 0;
+              if (data['isVat'] === 1) {
+                tax = (price / 1.12);
+                totalTax += (price - tax);
+              }
+              else totalTax += 0;
+
+              totalQty += p_qty;
+              totalPrice += price;
+              overallTotal += total;
+             
+
+              var $rowToUpdate = $("#tbl_purchaseOrders tbody").find("tr[data-rowid='" + product_id + "']");
+                if ($rowToUpdate.length > 0) {
+                    $rowToUpdate.find("td").eq(0).text(data['prod_desc']);
+                    $rowToUpdate.find("td").eq(1).text(p_qty); 
+                    $rowToUpdate.find("td").eq(2).html("&#x20B1;&nbsp;" + addCommasToNumber(price)); 
+                    $rowToUpdate.find("td").eq(3).html("&#x20B1;&nbsp;" + addCommasToNumber(total)); 
+                } 
+              else
+              {
+                $("#tbl_purchaseOrders tbody").append(
+                  "<tr data-rowid = "+data['id']+">" +
+                  "<td data-rowid = "+data['id']+" data-id = " + data['id'] + " data-inv_id = " + data['inventory_id']+ " data-qty = " + p_qty+ " data-price = " + price + " >" + data['prod_desc'] + "</td>" +
+                  "<td style = 'text-align: center' class ='editable'>" + p_qty + "</td>" +
+                  "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(price) + "</td>" +
+                  "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(total) + "</td>" +
+                  "<td style = 'text-align: right; width: 0px;'><i class = 'bi bi-trash' id = 'removeOrder'></i></td>"+
+                  "</tr>"
+                );
+              }
+              
+              // totalTax += total
+              // totalQty += quantity;
+              // totalPrice += price;
+              // total += subtotal;
+
+               $("#totalTax").html(totalTax.toFixed(2));
+              $("#totalQty").html(totalQty);
+              $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice.toFixed(2)));
+              $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(overallTotal.toFixed(2)));
+
+              $("#purchaseQty_modal").hide();
+              $("#prod_form")[0].reset();
+              $("#product").val("");
+              $("#item_verifier").val("");
+              // updateTotal();
+            
+            }
+          })
+
+          
+          $("#product").val('');
+            $("#selected_product_id").val("0");
+        }
+      })
     
     })
 </script>

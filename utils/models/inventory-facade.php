@@ -115,8 +115,6 @@ class InventoryFacade extends DBConnection
                                             WHERE 
                                                 p.prod_desc LIKE :searchQuery OR 
                                                 p.barcode LIKE :searchQuery OR 
-                                                p.sku LIKE :searchQuery OR 
-                                                p.code LIKE :searchQuery OR 
                                                 p.brand LIKE :searchQuery 
                                             GROUP BY i.product_id
                                             ORDER BY p.prod_desc ASC LIMIT  10");
