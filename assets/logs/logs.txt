@@ -4060,3 +4060,10 @@
 2024-08-02 10:26:59 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-02 10:41:06 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-02 10:46:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 10:52:08 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
+2024-08-02 10:56:32 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 11:01:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TATTOOS CORN TUBE Barcode #:4806521791528 
+2024-08-02 11:03:01 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 11:12:08 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 11:18:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 11:27:44 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

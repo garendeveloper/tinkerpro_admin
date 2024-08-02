@@ -51,12 +51,22 @@ $pdf->SetKeywords('TCPDF, PDF, Expenses, table');
 $pdf->AddPage();
 
 
+// $pdf->SetCellHeightRatio(1.5);
+// $imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
+// $imageWidth = 45; 
+// $imageHeight = 15; 
+// $imageX = 10; 
+// $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
 $pdf->SetCellHeightRatio(1.5);
-$imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
-$imageWidth = 45; 
-$imageHeight = 15; 
+$ipAddress = gethostbyname(gethostname());
+$imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
+
+$imageWidth = 30; 
+$imageHeight = 30; 
 $imageX = 10; 
-$pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+$serverFilePath = $_SERVER['DOCUMENT_ROOT'] . "/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
+$pdf->Image($serverFilePath, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+$pdf->SetFont('', 'I', 8);
 $pdf->SetFont('', 'I', 8);
 
 
@@ -120,7 +130,7 @@ $header = array('Revenue', $current_date);
 $headerWidths = array(108, 80);
 $maxCellHeight = 5; 
 
-$pdf->SetFillColor(152, 251, 152);
+$pdf->SetFillColor(211, 211, 211);
 $pdf->SetFont('', 'B', 9);
 $pdf->Cell($headerWidths[0], $maxCellHeight, $header[0], 1, 0, 'L', true);
 $pdf->Cell($headerWidths[1], $maxCellHeight, $header[1], 1, 0, 'R', true);
@@ -151,7 +161,7 @@ $pdf->SetFont('', '', autoAdjustFontSize($pdf, "0.00", 80));
 $pdf->Ln(); 
 
 $pdf->SetFont('', 'B', 9);
-$pdf->SetFillColor(152, 251, 152);
+$pdf->SetFillColor(211, 211, 211);
 $pdf->Cell(108, $maxCellHeight, "Total Revenues", 1, 0, 'L', true);
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 108));
 $pdf->SetFont('', 'B', 8);
@@ -233,65 +243,24 @@ $pdf->Cell(80, $maxCellHeight, number_format($income_tax_expense, 2), 1, 0, 'R',
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($income_tax_expense, 2), 80));
 $pdf->Ln(); 
 
-// $pdf->SetFont('', 'B', 9);
-// $pdf->SetFillColor(152, 251, 152);
-// $pdf->Cell(108, $maxCellHeight, "Income from Continuing Operations", 1, 0, 'L', true);
-// $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 108));
-// $pdf->SetFont('', 'B', 8);
-// $pdf->Cell(80, $maxCellHeight, number_format($total_expenses, 2, '.', ','), 1, 0, 'R', true);
-// $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($total_expenses, 2, '.', ','), 80));
-// $pdf->Ln(); 
-// $pdf->Ln(); 
-
-// $pdf->SetFont('', 'B', 9);
-// $pdf->SetFillColor(255, 218, 185);
-// $pdf->Cell(108, $maxCellHeight, "Below-the-Line Items", 1, 0, 'L', true);
-// $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 108));
-// $pdf->SetFont('', 'B', 8);
-// $pdf->Cell(80, $maxCellHeight, "Amount(Php)", 1, 0, 'R', true);
-// $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 80));
-// $pdf->Ln(); 
-
-// $lossanddamages = $lossanddamageFacade->get_consolidatedLossAndDamages($startDate, $endDate, $singleDateData);
-// $lossanddamages = $lossanddamages['totalAmountDamage'] ?? 0;
-// $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C');
-// $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 15));
-// $pdf->Cell(93, $maxCellHeight, "Loss and Damages Product", 0, 0, 'L');
-// $pdf->SetFont('', '', autoAdjustFontSize($pdf, "Loss and Damages Product", 93));
-// $pdf->SetTextColor(255, 102, 102); 
-// $pdf->SetFillColor(255, 255, 255);
-// $pdf->SetFont('', 'B', 8);
-// $pdf->Cell(80, $maxCellHeight, number_format($lossanddamages, 2, '.', ','), 1, 0, 'R', true);
-// $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($lossanddamages, 2, '.', ','), 80));
-// $pdf->Ln(); 
 $pdf->Ln(); 
 
 $net_income = $net_incomeAfterTax;
 
 $pdf->SetFont('', 'B', 9);
 $pdf->SetTextColor(0, 0, 0);
-$pdf->SetFillColor(152, 251, 152);
+$pdf->SetFillColor(211, 211, 211);
 $pdf->Cell(108, $maxCellHeight, "Net Income", 0, 0, 'L', true);
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 108));
 
 $pdf->SetTextColor(0, 0, 0);
-$pdf->SetFillColor(152, 251, 152);
+$pdf->SetFillColor(211, 211, 211);
 $pdf->SetFont('', 'B', 8);
 $pdf->Cell(80, $maxCellHeight, number_format($net_income, 2, '.', ','), 1,0, 'R', true);
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($net_income, 2, '.', ','), 80));
 
 $pdf->Ln(); 
 
-
-
-// $pdf->Output('income_statement.pdf', 'I');
-// $pdfPath = __DIR__ . '/../assets/pdf/income_statement/income_statement.pdf';
-
-// if (file_exists($pdfPath)) {
- 
-//     unlink($pdfPath);
-// }
-// $pdf->Output($pdfPath, 'F');
 $pdfPath = $pdfFolder . 'income_statement.pdf';
 $pdf->Output($pdfPath, 'F');
 
