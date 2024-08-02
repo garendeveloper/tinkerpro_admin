@@ -516,7 +516,7 @@ body, div, h1, h2, h3, h4, h5, p{
             </div>
             <div class="col-12 col-md-8 ">
               <div class="border p-3 col1">
-                <h5>Top Products </h5>
+                <h5>Top Products <i style = "font-style: italic; font-size: 10px;">Note: This product is gross and does not include discounts.</i></h5>
                 <p class="sub-title">Lead products in selected period (top <span id = 'topitem_identifier'>5</span>)</p>
                   <table   class = "text-color table-border tbl_dashboard" >
                     <thead>

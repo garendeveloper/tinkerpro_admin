@@ -520,6 +520,16 @@
             $endDate = isset($data->endDate) ? $data->endDate : '';
             $dashboard->getTopProducts($startDate, $endDate);
             break;
+        case 'getValidateCustomer':
+            $customerId = isset($data->customerId) ? $data->customerId : null;
+            $userFacade->getValidateCustomer($customerId);
+            break;
+        case 'getDeleteCustomer':
+            $customerId = isset($data->customerId) ? $data->customerId : null;
+            $typeFunction = isset($data->typeFunction) ? $data->typeFunction : 0;
+            
+            $userFacade->deleteCustomer($customerId, $typeFunction);
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

@@ -533,17 +533,58 @@ public function defaultCouponExpiration($value){
 
     return $stmtSetDefault;
 }
-public function getDefaultDate(){
-    $sql = $this->connect()->prepare("SELECT *
-    FROM coupon_expiration WHERE `default` = 1");
+    public function getDefaultDate(){
+        $sql = $this->connect()->prepare("SELECT *
+        FROM coupon_expiration WHERE `default` = 1");
 
-        $sql->execute();
-        $default = $sql->fetchAll(PDO::FETCH_ASSOC);
-        return $default;
-}
+            $sql->execute();
+            $default = $sql->fetchAll(PDO::FETCH_ASSOC);
+            return $default;
+    }
 
 
+    public function deleteCustomer($customerId, $typeFunction) {
+        $pdo = $this->connect();
 
+        if ($typeFunction == 0) {
+            $udpateUser = $pdo->prepare("UPDATE `users` SET `status_id`= 2 WHERE `id` = ?");
+            $udpateUser->execute([$customerId]);
+            
+            echo json_encode([
+                'type' => 'Updated',
+                'success' => true,
+                'data' => 'Success Delete',
+            ]);
+        } else {
+            
+            $deleteCustomer = $pdo->prepare('DELETE FROM `users` WHERE id = ?');
+            $deleteCustomer->execute([$customerId]);
+    
+            echo json_encode([
+                'type' => 'deleted',
+                'success' => true,
+                'data' => 'Success Delete',
+            ]);
+        }
+    }
+    
+
+    public function getValidateCustomer($customerId) {
+        $pdo = $this->connect();
+        $validate = $pdo->prepare('SELECT * FROM transactions WHERE user_id = ? LIMIT 1');
+        $validate->execute([$customerId]);
+
+        $res = $validate->fetch(PDO::FETCH_ASSOC);
+        if(!empty($res)) {
+            echo json_encode([
+                'isTransact' => true,
+            ]);
+        } else {
+            echo json_encode([
+                'isTransact' => false,
+            ]);
+        }
+    }
 }
 
 ?>

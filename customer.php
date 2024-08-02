@@ -125,9 +125,10 @@
   font-size: 12px !important;
 }
 
-.table-border th{
+.table-border th {
   background-color: transparent !important;
   color: var(--primary-color) !important;
+  border: none !important;
 }
 .text-color{
     color: #ffff;
@@ -154,6 +155,19 @@
     -moz-user-select: none;   
     -ms-user-select: none;  
     user-select: none;   
+  }
+
+
+  .containerTable::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .containerTable::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .containerTable::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 
 </style>
@@ -195,31 +209,30 @@
           <div>
           <div class="row">
             <div>
-              <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex"  style="height:76vh; width: 100%">
-                <!-- <div class="card-body"> -->
+              <div class="card p-0 d-flex">
+                <table class="text-color table-border containerTable" style = "border: none !important">
+                  <thead>
+                    <tr style="border: none !important">
+                      <th class="text-center col-1" style="border-left: 1px solid transparent !important">No.</th>
+                      <th class="text-center col-2">Customer</th>
+                      <th class="text-center col-1">Contact</th>
+                      <th class="text-center col-2">Code/Employee ID</th>
+                      <th class="text-center col-1">Type</th>
+                      <th class="text-center col-2">Email</th>
+                      <th class="text-center col-2">Address</th>
+                      <th class="text-center col-1" style="border-right: 1px solid transparent !important">Action</th>
+                    </tr>
+                  </thead>
+                </table>
+
+                <div class="ms-1 p-0 d-flex containerTable"  style="height:76vh; width: 100%; overflow-y: auto;">
                   <?php include('errors.php'); ?>
-                  <div class="table-container" style="background: yellow">
-                    <div class="productTable" style="background: red">
-                      <table id="recentcustomer" class="text-color table-border" style = "width: 100%">
-                        <thead>
-                          <tr>
-                            <th class="text-center" style="width: 2%; border-left: 1px solid transparent !important">No.</th>
-                            <th class="text-center" style="width: 15%;">Customer</th>
-                            <th class="text-center" style="width: 15%;">Contact</th>
-                            <th class="text-center" style="width: 15%;">Code/Employee ID</th>
-                            <th class="text-center" style="width: 15%;">Type</th>
-                            <th class="text-center" style="width: 15%;">Email</th>
-                            <th class="text-center" style="width: 15%;">Address</th>
-                            <th class="text-center" style="width: 7%; border-right: 1px solid transparent !important">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody id="fetchCustomer">
-                          
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                <!-- </div> -->
+                    <table id="recentcustomer" class="text-color table-border" style = "width: 100%">
+                      <tbody id="fetchCustomer">
+                        
+                      </tbody>
+                    </table>
+                </div>
               </div>
 
               <div id="paginationDiv" class="paginactionClass">
@@ -241,12 +254,117 @@
   </div>
   <!-- container-scroller -->
 
-<?php include("layout/footer.php") ?>
+<?php 
+  include("layout/footer.php");
+  include('./modals/delete_modal.php');
+?>
 <script>
 
 
-  showPaginationBtn('customer')
+  $(document.body).on('click', '.deleteCustomer', function() {
+    var warningDelete = ``;
+    $("#deleteProdModal").show();
+    var closestTableRow = $(this).closest('tr');
+    var Id = closestTableRow.find('.userId').text();
+    var customerName = closestTableRow.find('.firstName').text() + ' ' + closestTableRow.find('.lastName').text();
+    $('.ProdName').text(customerName);
 
+    axios.post('api.php?action=getValidateCustomer', {
+      'customerId': Id,
+    }).then(function(res) {
+      // Validate First if the customer has a previous transactions
+      if(res.data.isTransact) {
+        $('.deleteProductItem').html(`
+           <span>
+            <i class="bi bi-check2-circle" style = "color: white"></i>
+          </span>UPDATE
+        `);
+        warningDelete = `
+        <div class="d-flex justify-content-center text-center align-items-center w-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+          </svg>
+        </div>
+        <div class="d-flex align-items-center justify-content text-center mt-2">
+          <h4 class="w-100">Unable to delete. Would you like to change the status to <span style="color: var(--primary-color)" >"INACTIVE"</span> ?</h4>
+        </div>`;
+
+        $('.show_product_info').html(warningDelete);
+      } else {
+        $('.deleteProductItem').html(`
+          <span>
+            <i class = "bi bi-trash3 delete" style = "color: white"></i>
+          </span>DELETE
+        `);
+        warningDelete = `
+        <div class="d-flex justify-content-center text-center align-items-center w-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+          </svg>
+        </div>
+        <div class="d-flex align-items-center justify-content text-center mt-3">
+          <h4 class="w-100">Are you sure you want to delete this customer?</h4>
+        </div>`;
+
+        $('.show_product_info').html(warningDelete);
+      }
+
+      $('.deleteProductItem').off('click').on('click', function() {
+        var cusId = closestTableRow.find('.userId').text();
+        if(res.data.isTransact) {
+          $("#deleteProdModal").hide();
+          var idToUpdate = cusId;
+          deleteAndUpdate(idToUpdate, 0)
+        } else {
+          var idToDelete = cusId;
+          deleteAndUpdate(idToDelete, 1)
+        }
+
+      });
+
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
+  
+  });
+
+  function deleteAndUpdate(customerId, typeFunction) {
+    axios.post('api.php?action=getDeleteCustomer', {
+      'customerId': customerId,
+      'typeFunction': typeFunction,
+    })
+    .then(function(res) {
+      $("#deleteProdModal").hide();
+      if(res.data.type == 'Updated') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Customer Updated Successfully!',
+          timer: 1000, 
+          timerProgressBar: true, 
+          showConfirmButton: false 
+        });
+        return;
+      }
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Customer Deleted Successfully!',
+        timer: 1000, 
+        timerProgressBar: true, 
+        showConfirmButton: false 
+      });
+
+      refreshCustomerTable()
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  }
+
+  showPaginationBtn('customer')
   $("#customers").addClass('active');
   $("#pointer").html("Customers");
   $('.addCustomer').on('click', function(){

@@ -167,9 +167,8 @@ while ($row = $fetchSales->fetch(PDO::FETCH_ASSOC)) {
     $totalPrice += $row['prod_price'];
     $totalCustomerDiscount += (float)$row['overallDiscounts'];
 
-    $grossAmount = ((float)$row['grossAmount'] - (float)$row['itemDiscount']);
-    
-    
+    $grossAmount = ((float)$row['grossAmount'] - (float)$row['itemDiscount'] - $totalCustomerDiscount);
+
     $totalAmount += $grossAmount;
     // $t_amount += (($grossAmount - $totalCart) - $totalCustomerDiscount);
     $t_amount += (($grossAmount - $totalCart));

@@ -181,7 +181,7 @@
           <div>
           <div class="row">
             <div>
-              <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex" style="height:76vh; width: 100%">
+              <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex" style="height:76vh; width: 100%; overflow-y: auto;">
                 <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
                   <!-- <div class="productTable" > -->

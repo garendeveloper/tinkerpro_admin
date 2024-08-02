@@ -4034,6 +4034,54 @@
 2024-08-01 13:49:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-01 15:19:34 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
 2024-08-01 18:12:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+<<<<<<< HEAD
 2024-08-02 09:07:28 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-08-02 09:08:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-02 09:43:07 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+=======
+2024-08-02 09:03:03 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:17:05 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:18:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:22:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:25:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLGATE FLEXI BLACK TOOTHBRUSH Barcode #:8935236000734 
+2024-08-02 09:26:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLGATE GRF 140G (RED) Barcode #:8850006320501 
+2024-08-02 09:26:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLGATE GRF 214G RED Barcode #:8850006320495 
+2024-08-02 09:30:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLGATE GRF 2X195G Barcode #:8850006327425 
+2024-08-02 09:31:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLGATE GRF 37G (RED) Barcode #:8850006321133 
+2024-08-02 09:31:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLGATE GRF 74G (RED) Barcode #:8850006320518 
+2024-08-02 09:34:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:38:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:39:08 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:41:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated STING STRAWBERRY 330ML Barcode #:4803925033421 
+2024-08-02 09:41:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated STING ENERGY DRINK GOLD BLAST 330 ??330ML Barcode #:23645 
+2024-08-02 09:50:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:56:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLGATE PEPPERMINT ICE 193G Barcode #:8850006322932 
+2024-08-02 09:56:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 10:00:20 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 10:03:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLGATE PLAX ICE 60ML Barcode #:8850006304570 
+2024-08-02 10:05:31 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 10:05:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 10:16:44 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 10:26:59 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 10:41:06 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 10:46:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+>>>>>>> 8691de6c939873d42038d7d2088e196fc3953450
+2024-08-02 10:49:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 11:05:01 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Exported customer.csv 
+2024-08-02 11:40:02 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 13:05:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 13:07:41 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Rogen Advencula 
+2024-08-02 13:07:45 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Rogen Advencula 
+2024-08-02 13:15:07 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Rogen Advencula 
+2024-08-02 13:56:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 14:07:04 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Marvin SDSADSA 
+2024-08-02 15:08:14 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 15:10:01 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 WEEK 
+2024-08-02 15:10:20 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 WEEK 
+2024-08-02 15:10:24 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 MONTH 
+2024-08-02 15:51:26 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Johny Bravo 
+2024-08-02 16:06:05 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 DAY 
+2024-08-02 16:06:10 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 MONTH 
+2024-08-02 16:28:23 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 17:09:45 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 17:54:04 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 

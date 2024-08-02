@@ -153,6 +153,19 @@
     user-select: none;   
   }
 
+
+  .containerTable::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .containerTable::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .containerTable::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -223,7 +236,7 @@
           <div>
           <div class="row">
             <div>
-              <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex"  style="height:76vh; width: 100%">
+              <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex containerTable"  style="height:76vh; width: 100%; overflow-y: auto;">
                 <!-- <div class="card-body"> -->
                   <?php include('errors.php'); ?>
                   <!-- <div class="productTable" > -->
