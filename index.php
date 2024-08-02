@@ -516,7 +516,7 @@ body, div, h1, h2, h3, h4, h5, p{
             </div>
             <div class="col-12 col-md-8 ">
               <div class="border p-3 col1">
-                <h5>Top Products </h5>
+                <h5>Top Products <i style = "font-style: italic; font-size: 10px;">Note: This product is gross and does not include discounts.</i></h5>
                 <p class="sub-title">Lead products in selected period (top <span id = 'topitem_identifier'>5</span>)</p>
                   <table   class = "text-color table-border tbl_dashboard" >
                     <thead>
@@ -550,6 +550,21 @@ body, div, h1, h2, h3, h4, h5, p{
 <?php include "modals/dashboard_modal.php" ?>
 <?php include ("layout/footer.php") ?>
 <script>
+
+  function getSales() {
+    axios.post('api.php?action=getSales', {
+      'startDate' : '2024-08-01',
+      'endDate' : '2024-08-01'
+    })
+    .then(function(response) {
+      console.log(response.data)
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
+  }
+
+
   var originalColors = [];
 
   function printDiv() 
@@ -622,6 +637,9 @@ body, div, h1, h2, h3, h4, h5, p{
     }
 
   $(document).ready(function () {
+
+    getSales()
+
     var totalSales = 0;
     var totalCount = 0;
     setPredefinedPeriod("Today");  

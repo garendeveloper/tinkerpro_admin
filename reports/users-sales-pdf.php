@@ -8,12 +8,14 @@ use TCPDF;
 
 $pdfFolder = __DIR__ . '/../assets/pdf/users/';
 
-$files = glob($pdfFolder . '*'); 
+$files = glob($pdfFolder . '*');
+ 
 foreach ($files as $file) {
     if (is_file($file)) {
         unlink($file); 
     }
 }
+
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 10) {
     $pdf->SetFont('', '', $initialFontSize);
     while ($pdf->GetStringWidth($text) > $maxWidth) {

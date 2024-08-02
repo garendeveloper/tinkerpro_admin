@@ -958,10 +958,11 @@ $("#pointer").html("Reporting");
 
   function getAllZread() {
     // axios.post('api.php?action=e_summary', {
-    //   'startDate' : '2024-07-15',
-    //   'endDate' : '2024-07-17',
+    //   'startDate' : '2024-07-31',
+    //   'endDate' : '2024-07-31',
     // })
     // .then(function(response) {
+    //   console.log('Hello world');
     //   console.log(response.data)
     // })
     // .catch(function(error) {
@@ -1625,6 +1626,9 @@ function highlightDiv(id) {
         }
         else if(id === 50 || id === 55 || id === 51 || id === 52 || id === 53 ){
           contentTest(id)
+
+          console.log('Hello world')
+          getAllZread();
         }
         else if(id == 1){
           generatePdf(id)
@@ -2374,9 +2378,6 @@ function highlightDiv(id) {
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
         }else if(id == 55){
-
-
-          getAllZread();
           
           generatePdf(id)
           generateExcel(id)

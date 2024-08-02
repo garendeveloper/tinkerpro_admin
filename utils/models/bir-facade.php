@@ -6,10 +6,6 @@ class BirFacade extends DBConnection {
     public function getAllZread($startDate, $endDate) {
         $pdo = $this->connect();
 
-        if ($startDate == null && $endDate == null) {
-            return;
-        } 
-
         if(empty($startDate) && empty($endDate))
         {
             return;
@@ -18,6 +14,7 @@ class BirFacade extends DBConnection {
         $lastRowDate = "SELECT business_date.*, payments.business_date_id FROM `business_date` 
                     LEFT JOIN payments ON business_date.id = payments.business_date_id
                     ORDER BY `id` DESC LIMIT 1";
+
         $beginingOfBusiness = $pdo->prepare($lastRowDate);
         $beginingOfBusiness->execute();
         $lastDate = $beginingOfBusiness->fetch(PDO::FETCH_ASSOC);
@@ -50,6 +47,7 @@ class BirFacade extends DBConnection {
 
         $z_record = "SELECT * FROM `z_read`
                      WHERE DATE(`date_time`) BETWEEN ? AND ?";
+                     
         $z_all_reports = $pdo->prepare($z_record);
         $z_all_reports->execute([$startDate, $endDate]);
         $z_reports_data = $z_all_reports->fetchAll(PDO::FETCH_ASSOC);
@@ -147,6 +145,12 @@ class BirFacade extends DBConnection {
             'resetCount' => $resetCount,
             'z_counter' => $z_counter,
         ];
+
+
+        // echo json_encode([
+        //     'data' => $result,
+        // ]);
+
         return $result;
     }
   
@@ -284,24 +288,41 @@ class BirFacade extends DBConnection {
         
         // Fetch refundedTransactions
         $refunded_query = "SELECT 
+        id,
+        refunded_method_id,
+        payment_id,
+        refunded_qty, 
+        reference_num, 
+        OriginalAmountRef,
+        vat_amount,
+        VatExempt,
+        ROUND((totalRefAmount - cartDiscount), 2) AS totalRefAmount,
+        ROUND((overAllDiscounts + cartDiscount), 2) AS overAllDiscounts,
+        credits,
+        cartDiscount,
+        customerDiscount,
+        itemDiscount,
+        date
+    FROM (
+        SELECT 
             id, 
-            prod_id, 
             refunded_method_id, 
             payment_id, 
             refunded_qty, 
             reference_num, 
-            SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) as OriginalAmountRef,
+            SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS OriginalAmountRef,
             ROUND(((SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12) * 0.12 ,2) AS vat_amount,
-            ROUND((SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12 ,2) VatExempt,
-            ROUND(SUM(refunded_amt) - (SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * refunded_qty) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))), 2) AS totalRefAmount,
-            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * refunded_qty) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
+            ROUND((SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12 ,2) AS VatExempt,
+            ROUND(SUM(refunded_amt) - (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount')) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) ), 2) AS totalRefAmount,
+            (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
             SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].credits'))) AS credits,
-            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * refunded_qty) AS cartDiscount,
-            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) AS customerDiscount,
+            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * (refunded_amt)) AS cartDiscount,
+            (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) AS customerDiscount,
             SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS itemDiscount,
             date 
             FROM refunded
-            GROUP BY payment_id;";
+            GROUP BY payment_id
+    ) AS subquery;";
         
         $refundedTransactions = $pdo->prepare($refunded_query);
         $refundedTransactions->execute();
@@ -315,22 +336,39 @@ class BirFacade extends DBConnection {
 
 
         $return_query = "SELECT 
-            id, 
-          	product_id,
-            payment_id, 
-            return_qty, 
-            SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) as lessItemDiscount,
-            ROUND(((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12) * 0.12 ,2) AS vat_amount,
-            ROUND((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12 ,2) VatExempt,
-            ROUND(SUM(return_amount) - (SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_qty) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))), 2) AS totalReturnAmount,
-            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_qty) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
-            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].credits'))) AS credits,
-            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_qty) AS cartDiscount,
-            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) AS customerDiscount,
-            SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS itemDiscount,
-            date 
-            FROM return_exchange
-            GROUP BY payment_id";
+                id,
+                product_id,
+                payment_id,
+                return_qty,
+                lessItemDiscount,
+                vat_amount,
+                VatExempt,
+                totalReturnAmount,
+                overAllDiscounts,
+                credits,
+                cartDiscount,
+                customerDiscount,
+                itemDiscount,
+                date   
+            FROM (
+                SELECT 
+                    id, 
+                    product_id,
+                    payment_id, 
+                    return_qty, 
+                    SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) as lessItemDiscount,
+                    ROUND(((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12) * 0.12 ,2) AS vat_amount,
+                    ROUND((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12 ,2) VatExempt,
+                    ROUND(SUM(return_amount) - (SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))), 2) AS totalReturnAmount,
+                    SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
+                    SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].credits'))) AS credits,
+                    SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) AS cartDiscount,
+                    (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) AS customerDiscount,
+                    SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS itemDiscount,
+                    date 
+                    FROM return_exchange
+                    GROUP BY payment_id
+            ) AS subqeury;";
 
         $returnedTransactions = $pdo->prepare($return_query);
         $returnedTransactions->execute();

@@ -235,21 +235,22 @@
 
 <script>
 
-function closeModalCategory(){
+function closeModalCategory() {
     closeModal()
 }
+
 function getCategories() {
     $.ajax({
-            url: './fetch-data/fetch-categories.php', 
-            type: 'GET',
-            success: function(response) {
-                $('#categoriesDiv').html(response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText); 
-                        }
-        });
-  }
+        url: './fetch-data/fetch-categories.php', 
+        type: 'GET',
+        success: function(response) {
+        $('#categoriesDiv').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText); 
+        }
+    });
+}
 
 var previousSpan = null;
 
@@ -326,6 +327,9 @@ $(document).on("click", ".customAnchor", function() {
 
 
 $('.addCategory').off('click').on('click', function() {
+
+    console.log('Hello worldsss')
+
     var index = $('.customAnchor.highlighted').index();
     var categoryId = $('.customAnchor.highlighted').data('category-id');
     
@@ -333,7 +337,7 @@ $('.addCategory').off('click').on('click', function() {
         $('.inputCat').removeAttr('hidden');
         $('#inputCat').focus();
     } else if ($('.categoriesParagraph').hasClass('highlighted') && $('#mainSpanCategory_' + categoryId).text() === '-') {
-       
+            
             $('#spanVar').removeAttr('hidden');
             $('#cat_' + categoryId).removeAttr('hidden');
             addVariant(categoryId)

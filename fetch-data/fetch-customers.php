@@ -13,7 +13,8 @@ $counter = 1;
 
 ob_start();
 if ($customer->rowCount() > 0) {
-while ($row = $customer->fetch(PDO::FETCH_ASSOC)) {
+while ($row = $customer->fetch(PDO::FETCH_ASSOC)) 
+{
 //   var_dump( $row)
     ?>
     <tr class="table-row customer-row">

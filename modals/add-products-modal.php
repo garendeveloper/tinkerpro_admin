@@ -1610,7 +1610,7 @@ input:checked + .warningSpan:before {
                </div> 
                <div class="imageButtonDiv" style="margin-left: 20px;">
                  <input hidden type="file" id="fileInputs" style="display: none;" accept="image/jpeg, image/jpg, image/png">
-                 <button onclick="clearImageProduct()" style="margin-right: 2px;" class="btnCustom removeImage">-Del</button>
+                 <button onclick="clearImageProduct()" style="margin-right: 2px;" class="btnCustom removeImage">- Del</button>
                  <button class="btnCustom addImage" id="addImage">+ Add Image</button>
                 
           </div> 

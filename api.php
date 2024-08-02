@@ -514,6 +514,12 @@
             $returnVal = isset($data->returnVal) ? $data->returnVal : null;
             $products->updateSettings(json_encode($returnVal));
             break;
+
+        case 'getSales' :
+            $startDate = isset($data->startDate) ? $data->startDate : '';
+            $endDate = isset($data->endDate) ? $data->endDate : '';
+            $dashboard->getTopProducts($startDate, $endDate);
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

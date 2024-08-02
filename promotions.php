@@ -160,9 +160,9 @@ if (isset($_SESSION['user_id'])) {
             <div class="d-flex justify-content-between">
                 <label class="titeClass mb-2">PROMOTION & ACTION</label>
                 <button class="btn btn-secondary" id="addPromotion" style="background-color: var(--primary-color);">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
-                    </svg> ADD NEW PROMOTION
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-slash-minus" viewBox="0 0 16 16">
+                        <path d="m1.854 14.854 13-13a.5.5 0 0 0-.708-.708l-13 13a.5.5 0 0 0 .708.708M4 1a.5.5 0 0 1 .5.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2A.5.5 0 0 1 4 1m5 11a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5A.5.5 0 0 1 9 12"/>
+                    </svg> ADD / REMOVE NEW PROMOTION
                 </button>
             </div>
             
@@ -339,26 +339,28 @@ if (isset($_SESSION['user_id'])) {
     .then(function(response) {
         var promotionSet = response.data.data.promotions;
         var promos = JSON.parse(promotionSet);
-
+        var allZero = true;
      
         function allValuesZero(obj) {
             for (var key in obj) {
                 if (obj.hasOwnProperty(key) && obj[key] !== 0) {
-                    console.log('Hello world');
-                    $('.promotions_table').addClass('d-none');
-                    return false;
+                    return false; 
                 }
             }
-            return true; 
+            return true;
         }
 
-        var allZero = true;
         $.each(promos, function(index, promo) {
             if (!allValuesZero(promo)) {
-                allZero = false;
-                $('.promotions_table').removeClass('d-none');
+                allZero = false; 
             }
         });
+
+        if (allZero) {
+            $('.promotions_table').addClass('d-none'); 
+        } else {
+            $('.promotions_table').removeClass('d-none');
+        }
 
         if (promos[0].buy_1_take_1 == 1) {
             $('#buy_1_take_1').prop('checked', true);
@@ -411,13 +413,7 @@ if (isset($_SESSION['user_id'])) {
  }
 
 
- function toUpdatePromo() {
-    var take1 = $('#buy_1_take_1').prop('checked') ? 1 : 0;
-    var bundle = $('#bundle_sale').prop('checked') ? 1 : 0;
-    var wholesale = $('#whole_sale').prop('checked') ? 1 : 0;
-    var point_promo = $('#point_promo').prop('checked') ? 1 : 0;
-    var stamp_promo = $('#stam_card').prop('checked') ? 1 : 0;
-
+ function toUpdatePromo(take1, bundle, wholesale, point_promo, stamp_promo) {
     axios.post('api.php?action=updatePromo', {
         'bundle' : bundle,
         'take1' : take1,
@@ -426,7 +422,7 @@ if (isset($_SESSION['user_id'])) {
         'stamp_promo' : stamp_promo,
     })
     .then(function(response) {
-        console.log(response.data)
+        getPromoSet();
     })
     .catch(function(error) {
         console.log(error);
@@ -443,8 +439,14 @@ if (isset($_SESSION['user_id'])) {
 
 
     $('#updatePromotion').off('click').on('click', function() {
-        toUpdatePromo();
-        getPromoSet();
+
+        var take1 = $('#buy_1_take_1').prop('checked') ? 1 : 0;
+        var bundle = $('#bundle_sale').prop('checked') ? 1 : 0;
+        var wholesale = $('#whole_sale').prop('checked') ? 1 : 0;
+        var point_promo = $('#point_promo').prop('checked') ? 1 : 0;
+        var stamp_promo = $('#stam_card').prop('checked') ? 1 : 0;
+
+        toUpdatePromo(take1, bundle, wholesale, point_promo, stamp_promo);
         $('.closeModalPromotion').click();
     })
 
@@ -479,7 +481,6 @@ if (isset($_SESSION['user_id'])) {
     $('#addPromotion').on('click', function() {
         $('#promoteModal').fadeIn();
         if ($('#promoteModal').is(':visible')) {
-
            
         }
     });
