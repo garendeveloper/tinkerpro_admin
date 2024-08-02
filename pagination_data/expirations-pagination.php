@@ -47,7 +47,7 @@
     var totalPages = <?php echo $totalPages; ?>;
 
     $('#searchInput').focus();
-    $(".inventoryCard").html();
+    $(".inventoryCard").html("");
 
     var tblData =`<table id="tbl_expiredProducts" class="text-color table-border" style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%'>
                           <thead>

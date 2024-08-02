@@ -1006,7 +1006,8 @@ class InventoryFacade extends DBConnection
         $order_type = 1;
         
         $order_id = $this->get_lastOrderData() === false ? 0 : $this->get_lastOrderData()['id'];
-        if ($formData['order_id'] !== "0") {
+        if ($formData['order_id'] !== "0") 
+        {
             $sql = "UPDATE orders SET isPaid = :v1, supplier_id = :v2, date_purchased = :v3, price = :v4, totalTax = :v5, totalQty = :v6, totalPrice = :v7 WHERE id = :id";
             $sqlStatement = $this->connect()->prepare($sql);
 
@@ -1022,31 +1023,17 @@ class InventoryFacade extends DBConnection
 
             $order_id = $formData['order_id'];
 
-            // if($isPaid === 0)
-            // {
-            //     $balance = $this->remove_nonBreakingSpace($this->clean_number(($formData['rem_balance'])));
-            //     $next_payment = $this->remove_nonBreakingSpace($this->clean_number((($formData['next_payment']))));
-            //     $new_balance = $balance - $next_payment;
-            //     $date = date('Y-m-d', strtotime($formData['date_paid']));
-            //     $order_setting_id = $formData['order_setting_id'];
-            //     $sql = "INSERT INTO order_payments (order_setting_id, payment, balance, date_paid)
-            //             VALUES (?, ?, ?, ?)";
-            //     $stmt = $this->connect()->prepare($sql);
-            //     $stmt->bindParam(1, $order_setting_id, PDO::PARAM_INT);
-            //     $stmt->bindParam(2, $next_payment, PDO::PARAM_STR);
-            //     $stmt->bindParam(3, $new_balance, PDO::PARAM_STR);
-            //     $stmt->bindParam(4, $date, PDO::PARAM_STR);
-            //     $stmt->execute();
-            // }
-        } else {
+        } 
+        else 
+        {
             if (!$this->verify_order($po_number)) 
             {
                 if($isPaid === 1)
                 {
                     $sql = "INSERT INTO orders 
-                            (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice, due_date) 
+                            (isPaid, supplier_id, date_purchased, po_number, price, order_type, totalTax, totalQty, totalPrice) 
                             VALUES 
-                            (:isPaid, :supplier_id, :date_purchased, :po_number, :price, :order_type, :totalTax, :totalQty, :totalPrice, :due_date)";
+                            (:isPaid, :supplier_id, :date_purchased, :po_number, :price, :order_type, :totalTax, :totalQty, :totalPrice)";
 
                     $sqlStatement = $this->connect()->prepare($sql);
                     $params = [
@@ -1059,7 +1046,6 @@ class InventoryFacade extends DBConnection
                         ':totalTax' => $totalTax,
                         ':totalQty' => $totalQty,
                         ':totalPrice' => $totalPrice,
-                        ':due_date' => "",
                     ];
 
                     $sqlStatement->execute($params);
@@ -1158,6 +1144,7 @@ class InventoryFacade extends DBConnection
         $isPaid = $formData["isPaid"];
         $order_id = $this->get_orderDataByPONumber($po_number)['id'];
         $total_received = 0;
+        $today = date('Y-m-d');
         foreach ($tbl_data as $row) 
         {
             $inventory_id = $row["inventory_id"];
@@ -1185,11 +1172,12 @@ class InventoryFacade extends DBConnection
                 {
                     $isReceived = 1;
 
-                    $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = qty_received + :qty_received, qty_purchased = qty_purchased - :counted WHERE id = :id");
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = qty_received + :qty_received, qty_purchased = qty_purchased - :counted, dateReceived = :dateReceived WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
                     $stmt->bindParam(":isReceived", $isReceived); 
                     $stmt->bindParam(":qty_received", $qty_received);
                     $stmt->bindParam(":counted", $qty_received);
+                    $stmt->bindParam(":dateReceived", $today);
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
@@ -1273,11 +1261,12 @@ class InventoryFacade extends DBConnection
                 {
                     $isReceived = 1;
 
-                    $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = :qty_received, qty_purchased = qty_purchased - :counted WHERE id = :id");
+                    $stmt = $this->connect()->prepare("UPDATE inventory SET isReceived = :isReceived, stock = stock + :new_stock, qty_received = :qty_received, qty_purchased = qty_purchased - :counted, dateReceived = :dateReceived WHERE id = :id");
                     $stmt->bindParam(":new_stock", $qty_received); 
                     $stmt->bindParam(":isReceived", $isReceived); 
                     $stmt->bindParam(":qty_received", $qty_received);
                     $stmt->bindParam(":counted", $qty_received);
+                    $stmt->bindParam(":dateReceived", $today);
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
