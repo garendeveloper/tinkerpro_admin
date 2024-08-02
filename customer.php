@@ -69,18 +69,51 @@
     border-color: #FF6900; 
     color: #fefefe !important; 
 }
-.productTable{
-    position: absolute; 
-    left: 2px;
-    right:2px;
-    top:2px;
-    
-}
+
+  .productTable {
+    margin: 0;
+    padding: 0;
+  }
+
+
+  .table-container {
+    height: 100vh;
+    width: 100vw;
+    margin: 10px;
+    position: absolute;
+  }
+
+  .table-container::-webkit-scrollbar {
+    width: 0; 
+  }
+
+  .table-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .table-container::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  #recentcustomer tbody {
+    max-height: 100vh;
+    height: 100%;
+  }
+
+
+  table {
+    margin-bottom: 0;
+    overflow-x: auto;
+    overflow: hidden; 
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
 .table-border{
     border-collapse: collapse;
     width: 100%;
     border: 1px solid #292928 !important;
-}
+  }
 
 .table-border td {
   padding: 2px !important;
@@ -165,30 +198,32 @@
               <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex"  style="height:76vh; width: 100%">
                 <!-- <div class="card-body"> -->
                   <?php include('errors.php'); ?>
-                  <!-- <div class="productTable" > -->
-                    <table id="recentcustomer" class="text-color table-border" style = "width: 100%">
-                      <thead>
-                        <tr>
-                          <th class="text-center" style="width: 2%; border-left: 1px solid transparent !important">No.</th>
-                          <th class="text-center" style="width: 15%;">Customer</th>
-                          <th class="text-center" style="width: 15%;">Contact</th>
-                          <th class="text-center" style="width: 15%;">Code/Employee ID</th>
-                          <th class="text-center" style="width: 15%;">Type</th>
-                          <th class="text-center" style="width: 15%;">Email</th>
-                          <th class="text-center" style="width: 15%;">Address</th>
-                          <th class="text-center" style="width: 7%; border-right: 1px solid transparent !important">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody id="fetchCustomer">
-                        
-                      </tbody>
-                    </table>
-                  <!-- </div> -->
+                  <div class="table-container" style="background: yellow">
+                    <div class="productTable" style="background: red">
+                      <table id="recentcustomer" class="text-color table-border" style = "width: 100%">
+                        <thead>
+                          <tr>
+                            <th class="text-center" style="width: 2%; border-left: 1px solid transparent !important">No.</th>
+                            <th class="text-center" style="width: 15%;">Customer</th>
+                            <th class="text-center" style="width: 15%;">Contact</th>
+                            <th class="text-center" style="width: 15%;">Code/Employee ID</th>
+                            <th class="text-center" style="width: 15%;">Type</th>
+                            <th class="text-center" style="width: 15%;">Email</th>
+                            <th class="text-center" style="width: 15%;">Address</th>
+                            <th class="text-center" style="width: 7%; border-right: 1px solid transparent !important">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="fetchCustomer">
+                          
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 <!-- </div> -->
               </div>
 
               <div id="paginationDiv" class="paginactionClass">
-
+                
               </div>
 
               <div class="d-flex ms-2 justify-content-center">
