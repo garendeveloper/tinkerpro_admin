@@ -1577,7 +1577,7 @@ label{
 <script>
 
 $(document).ready(function(){
-  const TAX_RATE = 0.12; // define a constant for the tax rate
+  const TAX_RATE = 0.12; 
   $(window).on("click", function(event) {
     if (!$(event.target).hasClass("custom-btn") && !$(event.target).closest('.dropdown-content').length) {
       $(".dropdown-content").each(function() {
@@ -1587,9 +1587,6 @@ $(document).ready(function(){
       });
     }
   });
-  // var current_totalAmount = $("#total_amount").val();
-  // computeInclusive(current_totalAmount);
-
   function hide_dropdown()
   {
     $(".dropdown-content").each(function() {
@@ -1598,9 +1595,6 @@ $(document).ready(function(){
       }
     });
   }
-  
-  
-
   $("#btn_expense_type").on("click", function(event) {
     event.stopPropagation();
     hide_dropdown();

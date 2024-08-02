@@ -1425,6 +1425,13 @@ input[type="text"] {
                             po_number: $("#pcs_no").val(),
                         };
                     break;
+                case 'btn_receiveItems':
+                    url = './toprint/receiveditem_print.php';
+                    data = {
+                            order_id: $("#receive_orderID").val(),
+                            po_number: $("#r_PONumbers").val(),
+                        };
+                    break;
                 case 'btn_inventoryCount':
                     var tableData = [];
                     $('#tbl_inventory_count tbody tr').each(function() {

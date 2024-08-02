@@ -83,34 +83,9 @@ class MYPDF extends TCPDF {
         $this->Cell(0, 10, 'Email: '.$shop['shop_email'].'', 0, false, 'L');
         
         $this->Line(10, 52, 200, 52);
-
-        // $imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
         $imageWidth = 45; 
         $imageHeight = 15; 
         $imageX = 150; 
-        // $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
-
-//         $ipAddress = gethostbyname(gethostname());
-//         $imageFile = "http://{$ipAddress}/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
-    
-//         $imageWidth = 35; 
-// $imageHeight = 25; 
-// $imageX = 150; 
-
-// // Check if the URL is correct
-// if (file_exists($imageFile)) {
-//     $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight);
-// } else {
-//     echo "File does not exist.";
-// }
-// $ipAddress = gethostbyname(gethostname());
-// $imageFileUrl = "http://{$ipAddress}/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
-
-// if ($this->fileExistsViaHttp($imageFileUrl)) {
-//     $this->Image($imageFileUrl, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight);
-// } else {
-//     echo "File does not exist.";
-// }
         $serverFilePath = $_SERVER['DOCUMENT_ROOT'] . "/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
 
         if (file_exists($serverFilePath)) {
@@ -118,11 +93,7 @@ class MYPDF extends TCPDF {
         } else {
             echo "File does not exist.";
         }
-        // $imageWidth = 35; 
-        // $imageHeight = 25; 
-        // $imageX = 150; 
-        // $this->Image($imageFile, $imageX, $y = 20, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
-     
+   
     }
     public function fileExistsViaHttp($url) {
         $ch = curl_init($url);
@@ -179,6 +150,7 @@ $counter = 1;
 $order_id = $_GET['order_id'] ?? 0;
 $items = $orders->get_orderData($order_id);
 $orderDetails = $orders->get_paymentHistory($order_id);
+$isFullyReceived = (float)$items[0]['totalQty'] === (float)$items[0]['totalReceived'];
 
 $html = '<style>
             #tblHeader{
@@ -202,6 +174,7 @@ $html = '<style>
                 font-size: 9px;
             }
         </style>';
+
 
 $html .= '<table border = "0" cellpadding="2" id = "tblHeader">
             <thead>
@@ -268,11 +241,11 @@ foreach($items as $item)
     $overall_price += $item['cost'];
     $overall_vat += $item['tax'];
     $overall_total += $item['total'];
-
+    $qty  = $isFullyReceived ? number_format($item['qty_received'],2) : number_format($item['qty_purchased'],2);
     $html .= '<tr >
                 <td style = "width: 4%; text-align: center; ">'.$counter.'</td>
                 <td style = "width: 36%">'.$item['prod_desc'].'</td>
-                <td style = "text-align: right">'.number_format($item['qty_purchased'],2).'</td>
+                <td style = "text-align: right">'.$qty.'</td>
                 <td style = "text-align: right">'.$amountBeforeTaxFormatted.'</td>
                 <td style = "text-align: right">'.$tax.'</td>
                 <td style = "text-align: right">'.$total.'</td>

@@ -1012,6 +1012,7 @@ i:hover{
 
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
 
@@ -1065,9 +1066,15 @@ i:hover{
             show_lossanddamage_details(id);
             break;
           case 'tbl_orders':
-            var is_received = $(this).data('is_received');
+            var to_received = $(this).data('to_receive');
             var po_number = $(this).data('po_number');
-            if(is_received === 0)
+            if(to_received === 1)
+            {
+              $(".scrollable").addClass('hasLockImage');
+              $("#purchaseItems_div").addClass('lock');
+              $("#btn_savePO").addClass('lockButton');
+            }
+            if(to_received === 0)
             {
               openOptionModal();
               openReceivedItems();
@@ -1076,7 +1083,7 @@ i:hover{
             }
             else
             {
-              orderdata(id);
+              orderdata(id, to_received);
             }
             break;
           default:
@@ -2351,8 +2358,14 @@ i:hover{
               return poNumber; 
           }
       }
-      function orderdata(order_id)
+      function orderdata(order_id, to_received)
       {
+        if(to_received === 0)
+        {
+          $(".scrollable").removeClass('hasLockImage');
+          $("#purchaseItems_div").removeClass('lock');
+          $("#btn_savePO").removeClass('lockButton');
+        }
         $("#stocktransfer_div").hide();
         $("#received_div").hide()
         $("#quickinventory_div").hide()
@@ -2416,12 +2429,13 @@ i:hover{
               $("#unpaid_dueDate").val(orderData.due_date);
               $("#unpaid_note").val(orderData.note);
             }
-          
+            
             for (var i = 0; i < data.length; i++) 
             {
+              var qty_purchased = to_received === 1 ? data[i].qty_received : data[i].qty_purchased; 
               table += "<tr data-rowid = "+data[i].product_id+" id = 'show_pqtymodal'>";
               table += "<td data-rowid = "+data[i].product_id+" data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " </td>";
-              table += "<td style = 'text-align: center' class ='editable' data-qty = "+data[i].qty_purchased+" data-price= "+data[i].amount_beforeTax+">" + data[i].qty_purchased + "</td>";
+              table += "<td style = 'text-align: center' class ='editable' data-qty = "+data[i].qty_purchased+" data-price= "+data[i].amount_beforeTax+">" + qty_purchased + "</td>";
               table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
               table += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].total) + "</td>";
               table += "<td style = 'text-align: right; width: 0px;'><i class = 'bi bi-trash' id = 'removeOrder'></i></td>";
@@ -2460,7 +2474,7 @@ i:hover{
       $(".inventoryCard").on('click', '#btn_editOrder', function (e) {
         e.preventDefault();
         var order_id = $(this).data('id');
-        orderdata(order_id);
+        orderdata(order_id, 0);
       })
       $(".inventoryCard").on('click', '#btn_openUnpaidPayment', function (e) {
         e.preventDefault();
@@ -2538,7 +2552,7 @@ i:hover{
         $("#stocktransfer_div").hide();
         $("#lossanddamage_div").hide()
         $("#inventorycount_div").hide();
-        $("#open_po_report").hide();
+        $("#open_po_report").show();
         $("#receive_form #r_PONumbers").focus();
         $("#receive_form #r_PONumbers").val("");
         $("#btn_omPayTerms").hide();
@@ -2576,6 +2590,8 @@ i:hover{
 
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
+        $("#received_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
         $(".purchase-grid-container button").removeClass('active');
@@ -2613,6 +2629,8 @@ i:hover{
 
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
+        $("#received_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
         $(".purchase-grid-container button").removeClass('active');
@@ -2647,6 +2665,8 @@ i:hover{
         e.preventDefault();
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
+        $("#received_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
         openReceivedItems();
       })
@@ -2654,6 +2674,8 @@ i:hover{
         e.preventDefault();
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
+        $("#received_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
         $(".purchase-grid-container button").removeClass('active');
@@ -2670,6 +2692,8 @@ i:hover{
         e.preventDefault();
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
+        $("#received_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
         $("#open_po_report").hide();
@@ -2689,6 +2713,8 @@ i:hover{
         e.preventDefault();
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
+        $("#received_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
         $(".purchase-grid-container button").removeClass('active');
@@ -2707,6 +2733,8 @@ i:hover{
         e.preventDefault();
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
+        $("#received_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
         $("#loss_and_damage_input").focus();
@@ -2744,6 +2772,8 @@ i:hover{
         e.preventDefault();
         $(".scrollable").removeClass('hasLockImage');
         $("#inventorycount_div").removeClass('lock');
+        $("#purchaseItems_div").removeClass('lock');
+        $("#received_div").removeClass('lock');
         $("#btn_savePO").removeClass('lockButton');
 
         $("#btn_savePO").attr("disabled", false);
@@ -2787,7 +2817,7 @@ i:hover{
       $(document).click(function(event) {
         var $target = $(event.target);
 
-        if (!$target.closest('#optionModal, #btn_openOption').length) {
+        if (!$target.closest('#optionModal, #btn_openOption, #purchaseQty_modal, #removeOrder, .removeItem, #show_purchasePrintModal, #unpaid_purchase_modal').length) {
             if ($('#optionModal').is(':visible')) {
                 hideModals();
             }

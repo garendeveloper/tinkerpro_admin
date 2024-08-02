@@ -539,16 +539,13 @@ td[contenteditable="true"]:focus {
         $(this).addClass('editing');
     });
     
-    // Remove highlight when cell loses focus
     $('#tbl_bundled tbody').on('blur', 'td[contenteditable="true"]', function() {
         $(this).removeClass('editing');
     });
-
-    // Optional: Handle Enter key press to blur the cell
     $('#tbl_bundled tbody').on('keypress', 'td[contenteditable="true"]', function(e) {
-        if (e.which === 13) { // Enter key
-            e.preventDefault(); // Prevent newline in the cell
-            $(this).blur(); // Trigger blur event to save changes
+        if (e.which === 13) { 
+            e.preventDefault(); 
+            $(this).blur();
         }
     });
 </script>

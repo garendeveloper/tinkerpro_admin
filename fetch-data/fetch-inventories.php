@@ -31,11 +31,11 @@ if (count($inventories) > 0)
         $partially_received = $qty_purchased !== 0 && $qty_purchased < $qty_received;
         $fully_received = $qty_purchased === 0 && $qty_received !== 0;
         $is_lowstock = $stock_status && $stock < $stock_count;
-        $span = "<span style='color: #f94449; font-weight: bold'><i>TO PURCHASE</i></span>";
-        if ($isReceived === 1 && $is_lowstock && $fully_received) $span = "<span><i style='color: #72bf6a; font-weight: bold'>RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
-        if ($isReceived === 1 && !$is_lowstock && $fully_received) $span = "<span style='color: #72bf6a; font-weight: bold'><i>RECEIVED</i></span>";
-        if ($isReceived === 1 && $is_lowstock && $partially_received) $span = "<span><i style='color: #FF6900; font-weight: bold'>PARTIALLY RECEIVED</i> / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
-        if ($isReceived === 1 && !$is_lowstock && $partially_received) $span = "<span style='color: #72bf6a; font-weight: bold'><i>PARIALLY RECEIVED</i></span>";
+        $span = "<span style='color: #f94449; font-weight: bold'>TO PURCHASE</span>";
+        if ($isReceived === 1 && $is_lowstock && $fully_received) $span = "<span style='color: #72bf6a; font-weight: bold'> RECEIVED / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
+        if ($isReceived === 1 && !$is_lowstock && $fully_received) $span = "<span style='color: #72bf6a; font-weight: bold'>RECEIVED</span>";
+        if ($isReceived === 1 && $is_lowstock && $partially_received) $span = "<span><i style='color: yellow; font-weight: bold'>PARTIALLY RECEIVED / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
+        if ($isReceived === 1 && !$is_lowstock && $partially_received) $span = "<span style='color: yellow; font-weight: bold'>PARIALLY RECEIVED</span>";
         ?> 
             <tr  data-id = '<?=$row['inventory_id']?>'>
                 <td class = "text-center"><?= $counter?></td>

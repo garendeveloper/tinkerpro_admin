@@ -47,7 +47,7 @@
     var totalPages = <?php echo $totalPages; ?>;
 
     $('#searchInput').focus();
-    $(".inventoryCard").html();
+    $(".inventoryCard").html("");
 
     var tblData = `
              <table id='tbl_all_lostanddamages' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
@@ -135,7 +135,7 @@
                     </tr>
                     <tr style="background-color: #262626; font-size: 12px;">
                         <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Overall Total Cost:</th>
-                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626;" id="total_cot"></th>
+                        <th  class = "text-right" style="background-color: #262626; border: 1px solid #262626; color: #F08080" id="total_cot"></th>
                     </tr>
                     </tr>
                 </tbody>

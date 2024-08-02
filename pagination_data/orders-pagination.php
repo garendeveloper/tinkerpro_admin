@@ -47,7 +47,7 @@
     var totalPages = <?php echo $totalPages; ?>;
 
     $('#searchInput').focus();
-    $(".inventoryCard").html();
+    $(".inventoryCard").html("");
 
     var tblData = `
               <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
@@ -61,9 +61,9 @@
                           <th style='width: 2%;'>Quantity  Received</th>
                           <th style='width: 2%;'>Price</th>
                           <th style='width: 2%;'>Total</th>
-                          <th style='width: 2%;'>Payment Status</th>
-                          <th style='width: 2%;'>Status</th>
-                          <th style='width: 1%;' class='autofit'>Action</th>
+                          <th style='width: 2%; text-align: center'>Payment Status</th>
+                          <th style='width: 2%; text-align: center'>Status</th>
+                          <th style='width: 1%; text-align: center' class='autofit'>Action</th>
                       </tr>
                   </thead>
                   <tbody></tbody>
@@ -102,7 +102,7 @@
                 display_records();
             },
             error: function (xhr, status, error) {
-            console.error(xhr.responseText);
+                console.error(xhr.responseText);
             }
         });
         updatePaginationButtons();

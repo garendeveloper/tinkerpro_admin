@@ -317,6 +317,7 @@ table thead th{
           show_purchaseQtyModal(productId, qty_purchased, price);
       });
       $("#tbl_purchaseOrders tbody").off('click').on("click", "#removeOrder", function(){
+        reset_poFooter();
             $(this).closest('tr').remove();
             updateTotal();
         });
@@ -448,31 +449,31 @@ table thead th{
         $('#date_purchased').attr('readonly', true);
         $('#calendar-btn').prop('disabled', true);
       }
-    //   $('#product').on('keypress', function(event) {
-    //     if (event.keyCode === 13 || event.keyCode === 27) { 
-    //       hidePopups();
-    //     }
-    // });
     function updateTotal() {
-    
+  
       var totalQty = 0;
         var totalPrice = 0;
         var total = 0;
         var totalTax = 0;
-        $('#tbl_purchaseOrders tbody tr').each(function () {
-          var quantity = parseInt($(this).find('td:nth-child(2)').text().trim(), 10);
-          var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
-          var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
-          var tax = (price / 1.12);
-          totalTax += (price - tax);
-          totalQty += quantity;
-          totalPrice += price;
-          total += subtotal;
-        });
-        $("#totalTax").html("Tax: " + addCommasToNumber(totalTax));
-        $("#totalQty").html(totalQty);
-        $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice));
-        $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(total));
+        var tableLength = $("#tbl_purchaseOrders tbody").length();
+        if(tableLength > 0)
+        {
+         
+          $('#tbl_purchaseOrders tbody tr').each(function () {
+            var quantity = parseInt($(this).find('td:nth-child(2)').text().trim());
+            var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
+            var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
+            var tax = (price / 1.12);
+            totalTax += (price - tax);
+            totalQty += quantity;
+            totalPrice += price;
+            total += subtotal;
+          });
+          $("#totalTax").html("Tax: " + addCommasToNumber(totalTax));
+          $("#totalQty").html(totalQty);
+          $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice));
+          $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(total));
+        }
       }
       function show_purchaseQtyModal(product_id, qty, price )
       {
@@ -551,15 +552,16 @@ table thead th{
      
       function reset_poFooter()
       {
-        $("#totalTax").html("Tax: 0.0");
-        $("#totalQty").html("0.0");
-        $("#totalPrice").html("0.0");
-        $("#overallTotal").html("0.0");
+        $("#totalTax").html("Tax: 0.00");
+        $("#totalQty").html("0");
+        $("#totalPrice").html("0.00");
+        $("#overallTotal").html("0.00");
       }
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
-        // reset_poFooter();
+        reset_poFooter();
         if (validateProductForm()) {
+          $("#tbl_purchaseOrders tbody").click();
           var p_qty = parseFloat($("#p_qty").val());
           var price = parseFloat($("#price").val());
           var product_id = $("#selected_product_id").val();

@@ -49,7 +49,7 @@
     var totalPages = <?php echo $totalPages; ?>;
 
     $('#searchInput').focus();
-    $(".inventoryCard").html();
+    $(".inventoryCard").html("");
     var inv_count_tbl = `<table tabindex = '0' id='tbl_all_inventoryCounts' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
                             <thead>
                                 <tr>

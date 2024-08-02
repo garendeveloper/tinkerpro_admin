@@ -102,7 +102,7 @@
               <path fill="#131212" d="M0 0c0 1.302.961 2.108 2.232 2.108 1.241 0 2.233-.837 2.233-2.108v-11.938c0-1.271-.992-2.108-2.233-2.108-1.271 0-2.232.807-2.232 2.108V0Zm-.187-18.293a2.422 2.422 0 0 0 2.419 2.418 2.422 2.422 0 0 0 2.419-2.418 2.422 2.422 0 0 0-2.419-2.419 2.422 2.422 0 0 0-2.419 2.419" transform="translate(16.769 26.34)" class="color231f20 svgShape"></path>
             </g>
           </svg>
-          <p class="warning-title"><b>SHOW PURCHASE ORDER REPORT</b></p>&nbsp;
+          <p class="warning-title"><b>SHOW REPORT</b></p>&nbsp;
         </div>
       </div>
       <div hidden id="loadingImage" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 800px; position: absolute; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.8); z-index: 9999;">

@@ -24,7 +24,7 @@
                 <tr  data-id = '<?= $row['id'] ?>'>
                     <td class = "text-center"><?= $row['reference_no']?></td>
                     <td class = "text-center"><?= $date_transact ?></td>
-                    <td class = "text-right"><?= $row['reason']?></td>
+                    <td class = "text-center"><?= $row['reason']?></td>
                     <td class = "text-right"><?= number_format($row['total_qty'], 2)?></td>
                     <td class = "text-right"><?= number_format($row['total_cost'], 2)?></td>
                     <td class = "text-right"><?= number_format($row['over_all_total_cost'], 2)?></td>
