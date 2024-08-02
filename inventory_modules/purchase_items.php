@@ -450,7 +450,7 @@ table thead th{
         $('#calendar-btn').prop('disabled', true);
       }
     function updateTotal() {
-    
+  
       var totalQty = 0;
         var totalPrice = 0;
         var total = 0;
@@ -458,6 +458,7 @@ table thead th{
         var tableLength = $("#tbl_purchaseOrders tbody").length();
         if(tableLength > 0)
         {
+         
           $('#tbl_purchaseOrders tbody tr').each(function () {
             var quantity = parseInt($(this).find('td:nth-child(2)').text().trim());
             var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
@@ -560,6 +561,7 @@ table thead th{
         event.preventDefault();
         reset_poFooter();
         if (validateProductForm()) {
+          $("#tbl_purchaseOrders tbody").click();
           var p_qty = parseFloat($("#p_qty").val());
           var price = parseFloat($("#price").val());
           var product_id = $("#selected_product_id").val();

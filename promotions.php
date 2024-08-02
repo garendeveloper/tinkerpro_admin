@@ -445,7 +445,7 @@ if (isset($_SESSION['user_id'])) {
         var wholesale = $('#whole_sale').prop('checked') ? 1 : 0;
         var point_promo = $('#point_promo').prop('checked') ? 1 : 0;
         var stamp_promo = $('#stam_card').prop('checked') ? 1 : 0;
-
+        
         toUpdatePromo(take1, bundle, wholesale, point_promo, stamp_promo);
         $('.closeModalPromotion').click();
     })
@@ -467,14 +467,7 @@ if (isset($_SESSION['user_id'])) {
 
     $('.editBtns').click(function() {
         isClick = true;
-        // if (isClick) {
-        //     $(this).css('background-color', 'var(--primary-color)')
-        //     $('.promo_datePeriod').off('click').on('click', function() {
-        //         $('#dateTimeModal').show();
-        //     })
-        // }
         $('#dateTimeModal').show();
-        
     })
 
 
@@ -753,7 +746,7 @@ if (isset($_SESSION['user_id'])) {
                 $('#filters').show();
                 var slicedProductsLength = slicedProducts.length - 1;
                 var selectedProductId = slicedProducts[slicedProductsLength].id;
-                
+                $(".search_product_id").val(selectedProductId);
             } else {
                 $('#filters').hide();
             }
@@ -809,7 +802,6 @@ if (isset($_SESSION['user_id'])) {
         $(".promotionForm input").val("");
         $("body").find(".error-highlight").removeClass("error-highlight");
         $("#tbl_bundled tbody").html("");
-        $(".promo_datePeriod").val("");
     }
     function open_modal(product_name, product_id, barcode)
     {
@@ -1197,7 +1189,8 @@ if (isset($_SESSION['user_id'])) {
       return checkDigit;
     }
     $("input").on("input", function(){
-        $(this).removeClass('error-highlight');
+        $("input").removeClass('error-highlight');
+  
     })
 
 </script>
