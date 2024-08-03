@@ -4034,6 +4034,11 @@
 2024-08-01 13:49:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-01 15:19:34 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
 2024-08-01 18:12:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+<<<<<<< HEAD
+2024-08-02 09:07:28 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 09:08:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 09:43:07 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+=======
 2024-08-02 09:03:03 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-02 09:17:05 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-02 09:18:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
@@ -4467,6 +4472,26 @@
 2024-08-02 18:01:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HALO-HALO MIX NUTS 8G Barcode #:4806511010387 
 2024-08-02 18:05:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-02 18:07:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GC ALCOHOL W/MOIST  300ML Barcode #:4800047820557 
+>>>>>>> 8691de6c939873d42038d7d2088e196fc3953450
+2024-08-02 10:49:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 11:05:01 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Exported customer.csv 
+2024-08-02 11:40:02 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 13:05:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 13:07:41 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Rogen Advencula 
+2024-08-02 13:07:45 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Rogen Advencula 
+2024-08-02 13:15:07 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Rogen Advencula 
+2024-08-02 13:56:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-02 14:07:04 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Marvin SDSADSA 
+2024-08-02 15:08:14 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 15:10:01 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 WEEK 
+2024-08-02 15:10:20 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 WEEK 
+2024-08-02 15:10:24 | Zeus Baculio | 50 | 2 | Coupons | Zeus Baculio Updated the coupon expiration to 1 MONTH 
+2024-08-02 15:51:26 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Johny Bravo 
+2024-08-02 16:06:05 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 DAY 
+2024-08-02 16:06:10 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 MONTH 
+2024-08-02 16:28:23 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 17:09:45 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-02 17:54:04 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-08-02 18:09:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added GC ALCOHOL W/MOIST 75ML Barcode #:601045861870 
 2024-08-03 09:10:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-03 09:22:55 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

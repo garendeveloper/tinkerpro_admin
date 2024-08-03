@@ -254,6 +254,31 @@ input:checked + .sliderTax:before {
 }
 
 
+  .loadBalance {
+    border: 1px solid transparent;
+    height: 30vh;
+    width: 28vw;
+    background: #10253F;
+    border-radius: 10px;
+    color: var(--text-color);
+  }
+
+  .loadInputs input {
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color);
+    padding-right: 10px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: right;
+  }
+
+  .loadInputs button {
+    width: 100%;
+    background: var(--primary-color);
+    border: 1px solid var(--borer-color);
+  }
+
+
 
 
 /* .supplied-product-table::-webkit-scrollbar {
@@ -372,29 +397,61 @@ input:checked + .sliderTax:before {
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Loyalty Cards</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input readonly /></td>
                     </tr>
-                   <tr>
+                    <tr>
                         <td id="statusSupplier" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Tax Exempt</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px">
                         <?php
-                  $status = 'Active'; 
-                  $opposite_status = ($status == 'Active') ? 'Inactive' : 'Active';
-                  ?>
-                  <label class="switchTax" style="margin-left: 5px">
-                      <input readonly type="checkbox" id="taxExempt"<?php if($status == 'Active')?> >
-                      <span class="sliderTax round"></span>
-                  </label></td>
+                        $status = 'Active'; 
+                        $opposite_status = ($status == 'Active') ? 'Inactive' : 'Active';
+                        ?>
+                        <label class="switchTax" style="margin-left: 5px">
+                            <input readonly type="checkbox" id="taxExempt"<?php if($status == 'Active')?> >
+                            <span class="sliderTax round"></span>
+                        </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td id="customerStatus" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Customer Status</td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px">
+                        <?php
+                        $status = 'Active'; 
+                        $opposite_status = ($status == 'Active') ? 'Inactive' : 'Active';
+                        ?>
+                        <label class="switchTax" style="margin-left: 5px">
+                            <input readonly type="checkbox" id="customerStat"<?php if($status == 'Active')?> >
+                            <span class="sliderTax round"></span>
+                        </label>
+                        </td>
                     </tr>
               </tbody>
             </table>
           </div>
           <div style="margin-top: 10px; margin-left: 20px">
             <label class="text-custom">Address</label><br>
-            <textarea id="address" class="address"></textarea>
+            <textarea id="address" class="address p-2" style="border-radius: 10px; border: 1px solid var(--border-color)"></textarea>
           </div>
+
+
+          <div class="d-flex ms-3 me-3 justify-content-center loadBalance p-2">
+              <div class="col-6">
+                <label for="" class="mt-2">Load Balance (Php)</label>
+                <label for="" class="mt-2">Points Earned</label>
+              </div>
+
+              <div class="col-6 loadInputs">
+                  <input type="number" class="loadBalValue mt-1">
+                  <input type="number" class="EarnedPointVal mt-1">
+                  <button class="btn btn-secondary mt-1">Top-Up Balance</button>
+                  <button class="btn btn-secondary mt-1">Redeem Points</button>
+                  <button class="btn btn-secondary mt-1">View History</button>
+              </div>
+          </div>
+
            <div class="button-container" style="display:flex;justify-content: right;">
-              <button onclick="addCustomer()" class="btn-success-custom saveCustomerBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
-              <button hidden onclick="updateCustomer()" class="btn-success-custom updateCustomerBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
-              <button onclick="closeAddingModal()" class="cancelAddCustomer btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
+              <button onclick="closeAddingModal()" class="cancelAddCustomer btn-error-custom" style="margin-right: 10px;width: 100px; height: 40px">Cancel</button>
+              <button onclick="addCustomer()" class="btn-success-custom saveCustomerBtn" style="margin-right: 20px; width: 100px; height: 40px">Save</button>
+              <button hidden onclick="updateCustomer()" class="btn-success-custom updateCustomerBtn" style="margin-right: 20px; width: 100px; height: 40px">Update</button>
           </div>
         </div>
       </div>
@@ -413,7 +470,6 @@ function closeAddingModal(){
         $('.customer-modal').css('animation', '');
         clearFields()
     });
-
 }
 
 

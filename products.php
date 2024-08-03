@@ -291,7 +291,7 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
 
 .productHeader tr th {
   background: none;
-  border: 1px solid #262626;
+  border:
  }
 
 
