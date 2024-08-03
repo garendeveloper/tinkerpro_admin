@@ -38,8 +38,8 @@ if (count($inventories) > 0)
         if ($isReceived === 1 && !$is_lowstock && $partially_received) $span = "<span style='color: yellow; font-weight: bold'>PARIALLY RECEIVED</span>";
         ?> 
             <tr  data-id = '<?=$row['inventory_id']?>'>
-                <td class = "text-center"><?= $counter?></td>
-                <td><?= $row['prod_desc']?></td>
+                <td style = "width: 5%" class = "text-center"><?= $counter?></td>
+                <td style = "width: 20%" ><?= $row['prod_desc']?></td>
                 <td><?= $row['barcode']?></td>
                 <td class = "text-center"><?= $row['uom_name']?></td>
                 <td class = "text-right"><?= $row['all_qty_purchased']?></td>
@@ -47,7 +47,7 @@ if (count($inventories) > 0)
                 <td class = "text-right"><?= $row['total_stock']?></td>
                 <td class = "text-right"><?= number_format($row['cost'],2)?></td>
                 <td class = "text-right"><?= number_format($row['prod_price'], 2)?></td>
-                <td class = "text-center"><?= $span?></td>
+                <td class = "text-center" style ="width: 10%"><?= $span?></td>
             </tr>
         <?php
         $counter++;

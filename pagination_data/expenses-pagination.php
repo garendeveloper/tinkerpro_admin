@@ -50,21 +50,21 @@
 
     var tblData = `
             <table id='tbl_expenses' class='text-color table-border display' style='font-size: 12px;'>
-                <thead>
+                <thead class = 'adminTableHead'>
                     <tr>
-                        <th class='text-center auto-fit'>No.</th>
-                        <th class='auto-fit'>Item Name</th>
-                        <th class='auto-fit'>Date</th>
-                        <th class='auto-fit text-center'>Billable</th>
-                        <th class='auto-fit text-center'>Type</th>
-                        <th class='auto-fit text-center'>UOM</th>
-                        <th class='auto-fit text-center'>Supplier</th>
-                        <th class='auto-fit'>Invoice Number</th>
-                        <th class='auto-fit text-center'>Quantity</th>
-                        <th class='auto-fit text-center'>Price (Php)</th>
-                        <th class='auto-fit text-center'>Discount</th>
-                        <th class='auto-fit text-center'>Total Amount(Php)</th>
-                        <th class='auto-fit text-center'>Actions</th>
+                        <th style = "width: 3%" class='text-center auto-fit'>No.</th>
+                        <th style = "width: 20%" f>Item Name</th>
+                        <th style = "width: 6%">Date</th>
+                        <th style = "width: 6%">Billable</th>
+                        <th style = "width: 10%" >Type</th>
+                        <th style = "width: 6%" >UOM</th>
+                        <th style = "width: 6%" >Supplier</th>
+                        <th style = "width: 6%;font-size: 10px; text-align: center" >Invoice Number</th>
+                        <th style = "width: 8%" >Quantity</th>
+                        <th style = "width: 8%" >Price (Php)</th>
+                        <th style = "width: 8%" >Discount</th>
+                        <th style = "width: 8%" >Total Amount(Php)</th>
+                        <th >Actions</th>
                     </tr>
                 </thead>
                 <tbody></tbody>

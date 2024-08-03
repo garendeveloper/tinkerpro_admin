@@ -186,7 +186,6 @@ if (isset($_SESSION['user_id'])) {
     outline: none;
 }
 #responsive-data{
-  overflow: auto;
   max-height: 700px;
   width: 100%;
   position: absolute; 
@@ -194,16 +193,7 @@ if (isset($_SESSION['user_id'])) {
   right:2px;
   top:2px;
 }
-#responsive-data::-webkit-scrollbar {
-    width: 6px; 
-}
-#responsive-data::-webkit-scrollbar-track {
-    background: #1e1e1e;
-}
-#responsive-data::-webkit-scrollbar-thumb {
-    background: #888; 
-    border-radius: 20px; 
-}
+
 
 /* #responsive-data {
   max-height: 700px;
@@ -372,6 +362,73 @@ h1, label, textarea, input, table,h5{
   }
 
 
+  #responsive-data{
+    width: 100%;
+  }
+    #responsive-data thead {
+        display: table; 
+        width: calc(100% - 4px);
+    }
+
+    #responsive-data tbody {
+        display: block; 
+        max-height: 66vh; 
+        overflow-y: scroll;
+    }
+
+    #responsive-data th, td {
+        width: auto;
+        overflow-wrap: break-word; 
+        box-sizing: border-box;
+    }
+    #responsive-data tr {
+        display: table;
+        width: 100%;
+    }
+    #responsive-data, table, thead, tbody{
+      border: 1px solid #292928;
+    }
+    #responsive-data table{
+        background-color: #1e1e1e;
+        border: 1px solid #262626;
+        height: 5px;
+        padding: 10px 10px;
+    }
+  @media (max-width: 1200px) {
+      #responsive-data th, #responsive-data td {
+          width: 9%; 
+      }
+  }
+
+  @media (max-width: 992px) {
+      #responsive-data th, #responsive-data td {
+          width: 8%; 
+      }
+  }
+
+  @media (max-width: 768px) {
+      #responsive-data th, #responsive-data td {
+          width: 7%;
+      }
+  }
+
+  @media (max-width: 768px) {
+      #responsive-data {
+          display: block;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+      }
+  }
+  #responsive-data tbody::-webkit-scrollbar {
+      width: 4px; 
+  }
+  #responsive-data tbody::-webkit-scrollbar-track {
+      background: #151515;
+  }
+  #responsive-data tbody::-webkit-scrollbar-thumb {
+      background: #888; 
+      border-radius: 50px; 
+  }
 </style>
 
 <?php include "layout/admin/css.php"?> 

@@ -186,14 +186,14 @@
                   <?php include('errors.php'); ?>
                   <!-- <div class="productTable" > -->
                     <table id="recentsuppliers" class="text-color table-border" style = "width: 100%;">
-                      <thead>
-                        <th class="text-center" style="width: 2%; border-left: 1px solid transparent !important">No.</th>
+                      <thead class = "adminTableHead">
+                        <th class="text-center" style="width: 2%;">No.</th>
                         <th class="text-center" style="width: 15%;">Supplier</th>
                         <th class="text-center" style="width: 15%;">Contact</th>
                         <th class="text-center" style="width: 15%;">Email</th>
                         <th class="text-center" style="width: 15%;">Company</th>
                         <th class="text-center" style="width: 10%;">Status</th>
-                        <th class="text-center" style="width: 7%; border-right: 1px solid transparent !important">Action</th>
+                        <th class="text-center" style="width: 7%;">Action</th>
                       </thead>
                       <tbody id="fetchsuppliers">
                         

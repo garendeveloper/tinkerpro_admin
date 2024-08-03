@@ -333,7 +333,6 @@ if (isset($_SESSION['user_id'])) {
  $("#pointer").html("Promotion & Action");
 
 
-
  function getPromoSet() {
     axios.get('api.php?action=getPromotionSet')
     .then(function(response) {
@@ -341,28 +340,18 @@ if (isset($_SESSION['user_id'])) {
         var promos = JSON.parse(promotionSet);
         var allZero = true;
      
-        function allValuesZero(obj) {
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key) && obj[key] !== 0) {
-                    return false; 
-                }
-            }
-            return true;
+        function areAllValuesZero(obj) {
+            return Object.values(obj).every(value => value === 0);
         }
 
-        $.each(promos, function(index, promo) {
-            if (!allValuesZero(promo)) {
-                allZero = false; 
-            }
-        });
-
-        if (allZero) {
+        if (areAllValuesZero(promos)) {
             $('.promotions_table').addClass('d-none'); 
         } else {
             $('.promotions_table').removeClass('d-none');
         }
+      
 
-        if (promos[0].buy_1_take_1 == 1) {
+        if (promos['buy_1_take_1']== 1) {
             $('#buy_1_take_1').prop('checked', true);
             $('.buy-to-take-one').removeClass('d-none');
             
@@ -371,7 +360,7 @@ if (isset($_SESSION['user_id'])) {
             $('.buy-to-take-one').addClass('d-none');
         }
 
-        if (promos[0].bundle_sale == 1) {
+        if (promos['bundle_sale'] == 1) {
             $('#bundle_sale').prop('checked', true);
             $('.bundle-sale').removeClass('d-none');
            
@@ -380,7 +369,7 @@ if (isset($_SESSION['user_id'])) {
             $('.bundle-sale').addClass('d-none');
         }
 
-        if (promos[0].whole_sale == 1) {
+        if (promos['whole_sale'] == 1) {
             $('#whole_sale').prop('checked', true);
             $('.whole-sale').removeClass('d-none');
            
@@ -389,7 +378,7 @@ if (isset($_SESSION['user_id'])) {
             $('.whole-sale').addClass('d-none');
         }
 
-        if (promos[0].point_promo == 1) {
+        if (promos['point_promo'] == 1) {
             $('#point_promo').prop('checked', true);
             $('.point_promo').removeClass('d-none');
            
@@ -399,7 +388,7 @@ if (isset($_SESSION['user_id'])) {
         }
 
 
-        if (promos[0].stamp_promo == 1) {
+        if (promos['stamp_promo'] == 1) {
             $('#stam_card').prop('checked', true);
             $('.stamp_promo').removeClass('d-none');
         } else {
@@ -412,14 +401,31 @@ if (isset($_SESSION['user_id'])) {
     });
  }
 
-
- function toUpdatePromo(take1, bundle, wholesale, point_promo, stamp_promo) {
+    $(".my-checkbox").on("change", function(e){
+        e.preventDefault();
+        var promotionType = $(this).val();
+        if ($(this).prop("checked")) {
+            $(".data-" + promotionType).html("");
+        }
+        else
+        {
+            $.ajax({
+                type: 'get',
+                url: 'api.php?action=check_promotion',
+                data: {
+                    promotionType: promotionType
+                },
+                success: function(response)
+                {
+                    if(response)
+                        $(".data-"+promotionType).html("<i><span style = 'font-weight: bold'>Note</span>: Unchecking this promo will delete all associated data once you save.<i>");
+                }
+            })
+        }
+    })
+ function toUpdatePromo(promoValues) {
     axios.post('api.php?action=updatePromo', {
-        'bundle' : bundle,
-        'take1' : take1,
-        'point_promo' : point_promo,
-        'wholesale' : wholesale,
-        'stamp_promo' : stamp_promo,
+        'promoValues' : JSON.stringify(promoValues),
     })
     .then(function(response) {
         getPromoSet();
@@ -437,17 +443,17 @@ if (isset($_SESSION['user_id'])) {
     $('.search_product').focus();
     var isClick = false;
 
-
     $('#updatePromotion').off('click').on('click', function() {
-
-        var take1 = $('#buy_1_take_1').prop('checked') ? 1 : 0;
-        var bundle = $('#bundle_sale').prop('checked') ? 1 : 0;
-        var wholesale = $('#whole_sale').prop('checked') ? 1 : 0;
-        var point_promo = $('#point_promo').prop('checked') ? 1 : 0;
-        var stamp_promo = $('#stam_card').prop('checked') ? 1 : 0;
-        
-        toUpdatePromo(take1, bundle, wholesale, point_promo, stamp_promo);
+        var promoValues = {
+            'buy_1_take_1': $('#buy_1_take_1').prop('checked') ? 1 : 0,
+            'bundle_sale': $('#bundle_sale').prop('checked') ? 1 : 0,
+            'whole_sale': $('#whole_sale').prop('checked') ? 1 : 0,
+            'point_promo': $('#point_promo').prop('checked') ? 1 : 0,
+            'stamp_promo': $('#stam_card').prop('checked') ? 1 : 0 
+        };
+        toUpdatePromo(promoValues);
         $('.closeModalPromotion').click();
+        $("#tbl_promotions").html("");
     })
 
     $('.search_product').on('input', function() {
@@ -473,9 +479,7 @@ if (isset($_SESSION['user_id'])) {
 
     $('#addPromotion').on('click', function() {
         $('#promoteModal').fadeIn();
-        if ($('#promoteModal').is(':visible')) {
-           
-        }
+        $(".promo-error").html("");
     });
 
     $('.closeModalPromotion').click(function() {
@@ -633,6 +637,7 @@ if (isset($_SESSION['user_id'])) {
       if(promotion_type == 4) $("#date_picker_promo").val(date_period_selected);
       if(promotion_type == 5) $("#date_picker_stampCard").val(date_period_selected);
       $("#dateTimeModal").fadeOut(200);
+    //   show_promotionByType(promotion_type);
     })
     $("#btn_addProduct").click(function (e) {
         e.preventDefault();
@@ -782,6 +787,7 @@ if (isset($_SESSION['user_id'])) {
       $('.promotionType').off('click').on('click', function() {
         $('.search_product').prop('disabled', false)
         var id = $(this).data('id');
+    
         promoType = id;
         $(".promotion_type").val(id);
         $("._promotionType").val(id);
@@ -887,6 +893,13 @@ if (isset($_SESSION['user_id'])) {
     
     function show_promotionByType(type)
     {
+        var date_selected_by_type = "";
+        // if(type == 1) date_selected_by_type = $("#date_picker_buy1").val();
+        // if(type == 2) date_selected_by_type = $("#date_picker_bundle").val();
+        // if(type == 3) date_selected_by_type = $("#date_picker_wholeSale").val();
+        // if(type == 4) date_selected_by_type = $("#date_picker_promo").val();
+        // if(type == 5) date_selected_by_type = $("#date_picker_stampCard").val();
+
         $("#tbl_promotions").html("");
         $.ajax({
             type: 'get',

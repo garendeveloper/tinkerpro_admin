@@ -220,7 +220,7 @@
                     {
                         row += "<tr  data-id = "+data[i].product_id+">";
                         row += "<td data-id = " +data[i].product_id+ " style = 'width: 50% '>" + data[i].prod_desc + "</td>";
-                        row += "<td style = 'text-align:center; width: 50px;'>"+data[i].product_stock+"</td>";
+                        row += "<td style = 'text-align: center; width: 20%'>"+data[i].product_stock+"</td>";
                         row += "<td class = 'text-center; width: 50px;'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  autocomplete = 'off' required></input></td>";
                         row += "<td style = 'text-align: right; width: 50px;'></td>";
                         row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";

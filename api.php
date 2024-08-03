@@ -78,6 +78,9 @@
            echo json_encode(["success" => true,'role_id' => $role]);
             break;
         
+        case 'check_promotion':
+            echo json_encode($promotionFacade->check_promotion($_GET['promotionType']));
+            break;
         case 'get_allPromotions':
             echo json_encode($promotionFacade->get_allData());
             break;
@@ -502,12 +505,14 @@
             break;
 
         case 'updatePromo' :
-            $bundle = isset($data->bundle) ? $data->bundle : 0;
-            $take1 = isset($data->take1) ? $data->take1 : 0;
-            $point_promo = isset($data->point_promo) ? $data->point_promo : 0;
-            $wholesale = isset($data->wholesale) ? $data->wholesale : 0;
-            $stamp_promo = isset($data->stamp_promo) ? $data->stamp_promo : 0;
-            $products->updatePromo($bundle, $take1, $point_promo, $wholesale, $stamp_promo);
+            // $bundle = isset($data->bundle) ? $data->bundle : 0;
+            // $take1 = isset($data->take1) ? $data->take1 : 0;
+            // $point_promo = isset($data->point_promo) ? $data->point_promo : 0;
+            // $wholesale = isset($data->wholesale) ? $data->wholesale : 0;
+            // $stamp_promo = isset($data->stamp_promo) ? $data->stamp_promo : 0;
+            $promoValues = $data->promoValues;
+            echo json_encode($promoValues);
+            $products->updatePromo($data->promoValues);
             break;
 
         case 'postSettings' :

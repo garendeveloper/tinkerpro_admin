@@ -57,14 +57,14 @@
     $(".inventoryCard").html("");
     var tblData = `
         <table tabindex='0' id='tbl_all_stocks' class='' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
-            <thead style = "border: 1px solid var(--primary-color)">
+            <thead class='adminTableHead'>
                 <tr >
-                    <th class='autofit' >No.</th>
-                    <th>Product</th>
+                    <th style = "width: 5%" >No.</th>
+                    <th style = "width: 20%" >Product</th>
                     <th>Barcode</th>
                     <th>UOM</th>
                     <th class = "text-center">Qty in Store</th>
-                    <th style='text-align: center; width: 10px;'>Action</th>
+                    <th style='text-align: center; ;width: 5%'>Action</th>
                 </tr>
             </thead>
             <tbody></tbody>

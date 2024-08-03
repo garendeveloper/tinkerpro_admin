@@ -146,8 +146,7 @@ if (isset($_SESSION['user_id'])) {
   background-color: #151515;
   border-color: #242424;
   height: 200px;
-  overflow-x: auto; 
-  overflow-y: hidden;
+overflow: hidden;
   border-radius: 8px;
   padding: 16px;
 }
@@ -209,7 +208,6 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
 }
 
 #responsive-data {
-  overflow-y: auto;
   overflow-x: hidden;
   max-height: 80vh;
   position: absolute;
@@ -219,9 +217,81 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
 }
 
 
+#responsive-data{
+    width: 100%;
+  }
+    #responsive-data thead {
+        display: table; 
+        width: calc(100% - 4px);
+    }
+
+    #responsive-data tbody {
+        display: block; 
+        max-height: 78vh; 
+        overflow-y: scroll;
+    }
+
+    #responsive-data th, td {
+        width: auto;
+        overflow-wrap: break-word; 
+        box-sizing: border-box;
+    }
+    #responsive-data tr {
+        display: table;
+        width: 100%;
+    }
+    #responsive-data, table, thead, tbody{
+      border: 1px solid #292928;
+    }
+    #responsive-data table{
+        background-color: #1e1e1e;
+        border: 1px solid #262626;
+        height: 5px;
+        padding: 10px 10px;
+    }
+  @media (max-width: 1200px) {
+      #responsive-data th, #responsive-data td {
+          width: 9%; 
+      }
+  }
+
+  @media (max-width: 992px) {
+      #responsive-data th, #responsive-data td {
+          width: 8%; 
+      }
+  }
+
+  @media (max-width: 768px) {
+      #responsive-data th, #responsive-data td {
+          width: 7%;
+      }
+  }
+
+  @media (max-width: 768px) {
+      #responsive-data {
+          display: block;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+      }
+  }
+#responsive-data tbody::-webkit-scrollbar {
+    width: 4px; 
+}
+#responsive-data tbody::-webkit-scrollbar-track {
+    background: #151515;
+}
+#responsive-data tbody::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 50px; 
+}
+
+
+
+
 
 .productHeader tr th {
   background: none;
+  border: 1px solid #262626;
  }
 
 
@@ -338,7 +408,7 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
           <div>
           <div class="row">
             <div>
-              <div class="card p-0" style="height: 78vh; width: 100%;">
+              <div class="card p-0" style="height: 78vh; width: 100%; overflow: hidden">
                 <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
 
@@ -346,25 +416,25 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
                     
                   </table> -->
 
-                  <div id="responsive-data" style="height: 100%; ">
+                  <div id="responsive-data" style="height: 100%; overflow: hidden">
                     <table id="recentusers" class="text-color table-border">
 
                       <thead class="productHeader">
                         <tr>
-                          <th class="text-center font-size" style="width: 2%;">No.</th>
-                          <th class="text-center font-size"  style="width: 350px">Name</th>
-                          <th class="text-center font-size" style="width: 100px" >Barcode</th>
-                          <th class="text-center font-size"   style="width: 100px" >SKU</th>
-                          <th class="text-center font-size" style="width: 100px" >Code</th>
-                          <th class="text-center font-size" style="width: 100px"  >Unit</th>
-                          <th class="text-center font-size"  style="width: 100px" >Brand</th>
-                          <th class="text-center font-size"  style="width: 100px" >Price (Php)</th>
-                          <th class="text-center font-size"  style="width: 100px" >Mark-up (%)</th>
-                          <th class="text-center font-size" style="width: 100px"  >Cost (Php)</th>
+                          <th class="text-center font-size" style="width: 5%;">No.</th>
+                          <th class="text-center font-size" style="width: 20%">Name</th>
+                          <th class="text-center font-size" style="width: 6%" >Barcode</th>
+                          <th class="text-center font-size" style="width: 6%" >SKU</th>
+                          <th class="text-center font-size" style="width: 6%" >Code</th>
+                          <th class="text-center font-size" style="width: 6%"  >Unit</th>
+                          <th class="text-center font-size"  style="width: 6%" >Brand</th>
+                          <th class="text-center font-size"  style="width: 6%" >Price (Php)</th>
+                          <th class="text-center font-size"  style="width: 6%" >Mark-up (%)</th>
+                          <th class="text-center font-size" style="width: 6%"  >Cost (Php)</th>
                           <!-- <th class="text-center" style="width: 7%;">Serial No.</th> -->
-                          <th class="text-center font-size"  style="width: 300px" >Category</th>
-                          <th class="text-center font-size" style="width: 100px" >Status</th>
-                          <th class="text-center font-size"  style="width: 200px" >Action</th>
+                          <th class="text-center font-size"  style="width: 10%" >Category</th>
+                          <th class="text-center font-size" style="width: 6%" >Status</th>
+                          <th class="text-center font-size"  style="width: 6%" >Action</th>
                         </tr>
                       </thead> 
 

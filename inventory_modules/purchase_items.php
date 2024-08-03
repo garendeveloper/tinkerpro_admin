@@ -68,8 +68,8 @@
 
     #tbl_purchaseOrders tbody th,
     #tbl_purchaseOrders tbody td {
-        padding: 7px 7px; 
-        height: 20px; 
+        padding: 8px 8px; 
+        height: 30px; 
         line-height: 0.5; 
     }
     #tbl_purchaseOrders {
@@ -249,11 +249,6 @@ table thead th{
 <script>
     $(document).ready(function(){
         var productsCache = [];
-        var totalQty = 0;
-        var totalPrice = 0;
-        var total = 0;
-        var totalTax = 0;
-
         $("#btn_omPayTerms").off('click').on("click", function(e){
         e.preventDefault();
         $("#unpaid_purchase_modal").fadeIn(200);
@@ -452,28 +447,26 @@ table thead th{
     function updateTotal() {
   
       var totalQty = 0;
-        var totalPrice = 0;
-        var total = 0;
-        var totalTax = 0;
-        var tableLength = $("#tbl_purchaseOrders tbody").length();
-        if(tableLength > 0)
-        {
+      var totalPrice = 0;
+      var total = 0;
+      var totalTax = 0;
+
          
-          $('#tbl_purchaseOrders tbody tr').each(function () {
-            var quantity = parseInt($(this).find('td:nth-child(2)').text().trim());
-            var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
-            var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
-            var tax = (price / 1.12);
-            totalTax += (price - tax);
-            totalQty += quantity;
-            totalPrice += price;
-            total += subtotal;
-          });
-          $("#totalTax").html("Tax: " + addCommasToNumber(totalTax));
-          $("#totalQty").html(totalQty);
-          $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice));
-          $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(total));
-        }
+      $('#tbl_purchaseOrders tbody tr').each(function () {
+        var quantity = parseInt($(this).find('td:nth-child(2)').text().trim());
+        var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
+        var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
+        var tax = (price / 1.12);
+        totalTax += (price - tax);
+        totalQty += quantity;
+        totalPrice += price;
+        total += subtotal;
+      });
+      $("#totalTax").html("Tax: " + addCommasToNumber(totalTax));
+      $("#totalQty").html(totalQty);
+      $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice));
+      $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(total));
+    
       }
       function show_purchaseQtyModal(product_id, qty, price )
       {
@@ -549,7 +542,20 @@ table thead th{
            
           },
       });
-     
+           function validateProductForm() {
+        var isValid = true;
+        $('#prod_form input[type=text]').each(function () {
+          if ($(this).val() === '') {
+            isValid = false;
+            $(this).addClass('has-error');
+          }
+          else {
+            $(this).removeClass('has-error');
+          }
+        });
+
+        return isValid;
+      }
       function reset_poFooter()
       {
         $("#totalTax").html("Tax: 0.00");
@@ -559,9 +565,7 @@ table thead th{
       }
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
-        reset_poFooter();
         if (validateProductForm()) {
-          $("#tbl_purchaseOrders tbody").click();
           var p_qty = parseFloat($("#p_qty").val());
           var price = parseFloat($("#price").val());
           var product_id = $("#selected_product_id").val();
@@ -576,12 +580,7 @@ table thead th{
                 tax = (price / 1.12);
                 totalTax += (price - tax);
               }
-              else totalTax += 0;
 
-              totalQty += p_qty;
-              totalPrice += price;
-              overallTotal += total;
-             
 
               var $rowToUpdate = $("#tbl_purchaseOrders tbody").find("tr[data-rowid='" + product_id + "']");
                 if ($rowToUpdate.length > 0) {
@@ -594,30 +593,51 @@ table thead th{
               {
                 $("#tbl_purchaseOrders tbody").append(
                   "<tr data-rowid = "+data['id']+">" +
-                  "<td data-rowid = "+data['id']+" data-id = " + data['id'] + " data-inv_id = " + data['inventory_id']+ " data-qty = " + p_qty+ " data-price = " + price + " >" + data['prod_desc'] + "</td>" +
-                  "<td style = 'text-align: center' class ='editable'>" + p_qty + "</td>" +
-                  "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(price) + "</td>" +
-                  "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(total) + "</td>" +
-                  "<td style = 'text-align: right; width: 0px;'><i class = 'bi bi-trash' id = 'removeOrder'></i></td>"+
+                  "<td style = 'width: 55%' data-rowid = "+data['id']+" data-id = " + data['id'] + " data-inv_id = " + data['inventory_id']+ " data-qty = " + p_qty+ " data-price = " + price + " >" + data['prod_desc'] + "</td>" +
+                  "<td style = 'text-align: center; width: 10%' class ='editable'>" + p_qty + "</td>" +
+                  "<td style = 'text-align: right; width: 10%' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(price) + "</td>" +
+                  "<td style = 'text-align: right width: 10%'>&#x20B1;&nbsp;" + addCommasToNumber(total) + "</td>" +
+                  "<td style = 'text-align: right; width: width: 10%'><i class = 'bi bi-trash' id = 'removeOrder'></i></td>"+
                   "</tr>"
                 );
               }
+              
+
+                var totalQty = 0;
+                var totalPrice = 0;
+                var overalltotal = 0;
+                var totalTax = 0;
+
+                $('#tbl_purchaseOrders tbody tr').each(function () {
+                  var quantity = parseInt($(this).find('td:nth-child(2)').text().trim());
+                  var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
+                  var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
+                  var tax = (price / 1.12);
+                  totalTax += (price - tax);
+                  totalQty += quantity;
+                  totalPrice += price;
+                  overalltotal += subtotal;
+                });
+                $("#totalTax").html("Tax: " + addCommasToNumber(totalTax));
+                $("#totalQty").html(totalQty);
+                $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice));
+                $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(overalltotal));
               
               // totalTax += total
               // totalQty += quantity;
               // totalPrice += price;
               // total += subtotal;
 
-               $("#totalTax").html(totalTax.toFixed(2));
-              $("#totalQty").html(totalQty);
-              $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice.toFixed(2)));
-              $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(overallTotal.toFixed(2)));
+              //  $("#totalTax").html(totalTax.toFixed(2));
+              // $("#totalQty").html(totalQty);
+              // $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice.toFixed(2)));
+              // $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(overallTotal.toFixed(2)));
 
               $("#purchaseQty_modal").hide();
               $("#prod_form")[0].reset();
               $("#product").val("");
               $("#item_verifier").val("");
-              // updateTotal();
+            
             
             }
           })
@@ -625,6 +645,9 @@ table thead th{
           
           $("#product").val('');
             $("#selected_product_id").val("0");
+
+            updateTotal();
+            $('#tbl_purchaseOrders tbody tr:first').click();
         }
       })
     

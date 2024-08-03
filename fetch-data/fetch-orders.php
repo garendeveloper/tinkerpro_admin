@@ -107,17 +107,17 @@
             }
             ?> 
                 <tr  data-id = '<?= $row['order_id'] ?>' data-is_received = '<?= $row['is_received']?>' data-po_number = '<?= $row['po_number']?>' data-to_receive = '<?= $to_receive?>'>
-                    <td class = "text-center"><?= $row['po_number']?></td>
-                    <td><?= $row['supplier']?></td>
-                    <td data-id = '<?= $row['order_id'] ?>' class = "text-center unpaid_datePurchased"><?= $date_purchased ?></td>
-                    <td class = "text-center"><?= $due_date ===  "January 1, 1970" ? "Not Available" : $due_date ?></td>
-                    <td class = "text-right "><?= number_format($row['totalQty'], 2)?></td>
+                    <td style='width: 6%;' class = "text-center"><?= $row['po_number']?></td>
+                    <td style='width: 8%;'><?= $row['supplier']?></td>
+                    <td style='width: 5%;' data-id = '<?= $row['order_id'] ?>' class = "text-center unpaid_datePurchased"><?= $date_purchased ?></td>
+                    <td class = "text-center" style = " width: 6%"><?= $due_date ===  "January 1, 1970" ? "Not Available" : $due_date ?></td>
+                    <td  class = "text-right "><?= number_format($row['totalQty'], 2)?></td>
                     <td class = "text-right "><?= number_format($row['totalReceived'], 2)?></td>
-                    <td class = "text-right"><?= number_format($row['totalPrice'], 2)?></td>
-                    <td class = "text-right"><?= number_format($row['price'], 2)?></td>
-                    <td class = "text-center"><?= $isPaid?></td>
-                    <td class = "text-center"><?= $is_received?></td>
-                    <td class='text-center'  style="padding: 2px" ><?= $buttons?></td>
+                    <td  class = "text-right"><?= number_format($row['totalPrice'], 2)?></td>
+                    <td style='ext-align: right' class = "text-right"><?= number_format($row['price'], 2)?></td>
+                    <td style='text-align: center; width: 4%' class = "text-center"><?= $isPaid?></td>
+                    <td style=' text-align: center; width: 6%' class = "text-center"><?= $is_received?></td>
+                    <td style='text-align: center; width: 5%' class='text-center'  style="padding: 2px" ><?= $buttons?></td>
                     <?php 
                     ?>
                 </tr>

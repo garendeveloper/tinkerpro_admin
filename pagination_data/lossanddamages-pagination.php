@@ -51,7 +51,7 @@
 
     var tblData = `
              <table id='tbl_all_lostanddamages' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
-                <thead>
+                <thead class='adminTableHead'>
                     <tr>
                         <th class='autofit'>Reference No.</th>
                         <th style = 'text-align:center'>Date of Transaction</th>

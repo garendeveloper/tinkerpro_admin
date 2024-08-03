@@ -50,7 +50,7 @@
     $(".inventoryCard").html("");
 
     var tblData =`<table id="tbl_expiredProducts" class="text-color table-border" style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%'>
-                          <thead>
+                          <thead class='adminTableHead'>
                               <tr>
                                   <th>Product</th>
                                   <th>Barcode</th>
