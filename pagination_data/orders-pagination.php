@@ -38,6 +38,7 @@
         height: 5px;
         padding: 10px 10px;
     }
+  
 </style>
 
 <script>
@@ -51,19 +52,19 @@
 
     var tblData = `
               <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
-                  <thead>
+                  <thead class='adminTableHead'>
                       <tr>
-                          <th style='width: 2%;'>PO Number</th>
-                          <th style='width: 4%;'>Supplier</th>
-                          <th style='width: 2%;'>Date Purchased</th>
-                          <th style='width: 2%;'>Due Date</th>
-                          <th style='width: 2%;'>Quantity Purchased</th>
-                          <th style='width: 2%;'>Quantity  Received</th>
-                          <th style='width: 2%;'>Price</th>
-                          <th style='width: 2%;'>Total</th>
-                          <th style='width: 2%; text-align: center'>Payment Status</th>
-                          <th style='width: 2%; text-align: center'>Status</th>
-                          <th style='width: 1%; text-align: center' class='autofit'>Action</th>
+                          <th style='width: 6%;'>PO Number</th>
+                          <th style='width: 8%;'>Supplier</th>
+                          <th style='width: 5%; text-align:center; font-size: 10px;'>Date Purchased</th>
+                          <th style='width: 6%; text-align: center'>Due Date</th>
+                          <th style = "text-align: center" >Quantity Purchased</th>
+                          <th style = "text-align: center">Quantity  Received</th>
+                          <th style = "text-align: center">Price</th>
+                          <th style = "text-align: center">Total</th>
+                          <th style='text-align: center; width: 4%; font-size: 8px;'>Payment Status</th>
+                          <th style='text-align: center; width: 6%'>Status</th>
+                          <th style='text-align: center; width: 5%'>Action</th>
                       </tr>
                   </thead>
                   <tbody></tbody>

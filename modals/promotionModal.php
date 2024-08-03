@@ -324,31 +324,27 @@ td[contenteditable="true"]:focus {
 
 
             <div class="my-content mt-2 text-light">
-
               <div class="d-flex justify-content-between mb-2 promotionList">
-                  <label for="">Wholesale Promo</label>
-                  <input type="checkbox" class="my-checkbox" id="whole_sale">
+                  <label for="">Buy 1 take 1 &nbsp;&nbsp;<span class = "promo-error data-1" style = "color: red"></span></label>
+                  <input type="checkbox" class="my-checkbox" value = "1" id="buy_1_take_1">
+              </div>
+              <div class="d-flex justify-content-between mb-2 promotionList">
+                  <label for="">Bundled Promo &nbsp;&nbsp;<span class = "promo-error data-2" style = "color: red" ></span></label>
+                  <input type="checkbox" class="my-checkbox" value = "2" id="bundle_sale">
+              </div>
+              <div class="d-flex justify-content-between mb-2 promotionList">
+                  <label for="">Wholesale Promo &nbsp;&nbsp;<span class = "promo-error data-3" style = "color: red" ></span></label>
+                  <input type="checkbox" class="my-checkbox" value = "3" id="whole_sale">
               
               </div>
-
               <div class="d-flex justify-content-between mb-2 promotionList">
-                  <label for="">Point Promo</label>
-                  <input type="checkbox" class="my-checkbox" id="point_promo">
+                  <label for="">Point Promo &nbsp;&nbsp;<span class = "promo-error data-4" style = "color: red" ></span></label>
+                  <input type="checkbox" class="my-checkbox" value = "4" id="point_promo">
               </div>
 
               <div class="d-flex justify-content-between mb-2 promotionList">
-                  <label for="">Stamp Card Promo</label>
-                  <input type="checkbox" class="my-checkbox" id="stam_card">
-              </div>
-
-              <div class="d-flex justify-content-between mb-2 promotionList">
-                  <label for="">Buy 1 take 1</label>
-                  <input type="checkbox" class="my-checkbox" id="buy_1_take_1">
-              </div>
-
-              <div class="d-flex justify-content-between mb-2 promotionList">
-                  <label for="">Bundled Promo</label>
-                  <input type="checkbox" class="my-checkbox" id="bundle_sale">
+                  <label for="">Stamp Card Promo &nbsp;&nbsp;<span class = "promo-error data-5" style = "color: red" ></span></label>
+                  <input type="checkbox" class="my-checkbox" value = "5" id="stam_card">
               </div>
 
               <button class="btn btn-secondary w-100" id="updatePromotion" style="background: var(--primary-color); border: none">

@@ -28,12 +28,12 @@ if (count($inventories) > 0)
         }
         ?> 
             <tr  data-id = '<?=$row['product_id']?>'>
-                <td class = "text-center"><?= $counter?></td>
-                <td><?= $row['prod_desc']?></td>
+                <td style = "width: 5%"  class = "text-center"><?= $counter?></td>
+                <td style = "width: 20%" ><?= $row['prod_desc']?></td>
                 <td><?= $row['barcode']?></td>
                 <td class = "text-center"><?= $row['uom_name']?></td>
                 <td class = "text-right"><?= $product_stock?></td>
-                <td class='text-center '  style="padding: 2px" id='btn_openStockHistory'>
+                <td class='text-center '  style="padding: 2px; width: 5%" id='btn_openStockHistory'>
                     <a id="btn_openStockHistory" data-id="'<? $row['product_id']?>'" class='text-success productAnch '  style='text-decoration: none;'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-clipboard-data" viewBox="0 0 16 16">
                             <path d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z"/>

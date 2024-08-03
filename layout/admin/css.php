@@ -484,7 +484,7 @@ button:hover{
 
 
 .scrollable::-webkit-scrollbar {
-    width: 6px; 
+    width: 4px; 
 }
 .scrollable::-webkit-scrollbar-track {
     background: #1e1e1e;
@@ -555,5 +555,9 @@ button:hover{
       color: #333;
   } */
 
-
+.adminTableHead{
+  border: 1px solid var(--primary-color) !important; 
+  padding: 8px 8px; 
+  line-height: 0.5
+}
 </style>

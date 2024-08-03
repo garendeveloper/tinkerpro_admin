@@ -186,25 +186,76 @@ include ('./modals/optionModal.php');
 }
 .inventoryCard{
     width: 100%;
-    max-height: 750px; 
-    overflow-y: auto; 
-    overflow-x: auto; 
+  }
+    .inventoryCard thead {
+        display: table; 
+        width: calc(100% - 4px);
+    }
+
+    .inventoryCard tbody {
+        display: block; 
+        max-height: 61vh; 
+        overflow-y: scroll;
+    }
+
+    .inventoryCard th, td {
+        width: 9%;
+        overflow-wrap: break-word; 
+        box-sizing: border-box;
+    }
+    .inventoryCard tr {
+        display: table;
+        width: 100%;
+    }
+    .inventoryCard, table,  tbody{
+      border: 1px solid #292928;
+    }
+    .inventoryCard table{
+        background-color: #1e1e1e;
+        border: 1px solid #262626;
+        height: 5px;
+        padding: 10px 10px;
+    }
+  @media (max-width: 1200px) {
+      .inventoryCard th, .inventoryCard td {
+          width: 9%; 
+      }
   }
 
-.inventoryCard::-webkit-scrollbar {
-    width: 6px; 
+  @media (max-width: 992px) {
+      .inventoryCard th, .inventoryCard td {
+          width: 8%; 
+      }
+  }
+
+  @media (max-width: 768px) {
+      .inventoryCard th, .inventoryCard td {
+          width: 7%;
+      }
+  }
+
+  @media (max-width: 768px) {
+      .inventoryCard {
+          display: block;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+      }
+  }
+.inventoryCard tbody::-webkit-scrollbar {
+    width: 4px; 
 }
-.inventoryCard::-webkit-scrollbar-track {
+.inventoryCard tbody::-webkit-scrollbar-track {
     background: #151515;
 }
-.inventoryCard::-webkit-scrollbar-thumb {
+.inventoryCard tbody::-webkit-scrollbar-thumb {
     background: #888; 
-    border-radius: 20px; 
+    border-radius: 50px; 
 }
   table thead{ 
-      table-layout: fixed; 
-      border-collapse: collapse; 
-    } 
+    table-layout: fixed; 
+    border-collapse: collapse; 
+
+  } 
 
 #tbl_products tbody th,
 #tbl_products tbody td {
@@ -220,7 +271,7 @@ include ('./modals/optionModal.php');
     height: 3px; 
     line-height: 0.1; 
     border: 1px solid #292928; */
-  padding: 8px 8px; 
+  padding: 10px 10px; 
   height: 20px; 
   line-height: 0.5; 
   border: 1px solid #292928;
@@ -349,7 +400,11 @@ i:hover{
   border-radius: 0 20px 20px 0;
  }
 
-
+.inventoryCard table {
+  max-height: 70vh !important;
+ margin-left: -18px !important;
+ width: 101% !important;
+}
 </style>
 
 <?php include "layout/admin/css.php" ?>
@@ -427,13 +482,13 @@ i:hover{
           </div>
         </div>
      
-        <div class="row" >
-          <div class="card inventoryCard" style="width: 100%;background-color: #1e1e1e; height: 64vh; margin-top: -10px; margin-left: 5px;"></div>   
+        <div class="row " >
+          <div class="card inventoryCard" style="width: 100%; height: 64vh; background-color: #262626 !important;margin-top: -20px; margin-left: 5px;"></div>   
           <div id="paginationDiv" ></div>
         </div>
 
 
-        <div style="display: flex; margin-top: 3px; justify-content: space-between; ">
+        <div style="display: flex; margin-top: -5px; justify-content: space-between; ">
           <div>
             <button class="btn-control" id="printThis" style="width:160px; height:45px; margin-right: 10px"><svg version="1.1" id="_x32_" width="25px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="" stroke=""><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffff;} </style> <g> <path class="st0" d="M488.626,164.239c-7.794-7.813-18.666-12.684-30.578-12.676H409.01V77.861L331.145,0h-4.225H102.99v151.564 H53.955c-11.923-0.008-22.802,4.862-30.597,12.676c-7.806,7.798-12.665,18.671-12.657,30.574v170.937 c-0.008,11.919,4.847,22.806,12.661,30.589c7.794,7.813,18.678,12.669,30.593,12.661h49.034V512h306.02V409.001h49.037 c11.901,0.008,22.78-4.848,30.574-12.661c7.818-7.784,12.684-18.67,12.677-30.589V194.814 C501.306,182.91,496.436,172.038,488.626,164.239z M323.519,21.224l62.326,62.326h-62.326V21.224z M123.392,20.398l179.725,0.015 v83.542h85.491v47.609H123.392V20.398z M388.608,491.602H123.392v-92.801h-0.016v-96.638h265.217v106.838h0.015V491.602z M480.896,365.751c-0.004,6.353-2.546,11.996-6.694,16.17c-4.166,4.136-9.813,6.667-16.155,6.682h-49.049V281.75H102.974v106.853 H53.955c-6.365-0.015-12.007-2.546-16.166-6.682c-4.144-4.174-6.682-9.817-6.686-16.17V194.814 c0.004-6.338,2.538-11.988,6.686-16.155c4.167-4.144,9.809-6.682,16.166-6.698h49.034h306.02h49.037 c6.331,0.016,11.985,2.546,16.151,6.698c4.156,4.174,6.694,9.817,6.698,16.155V365.751z"></path> <rect x="167.59" y="336.155" class="st0" width="176.82" height="20.405"></rect> <rect x="167.59" y="388.618" class="st0" width="176.82" height="20.398"></rect> <rect x="167.59" y="435.255" class="st0" width="83.556" height="20.398"></rect> <path class="st0" d="M353.041,213.369c-9.263,0-16.767,7.508-16.767,16.774c0,9.251,7.504,16.759,16.767,16.759 c9.263,0,16.77-7.508,16.77-16.759C369.811,220.877,362.305,213.369,353.041,213.369z"></path> <path class="st0" d="M424.427,213.369c-9.262,0-16.77,7.508-16.77,16.774c0,9.251,7.508,16.759,16.77,16.759 c9.258,0,16.766-7.508,16.766-16.759C441.193,220.877,433.685,213.369,424.427,213.369z"></path> </g> </g></svg>&nbsp;Print</button>
             <button class="btn-control" id="generatePDFBtn" style="width:160px; height:45px; margin-right: 10px"><svg width="25px" height="25px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2.5 6.5V6H2V6.5H2.5ZM6.5 6.5V6H6V6.5H6.5ZM6.5 10.5H6V11H6.5V10.5ZM13.5 3.5H14V3.29289L13.8536 3.14645L13.5 3.5ZM10.5 0.5L10.8536 0.146447L10.7071 0H10.5V0.5ZM2.5 7H3.5V6H2.5V7ZM3 11V8.5H2V11H3ZM3 8.5V6.5H2V8.5H3ZM3.5 8H2.5V9H3.5V8ZM4 7.5C4 7.77614 3.77614 8 3.5 8V9C4.32843 9 5 8.32843 5 7.5H4ZM3.5 7C3.77614 7 4 7.22386 4 7.5H5C5 6.67157 4.32843 6 3.5 6V7ZM6 6.5V10.5H7V6.5H6ZM6.5 11H7.5V10H6.5V11ZM9 9.5V7.5H8V9.5H9ZM7.5 6H6.5V7H7.5V6ZM9 7.5C9 6.67157 8.32843 6 7.5 6V7C7.77614 7 8 7.22386 8 7.5H9ZM7.5 11C8.32843 11 9 10.3284 9 9.5H8C8 9.77614 7.77614 10 7.5 10V11ZM10 6V11H11V6H10ZM10.5 7H13V6H10.5V7ZM10.5 9H12V8H10.5V9ZM2 5V1.5H1V5H2ZM13 3.5V5H14V3.5H13ZM2.5 1H10.5V0H2.5V1ZM10.1464 0.853553L13.1464 3.85355L13.8536 3.14645L10.8536 0.146447L10.1464 0.853553ZM2 1.5C2 1.22386 2.22386 1 2.5 1V0C1.67157 0 1 0.671573 1 1.5H2ZM1 12V13.5H2V12H1ZM2.5 15H12.5V14H2.5V15ZM14 13.5V12H13V13.5H14ZM12.5 15C13.3284 15 14 14.3284 14 13.5H13C13 13.7761 12.7761 14 12.5 14V15ZM1 13.5C1 14.3284 1.67157 15 2.5 15V14C2.22386 14 2 13.7761 2 13.5H1Z" fill="#ffff"></path> </g></svg>&nbsp;Save as PDF</button>
@@ -607,15 +662,11 @@ i:hover{
       let inventoryCurrentPage = 1;
       const inventoryPageSize = 300;
 
-      var totalTax = 0;
-      var totalQty = 0;
-      var totalPrice = 0;
-      var overallTotal = 0;
       var selected_products = [];
       var isSaving = false;
       var lastInputTime = 0; 
       var productsCache = [];
-      var   toastDisplayed =false;
+      var toastDisplayed =false;
       $("#tbl_orders").hide();
 
       show_allSuppliers();
@@ -1310,26 +1361,26 @@ i:hover{
       })
       var remove_inventories = [];
 
-      function updateTotal() {
-        var totalQty = 0;
-        var totalPrice = 0;
-        var total = 0;
-        var totalTax = 0;
-        $('#tbl_purchaseOrders tbody tr').each(function () {
-          var quantity = parseInt($(this).find('td:nth-child(2)').text().trim(), 10);
-          var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
-          var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
-          var tax = (price / 1.12);
-          totalTax += (price - tax);
-          totalQty += quantity;
-          totalPrice += price;
-          total += subtotal;
-        });
-        $("#totalTax").html("Tax: " + addCommasToNumber(totalTax));
-        $("#totalQty").html(totalQty);
-        $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice));
-        $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(total));
-      }
+      // function updateTotal() {
+      //   var totalQty = 0;
+      //   var totalPrice = 0;
+      //   var total = 0;
+      //   var totalTax = 0;
+      //   $('#tbl_purchaseOrders tbody tr').each(function () {
+      //     var quantity = parseInt($(this).find('td:nth-child(2)').text().trim(), 10);
+      //     var price = parseFloat(clean_number($(this).find('td:nth-child(3)').text().trim()));
+      //     var subtotal = parseFloat(clean_number($(this).find('td:nth-child(4)').text().trim()));
+      //     var tax = (price / 1.12);
+      //     totalTax += (price - tax);
+      //     totalQty += quantity;
+      //     totalPrice += price;
+      //     total += subtotal;
+      //   });
+      //   $("#totalTax").html("Tax: " + addCommasToNumber(totalTax));
+      //   $("#totalQty").html(totalQty);
+      //   $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice));
+      //   $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(total));
+      // }
       $("#unpaid_form").on('submit', function (e) {
         e.preventDefault();
         var order_id = $("#_order_id").val();
@@ -2192,20 +2243,7 @@ i:hover{
 
         return isValid;
       }
-      function validateProductForm() {
-        var isValid = true;
-        $('#prod_form input[type=text]').each(function () {
-          if ($(this).val() === '') {
-            isValid = false;
-            $(this).addClass('has-error');
-          }
-          else {
-            $(this).removeClass('has-error');
-          }
-        });
 
-        return isValid;
-      }
       function addCommasToNumber(number) {
         var roundedNumber = Number(number).toFixed(2);
         var parts = roundedNumber.toString().split(".");

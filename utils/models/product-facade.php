@@ -1097,13 +1097,30 @@ $dataValue =  $serviceValue/100;
 
   } 
 
-  public function updatePromo($bundle, $take1, $point_promo, $wholesale, $stamp_promo) {
+  public function updatePromo($promotionValues) 
+  {
     $pdo = $this->connect();
     $sql = $pdo->prepare("UPDATE `pos_settings` SET `promotions`= ?");
+    $sql->execute([$promotionValues]);
 
-    $stingJson = '[{"buy_1_take_1":'.$take1.',"bundle_sale":'.$bundle.',"whole_sale":'.$wholesale.',"point_promo":'.$point_promo.', "stamp_promo":'.$stamp_promo.'}]';
-    $sql->execute([$stingJson]);
-    echo json_encode('Success');
+    $promotionTypes = json_decode($promotionValues, true);
+    foreach ($promotionTypes as $key => $value)
+    {
+      $type = 0;
+      if($value === 0)
+      {
+        if($key === "buy_1_take_1") $type = 1;
+        if($key === "bundle_sale") $type = 2;
+        if($key === "whole_sale") $type = 3;
+        if($key === "point_promo") $type = 4;
+        if($key === "stamp_promo") $type = 5;
+
+        $sql = "DELETE FROM promotions WHERE promotion_type = $type";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+      }
+    }
+    echo json_encode($status);
   }
 
 

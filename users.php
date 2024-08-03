@@ -256,9 +256,9 @@ if (isset($_SESSION['user_id'])) {
               <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex" style="height:76vh; width: 100%">
                 <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
-                  <!-- <div class="productTable" > -->
+                  <div id="responsive-data" >
                     <table id="recentusers" class="text-color table-border">
-                      <thead>
+                      <thead class = 'adminTableHead'>
                         <tr>
                           <th class="text-center" style="width: 3%; border-left: 1px solid transparent !important">No.</th>
                           <th class="text-center" style="width: 20%;">USERS</th>
@@ -275,7 +275,7 @@ if (isset($_SESSION['user_id'])) {
                       </tbody>
                     </table>
                     </table>
-                  <!-- </div> -->
+                  </div>
                 <!-- </div> -->
               </div>
 

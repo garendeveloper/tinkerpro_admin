@@ -183,7 +183,7 @@
     <table  class="text-color table-border tableHead" style="margin-top: -3px; ">
         <thead>
             <tr>
-                <th style="background-color: #1E1C11; color:#ffffff; width: 50%">ITEM DESCRIPTION</th>
+                <th style="background-color: #1E1C11; color:#ffffff; width: 40%">ITEM DESCRIPTION</th>
                 <th style="background-color: #1E1C11; color:#ffffff; text-align:center">QTY</th>
                 <th style="background-color: #1E1C11; color:#ffffff; text-align:right">COST</th>
                 <th style="background-color: #1E1C11; color:#ffffff; text-align:right">TOTAL COST</th>
@@ -350,11 +350,11 @@
                 success: function (data) {
                     var row = "";
                     row += "<tr data-id = " + data['id'] + " data-ld_id = ''>";
-                    row += "<td data-id = " + data['id'] + " style = 'width: 50%'>" + data['prod_desc'] + "</td>";
-                    row += "<td style = 'text-align:center; width: 50px' ><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' autocomplete = 'off'></input></td>";
-                    row += "<td style = 'text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
-                    row += "<td style = 'text-align:right' id = 'total_row_cost'></td>";
-                    row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";
+                    row += "<td data-id = " + data['id'] + " style = 'width: 40%'>" + data['prod_desc'] + "</td>";
+                    row += "<td style = 'text-align:center; width: 15%' ><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' autocomplete = 'off'></input></td>";
+                    row += "<td style = 'text-align:right; width: 15%' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + numberWithCommas(data['cost']) + "</td>";
+                    row += "<td style = 'text-align:right; width: 15%' id = 'total_row_cost'></td>";
+                    row += "<td class = 'text-center removeItem' style ='width: 15%'><i class = 'bi bi-trash3'></i></td>";
                     row += "</tr>";
                     // if (data["isSerialized"] === 1) {
                     //     var sub_row = data["sub_row"];

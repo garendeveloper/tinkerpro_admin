@@ -236,4 +236,13 @@ class PromotionFacade extends DBConnection
         }
         return '';
     }
+    public function check_promotion($promotionType)
+    {
+        $promotionType = (int) $promotionType;
+        $sql = $this->connect()->prepare("SELECT * FROM promotions WHERE promotion_type = $promotionType");
+        $sql->execute();
+        $hasData = $sql->rowCount() > 0;
+
+        return $hasData;
+    }
 }
