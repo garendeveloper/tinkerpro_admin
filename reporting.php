@@ -2377,6 +2377,7 @@ function highlightDiv(id) {
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
+          
         }else if(id == 55){
           
           generatePdf(id)

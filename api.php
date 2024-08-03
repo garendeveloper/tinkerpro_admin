@@ -13,6 +13,7 @@
     include( __DIR__ . '/utils/models/expense-facade.php');
     include( __DIR__ . '/utils/models/sales-history-facade.php');
     include( __DIR__ . '/utils/models/bir-facade.php');
+    include( __DIR__ . '/utils/models/other-reports-facade.php');
     include( __DIR__ . '/utils/models/promotion-facade.php');
    
     $userFacade = new UserFacade();
@@ -25,6 +26,8 @@
     $salesHistory = new SalesHistoyFacade;
     $bir = new BirFacade();
     $promotionFacade = new PromotionFacade();
+
+    $otherFacade = new OtherReportsFacade();
 
     include( __DIR__ . '/utils/models/ingredients-facade.php');
    
@@ -529,6 +532,9 @@
             $typeFunction = isset($data->typeFunction) ? $data->typeFunction : 0;
             
             $userFacade->deleteCustomer($customerId, $typeFunction);
+            break;
+        case 'getTest':
+            $otherFacade->getProductSales();
             break;
         default:
             header("HTTP/1.0 400 Bad Request");
