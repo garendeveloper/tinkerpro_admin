@@ -511,143 +511,22 @@ class OtherReportsFacade extends DBConnection {
     //   $stmt = $this->connect()->query( $sql );
     //   return $stmt;
     // }
+    public function cashInAmountsData($userId, $startDate, $endDate, $entries)
+    {
+        $type = "WHERE DATE(cash_in_out.date) BETWEEN '$startDate' AND '$endDate'";
+        if ($entries === 'in') $type = "WHERE cash_in_out.cashType = 0 AND DATE(cash_in_out.date) BETWEEN '$startDate' AND '$endDate'";
+        if ($entries === 'out') $type = "WHERE cash_in_out.cashType = 1 AND DATE(cash_in_out.date) BETWEEN '$startDate' AND '$endDate'";
+        if(!empty($userId)) $type .= "AND users.id = $userId";
 
-    public function cashInAmountsData( $userId, $singleDateData, $startDate, $endDate,$entries ) {
-        if($entries == "in"){
-        if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0 AND u.id = :userId';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-            $sql->execute();
-            return $sql;
-
-        } else if ( !$userId && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0  AND DATE(c.date) = :singleDateData';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->execute();
-            return $sql;
-
-        } else if ( !$userId && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0  AND DATE(c.date) BETWEEN :startDate AND :endDate';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->execute();
-            return $sql;
-
-        } else if ( $userId && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0 AND u.id = :userId AND DATE(c.date) = :singleDateData';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->execute();
-            return $sql;
-
-        } else if ( $userId && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0 AND u.id = :userId AND DATE(c.date) BETWEEN :startDate AND :endDate';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->execute();
-            return $sql;
-
-        } else {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 0';
-            $stmt = $this->connect()->query( $sql );
-            return $stmt;
-        }
-    }else{
-        if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1 AND u.id = :userId';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-            $sql->execute();
-            return $sql;
-
-        } else if ( !$userId && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1  AND DATE(c.date) = :singleDateData';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->execute();
-            return $sql;
-
-        } else if ( !$userId && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1  AND DATE(c.date) BETWEEN :startDate AND :endDate';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->execute();
-            return $sql;
-
-        } else if ( $userId && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1 AND u.id = :userId AND DATE(c.date) = :singleDateData';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->execute();
-            return $sql;
-
-        } else if ( $userId && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1 AND u.id = :userId AND DATE(c.date) BETWEEN :startDate AND :endDate';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->execute();
-            return $sql;
-
-        } else {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 1';
-            $stmt = $this->connect()->query( $sql );
-            return $stmt;
-        } 
-        
+        $stmt = $this->connect()->prepare("SELECT cash_in_out.*, users.first_name, users.last_name 
+                                            FROM cash_in_out
+                                            INNER JOIN users ON cash_in_out.user_id = users.id
+                                            $type");
+        $stmt->execute();
+        return $stmt;
     }
-    }
+
+   
     public function getUnpaidSales( $selectedCustomers, $userId, $singleDateData, $startDate, $endDate ) {
         if ( $selectedCustomers && !$userId && !$singleDateData && !$startDate && !$endDate ) {
             $sql = 'WITH TotalPaid AS (

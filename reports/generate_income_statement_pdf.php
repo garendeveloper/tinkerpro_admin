@@ -28,7 +28,7 @@ function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 8)
     return $initialFontSize;
 }
 
-$refundFacade = new OtherReportsFacade();
+$otherFacade = new OtherReportsFacade();
 $products = new ProductFacade();
 $expenses = new ExpenseFacade();
 $dashboard = new DashboardFacade();
@@ -41,6 +41,16 @@ $endDate = $_GET['endDate'] ?? null;
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
+if((empty($startDate) && empty($endDate)) && !empty($singleDateData))
+{
+    $startDate = $singleDateData;
+    $endDate = $singleDateData;
+}
+if((empty($startDate) && empty($endDate)) && empty($singleDateData))
+{
+    $startDate = date('Y-m-d');
+    $endDate = date('Y-m-d');
+}
 
 $pdf = new TCPDF();
 $pdf->SetCreator('TinkerPro Inc.');
@@ -61,8 +71,8 @@ $pdf->SetCellHeightRatio(1.5);
 $ipAddress = gethostbyname(gethostname());
 $imageFile = "http://".$ipAddress."/tinkerpros/www/assets/company_logo/".$shop['company_logo'];
 
-$imageWidth = 30; 
-$imageHeight = 30; 
+$imageWidth = 20; 
+$imageHeight = 12; 
 $imageX = 10; 
 $serverFilePath = $_SERVER['DOCUMENT_ROOT'] . "/tinkerpros/www/assets/company_logo/{$shop['company_logo']}";
 $pdf->Image($serverFilePath, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
@@ -152,12 +162,22 @@ $pdf->Cell(80, $maxCellHeight, number_format($total_sales, 2, '.', ','), 1, 0, '
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($total_sales, 2, '.', ','), 80));
 $pdf->Ln(); 
 
+$cash_inQuery = $otherFacade->cashInAmountsData('',$startDate,$endDate,0);
+$cash_inData = $cash_inQuery->fetchAll(PDO::FETCH_ASSOC);
+$cash_in = 0;
+if(count($cash_inData) > 0)
+{
+    foreach($cash_inData as $row)
+    {
+        $cash_in += $row['cash_in_amount'];
+    }
+}
 $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C');
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 15));
-$pdf->Cell(93, $maxCellHeight, "Other Income", 0, 0, 'L');
+$pdf->Cell(93, $maxCellHeight, "Other Income (Cash In)", 0, 0, 'L');
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, "Other Income", 93));
-$pdf->Cell(80, $maxCellHeight, "0.00", 1, 0, 'R');
-$pdf->SetFont('', '', autoAdjustFontSize($pdf, "0.00", 80));
+$pdf->Cell(80, $maxCellHeight, number_format($cash_in, 2), 1, 0, 'R');
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($cash_in, 2), 80));
 $pdf->Ln(); 
 
 $pdf->SetFont('', 'B', 9);

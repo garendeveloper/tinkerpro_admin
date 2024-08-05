@@ -109,7 +109,8 @@
     display_c7();
   }
 
-  function display_c7(){
+  function display_c7()
+  {
     var refresh=1000; 
     mytime=setTimeout('display_ct7()',refresh)
   }

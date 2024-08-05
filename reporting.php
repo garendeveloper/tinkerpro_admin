@@ -104,12 +104,7 @@ if (isset($_SESSION['user_id'])) {
     color: white;
 }
 
-.highlight {
-  background-color: var(--primary-color);
-}
-.highlight:hover {
-  background-color: var(--primary-color) !important;
-}
+
 /* .allAnchrBtn.active{
   background-color: var(--active-bg-color);
 } */
@@ -289,11 +284,15 @@ body, html {
 .anchor-container a:hover{
   background-color: #333333;
 }
+.highlight {
+  background-color: var(--primary-color);
+}
 </style>
 
  <?php include "layout/admin/css.php"?> 
  <div class="container-scroller">
   <?php include 'layout/admin/sidebar.php' ?>
+ 
     <div class="main-panel" style= "overflow: hidden; ">
       <div class="content-wrapper" >
         <div style="display:flex; ">
@@ -569,6 +568,7 @@ body, html {
                     <select id="entriesSelect">
                     <option value="in" selected >Cash In Entries</option>
                     <option value="out">Cash Out Entries</option>
+                    <option value="all">All</option>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
