@@ -6773,6 +6773,242 @@ GROUP BY
         return $stmt;
     }
 
+
+
+
+    public function getProductSales() {
+        $pdo = $this->connect();
+
+        $productSalesQuery = 'SELECT
+                        payments.id AS paymentId,
+                        payments.date_time_of_payment,
+                        SUM(transactions.prod_qty) AS newQty,
+                        products.prod_price,
+                        SUM(transactions.prod_qty) * products.prod_price AS totalProductAmount,
+                        products.id AS productsId,
+                        products.prod_desc AS productName,
+                        products.isVAT,
+                        products.sku,
+                        products.cost,
+                        SUM(transactions.discount_amount) AS itemDiscount,
+                        CASE 
+                        	WHEN products.isVAT = 1 THEN
+                            	ROUND(((SUM(transactions.prod_qty) * products.prod_price) / 1.12) * 0.12, 2)
+                           	ELSE 0
+                        END AS totalVat,
+                        products.is_discounted,
+                        receipt.barcode,
+                        receipt.id AS receiptId,
+                        discounts.name AS customerType,
+                        discounts.discount_amount AS customerDiscountRate
+                    FROM transactions
+                        INNER JOIN products ON products.id = transactions.prod_id
+                        INNER JOIN receipt ON receipt.id = transactions.receipt_id
+                        INNER JOIN users ON users.id = transactions.user_id
+                        INNER JOIN discounts ON discounts.id = users.discount_id
+                        INNER JOIN payments ON payments.id = transactions.payment_id
+                        LEFT JOIN refunded ON products.id = refunded.prod_id
+                        LEFT JOIN return_exchange ON products.id = return_exchange.product_id
+                    WHERE transactions.is_paid = 1 
+                    AND transactions.is_void NOT IN (1,2)
+                    GROUP BY products.id';
+
+        $productSales = $pdo->prepare($productSalesQuery);
+        $productSales->execute();
+        $productrSalesResult = $productSales->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $sales = 'SELECT
+                    SUM(DISTINCT payments.payment_amount - payments.change_amount) AS totalPaid,
+                    payments.id AS paymentId,
+                    payments.date_time_of_payment,
+                    receipt.id AS receiptId,
+                    SUM(transactions.subtotal) AS totalAmount,
+                    payments.sc_pwd_discount,
+                    payments.cart_discount,
+                    SUM(transactions.discount_amount) as itemDiscount,
+                    transactions.transaction_num,
+                    SUM(transactions.prod_qty) AS totalProductQty
+                FROM payments
+                    INNER JOIN transactions ON payments.id = transactions.payment_id
+                    INNER JOIN receipt ON receipt.id = transactions.receipt_id
+                    GROUP BY payments.id;';
+
+        $sales_result = $pdo->prepare($sales); 
+        $sales_result->execute();
+        $salesReport = $sales_result->fetchAll(PDO::FETCH_ASSOC);
+
+        $refundProdQuery = "SELECT 
+            id,
+            refunded_method_id,
+            payment_id,
+            prod_id,
+            refunded_amt,
+            refunded_qty, 
+            reference_num, 
+            OriginalAmountRef,
+            ROUND((totalRefAmount - cartDiscount), 2) AS totalRefAmount,
+            ROUND((overAllDiscounts + cartDiscount), 2) AS overAllDiscounts,
+            credits,
+            cartDiscount,
+            customerDiscount,
+            itemDiscount,
+            date
+        FROM (
+            SELECT 
+                refunded_amt,
+                id, 
+                refunded_method_id, 
+                payment_id, 
+                refunded_qty,
+                prod_id, 
+                reference_num, 
+                SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS OriginalAmountRef,
+                ROUND(SUM(refunded_amt) - (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount')) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) ), 2) AS totalRefAmount,
+                (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
+                SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].credits'))) AS credits,
+                SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * refunded_amt) AS cartDiscount,
+                (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) AS customerDiscount,
+                SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS itemDiscount,
+                date 
+                FROM refunded
+                GROUP BY prod_id
+        ) AS subquery;";
+
+
+        $refundedProducts = $pdo->prepare($refundProdQuery);
+        $refundedProducts->execute();
+        $refundedResult = $refundedProducts->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $refund_map = [];
+        foreach ($refundedResult as $refund) { // Product Sales
+            $refund_map[$refund['prod_id']] = $refund;
+        }
+
+        $refund_map_sales = [];
+        foreach ($refundedResult as $refund_sales) { // For Sales
+            $refund_map_sales[$refund_sales['payment_id']] = $refund_sales;
+        }
+
+
+        $return_query = "SELECT 
+            id,
+            product_id,
+            payment_id,
+            return_qty,
+            lessItemDiscount,
+            vat_amount,
+            VatExempt,
+            totalReturnAmount,
+            return_amount,
+            overAllDiscounts,
+            credits,
+            cartDiscount,
+            customerDiscount,
+            itemDiscount,
+            date   
+        FROM (
+            SELECT 
+                id, 
+                product_id,
+                payment_id, 
+                SUM(return_qty) AS return_qty,
+                SUM(return_amount) AS return_amount, 
+                SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) as lessItemDiscount,
+                ROUND(((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12) * 0.12 ,2) AS vat_amount,
+                ROUND((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12 ,2) VatExempt,
+                ROUND(SUM(return_amount) - (SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))), 2) AS totalReturnAmount,
+                SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
+                SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].credits'))) AS credits,
+                SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) AS cartDiscount,
+                (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) AS customerDiscount,
+                SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS itemDiscount,
+                date 
+                FROM return_exchange
+                GROUP BY product_id
+        ) AS subqeury";
+
+        $return_report = $pdo->prepare($return_query);
+        $return_report->execute();
+        $returndData = $return_report->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $returned_map = [];
+        foreach ($returndData as $returned) { // Product Sales
+            $returned_map[$returned['product_id']] = $returned;
+        }
+
+        $returned_map_sales = [];
+        foreach ($returndData as $returned_sales) { // Product Sales
+            $returned_map_sales[$returned_sales['payment_id']] = $returned_sales;
+        }
+       
+
+        $cartDiscount = 0;
+        $customerDiscount = 0;
+        $refundeAmount = 0;
+        $itemDiscount = 0;
+        
+        $result = [];
+        foreach ($salesReport as $sales) { // Sales
+            $salesPaymentId = $sales['paymentId'];
+            $cartDiscount += (float)$sales['cart_discount'];
+            $customerDiscount += (float)$sales['sc_pwd_discount'];
+
+            if (isset($refund_map_sales[$salesPaymentId])) {
+                $customerDiscount -= (float)$refund_map_sales[$salesPaymentId]['customerDiscount'];
+                $cartDiscount -= $cartDiscount;
+            }
+        
+            if (isset($returned_map_sales[$salesPaymentId])) {
+                $customerDiscount -= (float)$returned_map_sales[$salesPaymentId]['customerDiscount'];
+                $cartDiscount -= $cartDiscount;
+            }
+        }
+
+        foreach ($productrSalesResult as $products) { // Pr0duct Sales
+            $productId = $products['productsId'];
+            $productQty = (float)$products['newQty'];
+            $totalProductAmount = (float)$products['totalProductAmount'];
+            $paymentId = $products['paymentId'];
+
+        
+            if (isset($refund_map[$productId])) {
+                $totalProductAmount -= (float)$refund_map[$productId]['OriginalAmountRef'];
+                $productQty -= (float)$refund_map[$productId]['refunded_qty'];
+            }
+
+
+            if (isset($returned_map[$productId])) {
+                $totalProductAmount -= (float)$returned_map[$productId]['return_amount'];
+                $productQty -= (float)$returned_map[$productId]['return_qty'];
+            }
+        
+
+            if ($productQty != 0) {
+                $result[] = [
+                    'overallDiscounts' => $customerDiscount,
+                    'prod_price' => $products['prod_price'],
+                    'totalCartDiscountPerItem' => $cartDiscount,
+                    'productId' => $productId,
+                    'newQty' => $productQty,
+                    'grossAmount' => $totalProductAmount,
+                    'prod_desc' => $products['productName'],
+                    'sku' => $products['sku'],
+                    'cost' => $products['cost'],
+                    'itemDiscount' => $products['itemDiscount'],
+                    'totalVat' => $products['totalVat'],
+                    'is_discounted' => $products['is_discounted'],
+                ];
+            }  
+        }
+        
+        // echo json_encode($result);
+        return $result;
+    }
+
+
     public function geProductSalesData( $selectedProduct, $selectedCategories, $selectedSubCategories, $singleDateData, $startDate, $endDate ) {
 
         $sql = "SELECT DISTINCT  
