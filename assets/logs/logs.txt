@@ -5375,3 +5375,4 @@
 2024-08-05 10:01:45 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-05 10:03:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLORS ASC NOTEBOOK 80 LEAVES Barcode #:519314 
 2024-08-05 10:03:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLOUR PENCILS 12S Barcode #:220965 
+2024-08-05 10:03:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLT 45 330 ML Barcode #:547423 
