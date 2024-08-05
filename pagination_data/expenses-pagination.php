@@ -59,11 +59,11 @@
                         <th style = "width: 10%" >Type</th>
                         <th style = "width: 6%" >UOM</th>
                         <th style = "width: 6%" >Supplier</th>
-                        <th style = "width: 6%;font-size: 10px; text-align: center" >Invoice Number</th>
+                        <th style = "width: 7%;font-size: 10px; text-align: center" >Invoice Number</th>
                         <th style = "width: 8%" >Quantity</th>
                         <th style = "width: 8%" >Price (Php)</th>
                         <th style = "width: 8%" >Discount</th>
-                        <th style = "width: 8%" >Total Amount(Php)</th>
+                        <th style = "width: 8%; font-size: 10px;" >Total Amount(Php)</th>
                         <th >Actions</th>
                     </tr>
                 </thead>

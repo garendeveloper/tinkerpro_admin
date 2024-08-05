@@ -72,13 +72,6 @@
             <label>REF# </label>
             <input type="text" name="ref" id="ic_reference" name="ic_reference"
                 style="width: 250px; height: 30px; font-size: 14px;" readonly>
-            <!-- <div class="date-input-container">
-                <input type="text" name="date_counted" value = "" oninput="$(this).removeClass('has-error')" id="date_counted"
-                    style="height: 30px;  text-align: center" >
-                <button id="btn_dateCounted" class="button" type="button" style="height: 30px;">
-                    <i class="bi bi-calendar2" aria-hidden="true"></i>
-                </button>
-            </div> -->
             <div class="date-input-container">
                 <input type="text" class = "toLock" name="date_counted" id="date_counted" style="height: 30px;  text-align: center" placeholder="Select date" oninput="$(this).removeClass('has-error')" readonly>
                 <i id="calendar-btn" class="bi bi-calendar3 calendar-icon"   aria-hidden="true"></i>
@@ -97,15 +90,6 @@
                 </div>
                 <button class = "toLock" type = "button" style="font-size: 12px; height:30px; border-radius: 4px;" id="btn_go_inventory">
                     DISPLAY ALL</button>
-                <!-- <div class="custom-select">
-                    <select name="select_category" id = "select_category"
-                        style=" background-color: #1E1C11; color: #ffff; width: 160px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
-                        <option value="0">Select inventory type</option>
-                        <option value="1">Custom Select</option>
-                        <option value="2">Display All</option>
-                    </select>
-                    <i class="bi bi-chevron-double-down"></i>
-                </div> -->
             </div>
             <div class="group right-aligned" style="display: flex; align-items: center;">
                 <button class = "toLock" style="font-size: 12px; height: 30px; border-radius: 4px; width: 180px; " id="btn_open_print_count_modal" type = "button">
@@ -142,7 +126,7 @@
             </thead>
         </table>
     <div class = "scrollable hasLockImage" style = "height: 52vh;" >
-        <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh; margin-top: -5px;">
+        <table id="tbl_inventory_count" class="text-color table-border" style=" margin-bottom: 30vh; margin-top: -5px; table-layout: relative">
             <tbody style="border-collapse: collapse; border: none">
 
             </tbody>
@@ -459,13 +443,21 @@
                 data: { data: product_id },
                 success: function (data) {
                     var row = "";
-                    row += "<tr data-id = " + data['id'] + " data-ic_id = ''>";
-                    row += "<td data-id = " + data['id'] + ">" + data['prod_desc'] + "</td>";
-                    row += "<td style = 'text-align:center'>" + data['product_stock'] + "</td>";
-                    row += "<td class = 'text-center'><input placeholder='QTY' class = 'italic-placeholder required' id = 'counted' style = 'width: 60px; text-align: center; height:20px;' autocomplete = 'off'></input></td>";
-                    row += "<td style = 'text-align: right'></td>";
+                    // row += "<tr data-id = " + data['id'] + " data-ic_id = ''>";
+                    // row += "<td data-id = " + data['id'] + " style = 'width: 50%'>" + data['prod_desc'] + "</td>";
+                    // row += "<td style = 'text-align: center; width: 20% !important; '>" + data['product_stock'] + "</td>";
+                    // row += "<td  style = 'text-align: right; width: 10%'><input placeholder='QTY' class = 'italic-placeholder required' id = 'counted' style = 'width: 60px; text-align: center; height:20px;' autocomplete = 'off'></input></td>";
+                    // row += "<td style = 'text-align: right'></td>";
+                    // row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";
+                    // row += "</tr>";
+                    row += "<tr  data-id = "+data['id']+">";
+                    row += "<td data-id = " +data['id']+ " style = 'width: 50% '>" + data['prod_desc'] + "</td>";
+                    row += "<td style = 'text-align: center; width: 20%'>"+data['product_stock']+"</td>";
+                    row += "<td class = 'text-center; width: 50px;'><input placeholder='QTY' style = 'text-align:center; width: 60px; height: 20px; font-size: 12px;'  id = 'counted'  autocomplete = 'off' required></input></td>";
+                    row += "<td style = 'text-align: right; width: 50px;'></td>";
                     row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";
                     row += "</tr>";
+
                     $("#tbl_inventory_count tbody").append(row);
                 }
             })

@@ -23,7 +23,7 @@
     position: absolute;
     right: 1.6em;
     top: 10px;
-    background: #FF6900;
+    background: var(--primary-color);
     color: #fff;
     border: none;
     width: 40px;
@@ -129,11 +129,11 @@
 }
 
 .flatpickr-day.selected:hover {
-    background-color: #FF6900 !important;
+    background-color: var(--primary-color) !important;
 }
 .flatpickr-day.selected {
-    background-color: #FF6900 !important;
-    border-color:#FF6900 !important;
+    background-color: var(--primary-color) !important;
+    border-color:var(--primary-color) !important;
 }
 @media (max-width: 600px) {
   .flatpickr-calendar {
@@ -181,8 +181,8 @@
             </g>
           </svg>
           <h4>SELECT DATES</h4>&nbsp;
-          <p hidden class="warning-title selectedDates" style="color:#FF6900"><b>[<span id="dateFrom"></span>-<span id="dateTo"></span></span>]</b></p>
-          <p hidden class="warning-title selectedsDates" style="color:#FF6900"><b>[<span id="dateSlcted"></span>]</b></p>
+          <p hidden class="warning-title selectedDates" style="color:var(--primary-color)"><b>[<span id="dateFrom"></span>-<span id="dateTo"></span></span>]</b></p>
+          <p hidden class="warning-title selectedsDates" style="color:var(--primary-color)"><b>[<span id="dateSlcted"></span>]</b></p>
         </div>
       </div>
       <div class="warningCard" style="display: flex;">

@@ -884,16 +884,6 @@ $("#pointer").html("Reporting");
 
   function contentTest(id) {
 
-    if (id == 50) {
-      getEReports(1)
-    } else if(id == 51) {
-      getEReports(6)
-    } else if(id == 52) {
-      getEReports(7)
-    } else if(id == 53) {
-      getEReports(4)
-    }
- 
     generatePdf(id)
     generateExcel(id)
     printDocuments(id)
@@ -954,36 +944,6 @@ $("#pointer").html("Reporting");
   
   }
 
-
-
-  function getAllZread() {
-    // axios.post('api.php?action=e_summary', {
-    //   'startDate' : '2024-07-31',
-    //   'endDate' : '2024-07-31',
-    // })
-    // .then(function(response) {
-    //   console.log('Hello world');
-    //   console.log(response.data)
-    // })
-    // .catch(function(error) {
-    //   console.log(error);
-    // })
-  }
-
-
-  function getEReports(cusType) {
-    // axios.post('api.php?action=e_reports', {
-    //   'customerType' : cusType,
-    //   'startDate' : '2024-07-01',
-    //   'endDate' : '2024-',
-    // })
-    // .then(function(response) {
-    //   console.log(response.data)
-    // })
-    // .catch(function(error) {
-    //   console.log(error)
-    // })
-  }
 
 
 function highlightDiv(id) {
@@ -1626,9 +1586,6 @@ function highlightDiv(id) {
         }
         else if(id === 50 || id === 55 || id === 51 || id === 52 || id === 53 ){
           contentTest(id)
-
-          console.log('Hello world')
-          getAllZread();
         }
         else if(id == 1){
           generatePdf(id)
@@ -7159,6 +7116,22 @@ function printDocuments(id){
 
 function showReports(id) {
 
+  $("#showReportsModal .modal-dialog").css({
+    ' max-width': '1000px', 
+    'min-width': '500px' 
+  });
+
+  $("#showReportsModal .modal-content").css({
+    'color': '#ffff',
+  'background': '#262625',
+  'border-radius': '0',
+  'position': 'relative',
+  'height': '800px',
+  'width': '1000px',
+  });
+
+  $("#pdfViewer").attr('width', '935px'); 
+
   if(id == 2){
     $('#showReport').off('click').on('click', function(){
        $('#showReportsModal').show()
@@ -7826,6 +7799,19 @@ function showReports(id) {
     })
   }
   else if(id == 50 || id == 55){
+    if(id === 55)
+    {
+      $("#showReportsModal  .modal-dialog").css({
+        'max-width': '1500px',
+        'max-width': '1400px',
+      })
+
+      $("#showReportsModal .modal-content").css({
+        'width': '1500px',
+      })
+
+      $("#pdfViewer").attr('width', '1430px');
+    }
     $('#showReport').off('click').on('click', function(){
       $('#showReportsModal').show()
       if($('#showReportsModal').is(":visible"))
