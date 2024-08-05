@@ -1453,6 +1453,7 @@ i:hover{
         if (tbl_length > 0) {
           isSavingPO = true;
           var dataArray = [];
+          $('#modalCashPrint').show();
           $('#tbl_purchaseOrders tbody tr').each(function () {
             var rowData = {};
             $(this).find('td').each(function (index, cell) {
@@ -1518,6 +1519,7 @@ i:hover{
                 }else{
                   insertLogs('P.O Created',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO) 
                 }
+          
                 if($('#show_purchasePrintModal').is(":visible"))
                 {
                   $('#modalCashPrint').hide();
@@ -2146,17 +2148,14 @@ i:hover{
         {
           var tbl_poL = $("#po_body tr").length;
           if (tbl_poL > 0) {
-            $('#modalCashPrint').show();
+        
             var order_id = $("#_order_id").val();
             if (order_id > 0) {
               submit_purchaseOrder();
             }
             else {
               if ($("#paidSwitch").prop("checked") === false) {
-                $("#unpaid_purchase_modal").slideDown({
-                  backdrop: 'static',
-                  keyboard: false,
-                });
+                $("#unpaid_purchase_modal").fadeIn("200")
                 var amount = clean_number($("#overallTotal").text());
                 amount = amount.replace(/,/g, '');
                 $("#unpaid_term").focus();

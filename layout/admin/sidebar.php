@@ -282,6 +282,11 @@ if (isset($_SESSION['user_id'])) {
             class="text dynamic-color">Promotion & Action</span></a></li>
             <?php endif ?>
 
+            
+            <li><a href="priceLists" id="price_list"><i class="bi bi-cash-coin"></i>&nbsp;&nbsp; <span
+                        class="text dynamic-color">Price List</span></a>
+            </li>
+
             <li><a href="priceTags" id="price_tags"><i class="bi bi-tag fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price Tags</span></a>
             </li>

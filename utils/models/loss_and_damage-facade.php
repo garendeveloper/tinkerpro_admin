@@ -53,7 +53,7 @@
                         ld.date_transact LIKE :searchQuery OR
                         ld.note LIKE :searchQuery";
 
-                $searchParam = "%" . $searchInput . "%";
+                $searchParam = $searchInput . "_%";
                 $stmt = $this->connect()->prepare($sql);
                 $stmt->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
                 $stmt->execute();

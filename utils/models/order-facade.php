@@ -30,7 +30,7 @@ class OrderFacade extends DBConnection
                                             GROUP BY orders.id, supplier.supplier
                                             ORDER BY orders.po_number ASC LIMIT  $offset, $recordsPerPage");
 
-            $searchParam = "%" . $searchInput . "%";
+            $searchParam = $searchInput . "_%";
             $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);

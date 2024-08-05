@@ -48,7 +48,7 @@
         $sql = $this->connect()->prepare($sqlQuery);
 
         if (!empty($searchQuery)) {
-          $searchParam = "%" . $searchQuery . "%";
+          $searchParam = $searchQuery . "_%";
           $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
           $sql->execute();
           return $sql;

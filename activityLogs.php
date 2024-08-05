@@ -340,7 +340,7 @@ select::-webkit-scrollbar-thumb {
                         </thead>
                       </table>
                       <div class="fcontainer">
-                          <table id="logTable" class="text-color " style="margin-top: -3px; height: 300px; padding:10px;">
+                          <table id="logTable" class="text-color " style="margin-top: -3px; height: 300px; padding:10px; font-size: 12px;">
                               <tbody style="border-collapse: collapse; border: none">
                                 <img id="noRecords" src ="./assets/img/tinkerpro-t.png" style="display: none;">
                               </tbody>

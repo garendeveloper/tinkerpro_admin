@@ -209,7 +209,7 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
 
 #responsive-data {
   overflow-x: hidden;
-  max-height: 80vh;
+  max-height: 78vh;
   position: absolute;
   left: 2px;
   right: 2px;
@@ -227,7 +227,7 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
 
     #responsive-data tbody {
         display: block; 
-        max-height: 78vh; 
+        max-height: 72vh; 
         overflow-y: scroll;
     }
 
