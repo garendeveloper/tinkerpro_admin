@@ -297,49 +297,61 @@
 
   $(document.body).on('click', '.deleteSupplier', function() {
     var supplierId =  $(this).closest('tr').find('.supplierId').text();
-    $("#deleteProdModal").fadeIn(200);
-    $('.deleteProductItem').addClass('d-none');
-    $('.inactiveBtn').removeClass('d-none');
+    var supplierName    =  $(this).closest('tr').find('.supplierName').text();
+    var supplierContact =  $(this).closest('tr').find('.supplierContact').text();
+    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    var firstName = userInfo.firstName;
+    var lastName = userInfo.lastName;
+    var cid = userInfo.userId;
+    var role_id = userInfo.roleId; 
 
-    // $.ajax({
-    //   type: 'get',
-    //   url: 'api.php?verify_supplier',
-    //   data: {
-    //     id: supplierId,
-    //   },
-    //   success: function(response)
-    //   {
-    //     if(response.status)
-    //     {
-    //       var warningDelete = `
-    //         <div class="d-flex justify-content-center text-center align-items-center w-100">
-    //         <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-    //           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-    //         </svg>
-    //       </div>
-    //       <div class="d-flex align-items-center justify-content text-center mt-2">
-    //         <h4 class="w-100">Unable to delete. Would you like to change the status to <span style="color: var(--primary-color)" >"INACTIVE"</span> ?</h4>
-    //       </div>`;
-          
-    //       $('.show_product_info').html(warningDelete)
-    //         $('.inactiveBtn').off('click').on('click', function() {
-    //           axios.post('api.php?action=updateProductStat', {
-    //             'productId' : parseInt(productId),
-    //           })
-    //           .then(function(response) {
-    //             insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Updated the status to "INACTIVE" :' + ' ' +  productName +' '+ 'Barcode #:'+ productBarcode)
-    //             $('#deleteProdModal').hide();
-    //           })
-    //           .catch(function(error) {
-    //             console.log(error);
-    //           })
-    //         })
-
-    //     }
-    //   }
-    // })
-   
-
+    $.ajax({
+      type: 'get',
+      url: 'api.php?action=verify_supplier',
+      data: {
+        id: supplierId,
+      },
+      success: function(response)
+      {
+        if(!response)
+        {
+          var warningDelete = `
+            <div class="d-flex justify-content-center text-center align-items-center w-100">
+            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+            </svg>
+          </div>
+          <div class="d-flex align-items-center justify-content text-center mt-2">
+            <h4 class="w-100">Are you sure you want to delete this supplier?</h4>
+          </div>`;
+          $('.show_product_info').html(warningDelete);
+          insertLogs('Supplier',firstName + ' ' + lastName + ' '+ 'Tries to delete' + ' ' +  supplierName)
+          $("#deleteProdModal").fadeIn(200);
+          $('.deleteProductItem').removeClass('d-none');
+          $('.inactiveBtn').addClass('d-none');
+          $('.deleteProductItem').off('click').on('click', function() {
+            $.ajax({
+              type: 'get',
+              url: 'api.php?action=delete_supplier',
+              data: {
+                id: supplierId,
+              },
+              success: function(response)
+              {
+                $("#deleteProdModal").fadeOut(200);
+                show_response("Supplier has been successfully deleted", 1);
+                refreshSupplierTable()
+                insertLogs('Supplier',firstName + ' ' + lastName + ' '+ 'Deleted Supplier' + ' ' +  supplierName)
+              }
+            })
+          });
+        }
+        else
+        {
+          show_response("Unable to delete. Supplier has been used by other transaction.", 0);
+        }
+      }
+    })
   })
 
     $('.clearSupplierBtn').on('click', function(){
@@ -403,6 +415,32 @@ $('#generateSupplierDFBtn').click(function() {
         }
     });
 });
+
+function show_response(message, type) {
+  toastr.options = {
+    "onShown": function () {
+      $('.custom-toast').css({
+        "opacity": 1,
+        "width": "600px",
+        "text-align": "center",
+      });
+    },
+    "closeButton": true,
+    "positionClass": "toast-top-right",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "progressBar": true,
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut",
+    "tapToDismiss": false,
+    "toastClass": "custom-toast",
+    "onclick": function () {  }
+
+  };
+  type === 1 ? toastr.success(message) : toastr.error(message);
+}
 
 $('#printSupplier').click(function() {
     var searchData = $('.searchSupplier').val();

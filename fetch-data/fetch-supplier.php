@@ -36,7 +36,7 @@ while ($row = $fetchSupplier->fetch(PDO::FETCH_ASSOC)) {
                 </svg>
                </a>
                <a class='text-success deleteSupplier' style='text-decoration: none;'>
-                <i class = "bi bi-trash3" style = "font-size: 14px"></i>
+                <i class = "bi bi-trash3 deleteIcon" style = "font-size: 14px; color: white"></i>
                </a>
             <?php 
             ?>
@@ -67,5 +67,6 @@ echo $html;
     padding: 0;
     height: auto; 
 }
+
 </style>
 
