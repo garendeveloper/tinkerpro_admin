@@ -1387,6 +1387,7 @@ label{
   background-color: #262626 !important;;
   width:  fit-content !important;;
 }
+
 </style>
 
 <div class="modal" id="add_expense_modal" tabindex="0">
@@ -1400,8 +1401,9 @@ label{
         <div class="warning-container" >
           <div class="tableCard" >
           <div style="margin-left: 20px;margin-right: 20px">
-            <table id="tbl_createExpense" class="text-color table-border" > 
-              <input type="hidden" name = "expense_id" id = "expense_id" value = "">
+          <input type="hidden" name = "isProductIDExist" id = "isProductIDExist" value = "0">
+          <input type="hidden" name = "expense_id" id = "expense_id" value = "">
+            <table id="tbl_createExpense" class="text-color table-border expense-hide" > 
                 <tbody>
                     <tr>
                         <td class="nameTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Item Name<sup>*</sup></td>
@@ -1543,16 +1545,17 @@ label{
             <br>
             <table>
                 <thead>
-                    <tr>
-                        <td class="td-height text-custom td-style td-bg" colspan = "2" style="font-size: 12px; height: 10px">Add Landing Cost&nbsp;&nbsp;&nbsp;
-                          <label class="taxExlusive" style="margin-left: 5px">
-                              <input type="checkbox" id="toggleLandingCost" />
-                              <span class="warrantySpan round"></span>
-                          </label>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg" colspan = "2" style="font-size: 12px; height: 10px">Landed Cost&nbsp;&nbsp;&nbsp;
+                        <label class="taxExlusive" style="margin-left: 5px">
+                            <input type="checkbox" name = "toggleLandingCost" id="toggleLandingCost">
+                            <span class="warrantySpan round"></span>
+                        </label>
                       </td>
-                    </tr>
+                  </tr>
                 </thead>
                 <tbody id="landingCostDiv" style = "display: none">
+                   
                   <tr>
                       <td class="td-height text-custom td-style td-bg">Freight Charges</td>
                       <td class="td-height text-custom"><input class="landingCost" name="freightCharges" id="freightCharges" autocomplete="off" value="0"/></td>
@@ -1609,19 +1612,23 @@ label{
                       <td class="td-height text-custom td-style td-bg">Others</td>
                       <td class="td-height text-custom"><input class="landingCost" name="others" id="others" autocomplete="off" value="0"/></td>
                   </tr>
+                  <tr >
+                      <td class="td-height  td-bg" style = "color: white; font-style: normal; font-weight: bold; padding: 8px;">Total Landed Cost</td>
+                      <td class="td-height"><input style = " font-weight: bold; " class="landingCostTotal" name="totalLandingCost" id="totalLandingCost" autocomplete="off" value="0" readonly/></td>
+                  </tr>
                   <tr>
-                      <td class="td-height td-style td-bg" style="color: red">Total Landing Cost</td>
-                      <td class="td-height text-custom"><input class="landingCost" name="totalLandingCost" id="totalLandingCost" autocomplete="off" value="0" readonly/></td>
+                      <td class="td-height  td-bg" style = "color: white; font-style: normal; font-weight: bold; padding: 8px; ">Total Landed Cost Per Peice</td>
+                      <td class="td-height "><input style = " font-weight: bold; " class="landingCostTotal" name="totalLandingCostPerPiece" id="totalLandingCostPerPiece" autocomplete="off" value="0" readonly/></td>
                   </tr>
               </tbody>
             </table>
           </div>
-          <div style="margin-top: 10px; margin-left: 20px">
+          <div style="margin-top: 10px; margin-left: 20px" class = "expense-hide" >
             <label class="text-custom"  style="color:var(--primary-color);">Description</label><br>
-            <textarea id="description" name = "description" class="item_description"></textarea>
+            <textarea id="description" name = "description" class="item_description expense-hide"></textarea>
           </div>
-          <div id="scrollable-div">
-              <div class="imageCard">
+          <div id="scrollable-div" >
+              <div class="imageCard" >
                   <div  style="width:180px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid gray; background-color: #151515" class="imageExpense" id="imageExpense">
                       <img src="./assets/img/invoice.png" id= "imagePreview" alt="Image Preview" style = "width: 175px; height: 195px"></img>
                       <p style = "color: red; font-size: 0.80rem" id = "dd_r">Drag or Drop your Receipt</p>
@@ -1664,17 +1671,18 @@ $(document).ready(function(){
     }
   });
 
-  function calculateTotalLandingCost() {
-      var total = 0;
-      $('.landingCost').each(function() {
-          var value = parseFloat($(this).val()) || 0;
-          total += value;
-      });
-      $('#totalLandingCost').val(total.toFixed(2));
-  }
-
-  $('.landingCost').on('input', calculateTotalLandingCost);
-  calculateTotalLandingCost();
+  $('.landingCost').on('input', function(){
+    var total = parseFloat($("#vatable_amount").val());
+    $('.landingCost').each(function() {
+        var value = parseFloat($(this).val()) || 0;
+        total += value;
+    });
+    $('#totalLandingCost').val(total.toFixed(2));
+    var totalLandingCost = total;
+    var purchaseQty = parseFloat($("#qty").val());
+    var totalLandingCostPerPiece = parseFloat(totalLandingCost / purchaseQty);
+    $("#totalLandingCostPerPiece").val(totalLandingCostPerPiece.toFixed(2));
+  })
 
   function hide_dropdown()
   {
@@ -1806,6 +1814,10 @@ $(document).ready(function(){
     }
   });
 
+  $("#toggleLandingCost").on("change", function(){
+    if($(this).is(":checked")) $("#landingCostDiv").show();
+    else $("#landingCostDiv").hide();
+  })
   $("#qty, #price, #discount").on("input", function() {
     var price = parseFloat($("#price").val()) || 0;
     var qty = parseFloat($("#qty").val()) || 0;
@@ -1833,16 +1845,6 @@ $(document).ready(function(){
     {
       $("#isVatable").val("0");
       $("#vatable_amount").val(total_amount);
-    }
-  })
-  $("#toggleLandingCost").on("change", function(){
-    if($(this).is(":checked"))
-    {
-      $("#landingCostDiv").show();
-    }
-    else
-    {
-      $("#landingCostDiv").hide();
     }
   })
   function computeTax(amount)

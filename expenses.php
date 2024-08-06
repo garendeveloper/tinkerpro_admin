@@ -634,10 +634,12 @@ h1, label, textarea, input, table,h5{
     $("#btn_createExpense").off("click").on("click", function(){
       $("#expense_form")[0].reset();
       $('#imagePreview').attr('src', "./assets/img/invoice.png");
-      $("#expense_id").val("");
+      $("#expense_id").val(""); 
+      $("#isProductIDExist").val("0");
       $("#item_name").focus();
       $("#add_expense_modal").find(".modalHeaderTxt").html("Add New Expense");
       createExpense();
+      
     })
     function createExpense()
     {
@@ -647,6 +649,12 @@ h1, label, textarea, input, table,h5{
         $("#add_expense_modal").show();
         $(".expense_content").show();
       }, 100);
+      $(".expense-hide").prop("disabled", false);
+      $(".expense-hide input").prop("disabled", false);
+      $(".expense-hide").css({
+        'opacity': '1',
+      })
+      $("#landingCostDiv").hide();
     }
     function setFormattedDate(date) {
       return moment(date).format('MM-DD-YYYY');
@@ -677,48 +685,91 @@ h1, label, textarea, input, table,h5{
       })
     })
     $("#responsive-data").on("click", "tr", function() {
+      createExpense();
       var expense_id = $(this).data("id");
       var product_id = $(this).data('product_id');
       $("#tbl_expenses tbody").find("tr").removeClass('highlighted-row')
       $(this).toggleClass('highlighted-row');
+      $("#add_expense_modal").find(".modalHeaderTxt").html("Edit Expense");
+
       if(product_id == 0)
       {
-        $("#add_expense_modal").find(".modalHeaderTxt").html("Edit Expense");
-        $.ajax({
-          type: 'get',
-          url: 'api.php?action=get_expenseDataById',
-          data: {
-            expense_id: expense_id
-          },
-          success: function(response)
-          {
-            $("#expense_id").val(expense_id);
-            var item_name = response['item_name'] === "" ? response['product'] : response['item_name'];
-            $("#item_name").val(item_name);
-            var formattedDate = moment(response['date_of_transaction']).format('MM-DD-YYYY');
-            $("#date_of_transaction").val(formattedDate);
-            $("#billable_receipt_no").val(response['billable_receipt_no']);
-            $("#expense_type").val(response['expense_type']);
-            $("#qty").val(response['quantity']);
-            $("#supplier").val(response['supplier']);
-            $("#supplier_id").val(response['supplier_id']);
-            $("#uomType").val(response['uom_name']);
-            $("#uomID").val(response['uom_id']);
-            $("#invoice_number").val(response['invoice_number']);
-            $("#price").val(response['price']);
-            $("#discount").val(response['discount']);
-            $("#total_amount").val(response['total_amount']);
-            $("#description").val(response['description']);
-
-            if (response['invoice_photo_url']) {
-                $("#imagePreview").attr("src", response['invoice_photo_url']).show();
-            } else {
-                $('#imagePreview').attr('src', "./assets/img/invoice.png").show();
-            }
-            createExpense();
-          }
+        $(".expense-hide").prop("disabled", false);
+        $(".expense-hide input").prop("disabled", false);
+        $(".expense-hide").css({
+          'opacity': '1',
         })
       }
+      else
+      {
+        $(".expense-hide").prop("disabled", true);
+        $(".expense-hide input").prop("disabled", true);
+        $(".expense-hide").css({
+          'opacity': '0.5',
+        })
+      }
+      $("#isProductIDExist").val(product_id);
+
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=get_expenseDataById',
+        data: {
+          expense_id: expense_id
+        },
+        success: function(response)
+        {
+        
+          $("#expense_id").val(expense_id);
+          var item_name = response['item_name'] === "" ? response['product'] : response['item_name'];
+          $("#item_name").val(item_name);
+          var formattedDate = moment(response['date_of_transaction']).format('MM-DD-YYYY');
+          $("#date_of_transaction").val(formattedDate);
+          $("#billable_receipt_no").val(response['billable_receipt_no']);
+          $("#expense_type").val(response['expense_type']);
+          $("#qty").val(response['quantity']);
+          $("#supplier").val(response['supplier']);
+          $("#supplier_id").val(response['supplier_id']);
+          $("#uomType").val(response['uom_name']);
+          $("#uomID").val(response['uom_id']);
+          $("#invoice_number").val(response['invoice_number']);
+          $("#price").val(response['price']);
+          $("#discount").val(response['discount']);
+          $("#total_amount").val(response['total_amount']);
+          $("#description").val(response['description']);
+          if (response['invoice_photo_url']) {
+                $("#imagePreview").attr("src", response['invoice_photo_url']).show();
+          } else {
+              $('#imagePreview').attr('src', "./assets/img/invoice.png").show();
+          }
+
+          var isLandingCostEnabled = response['isLandingCostEnabled'] === 1;
+          if(isLandingCostEnabled)
+          {
+            $("#landingCostDiv").show();
+            $("#toggleLandingCost").prop("checked", "checked");
+            $("#totalLandingCost").val(response['total_amount']);
+            
+            var totalLandingCost = $("#totalLandingCost").val();
+            var landingCostPerPiece = totalLandingCost / response['quantity'];
+            $("#totalLandingCostPerPiece").val(landingCostPerPiece);
+
+            var landingCosts = JSON.parse(response['landingCost']);
+            $.each(landingCosts, function(key, value) {
+                var $element = $("#" + key);
+                if ($element.length) {
+                    $element.val(value);
+                } else {
+                    console.warn("Element with ID '" + key + "' not found.");
+                }
+            });
+          }
+          else
+          {
+            $("#landingCostDiv").hide();
+            $("#toggleLandingCost").prop("checked", false);
+          }
+        }
+      })
     });
     function addCommasToNumber(number) 
     {
@@ -742,9 +793,14 @@ h1, label, textarea, input, table,h5{
     function getLandingCostValues() 
     {
         const inputs = document.querySelectorAll('.landingCost');
+        const landingCostTotals = document.querySelectorAll('.landingCostTotal');
         const valuesObject = {};
         inputs.forEach(input => {
             valuesObject[input.id] = input.value;
+        });
+
+        landingCostTotals.forEach(input => {
+          valuesObject[input.id] = input.value;
         });
         
         return valuesObject;
@@ -752,7 +808,6 @@ h1, label, textarea, input, table,h5{
     $("#expense_form").on("submit", function(e){
       e.preventDefault();
       var errorCount = $('#expense_form td.form-error').length;
-     
       if(errorCount === 0)
       {
         var formData = new FormData(this);
@@ -791,6 +846,7 @@ h1, label, textarea, input, table,h5{
                 $("#expense_errorMessages").html(errors)
             } else {
               $("#expense_form")[0].reset();
+              $("#isProductIDExist").val("0");
               $("table td").removeClass('form-error');
               show_sweetReponse(response.message);
               hide_modal();

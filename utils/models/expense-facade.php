@@ -134,7 +134,14 @@ class ExpenseFacade extends DBConnection
                                                     WHEN isTaxable = 1 THEN expenses.taxable_amount - expenses.total_amount
                                                     ELSE 0
                                                 END
-                                            ), 2) AS total_income_tax_expense
+                                            ), 2) AS total_income_tax_expense,
+                                            SUM(
+                                                CASE 
+                                                    WHEN JSON_VALID(expenses.landingCost) = 1 AND JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost') IS NOT NULL 
+                                                    THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost')) AS DECIMAL(10,2))
+                                                    ELSE 0
+                                                END
+                                            ) AS Landing_Cost
                                         FROM expenses
                                         WHERE 
                                             date_of_transaction = COALESCE(:singleDateParam, :startDateParam, CURDATE())
@@ -266,6 +273,11 @@ class ExpenseFacade extends DBConnection
     }
     public function save_expense($formdata)
     {
+        $isProductIDExist = $formdata['isProductIDExist'] == 1;
+        $landingCostValues = null;
+        $isToggleLandingCost = isset($formdata['toggleLandingCost']) ? 1 : 0;
+        if($isToggleLandingCost === 1) $landingCostValues = $formdata['landingCostValues'];
+
         $response = [
             'success' => false,
             'message'=> '',
@@ -273,146 +285,158 @@ class ExpenseFacade extends DBConnection
             'data' => [],
         ];
 
-        $fields_to_validate = ['item_name', 'date_of_transaction',  'qty', 'expense_type', 'price'];
-        $field_labels = [
-            'item_name' => 'Item Name',
-            'date_of_transaction' => 'Date of Transaction',
-            'qty' => 'Qty',
-            'expense_type' => 'Expense Type',
-            'price' => 'Price'
-        ];
-        foreach ($fields_to_validate as $field)
-        {
-            $value = isset($formdata[$field]) ? trim($formdata[$field]) : '';
-            if (empty($value)) {
-                $response['errors'][$field] = $this->validate_required($value, $field_labels[$field]);
-            }
-            $response['data'][$field] = $value;
-        }
-
-      
         if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] == UPLOAD_ERR_OK) 
         {
             $uploadDir = 'expenses_uploads/';
             $uploadFile = $uploadDir . basename($_FILES['image_url']['name']);
             
-            if (move_uploaded_file($_FILES['image_url']['tmp_name'], $uploadFile)) 
-            {
-                $response['data']['image_url'] = $uploadFile;
-            } 
-            else 
-            {
-                $response['errors']['image_url'] = 'Failed to upload image';
-            }
+            if (move_uploaded_file($_FILES['image_url']['tmp_name'], $uploadFile)) $response['data']['image_url'] = $uploadFile;
+            else $response['errors']['image_url'] = 'Failed to upload image';
         } 
-        else 
+        else  $response['data']['image_url'] = null; 
+
+        if($isProductIDExist)
         {
-            $response['data']['image_url'] = null; 
-        }
-
-        if (empty(array_filter($response['errors']))) 
-        {
-            $item_name = $response['data']['item_name'];
-            $billable_receipt_no = $formdata['billable_receipt_no'];
-            $qty = $response['data']['qty'];
-            $expense_type = $response['data']['expense_type'];
-            $uom_id = $formdata['uomID'];
-            $supplier_id = $formdata['supplier_id'];
-            $invoice_number = $formdata['invoice_number'];
-            $price = $response['data']['price'];
-            $discount = $formdata['discount'];
-            $total_amount = $formdata['total_amount'];
-            $description = $formdata['description'];
-            $taxable_amount = $formdata['vatable_amount'];
-            $isTaxable= $formdata['isVatable'];
-            $date_of_transaction = DateTime::createFromFormat('m-d-Y', $response['data']['date_of_transaction'])->format('Y-m-d');
-            $invoice_photo_url = $response['data']['image_url'];
-
-            $landingCostValues = $formdata['landingCostValues'];
-            if(empty($formdata['expense_id']))
+            if($isToggleLandingCost === 1)
             {
-                $isInvoiceNumberExist_SQL = $this->connect()->prepare("SELECT * FROM expenses WHERE invoice_number = :invoice_number");
-                $isInvoiceNumberExist_SQL->execute([':invoice_number'=>$formdata['invoice_number']]);
-                $isInvoiceNumberExist = $isInvoiceNumberExist_SQL->fetch(PDO::FETCH_ASSOC);
-                if(!$isInvoiceNumberExist)
-                {
-                    $sql = $this->connect()->prepare("
-                        INSERT INTO expenses (item_name, date_of_transaction, billable_receipt_no, expense_type, quantity, uom_id, supplier, invoice_number, price, discount, total_amount, description, invoice_photo_url, taxable_amount, isTaxable, landingCost)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ");
-
-                    $sql->bindParam(1, $item_name, PDO::PARAM_STR);
-                    $sql->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
-                    $sql->bindParam(3, $billable_receipt_no, PDO::PARAM_STR);
-                    $sql->bindParam(4, $expense_type, PDO::PARAM_STR);
-                    $sql->bindParam(5, $qty, PDO::PARAM_INT);
-                    $sql->bindParam(6, $uom_id, PDO::PARAM_INT);
-                    $sql->bindParam(7, $supplier_id, PDO::PARAM_INT);
-                    $sql->bindParam(8, $invoice_number, PDO::PARAM_STR);
-                    $sql->bindParam(9, $price, PDO::PARAM_STR);
-                    $sql->bindParam(10, $discount, PDO::PARAM_STR);
-                    $sql->bindParam(11, $total_amount, PDO::PARAM_STR);
-                    $sql->bindParam(12, $description, PDO::PARAM_STR);
-                    $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
-                    $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
-                    $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
-                    $sql->bindParam(16, $landingCostValues, PDO::PARAM_STR);
-                    $sql->execute();
-
-                    $response['message'] = "Expense has been successfully saved!";
-                    $response['success'] = true;
-                }
-                else
-                {
-                    $response['errors']['invoice_number'] = 'Invoice number already exist.';
-                    $response['success'] = false;
-                }
-            }
-            else
-            {
-            
                 $id = $formdata['expense_id'];
-                $isInvoiceNumberExist_SQL = $this->connect()->prepare("SELECT * FROM expenses WHERE invoice_number = :invoice_number AND id <> :currentId");
-                $isInvoiceNumberExist_SQL->execute([':invoice_number'=>$formdata['invoice_number'], 'currentId'=>$id]);
-                $isInvoiceNumberExist = $isInvoiceNumberExist_SQL->fetch(PDO::FETCH_ASSOC);
-                if(!$isInvoiceNumberExist)
-                {
-                    $sql = $this->connect()->prepare("
-                        UPDATE expenses
-                        SET item_name = ?, date_of_transaction = ?, billable_receipt_no = ?, expense_type = ?, quantity = ?, uom_id = ?, supplier = ?, invoice_number = ?, price = ?, discount = ?, total_amount = ?, description = ?, invoice_photo_url = ?, taxable_amount = ?, isTaxable = ?
-                        WHERE id = ?
-                    ");
-                    
-                    $sql->bindParam(1, $item_name, PDO::PARAM_STR);
-                    $sql->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
-                    $sql->bindParam(3, $billable_receipt_no, PDO::PARAM_STR);
-                    $sql->bindParam(4, $expense_type, PDO::PARAM_STR);
-                    $sql->bindParam(5, $qty, PDO::PARAM_INT);
-                    $sql->bindParam(6, $uom_id, PDO::PARAM_INT);
-                    $sql->bindParam(7, $supplier_id, PDO::PARAM_INT);
-                    $sql->bindParam(8, $invoice_number, PDO::PARAM_STR);
-                    $sql->bindParam(9, $price, PDO::PARAM_STR);
-                    $sql->bindParam(10, $discount, PDO::PARAM_STR);
-                    $sql->bindParam(11, $total_amount, PDO::PARAM_STR);
-                    $sql->bindParam(12, $description, PDO::PARAM_STR);
-                    $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
-                    $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
-                    $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
-                    $sql->bindParam(16, $id, PDO::PARAM_INT);
-                    $sql->execute();
+   
+                $sql = $this->connect()->prepare("
+                    UPDATE expenses
+                    SET landingCost = ?, isLandingCostEnabled = ?
+                    WHERE id = ?
+                ");
+    
+                $sql->execute([$landingCostValues, $isToggleLandingCost, $id]);
+            }
+            $response['message'] = "Expense has been successfully updated!";
+            $response['success'] = true;
+        }
+        else
+        {
+            $fields_to_validate = ['item_name', 'date_of_transaction',  'qty', 'expense_type', 'price'];
+            $field_labels = [
+                'item_name' => 'Item Name',
+                'date_of_transaction' => 'Date of Transaction',
+                'qty' => 'Qty',
+                'expense_type' => 'Expense Type',
+                'price' => 'Price'
+            ];
+    
+            foreach ($fields_to_validate as $field)
+            {
+                $value = isset($formdata[$field]) ? trim($formdata[$field]) : '';
+                if (empty($value)) {
+                    $response['errors'][$field] = $this->validate_required($value, $field_labels[$field]);
+                }
+                $response['data'][$field] = $value;
+            }
 
-                    $response['message'] = "Expense has been successfully updated!";
-                    $response['success'] = true;
+            if (empty(array_filter($response['errors']))) 
+            {
+                $item_name = $response['data']['item_name'];
+                $billable_receipt_no = $formdata['billable_receipt_no'];
+                $qty = $response['data']['qty'];
+                $expense_type = $response['data']['expense_type'];
+                $uom_id = $formdata['uomID'];
+                $supplier_id = $formdata['supplier_id'];
+                $invoice_number = $formdata['invoice_number'];
+                $price = $response['data']['price'];
+                $discount = $formdata['discount'];
+                $total_amount = $formdata['total_amount'];
+                $description = $formdata['description'];
+                $taxable_amount = $formdata['vatable_amount'];
+                $isTaxable= $formdata['isVatable'];
+                $date_of_transaction = DateTime::createFromFormat('m-d-Y', $response['data']['date_of_transaction'])->format('Y-m-d');
+                $invoice_photo_url = $response['data']['image_url'];
+                if(empty($formdata['expense_id']))
+                {
+                    $isInvoiceNumberExist_SQL = $this->connect()->prepare("SELECT * FROM expenses WHERE invoice_number = :invoice_number");
+                    $isInvoiceNumberExist_SQL->execute([':invoice_number'=>$formdata['invoice_number']]);
+                    $isInvoiceNumberExist = $isInvoiceNumberExist_SQL->fetch(PDO::FETCH_ASSOC);
+                    if(!$isInvoiceNumberExist)
+                    {
+                        $sql = $this->connect()->prepare("
+                            INSERT INTO expenses (item_name, date_of_transaction, billable_receipt_no, expense_type, quantity, uom_id, supplier, invoice_number, price, discount, total_amount, description, invoice_photo_url, taxable_amount, isTaxable, landingCost, isLandingCostEnabled)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ");
+    
+                        $sql->bindParam(1, $item_name, PDO::PARAM_STR);
+                        $sql->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
+                        $sql->bindParam(3, $billable_receipt_no, PDO::PARAM_STR);
+                        $sql->bindParam(4, $expense_type, PDO::PARAM_STR);
+                        $sql->bindParam(5, $qty, PDO::PARAM_INT);
+                        $sql->bindParam(6, $uom_id, PDO::PARAM_INT);
+                        $sql->bindParam(7, $supplier_id, PDO::PARAM_INT);
+                        $sql->bindParam(8, $invoice_number, PDO::PARAM_STR);
+                        $sql->bindParam(9, $price, PDO::PARAM_STR);
+                        $sql->bindParam(10, $discount, PDO::PARAM_STR);
+                        $sql->bindParam(11, $total_amount, PDO::PARAM_STR);
+                        $sql->bindParam(12, $description, PDO::PARAM_STR);
+                        $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
+                        $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
+                        $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
+                        $sql->bindParam(16, $landingCostValues, PDO::PARAM_STR);
+                        $sql->bindParam(17, $isToggleLandingCost, PDO::PARAM_STR);
+                        $sql->execute();
+    
+                        $response['message'] = "Expense has been successfully saved!";
+                        $response['success'] = true;
+                    }
+                    else
+                    {
+                        $response['errors']['invoice_number'] = 'Invoice number already exist.';
+                        $response['success'] = false;
+                    }
                 }
                 else
                 {
-                    $response['errors']['invoice_number'] = 'Invoice number already exist.';
-                    $response['success'] = false;
-                }
-            }
-            
-        }
+                
+                    $id = $formdata['expense_id'];
+                    $isInvoiceNumberExist_SQL = $this->connect()->prepare("SELECT * FROM expenses WHERE invoice_number = :invoice_number AND id <> :currentId");
+                    $isInvoiceNumberExist_SQL->execute([':invoice_number'=>$formdata['invoice_number'], 'currentId'=>$id]);
+                    $isInvoiceNumberExist = $isInvoiceNumberExist_SQL->fetch(PDO::FETCH_ASSOC);
+                    if(!$isInvoiceNumberExist)
+                    {
+                        $sql = $this->connect()->prepare("
+                            UPDATE expenses
+                            SET item_name = ?, date_of_transaction = ?, billable_receipt_no = ?, expense_type = ?, quantity = ?, uom_id = ?, supplier = ?, invoice_number = ?, price = ?, discount = ?, total_amount = ?, description = ?, invoice_photo_url = ?, taxable_amount = ?, isTaxable = ?, landingCost = ?, isLandingCostEnabled = ?
+                            WHERE id = ?
+                        ");
+                        
+                        $sql->bindParam(1, $item_name, PDO::PARAM_STR);
+                        $sql->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
+                        $sql->bindParam(3, $billable_receipt_no, PDO::PARAM_STR);
+                        $sql->bindParam(4, $expense_type, PDO::PARAM_STR);
+                        $sql->bindParam(5, $qty, PDO::PARAM_INT);
+                        $sql->bindParam(6, $uom_id, PDO::PARAM_INT);
+                        $sql->bindParam(7, $supplier_id, PDO::PARAM_INT);
+                        $sql->bindParam(8, $invoice_number, PDO::PARAM_STR);
+                        $sql->bindParam(9, $price, PDO::PARAM_STR);
+                        $sql->bindParam(10, $discount, PDO::PARAM_STR);
+                        $sql->bindParam(11, $total_amount, PDO::PARAM_STR);
+                        $sql->bindParam(12, $description, PDO::PARAM_STR);
+                        $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
+                        $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
+                        $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
+                        $sql->bindParam(16, $landingCostValues, PDO::PARAM_STR);
+                        $sql->bindParam(17, $isToggleLandingCost, PDO::PARAM_STR);
+                        $sql->bindParam(18, $id, PDO::PARAM_INT);
+                        $sql->execute();
     
+                        $response['message'] = "Expense has been successfully updated!";
+                        $response['success'] = true;
+                    }
+                    else
+                    {
+                        $response['errors']['invoice_number'] = 'Invoice number already exist.';
+                        $response['success'] = false;
+                    }
+                }
+                
+            }     
+        }
+       
         return $response;
     }
     function validate_required($field, $name) 

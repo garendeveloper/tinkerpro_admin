@@ -36,9 +36,9 @@
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['total_amount'], 2)?></td>
                     <td class='text-center'  style="padding: 2px" >
                         <?php if($row['product_id'] !== 0) {?>
-                        <a   class="text-success productAnch " style="text-decoration: none;" >
-                            <i class="bi bi-lock" style = "color: red; font-size: 16px;"></i>
-                        </a>
+                            <a class="text-success productAnch " style="text-decoration: none;" >
+                                <i class="bi bi-receipt" style = "font-size: 16px;"></i>
+                            </a>
                         <?php }?>
                         <?php if($row['product_id'] == 0) {?>
                             <a id="btn_removeExpense" data-id='<?= $row['id']?>'  class="text-success productAnch " style="text-decoration: none;" disabled>
