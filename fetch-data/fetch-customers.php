@@ -17,7 +17,7 @@ while ($row = $customer->fetch(PDO::FETCH_ASSOC))
 {
 //   var_dump( $row)
     ?>
-    <tr class="table-row customer-row">
+    <tr class="table-row customer-row" style="height: 20px;">
     <td class='text-center td-h col-1' style="border-left: 1px solid transparent !important"><?= $counter?></td>
     <td hidden class='text-center action-td td-h'><span class="userId"><?= $row['id'] ?? null ?></span><span class="customerId"><?= $row['customerId'] ?? null ?></span></td>
     <td class='text-light'><span class="firstName text-light"><?= $row['firstname'] ?? null ?></span>&nbsp;<span class="lastName text-light"><?= $row['lastname'] ?? null ?></span></td>
@@ -56,7 +56,7 @@ while ($row = $customer->fetch(PDO::FETCH_ASSOC))
     ?>
     <tr style="border: none">
         <td colspan="100%" rowspan="100%" style="text-align: center; padding: 20px; border: 1px solid transparent !important">
-            <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+            <!-- <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br> -->
             No Data Found!
         </td>
     </tr>

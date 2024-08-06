@@ -401,7 +401,10 @@ function toggleStatusSupplier(checkbox) {
         statusLabel.style.color = '#fefefe'; 
     }
 }
-function closeAddSupplierModal(){
+
+
+function closeAddSupplierModal()
+{
   $('.highlighteds').removeClass('highlighteds');
   clearInputs()
   $('.form-check-input:checked').prop('checked', false);
@@ -424,7 +427,8 @@ function closeAddSupplierModal(){
    
   });
 }
-function clearInputs(){
+function clearInputs()
+{
   document.getElementById('supplierName').value = "";
   document.getElementById('supplierContact').value = "";
   document.getElementById('supplierEmail').value = "";
@@ -450,14 +454,15 @@ function addSupplier(){
   var suppliedProductData = JSON.parse(localStorage.getItem('suppliedProductData')) || [];
   var suppliedIngredientsData = JSON.parse(localStorage.getItem('suppliedIngredientsData')) || [];
 
-  if (!s_name) {
+  if (s_name.trim() === "") {
       $('.supplierLbl').css('color', 'red');
         return; 
   }else{
       $('.supplierLbl').css('color', '');
   }
    
-  if(s_name){
+  if(s_name)
+  {
     var formData = new FormData();
     formData.append("supplierName", s_name); 
     formData.append("supplierContact", s_contact); 

@@ -29,7 +29,7 @@ while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
     <tr>
     <td hidden><span hidden class="roleN td-h"><?= $row['role_name'] ?></span><span hidden class="roleidNum"><?= $row['role_id'] ?></span><span hidden class="identification"><?= $row['identification'] ?></span></span><span hidden class="datehired"><?= $row['dateHired'] ?></span><span hidden class="permission"><?= $row['permission'] ?></span></td>
         <td style="border-left: 1px solid transparent !important"  class='text-center td-h' ><?= $counter?><span hidden class="userId"><?= $row['id'] ?></span></td>
-        <td  class='text-center text-color td-h'><?= $row['first_name'] . ' ' . $row['last_name'] ?><span hidden class="f_name"><?= $row['first_name']?></span><span hidden class="l_name"><?= $row['last_name']?></span></td>
+        <td  class='text-left text-color td-h'><?= $row['first_name'] . ' ' . $row['last_name'] ?><span hidden class="f_name"><?= $row['first_name']?></span><span hidden class="l_name"><?= $row['last_name']?></span></td>
         <td  class='text-center text-color td-h'><?= $row['role_name'] ?></td>
         <td  class='text-center text-color td-h'><?= $row['identification'] ?? null ?><span hidden class="pw"><?= $row['password']?></span><span hidden class="imageName"><?= $row['imageName']?></span></td>
         <td  class='text-center text-color employeeNum td-h'><?= $row['employeeNum'] ?? null ?></td>
@@ -61,7 +61,7 @@ while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
     ?>
     <tr>
         <td colspan="100%" rowspan="100%" style="text-align: center; padding: 20px; border: 1px solid transparent !important">
-            <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+            <!-- <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br> -->
             No Data Found!
         </td>
     </tr>

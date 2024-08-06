@@ -37,6 +37,8 @@
 	}
 
   include('./modals/add-suppliers-modal.php');
+  
+  include('./modals/delete_modal.php');
   include('./modals/supplied-products.php');
   include('./modals/supplied-ingredients.php');
  
@@ -249,7 +251,8 @@
     }
   }
 
-  function refreshSupplierTable() {
+  function refreshSupplierTable() 
+  {
     $.ajax({
         url: './fetch-data/fetch-supplier.php', 
         type: 'GET',
@@ -265,7 +268,8 @@
   refreshSupplierTable()
 
 
-  function showSupplier(t) {
+  function showSupplier(t) 
+  {
     var supplierId      =  t.closest('tr').find('.supplierId').text();
     var supplierName    =  t.closest('tr').find('.supplierName').text();
     var supplierContact =  t.closest('tr').find('.supplierContact').text();
@@ -275,10 +279,8 @@
 
     $('.highlighteds').removeClass('highlighteds');
     var $row = t.closest('tr').addClass('highlighteds');
-
     toUpdateSupplier(supplierId,supplierName,supplierContact,supplierEmail,supplierCompany,supplierStatus)
   }
-
 
   $(document.body).on('click', '.supplier-rows', function() {
     $('.highlighteds').removeClass('highlighteds');
@@ -291,6 +293,53 @@
 
   $(document.body).on('click', '.editSupplier', function() {
     showSupplier($(this))
+  })
+
+  $(document.body).on('click', '.deleteSupplier', function() {
+    var supplierId =  $(this).closest('tr').find('.supplierId').text();
+    $("#deleteProdModal").fadeIn(200);
+    $('.deleteProductItem').addClass('d-none');
+    $('.inactiveBtn').removeClass('d-none');
+
+    // $.ajax({
+    //   type: 'get',
+    //   url: 'api.php?verify_supplier',
+    //   data: {
+    //     id: supplierId,
+    //   },
+    //   success: function(response)
+    //   {
+    //     if(response.status)
+    //     {
+    //       var warningDelete = `
+    //         <div class="d-flex justify-content-center text-center align-items-center w-100">
+    //         <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+    //           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+    //         </svg>
+    //       </div>
+    //       <div class="d-flex align-items-center justify-content text-center mt-2">
+    //         <h4 class="w-100">Unable to delete. Would you like to change the status to <span style="color: var(--primary-color)" >"INACTIVE"</span> ?</h4>
+    //       </div>`;
+          
+    //       $('.show_product_info').html(warningDelete)
+    //         $('.inactiveBtn').off('click').on('click', function() {
+    //           axios.post('api.php?action=updateProductStat', {
+    //             'productId' : parseInt(productId),
+    //           })
+    //           .then(function(response) {
+    //             insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Updated the status to "INACTIVE" :' + ' ' +  productName +' '+ 'Barcode #:'+ productBarcode)
+    //             $('#deleteProdModal').hide();
+    //           })
+    //           .catch(function(error) {
+    //             console.log(error);
+    //           })
+    //         })
+
+    //     }
+    //   }
+    // })
+   
+
   })
 
     $('.clearSupplierBtn').on('click', function(){
@@ -314,7 +363,6 @@
           }
       });
     });
-
 
 $('#generateSupplierDFBtn').click(function() {
       var searchData = $('.searchSupplier').val();

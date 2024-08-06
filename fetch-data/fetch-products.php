@@ -82,7 +82,7 @@ if ($fetchProduct->rowCount() > 0) {
     ?>
     <tr>
         <td colspan="100%" rowspan="100%" style="text-align: center; padding: 20px; border: 1px solid transparent !important">
-            <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+            <!-- <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br> -->
             No Data Found!
         </td>
     </tr>

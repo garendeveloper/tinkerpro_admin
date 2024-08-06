@@ -228,7 +228,8 @@ class DashboardFacade extends DBConnection
             'data'=> $data,
             'total_sales_by_period' => $total_sales_by_period,
             'total_gross_sales_by_period' => $total_sales_by_period,
-            'total_expense_by_period' => $this->get_expenseValueFromDatePeriod($start_date, $end_date)['total_expense_of_the_month']
+            'total_expense_by_period' => $this->get_expenseValueFromDatePeriod($start_date, $end_date)['total_expense_of_the_month'],
+            'total_landing_cost' => $this->get_expenseValueFromDatePeriod($start_date, $end_date)['total_landing_cost']
         ];
     }
     public function get_salesDataByHour($start_date, $end_date)
@@ -294,6 +295,8 @@ class DashboardFacade extends DBConnection
             $month = $i;
             $grossAmount = $this->get_dataByMonthAndYear($month, $year);
             $month_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_expense_of_the_month'];
+            $landingCost_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_landing_cost'];
+            $month_expense += $landingCost_expense;
             $expensesData[] = $month_expense !== null ? $month_expense : 0;
             $annual_expenses += $month_expense;
             
@@ -324,7 +327,15 @@ class DashboardFacade extends DBConnection
     }
     public function get_expenseValueFromDatePeriod($start_date, $end_date)
     {
-        $stmt = $this->connect()->prepare("SELECT SUM(expenses.total_amount) AS total_expense_of_the_month
+        $stmt = $this->connect()->prepare("SELECT 
+                                                SUM(expenses.total_amount) AS total_expense_of_the_month,
+                                                SUM(
+                                                    CASE 
+                                                        WHEN JSON_VALID(expenses.landingCost) = 1 AND JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost') IS NOT NULL 
+                                                        THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost')) AS DECIMAL(10,2))
+                                                        ELSE 0
+                                                    END
+                                                ) AS total_landing_cost
                                             FROM expenses
                                             LEFT JOIN supplier ON supplier.id = expenses.supplier
                                             LEFT JOIN uom ON uom.id = expenses.uom_id
@@ -334,12 +345,19 @@ class DashboardFacade extends DBConnection
     }
     public function get_totalExpenseOfTheMonth($month, $year)
     {
-        $stmt = $this->connect()->prepare("SELECT SUM(expenses.total_amount) AS total_expense_of_the_month
-                                        FROM expenses
-                                        LEFT JOIN supplier ON supplier.id = expenses.supplier
-                                        LEFT JOIN uom ON uom.id = expenses.uom_id
-                                        WHERE MONTH(expenses.date_of_transaction) = :currentMonth
-                                        AND YEAR(expenses.date_of_transaction) = :currentYear");
+        $stmt = $this->connect()->prepare("SELECT SUM(expenses.total_amount) AS total_expense_of_the_month,
+                                                SUM(
+                                                    CASE 
+                                                        WHEN JSON_VALID(expenses.landingCost) = 1 AND JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost') IS NOT NULL 
+                                                        THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost')) AS DECIMAL(10,2))
+                                                        ELSE 0
+                                                    END
+                                                ) AS total_landing_cost
+                                            FROM expenses
+                                            LEFT JOIN supplier ON supplier.id = expenses.supplier
+                                            LEFT JOIN uom ON uom.id = expenses.uom_id
+                                            WHERE MONTH(expenses.date_of_transaction) = :currentMonth
+                                            AND YEAR(expenses.date_of_transaction) = :currentYear");
         $stmt->execute([':currentMonth'=>$month, ':currentYear'=>$year]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

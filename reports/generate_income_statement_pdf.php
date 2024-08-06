@@ -153,7 +153,7 @@ $total_expenses = 0;
 $sales = $dashboard->get_allRevenues($startDate, $endDate, $singleDateData);
 $total_sales = $sales['total_sales'] ?? 0;
 $other_income = 0;
-$total_revenue = $total_sales + $other_income;
+
 $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C');
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 15));
 $pdf->Cell(93, $maxCellHeight, "Sales", 0, 0, 'L');
@@ -172,6 +172,7 @@ if(count($cash_inData) > 0)
         $cash_in += $row['cash_in_amount'];
     }
 }
+$total_revenue = $total_sales + $cash_in;
 $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C');
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 15));
 $pdf->Cell(93, $maxCellHeight, "Other Income (Cash In)", 0, 0, 'L');
@@ -215,6 +216,19 @@ if($expenses)
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($row['expense_amount'], 2, '.', ','), 80));
         $income_tax_expense += $row['total_income_tax_expense'];
         $pdf->Ln(); 
+
+        if($row['Landing_Cost'] != 0)
+        {
+            $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C');
+            $pdf->SetFont('', 'I', autoAdjustFontSize($pdf, "", 15));
+            $pdf->Cell(93, $maxCellHeight, "             Landed Cost", 0, 0, 'L');
+            $pdf->SetFont('', 'I', autoAdjustFontSize($pdf, "             Landed Cost", 93));
+            $pdf->Cell(80, $maxCellHeight, number_format($row['Landing_Cost'], 2, '.', ','), 1, 0, 'R');
+            $pdf->SetFont('', 'I', autoAdjustFontSize($pdf, number_format($row['Landing_Cost'], 2, '.', ','), 80));
+            $income_tax_expense += $row['Landing_Cost'];
+            $pdf->Ln(); 
+        }
+        
         $counter++;
     }
 }
@@ -245,7 +259,7 @@ $pdf->SetFillColor($r, $g, $b);
 
 $net_incomebeforeTax = $total_revenue - $total_expenses;
 
-$net_incomeAfterTax = $net_incomebeforeTax - $income_tax_expense;
+
 
 $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C', true);
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 15));
@@ -253,6 +267,26 @@ $pdf->Cell(93, $maxCellHeight, "Net Income Before Taxes", 0, 0, 'L', true);
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, "Net Income Before Taxes", 93));
 $pdf->Cell(80, $maxCellHeight, number_format($net_incomebeforeTax, 2), 1, 0, 'R', true);
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($net_incomebeforeTax,2), 80));
+$pdf->Ln(); 
+
+$cash_outQuery = $otherFacade->cashInAmountsData('',$startDate,$endDate,1);
+$cash_outData = $cash_outQuery->fetchAll(PDO::FETCH_ASSOC);
+$cash_out = 0;
+if(count($cash_outData) > 0)
+{
+    foreach($cash_outData as $row)
+    {
+        $cash_out += $row['cash_out_amount'];
+    }
+}
+$net_incomeAfterTax = $net_incomebeforeTax - $income_tax_expense - $cash_out;
+
+$pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C', true);
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, "", 15));
+$pdf->Cell(93, $maxCellHeight, "Other Expense (Cash Out)", 0, 0, 'L', true);
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, "Other Expense (Cash Out)", 93));
+$pdf->Cell(80, $maxCellHeight, number_format($cash_out, 2), 1, 0, 'R', true);
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($cash_out, 2), 80));
 $pdf->Ln(); 
 
 $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C', true);
