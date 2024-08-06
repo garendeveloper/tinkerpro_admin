@@ -5288,6 +5288,129 @@
 2024-08-03 16:08:59 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-03 17:09:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-03 18:47:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-03 19:03:02 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-05 09:08:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:09:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:10:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML WATERMELON SLICE Barcode #:4800086045973 
+2024-08-05 09:11:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML B/FOREST-SEL Barcode #:663374 
+2024-08-05 09:11:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:21:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML BUCO SALAD-SEL Barcode #:672274 
+2024-08-05 09:22:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIODERM TIMELESS 60G-IPI Barcode #:996644 
+2024-08-05 09:22:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML C&C-C/C-SEL Barcode #:51583 
+2024-08-05 09:22:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIODERM TIMELESS 90G-IPI Barcode #:887979 
+2024-08-05 09:22:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIOFLU 500 MG TABLET Barcode #:125894 
+2024-08-05 09:22:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML C-A-F Barcode #:895434 
+2024-08-05 09:26:45 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:26:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIOGESIC 500 MG TABLET Barcode #:85154 
+2024-08-05 09:27:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIRCH TREE 33G Barcode #:546525 
+2024-08-05 09:27:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIRCH TREE 33G 1TIE Barcode #:748485401492 
+2024-08-05 09:27:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIRCH TREE ADULT 300G Barcode #:748485401751 
+2024-08-05 09:27:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIRCH TREE CHOCO 29G Barcode #:323152 
+2024-08-05 09:27:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIRCH TREE CHOCO 29G 1TIE Barcode #:748485401621 
+2024-08-05 09:27:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIRCH TREE FULL CREAM MILK 300G Barcode #:748485400891 
+2024-08-05 09:27:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIRCH TREE MILK 300G Barcode #:748485401508 
+2024-08-05 09:33:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML C/CRUMBLE-SEL Barcode #:374706 
+2024-08-05 09:35:14 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:37:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BISCUCHO 200G Barcode #:926250 
+2024-08-05 09:37:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BL CREAM 7G Barcode #:966786 
+2024-08-05 09:37:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLACK BEANS WH 120G Barcode #:740116 
+2024-08-05 09:37:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLACK CHILI 7G 1PCK Barcode #:11763 
+2024-08-05 09:37:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLACK CHILI BBQ 55G Barcode #:706691 
+2024-08-05 09:38:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLACK PEPPER GROUND 30G Barcode #:227362 
+2024-08-05 09:39:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML CHOCO-KESO-SEL Barcode #:118183 
+2024-08-05 09:39:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML CHOCO-UBE-SEL Barcode #:298240 
+2024-08-05 09:43:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLACK PEPPER GROUND 35G Barcode #:340181 
+2024-08-05 09:43:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLACK PEPPER GROUND 3G Barcode #:500087 
+2024-08-05 09:43:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLACKBOARD ERASER BIG Barcode #:540600 
+2024-08-05 09:43:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE BAY AFRITADA 155G Barcode #:921640 
+2024-08-05 09:44:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE BAY CALDERETA 155G Barcode #:626622 
+2024-08-05 09:44:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE BAY TUNA ADOBO 155G Barcode #:655812 
+2024-08-05 09:44:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:44:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE BAY TUNA FLAKES & OIL 140G Barcode #:350336 
+2024-08-05 09:44:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE BAY TUNA HOT & SPICY 140G Barcode #:968708 
+2024-08-05 09:45:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML COOKIES&CRM-SEL Barcode #:171418 
+2024-08-05 09:46:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML D/D-C&C-SEL Barcode #:334858 
+2024-08-05 09:46:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:48:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CLUB MIX LIME JUICE 350ML-EMPE Barcode #:4800142122013 
+2024-08-05 09:49:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE CAMP COMPO NOTES 80L Barcode #:738388 
+2024-08-05 09:49:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE PRO PEACH ORANGE 500ML Barcode #:856753 
+2024-08-05 09:50:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE WATER CALAMANSI Barcode #:4800016073335 
+2024-08-05 09:50:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE WATER LYCHEE 500ML Barcode #:4800016073588 
+2024-08-05 09:50:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML D/DUTCH-SEL Barcode #:99740 
+2024-08-05 09:50:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BLUE WATER ORANGE 500ML Barcode #:223324 
+2024-08-05 09:50:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML HALO2X-UK Barcode #:682944 
+2024-08-05 09:50:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOARD ERASER BIG Barcode #:845491 
+2024-08-05 09:50:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML MANGO/G/C-SEL Barcode #:565940 
+2024-08-05 09:50:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOARD ERASER SMALL Barcode #:683804 
+2024-08-05 09:51:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOARD ERASER SMALL KING Barcode #:371631 
+2024-08-05 09:51:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML P/C-D/D-SEL Barcode #:136854 
+2024-08-05 09:51:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOMBAY BIG Barcode #:799815 
+2024-08-05 09:51:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAKID 1-3 350G-SUL Barcode #:4800153151255 
+2024-08-05 09:51:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAKID 1-3 YEARS 150G-SUL Barcode #:458947 
+2024-08-05 09:51:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAKID 3+ MILK 350G-SUL Barcode #:4800153151262 
+2024-08-05 09:51:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:52:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML PIS & CAS-SEL Barcode #:928692 
+2024-08-05 09:53:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML QUEZO REAL-SEL Barcode #:359278 
+2024-08-05 09:53:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML R/R-C&C-SEL Barcode #:874241 
+2024-08-05 09:53:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML ROCKY ROAD-SEL Barcode #:494127 
+2024-08-05 09:54:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAKID PRE-SCHOOL 180G-SUL Barcode #:110440 
+2024-08-05 09:54:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML UBE/S/EGG-SEL Barcode #:482585 
+2024-08-05 09:54:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAKID PRES-SCHOOL 400G-SUL Barcode #:524000 
+2024-08-05 09:55:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAMIL 6-12 MONTHS 150G-SUL Barcode #:130033 
+2024-08-05 09:55:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA BASO CHOCO 400ML-SEL Barcode #:687774 
+2024-08-05 09:55:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA BASO KESO 400ML-SEL Barcode #:929703 
+2024-08-05 09:55:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAMIL 6-12 MONTHS 180G-SUL Barcode #:490975 
+2024-08-05 09:55:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAMIL 6-12 MONTHS 350G-SUL Barcode #:4800153151248 
+2024-08-05 09:55:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA BASO UBE 400ML-SEL Barcode #:503056 
+2024-08-05 09:55:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAMIL 6-12 MONTHS 360G-SUL Barcode #:871403 
+2024-08-05 09:55:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAMINE FOR ADULTS 25MG Barcode #:780685 
+2024-08-05 09:55:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA BIRTHDAY 750ML C/CREAM Barcode #:459120 
+2024-08-05 09:55:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONAMINE FOR KIDS 12MG Barcode #:948451 
+2024-08-05 09:55:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOND PAPER A4 REAM Barcode #:773204 
+2024-08-05 09:56:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOND PAPER LONG 1REAM Barcode #:939707 
+2024-08-05 09:56:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOND PAPER LONG 20'S Barcode #:782208 
+2024-08-05 09:56:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOND PAPER SHORT 1REAM Barcode #:978795 
+2024-08-05 09:56:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOND PAPER SHORT 20'S Barcode #:225715 
+2024-08-05 09:56:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOND PAPER SUB-20 A4 Barcode #:866659 
+2024-08-05 09:56:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA BIRTHDAY 750ML R/ROAD Barcode #:598759 
+2024-08-05 09:56:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOND PAPER SUB-20 LONG Barcode #:400202 
+2024-08-05 09:56:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BOND PAPER SUB-20 SHORT Barcode #:155658 
+2024-08-05 09:56:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA BITES Barcode #:166666 
+2024-08-05 09:56:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated boneless danggit Barcode #:406607 
+2024-08-05 09:56:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONFIRE MALLOWS 135G Barcode #:245202 
+2024-08-05 09:57:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONGGA BEEF LOAF 150G Barcode #:296895 
+2024-08-05 09:57:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONGGA CARNE NORTE 150G Barcode #:880829 
+2024-08-05 09:57:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BONGS POPCORN 250G Barcode #:695151 
+2024-08-05 09:59:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLORING PENS 8S Barcode #:239667 
+2024-08-05 10:01:45 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 10:03:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLORS ASC NOTEBOOK 80 LEAVES Barcode #:519314 
+2024-08-05 10:03:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLOUR PENCILS 12S Barcode #:220965 
+2024-08-05 10:03:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated COLT 45 330 ML Barcode #:547423 
 2024-08-05 09:09:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-05 09:10:57 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-08-05 09:59:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 10:50:38 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 11:52:59 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 12:15:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 13:18:51 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 13:19:50 | Zeus Baculio | 50 | 2 | Expense | Updated expense: SWELDO SA TRABANTE, Amount: 1919974.00, Invoice#: KKK 
+2024-08-05 13:20:22 | Zeus Baculio | 50 | 2 | Expense | Deleted Expense: NAME EXPENSE Invoice #: 900 Amount: 11353.00 
+2024-08-05 13:20:58 | Zeus Baculio | 50 | 2 | Expense | Updated expense: fghfgh, Amount: 98.00, Invoice#: SSS3 
+2024-08-05 13:29:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 13:47:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 13:55:40 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 14:11:03 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 14:23:58 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 14:45:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 14:56:26 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: SWELDO SA TRABANTE, Amount: 1919974.00, Invoice#: KKK 
+2024-08-05 14:56:46 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: fghfgh, Amount: 98.00, Invoice#: SSS3 
+2024-08-05 14:57:13 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-05 15:27:05 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 15:28:23 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-05 15:35:39 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 17:03:00 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 17:10:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 17:21:01 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-05 18:14:32 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 18:15:43 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-06 09:02:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

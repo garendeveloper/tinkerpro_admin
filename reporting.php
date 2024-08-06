@@ -548,16 +548,9 @@ body, html {
               </div>
               <div hidden class="custom-select" id="productsDIV">
                 <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Products</label>
-                <div class="select-container">
+                <div class="select-container wrapper">
                     <select id="selectProducts" >
-                    <option value="" selected >All Products</option>
-                    <?php
-                        $productFacade = new ProductFacade;
-                        $products =  $productFacade->getProductsData();
-                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['prod_desc'] .' </option>';
-                        }
-                        ?>
+                      <option value="" selected >All Products</option>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -596,14 +589,7 @@ body, html {
                 <label class="text-color" style="display: inline-block; margin-bottom: 5px; margin-top: 10px">Select Product Sub-categories</label>
                 <div class="select-container">
                     <select id="subCategoreisSelect">
-                    <option value="" selected >All Product Sub-categories</option>
-                    <?php
-                        $productFacade = new ProductFacade;
-                        $products =  $productFacade->getVariantsData();
-                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['variant_name'] .' </option>';
-                        }
-                        ?>
+                      <option value="" selected >All Product Sub-categories</option>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -752,16 +738,85 @@ body, html {
 <?php include("layout/footer.php") ?>
 
 <script>
-document.getElementById('selectProducts').addEventListener('click', function() {
-    document.getElementById('dropdownContent').style.display = 'block';
-    $('#searchInput').focus()
-});
 
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.custom-dropdown')) {
-        document.getElementById('dropdownContent').style.display = 'none';
+$(document).ready(function() {
+
+  //selectProducts
+
+    let allProducts = [];
+    let currentIndex = 0;
+    const chunkSize = 100;
+
+    function getAllProducts() {
+      axios.get('api.php?action=getProductsData')
+        .then(function(res) {
+          allProducts = res.data;
+          $('#selectProducts').empty();
+          $('#selectProducts').append(
+            $('<option></option>').val('').text('All Product Sub-categories')
+          );
+          loadMoreProducts();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
-});
+
+    function loadMoreProducts() {
+      const nextIndex = currentIndex + chunkSize;
+      const productsToLoad = allProducts.slice(currentIndex, nextIndex);
+      $.each(productsToLoad, function(index, product) {
+        $('#selectProducts').append(
+          $('<option></option>').val(product.id).text(product.prod_desc)
+        );
+      });
+      currentIndex = nextIndex;
+    }
+
+    $('.wrapper').on('change', function() {
+      console.log('Hello world');
+      if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+        loadMoreProducts();
+      }
+    })
+    
+    getAllProducts();
+
+  $('#categoreisSelect').off('change').on('change', function() {
+    var catId = $(this).val();
+    axios.post('api.php?action=getSubCat', {
+      'cat_id' : catId,
+    })
+    .then(function(response) {
+      if(response.data) {
+        $('#subCategoreisSelect').empty();
+        $('#subCategoreisSelect').append(
+          $('<option></option>').val('').text('All Product Sub-categories')
+        );
+
+        $.each(response.data, function(index, variant) {
+          $('#subCategoreisSelect').append(
+            $('<option></option>').val(variant.id).text(variant.variant_name)
+          );
+        });
+      }
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  })
+})
+
+// document.getElementById('selectProducts').addEventListener('click', function() {
+//     document.getElementById('dropdownContent').style.display = 'block';
+//     $('#searchInput').focus()
+// });
+
+// document.addEventListener('click', function(e) {
+//     if (!e.target.closest('.custom-dropdown')) {
+//         document.getElementById('dropdownContent').style.display = 'none';
+//     }
+// });
 
 // document.addEventListener('keydown', function(e) {
 //     var searchInput = document.getElementById('searchInput');
@@ -832,7 +887,6 @@ document.querySelectorAll('.dropdown-option').forEach(option => {
         document.getElementById('selectProducts').textContent = this.textContent;
         document.getElementById('selectProducts').setAttribute('data-value', this.getAttribute('data-value'));
         document.getElementById('searchInput').value = "";
-
         document.getElementById('dropdownContent').style.display = 'none';
     });
 });
@@ -842,6 +896,8 @@ function filterOptions() {
     input = document.getElementById('searchInput');
     filter = input.value.toUpperCase();
     options = document.querySelectorAll('.dropdown-option');
+
+    console.log(options);
     for (i = 0; i < options.length; i++) {
         if (options[i].textContent.toUpperCase().indexOf(filter) > -1) {
             options[i].style.display = "";
@@ -852,6 +908,7 @@ function filterOptions() {
 }
 function getSelectedProductValue() {
     var selectedProduct = document.getElementById('selectProducts').getAttribute('data-value');
+    console.log(selectedProduct);
     return selectedProduct;
 }
 
@@ -884,16 +941,6 @@ $("#pointer").html("Reporting");
 
   function contentTest(id) {
 
-    if (id == 50) {
-      getEReports(1)
-    } else if(id == 51) {
-      getEReports(6)
-    } else if(id == 52) {
-      getEReports(7)
-    } else if(id == 53) {
-      getEReports(4)
-    }
- 
     generatePdf(id)
     generateExcel(id)
     printDocuments(id)
@@ -954,36 +1001,6 @@ $("#pointer").html("Reporting");
   
   }
 
-
-
-  function getAllZread() {
-    // axios.post('api.php?action=e_summary', {
-    //   'startDate' : '2024-07-31',
-    //   'endDate' : '2024-07-31',
-    // })
-    // .then(function(response) {
-    //   console.log('Hello world');
-    //   console.log(response.data)
-    // })
-    // .catch(function(error) {
-    //   console.log(error);
-    // })
-  }
-
-
-  function getEReports(cusType) {
-    // axios.post('api.php?action=e_reports', {
-    //   'customerType' : cusType,
-    //   'startDate' : '2024-07-01',
-    //   'endDate' : '2024-',
-    // })
-    // .then(function(response) {
-    //   console.log(response.data)
-    // })
-    // .catch(function(error) {
-    //   console.log(error)
-    // })
-  }
 
 
 function highlightDiv(id) {
@@ -1626,9 +1643,6 @@ function highlightDiv(id) {
         }
         else if(id === 50 || id === 55 || id === 51 || id === 52 || id === 53 ){
           contentTest(id)
-
-          console.log('Hello world')
-          getAllZread();
         }
         else if(id == 1){
           generatePdf(id)
@@ -1978,6 +1992,7 @@ function highlightDiv(id) {
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
+
         }else if(id == 7){
           generatePdf(id)
           generateExcel(id)
@@ -7160,6 +7175,22 @@ function printDocuments(id){
 
 function showReports(id) {
 
+  $("#showReportsModal .modal-dialog").css({
+    ' max-width': '1000px', 
+    'min-width': '500px' 
+  });
+
+  $("#showReportsModal .modal-content").css({
+    'color': '#ffff',
+  'background': '#262625',
+  'border-radius': '0',
+  'position': 'relative',
+  'height': '800px',
+  'width': '1000px',
+  });
+
+  $("#pdfViewer").attr('width', '935px'); 
+
   if(id == 2){
     $('#showReport').off('click').on('click', function(){
        $('#showReportsModal').show()
@@ -7234,22 +7265,23 @@ function showReports(id) {
         });
      }
     })
-  }else if(id == 3){
-    $('#showReport').off('click').on('click', function(){
-       $('#showReportsModal').show()
+  }else if(id == 3) {
+    $('#showReport').off('click').on('click', function() {
+    $('#showReportsModal').show()
+
     if($('#showReportsModal').is(":visible")){
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-        var loadingImage = document.getElementById("loadingImage");
-        loadingImage.removeAttribute("hidden");
-        var pdfFile= document.getElementById("pdfFile");
-        pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
-        var categoriesSelect = document.getElementById('categoreisSelect')
-        var selectedCategories = categoriesSelect.value
-        var subCategoreisSelect = document.getElementById('subCategoreisSelect')
-        var selectedSubCategories = subCategoreisSelect.value 
-        var datepicker = document.getElementById('datepicker').value
+      var loadingImage = document.getElementById("loadingImage");
+      loadingImage.removeAttribute("hidden");
+      var pdfFile= document.getElementById("pdfFile");
+      pdfFile.setAttribute('hidden',true)
+      var selectedProduct =  getSelectedProductValue()
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value 
+      var datepicker = document.getElementById('datepicker').value
       var singleDateData;
       var startDates;
       var endDate;
@@ -7827,6 +7859,19 @@ function showReports(id) {
     })
   }
   else if(id == 50 || id == 55){
+    if(id === 55)
+    {
+      $("#showReportsModal  .modal-dialog").css({
+        'max-width': '1500px',
+        'max-width': '1400px',
+      })
+
+      $("#showReportsModal .modal-content").css({
+        'width': '1500px',
+      })
+
+      $("#pdfViewer").attr('width', '1430px');
+    }
     $('#showReport').off('click').on('click', function(){
       $('#showReportsModal').show()
       if($('#showReportsModal').is(":visible"))
@@ -8632,6 +8677,8 @@ function showReports(id) {
           if(endDate == "" || endDate == null){
           endDate = ""
         }
+
+      console.log(startDate);
       $.ajax({
           url: './reports/generate_paymentMethod_pdf.php',
           type: 'GET',

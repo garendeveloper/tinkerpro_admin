@@ -538,8 +538,15 @@
             
             $userFacade->deleteCustomer($customerId, $typeFunction);
             break;
-        case 'getTest':
-            $otherFacade->getProductSales();
+        // case 'getTest':
+        //     $otherFacade->getAllPaymentMethods('2024-08-05', '2024-08-05');
+        //     break;
+        case 'getSubCat':
+            $cat_id = isset($data->cat_id) ? $data->cat_id : 0;
+            $products->getVariantsData($cat_id);
+            break;
+        case 'getProductsData':
+            $products->getAllProducts();
             break;
         default:
             header("HTTP/1.0 400 Bad Request");

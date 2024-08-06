@@ -62,7 +62,7 @@
                           <th style = "text-align: center">Quantity  Received</th>
                           <th style = "text-align: center">Price</th>
                           <th style = "text-align: center">Total</th>
-                          <th style='text-align: center; width: 4%; font-size: 8px;'>Payment Status</th>
+                          <th style='text-align: center; width: 4%; font-size: 7px;'>Payment Status</th>
                           <th style='text-align: center; width: 6%'>Status</th>
                           <th style='text-align: center; width: 5%'>Action</th>
                       </tr>

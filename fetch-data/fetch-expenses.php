@@ -29,7 +29,7 @@
                     <td style = "width: 10%"  class = "center"><?= $row['expense_type'] ?></td>
                     <td style = "width: 6%"  class = "text-center"><?= $row['uom_name']?></td>
                     <td style = "width: 6%" ><?= $row['supplier']?></td>
-                    <td style = "width: 6%" class = "text-center"><?= $row['invoice_number']?></td>
+                    <td style = "width: 7%" class = "text-center"><?= $row['invoice_number']?></td>
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['quantity'], 2)?></td>
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['price'], 2)?></td>
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['discount'], 2)?></td>

@@ -2928,6 +2928,87 @@ class OtherReportsFacade extends DBConnection {
         }
     }
 
+
+
+    public function getAllPaymentMethods($startDate, $endDate) {
+
+        $pdo = $this->connect();
+        
+        $paymentsData = "SELECT 
+            payments.id,
+            payments.change_amount,
+            payments.payment_amount,
+            payments.payment_details,
+            payments.date_time_of_payment
+        FROM payments
+        WHERE DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
+    
+        $paymentsExecute = $pdo->prepare($paymentsData); 
+        $paymentsExecute->execute([$startDate, $endDate]);
+
+        $paymentResult = $paymentsExecute->fetchAll(PDO::FETCH_ASSOC);
+        $totalChange = 0;
+        $totalAmountCash = 0;
+        $totalAmountCredit = 0;
+        $totalAmountCoupons = 0;
+        $totalAmountGCash = 0;
+        $totalAmountMaya = 0;
+        $totalAmountShopeePay = 0;
+        $totalAmountGrapPay = 0;
+        $totalAmountAlipay = 0;
+        $totalAmountCreditDebit = 0;
+        $payMetCreditDebit = [11, 12, 13, 14, 15];
+        foreach ($paymentResult as $paymentData) {
+            $totalChange = $paymentData['change_amount'];
+            $paymentDetails = json_decode($paymentData['payment_details'], true);
+    
+            if (json_last_error() === JSON_ERROR_NONE) {
+                
+                foreach ($paymentDetails as $data) {
+                    if ($data['index'] == 1) {
+                        $totalAmountCash += (float)$data['amount'] - $totalChange;
+                    } else if ($data['index'] == 2) {
+                        $totalAmountGCash += (float)$data['amount'];
+                    } else if ($data['index'] == 3) {
+                        $totalAmountMaya += (float)$data['amount'];
+                    } else if ($data['index'] == 5) {
+                        $totalAmountCredit += (float)$data['amount'];
+                    } else if ($data['index'] == 7) {
+                        $totalAmountCoupons += (float)$data['amount'];
+                    } else if ($data['index'] == 8) {
+                        $totalAmountShopeePay += (float)$data['amount'];
+                    } else if ($data['index'] == 9) {
+                        $totalAmountGrapPay += (float)$data['amount'];
+                    } else if ($data['index'] == 10) {
+                        $totalAmountAlipay += (float)$data['amount'];
+                    } else if (in_array($data['index'], $payMetCreditDebit)) {
+                        $totalAmountCreditDebit += (float)$data['amount'];
+                    }
+                }
+            } else {
+                echo "Error decoding JSON: " . json_last_error_msg();
+            }
+        }
+
+
+        $result = [
+            'totalCashPerPayment' => $totalAmountCash,
+            'totalAmountGCash' => $totalAmountGCash,
+            'totalAmountMaya' => $totalAmountMaya,
+            'totalAmountCredit' => $totalAmountCredit,
+            'totalAmountCoupons' => $totalAmountCoupons,
+            'totalAmountShopeePay' => $totalAmountShopeePay,
+            'totalAmountGrapPay' => $totalAmountGrapPay,
+            'totalAmountAlipay' => $totalAmountAlipay,
+            'totalAmountCreditDebit' => $totalAmountCreditDebit,
+            'total' => ($totalAmountCash + $totalAmountGCash + $totalAmountMaya + $totalAmountCredit +
+            $totalAmountCoupons + $totalAmountShopeePay + $totalAmountGrapPay + $totalAmountAlipay + $totalAmountCreditDebit)
+        ];
+
+        // echo json_encode($result);
+        return $result;
+    }
+
     public function getPaymentMethod( $singleDateData, $startDate, $endDate) {
         if($singleDateData && !$startDate && !$endDate){
             $sql = "SELECT 
