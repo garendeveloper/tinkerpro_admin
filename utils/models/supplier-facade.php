@@ -3,6 +3,10 @@
   class SupplierFacade extends DBConnection {
    
 
+    public function verify_supplier($id)
+    {
+        // $sql = $this->connect()->prepare("SELECT count(supplier_id) FROM orders ");
+    }
     public function addSupplier($formData){
         $s_name = $formData['supplierName'] ?? null;
         $s_contact =  $formData['supplierContact'] ?? null;

@@ -81,6 +81,9 @@
            echo json_encode(["success" => true,'role_id' => $role]);
             break;
         
+        case 'verify_supplier':
+            echo json_encode($supplier->verify_supplier($_GET['id']));
+            break;
         case 'check_promotion':
             echo json_encode($promotionFacade->check_promotion($_GET['promotionType']));
             break;

@@ -202,7 +202,6 @@ if (isset($_SESSION['user_id'])) {
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
-    
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel h-100">
         <div class="content-wrapper">

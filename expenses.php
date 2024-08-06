@@ -684,7 +684,7 @@ h1, label, textarea, input, table,h5{
         }
       })
     })
-    $("#responsive-data").on("click", "tr", function() {
+    $("#responsive-data").on("dblclick", "tr", function() {
       createExpense();
       var expense_id = $(this).data("id");
       var product_id = $(this).data('product_id');
