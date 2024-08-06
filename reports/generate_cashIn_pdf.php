@@ -4,7 +4,6 @@ include(__DIR__ . '/../utils/db/connector.php');
 include(__DIR__ . '/../utils/models/other-reports-facade.php');
 include( __DIR__ . '/../utils/models/product-facade.php');
 
-use TCPDF;
 $pdfFolder = __DIR__ . '/../assets/pdf/entries/';
 
 $files = glob($pdfFolder . '*'); 
@@ -33,7 +32,18 @@ $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->cashInAmountsData($userId,$singleDateData ,$startDate,$endDate,$entries);
+if((empty($startDate) && empty($endDate)) && !empty($singleDateData))
+{
+    $startDate = $singleDateData;
+    $endDate = $singleDateData;
+}
+if((empty($startDate) && empty($endDate)) && empty($singleDateData))
+{
+    $startDate = date('Y-m-d');
+    $endDate = date('Y-m-d');
+}
+
+$fetchRefund= $refundFacade->cashInAmountsData($userId,$startDate,$endDate,$entries);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -128,20 +138,116 @@ $pdf->SetLineWidth(0.3);
 $groupedData = [];
 $totalDiscount = 0;
 $grandTotal = 0;
-while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $lastName = $row['last_name'];
-    $firstName = $row['first_name'];
-    $grandTotal += $row['amount'];
-    if (!isset($groupedData[$lastName])) {
-        $groupedData[$lastName] = [];
+$hasData = $fetchRefund->rowCount() > 0;
+if($hasData)
+{
+    if($entries === "all")
+    {
+        $data = $fetchRefund->fetchAll(PDO::FETCH_ASSOC);
+        $totalAmount = 0;
+        $pdf->SetDrawColor(192, 192, 192); 
+        $pdf->SetLineWidth(0.3); 
+        $header = array('No.', 'Cash Type', 'User', 'Description', 'Date', 'Total');
+        $headerWidths = array(20, 20, 30, 50, 40, 30);
+        $maxCellHeight = 5; 
+    
+        $hexColor = '#F5F5F5';
+        list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+        
+        $pdf->SetFillColor($r, $g, $b);
+        
+        $pdf->SetFont('', 'B', 9);
+        foreach ($header as $i => $headerItem) {
+            $pdf->Cell($headerWidths[$i], $maxCellHeight, $headerItem, 1, 0, 'C', true);
+        }  
+        $pdf->Ln();
+    
+        $counter = 1;
+        $pdf->SetFont('', '', 8);
+        foreach ($data as $row) 
+        {
+            $amount = $row['cashType'] == 1 ? $row['cash_out_amount'] : $row['cash_in_amount'];
+            $formattedDate = date('d F Y h:i A', strtotime($row['date']));
+            $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
+            $pdf->Cell($headerWidths[1], $maxCellHeight, $row['cashType'] == 1 ? "In" : "Out", 1, 0, 'C');
+            $pdf->Cell($headerWidths[2], $maxCellHeight, $row['first_name']." ".$row['last_name'], 1, 0, 'L');
+            $pdf->Cell($headerWidths[3], $maxCellHeight, $row['reason_note'], 1, 0, 'L');
+            $pdf->Cell($headerWidths[4], $maxCellHeight, $formattedDate, 1, 0, 'C');
+            $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($amount, 2), 1, 0, 'R');
+            $totalAmount += $amount; 
+            $pdf->Ln(); 
+            $counter++;
+        }
+       
+        $pdf->SetFont('', 'B', 9); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, 'C'); 
+        $pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5] , $maxCellHeight, number_format( $totalAmount, 2), 1, 0, 'R');
     }
-    $groupedData[$lastName][] = $row;
+    else
+    {
+        while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) 
+        {
+            $lastName = $row['last_name'];
+            $firstName = $row['first_name'];
+            $grandTotal += $row['amount'];
+            if (!isset($groupedData[$lastName])) {
+                $groupedData[$lastName] = [];
+            }
+            $groupedData[$lastName][] = $row;
+        }
+        
+        foreach ($groupedData as $lastName => $userData) 
+        {
+            $totalDiscount = 0;
+            $pdf->SetFont('', 'B', 10);
+            $pdf->Cell(0, 10, 'User Name: ' . $firstName . ' ' . $lastName, 0, 1, 'L', 0);
+            $pdf->Ln(-2); 
+            $pdf->SetDrawColor(192, 192, 192); 
+            $pdf->SetLineWidth(0.3); 
+            $header = array('No.', 'Date', 'Note', 'Amount',);
+            $headerWidths = array(10, 60, 60, 60);
+            $maxCellHeight = 5; 
+        
+            $hexColor = '#F5F5F5';
+            list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+            
+            $pdf->SetFillColor($r, $g, $b);
+            
+            $pdf->SetFont('', 'B', 10);
+            foreach ($header as $i => $headerItem) {
+                $pdf->Cell($headerWidths[$i], $maxCellHeight, $headerItem, 1, 0, 'C', true);
+            }  
+            $pdf->Ln();
+        
+            $counter = 1;
+            foreach ($userData as $row) 
+            {
+                $amount = $row['cashType'] == 1 ? $row['cash_out_amount'] : $row['cash_in_amount'];
+                $pdf->SetFont('', '', 8);
+                $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
+                $formattedDate = date('M d, Y', strtotime($row['date']));
+                $pdf->Cell($headerWidths[1], $maxCellHeight, $formattedDate, 1, 0, 'C');
+                $pdf->Cell($headerWidths[2], $maxCellHeight, $row['reason_note'], 1, 0, 'C');
+                $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($amount, 2), 1, 0, 'R');
+                $totalDiscount += $amount; 
+                $pdf->Ln(); 
+                $counter++;
+            }
+           
+            $pdf->SetFont('', 'B', 9); 
+            $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, 'C'); 
+            $pdf->Cell( $headerWidths[2] + $headerWidths[3] , $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R');
+            $pdf->Ln(15); 
+            $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Overall Total', 1, 0, 'C'); 
+            $pdf->Cell( $headerWidths[2] + $headerWidths[3] , $maxCellHeight, number_format($grandTotal , 2), 1, 0, 'R'); 
+            $pdf->Ln();
+        }
     }
-
-foreach ($groupedData as $lastName => $userData) {
-    $totalDiscount = 0;
-    $pdf->SetFont('', 'B', 10);
-    $pdf->Cell(0, 10, 'User Name: ' . $firstName . ' ' . $lastName, 0, 1, 'L', 0);
+}
+else
+{
+    $pdf->SetFont('', 'B', 9);
+    $pdf->Cell(0, 10, 'User Name: ---', 0, 1, 'L', 0);
     $pdf->Ln(-2); 
     $pdf->SetDrawColor(192, 192, 192); 
     $pdf->SetLineWidth(0.3); 
@@ -160,30 +266,13 @@ foreach ($groupedData as $lastName => $userData) {
     }  
     $pdf->Ln();
 
-    $counter = 1;
-    foreach ($userData as $row) {
-        $pdf->SetFont('', '', 10);
-        $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
-        $formattedDate = date('M d, Y', strtotime($row['date']));
-        $pdf->Cell($headerWidths[1], $maxCellHeight, $formattedDate, 1, 0, 'C');
-        $pdf->Cell($headerWidths[2], $maxCellHeight, $row['note'], 1, 0, 'R');
-        $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['amount'], 2), 1, 0, 'R');
-        $totalDiscount += $row['amount']; 
-        $pdf->Ln(); 
-        $counter++;
-    }
-   
-
-
-    $pdf->SetFont('', 'B', 10); 
-    $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Total', 1, 0, 'C'); 
-    $pdf->Cell( $headerWidths[2] + $headerWidths[3] , $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R');
-    $pdf->Ln(15); 
-    $pdf->Cell($headerWidths[0] + $headerWidths[1], $maxCellHeight, 'Overall Total', 1, 0, 'C'); 
-    $pdf->Cell( $headerWidths[2] + $headerWidths[3] , $maxCellHeight, number_format($grandTotal , 2), 1, 0, 'R'); 
-    $pdf->Ln();
+    $pdf->SetFont('', '', 10);
+    $mergedWidth = array_sum($headerWidths);
+    $cellHeight = $maxCellHeight;
+    $mergedContent = 'No available data.';
+    $pdf->MultiCell($mergedWidth, $cellHeight, $mergedContent, 1, 'C');
+    $pdf->SetXY($pdf->GetX() + $mergedWidth, $pdf->GetY());
 }
-
 $pdfPath = $pdfFolder . 'cashEntriesList.pdf';
 $pdf->Output($pdfPath, 'F');
 

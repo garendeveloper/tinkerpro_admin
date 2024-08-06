@@ -1209,10 +1209,10 @@ i:hover{
             for (var i = 0; i < ld_data.length; i++) {
               var inventory = ld_data[i];
               var row = "<tr data-id=" + inventory.inventory_id + " data-ld_id = "+inventory.loss_and_damage_id+">";
-              row += "<td data-id = "+inventory.inventory_id+">" + inventory.prod_desc + "</td>";
-              row += "<td style='text-align:center'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' value = "+inventory.qty_damage+" ></input></td>";
-              row += "<td style='text-align:right' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + addCommasToNumber(inventory.cost) + "</td>";
-              row += "<td style='text-align:right' id = 'total_row_cost'>₱ " + addCommasToNumber(inventory.total_cost) + "</td>";
+              row += "<td data-id = "+inventory.inventory_id+" style = 'width: 40%'>" + inventory.prod_desc + "</td>";
+              row += "<td style='text-align:center; width: 15%'><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' value = "+inventory.qty_damage+" ></input></td>";
+              row += "<td style='text-align:right; width: 15%' id = 'cost' class='editable' data-id=" + data['cost'] + ">₱ " + addCommasToNumber(inventory.cost) + "</td>";
+              row += "<td style='text-align:right; width: 15%' id = 'total_row_cost'>₱ " + addCommasToNumber(inventory.total_cost) + "</td>";
               rows.push(row);
             }
             tbody.html(rows.join(''));
@@ -1264,12 +1264,12 @@ i:hover{
             {
               var inventory = inventoryData[i];
               var row = "<tr data-id=" + inventory.inventory_id + " data-ic_id = " + inventory.inventory_count_item_id + ">";
-              row += "<td data-id=" + inventory.inventory_id + ">" + inventory.prod_desc + "</td>";
-              row += "<td style='text-align:center'>" + inventory.counted_qty + "</td>";
-              row += "<td class='text-center'><input placeholder='QTY' id = 'counted' style='text-align:center; width: 60px; height: 20px; font-size: 12px;' class='counted-input toLock' value = " + inventory.counted + " ></input></td>";
+              row += "<td data-id=" + inventory.inventory_id + " style = 'width: 50%'>" + inventory.prod_desc + "</td>";
+              row += "<td style='text-align:center' style = 'width: 20%'>" + inventory.counted_qty + "</td>";
+              row += "<td class='text-right' style = 'width: 50px'><input placeholder='QTY' id = 'counted' style='text-align:center; width: 60px; height: 20px; font-size: 12px;' class='counted-input toLock' value = " + inventory.counted + " ></input></td>";
               var difference = inventory.difference;
               var differenceDisplay = difference > 0 ? "+" + difference : difference;
-              row += "<td style='text-align: right'>" + differenceDisplay + "</td>";
+              row += "<td style='text-align: right; width: 50px'>" + differenceDisplay + "</td>";
               row += "</tr>";
               rows.push(row);
             }
@@ -1285,8 +1285,6 @@ i:hover{
             $("#purchaseItems_div").hide();
             $("#inventorycount_div").show();
             $("#open_po_report").show();
-
-
             $("#btn_omPayTerms").hide();
             $("#inventorycount_form").find('input').removeClass('has-error');
             openOptionModal();
@@ -1455,6 +1453,7 @@ i:hover{
         if (tbl_length > 0) {
           isSavingPO = true;
           var dataArray = [];
+          $('#modalCashPrint').show();
           $('#tbl_purchaseOrders tbody tr').each(function () {
             var rowData = {};
             $(this).find('td').each(function (index, cell) {
@@ -1520,6 +1519,7 @@ i:hover{
                 }else{
                   insertLogs('P.O Created',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO) 
                 }
+          
                 if($('#show_purchasePrintModal').is(":visible"))
                 {
                   $('#modalCashPrint').hide();
@@ -2148,17 +2148,14 @@ i:hover{
         {
           var tbl_poL = $("#po_body tr").length;
           if (tbl_poL > 0) {
-            $('#modalCashPrint').show();
+        
             var order_id = $("#_order_id").val();
             if (order_id > 0) {
               submit_purchaseOrder();
             }
             else {
               if ($("#paidSwitch").prop("checked") === false) {
-                $("#unpaid_purchase_modal").slideDown({
-                  backdrop: 'static',
-                  keyboard: false,
-                });
+                $("#unpaid_purchase_modal").fadeIn("200")
                 var amount = clean_number($("#overallTotal").text());
                 amount = amount.replace(/,/g, '');
                 $("#unpaid_term").focus();

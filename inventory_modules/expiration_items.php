@@ -154,7 +154,7 @@
                     <tr>
                         <td>1<sup>st</sup> Notification</td>
                         <td>30 DAYS</td>
-                        <td class="center-switch">
+                        <td class="center-switch" style = "width: 100%">
                             <label class="switch">
                                 <input type="checkbox" name="first_expiration" id="first_expiration" checked>
                                 <span class="slider round"></span>
@@ -164,7 +164,7 @@
                     <tr>
                         <td>2<sup>nd</sup> Notification</td>
                         <td>15 DAYS</td>
-                        <td class="center-switch">
+                        <td class="center-switch" style = "width: 100%">
                             <label class="switch">
                                 <input type="checkbox" name="second_expiration" id="second_expiration" checked>
                                 <span class="slider round"></span>
@@ -174,7 +174,7 @@
                     <tr>
                         <td>3<sup>rd</sup> Notification</td>
                         <td>5 DAYS</td>
-                        <td class="center-switch">
+                        <td class="center-switch" style = "width: 100%">
                             <label class="switch">
                                 <input type="checkbox" name="third_expiration" id="third_expiration" checked>
                                 <span class="slider round"></span>
@@ -184,7 +184,7 @@
                     <tr>
                         <td>4<sup>th</sup> Notification</td>
                         <td>0 DAYS</td>
-                        <td class="center-switch">
+                        <td class="center-switch" style = "width: 100%">
                             <label class="switch">
                                 <input type="checkbox" name="fourth_expiration" id="fourth_expiration" checked>
                                 <span class="slider round"></span>

@@ -309,7 +309,7 @@ button:hover {
     right: 2px;
   }
   table thead tr th{
-        background-color: #FF6900;
+        background-color: transparent;
         color: white;
         border-color: 1px solid #ccc;
     }

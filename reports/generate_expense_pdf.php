@@ -103,7 +103,8 @@ $pdf->SetLineWidth(0.3);
     $total_expenses = 0;
     $total_price = 0;
     $total_discount = 0;
-    foreach($expenses_data as $row) {
+    foreach($expenses_data as $row) 
+    {
         $item_name = $row['item_name'] == "" ? $row['product'] : $row['item_name'];
         $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
         $pdf->SetFont('', '', autoAdjustFontSize($pdf, $item_name, $headerWidths[1]));

@@ -3,8 +3,8 @@ require_once('./vendor/autoload.php');
 include(__DIR__ . '/../utils/db/connector.php');
 include(__DIR__ . '/../utils/models/other-reports-facade.php');
 include( __DIR__ . '/../utils/models/product-facade.php');
+include( __DIR__ . '/../utils/models/dashboard-facade.php');
 
-use TCPDF;
 $pdfFolder = __DIR__ . '/../assets/pdf/tax/';
 
 $files = glob($pdfFolder . '*'); 
@@ -23,7 +23,8 @@ function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 8) {
     return $initialFontSize;
 }
 
-$refundFacade = new OtherReportsFacade();
+$otherfacade = new OtherReportsFacade();
+$dashboardfacade = new DashboardFacade();
 $products = new ProductFacade();
 
 $counter = 1;
@@ -32,7 +33,17 @@ $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$fetchRefund= $refundFacade->taxRates($singleDateData,$startDate,$endDate);
+if(!empty($singleDateData) && (empty($startDate) && empty($endDate)))
+{
+    $startDate = $singleDateData;
+    $endDate = $singleDateData;
+}
+if(empty($singleDateData) && (empty($startDate) && empty($endDate)))
+{
+    $startDate = date('Y-m-d');
+    $endDate = date('Y-m-d');
+}
+$sales= $dashboardfacade->get_salesByPeriod($startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -118,8 +129,8 @@ if ($singleDateData && !$startDate && !$endDate) {
 
 $pdf->SetDrawColor(192, 192, 192); 
 $pdf->SetLineWidth(0.3); 
-$header = array('No.','Zero Rated','Others','Vatable Sales','VAT');
-$headerWidths = array(30, 40,40, 40, 40);
+$header = array('Zero Rated','Others','Vatable Sales','VAT');
+$headerWidths = array(40, 50, 50, 50);
 $maxCellHeight = 5; 
 
 $hexColor = '#F5F5F5';
@@ -138,42 +149,22 @@ for ($i = 0; $i < count($header); $i++) {
 }
 $pdf->Ln(); 
 
-$totalVatableSales = 0;
-$totalTax = 0;
-$totalOther = 0;
 $totalZeroRated = 0;
-$pdf->SetFont('', '', 8); 
-while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
-    $totalVatableSales += $row['total_vatable_sales'] ??  0;
-    $totalTax += $row['total_vat_amount'] ?? 0;
-    $totalOther +=   0;
-    $totalZeroRated  += $row['total_zero_rated'] ?? 0;
-    $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'L');
-    // $formatted_date = date("M j, Y", strtotime($row['date_time']));
-    // $pdf->SetFont('', '', autoAdjustFontSize($pdf, $formatted_date, $headerWidths[1]));
-    // $pdf->Cell($headerWidths[1], $maxCellHeight, $formatted_date, 1, 0, 'C');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_zero_rated'], $headerWidths[2]));
-    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['total_zero_rated'] ?? 0,2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_other'], $headerWidths[2]));
-    $pdf->Cell($headerWidths[2], $maxCellHeight, number_format($row['total_other'] ?? 0,2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_vatable_sales'], $headerWidths[3]));
-    $pdf->Cell($headerWidths[3], $maxCellHeight, number_format($row['total_vatable_sales'] ?? 0,2), 1, 0, 'R');
-    $pdf->SetFont('', '', autoAdjustFontSize($pdf, $row['total_vat_amount'], $headerWidths[4]));
-    $pdf->Cell($headerWidths[4], $maxCellHeight, number_format($row['total_vat_amount'] ?? 0,2), 1, 0, 'R');
-  
- 
+$totalOther = 0;
 
-    $pdf->Ln(); 
-    $counter++;
-}
+$vatableSales = (float)  $sales / 1.12;
+$vat = (float) $tax * 1.12;
+$totalSales = (float) $tax + $vatableSales;
 
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, $totalZeroRated, $headerWidths[0]));
+$pdf->Cell($headerWidths[0], $maxCellHeight, number_format($totalZeroRated ?? 0,2), 1, 0, 'R');
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, $totalOther, $headerWidths[1]));
+$pdf->Cell($headerWidths[1], $maxCellHeight, number_format($totalOther ?? 0,2), 1, 0, 'R');
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, $vatableSales, $headerWidths[2]));
+$pdf->Cell($headerWidths[2], $maxCellHeight, number_format($vatableSales ?? 0,2), 1, 0, 'R');
+$pdf->SetFont('', '', autoAdjustFontSize($pdf, $vat, $headerWidths[3]));
+$pdf->Cell($headerWidths[3], $maxCellHeight, number_format($vat ?? 0,2), 1, 0, 'R');
 $pdf->SetFont('', 'B', 8); 
-$pdf->Cell($headerWidths[0] , $maxCellHeight, 'Total', 1, 0, 'L'); 
-$pdf->Cell($headerWidths[2] , $maxCellHeight,  $totalZeroRated, 1, 0, 'R');
-$pdf->Cell($headerWidths[2] , $maxCellHeight,  $totalOther, 1, 0, 'R');
-$pdf->Cell($headerWidths[3] , $maxCellHeight,  $totalVatableSales, 1, 0, 'R'); 
-$pdf->Cell($headerWidths[4] , $maxCellHeight,   $totalTax, 1, 0, 'R'); 
-// $pdf->Cell( $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, number_format( $totalDiscount, 2), 1, 0, 'R'); 
 // $pdf->Ln(); 
 $pdfPath = $pdfFolder . 'tax-rates.pdf';
 $pdf->Output($pdfPath, 'F');

@@ -23215,23 +23215,23 @@ body {
 
 
 .bg-primary {
-  background-color: #ff6700 !important;
+  background-color: var(--primary-color) !important;
 }
 
 .payment_btn.btn-primary {
-  background-color: #ff6700;
+  background-color: var(--primary-color);
   border-color: #fff;
 }
 
 
 .btn-primary:hover {
-  background-color: darken(#ff6700, 10%);
-  border-color: darken(#ff6700, 10%);
+  background-color: darken(var(--primary-color), 10%);
+  border-color: darken(var(--primary-color), 10%);
 }
 
 .btn-primary:active {
-  background-color: darken(#ff6700, 20%);
-  border-color: darken(#ff6700, 20%);
+  background-color: darken(var(--primary-color), 20%);
+  border-color: darken(var(--primary-color), 20%);
 }
 
 .responsiveContainer {
@@ -23271,8 +23271,8 @@ section {
   width: 100%; 
   height: 100%; 
   background: #262626; 
-  border: 1px solid #FF6700; 
-  color: #FF6700;
+  border: 1px solid var(--primary-color); 
+  color: var(--primary-color);
   table-layout: fixed;
 }
 
@@ -23288,7 +23288,7 @@ section {
 
 
 .primary-color-btn {
-  background-color: #FF6700;
+  background-color: var(--primary-color);
   font-family: Century Gothic;
   color: #fff;
   font-weight: bold;
@@ -23495,7 +23495,7 @@ body.modal-open > .container {
   max-width: 74.7%;
   width: 100%;
   background: #262626;
-  color: #FF6700;
+  color: var(--primary-color);
   margin: 0;
   height: 10vh;
 }
@@ -23621,7 +23621,7 @@ table {
   position: sticky;
   top: 0;
   background-color: #262626; 
-  color: #FF6700; 
+  color: var(--primary-color); 
   z-index: 1; 
 } */
 
@@ -23666,7 +23666,7 @@ table {
   }
 
   .selectable-row:hover {
-    background-color: #FF6700;
+    background-color: var(--primary-color);
   } */
 
   .selectable-row {
@@ -23675,7 +23675,7 @@ table {
 
  
   .selectable-row.selected {
-    background-color: #FF6700;
+    background-color: var(--primary-color);
   }
 
   .table-class {
@@ -23719,7 +23719,7 @@ table {
   }
 
   .highlight-row {
-    background-color: #FF6700;
+    background-color: var(--primary-color);
   }
 
   .close-btn {
@@ -23823,7 +23823,7 @@ html, body {
 
 .itemImage {
   height: 260px;
-  border: 1px solid #ff6700;
+  border: 1px solid var(--primary-color);
   position: relative;
   overflow: hidden;
 }
@@ -23835,7 +23835,7 @@ html, body {
 }
 
 .show_product_info label {
-  color: #FF6700;
+  color: var(--primary-color);
 }
 
 .show_product_info span {
@@ -23845,20 +23845,20 @@ html, body {
 
   .result-item.selected_result {
     padding: 5px;
-    background-color: #FF6700;
+    background-color: var(--primary-color);
   }
 
   .result-item:hover {
-    background-color: #FF6700;
+    background-color: var(--primary-color);
   }
 
   .result-item-product.selected_result {
     padding: 5px;
-    background-color: #FF6700;
+    background-color: var(--primary-color);
   }
 
   .result-item-product:hover {
-    background-color: #FF6700;
+    background-color: var(--primary-color);
   }
 
 
@@ -23894,7 +23894,7 @@ html, body {
   }
 
   .selected {
-    background-color: #FF6700;
+    background-color: var(--primary-color);
     color: #fff;
     font-weight: bold;
   }
@@ -23910,7 +23910,7 @@ html, body {
   }
 
   .continue {
-    background: #FF6700
+    background: var(--primary-color)
   }
 
 
@@ -23924,7 +23924,7 @@ html, body {
   }
 
   .selectBtnPaymentMethod {
-      background-color: #FF6700;
+      background-color: var(--primary-color);
       color: white;
     }
 

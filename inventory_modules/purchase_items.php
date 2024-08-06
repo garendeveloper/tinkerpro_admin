@@ -260,6 +260,8 @@ table thead th{
             $(this).submit();
             $("#product").focus();
             $('#calendar-btn').prop('disabled', false);
+            $('#tbl_purchaseOrders').click();
+            updateTotal();
           }
       });
       function validatePurchaseQtyModal() {
@@ -380,22 +382,28 @@ table thead th{
             toastr.error(message);
         }
         function filterProducts(term) {
-          return productsCache.filter(function(row) {
-              var lowercaseTerm = term.toLowerCase();
-              return row.product.toLowerCase().includes(lowercaseTerm) ||
-                  row.barcode.includes(lowercaseTerm) ||
-                  (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
-                  (!row.brand && lowercaseTerm === "");
-          }).map(function(row) {
-              var brand = row.brand === null ? " " : "( " + row.brand + " )";
-              return {
-                  label: row.product,
-                  value: row.product,
-                  inventory_id: row.inventory_id,
-                  id: row.product_id
-              };
-          });
-      }
+            var regexPattern = term
+                .replace(/_/g, '.') 
+                .replace(/%/g, '.*'); 
+
+            var regex = new RegExp('^' + regexPattern, 'i'); 
+
+            return productsCache.filter(function(row) {
+                var productMatch = row.product && regex.test(row.product);
+                var barcodeMatch = row.barcode && regex.test(row.barcode);
+                var brandMatch = row.brand && regex.test(row.brand);
+
+                return productMatch || barcodeMatch || brandMatch;
+            }).map(function(row) {
+                var brand = row.brand === null ? " " : "( " + row.brand + " )";
+                return {
+                    label: row.product,
+                    value: row.product,
+                    inventory_id: row.inventory_id,
+                    id: row.product_id
+                };
+            });
+        }
       $("#product").on("input", function(e) {
         e.preventDefault();
           var term = $(this).val();
@@ -444,6 +452,10 @@ table thead th{
         $('#date_purchased').attr('readonly', true);
         $('#calendar-btn').prop('disabled', true);
       }
+      function clean_number(number) {
+        return number.replace(/[₱\s]/g, '');
+      }
+
     function updateTotal() {
   
       var totalQty = 0;
@@ -494,6 +506,7 @@ table thead th{
           });
           
           $("#prod_form #p_qty").focus();
+    
         }
         else
         {
@@ -542,7 +555,7 @@ table thead th{
            
           },
       });
-           function validateProductForm() {
+      function validateProductForm() {
         var isValid = true;
         $('#prod_form input[type=text]').each(function () {
           if ($(this).val() === '') {
@@ -565,6 +578,7 @@ table thead th{
       }
       $("#prod_form").on("submit", function (event) {
         event.preventDefault();
+   
         if (validateProductForm()) {
           var p_qty = parseFloat($("#p_qty").val());
           var price = parseFloat($("#price").val());
@@ -596,8 +610,8 @@ table thead th{
                   "<td style = 'width: 55%' data-rowid = "+data['id']+" data-id = " + data['id'] + " data-inv_id = " + data['inventory_id']+ " data-qty = " + p_qty+ " data-price = " + price + " >" + data['prod_desc'] + "</td>" +
                   "<td style = 'text-align: center; width: 10%' class ='editable'>" + p_qty + "</td>" +
                   "<td style = 'text-align: right; width: 10%' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(price) + "</td>" +
-                  "<td style = 'text-align: right width: 10%'>&#x20B1;&nbsp;" + addCommasToNumber(total) + "</td>" +
-                  "<td style = 'text-align: right; width: width: 10%'><i class = 'bi bi-trash' id = 'removeOrder'></i></td>"+
+                  "<td style = 'text-align: right; width: 10%'>&#x20B1;&nbsp;" + addCommasToNumber(total) + "</td>" +
+                  "<td style = 'text-align: right;  width: 10%'><i class = 'bi bi-trash' id = 'removeOrder'></i></td>"+
                   "</tr>"
                 );
               }
@@ -607,6 +621,16 @@ table thead th{
                 var totalPrice = 0;
                 var overalltotal = 0;
                 var totalTax = 0;
+
+              $("#purchaseQty_modal").hide();
+              $("#prod_form")[0].reset();
+              $("#product").val("");
+              $("#item_verifier").val("");
+              var totalQty = 0;
+                var totalPrice = 0;
+                var overalltotal = 0;
+                var totalTax = 0;
+
 
                 $('#tbl_purchaseOrders tbody tr').each(function () {
                   var quantity = parseInt($(this).find('td:nth-child(2)').text().trim());
@@ -621,33 +645,13 @@ table thead th{
                 $("#totalTax").html("Tax: " + addCommasToNumber(totalTax));
                 $("#totalQty").html(totalQty);
                 $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice));
-                $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(overalltotal));
-              
-              // totalTax += total
-              // totalQty += quantity;
-              // totalPrice += price;
-              // total += subtotal;
-
-              //  $("#totalTax").html(totalTax.toFixed(2));
-              // $("#totalQty").html(totalQty);
-              // $("#totalPrice").html("&#x20B1;&nbsp;" + addCommasToNumber(totalPrice.toFixed(2)));
-              // $("#overallTotal").html("&#x20B1;&nbsp;" + addCommasToNumber(overallTotal.toFixed(2)));
-
-              $("#purchaseQty_modal").hide();
-              $("#prod_form")[0].reset();
-              $("#product").val("");
-              $("#item_verifier").val("");
-            
-            
+                $("#overallTotal").html("&#x20B1;&nbsp;" + overalltotal);
             }
           })
 
           
           $("#product").val('');
             $("#selected_product_id").val("0");
-
-            updateTotal();
-            $('#tbl_purchaseOrders tbody tr:first').click();
         }
       })
     

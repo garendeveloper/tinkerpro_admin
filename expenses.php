@@ -739,12 +739,25 @@ h1, label, textarea, input, table,h5{
       }, 100);
       $("#searchInput").focus();
     }
+    function getLandingCostValues() 
+    {
+        const inputs = document.querySelectorAll('.landingCost');
+        const valuesObject = {};
+        inputs.forEach(input => {
+            valuesObject[input.id] = input.value;
+        });
+        
+        return valuesObject;
+    }
     $("#expense_form").on("submit", function(e){
       e.preventDefault();
       var errorCount = $('#expense_form td.form-error').length;
+     
       if(errorCount === 0)
       {
         var formData = new FormData(this);
+        var landingCostValues = getLandingCostValues();
+        formData.append('landingCostValues', JSON.stringify(landingCostValues));
         var expense = $("#item_name").val();
         var total_amount = $("#total_amount").val();
         var invoice_number = $("#invoice_number").val();
@@ -758,7 +771,6 @@ h1, label, textarea, input, table,h5{
           dataType: 'json',
           success: function(response)
           {
-            
             $('table td').removeClass('form-error'); 
             if (!response.success) {
               var errors = "";

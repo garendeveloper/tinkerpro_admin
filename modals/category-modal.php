@@ -291,8 +291,8 @@ $(document).on("click", ".customAnchor", function() {
     var categoriesInput = document.getElementById('categoriesInput');
     var id_cat = document.getElementById('catID');
     var idVar = document.getElementById('varID');
-
  
+    id_cat.value = categoryId;
     if (categoryId !== undefined && index !== undefined) {
         getVariants(categoryId);
         catValue.value =  "/" + name ;

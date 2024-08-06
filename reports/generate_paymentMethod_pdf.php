@@ -33,7 +33,10 @@ $exclude = $_GET['exclude'] ?? null;
 $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
+$customerId = $_GET['customerId'] ?? null;
+$cashierId = $_GET['cashierId'] ?? null;
 
+var_dump($cashierId);
 
 if ($startDate == '' || $endDate == '') {
     $startDate = date('Y-m-d');
@@ -46,7 +49,7 @@ if ($startDate == '' || $endDate == '') {
     $endDate = date('Y-m-d', $e_date);
 }
 
-$fetchPaymentMethod = $refundFacade->getAllPaymentMethods($startDate, $endDate);
+$fetchPaymentMethod = $refundFacade->getAllPaymentMethods($startDate, $endDate, $customerId, $cashierId);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 

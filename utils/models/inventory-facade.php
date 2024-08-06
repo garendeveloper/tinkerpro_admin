@@ -119,7 +119,7 @@ class InventoryFacade extends DBConnection
                                             GROUP BY i.product_id
                                             ORDER BY p.prod_desc ASC LIMIT  10");
 
-            $searchParam = "%" . $searchInput . "%";
+            $searchParam = $searchInput . "_%";
             $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
             $sql->execute();
             return $sql->fetchAll(PDO::FETCH_ASSOC);

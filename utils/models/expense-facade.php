@@ -189,7 +189,7 @@ class ExpenseFacade extends DBConnection
                         OR expenses.expense_type LIKE :search_value
                         OR expenses.invoice_number LIKE :search_value";
 
-            $searchParam = "%" . $searchInput . "%";
+            $searchParam = $searchInput . "_%";
             $stmt = $this->connect()->prepare($sql);
             $stmt->execute([
                 ':search_value' => $searchParam,
@@ -328,6 +328,7 @@ class ExpenseFacade extends DBConnection
             $date_of_transaction = DateTime::createFromFormat('m-d-Y', $response['data']['date_of_transaction'])->format('Y-m-d');
             $invoice_photo_url = $response['data']['image_url'];
 
+            $landingCostValues = $formdata['landingCostValues'];
             if(empty($formdata['expense_id']))
             {
                 $isInvoiceNumberExist_SQL = $this->connect()->prepare("SELECT * FROM expenses WHERE invoice_number = :invoice_number");
@@ -336,8 +337,8 @@ class ExpenseFacade extends DBConnection
                 if(!$isInvoiceNumberExist)
                 {
                     $sql = $this->connect()->prepare("
-                        INSERT INTO expenses (item_name, date_of_transaction, billable_receipt_no, expense_type, quantity, uom_id, supplier, invoice_number, price, discount, total_amount, description, invoice_photo_url, taxable_amount, isTaxable)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        INSERT INTO expenses (item_name, date_of_transaction, billable_receipt_no, expense_type, quantity, uom_id, supplier, invoice_number, price, discount, total_amount, description, invoice_photo_url, taxable_amount, isTaxable, landingCost)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ");
 
                     $sql->bindParam(1, $item_name, PDO::PARAM_STR);
@@ -355,6 +356,7 @@ class ExpenseFacade extends DBConnection
                     $sql->bindParam(13, $invoice_photo_url, PDO::PARAM_STR);
                     $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
                     $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
+                    $sql->bindParam(16, $landingCostValues, PDO::PARAM_STR);
                     $sql->execute();
 
                     $response['message'] = "Expense has been successfully saved!";

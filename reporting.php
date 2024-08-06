@@ -104,12 +104,7 @@ if (isset($_SESSION['user_id'])) {
     color: white;
 }
 
-.highlight {
-  background-color: var(--primary-color);
-}
-.highlight:hover {
-  background-color: var(--primary-color) !important;
-}
+
 /* .allAnchrBtn.active{
   background-color: var(--active-bg-color);
 } */
@@ -289,11 +284,15 @@ body, html {
 .anchor-container a:hover{
   background-color: #333333;
 }
+.highlight {
+  background-color: var(--primary-color);
+}
 </style>
 
  <?php include "layout/admin/css.php"?> 
  <div class="container-scroller">
   <?php include 'layout/admin/sidebar.php' ?>
+ 
     <div class="main-panel" style= "overflow: hidden; ">
       <div class="content-wrapper" >
         <div style="display:flex; ">
@@ -562,6 +561,7 @@ body, html {
                     <select id="entriesSelect">
                     <option value="in" selected >Cash In Entries</option>
                     <option value="out">Cash Out Entries</option>
+                    <option value="all">All</option>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -740,9 +740,6 @@ body, html {
 <script>
 
 $(document).ready(function() {
-
-  //selectProducts
-
     let allProducts = [];
     let currentIndex = 0;
     const chunkSize = 100;
@@ -774,7 +771,6 @@ $(document).ready(function() {
     }
 
     $('.wrapper').on('change', function() {
-      console.log('Hello world');
       if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
         loadMoreProducts();
       }
@@ -806,6 +802,12 @@ $(document).ready(function() {
     });
   })
 })
+
+
+function getSelectedProductValue() {
+  var selectedProduct = $('#selectProducts').val();
+  return selectedProduct;
+}
 
 // document.getElementById('selectProducts').addEventListener('click', function() {
 //     document.getElementById('dropdownContent').style.display = 'block';
@@ -906,11 +908,8 @@ function filterOptions() {
         }
     }
 }
-function getSelectedProductValue() {
-    var selectedProduct = document.getElementById('selectProducts').getAttribute('data-value');
-    console.log(selectedProduct);
-    return selectedProduct;
-}
+
+
 
 $("#reporting").addClass('active');
 $("#pointer").html("Reporting");
@@ -1014,6 +1013,9 @@ function highlightDiv(id) {
   $('#showReport').off('click')
   $('#printDocu').off('click')
 
+    if (id == 36) {
+      $('#salesHistoryModal').show();
+    }
  
      if (id == 2) {
           generatePdf(id)
@@ -2012,13 +2014,13 @@ function highlightDiv(id) {
           ingredientsDIV.setAttribute('hidden',true);
 
           var usersSelect = document.getElementById('usersDIV');
-          usersSelect.setAttribute('hidden',true);
+          usersSelect.removeAttribute('hidden');
 
           var dateTimeAnchor = document.getElementById('dateTimeAnchor');
           dateTimeAnchor.removeAttribute('hidden');
 
           var customerDIV = document.getElementById('customerDIV');
-          customerDIV.setAttribute('hidden',true);
+          customerDIV.removeAttribute('hidden');
 
           document.getElementById("customersSelect").value = "";
           document.getElementById('datepicker').value =""
@@ -2673,7 +2675,7 @@ function generatePdf(id)
     $('#PDFBtn').off('click').on('click',function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var selectedProduct =  getSelectedProductValue()
+      var selectedProduct = getSelectedProductValue();
     
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
@@ -2710,6 +2712,8 @@ function generatePdf(id)
         if(endDate == "" || endDate == null){
         endDate = ""
       }
+
+      console.log(selectedProduct);
         $.ajax({
             url: './reports/generate-products-data-inventory.php',
             type: 'GET',
@@ -2742,6 +2746,7 @@ function generatePdf(id)
                 console.log(searchData)
             }
         });
+
     });
   }else if(id == 4){
     $('#PDFBtn').off('click').on('click',function() {
@@ -2777,7 +2782,7 @@ function generatePdf(id)
     });
   }else if(id == 5){
     $('#PDFBtn').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var selectedProduct = getSelectedProductValue();
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -3537,6 +3542,7 @@ function generatePdf(id)
     });
   }else if( id == 7){
     $('#PDFBtn').off('click').on('click',function() {
+      
       var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
       var paymentM = document.getElementById('paymentTypesSelect')
       var paymentMethod =  paymentM.value;
@@ -8645,6 +8651,8 @@ function showReports(id) {
         pdfFile.setAttribute('hidden',true)
         var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
         var paymentM = document.getElementById('paymentTypesSelect')
+        var customerId = document.getElementById('customersSelect')
+        var cashierId = document.getElementById('usersSelect');
         var paymentMethod =  paymentM.value;
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
@@ -8678,7 +8686,8 @@ function showReports(id) {
           endDate = ""
         }
 
-      console.log(startDate);
+     
+
       $.ajax({
           url: './reports/generate_paymentMethod_pdf.php',
           type: 'GET',
@@ -8686,6 +8695,8 @@ function showReports(id) {
               responseType: 'blob'
           },
           data: {
+                cashierId : cashierId.value,
+                customerId : customerId.value,
                 selectedMethod: paymentMethod,
                 singleDateData: singleDateData,
                 startDate: startDate,

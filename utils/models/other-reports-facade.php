@@ -511,143 +511,22 @@ class OtherReportsFacade extends DBConnection {
     //   $stmt = $this->connect()->query( $sql );
     //   return $stmt;
     // }
+    public function cashInAmountsData($userId, $startDate, $endDate, $entries)
+    {
+        $type = "WHERE DATE(cash_in_out.date) BETWEEN '$startDate' AND '$endDate'";
+        if ($entries === 'in') $type = "WHERE cash_in_out.cashType = 0 AND DATE(cash_in_out.date) BETWEEN '$startDate' AND '$endDate'";
+        if ($entries === 'out') $type = "WHERE cash_in_out.cashType = 1 AND DATE(cash_in_out.date) BETWEEN '$startDate' AND '$endDate'";
+        if(!empty($userId)) $type .= "AND users.id = $userId";
 
-    public function cashInAmountsData( $userId, $singleDateData, $startDate, $endDate,$entries ) {
-        if($entries == "in"){
-        if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0 AND u.id = :userId';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-            $sql->execute();
-            return $sql;
-
-        } else if ( !$userId && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0  AND DATE(c.date) = :singleDateData';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->execute();
-            return $sql;
-
-        } else if ( !$userId && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0  AND DATE(c.date) BETWEEN :startDate AND :endDate';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->execute();
-            return $sql;
-
-        } else if ( $userId && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0 AND u.id = :userId AND DATE(c.date) = :singleDateData';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->execute();
-            return $sql;
-
-        } else if ( $userId && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 0 AND u.id = :userId AND DATE(c.date) BETWEEN :startDate AND :endDate';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->execute();
-            return $sql;
-
-        } else {
-            $sql = 'SELECT c.cash_in_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 0';
-            $stmt = $this->connect()->query( $sql );
-            return $stmt;
-        }
-    }else{
-        if ( $userId && !$singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1 AND u.id = :userId';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-            $sql->execute();
-            return $sql;
-
-        } else if ( !$userId && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1  AND DATE(c.date) = :singleDateData';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->execute();
-            return $sql;
-
-        } else if ( !$userId && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1  AND DATE(c.date) BETWEEN :startDate AND :endDate';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->execute();
-            return $sql;
-
-        } else if ( $userId && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1 AND u.id = :userId AND DATE(c.date) = :singleDateData';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-            $sql->bindParam( ':singleDateData', $singleDateData );
-            $sql->execute();
-            return $sql;
-
-        } else if ( $userId && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name
-      FROM cash_in_out as c 
-      INNER JOIN users as u ON u.id = c.user_id 
-      WHERE cashType = 1 AND u.id = :userId AND DATE(c.date) BETWEEN :startDate AND :endDate';
-
-            $sql = $this->connect()->prepare( $sql );
-            $sql->bindParam( ':userId', $userId );
-
-            $sql->bindParam( ':startDate', $startDate );
-            $sql->bindParam( ':endDate', $endDate );
-            $sql->execute();
-            return $sql;
-
-        } else {
-            $sql = 'SELECT c.cash_out_amount as amount,c.reason_note as note,c.date as date, u.first_name as first_name, u.last_name as last_name FROM cash_in_out as c INNER JOIN users as u ON u.id = c.user_id WHERE cashType = 1';
-            $stmt = $this->connect()->query( $sql );
-            return $stmt;
-        } 
-        
+        $stmt = $this->connect()->prepare("SELECT cash_in_out.*, users.first_name, users.last_name 
+                                            FROM cash_in_out
+                                            INNER JOIN users ON cash_in_out.user_id = users.id
+                                            $type");
+        $stmt->execute();
+        return $stmt;
     }
-    }
+
+   
     public function getUnpaidSales( $selectedCustomers, $userId, $singleDateData, $startDate, $endDate ) {
         if ( $selectedCustomers && !$userId && !$singleDateData && !$startDate && !$endDate ) {
             $sql = 'WITH TotalPaid AS (
@@ -2930,20 +2809,37 @@ class OtherReportsFacade extends DBConnection {
 
 
 
-    public function getAllPaymentMethods($startDate, $endDate) {
+    public function getAllPaymentMethods($startDate, $endDate, $customerId, $cashierId) {
 
         $pdo = $this->connect();
         
         $paymentsData = "SELECT 
+			users.first_name,
+            users.last_name,
+            users.id AS usersId,
+            cashiers.last_name AS cashierLastName,
+            cashiers.first_name AS cashierFirstName,
             payments.id,
             payments.change_amount,
             payments.payment_amount,
             payments.payment_details,
             payments.date_time_of_payment
         FROM payments
+        INNER JOIN transactions ON payments.id = transactions.payment_id
+        INNER JOIN users ON users.id = transactions.user_id
+        INNER JOIN users AS cashiers ON cashiers.id = transactions.cashier_id
         WHERE DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
-    
-        $paymentsExecute = $pdo->prepare($paymentsData); 
+
+     
+        if ($customerId != '') {
+            $whereClause = " AND transactions.user_id = $customerId";
+        } else if ($cashierId != '') {
+            $whereClause = " AND transactions.cashier_id = $cashierId";
+        }
+
+        $groupBy = " GROUP BY payments.id";
+
+        $paymentsExecute = $pdo->prepare($paymentsData . $whereClaus . $groupBy); 
         $paymentsExecute->execute([$startDate, $endDate]);
 
         $paymentResult = $paymentsExecute->fetchAll(PDO::FETCH_ASSOC);
@@ -6855,49 +6751,73 @@ GROUP BY
     }
 
 
-
-
-    public function getProductSales() {
+    public function getProductSales($startDate, $endDate, $selectedCategories, $selectedSubCategories, $selectedProduct) {
         $pdo = $this->connect();
 
-        $productSalesQuery = 'SELECT
-                        payments.id AS paymentId,
-                        payments.date_time_of_payment,
-                        SUM(transactions.prod_qty) AS newQty,
-                        products.prod_price,
-                        SUM(transactions.prod_qty) * products.prod_price AS totalProductAmount,
-                        products.id AS productsId,
-                        products.prod_desc AS productName,
-                        products.isVAT,
-                        products.sku,
-                        products.cost,
-                        SUM(transactions.discount_amount) AS itemDiscount,
-                        CASE 
-                        	WHEN products.isVAT = 1 THEN
-                            	ROUND(((SUM(transactions.prod_qty) * products.prod_price) / 1.12) * 0.12, 2)
-                           	ELSE 0
-                        END AS totalVat,
-                        products.is_discounted,
-                        receipt.barcode,
-                        receipt.id AS receiptId,
-                        discounts.name AS customerType,
-                        discounts.discount_amount AS customerDiscountRate
-                    FROM transactions
-                        INNER JOIN products ON products.id = transactions.prod_id
-                        INNER JOIN receipt ON receipt.id = transactions.receipt_id
-                        INNER JOIN users ON users.id = transactions.user_id
-                        INNER JOIN discounts ON discounts.id = users.discount_id
-                        INNER JOIN payments ON payments.id = transactions.payment_id
-                        LEFT JOIN refunded ON products.id = refunded.prod_id
-                        LEFT JOIN return_exchange ON products.id = return_exchange.product_id
-                    WHERE transactions.is_paid = 1 
-                    AND transactions.is_void NOT IN (1,2)
-                    GROUP BY products.id';
+        if($startDate == '' || $endDate == '') {
+            $startDate = date('Y-m-d');
+            $endDate = date('Y-m-d');
+        } else {
+            $s_date = strtotime($startDate);
+            $e_date = strtotime($endDate);
 
-        $productSales = $pdo->prepare($productSalesQuery);
-        $productSales->execute();
+            $startDate = date('Y-m-d', $s_date);
+            $endDate = date('Y-m-d', $e_date);
+        }
+
+        $productSalesQuery = "SELECT
+            payments.id AS paymentId,
+            payments.date_time_of_payment,
+            SUM(transactions.prod_qty) AS newQty,
+            products.prod_price,
+            SUM(transactions.prod_qty) * products.prod_price AS totalProductAmount,
+            products.id AS productsId,
+            products.prod_desc AS productName,
+            products.isVAT,
+            products.sku,
+            products.cost,
+            SUM(transactions.discount_amount) AS itemDiscount,
+            CASE 
+                WHEN products.isVAT = 1 THEN
+                    ROUND(((SUM(transactions.prod_qty) * products.prod_price) / 1.12) * 0.12, 2)
+                ELSE 0
+            END AS totalVat,
+            products.is_discounted,
+            receipt.barcode,
+            receipt.id AS receiptId,
+            discounts.name AS customerType,
+            discounts.discount_amount AS customerDiscountRate,
+            category.category_name,
+            variants.variant_name
+        FROM transactions
+            INNER JOIN products ON products.id = transactions.prod_id
+            INNER JOIN receipt ON receipt.id = transactions.receipt_id
+            INNER JOIN users ON users.id = transactions.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN payments ON payments.id = transactions.payment_id
+            LEFT JOIN refunded ON products.id = refunded.prod_id
+            LEFT JOIN return_exchange ON products.id = return_exchange.product_id
+            LEFT JOIN category ON category.id = products.category_id
+            LEFT JOIN variants ON category.id = variants.category_id
+        WHERE transactions.is_paid = 1 
+        AND transactions.is_void NOT IN (1,2)
+        AND DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
+
+        if ($selectedCategories != '' && $selectedSubCategories != '' && $selectedProduct != '') {
+            $whereClause = " AND (category.id = $selectedCategories AND variants.id = $selectedSubCategories AND product.id = $selectedProduct)";
+        } else if ($selectedCategories != '' && $selectedSubCategories == '' && $selectedProduct != '') {
+            $whereClause = " AND (category.id = $selectedCategories AND product.id = $selectedProduct)";
+        } else if ($selectedCategories != '' && $selectedSubCategories == '' && $selectedProduct == '') {
+            $whereClause = " AND (category.id = $selectedCategories)";
+        } else if ($selectedCategories == '' && $selectedSubCategories == '' && $selectedProduct != '') {
+            $whereClause = " AND (products.id = $selectedProduct)";
+        }
+
+        $groupByProduct = ' GROUP BY products.id';
+
+        $productSales = $pdo->prepare($productSalesQuery . $whereClause . $groupByProduct);
+        $productSales->execute([$startDate, $endDate]);
         $productrSalesResult = $productSales->fetchAll(PDO::FETCH_ASSOC);
-
 
         $sales = 'SELECT
                     SUM(DISTINCT payments.payment_amount - payments.change_amount) AS totalPaid,
@@ -6913,10 +6833,11 @@ GROUP BY
                 FROM payments
                     INNER JOIN transactions ON payments.id = transactions.payment_id
                     INNER JOIN receipt ON receipt.id = transactions.receipt_id
+                    WHERE DATE(payments.date_time_of_payment) BETWEEN ? AND ?
                     GROUP BY payments.id;';
 
         $sales_result = $pdo->prepare($sales); 
-        $sales_result->execute();
+        $sales_result->execute([$startDate, $endDate]);
         $salesReport = $sales_result->fetchAll(PDO::FETCH_ASSOC);
 
         $refundProdQuery = "SELECT 

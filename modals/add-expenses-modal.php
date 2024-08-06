@@ -905,7 +905,7 @@ font-weight: bold;
   margin: 0;
   bottom: 0;
   right:0;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 
 }
 .bomHeader{
@@ -1390,16 +1390,15 @@ label{
 </style>
 
 <div class="modal" id="add_expense_modal" tabindex="0">
-  <div class="modal-dialog ">
-    <div class="modal-content expense_content">
-      <!-- <div id="scrollable-data"> -->
+  <div class="modal-dialog " >
+    <div class="modal-content expense_content scrollable" style = "overflow:auto;">
       <div class="modal-title">
         <div style="margin-top: 30px; margin-left: 20px">
            <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color: var(--primary-color)">EXPENSES</h5>
         </div>
         <form id = "expense_form" enctype="multipart/form-data">
-        <div class="warning-container">
-          <div class="tableCard">
+        <div class="warning-container" >
+          <div class="tableCard" >
           <div style="margin-left: 20px;margin-right: 20px">
             <table id="tbl_createExpense" class="text-color table-border" > 
               <input type="hidden" name = "expense_id" id = "expense_id" value = "">
@@ -1538,6 +1537,83 @@ label{
                           <input type="text"value = "0" class="vatable_amount" id="vatable_amount" name = "vatable_amount" style="width: 80px" placeholder="Gross Amount (Inclusive of VAT):" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); if(this.value.includes('-')) this.value = this.value.replace('-', ''); if(this.value.includes('.')) { let parts = this.value.split('.'); this.value = parts[0] + '.' + parts.slice(1).join('').slice(0, 2); }" maxlength="10" readonly/>
                         </td>
                     </tr>
+                 
+            </table>
+
+            <br>
+            <table>
+                <thead>
+                    <tr>
+                        <td class="td-height text-custom td-style td-bg" colspan = "2" style="font-size: 12px; height: 10px">Add Landing Cost&nbsp;&nbsp;&nbsp;
+                          <label class="taxExlusive" style="margin-left: 5px">
+                              <input type="checkbox" id="toggleLandingCost" />
+                              <span class="warrantySpan round"></span>
+                          </label>
+                      </td>
+                    </tr>
+                </thead>
+                <tbody id="landingCostDiv" style = "display: none">
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Freight Charges</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="freightCharges" id="freightCharges" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Insurance Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="insuranceFees" id="insuranceFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Import Duties</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="importDuties" id="importDuties" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Customs Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="customsFees" id="customsFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">VAT</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="vat" id="vat" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Custom Broker Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="customBrokerFees" id="customBrokerFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Port Handling Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="portHandlingFees" id="portHandlingFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Storage Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="storageFees" id="storageFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Inland Transport</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="inlandTransport" id="inlandTransport" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Documentation Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="documentationFees" id="documentationFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Inspection Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="inspectionFees" id="inspectionFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Bank Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="bankFees" id="bankFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Currency Conversion Fees</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="currencyConversionFees" id="currencyConversionFees" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height text-custom td-style td-bg">Others</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="others" id="others" autocomplete="off" value="0"/></td>
+                  </tr>
+                  <tr>
+                      <td class="td-height td-style td-bg" style="color: red">Total Landing Cost</td>
+                      <td class="td-height text-custom"><input class="landingCost" name="totalLandingCost" id="totalLandingCost" autocomplete="off" value="0" readonly/></td>
+                  </tr>
+              </tbody>
             </table>
           </div>
           <div style="margin-top: 10px; margin-left: 20px">
@@ -1560,11 +1636,11 @@ label{
               <div style = "margin-left: 20px">
                 <p id = "expense_errorMessages" style = "color: red">  
               </div>
-            <div class="button-container" style="display:flex;justify-content: space-between; position:absolute; ">
-              <button  type = "button" class="btn-success-custom btn-error-custom" id = "btn_cancelExpense" style="margin-right: 10px; width: 100px; height: 40px">CANCEL</button>
-              <button  class="btn-success-custom saveProductsBtn" type = "submit" style="margin-right: 10px; width: 100px; height: 40px">SAVE</button>
+              <div class="button-container" style="display:flex;justify-content: space-between; position: fixed;">
+                <button  type = "button" class="btn-success-custom btn-error-custom" id = "btn_cancelExpense" style="margin-left:20px; margin-right: 10px; width: 100px; height: 40px">CANCEL</button>
+                <button  class="btn-success-custom saveProductsBtn" type = "submit" style="margin-right: 10px; width: 100px; height: 40px">SAVE</button>
+              </div>
             </div>
-          </div>
           </div>
           </form>
         </div>
@@ -1587,6 +1663,19 @@ $(document).ready(function(){
       });
     }
   });
+
+  function calculateTotalLandingCost() {
+      var total = 0;
+      $('.landingCost').each(function() {
+          var value = parseFloat($(this).val()) || 0;
+          total += value;
+      });
+      $('#totalLandingCost').val(total.toFixed(2));
+  }
+
+  $('.landingCost').on('input', calculateTotalLandingCost);
+  calculateTotalLandingCost();
+
   function hide_dropdown()
   {
     $(".dropdown-content").each(function() {
@@ -1716,18 +1805,6 @@ $(document).ready(function(){
     onClose: function(selectedDates) {
     }
   });
-  // $('#date_of_transaction').datepicker({
-  //     changeMonth: true,
-  //     changeYear: true,
-  //     dateFormat: 'm-d-Y',
-  //     altFormat: 'm-d-Y',
-  //     altField: '#date_of_transaction',
-  //     onSelect: function (dateText, inst) { }
-  // });
-  // $('#date_of_transaction').on('click', function (e) {
-  //     e.preventDefault();
-  //     $('#date_of_transaction').datepicker('show');
-  // });
 
   $("#qty, #price, #discount").on("input", function() {
     var price = parseFloat($("#price").val()) || 0;
@@ -1742,7 +1819,7 @@ $(document).ready(function(){
     }
     else
     {
-      computeInclusive(total_amount);
+      $("#vatable_amount").val(total_amount.toFixed(2));
     }
   });
   $("#toggleTaxIn").on("change", function(){
@@ -1755,7 +1832,17 @@ $(document).ready(function(){
     else
     {
       $("#isVatable").val("0");
-      computeInclusive(total_amount);
+      $("#vatable_amount").val(total_amount);
+    }
+  })
+  $("#toggleLandingCost").on("change", function(){
+    if($(this).is(":checked"))
+    {
+      $("#landingCostDiv").show();
+    }
+    else
+    {
+      $("#landingCostDiv").hide();
     }
   })
   function computeTax(amount)
