@@ -26,6 +26,7 @@
     $salesHistory = new SalesHistoyFacade;
     $bir = new BirFacade();
     $promotionFacade = new PromotionFacade();
+    
 
     $otherFacade = new OtherReportsFacade();
 
@@ -83,6 +84,9 @@
         
         case 'verify_supplier':
             echo json_encode($supplier->verify_supplier($_GET['id']));
+            break;
+        case 'delete_supplier':
+            echo json_encode($supplier->delete_supplier($_GET['id']));
             break;
         case 'check_promotion':
             echo json_encode($promotionFacade->check_promotion($_GET['promotionType']));

@@ -978,7 +978,9 @@ $('#exportProducts').click(function() {
 
             })
 
-          } else {
+          } 
+          else 
+          {
             var warningDelete = `
 
             <div class="d-flex justify-content-center text-center align-items-center w-100">

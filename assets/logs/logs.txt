@@ -7962,3 +7962,21 @@
 2024-08-06 16:30:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HAPPY DIAPER M 4S PINK Barcode #:954411 
 2024-08-06 16:30:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HAPPY DIAPER M 4S YELLOW Barcode #:190851 
 2024-08-06 16:31:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HAPPY DIAPER M MENUDO Barcode #:19999 
+2024-08-06 16:38:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 16:38:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 16:42:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HAPPY DIAPER M12 YELLOW Barcode #:648731 
+2024-08-06 16:42:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HAPPY DIAPER S 12S BLUE Barcode #:394766 
+2024-08-06 16:43:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HAPPY DIAPER S 12S PINK Barcode #:146268 
+2024-08-06 16:43:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ZIM CLEANING PADS JR TIPID SIZE SINGLE Barcode #:4800147210654 
+2024-08-06 16:43:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HAPPY DIAPER S 12S YELLOW Barcode #:101841 
+2024-08-06 16:47:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated OPPO CHARGER Barcode #:945812 
+2024-08-06 16:47:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ORAL B TOOTHBRUSH 3 IN 1 Barcode #:762203 
+2024-08-06 16:47:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ORAL B TOOTHBRUSH SOFT Barcode #:0300410105082 
+2024-08-06 16:47:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ORAL DEHYDRATION SALT BANANA Barcode #:808524 
+2024-08-06 17:55:32 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 18:17:18 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete asdf          
+2024-08-06 18:17:19 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted asdf          
+2024-08-06 18:17:30 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete 1212 
+2024-08-06 18:17:32 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted 1212 
+2024-08-06 18:20:58 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete Jomar 
+2024-08-06 18:20:59 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted Jomar 

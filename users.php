@@ -198,7 +198,9 @@ if (isset($_SESSION['user_id'])) {
   }
 
 
-
+  .deleteIcon:hover{
+    color: red;
+}
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">

@@ -1,11 +1,18 @@
 <?php
 
-  class SupplierFacade extends DBConnection {
-   
-
+  class SupplierFacade extends DBConnection 
+  {
     public function verify_supplier($id)
     {
-        // $sql = $this->connect()->prepare("SELECT count(supplier_id) FROM orders ");
+        $sql = $this->connect()->prepare("SELECT * FROM orders WHERE supplier_id = $id");
+        $sql->execute();
+        return $sql->rowCount() > 0;
+    }
+    public function delete_supplier($id)
+    {
+        $sql = $this->connect()->prepare("DELETE FROM supplier WHERE id = $id");
+        $sql->execute();
+        return $sql;
     }
     public function addSupplier($formData){
         $s_name = $formData['supplierName'] ?? null;
