@@ -151,7 +151,7 @@
         var totalPP = 0;
         var totalPOT = 0;
 
-        var itemCount = $('.inventoryCard #tbl_orders tbody tr').length;
+        var itemCount = $('.inventoryCard #tbl_orders tbody .tbl_rows').length;
         $('.inventoryCard #tbl_orders tbody tr').each(function() {
             var qty_purchased = removeCommas($(this).find('td:eq(4)').text().trim());
             qty_purchased = parseFloat(qty_purchased);

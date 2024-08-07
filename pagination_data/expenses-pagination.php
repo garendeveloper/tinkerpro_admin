@@ -162,7 +162,7 @@
         var totalDiscount = 0;
         var overallTotal = 0;
 
-        var itemCount = $('#responsive-data #tbl_expenses tbody tr').length;
+        var itemCount = $('#responsive-data #tbl_expenses tbody .tbl_rows').length;
         $('#responsive-data #tbl_expenses tbody tr').each(function() {
             var tq = removeCommas($(this).find('td:eq(8)').text().trim());
             tq = parseFloat(tq);

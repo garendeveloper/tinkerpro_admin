@@ -21,7 +21,7 @@
         {
             $date_transact = date('F j, Y', strtotime($row['date_transact']));
             ?> 
-                <tr  data-id = '<?= $row['id'] ?>'>
+                <tr  data-id = '<?= $row['id'] ?>' class = "tbl_rows">
                     <td class = "text-center"><?= $row['reference_no']?></td>
                     <td class = "text-center"><?= $date_transact ?></td>
                     <td class = "text-center"><?= $row['reason']?></td>
@@ -54,8 +54,7 @@
         ?>
         <tr>
             <td colspan="100%" style="text-align: center; padding: 20px;">
-                <img src="./assets/img/tinkerpro-t.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
-                No Data Found!
+                <img src="./assets/img/no-data.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
             </td>
         </tr>
         <?php

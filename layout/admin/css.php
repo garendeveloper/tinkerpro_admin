@@ -560,4 +560,35 @@ button:hover{
   padding: 8px 8px; 
   line-height: 0.5
 }
+
+/* .ui-tooltip {
+      background: var(--primary-color) !important;
+      color: white;
+      border: 1px solid var(--primary-color) !important;
+      width: 200px;
+      font-size: 12px;
+      font-family: Century Gothic;
+  } */
+
+.ui-tooltip {
+  background: var(--primary-color) !important;
+  color: white;
+  font-weight: bold;
+  border: 1px solid var(--primary-color);
+  width: 200px;
+  font-size: 12px;
+  font-family: Century Gothic;
+  position: relative;
+}
+.ui-tooltip::after {
+    content: "";
+    position: absolute;
+    bottom: 100%; 
+    left: 90%;
+    margin-left: -5px; 
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent var(--primary-color) transparent; 
+}
+
 </style>

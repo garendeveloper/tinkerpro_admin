@@ -146,7 +146,7 @@
         var totalcd = 0;
         var totalcot = 0;
 
-        var itemCount = $('.inventoryCard #tbl_all_lostanddamages tbody tr').length;
+        var itemCount = $('.inventoryCard #tbl_all_lostanddamages tbody .tbl_rows').length;
         $('.inventoryCard #tbl_all_lostanddamages tbody tr').each(function() {
             var qd = removeCommas($(this).find('td:eq(3)').text().trim());
             qd = parseFloat(qd);

@@ -121,7 +121,7 @@
 
         var totalQtyS = 0;
 
-        var itemCount = $('.inventoryCard #tbl_all_inventoryCounts  tbody tr').length;
+        var itemCount = $('.inventoryCard #tbl_all_inventoryCounts  tbody .tbl_rows').length;
         $("#preview_records").html(table);
         $('#total_items').text(numberWithCommas(itemCount));
     }

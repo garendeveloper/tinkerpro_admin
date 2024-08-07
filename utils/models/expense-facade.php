@@ -273,7 +273,7 @@ class ExpenseFacade extends DBConnection
     }
     public function save_expense($formdata)
     {
-        $isProductIDExist = $formdata['isProductIDExist'] == 1;
+        $isProductIDExist = $formdata['isProductIDExist'] != 0;
         $landingCostValues = null;
         $isToggleLandingCost = isset($formdata['toggleLandingCost']) ? 1 : 0;
         if($isToggleLandingCost === 1) $landingCostValues = $formdata['landingCostValues'];

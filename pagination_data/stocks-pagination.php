@@ -143,7 +143,7 @@
 
         var totalQtyS = 0;
 
-        var itemCount = $('.inventoryCard #tbl_all_stocks tbody tr').length;
+        var itemCount = $('.inventoryCard #tbl_all_stocks tbody .tbl_rows').length;
         $('.inventoryCard #tbl_all_stocks tbody tr').each(function() {
             var qs = removeCommas($(this).find('td:eq(4)').text().trim());
             qs = parseFloat(qs);

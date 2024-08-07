@@ -46,7 +46,7 @@
                     'This product has a remaining shelf life of <span style="color: #FF6900; font-size: 14px;">' . $days_remaining . '</span> days' :
                     '<span style="font-size: 14px;"> This product has already expired. <span style = "color: red; ">' . $days_remaining . '</span> </span> days';
                 ?>
-                    <tr  data-id = '<?= $row['inventory_id'] ?>'>
+                    <tr  data-id = '<?= $row['inventory_id'] ?>' class = "tbl_rows">
                         <td><?= $row['prod_desc']?></td>
                         <td class = "text-center"><?= $row['barcode'] ?></td>
                         <td class = "text-center"><?= $row['date_expired'] ?></td>
@@ -62,9 +62,8 @@
     {
         ?>
         <tr>
-            <td colspan="100%" style="text-align: center; padding: 20px;">
-                <img src="./assets/img/tinkerpro-t.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
-                No Data Found!
+            <td colspan="100%" style="text-align: center; padding: 20px;" >
+                <img src="./assets/img/no-data.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
             </td>
         </tr>
         <?php

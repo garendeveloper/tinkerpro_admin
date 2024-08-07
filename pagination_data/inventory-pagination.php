@@ -138,7 +138,7 @@
         var amtB = 0;
         var amtA = 0;
 
-        var itemCount = $('.inventoryCard #tbl_products tbody tr').length;
+        var itemCount = $('.inventoryCard #tbl_products tbody .tbl_rows').length;
         $('.inventoryCard #tbl_products tbody tr').each(function() {
             var qty_purchased = removeCommas($(this).find('td:eq(4)').text().trim());
             qty_purchased = parseFloat(qty_purchased);

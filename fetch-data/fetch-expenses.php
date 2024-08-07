@@ -21,7 +21,7 @@
         foreach($data as $row)
         {
             ?> 
-                <tr  data-id = '<?= $row['id'] ?>' data-product_id = '<?= $row['product_id']?>'>
+                <tr  data-id = '<?= $row['id'] ?>' data-product_id = '<?= $row['product_id']?>' class = "tbl_rows">
                     <td style = "width: 3%" class = "text-center"><?= $counter?></td>
                     <td style = "width: 20%"><?= $row['item_name'] === "" ? $row['product'] : $row['item_name']?></td>
                     <td style = "width: 6%" class = "text-center"><?= $row['date_of_transaction']?></td>
@@ -61,8 +61,7 @@
         ?>
         <tr>
             <td colspan="100%" style="text-align: center; padding: 20px;">
-                <img src="./assets/img/tinkerpro-t.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
-                No Data Found!
+                <img src="./assets/img/no-data.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
             </td>
         </tr>
         <?php

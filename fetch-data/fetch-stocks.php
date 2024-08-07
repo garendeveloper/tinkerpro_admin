@@ -27,7 +27,7 @@ if (count($inventories) > 0)
             $product_stock = "<span style='color: #90EE90'>".$row['product_stock']."</span>";
         }
         ?> 
-            <tr  data-id = '<?=$row['product_id']?>'>
+            <tr  data-id = '<?=$row['product_id']?>' class = "tbl_rows">
                 <td style = "width: 5%"  class = "text-center"><?= $counter?></td>
                 <td style = "width: 20%" ><?= $row['prod_desc']?></td>
                 <td><?= $row['barcode']?></td>
@@ -53,8 +53,7 @@ if (count($inventories) > 0)
     ?>
     <tr>
         <td colspan="100%" style="text-align: center; padding: 20px;">
-            <img src="./assets/img/tinkerpro-t.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
-            No Data Found!
+            <img src="./assets/img/no-data.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
         </td>
     </tr>
     <?php
