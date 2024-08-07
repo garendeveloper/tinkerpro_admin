@@ -848,5 +848,4 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
   color:#fff;
   outline: 0 !important;
 }
-  
 </style>

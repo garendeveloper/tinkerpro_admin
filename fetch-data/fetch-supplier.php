@@ -41,6 +41,7 @@ while ($row = $fetchSupplier->fetch(PDO::FETCH_ASSOC)) {
             <?php 
             ?>
         </td>
+</tr>
     <?php
     $counter++;
 }
@@ -48,8 +49,7 @@ while ($row = $fetchSupplier->fetch(PDO::FETCH_ASSOC)) {
     ?>
     <tr>
         <td colspan="100%" rowspan="100%" style="text-align: center; padding: 20px; border: 1px solid transparent !important">
-            <!-- <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br> -->
-            No Data Found!
+            <img src="./assets/img/no-data.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
         </td>
     </tr>
     <?php

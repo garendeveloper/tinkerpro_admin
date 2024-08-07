@@ -165,115 +165,18 @@ if (isset($_SESSION['user_id'])) {
                     </svg> ADD / REMOVE NEW PRICE LIST
                 </button>
             </div>
-            
-            <div class="col-3 h-100 ps-2 pb-2 p-0" id="promotions_title">
 
-                <div class="promotion-container">
-                    <input type="hidden" class = "promotion_type" value = "0">
-                    <div class="buy-to-take-one promotionType d-none"  data-id="1">
-                        <div class="d-flex justify-content-between">
-                            <label for="" class="titleBtn">Buy 1 Take 1</label>
-                            <button class="btn btn-secondary editBtns">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between mt-2">
-                            <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center promo_datePeriod" type="text" id="date_picker_buy1" placeholder="SELECT DATE" readonly autocomplete="off">
-                        </div>
-                    </div>
-
-                    <div class="bundle-sale mt-2 promotionType d-none" data-id="2">
-                        <div class="d-flex justify-content-between">
-                            <label for="" class="titleBtn">Bundle Sale</label>
-                            <button class="btn btn-secondary editBtns" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between mt-2">
-                            <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center promo_datePeriod" type="text" id="date_picker_bundle" placeholder="SELECT DATE" readonly autocomplete="off">
-                        </div>
-                    </div>
-
-                    <div class="whole-sale mt-2 promotionType d-none" data-id="3">
-                        <div class="d-flex justify-content-between">
-                            <label for="" class="titleBtn">Wholesale</label>
-                            <button class="btn btn-secondary editBtns" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between mt-2">
-                            <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center promo_datePeriod" type="text" id="date_picker_wholeSale" placeholder="SELECT DATE" readonly>
-                        </div>
-                    </div>
-
-                    <div class="point_promo mt-2 promotionType d-none" data-id="4">
-                        <div class="d-flex justify-content-between">
-                            <label for="" class="titleBtn">Point Promo</label>
-                            <button class="btn btn-secondary editBtns">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                </svg>
-                            </button>
-                        </div>
-
-
-                        <div class="d-flex align-items-center justify-content-between mt-2">
-                            <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center promo_datePeriod" type="text" id="date_picker_promo" placeholder="SELECT DATE" readonly>
-                        </div>
-                    </div>
-
-                    <div class="stamp_promo mt-2 promotionType d-none" data-id="5">
-                        <div class="d-flex justify-content-between">
-                            <label for="" class="titleBtn">Stamp Card Promo</label>
-                            <button class="btn btn-secondary editBtns">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                </svg>
-                            </button>
-                        </div>
-
-
-                        <div class="d-flex align-items-center justify-content-between mt-2">
-                            <label class="promoLabel" for="">Promo Period</label>
-                            <input class="text-center promo_datePeriod"  type="text" id="date_picker_stampCard" placeholder="SELECT DATE" readonly>
-                        </div>
-                    </div>
-                    
-                </div>
-
-            </div>
-
-
-            <div class="col-9 d-none promotions_table" >
-
+            <div class="col-12 promotions_table" >
                 <div class="table-cotainers p-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
                             <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
                         </svg>
                         <input type="hidden" class="w-100 search_product_id me-2 ms-2">
-                        <input disabled type="text"  placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
+                        <input type="text"  placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product ">
 
                         <div class="btn-container">
-                            <button class="btn btn-secondary clearInput d-none">
+                            <button class="btn btn-secondary clearInput ">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
                                         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -317,7 +220,7 @@ if (isset($_SESSION['user_id'])) {
 <?php 
 
     include("layout/footer.php");
-    include('./modals/promotionModal.php');
+    include("modals/priceListModal.php")
 ?>
 
 <script>
@@ -328,128 +231,13 @@ if (isset($_SESSION['user_id'])) {
  $("#pointer").html("Price List");
 
 
- function getPromoSet() {
-    axios.get('api.php?action=getPromotionSet')
-    .then(function(response) {
-        var promotionSet = response.data.data.promotions;
-        var promos = JSON.parse(promotionSet);
-        var allZero = true;
-     
-        function areAllValuesZero(obj) {
-            return Object.values(obj).every(value => value === 0);
-        }
-
-        if (areAllValuesZero(promos)) {
-            $('.promotions_table').addClass('d-none'); 
-        } else {
-            $('.promotions_table').removeClass('d-none');
-        }
-      
-
-        if (promos['buy_1_take_1']== 1) {
-            $('#buy_1_take_1').prop('checked', true);
-            $('.buy-to-take-one').removeClass('d-none');
-            
-        } else {
-            $('#buy_1_take_1').prop('checked', false);
-            $('.buy-to-take-one').addClass('d-none');
-        }
-
-        if (promos['bundle_sale'] == 1) {
-            $('#bundle_sale').prop('checked', true);
-            $('.bundle-sale').removeClass('d-none');
-           
-        } else {
-            $('#bundle_sale').prop('checked', false);
-            $('.bundle-sale').addClass('d-none');
-        }
-
-        if (promos['whole_sale'] == 1) {
-            $('#whole_sale').prop('checked', true);
-            $('.whole-sale').removeClass('d-none');
-           
-        } else {
-            $('#whole_sale').prop('checked', false);
-            $('.whole-sale').addClass('d-none');
-        }
-
-        if (promos['point_promo'] == 1) {
-            $('#point_promo').prop('checked', true);
-            $('.point_promo').removeClass('d-none');
-           
-        } else {
-            $('#point_promo').prop('checked', false);
-            $('.point_promo').addClass('d-none');
-        }
-
-
-        if (promos['stamp_promo'] == 1) {
-            $('#stam_card').prop('checked', true);
-            $('.stamp_promo').removeClass('d-none');
-        } else {
-            $('#stam_card').prop('checked', false);
-            $('.stamp_promo').addClass('d-none');
-        }
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
- }
-
-    $(".my-checkbox").on("change", function(e){
-        e.preventDefault();
-        var promotionType = $(this).val();
-        if ($(this).prop("checked")) {
-            $(".data-" + promotionType).html("");
-        }
-        else
-        {
-            $.ajax({
-                type: 'get',
-                url: 'api.php?action=check_promotion',
-                data: {
-                    promotionType: promotionType
-                },
-                success: function(response)
-                {
-                    if(response)
-                        $(".data-"+promotionType).html("<i><span style = 'font-weight: bold'>Note</span>: Unchecking this promo will delete all associated data once you save.<i>");
-                }
-            })
-        }
-    })
- function toUpdatePromo(promoValues) {
-    axios.post('api.php?action=updatePromo', {
-        'promoValues' : JSON.stringify(promoValues),
-    })
-    .then(function(response) {
-        getPromoSet();
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
-
- }
+ 
 
 
  $(document).ready(function() {
-    getPromoSet();
-
     $('.search_product').focus();
     var isClick = false;
 
-    $('#updatePromotion').off('click').on('click', function() {
-        var promoValues = {
-            'buy_1_take_1': $('#buy_1_take_1').prop('checked') ? 1 : 0,
-            'bundle_sale': $('#bundle_sale').prop('checked') ? 1 : 0,
-            'whole_sale': $('#whole_sale').prop('checked') ? 1 : 0,
-            'point_promo': $('#point_promo').prop('checked') ? 1 : 0,
-            'stamp_promo': $('#stam_card').prop('checked') ? 1 : 0 
-        };
-        toUpdatePromo(promoValues);
-        $('.closeModalPromotion').click();
-        $("#tbl_promotions").html("");
-    })
 
     $('.search_product').on('input', function() {
         if ($(this).val() != '') {
@@ -473,12 +261,12 @@ if (isset($_SESSION['user_id'])) {
 
 
     $('#addPromotion').on('click', function() {
-        $('#promoteModal').fadeIn();
+        $('#priceListModal').fadeIn();
         $(".promo-error").html("");
     });
 
     $('.closeModalPromotion').click(function() {
-        $('#promoteModal').fadeOut();
+        $('#priceListModal').fadeOut();
     });
  })
 

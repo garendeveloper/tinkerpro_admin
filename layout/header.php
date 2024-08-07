@@ -26,6 +26,7 @@
   <meta charset="utf-8">
   <meta http-equiv="refresh" content="900;url=logout.php" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width">
   <title>POS Management | Admin</title>
   <link rel="icon" href="assets/img/tinkerpro-logo-dark.png" type="image/png">
   <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -77,6 +78,8 @@
   <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/JsBarcode.all.js"></script>
   <!-- <script src="assets/js/choices.min.js"></script> -->
+
+
 
 </head>
 <body>

@@ -22,7 +22,7 @@ if (count($data) > 0)
     foreach($data as $row)
     {
         ?> 
-            <tr  data-id = '<?=$row['id']?>'>
+            <tr  data-id = '<?=$row['id']?>' class = "tbl_rows">
                 <td class = "text-center"><?= $row['reference_no']?></td>
                 <td class = "text-center"><?= $row['date_counted']?></td>
                 <td class = "text-center">
@@ -42,8 +42,8 @@ else
     ?>
     <tr>
         <td colspan="100%" style="text-align: center; padding: 20px;">
-            <img src="./assets/img/tinkerpro-t.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
-            No Data Found!
+            <img src="./assets/img/no-data.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
+
         </td>
     </tr>
     <?php

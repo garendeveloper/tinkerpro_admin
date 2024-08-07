@@ -26,9 +26,10 @@ class DashboardFacade extends DBConnection
         $sales = 'SELECT
                 SUM(DISTINCT payments.payment_amount - payments.change_amount) AS totalPaid,
                 payments.id AS paymentId,
+                payments.payment_amount AS totalAmount,
                 payments.date_time_of_payment,
                 receipt.id AS receiptId,
-                SUM(transactions.subtotal) AS totalAmount,
+                SUM(transactions.subtotal) AS totalAmount1,
                 transactions.transaction_num,
                 SUM(transactions.prod_qty) AS totalProductQty
                 FROM payments
@@ -147,6 +148,11 @@ class DashboardFacade extends DBConnection
                         products.isVAT,
                         products.is_discounted,
                         receipt.barcode,
+                        CASE 
+                        	WHEN payments.id = transactions.payment_id THEN
+                            	payments.payment_amount
+                            ELSE 0
+                        END AS totalSales,
                         receipt.id AS receiptId,
                         discounts.name AS customerType,
                         discounts.discount_amount AS customerDiscountRate
@@ -181,6 +187,11 @@ class DashboardFacade extends DBConnection
                         products.isVAT,
                         products.is_discounted,
                         receipt.barcode,
+                        CASE 
+                        	WHEN payments.id = transactions.payment_id THEN
+                            	payments.payment_amount
+                            ELSE 0
+                        END AS totalSales,
                         receipt.id AS receiptId,
                         discounts.name AS customerType,
                         discounts.discount_amount AS customerDiscountRate
@@ -200,6 +211,7 @@ class DashboardFacade extends DBConnection
         
         return $soldProducts;
     }
+
     public function get_allTopProducts($item, $start_date, $end_date)
     {
         $start_date = $this->convertDateFormat($start_date);
@@ -211,7 +223,7 @@ class DashboardFacade extends DBConnection
         $total_sales_by_period = 0;
         foreach($top_products as $row)
         {
-            $grossAmount = $row['totalProductAmount'];
+            $grossAmount = (float)$row['totalSales'];
             $total_sales_by_period += $grossAmount;
 
             $tp_array[] = [
@@ -263,7 +275,7 @@ class DashboardFacade extends DBConnection
             $sales = 0;
             foreach($top_products as $row)
             {
-                $grossAmount = $row['totalProductAmount'];
+                $grossAmount = (float)$row['totalSales'];
                 $sales += $grossAmount;
             }
             

@@ -277,7 +277,6 @@ if($item)
                     </tr>
                 </tbody>
             </table>';
-
 }
 else
 {

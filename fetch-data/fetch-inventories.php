@@ -37,7 +37,7 @@ if (count($inventories) > 0)
         if ($isReceived === 1 && $is_lowstock && $partially_received) $span = "<span><i style='color: yellow; font-weight: bold'>PARTIALLY RECEIVED / <i style='color: #f94449; font-weight: bold'>TO PURCHASE</i></span>";
         if ($isReceived === 1 && !$is_lowstock && $partially_received) $span = "<span style='color: yellow; font-weight: bold'>PARIALLY RECEIVED</span>";
         ?> 
-            <tr  data-id = '<?=$row['inventory_id']?>'>
+            <tr  data-id = '<?=$row['inventory_id']?>' class = "tbl_rows">
                 <td style = "width: 5%" class = "text-center"><?= $counter?></td>
                 <td style = "width: 20%" ><?= $row['prod_desc']?></td>
                 <td><?= $row['barcode']?></td>
@@ -57,7 +57,6 @@ if (count($inventories) > 0)
     <tr>
         <td colspan="100%" style="text-align: center; padding: 20px;">
             <img src="./assets/img/no-data.png" alt="No data Found" style="display: block; margin: 0 auto 10px auto;"><br>
-   
         </td>
     </tr>
     <?php
