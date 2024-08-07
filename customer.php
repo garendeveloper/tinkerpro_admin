@@ -481,8 +481,7 @@ $('#generateCustomerDFBtn').click(function() {
             var lastName = userInfo.lastName;
             var cid = userInfo.userId;
             var role_id = userInfo.roleId; 
-    
-    
+  
             insertLogs('Customers',firstName + ' ' + lastName + ' '+ 'Generating pdf');
         },
         error: function(xhr, status, error) {
