@@ -8946,3 +8946,29 @@
 2024-08-07 15:22:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY ANTIBAC 17ML MENUDO Barcode #:4902430389549 
 2024-08-07 15:22:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY ANTIBAC 18ML 1/2DOZ Barcode #:820322 
 2024-08-07 15:23:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY ANTIBAC 18ML 1DOZ-OYT Barcode #:21672 
+2024-08-07 15:23:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY ANTIBAC 240ML-OYT Barcode #:978843 
+2024-08-07 15:23:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY ANTIBAC 38ML-OYT Barcode #:4902430389556 
+2024-08-07 15:23:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY CORRECTION FLUID 15ML Barcode #:214794 
+2024-08-07 15:23:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY CORRECTION TAPE Barcode #:4806021318942 
+2024-08-07 15:23:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY CORRECTION TAPE 8M Barcode #:755649 
+2024-08-07 15:23:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY CRAYON 16S Barcode #:218940 
+2024-08-07 15:23:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY CRAYONS 24S Barcode #:410897 
+2024-08-07 15:24:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY DOUBLE ADHESIVE TAPE Barcode #:6272732579190 
+2024-08-07 15:24:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY KALAMANSI 175ML Barcode #:4902430154154 
+2024-08-07 15:24:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY KALAMANSI 20ML 1/2DZN Barcode #:4902430389532 
+2024-08-07 15:24:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY KALAMANSI 20ML 1DZ-OYT Barcode #:647392 
+2024-08-07 15:24:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY KALAMANSI 20ML MENUDO Barcode #:998302 
+2024-08-07 15:24:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY KALAMANSI 250ML-OYT Barcode #:4806519893869 
+2024-08-07 15:24:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY KALAMANSI 40ML Barcode #:545580 
+2024-08-07 15:25:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY KALAMANSI 475ML Barcode #:4902430867306 
+2024-08-07 15:25:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY LEMON 175ML-OYT Barcode #:4902430154147 
+2024-08-07 15:25:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY LEMON 18.5ML Barcode #:4902430389570 
+2024-08-07 15:25:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY LEMON 20ML 1/2DOZ Barcode #:4902430389563 
+2024-08-07 15:26:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY LEMON 20ML 1DZ-OYT Barcode #:917551 
+2024-08-07 15:26:11 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 15:27:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY LEMON 250ML-OYT Barcode #:74838 
+2024-08-07 15:27:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY LEMON 45ML-OYT Barcode #:239020 
+2024-08-07 15:27:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY MULTI COLORED CLAY Barcode #:4220 
+2024-08-07 15:28:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY SCISSOR Barcode #:620724 
+2024-08-07 15:28:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY SCISSOR (SMALL) Barcode #:947357 
+2024-08-07 15:28:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JPY SCISSORS Barcode #:751354 

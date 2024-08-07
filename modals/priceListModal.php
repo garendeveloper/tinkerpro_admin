@@ -15,7 +15,7 @@
         background-color: #333333;
         margin: 15% auto;
         max-width: 430px;
-        height: 200px;
+        height: 480px;
         max-height: 100%;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -239,7 +239,7 @@ td[contenteditable="true"]:focus {
             <div class="row">
               <div class="col-md-12">
                   <label class = "tinker_label" for=""  style = "margin-right: 90px;">PRICE LIST NAME</label>
-                  <input  type="number" name = "qty" id = "qty" class = "inputAmount appQty"  autocomplete="off">
+                  <input  type="text" name = "qty" id = "qty" class = "inputAmount"  autocomplete="off">
               </div>
               <div class="col-md-12" >
                   <label class = "tinker_label" for="" style = "margin-right: 70px;">PRICE ADJUSTMENT</label>
@@ -252,6 +252,52 @@ td[contenteditable="true"]:focus {
                       <i class="bi bi-menu-up"></i>
                   </div>
                   <input type="text" name = "newprice" id = "newprice" class = "inputAmount"   autocomplete="off" style=" background-color: #262626; color: #ffff; width:100px; font-size: 14px; height: 30px;"/>  
+              </div>
+            </div>
+            <div class = "row" style = "padding: 10px;">
+              <div class="table-cotainer p-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
+                    </svg>
+                    <input type="hidden" class="w-100 search_product_b_id me-2 ms-2">
+                    <input type="text"  placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product_b ">
+                    <div class="btn-container b-addbutton" >
+                        <button class="btn btn-secondary" id= "btn_addBProduct" style = "height: 35px;">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="row bundledDiv" style = "margin-top: -5px; border: 1px solid #757575 !important; margin-left: 3px; margin-right: 3px; height: 150px;overflow: auto; ">
+              <div class = "table-responsive" >
+                <table  style="width: 100%; border: collapse;  font-size: 12px;" id = "tbl_bundled">
+                    <thead style = "font-weight: bold">
+                      <tr>
+                        <th style = "background-color: #333333; border: 1px solid #333333">ITEM DESCRIPTION</th>
+                        <th style = "background-color: #333333; border: 1px solid #333333; text-align: center">ACTION</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row" style = "margin-top: 10px;">
+              <div class="col-md-12" >
+                  <div class="barcode-container">
+                    <label class="tinker_label" for="newbarcode" style="margin-right: 24px;">Generate New Barcode</label>
+                    <div class="input-icon-wrapper">
+                      <input type="text" name="newbarcode" id="newbarcode" style = "text-align: center; " class="inputAmount displayBarcode"  autocomplete="off"/>
+                      <div class="generate-button">
+                        <i class="bi bi-arrow-down-circle"></i>
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
             <div class="row">
