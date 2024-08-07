@@ -2807,6 +2807,104 @@ class OtherReportsFacade extends DBConnection {
         }
     }
 
+
+
+    public function getAllPaymentMethods($startDate, $endDate, $customerId, $cashierId) {
+
+        $pdo = $this->connect();
+        
+        $paymentsData = "SELECT 
+			users.first_name,
+            users.last_name,
+            users.id AS usersId,
+            cashiers.last_name AS cashierLastName,
+            cashiers.first_name AS cashierFirstName,
+            payments.id,
+            payments.change_amount,
+            payments.payment_amount,
+            payments.payment_details,
+            payments.date_time_of_payment
+        FROM payments
+        INNER JOIN transactions ON payments.id = transactions.payment_id
+        INNER JOIN users ON users.id = transactions.user_id
+        INNER JOIN users AS cashiers ON cashiers.id = transactions.cashier_id
+        WHERE DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
+
+     
+        if ($customerId != '') {
+            $whereClause = " AND transactions.user_id = $customerId";
+        } else if ($cashierId != '') {
+            $whereClause = " AND transactions.cashier_id = $cashierId";
+        }
+
+        $groupBy = " GROUP BY payments.id";
+
+        $paymentsExecute = $pdo->prepare($paymentsData . $whereClaus . $groupBy); 
+        $paymentsExecute->execute([$startDate, $endDate]);
+
+        $paymentResult = $paymentsExecute->fetchAll(PDO::FETCH_ASSOC);
+        $totalChange = 0;
+        $totalAmountCash = 0;
+        $totalAmountCredit = 0;
+        $totalAmountCoupons = 0;
+        $totalAmountGCash = 0;
+        $totalAmountMaya = 0;
+        $totalAmountShopeePay = 0;
+        $totalAmountGrapPay = 0;
+        $totalAmountAlipay = 0;
+        $totalAmountCreditDebit = 0;
+        $payMetCreditDebit = [11, 12, 13, 14, 15];
+        foreach ($paymentResult as $paymentData) {
+            $totalChange = $paymentData['change_amount'];
+            $paymentDetails = json_decode($paymentData['payment_details'], true);
+    
+            if (json_last_error() === JSON_ERROR_NONE) {
+                
+                foreach ($paymentDetails as $data) {
+                    if ($data['index'] == 1) {
+                        $totalAmountCash += (float)$data['amount'] - $totalChange;
+                    } else if ($data['index'] == 2) {
+                        $totalAmountGCash += (float)$data['amount'];
+                    } else if ($data['index'] == 3) {
+                        $totalAmountMaya += (float)$data['amount'];
+                    } else if ($data['index'] == 5) {
+                        $totalAmountCredit += (float)$data['amount'];
+                    } else if ($data['index'] == 7) {
+                        $totalAmountCoupons += (float)$data['amount'];
+                    } else if ($data['index'] == 8) {
+                        $totalAmountShopeePay += (float)$data['amount'];
+                    } else if ($data['index'] == 9) {
+                        $totalAmountGrapPay += (float)$data['amount'];
+                    } else if ($data['index'] == 10) {
+                        $totalAmountAlipay += (float)$data['amount'];
+                    } else if (in_array($data['index'], $payMetCreditDebit)) {
+                        $totalAmountCreditDebit += (float)$data['amount'];
+                    }
+                }
+            } else {
+                echo "Error decoding JSON: " . json_last_error_msg();
+            }
+        }
+
+
+        $result = [
+            'totalCashPerPayment' => $totalAmountCash,
+            'totalAmountGCash' => $totalAmountGCash,
+            'totalAmountMaya' => $totalAmountMaya,
+            'totalAmountCredit' => $totalAmountCredit,
+            'totalAmountCoupons' => $totalAmountCoupons,
+            'totalAmountShopeePay' => $totalAmountShopeePay,
+            'totalAmountGrapPay' => $totalAmountGrapPay,
+            'totalAmountAlipay' => $totalAmountAlipay,
+            'totalAmountCreditDebit' => $totalAmountCreditDebit,
+            'total' => ($totalAmountCash + $totalAmountGCash + $totalAmountMaya + $totalAmountCredit +
+            $totalAmountCoupons + $totalAmountShopeePay + $totalAmountGrapPay + $totalAmountAlipay + $totalAmountCreditDebit)
+        ];
+
+        // echo json_encode($result);
+        return $result;
+    }
+
     public function getPaymentMethod( $singleDateData, $startDate, $endDate) {
         if($singleDateData && !$startDate && !$endDate){
             $sql = "SELECT 
@@ -6653,49 +6751,73 @@ GROUP BY
     }
 
 
-
-
-    public function getProductSales() {
+    public function getProductSales($startDate, $endDate, $selectedCategories, $selectedSubCategories, $selectedProduct) {
         $pdo = $this->connect();
 
-        $productSalesQuery = 'SELECT
-                        payments.id AS paymentId,
-                        payments.date_time_of_payment,
-                        SUM(transactions.prod_qty) AS newQty,
-                        products.prod_price,
-                        SUM(transactions.prod_qty) * products.prod_price AS totalProductAmount,
-                        products.id AS productsId,
-                        products.prod_desc AS productName,
-                        products.isVAT,
-                        products.sku,
-                        products.cost,
-                        SUM(transactions.discount_amount) AS itemDiscount,
-                        CASE 
-                        	WHEN products.isVAT = 1 THEN
-                            	ROUND(((SUM(transactions.prod_qty) * products.prod_price) / 1.12) * 0.12, 2)
-                           	ELSE 0
-                        END AS totalVat,
-                        products.is_discounted,
-                        receipt.barcode,
-                        receipt.id AS receiptId,
-                        discounts.name AS customerType,
-                        discounts.discount_amount AS customerDiscountRate
-                    FROM transactions
-                        INNER JOIN products ON products.id = transactions.prod_id
-                        INNER JOIN receipt ON receipt.id = transactions.receipt_id
-                        INNER JOIN users ON users.id = transactions.user_id
-                        INNER JOIN discounts ON discounts.id = users.discount_id
-                        INNER JOIN payments ON payments.id = transactions.payment_id
-                        LEFT JOIN refunded ON products.id = refunded.prod_id
-                        LEFT JOIN return_exchange ON products.id = return_exchange.product_id
-                    WHERE transactions.is_paid = 1 
-                    AND transactions.is_void NOT IN (1,2)
-                    GROUP BY products.id';
+        if($startDate == '' || $endDate == '') {
+            $startDate = date('Y-m-d');
+            $endDate = date('Y-m-d');
+        } else {
+            $s_date = strtotime($startDate);
+            $e_date = strtotime($endDate);
 
-        $productSales = $pdo->prepare($productSalesQuery);
-        $productSales->execute();
+            $startDate = date('Y-m-d', $s_date);
+            $endDate = date('Y-m-d', $e_date);
+        }
+
+        $productSalesQuery = "SELECT
+            payments.id AS paymentId,
+            payments.date_time_of_payment,
+            SUM(transactions.prod_qty) AS newQty,
+            products.prod_price,
+            SUM(transactions.prod_qty) * products.prod_price AS totalProductAmount,
+            products.id AS productsId,
+            products.prod_desc AS productName,
+            products.isVAT,
+            products.sku,
+            products.cost,
+            SUM(transactions.discount_amount) AS itemDiscount,
+            CASE 
+                WHEN products.isVAT = 1 THEN
+                    ROUND(((SUM(transactions.prod_qty) * products.prod_price) / 1.12) * 0.12, 2)
+                ELSE 0
+            END AS totalVat,
+            products.is_discounted,
+            receipt.barcode,
+            receipt.id AS receiptId,
+            discounts.name AS customerType,
+            discounts.discount_amount AS customerDiscountRate,
+            category.category_name,
+            variants.variant_name
+        FROM transactions
+            INNER JOIN products ON products.id = transactions.prod_id
+            INNER JOIN receipt ON receipt.id = transactions.receipt_id
+            INNER JOIN users ON users.id = transactions.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN payments ON payments.id = transactions.payment_id
+            LEFT JOIN refunded ON products.id = refunded.prod_id
+            LEFT JOIN return_exchange ON products.id = return_exchange.product_id
+            LEFT JOIN category ON category.id = products.category_id
+            LEFT JOIN variants ON category.id = variants.category_id
+        WHERE transactions.is_paid = 1 
+        AND transactions.is_void NOT IN (1,2)
+        AND DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
+
+        if ($selectedCategories != '' && $selectedSubCategories != '' && $selectedProduct != '') {
+            $whereClause = " AND (category.id = $selectedCategories AND variants.id = $selectedSubCategories AND product.id = $selectedProduct)";
+        } else if ($selectedCategories != '' && $selectedSubCategories == '' && $selectedProduct != '') {
+            $whereClause = " AND (category.id = $selectedCategories AND product.id = $selectedProduct)";
+        } else if ($selectedCategories != '' && $selectedSubCategories == '' && $selectedProduct == '') {
+            $whereClause = " AND (category.id = $selectedCategories)";
+        } else if ($selectedCategories == '' && $selectedSubCategories == '' && $selectedProduct != '') {
+            $whereClause = " AND (products.id = $selectedProduct)";
+        }
+
+        $groupByProduct = ' GROUP BY products.id';
+
+        $productSales = $pdo->prepare($productSalesQuery . $whereClause . $groupByProduct);
+        $productSales->execute([$startDate, $endDate]);
         $productrSalesResult = $productSales->fetchAll(PDO::FETCH_ASSOC);
-
 
         $sales = 'SELECT
                     SUM(DISTINCT payments.payment_amount - payments.change_amount) AS totalPaid,
@@ -6711,10 +6833,11 @@ GROUP BY
                 FROM payments
                     INNER JOIN transactions ON payments.id = transactions.payment_id
                     INNER JOIN receipt ON receipt.id = transactions.receipt_id
+                    WHERE DATE(payments.date_time_of_payment) BETWEEN ? AND ?
                     GROUP BY payments.id;';
 
         $sales_result = $pdo->prepare($sales); 
-        $sales_result->execute();
+        $sales_result->execute([$startDate, $endDate]);
         $salesReport = $sales_result->fetchAll(PDO::FETCH_ASSOC);
 
         $refundProdQuery = "SELECT 

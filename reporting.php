@@ -547,16 +547,9 @@ body, html {
               </div>
               <div hidden class="custom-select" id="productsDIV">
                 <label class="text-color" style="display: block; margin-bottom: 5px; margin-top: 10px">Select Products</label>
-                <div class="select-container">
+                <div class="select-container wrapper">
                     <select id="selectProducts" >
-                    <option value="" selected >All Products</option>
-                    <?php
-                        $productFacade = new ProductFacade;
-                        $products =  $productFacade->getProductsData();
-                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['prod_desc'] .' </option>';
-                        }
-                        ?>
+                      <option value="" selected >All Products</option>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -596,14 +589,7 @@ body, html {
                 <label class="text-color" style="display: inline-block; margin-bottom: 5px; margin-top: 10px">Select Product Sub-categories</label>
                 <div class="select-container">
                     <select id="subCategoreisSelect">
-                    <option value="" selected >All Product Sub-categories</option>
-                    <?php
-                        $productFacade = new ProductFacade;
-                        $products =  $productFacade->getVariantsData();
-                        while ($row = $products->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['id'] . '">' . $row['variant_name'] .' </option>';
-                        }
-                        ?>
+                      <option value="" selected >All Product Sub-categories</option>
                     </select>
                     <div class="select-arrow"></div>
                 </div>
@@ -752,16 +738,87 @@ body, html {
 <?php include("layout/footer.php") ?>
 
 <script>
-document.getElementById('selectProducts').addEventListener('click', function() {
-    document.getElementById('dropdownContent').style.display = 'block';
-    $('#searchInput').focus()
-});
 
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.custom-dropdown')) {
-        document.getElementById('dropdownContent').style.display = 'none';
+$(document).ready(function() {
+    let allProducts = [];
+    let currentIndex = 0;
+    const chunkSize = 100;
+
+    function getAllProducts() {
+      axios.get('api.php?action=getProductsData')
+        .then(function(res) {
+          allProducts = res.data;
+          $('#selectProducts').empty();
+          $('#selectProducts').append(
+            $('<option></option>').val('').text('All Product Sub-categories')
+          );
+          loadMoreProducts();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
-});
+
+    function loadMoreProducts() {
+      const nextIndex = currentIndex + chunkSize;
+      const productsToLoad = allProducts.slice(currentIndex, nextIndex);
+      $.each(productsToLoad, function(index, product) {
+        $('#selectProducts').append(
+          $('<option></option>').val(product.id).text(product.prod_desc)
+        );
+      });
+      currentIndex = nextIndex;
+    }
+
+    $('.wrapper').on('change', function() {
+      if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+        loadMoreProducts();
+      }
+    })
+    
+    getAllProducts();
+
+  $('#categoreisSelect').off('change').on('change', function() {
+    var catId = $(this).val();
+    axios.post('api.php?action=getSubCat', {
+      'cat_id' : catId,
+    })
+    .then(function(response) {
+      if(response.data) {
+        $('#subCategoreisSelect').empty();
+        $('#subCategoreisSelect').append(
+          $('<option></option>').val('').text('All Product Sub-categories')
+        );
+
+        $.each(response.data, function(index, variant) {
+          $('#subCategoreisSelect').append(
+            $('<option></option>').val(variant.id).text(variant.variant_name)
+          );
+        });
+      }
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  })
+})
+
+
+function getSelectedProductValue() {
+  var selectedProduct = $('#selectProducts').val();
+  return selectedProduct;
+}
+
+// document.getElementById('selectProducts').addEventListener('click', function() {
+//     document.getElementById('dropdownContent').style.display = 'block';
+//     $('#searchInput').focus()
+// });
+
+// document.addEventListener('click', function(e) {
+//     if (!e.target.closest('.custom-dropdown')) {
+//         document.getElementById('dropdownContent').style.display = 'none';
+//     }
+// });
 
 // document.addEventListener('keydown', function(e) {
 //     var searchInput = document.getElementById('searchInput');
@@ -832,7 +889,6 @@ document.querySelectorAll('.dropdown-option').forEach(option => {
         document.getElementById('selectProducts').textContent = this.textContent;
         document.getElementById('selectProducts').setAttribute('data-value', this.getAttribute('data-value'));
         document.getElementById('searchInput').value = "";
-
         document.getElementById('dropdownContent').style.display = 'none';
     });
 });
@@ -842,6 +898,8 @@ function filterOptions() {
     input = document.getElementById('searchInput');
     filter = input.value.toUpperCase();
     options = document.querySelectorAll('.dropdown-option');
+
+    console.log(options);
     for (i = 0; i < options.length; i++) {
         if (options[i].textContent.toUpperCase().indexOf(filter) > -1) {
             options[i].style.display = "";
@@ -850,10 +908,8 @@ function filterOptions() {
         }
     }
 }
-function getSelectedProductValue() {
-    var selectedProduct = document.getElementById('selectProducts').getAttribute('data-value');
-    return selectedProduct;
-}
+
+
 
 $("#reporting").addClass('active');
 $("#pointer").html("Reporting");
@@ -957,6 +1013,9 @@ function highlightDiv(id) {
   $('#showReport').off('click')
   $('#printDocu').off('click')
 
+    if (id == 36) {
+      $('#salesHistoryModal').show();
+    }
  
      if (id == 2) {
           generatePdf(id)
@@ -1935,6 +1994,7 @@ function highlightDiv(id) {
 
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
+
         }else if(id == 7){
           generatePdf(id)
           generateExcel(id)
@@ -1954,13 +2014,13 @@ function highlightDiv(id) {
           ingredientsDIV.setAttribute('hidden',true);
 
           var usersSelect = document.getElementById('usersDIV');
-          usersSelect.setAttribute('hidden',true);
+          usersSelect.removeAttribute('hidden');
 
           var dateTimeAnchor = document.getElementById('dateTimeAnchor');
           dateTimeAnchor.removeAttribute('hidden');
 
           var customerDIV = document.getElementById('customerDIV');
-          customerDIV.setAttribute('hidden',true);
+          customerDIV.removeAttribute('hidden');
 
           document.getElementById("customersSelect").value = "";
           document.getElementById('datepicker').value =""
@@ -2615,7 +2675,7 @@ function generatePdf(id)
     $('#PDFBtn').off('click').on('click',function() {
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-      var selectedProduct =  getSelectedProductValue()
+      var selectedProduct = getSelectedProductValue();
     
       var categoriesSelect = document.getElementById('categoreisSelect')
       var selectedCategories = categoriesSelect.value
@@ -2652,6 +2712,8 @@ function generatePdf(id)
         if(endDate == "" || endDate == null){
         endDate = ""
       }
+
+      console.log(selectedProduct);
         $.ajax({
             url: './reports/generate-products-data-inventory.php',
             type: 'GET',
@@ -2684,6 +2746,7 @@ function generatePdf(id)
                 console.log(searchData)
             }
         });
+
     });
   }else if(id == 4){
     $('#PDFBtn').off('click').on('click',function() {
@@ -2719,7 +2782,7 @@ function generatePdf(id)
     });
   }else if(id == 5){
     $('#PDFBtn').off('click').on('click',function() {
-      var selectedProduct =  getSelectedProductValue()
+      var selectedProduct = getSelectedProductValue();
       var datepicker = document.getElementById('datepicker').value
       var singleDateData = null;
       var startDate;
@@ -3479,6 +3542,7 @@ function generatePdf(id)
     });
   }else if( id == 7){
     $('#PDFBtn').off('click').on('click',function() {
+      
       var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
       var paymentM = document.getElementById('paymentTypesSelect')
       var paymentMethod =  paymentM.value;
@@ -7207,22 +7271,23 @@ function showReports(id) {
         });
      }
     })
-  }else if(id == 3){
-    $('#showReport').off('click').on('click', function(){
-       $('#showReportsModal').show()
+  }else if(id == 3) {
+    $('#showReport').off('click').on('click', function() {
+    $('#showReportsModal').show()
+
     if($('#showReportsModal').is(":visible")){
       var soldSelect = document.getElementById('soldSelect')
       var selectedOption = soldSelect.value;
-        var loadingImage = document.getElementById("loadingImage");
-        loadingImage.removeAttribute("hidden");
-        var pdfFile= document.getElementById("pdfFile");
-        pdfFile.setAttribute('hidden',true)
-        var selectedProduct =  getSelectedProductValue()
-        var categoriesSelect = document.getElementById('categoreisSelect')
-        var selectedCategories = categoriesSelect.value
-        var subCategoreisSelect = document.getElementById('subCategoreisSelect')
-        var selectedSubCategories = subCategoreisSelect.value 
-        var datepicker = document.getElementById('datepicker').value
+      var loadingImage = document.getElementById("loadingImage");
+      loadingImage.removeAttribute("hidden");
+      var pdfFile= document.getElementById("pdfFile");
+      pdfFile.setAttribute('hidden',true)
+      var selectedProduct =  getSelectedProductValue()
+      var categoriesSelect = document.getElementById('categoreisSelect')
+      var selectedCategories = categoriesSelect.value
+      var subCategoreisSelect = document.getElementById('subCategoreisSelect')
+      var selectedSubCategories = subCategoreisSelect.value 
+      var datepicker = document.getElementById('datepicker').value
       var singleDateData;
       var startDates;
       var endDate;
@@ -8586,6 +8651,8 @@ function showReports(id) {
         pdfFile.setAttribute('hidden',true)
         var toggleDivExcludes = document.getElementById('statusExcludes').checked ? 1 : 0;
         var paymentM = document.getElementById('paymentTypesSelect')
+        var customerId = document.getElementById('customersSelect')
+        var cashierId = document.getElementById('usersSelect');
         var paymentMethod =  paymentM.value;
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
@@ -8618,6 +8685,9 @@ function showReports(id) {
           if(endDate == "" || endDate == null){
           endDate = ""
         }
+
+     
+
       $.ajax({
           url: './reports/generate_paymentMethod_pdf.php',
           type: 'GET',
@@ -8625,6 +8695,8 @@ function showReports(id) {
               responseType: 'blob'
           },
           data: {
+                cashierId : cashierId.value,
+                customerId : customerId.value,
                 selectedMethod: paymentMethod,
                 singleDateData: singleDateData,
                 startDate: startDate,

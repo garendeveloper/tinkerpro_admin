@@ -96,8 +96,7 @@
   }
 
   #recentcustomer tbody {
-    max-height: 100vh;
-    height: 100%;
+    height: auto;
   }
 
 
@@ -125,23 +124,24 @@
   font-size: 12px !important;
 }
 
-.table-border th {
-  background-color: transparent !important;
-  color: var(--primary-color) !important;
-  border: none !important;
-}
-.text-color{
+  .table-border th {
+    background-color: transparent !important;
+    color: var(--primary-color) !important;
+    border: none !important;
+  }
+
+  .text-color{
     color: #ffff;
     font-family: Century Gothic;
   }
+
   .table-responsive {
     max-height: 600px;
     width: 100%; 
-   
-}
+  }
 
 
-.card{
+  .card{
     background-color:#151515;
     border-color: #242424;
     height: 200px; 
@@ -186,7 +186,6 @@
               </svg>
             </span>
 
-
             <button class="searchAdd">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -225,13 +224,15 @@
                   </thead>
                 </table>
 
-                <div class="ms-1 p-0 d-flex containerTable"  style="height:76vh; width: 100%; overflow-y: auto;">
-                  <?php include('errors.php'); ?>
-                    <table id="recentcustomer" class="text-color table-border" style = "width: 100%">
-                      <tbody id="fetchCustomer">
-                        
-                      </tbody>
-                    </table>
+                <div class="ms-1 p-0 d-flex containerTable"  style="height: 76vh; width: 100%; overflow-y: auto;">
+                  <div class="tableCustomerRow">
+                      <?php include('errors.php'); ?>
+                      <table id="recentcustomer" class="text-color table-border" style = "width: 100%">
+                        <tbody id="fetchCustomer">
+                            
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
               </div>
 
@@ -390,9 +391,7 @@
     });
   }
     
-  refreshCustomerTable()
-
-
+  refreshCustomerTable();
 
   $(document.body).on('click', '.customer-row', function() {
     $('.highlighteds').removeClass('highlighteds');
@@ -567,5 +566,5 @@ $('#printCustomers').click(function() {
             console.error(xhr.responseText);
         }
     });
-});
+  });
 </script>

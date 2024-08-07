@@ -879,10 +879,19 @@ public function getCategoriesData(){
   $stmt = $this->connect()->query($sql);
   return $stmt;
 }
-public function getVariantsData(){
-  $sql = 'SELECT * FROM variants';
-  $stmt = $this->connect()->query($sql);
-  return $stmt;
+public function getVariantsData($categoryId) {
+  $sql = 'SELECT variants.*, category.id AS categoryId 
+          FROM variants
+          INNER JOIN category ON category.id = variants.category_id
+          WHERE variants.category_id = ?';
+  $stmt = $this->connect();
+  $variants = $stmt->prepare($sql);
+  $variants->execute([$categoryId]);
+
+  $result = $variants->fetchAll(PDO::FETCH_ASSOC);
+  
+  echo json_encode($result);
+
 }
 public function getSuppliersData(){
   $sql = 'SELECT * FROM supplier';
@@ -1160,6 +1169,15 @@ $dataValue =  $serviceValue/100;
   }
 
 
+
+  public function getAllProducts() {
+    $pdo = $this->connect();
+    $product = $pdo->prepare('SELECT * FROM products ORDER BY prod_desc ASC');
+    $product->execute();
+    $products = $product->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode($products);
+  }
 
 
 

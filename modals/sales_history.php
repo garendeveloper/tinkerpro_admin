@@ -8,7 +8,7 @@
         <div class="d-flex">
             <h3 class="headTitle">E-JOURNAL <span class="spanUserName">[USER: <span id="user_Name">ADMIN</span>]</span> <span class="current_date">CURRENT DATE</span></h3>
             <div class="ml-auto"> 
-                <button class="btn btn-secondary shadow-none closeBtnSalesHistory">X</i></button>
+                <button class="btn btn-secondary shadow-none closeBtnSalesHistory"><i class="bi bi-x"></i></button>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
                         <input type="text" id="search-sales" placeholder="Search customer/ tax no./ email/ phone/ loyalty card" class="form-control shadow-none" style="margin-right: 10px; border:none; border-radius: 0; font-style: italic">
                         <div id="customer-result" class="form-control shadow-none d-none"></div>
                     </div>
-                    <div class="allUserSales">
+                    <div class="allUserSales me-2">
                         <input type="checkbox" id="all_user_sales" class="toggle-checkbox">
                         <label for="all_user_sales" data-toggle="tooltip" data-placement="top" title="Show all users" class="toggle-label"></label>
                     </div>
@@ -46,7 +46,7 @@
                         <option value="THIS YEAR">THIS YEAR</option>
                         <option value="CUSTOM">CUSTOM</option>
                     </select>
-                    <input disabled class="dateRange" style="width: 300px; outline: none">
+                    <input class="dateRange" style="width: 300px; outline: none">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
                         <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
                         <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
@@ -56,9 +56,9 @@
 
            
             <div class="d-flex sales_history" style="align-items: baseline;">
-            <table style="width: 80%; margin-right: 10px; margin-top: 10px; border: none !important;" id="table" class="salesHistoryTable table m-0 text-light">
+            <table style="width: 80%; margin-right: 10px; margin-top: 10px; border: none !important;" class="salesHistoryTable m-0 text-light">
                 <thead>
-                    <tr class="salesHistoryBorder">
+                    <tr class="salesHistoryBorder" style="border: 1px solid transparent !important">
                         <th colspan="1">#</th>
                         <th colspan="2">Receipt No.</th>
                         <th colspan="2">Reference No.</th>
@@ -227,11 +227,12 @@ function currentDate() {
     d.getFullYear() + ' ' + hour + ':' +
     (minutes < 10 ? '0' : '') + minutes + ':' +
     (seconds < 10 ? '0' : '') + seconds; 
-
   return output;
 }
 
 $(document).ready(function() {
+
+    getAllSalesHistory()
     $('#all_user_sales').off('change').on('change', function() {
         getAllSalesHistory();
     })
@@ -788,103 +789,15 @@ axios.post('api.php?action=getSalesHistory', {
 
 function reprintReceipt(urls, print_idetifier) {
     if(paymentid) {
-        console.log('Hello world');
-        $.ajax({
-            url: urls,
-            type: "GET",
-            data: {
-                payment_id: paymentid,
-                first_name: localStorage.firstName,
-                last_name: localStorage.lastName,
-                customerDiscountId : discoutnIds,
-            },
-            success: function(data) {
-                console.log('SUCCESS PRINT REFUND')
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
 
     } else if(print_idetifier == 2) {
-        console.log('Hello world2');
-        $.ajax({
-            url: urls,
-            type: "GET",
-            data: {
-                first_name: localStorage.firstName,
-                last_name: localStorage.lastName,
-                identifier : print_idetifier,
-                transaction_num: transactionNumber,
-                user_id: customerId,
-                reasons: reasonToVoid,
-                customerDiscountId : discoutnIds,
-            },
-            success: function(data) {
-                console.log('SUCCESS PRINT REFUND')
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-        
+       
     } else if(print_idetifier == 1) {
-        console.log('Hello world3');
-        $.ajax({
-            url: urls,
-            type: "GET",
-            data: {
-                first_name: localStorage.firstName,
-                last_name: localStorage.lastName,
-                transaction_num: transactionNumber,
-                user_id: customerId,
-                customerDiscountId : discoutnIds,
-            },
-            success: function(data) {
-            console.log('SUCCESS PRINTING')
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
+
     } else if(print_idetifier == 3) {
-        console.log('Hello world4');
-        $.ajax({
-            url: urls,
-            type: "GET",
-            data: {
-                first_name: localStorage.firstName,
-                last_name: localStorage.lastName,
-                transaction_num: transactionNumber,
-                user_id: customerId,
-                customerDiscountId : discoutnIds,
-            },
-            success: function(data) {
-            console.log('SUCCESS PRINTING')
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
+
     } else {
-        console.log('Hello world5');
-        $.ajax({
-            url: urls,
-            type: "GET",
-            data: {
-                first_name: localStorage.firstName,
-                last_name: localStorage.lastName,
-                transaction_num: transactionNumber,
-                user_id: customerId,
-                customerDiscountId : discoutnIds,
-            },
-            success: function(data) {
-            console.log('SUCCESS PRINTING')
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
+       
     }
 }
 
@@ -1181,6 +1094,7 @@ function getRefundedSales(refunded, referenceNum) {
 
 function getAllSalesHistory() {
     $('.salesHistoryModal').focus();
+
     var existingData = [];
     var existingDataRefund = [];
     var salesIndexRow = -1;
@@ -1216,10 +1130,13 @@ function getAllSalesHistory() {
         return texts;
     }
 
+    $('.dateRange').css({
+        'color': 'var(--border-color)',
+        'background-color': 'transparent',
+    });
     
     if (selectedFilter === 'TODAY') {
         startDate = dateAndTimeFormat(currentDate()).formatted_date;
-        
         $('.dateRange').prop('disabled', true);
         $('.current_date').text(startDate);
     } else if (selectedFilter === 'YESTERDAY') {
@@ -1263,6 +1180,11 @@ function getAllSalesHistory() {
         $('.current_date').text(startDate + ' to ' + endDate);
     } else if (selectedFilter === 'CUSTOM') {
         $('.dateRange').prop('disabled', false);
+
+        $('.dateRange').css({
+            'color': '#fff',
+            'background-color': 'transparent',
+        });
         var startDate = new Date(selectedDates[0]);
         var endDate = new Date(selectedDates[1]);
         startDate = dateAndTimeFormat(new Date(selectedDates[0])).formatted_date
@@ -1678,9 +1600,12 @@ option {
     
     .dateRange {
         font-size: small;
-        background: transparent; 
-        color: #fff;
+        background: transparent !important; 
+        color: var(--border-color);
         outline: solid 1px #4B413E;
+        width: auto;
+        border: none;
+        border-radius: 0;
     }
 
      input.dateRange {
@@ -1690,7 +1615,7 @@ option {
     .receipt_preview_history {
         border: 1px solid #4B413E; 
         height: 600px; 
-        color: #000;
+        color: #000 !important;
         padding: 0;
         overflow-y: auto;
         scrollbar-width: 0; 
@@ -1744,13 +1669,6 @@ option {
     .receipt_preview_history::-webkit-scrollbar-thumb {
         background-color: transparent;
     }
-    
-    .dateRange {
-        width: auto;
-        border: none;
-        border-radius: 0;
-    }
-
 
     .headTitle {
         font-weight: bold;
@@ -1881,6 +1799,12 @@ option {
         border-radius: 0;
     }
 
+    div.flatpickr-calendar.rangeMode.animate.arrowTop.arrowLeft.centerMost.open {
+        width: auto;
+        right: 100px !important;
+        left: auto !important;
+    }
+
 
     .toggle-checkbox {
       display: none; 
@@ -1921,6 +1845,13 @@ option {
 
     .toggle-checkbox:checked + .toggle-label {
         background-color: #428A47; /* Change background color when checked */
+    }
+
+    .salesHistoryModal {
+        -webkit-user-select: none; 
+        -moz-user-select: none;   
+        -ms-user-select: none;  
+        user-select: none;   
     }
 
 

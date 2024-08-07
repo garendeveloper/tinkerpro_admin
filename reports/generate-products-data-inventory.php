@@ -38,7 +38,7 @@ $endDate = $_GET['endDate'] ?? null;
 
 
 // $fetchSales= $productSales->geProductSalesData($selectedProduct,$selectedCategories,$selectedSubCategories,$singleDateData,$startDate,$endDate);
-$fetchSales = $productSales->getProductSales();
+$fetchSales = $productSales->getProductSales($startDate, $endDate, $selectedCategories, $selectedSubCategories, $selectedProduct);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 

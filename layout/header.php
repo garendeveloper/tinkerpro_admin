@@ -47,6 +47,7 @@
   <!-- <link rel="stylesheet" href="assets/css/base.min.css"> -->
 
   <script src="assets/vendors/base/vendor.bundle.base.js"></script>
+  <!-- <script src="assets/js/jquery-3.6.4.min.js"></script> -->
   <script src="assets/js/jquery.min.js"></script>
   <script src="assets/vendors/chart.js/Chart.min.js"></script>
   <script src="assets/vendors/datatables.net/jquery.dataTables.js"></script>

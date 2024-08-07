@@ -7980,6 +7980,73 @@
 2024-08-06 18:17:32 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted 1212 
 2024-08-06 18:20:58 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete Jomar 
 2024-08-06 18:20:59 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted Jomar 
+2024-08-05 09:09:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 09:10:57 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 09:59:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 10:50:38 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 11:52:59 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 12:15:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 13:18:51 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 13:19:50 | Zeus Baculio | 50 | 2 | Expense | Updated expense: SWELDO SA TRABANTE, Amount: 1919974.00, Invoice#: KKK 
+2024-08-05 13:20:22 | Zeus Baculio | 50 | 2 | Expense | Deleted Expense: NAME EXPENSE Invoice #: 900 Amount: 11353.00 
+2024-08-05 13:20:58 | Zeus Baculio | 50 | 2 | Expense | Updated expense: fghfgh, Amount: 98.00, Invoice#: SSS3 
+2024-08-05 13:29:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 13:47:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 13:55:40 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 14:11:03 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 14:23:58 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 14:45:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 14:56:26 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: SWELDO SA TRABANTE, Amount: 1919974.00, Invoice#: KKK 
+2024-08-05 14:56:46 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: fghfgh, Amount: 98.00, Invoice#: SSS3 
+2024-08-05 14:57:13 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-05 15:27:05 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 15:28:23 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-05 15:35:39 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 17:03:00 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-05 17:10:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 17:21:01 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-05 18:14:32 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-05 18:15:43 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-06 09:02:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 09:39:52 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-06 09:51:11 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated YARN EAGLE 25G Barcode #:169777 
+2024-08-06 09:51:43 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated YARN EAGLE 25G Barcode #:169777 
+2024-08-06 09:51:50 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated YARN EAGLE 25G Barcode #:169777 
+2024-08-06 09:53:03 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 555 TUNA SPICY PAKSIW Barcode #:0748485701387 
+2024-08-06 10:03:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 10:07:10 | Zeus Baculio | 50 | 2 | Expense | Updated expense: SWELDO SA TRABANTE, Amount: 1919974.00, Invoice#: KKK 
+2024-08-06 10:09:24 | Zeus Baculio | 50 | 2 | Expense | Updated expense: Youtube Ad, Amount: 98.00, Invoice#: SSS3 
+2024-08-06 10:10:37 | Zeus Baculio | 50 | 2 | Expense | Updated expense: CALCULATOR, Amount: 5975.00, Invoice#: 25 
+2024-08-06 10:11:23 | Zeus Baculio | 50 | 2 | Expense | Updated expense: CALCULATOR, Amount: 5975.00, Invoice#: 25 
+2024-08-06 10:11:36 | Zeus Baculio | 50 | 2 | Expense | Updated expense: CALCULATOR, Amount: 5975.00, Invoice#: 233522-52 
+2024-08-06 10:11:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-08-06 10:13:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-08-06 10:47:06 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-06 10:50:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 MANGO 40G Barcode #:888779554 
+2024-08-06 11:08:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 11:10:11 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-06 13:01:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 13:07:35 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-06 14:45:33 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-06 15:09:21 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Added supplier       
+2024-08-06 15:09:42 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier       
+2024-08-06 15:10:23 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Added supplier   
+2024-08-06 15:10:29 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier   
+2024-08-06 15:34:27 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-06 16:22:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 16:23:25 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 12 
+2024-08-06 16:25:19 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 12,000.00 
+2024-08-06 16:35:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 16:43:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 16:50:14 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 17:14:07 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 17:25:23 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer Balo lang 
+2024-08-06 17:25:45 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer Bo  Wang 
+2024-08-06 17:31:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 17:50:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 17:56:39 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 18:06:17 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-06 18:20:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-07 09:03:55 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-07 09:06:53 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete 2121s121 
 2024-08-07 09:06:57 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete P&G 
@@ -8682,3 +8749,17 @@
 2024-08-07 14:25:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHATTA TOPS ROCKY ROAD (MENUDO) Barcode #:233719 
 2024-08-07 14:25:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHATTA TOPS ROCKY ROAD (MENUDO) Barcode #:233719 
 2024-08-07 14:25:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHATTA TOPS ROCKY ROAD 1-PACK Barcode #:225532 
+2024-08-07 14:26:47 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete s121sa121 
+2024-08-07 14:26:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 14:27:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS SOUR & CREAM 40G Barcode #:4800016671807 
+2024-08-07 14:27:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIATTOS SOUR & CREAM 85G Barcode #:4800016671500 
+2024-08-07 14:27:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIC A SNACK MIX 90G Barcode #:4800016635243 
+2024-08-07 14:27:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 14:27:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIER 28 SWEET&SPICY 23G Barcode #:468193 
+2024-08-07 14:28:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILIT RICE 1SACK-MER Barcode #:240111 
+2024-08-07 14:28:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILIT RICE 1KL Barcode #:32471 
+2024-08-07 14:28:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILIT RICE 1/4KL Barcode #:307415 
+2024-08-07 14:28:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS CHOCO 24G Barcode #:4800194117463 
+2024-08-07 14:28:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS CHOCO 38G Barcode #:4800194116466 
+2024-08-07 14:28:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS UBE 24G Barcode #:4800194153324 
+2024-08-07 14:28:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS UBE 38G Barcode #:4800194152327 
