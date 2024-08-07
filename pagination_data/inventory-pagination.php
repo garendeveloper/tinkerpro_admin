@@ -204,9 +204,9 @@
         });
         updatePaginationButtons();
     }
-    $(".inventoryCard tbody").on("click", "tr", function(e){
+    $(".inventoryCard tbody").on("click", ".tbl_rows", function(e){
         e.preventDefault();
-        $(".inventoryCard  tbody").find("tr").removeClass('highlightedss')
+        $(".inventoryCard  tbody ").find(".tbl_rows").removeClass('highlightedss')
         $(this).toggleClass('highlightedss');
     })
     function updatePaginationButtons() 

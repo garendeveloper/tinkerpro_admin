@@ -41,6 +41,7 @@ while ($row = $fetchSupplier->fetch(PDO::FETCH_ASSOC)) {
             <?php 
             ?>
         </td>
+</tr>
     <?php
     $counter++;
 }

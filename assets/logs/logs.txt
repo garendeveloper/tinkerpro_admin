@@ -8763,3 +8763,186 @@
 2024-08-07 14:28:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS CHOCO 38G Barcode #:4800194116466 
 2024-08-07 14:28:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS UBE 24G Barcode #:4800194153324 
 2024-08-07 14:28:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILLOWS UBE 38G Barcode #:4800194152327 
+2024-08-07 14:28:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT G-TEC-C4 Barcode #:85224 
+2024-08-07 14:29:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT MARKER BROAD BLACK Barcode #:525667 
+2024-08-07 14:29:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT MARKER BROAD BLUE Barcode #:112075 
+2024-08-07 14:29:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT MARKER BROAD RED Barcode #:737815 
+2024-08-07 14:29:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT MARKER FINE BLACK Barcode #:433572 
+2024-08-07 14:29:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT MARKER FINE BLUE Barcode #:296840 
+2024-08-07 14:29:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT MARKER FINE RED Barcode #:319511 
+2024-08-07 14:29:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT REFILL INK BLACK 30ML Barcode #:346933 
+2024-08-07 14:29:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT REFILL INK RED Barcode #:398438 
+2024-08-07 14:30:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT SUPER COLOR MARKER FINE Barcode #:949449 
+2024-08-07 14:30:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PILOT WYTEBOARD MARKER BLACK Barcode #:440651 
+2024-08-07 14:30:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PING PONG BALLS Barcode #:487129 
+2024-08-07 14:30:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PINIPIG CHOCO-CDC Barcode #:861568 
+2024-08-07 14:31:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHATTA TOPS VANILLA 1PCK Barcode #:464257 
+2024-08-07 14:31:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHATTA TOPS VANILLA CREAM MENUDO Barcode #:954867 
+2024-08-07 14:36:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER ALL NIGHT 3S-OYT Barcode #:519348 
+2024-08-07 14:37:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PINIPIG STRAWBERRY-CDC Barcode #:4806514102300 
+2024-08-07 14:38:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PINTORA GUM BALL (MENUDO) Barcode #:657924 
+2024-08-07 14:38:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PINTORA GUM BALL 1PCK-VM Barcode #:271946 
+2024-08-07 14:38:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIXEL BIG NOTEBOOK Barcode #:209730 
+2024-08-07 14:38:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PIXEL NOTEBOOK 80L Barcode #:387679 
+2024-08-07 14:38:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC COVER 1/2 Barcode #:895108 
+2024-08-07 14:38:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC COVER FOLDED Barcode #:795375 
+2024-08-07 14:38:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC COVER ROLL Barcode #:103141 
+2024-08-07 14:39:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC ENV W/HNDL LONG Barcode #:667451 
+2024-08-07 14:39:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC ENVELOPE LONG Barcode #:951129 
+2024-08-07 14:39:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC ENVELOPE SHORT Barcode #:753293 
+2024-08-07 14:39:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER ALL NIGHT X-LONG 4S Barcode #:337940 
+2024-08-07 14:39:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC FOLDER LONG Barcode #:913079 
+2024-08-07 14:41:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC FOLDER LONG Barcode #:913079 
+2024-08-07 14:41:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PLASTIC FOLDER SHORT Barcode #:305516 
+2024-08-07 14:42:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 14:43:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 14:44:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER COTTONY N/WINGS 20S Barcode #:276243 
+2024-08-07 14:46:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER COTTONY WINGS 16S-OYT Barcode #:925223 
+2024-08-07 14:47:54 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 14:48:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT MILK 500ML Barcode #:8850007090281 
+2024-08-07 14:48:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER COTTONY WINGS 8S-OYT Barcode #:457792 
+2024-08-07 14:48:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT MILK+RICE 100ML Barcode #:9556006060346 
+2024-08-07 14:48:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT MILK+RICE 200ML Barcode #:9556006060353 
+2024-08-07 14:48:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT MILK+RICE 50ML Barcode #:602082 
+2024-08-07 14:48:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT PINK 100ML Barcode #:8850007030744 
+2024-08-07 14:49:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT PINK 100ML OLD Barcode #:518888 
+2024-08-07 14:49:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT PINK 200ML Barcode #:8850007031307 
+2024-08-07 14:49:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB LOT PINK 50ML Barcode #:131143 
+2024-08-07 14:49:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB MILK BATH 200MLAN-DM Barcode #:14801010534201 
+2024-08-07 14:49:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB OIL ALOE VERA 25ML Barcode #:48035996 
+2024-08-07 14:49:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB OIL ALOE VERA 50ML Barcode #:4801010504207 
+2024-08-07 14:49:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB OIL LITE 25ML Barcode #:751555 
+2024-08-07 14:49:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB OIL LITE 50ML Barcode #:557357 
+2024-08-07 14:50:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB OIL REGULAR 25ML Barcode #:612792128671 
+2024-08-07 14:50:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB OIL REGULAR 50ML Barcode #:173182 
+2024-08-07 14:50:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER HEAVY WINGS 8S-OYT Barcode #:299126 
+2024-08-07 14:50:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW BEDTIME 100G Barcode #:137892 
+2024-08-07 14:50:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW BEDTIME 25G Barcode #:359073 
+2024-08-07 14:50:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW BEDTIME 50G Barcode #:8850007010890 
+2024-08-07 14:50:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW BLOSSOMS 100G Barcode #:4801010105206 
+2024-08-07 14:50:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW BLOSSOMS 25G Barcode #:48040693 
+2024-08-07 14:50:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW BLOSSOMS 50G Barcode #:4801010105107 
+2024-08-07 14:51:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW MILK+RICE 100G Barcode #:5055853681918 
+2024-08-07 14:51:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW MILK+RICE 25G Barcode #:804550 
+2024-08-07 14:51:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW MILK+RICE 50G Barcode #:908350 
+2024-08-07 14:52:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 135G GUAVA-OYT Barcode #:178541 
+2024-08-07 14:52:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW PRICKLY HEAT 50G Barcode #:456204 
+2024-08-07 14:52:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER NAPKIN MENUDO Barcode #:915596 
+2024-08-07 14:52:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW REGULAR 25G Barcode #:48032742 
+2024-08-07 14:53:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW REGULAR 50G Barcode #:48033459 
+2024-08-07 14:53:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW SUMMER BLOOMS 50G Barcode #:513454 
+2024-08-07 14:53:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW WHITE 10G Barcode #:553271 
+2024-08-07 14:53:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 135G IVORY WHITE-OYT Barcode #:560350 
+2024-08-07 14:53:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 135G LEMON-OYT Barcode #:771340 
+2024-08-07 14:53:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB POW WHITE 10G REFILL Barcode #:328906 
+2024-08-07 14:53:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB SHAMPOO BLUE 8ML Barcode #:462474 
+2024-08-07 14:53:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 135G PAPAYA-OYT Barcode #:854946 
+2024-08-07 14:53:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB SHAMPOO PINK 100ML Barcode #:453744 
+2024-08-07 14:53:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 135G PINK-OYT Barcode #:364650 
+2024-08-07 14:54:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 135G WHITE-OYT Barcode #:8157 
+2024-08-07 14:54:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB SHAMPOO PINK 8ML Barcode #:951140 
+2024-08-07 14:54:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB SOAP BLOSSOMS 60G Barcode #:4801010561507 
+2024-08-07 14:54:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 175G GREEN Barcode #:602691 
+2024-08-07 14:54:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB SOAP MILK 60G Barcode #:4801010562306 
+2024-08-07 14:54:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JB SOAP REGULAR 60G Barcode #:4801010560432 
+2024-08-07 14:54:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 175G LEMON-OYT Barcode #:560763 
+2024-08-07 14:54:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JELLIYUM ICE POP 8S Barcode #:4800139990212 
+2024-08-07 14:54:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JELLIYUM LYCHEE 18S Barcode #:101911 
+2024-08-07 14:54:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 175G PINK-OYT Barcode #:575016 
+2024-08-07 14:54:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 175G WHITE-OYT Barcode #:4902430222891 
+2024-08-07 14:55:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 225ML HAND SOAP Barcode #:4902430533744 
+2024-08-07 14:55:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 225ML LEMON-OYT Barcode #:4902430533751 
+2024-08-07 14:55:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JELLY ASST PUDDING 24S Barcode #:4806507621252 
+2024-08-07 14:55:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JELLY CUP MANGO FLAVOR Barcode #:656240 
+2024-08-07 14:55:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JELLY JUICE FOUR SEASON 230ML Barcode #:127985 
+2024-08-07 14:56:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER OVERNIGHT 10S-OYT Barcode #:730589 
+2024-08-07 14:56:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G GUAVA-OYT Barcode #:714171 
+2024-08-07 14:56:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G GREEN-OYT Barcode #:563451 
+2024-08-07 14:56:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G EUCALYPTUS-OYT Barcode #:620417 
+2024-08-07 14:56:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G C/MENTHOL-OYT Barcode #:975690 
+2024-08-07 14:57:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G BEIGE-OYT Barcode #:114674 
+2024-08-07 14:57:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 14:58:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 14:58:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 720ML BW PINK-OYT Barcode #:182179 
+2024-08-07 14:58:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JELLY JUICE LYCHEE 230ML Barcode #:413969 
+2024-08-07 14:59:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER OVERNIGHT 4S-OYT Barcode #:215403 
+2024-08-07 14:59:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JELLY JUICE ORANGE 230ML Barcode #:940847 
+2024-08-07 15:00:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 60G WHITE-OYT Barcode #:613411 
+2024-08-07 15:00:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER OVERNIGHT 8S-OYT Barcode #:201493 
+2024-08-07 15:01:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JELLY POPS W/NATA 1PCK Barcode #:469283 
+2024-08-07 15:01:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY AP CREAM 250ML Barcode #:728181 
+2024-08-07 15:01:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY BUKO PANDAN CONDENSED 390G Barcode #:344535 
+2024-08-07 15:01:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY CHOCO MILK 110ML Barcode #:4806516761659 
+2024-08-07 15:01:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY CHOCOLATE CONDENSED 390G Barcode #:470597861595 
+2024-08-07 15:01:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY CONDENSED 390G Barcode #:4806516761888 
+2024-08-07 15:01:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY EVAPORADA 370ML Barcode #:9555513203017 
+2024-08-07 15:02:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY FC MILK 110ML Barcode #:4806516763615 
+2024-08-07 15:02:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY MANGO CONDENSED 390G Barcode #:4806516762403 
+2024-08-07 15:02:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY MELON CONDENSED 390G Barcode #:128980 
+2024-08-07 15:02:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JERSEY UBE CONDENSED 390G Barcode #:4806516762632 
+2024-08-07 15:02:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JHONSONS SOAP BLOSSOMS 60G Barcode #:414902 
+2024-08-07 15:02:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JIANGJIANG BISCUCHO Barcode #:998170 
+2024-08-07 15:02:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated WHISPER REG N/WINGS 8S-OYT Barcode #:809717 
+2024-08-07 15:02:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JINLING VERMICELLI 50G Barcode #:852155 
+2024-08-07 15:03:09 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 15:04:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JJ'S BANANA CHIPS Barcode #:54747 
+2024-08-07 15:04:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY BLOSSOMS SOAP 100G Barcode #:4801010562108 
+2024-08-07 15:04:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY CONDITIONING SHAMPOO 100ML Barcode #:9556006014547 
+2024-08-07 15:04:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY COOLING POWDER 100G Barcode #:8850007011132 
+2024-08-07 15:04:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 60G GREEN-OYT Barcode #:258026 
+2024-08-07 15:04:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY COOLING POWDER 50G Barcode #:218470 
+2024-08-07 15:04:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 60G GUAVA-OYT Barcode #:130772 
+2024-08-07 15:04:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 60G ICY COOL-OYT Barcode #:987907 
+2024-08-07 15:05:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY POWDER HYPOALLERGENIC 100G Barcode #:833639 
+2024-08-07 15:06:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY SHAMPOO 100ML Barcode #:880009254761 
+2024-08-07 15:06:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY SOAP 100G Barcode #:4801010525004 
+2024-08-07 15:06:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY SOAP 60G Barcode #:551437 
+2024-08-07 15:06:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY SOFT&SHINY SHAMPOO 100ML Barcode #:825195 
+2024-08-07 15:06:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABYPOWDER CLASSIC 500G Barcode #:8850007011163 
+2024-08-07 15:06:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON PURE ESSENTIALS CITRUS SPLASH Barcode #:403626 
+2024-08-07 15:09:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON PURE ESSENTIALS FLORAL TOUCH 60G Barcode #:297659 
+2024-08-07 15:12:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON PURE ESSENTIALS HEALTHY FRESH 60G Barcode #:503374 
+2024-08-07 15:13:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BABY ACTIVE FRESH POWDER 50G Barcode #:18929 
+2024-08-07 15:13:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BABY BATH HYPOALERGENIC 200ML Barcode #:368280 
+2024-08-07 15:13:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BABY BATH MILK 200ML Barcode #:253939245989 
+2024-08-07 15:13:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BABY BATH MILK+RICE Barcode #:9556006061084 
+2024-08-07 15:13:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BABY BEDTIME OIL 50ML Barcode #:753257 
+2024-08-07 15:13:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BABY BEDTIME SOAP 100G Barcode #:291273 
+2024-08-07 15:15:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BABY MILK SOAP 100G Barcode #:278174 
+2024-08-07 15:15:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BABY SOAP WITH MOISTURIZERS 150G Barcode #:4801010560609 
+2024-08-07 15:15:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BB BATH MILK+RICE (200ML) FREE PUFF Barcode #:211317 
+2024-08-07 15:15:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS BB MILK SOAP 150G Barcode #:4801010562207 
+2024-08-07 15:15:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS FACE POWDER 10G Barcode #:397744 
+2024-08-07 15:15:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 15:16:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS PURE ESSENTIALS CLEAN MOISTURE 60G Barcode #:125156 
+2024-08-07 15:16:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 15:17:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 60G IVORY-OYT Barcode #:4902430381772 
+2024-08-07 15:17:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS PURE ESSENTILS SOFT CARE 60G Barcode #:385104 
+2024-08-07 15:17:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSONS SOAP MILK 60G Barcode #:923317 
+2024-08-07 15:18:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY 10X3 PAIRS Barcode #:687307 
+2024-08-07 15:18:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY COOKIES 8 PAIRS Barcode #:458567 
+2024-08-07 15:18:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY CREAM CORN 425G Barcode #:4806014000137 
+2024-08-07 15:18:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY MUSHROOMS 198G Barcode #:4806014000786 
+2024-08-07 15:18:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY MUSHROOMS 400G Barcode #:4806014000762 
+2024-08-07 15:19:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 60G LEMON-OYT Barcode #:4902430803694 
+2024-08-07 15:19:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 60G PAPAYA-OYT Barcode #:587654 
+2024-08-07 15:19:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 60G PINK-OYT Barcode #:4902430951357 
+2024-08-07 15:19:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 15:20:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY MUSHROOMS P&S 156G Barcode #:4806014093092 
+2024-08-07 15:20:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G IVORY WHITE-OYT Barcode #:856047 
+2024-08-07 15:20:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G LEMON FRESH-OYT Barcode #:39916 
+2024-08-07 15:21:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G PAPAYA-OYT Barcode #:939792 
+2024-08-07 15:21:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY MUSHROOMS PIECES AND STEMS 200G Barcode #:759976 
+2024-08-07 15:21:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY MUSHROOMS WHOLE 198G Barcode #:821462 
+2024-08-07 15:21:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G PINK-OYT Barcode #:655984 
+2024-08-07 15:21:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY SANDWICH COOKIES 27G Barcode #:212602 
+2024-08-07 15:21:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY WHOLE CORN 425G Barcode #:4806014000144 
+2024-08-07 15:21:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEGUARD 90G WHITE-OYT Barcode #:720423 
+2024-08-07 15:21:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY WHOLE MUSHROOMS 284G Barcode #:283557 
+2024-08-07 15:21:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFEHAND DISPOSABLE GLOVES 100S Barcode #:339186 
+2024-08-07 15:21:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAFETY PIN BIG Barcode #:688275 
+2024-08-07 15:22:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY YOUNG CORN CUT 425G Barcode #:151296 
+2024-08-07 15:22:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY YOUNG CORN WHOLE 425G Barcode #:29526 
+2024-08-07 15:22:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY ANTIBAC 17ML MENUDO Barcode #:4902430389549 
+2024-08-07 15:22:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY ANTIBAC 18ML 1/2DOZ Barcode #:820322 
+2024-08-07 15:23:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY ANTIBAC 18ML 1DOZ-OYT Barcode #:21672 

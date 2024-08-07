@@ -157,9 +157,9 @@
         $('#total_items').text(numberWithCommas(itemCount));
         $('#total_qty_store').text(numberWithCommas(totalQtyS.toFixed(2)));
     }
-    $(".inventoryCard tbody").on("click", "tr", function(e){
+    $(".inventoryCard tbody").on("click", ".tbl_rows", function(e){
         e.preventDefault();
-        $(".inventoryCard  tbody").find("tr").removeClass('highlightedss')
+        $(".inventoryCard  tbody ").find(".tbl_rows").removeClass('highlightedss')
         $(this).toggleClass('highlightedss');
     })
     function updatePaginationButtons() 

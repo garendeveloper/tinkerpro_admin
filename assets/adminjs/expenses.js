@@ -163,11 +163,11 @@ $(document).ready(function()
       }
     })
   })
-  $("#responsive-data").on("dblclick", "tr", function() {
+  $("#responsive-data").on("dblclick", ".tbl_rows", function() {
     createExpense();
     var expense_id = $(this).data("id");
     var product_id = $(this).data('product_id');
-    $("#tbl_expenses tbody").find("tr").removeClass('highlighted-row')
+    $("#tbl_expenses tbody").find(".tbl_rows").removeClass('highlighted-row')
     $(this).toggleClass('highlighted-row');
     $("#add_expense_modal").find(".modalHeaderTxt").html("Edit Expense");
 
