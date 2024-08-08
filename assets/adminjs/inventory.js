@@ -904,6 +904,7 @@
               isSavingPO = false;
               if (response.status) 
               {
+                $('#modalCashPrint').hide();
                 var order_id = response.order_id;
                 var po_number = response.po_number;
                 resetPurchaseOrderForm();
@@ -914,12 +915,6 @@
                 $("#totalQty").html("0");
                 $("#totalPrice").html("&#x20B1;&nbsp;0.00");
                 $("#overallTotal").html("&#x20B1;&nbsp;0.00");
-                show_sweetReponse(response.message);
-                show_purchaseOrderNo();
-                show_allSuppliers();
-                display_datePurchased();
-                show_allReceivedItems_PurchaseOrders();
-                hideModals();
                 $('#show_purchasePrintModal').show()
                 var userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 var firstName = userInfo.firstName;
@@ -934,7 +929,7 @@
           
                 if($('#show_purchasePrintModal').is(":visible"))
                 {
-                  $('#modalCashPrint').hide();
+                
                     var loadingImage = document.getElementById("loadingImage");
                     loadingImage.removeAttribute("hidden");
                     var pdfFile= document.getElementById("pdfFile");
@@ -950,21 +945,28 @@
                             po_number: po_number,
                         },
                         success: function(response) {
-                        loadingImage.setAttribute("hidden",true);
-                        var pdfFile = document.getElementById("pdfFile");
-                        pdfFile.removeAttribute('hidden')
-                        if( loadingImage.hasAttribute('hidden')) {
-                            var newBlob = new Blob([response], { type: 'application/pdf' });
-                            var blobURL = URL.createObjectURL(newBlob);
-                            
-                            $('#pdfViewer').attr('src', blobURL);
-                        }
+                          loadingImage.setAttribute("hidden",true);
+                          var pdfFile = document.getElementById("pdfFile");
+                          pdfFile.removeAttribute('hidden')
+                          if( loadingImage.hasAttribute('hidden')) {
+                              var newBlob = new Blob([response], { type: 'application/pdf' });
+                              var blobURL = URL.createObjectURL(newBlob);
+                              
+                              $('#pdfViewer').attr('src', blobURL);
+                          }
+                        
                         },
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText);
                         }
                     });
                 }
+                show_sweetReponse(response.message);
+                show_purchaseOrderNo();
+                show_allSuppliers();
+                display_datePurchased();
+                show_allReceivedItems_PurchaseOrders();
+                hideModals();
                 $(".inventoryCard").html("");
                 $(".grid-container button").removeClass('active');
                 $("#purchase-order").addClass('active');
@@ -1881,11 +1883,11 @@
             {
               var qty_purchased = to_received === 1 ? data[i].qty_received : data[i].qty_purchased; 
               table += "<tr data-rowid = "+data[i].product_id+" id = 'show_pqtymodal'>";
-              table += "<td data-rowid = "+data[i].product_id+" data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " </td>";
-              table += "<td style = 'text-align: center' class ='editable' data-qty = "+data[i].qty_purchased+" data-price= "+data[i].amount_beforeTax+">" + qty_purchased + "</td>";
-              table += "<td style = 'text-align: right' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
-              table += "<td style = 'text-align: right'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].total) + "</td>";
-              table += "<td style = 'text-align: right; width: 0px;'><i class = 'bi bi-trash' id = 'removeOrder'></i></td>";
+              table += "<td style = 'width: 55%'  data-rowid = "+data[i].product_id+" data-id = " + data[i].product_id + " data-inv_id = " + data[i].inventory_id + ">" + data[i].prod_desc + " </td>";
+              table += "<td style = 'text-align: center; width: 10%;' class ='editable' data-qty = "+data[i].qty_purchased+" data-price= "+data[i].amount_beforeTax+">" + qty_purchased + "</td>";
+              table += "<td style = 'text-align: right; width: 10%;' class ='editable'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].amount_beforeTax) + "</td>";
+              table += "<td style = 'text-align: right; width: 10%;'>&#x20B1;&nbsp;" + addCommasToNumber(data[i].total) + "</td>";
+              table += "<td style = 'text-align: right; width: 10%;'><i class = 'bi bi-trash' id = 'removeOrder'></i></td>";
               table += "</tr>";
             }
             var counter = 1;
@@ -2249,7 +2251,6 @@
       })
       function openOptionModal() {
         resetPurchaseOrderForm();
-
         $("#paidSwitch").css('background-color', 'green');
         $('#paidSwitch').prop('checked', true).prop('disabled', false);
         $("#optionModal").addClass('slideInRight');
