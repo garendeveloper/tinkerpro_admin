@@ -8992,5 +8992,45 @@
 2024-08-07 18:41:09 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 24/7 MANGO 40G, Amount: 3000.00, Invoice#: 10-000000001 
 2024-08-07 18:44:05 | Talkosoy Admin | 1 | 2 | Expense | Created expense: sample, Amount: 40000.00, Invoice#: lkaskjdfkl 
 2024-08-07 18:46:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 09:14:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 09:52:39 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 10:58:58 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 16:22:10 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 16:37:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 16:39:19 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-07 16:40:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 16:43:43 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-07 16:43:49 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 16:44:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 16:47:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-07 16:49:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Lucky ME Pancit Canton Clamansi Barcode #:4807770273698 
+2024-08-07 16:49:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Lucky ME Pancit Canton Clamansi Barcode #:4807770273698 
+2024-08-07 16:49:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Deleted Lucky ME Pancit Canton Clamansi Barcode #:4807770273698 
+2024-08-07 16:53:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 16:55:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 555 Tuna Spicy Paksiw Barcode #:2131644570623 
+2024-08-07 16:56:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Energen Champion Twin Pack Barcode #:8996001603444 
+2024-08-07 16:59:53 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 4,300.00 
+2024-08-07 17:00:50 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 17:06:33 | Talkosoy Admin | 1 | 2 | P.O Updated | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 4,300.00 
+2024-08-07 17:07:35 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: Jomar 
+2024-08-07 17:18:07 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 555 Tuna Spicy Paksiw, Amount: 2000.00, Invoice#: 10-000000001 
+2024-08-07 17:19:18 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete       
+2024-08-07 17:19:20 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted Supplier       
+2024-08-07 17:19:21 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete   
+2024-08-07 17:19:22 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted Supplier   
+2024-08-07 17:19:28 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete PRINCE 
+2024-08-07 17:19:29 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted Supplier PRINCE 
+2024-08-07 17:19:32 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Tries to delete GAISANO 
+2024-08-07 17:19:33 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Deleted Supplier GAISANO 
+2024-08-07 17:20:49 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer wael he 
+2024-08-07 17:21:03 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer wael he 
+2024-08-07 17:21:14 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer Unknown   
+2024-08-07 18:01:17 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 18:02:19 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-07 18:20:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 18:32:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-07 18:36:27 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 555 Tuna Spicy Paksiw, Amount: 2000.00, Invoice#: 10-000000001 
+2024-08-07 18:37:20 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 555 Tuna Spicy Paksiw, Amount: 2000.00, Invoice#: 10-000000001 
+2024-08-07 18:38:43 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 555 Tuna Spicy Paksiw, Amount: 2000.00, Invoice#: 10-000000001 
 2024-08-08 09:08:44 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-08 09:09:59 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
