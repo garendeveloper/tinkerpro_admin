@@ -14,8 +14,7 @@
     display_datePurchased();
 
     show_allInventories();
-    $("#btn_openOption").attr('title', 'Click this to open option').tooltip();
-    $("#btn_openOption").tooltip({
+    $("#btn_openOption").attr('title', 'Click this to open option').tooltip({
         open: function(event, ui) {
             $('body').css('background-color', '#262626'); 
         },
@@ -23,8 +22,7 @@
             $('body').css('background-color', '#262626'); 
         }
     }).tooltip("open");
-    $("#btn_openOption").trigger('mouseenter');
-
+   
     $(document).ready(function () {
     
         $('.container-scroller').click(function(event) {
@@ -2265,7 +2263,7 @@
       $(document).click(function(event) {
         var $target = $(event.target);
 
-        if (!$target.closest('#optionModal, #btn_openOption, #purchaseQty_modal, #removeOrder, .removeItem, #show_purchasePrintModal, #unpaid_purchase_modal, .ui-autocomplete, .ui-autocomplete-input').length) {
+        if (!$target.closest('#optionModal, #btn_openOption, #purchaseQty_modal, #removeOrder, .removeItem, #show_purchasePrintModal, #unpaid_purchase_modal, .ui-autocomplete, .ui-autocomplete-input, #date_expired').length) {
             if ($('#optionModal').is(':visible')) {
                 hideModals();
             }

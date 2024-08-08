@@ -1205,8 +1205,8 @@ class InventoryFacade extends DBConnection
                         $uom_id_expense = $this->get_productInfo($product_id)['uom_id'];
     
                         $expense_stmt = $this->connect()->prepare("
-                            INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )
+                            INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount, taxable_amount)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
                         ");
     
                         $expense_stmt->bindParam(1, $product_id, PDO::PARAM_STR);
@@ -1218,6 +1218,7 @@ class InventoryFacade extends DBConnection
                         $expense_stmt->bindParam(7, $invoice_number, PDO::PARAM_STR);
                         $expense_stmt->bindParam(8, $price, PDO::PARAM_STR);
                         $expense_stmt->bindParam(9, $total_amount, PDO::PARAM_STR);
+                        $expense_stmt->bindParam(10, $taxable_amount, PDO::PARAM_STR);
                         $expense_stmt->execute();
                     }
 

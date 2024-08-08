@@ -219,13 +219,14 @@ if($expenses)
 
         if($row['Landing_Cost'] != 0)
         {
+            $landingCost = $row['Landing_Cost'] - $row['expense_amount'];
             $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C');
             $pdf->SetFont('', 'I', autoAdjustFontSize($pdf, "", 15));
             $pdf->Cell(93, $maxCellHeight, "             Landed Cost", 0, 0, 'L');
             $pdf->SetFont('', 'I', autoAdjustFontSize($pdf, "             Landed Cost", 93));
-            $pdf->Cell(80, $maxCellHeight, number_format($row['Landing_Cost'], 2, '.', ','), 1, 0, 'R');
-            $pdf->SetFont('', 'I', autoAdjustFontSize($pdf, number_format($row['Landing_Cost'], 2, '.', ','), 80));
-            $income_tax_expense += $row['Landing_Cost'];
+            $pdf->Cell(80, $maxCellHeight, number_format($landingCost, 2, '.', ','), 1, 0, 'R');
+            $pdf->SetFont('', 'I', autoAdjustFontSize($pdf, number_format($landingCost, 2, '.', ','), 80));
+            $total_expenses += $landingCost;
             $pdf->Ln(); 
         }
         

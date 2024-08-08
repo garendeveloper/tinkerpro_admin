@@ -1670,6 +1670,13 @@ $(document).ready(function(){
       });
     }
   });
+  function numberWithCommas(number) 
+  {
+      var numString = number.toString();
+      var parts = numString.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return parts.join('.');
+  }
 
   $('.landingCost').on('input', function(){
     var total = parseFloat($("#vatable_amount").val());
@@ -1677,11 +1684,11 @@ $(document).ready(function(){
         var value = parseFloat($(this).val()) || 0;
         total += value;
     });
-    $('#totalLandingCost').val(total.toFixed(2));
+    $('#totalLandingCost').val(numberWithCommas(total.toFixed(2)));
     var totalLandingCost = total;
     var purchaseQty = parseFloat($("#qty").val());
     var totalLandingCostPerPiece = parseFloat(totalLandingCost / purchaseQty);
-    $("#totalLandingCostPerPiece").val(totalLandingCostPerPiece.toFixed(2));
+    $("#totalLandingCostPerPiece").val(numberWithCommas(totalLandingCostPerPiece.toFixed(2)));
   })
 
   function hide_dropdown()

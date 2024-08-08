@@ -309,7 +309,7 @@ class DashboardFacade extends DBConnection
             $month_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_expense_of_the_month'];
             $landingCost_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_landing_cost'];
             
-            $totalLandingCost = $month_expense - $landingCost_expense;
+            $totalLandingCost = $landingCost_expense - $month_expense;
             $expensesData[] = $month_expense !== null ? $month_expense + $totalLandingCost : 0;
             $annual_expenses += $month_expense + $totalLandingCost;
             
