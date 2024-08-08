@@ -66,7 +66,7 @@
   background-color: red;
 }
 .btn-control:hover {
-    border-color: #FF6900; 
+    border-color: var(--primary-color); 
     color: #fefefe !important; 
 }
 
@@ -76,12 +76,6 @@
   }
 
 
-  .table-container {
-    height: 100vh;
-    width: 100vw;
-    margin: 10px;
-    position: absolute;
-  }
 
   .table-container::-webkit-scrollbar {
     width: 0; 
@@ -100,29 +94,28 @@
   }
 
 
-  table {
+  /* table {
     margin-bottom: 0;
     overflow-x: auto;
     overflow: hidden; 
     border-collapse: collapse;
     table-layout: fixed;
-  }
+  } */
 
-.table-border{
-    border-collapse: collapse;
+/* .table-border{
     width: 100%;
     border: 1px solid #292928 !important;
-  }
+  } */
 
-.table-border td {
+/* .table-border td {
   padding: 2px !important;
-}
+} */
 
-.table-border th, td {
+/* .table-border th, td {
   border: 1px solid #292928 !important;
   padding: 8px;
   font-size: 12px !important;
-}
+} */
 
   .table-border th {
     background-color: transparent !important;
@@ -141,13 +134,11 @@
   }
 
 
-  .card{
+  /* .card{
     background-color:#151515;
     border-color: #242424;
-    height: 200px; 
     border-radius: 8px;
-    padding: 16px; 
-  }
+  } */
 
 
   .main-panel {
@@ -169,13 +160,90 @@
   .containerTable::-webkit-scrollbar-track {
     background-color: transparent;
   }
+  #responsive-data thead th,
+    #responsive-data tbody td {
+      padding: 6px 6px; 
+      height: auto; 
+      line-height: 0.5; 
+      border: 1px solid #292928;
+      color: #ffff;
+  }
+  #responsive-data{
+    width: 100%;
+  }
+  #responsive-data thead {
+      display: table; 
+      width: calc(100% - 4px);
+  }
 
+  #responsive-data tbody {
+      display: block; 
+      max-height: 76vh; 
+      overflow-y: scroll;
+  }
+
+  #responsive-data th, td {
+      width: 9%;
+      overflow-wrap: break-word; 
+      box-sizing: border-box;
+      font-size: 13px;
+  }
+  #responsive-data tr {
+      display: table;
+      width: 100%;
+  }
+  #responsive-data, table,  tbody{
+    border: 1px solid #292928;
+  }
+  #responsive-data table{
+      background-color: #1e1e1e;
+   
+      height: 5px;
+      padding: 10px 10px;
+  }
+  #responsive-data tbody::-webkit-scrollbar {
+    width: 4px; 
+}
+#responsive-data tbody::-webkit-scrollbar-track {
+    background: #151515;
+}
+#responsive-data tbody::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 50px; 
+}
+ .main-panel, .container-scroller, .card, .card-body, .content-wrapper{
+  overflow: hidden !important;
+ }
+ .child-a{
+  width: 5% !important;
+ }
+ .child-b{
+  width: 12% !important;
+ }
+ .child-c{
+  width: 8% !important;
+ }
+ .child-d{
+  width: 8% !important;
+ }
+ .child-e{
+  width: 8% !important;
+ }
+ .child-f{
+  width: 10% !important;
+ }
+ .child-g{
+  width: 15% !important;
+ }
+ .child-h{
+  width: 5% !important;
+ }
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
     <!-- <div class="" > -->
       <?php include 'layout/admin/sidebar.php' ?>
-      <div class="main-panel h-100">
+      <div class="main-panel ">
         <div class="content-wrapper">
           <div class="d-flex mb-2 w-10">
             <input  class="text-color searchCustomer w-100 ms-2 ps-3 searchInputs" placeholder="Search Customer"/>
@@ -208,26 +276,23 @@
           <div>
           <div class="row">
             <div>
-              <div class="card p-0 d-flex">
-                <table class="text-color table-border containerTable" style = "border: none !important">
-                  <thead>
-                    <tr style="border: none !important">
-                      <th class="text-center col-1" style="border-left: 1px solid transparent !important">No.</th>
-                      <th class="text-center col-2">Customer</th>
-                      <th class="text-center col-1">Contact</th>
-                      <th class="text-center col-2">Code/Employee ID</th>
-                      <th class="text-center col-1">Type</th>
-                      <th class="text-center col-2">Email</th>
-                      <th class="text-center col-2">Address</th>
-                      <th class="text-center col-1" style="border-right: 1px solid transparent !important">Action</th>
-                    </tr>
-                  </thead>
-                </table>
-
-                <div class="ms-1 p-0 d-flex containerTable"  style="height: 76vh; width: 100%; overflow-y: auto;">
-                  <div class="tableCustomerRow">
+              <div class="card" style = "background-color: #292928;">
+                <div class="card-body" style="height: 76vh; width: 100%; " >
+                  <div id = "responsive-data" style=" width: 100%; overflow: hidden;">
                       <?php include('errors.php'); ?>
-                      <table id="recentcustomer" class="text-color table-border" style = "width: 100%">
+                      <table  >
+                        <thead class = "adminTableHead" style ="border: 1px solid var(--primary-color) !important">
+                          <tr >
+                            <th class="text-center child-a" >No.</th>
+                            <th class="text-center child-b">Customer</th>
+                            <th class="text-center child-c">Contact</th>
+                            <th class="text-center child-d">Code/Employee ID</th>
+                            <th class="text-center child-e">Type</th>
+                            <th class="text-center child-f">Email</th>
+                            <th class="text-center child-g">Address</th>
+                            <th class="text-center child-h">Action</th>
+                          </tr>
+                        </thead>
                         <tbody id="fetchCustomer">
                             
                         </tbody>
@@ -260,8 +325,6 @@
   include('./modals/delete_modal.php');
 ?>
 <script>
-
-
   $(document.body).on('click', '.deleteCustomer', function() {
     var warningDelete = ``;
     $("#deleteProdModal").show();
@@ -370,6 +433,8 @@
   $("#pointer").html("Customers");
   $('.addCustomer').on('click', function(){
     $('#add_customer_modal').show()
+    $("#add_customer_modal input").val("");
+    $("#add_customer_modal input").attr("autocomplete", "off")
 
   var type = document.getElementById('customerType') 
   type.checked = false;

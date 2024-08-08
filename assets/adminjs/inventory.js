@@ -24,12 +24,6 @@
     }).tooltip("open");
    
     $(document).ready(function () {
-    
-        $('.container-scroller').click(function(event) {
-          if ($(event.target).is('#optionModal')) {
-              $('#optionModal').fadeOut();
-          }
-      });
       
         $("#inventory").addClass('active');
         $("#inventories").addClass('active');

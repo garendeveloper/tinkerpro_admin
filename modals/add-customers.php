@@ -197,7 +197,7 @@ input:checked + .sliderType:before {
 }
 
 input:checked + .sliderTax {
-  background-color: #00CC00;
+  background-color: var(--primary-color);
 }
 
 input:focus + .sliderTax {
@@ -255,11 +255,13 @@ input:checked + .sliderTax:before {
 
 
   .loadBalance {
-    border: 1px solid transparent;
     height: 30vh;
-    width: 28vw;
-    background: #10253F;
-    border-radius: 10px;
+    width: auto;
+    margin-left: 20px; 
+    margin-right: 20px;
+    padding: 10px;
+    background: #262626;
+    border: 1px solid #333333;
     color: var(--text-color);
   }
 
@@ -351,7 +353,7 @@ input:checked + .sliderTax:before {
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Contact</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="customerContact"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px; width:65%"><input id="customerContact"/></td>
                     </tr>
                      <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Email</td>
@@ -433,7 +435,7 @@ input:checked + .sliderTax:before {
           </div>
 
 
-          <div class="d-flex ms-3 me-3 justify-content-center loadBalance p-2">
+          <div class="d-flex loadBalance "style="">
               <div class="col-6">
                 <label for="" class="mt-2">Load Balance (Php)</label>
                 <label for="" class="mt-2">Points Earned</label>
@@ -460,7 +462,8 @@ input:checked + .sliderTax:before {
 </div>
 <script>
 
-function closeAddingModal(){
+function closeAddingModal()
+{
   $('.highlighteds').removeClass('highlighteds');
     $('#add_customer_modal').css('animation', 'slideOutRight 0.5s forwards');
     $('.customer-modal').css('animation', 'slideOutRight 0.5s forwards');
@@ -471,8 +474,6 @@ function closeAddingModal(){
         clearFields()
     });
 }
-
-
 
 function clearFields(){
  

@@ -50,7 +50,8 @@
         return $stmt; 
     }
     }
-    public function updateCustomer($formData) {
+    public function updateCustomer($formData) 
+    {
       $code = $formData['code'];
       $firstName = $formData['firstName'];
       $lastName = $formData['lastName'];
@@ -66,7 +67,6 @@
       $customerid = $formData['customerId'];
       $role = 4;
   
-      // Update the users table
       $sql = 'UPDATE users SET 
           first_name = ?,
           role_id = ?,
@@ -76,7 +76,6 @@
       $stmt = $this->connect()->prepare($sql);
       $stmt->execute([$firstName, $role, $lastName, $id]);
   
-      // Update the customer table
       $sql = 'UPDATE customer SET 
           contact = ?,
           code = ?,

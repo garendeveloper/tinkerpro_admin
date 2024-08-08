@@ -416,3 +416,28 @@ $(document).ready(function()
     toastr.success(message);
   }
 })
+
+
+$(document).click(function(event) {
+  var $target = $(event.target);
+  if (!$target.closest('#add_expense_modal').length) {
+      if ($('#add_expense_modal').is(':visible')) {
+          hide_modal();
+      }
+  }
+});
+
+
+
+function hide_modal()
+  {
+    $("#add_expense_modal").addClass('slideOutRight');
+    $(".expense_content").addClass('slideOutRight');
+    setTimeout(function () {
+      $("#add_expense_modal").removeClass('slideOutRight');
+      $("#add_expense_modal").hide();
+      $(".expense_content").removeClass('slideOutRight');
+      $(".expense_content").hide();
+    }, 100);
+    $("#searchInput").focus();
+  }

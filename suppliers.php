@@ -151,6 +151,83 @@
 
 
 
+  #responsive-data thead th,
+    #responsive-data tbody td {
+      padding: 6px 6px; 
+      height: auto; 
+      line-height: 0.5; 
+      border: 1px solid #292928;
+      color: #ffff;
+  }
+  #responsive-data{
+    width: 100%;
+  }
+  #responsive-data thead {
+      display: table; 
+      width: calc(100% - 4px);
+  }
+
+  #responsive-data tbody {
+      display: block; 
+      max-height: 76vh; 
+      overflow-y: scroll;
+  }
+
+  #responsive-data th, td {
+      width: 9%;
+      overflow-wrap: break-word; 
+      box-sizing: border-box;
+      font-size: 13px;
+  }
+  #responsive-data tr {
+      display: table;
+      width: 100%;
+  }
+  #responsive-data, table,  tbody{
+    border: 1px solid #292928;
+  }
+  #responsive-data table{
+      background-color: #1e1e1e;
+   
+      height: 5px;
+      padding: 10px 10px;
+  }
+  #responsive-data tbody::-webkit-scrollbar {
+    width: 4px; 
+}
+#responsive-data tbody::-webkit-scrollbar-track {
+    background: #151515;
+}
+#responsive-data tbody::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 50px; 
+}
+ .main-panel, .container-scroller, .card, .card-body, .content-wrapper{
+  overflow: hidden !important;
+ }
+ .child-a{
+  width: 5% !important;
+ }
+ .child-b{
+  width: 12% !important;
+ }
+ .child-c{
+  width: 10% !important;
+ }
+ .child-d{
+  width: 10% !important;
+ }
+ .child-e{
+  width: 10% !important;
+ }
+ .child-f{
+  width: 5% !important;
+ }
+ .child-g{
+  width: 5% !important;
+ }
+
+
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -182,24 +259,27 @@
           <div>
           <div class="row">
             <div>
-              <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex" style="height:76vh; width: 100%; overflow-y: auto;">
+              <div class="card" style="height:76vh; width: 100%; overflow: hidden;">
                 <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
                   <!-- <div class="productTable" > -->
-                    <table id="recentsuppliers" class="text-color table-border" style = "width: 100%;">
-                      <thead class = "adminTableHead">
-                        <th class="text-center" style="width: 2%;">No.</th>
-                        <th class="text-center" style="width: 15%;">Supplier</th>
-                        <th class="text-center" style="width: 15%;">Contact</th>
-                        <th class="text-center" style="width: 15%;">Email</th>
-                        <th class="text-center" style="width: 15%;">Company</th>
-                        <th class="text-center" style="width: 10%;">Status</th>
-                        <th class="text-center" style="width: 7%;">Action</th>
-                      </thead>
-                      <tbody id="fetchsuppliers">
-                        
-                      </tbody>
-                    </table>
+                    <div id="responsive-data" style= "overflow: hidden">
+                      <table id="recentsuppliers">
+                        <thead class = "adminTableHead">
+                          <th class="text-center child-a">No.</th>
+                          <th class="text-center child-b" >Supplier</th>
+                          <th class="text-center child-c" >Contact</th>
+                          <th class="text-center child-d" >Email</th>
+                          <th class="text-center child-e">Company</th>
+                          <th class="text-center child-f" >Status</th>
+                          <th class="text-center child-g" >Action</th>
+                        </thead>
+                        <tbody id="fetchsuppliers">
+                          
+                        </tbody>
+                      </table>
+                    </div>
+                   
                   <!-- </div> -->
                 <!-- </div> -->
               </div>
@@ -233,6 +313,23 @@
 
   $("#suppliers").addClass('active');
   $("#pointer").html("Suppliers");
+
+  $(document).click(function(event) {
+        var $target = $(event.target);
+        if (!$target.closest('.settingModal').length) {
+            if ($('.settingModal').is(':visible')) {
+                $('#add_supplier_modal').css('animation', 'slideOutRight 0.5s forwards');
+                $('.supplier-modal').css('animation', 'slideOutRight 0.5s forwards');
+                
+                $('#add_supplier_modal').one('animationend', function() {
+                  $(this).hide();
+                  $(this).css('animation', '');
+                  $('.supplier-modal').css('animation', '');
+                });
+            }
+        }
+    });
+ 
 
   function addSuppliers(){
     $('#add_supplier_modal').show()

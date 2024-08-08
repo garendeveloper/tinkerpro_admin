@@ -58,31 +58,31 @@ $("#btn_datePicker").off("click").on("click", function(){
 })
 function formatDates(dateStr) 
 {
-const parts = dateStr.split('/');
-const date = new Date(parts[2], parts[1] - 1, parts[0]);
-const options = {
-  timeZone: 'Asia/Manila',
-  year: 'numeric',
-  month: 'short',
-  day: '2-digit'
-};
-return new Intl.DateTimeFormat('en-PH', options).format(date);
+    const parts = dateStr.split('/');
+    const date = new Date(parts[2], parts[1] - 1, parts[0]);
+    const options = {
+    timeZone: 'Asia/Manila',
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit'
+    };
+    return new Intl.DateTimeFormat('en-PH', options).format(date);
 }
 function convertDateRange(dateRange) 
 {
-const [startDateStr, endDateStr] = dateRange.split(' - ');
-const startFormatted = formatDates(startDateStr);
-const endFormatted = formatDates(endDateStr);
-return `${startFormatted} - ${endFormatted}`;
-}
-$("#btn_datePeriodSelected").on("click", function(){
-var date_selected = $("#date_selected").text();
-$("#date_range").val(date_selected);
-$("#period_reports").hide();
-$("#datepicker").val(convertDateRange(date_selected))
-var selectedDate = $("#datepicker").val();
-var selectedUser = $('#user').val();
-filterTable(selectedDate, selectedUser);
+    const [startDateStr, endDateStr] = dateRange.split(' - ');
+    const startFormatted = formatDates(startDateStr);
+    const endFormatted = formatDates(endDateStr);
+    return `${startFormatted} - ${endFormatted}`;
+    }
+    $("#btn_datePeriodSelected").on("click", function(){
+    var date_selected = $("#date_selected").text();
+    $("#date_range").val(date_selected);
+    $("#period_reports").hide();
+    $("#datepicker").val(convertDateRange(date_selected))
+    var selectedDate = $("#datepicker").val();
+    var selectedUser = $('#user').val();
+    filterTable(selectedDate, selectedUser);
 })
 
 function show_response(message, type) 
@@ -162,6 +162,8 @@ function filterTable(selectedDates, selectedUser) {
       filterDateRange(selectedDates, selectedUser);
   }
 }
+
+
 
 function filterSingleDate(selectedDate, selectedUser) {
     var date = new Date(selectedDate);
