@@ -75,7 +75,7 @@
         max-width: 100%; 
     }
     
-    /* #FF6900; */
+    /* var(--primary-color); */
 .tableCard{
    
     height: auto; 
@@ -87,6 +87,7 @@
     padding: 0; 
     margin: 0; 
     height: auto; 
+    border: 1px solid #D3D3D3;
 }
 
 .td-style{
@@ -95,6 +96,7 @@
 }
 .td-bg{
     background-color: #404040;
+   
 }
 .td-height input {
   /* border: 1px solid #000; */
@@ -142,7 +144,7 @@
 .btnCustom{
   font-size: 11px;
   font-family: Century Gothic;
-  color:#FF6900;
+  color:var(--primary-color);
   border-radius: 5px;
 }
 
@@ -267,7 +269,7 @@ input:checked + .slider:before {
 }
 
 input:checked + .sliderOtherCharges {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .sliderOtherCharges {
@@ -289,7 +291,7 @@ input:checked + .sliderOtherCharges:before {
 }
 
 .sliderOtherCharges.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 .displayReceipt {
   position: relative;
@@ -333,7 +335,7 @@ input:checked + .sliderOtherCharges:before {
 }
 
 input:checked + .spanDisplayReceipt {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .spanDisplayReceipt {
@@ -355,7 +357,7 @@ input:checked + .spanDisplayReceipt:before {
 }
 
 .spanDisplayReceipt.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 .serviceCharge {
@@ -400,7 +402,7 @@ input:checked + .spanDisplayReceipt:before {
 }
 
 input:checked + .sliderServiceCharges {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .sliderServiceCharges {
@@ -422,7 +424,7 @@ input:checked + .sliderServiceCharges:before {
 }
 
 .sliderServiceCharges.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 /* new */
@@ -468,7 +470,7 @@ input:checked + .sliderServiceCharges:before {
 }
 
 input:checked + .spanDisplayServiceChargeReceipt {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .spanDisplayServiceChargeReceipt {
@@ -490,7 +492,7 @@ input:checked + .spanDisplayServiceChargeReceipt:before {
 }
 
 .spanDisplayServiceChargeReceipt.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .taxVat {
@@ -535,7 +537,7 @@ input:checked + .spanDisplayServiceChargeReceipt:before {
 }
 
 input:checked + .taxVatSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .taxVatSpan {
@@ -557,7 +559,7 @@ input:checked + .taxVatSpan:before {
 }
 
 .taxVatSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .includesTaxVat {
@@ -602,7 +604,7 @@ input:checked + .taxVatSpan:before {
 }
 
 input:checked + .spanTaxVat {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .spanTaxVat {
@@ -624,7 +626,7 @@ input:checked + .spanTaxVat:before {
 }
 
 .spanTaxVat.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .showIncludesTaxVat {
@@ -669,7 +671,7 @@ input:checked + .spanTaxVat:before {
 }
 
 input:checked + .spanShowTaxVat {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .spanShowTaxVat {
@@ -691,7 +693,7 @@ input:checked + .spanShowTaxVat:before {
 }
 
 .spanShowTaxVat.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .discount {
@@ -736,7 +738,7 @@ input:checked + .spanShowTaxVat:before {
 }
 
 input:checked + .discountSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .discountSpan {
@@ -758,7 +760,7 @@ input:checked + .discountSpan:before {
 }
 
 .discountSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 /* new */
@@ -835,11 +837,11 @@ font-weight: bold;
   border-color: #595959;
 }
 .generate:hover{
-  background-color: #FF6900;
+  background-color: var(--primary-color);
   color: #fefefe;
 }
 .btnCustom:hover {
-    background-color: #FF6900;
+    background-color: var(--primary-color);
     color: #fefefe;
 
 }
@@ -850,7 +852,7 @@ font-weight: bold;
   border-color: #595959;
 }
 .addCategory:hover{
-  background-color: #FF6900;
+  background-color: var(--primary-color);
   color: #fefefe;
          
 }.button-container {
@@ -955,7 +957,7 @@ input:checked + .sliderbom:before {
   margin-top: 20px
 }
 .btns-bom:hover{
-  background-color: #FF6900;
+  background-color: var(--primary-color);
   outline: 0;
 }
 #myTable {
@@ -1051,7 +1053,7 @@ input:checked + .sliderbom:before {
 }
 
 input:checked + .warrantySpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .warrantySpan {
@@ -1073,7 +1075,7 @@ input:checked + .warrantySpan:before {
 }
 
 .warrantySpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 /* new */
@@ -1119,7 +1121,7 @@ input:checked + .warrantySpan:before {
 }
 
 input:checked + .multipleSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .multipleSpan {
@@ -1141,7 +1143,7 @@ input:checked + .multipleSpan:before {
 }
 
 .multipleSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 .stockeable {
@@ -1186,7 +1188,7 @@ input:checked + .multipleSpan:before {
 }
 
 input:checked + .stockeableSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .stockeableSpan {
@@ -1208,7 +1210,7 @@ input:checked + .stockeableSpan:before {
 }
 
 .stockeableSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 /* new */
 
@@ -1254,7 +1256,7 @@ input:checked + .stockeableSpan:before {
 }
 
 input:checked + .warningSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .warningSpan {
@@ -1276,7 +1278,7 @@ input:checked + .warningSpan:before {
 }
 
 .warningSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 .imageButtonDiv{
@@ -1324,6 +1326,7 @@ input:checked + .warningSpan:before {
 }
 
 
+
 </style>
 
 <div class="modal" id="add_products_modal" tabindex="0">
@@ -1332,7 +1335,7 @@ input:checked + .warningSpan:before {
       <!-- <div id="scrollable-data"> -->
       <div class="modal-title">
         <div style="margin-top: 30px; margin-left: 20px">
-           <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">Add New Product</h5>
+           <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:var(--primary-color);">Add New Product</h5>
         </div>
         <div class="warning-container">
           <div class="tableCard">
@@ -1614,7 +1617,7 @@ input:checked + .warningSpan:before {
                  <button class="btnCustom addImage" id="addImage">+ Add Image</button>
                 
           </div> 
-          <h4 class="descripTion"  style="color:#FF6900;">Description</h4> 
+          <h4 class="descripTion"  style="color:var(--primary-color);">Description</h4> 
           <div style="margin-left: 20px;width: 100%; margin-right: 20px">
             <textarea  id="description" style="width: 92%; height: 120px; background-color: transparent; color:#fefefe" name="description"  class="description"></textarea>
           </div>
@@ -1737,7 +1740,7 @@ function toggleShowText(checkbox) {
     var multiLbl = document.getElementById('multiLbl');
     var addMultiple = document.getElementById('addMultiple')
     if(checkbox.checked){
-      multiLbl.style.color = "#FF6900";
+      multiLbl.style.color = "var(--primary-color)";
       addMultiple.disabled = false;
     }else{
       multiLbl.style.color = "";
@@ -1760,7 +1763,7 @@ function toggleShowText(checkbox) {
       var otherChargesDisplayOnReceipt = document.getElementById('otherChargesDisplayOnReceipt')
       var spanDisplayReceipt = checkbox.parentNode.querySelector('.spanDisplayReceipt'); 
       if (checkbox.checked) {
-        otherChargesDisplayOnReceipt.style.color = "#FF6900";
+        otherChargesDisplayOnReceipt.style.color = "var(--primary-color)";
             } else {
               otherChargesDisplayOnReceipt.style.color = "#FFFFFF";  
             }
@@ -1798,7 +1801,7 @@ function toggleShowText(checkbox) {
     var otherServiceChargesDisplayOnReceipt = document.getElementById('displayOnReceiptServiceCharge')
     var spanDisplayServiceReceipt = checkbox.parentNode.querySelector('.spanDisplayServiceChargeReceipt'); 
       if (checkbox.checked) {
-         otherServiceChargesDisplayOnReceipt.style.color="#FF6900"
+         otherServiceChargesDisplayOnReceipt.style.color="var(--primary-color)"
             } else {
               otherServiceChargesDisplayOnReceipt.style.color="#FFFFFF"
             }
@@ -1822,7 +1825,7 @@ function toggleShowText(checkbox) {
     var taxLbl = document.getElementById('showTaxVatLbl')
     var spanDisplayTaxVat = checkbox.parentNode.querySelector('.spanShowTaxVat'); 
     if (checkbox.checked) {
-         taxLbl.style.color="#FF6900"
+         taxLbl.style.color="var(--primary-color)"
             } else {
               taxLbl.style.color="#FFFFFF"
             }
@@ -2253,7 +2256,7 @@ service.addEventListener('change', function() {
         // Disable tax checkboxes
         taxCheckbox.disabled = true;
         showTaxCheckbox.disabled = true;
-        taxLabel.style.color = '#FF6900';
+        taxLabel.style.color = 'var(--primary-color)';
     } else {
         var originalPrice = sellingPrice / (1 + serviceCharge);
         document.getElementById('selling_price').value = parseFloat(0);
@@ -2289,8 +2292,8 @@ otherCharges.addEventListener('change', function() {
         taxCheckbox.disabled = true;
         showTaxCheckbox.disabled = true;
         service.disabled = true
-        taxLabel.style.color = '#FF6900';
-        serviceLabel.style.color = '#FF6900';
+        taxLabel.style.color = 'var(--primary-color)';
+        serviceLabel.style.color = 'var(--primary-color)';
     } else {
         var originalPrice = sellingPrice / (1 + otherCharge);
         document.getElementById('selling_price').value = parseFloat(0);

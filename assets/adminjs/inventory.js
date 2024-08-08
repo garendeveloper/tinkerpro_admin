@@ -632,9 +632,9 @@
             $("#lossDamageInfoID").val(infoData['id']);
             $("#date_damage").val(date_format(infoData['date_transact']));
             $("#ld_reason").val(infoData['reason']);
-            $("#footer_lossand_damages #total_qty").html(infoData['total_qty']);
-            $("#footer_lossand_damages #total_cost").html("₱ " + infoData['total_cost']);
-            $("#footer_lossand_damages #overall_total_cost").html("₱ " + infoData['over_all_total_cost']);
+            $("#footer_lossand_damages #total_qty").html(addCommasToNumber(infoData['total_qty']));
+            $("#footer_lossand_damages #total_cost").html("₱ " + addCommasToNumber(infoData['total_cost']));
+            $("#footer_lossand_damages #overall_total_cost").html("₱ " + addCommasToNumber(infoData['over_all_total_cost']));
             $("#loss_and_damage_note").val(infoData['note']);
             var rows = [];
             for (var i = 0; i < ld_data.length; i++) {

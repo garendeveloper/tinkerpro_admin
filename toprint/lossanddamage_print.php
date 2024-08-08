@@ -150,9 +150,9 @@
         $html .= '<tr>
                     <td style = "width: 4%; text-align: center; ">'.$counter.'</td>
                     <td style = "width: 36%">'.$items[$i][0].'</td>
-                    <td style = "text-align: right">'.$items[$i][1].'</td>
-                    <td style = "text-align: right">'.$items[$i][2].'</td>
-                    <td style = "text-align: right">'.$items[$i][3].'</td>
+                    <td style = "text-align: right">'.number_format($items[$i][1],2).'</td>
+                    <td style = "text-align: right">'.number_format($items[$i][2],2).'</td>
+                    <td style = "text-align: right">'.number_format($items[$i][3],2).'</td>
                 </tr>';
             $counter++; 
     }
@@ -160,9 +160,9 @@
             <tfoot>
                 <tr>
                     <td style = "width: 40%; text-align: left; " colspan = "2">Total</td>
-                    <td style = "text-align: right">'.$_GET['total_qty'].'</td>
-                    <td style = "text-align: right">'.$_GET['total_cost'].'</td>
-                    <td style = "text-align: right">'.$_GET['overalltotal_cost'].'</td>
+                    <td style = "text-align: right">'.number_format($_GET['total_qty'],2).'</td>
+                    <td style = "text-align: right">'.number_format($_GET['total_cost'],2).'</td>
+                    <td style = "text-align: right">'.number_format($_GET['overalltotal_cost'],2).'</td>
                 </tr>
             </tfoot>
         </table>';

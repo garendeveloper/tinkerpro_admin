@@ -273,11 +273,11 @@ class ExpenseFacade extends DBConnection
     }
     public function save_expense($formdata)
     {
-        $isProductIDExist = $formdata['isProductIDExist'] != 0;
+        $isProductIDExist = isset($formdata['isProductIDExist']) && $formdata['isProductIDExist'] != 0;
         $landingCostValues = null;
-        $isToggleLandingCost = isset($formdata['toggleLandingCost']) ? 1 : 0;
-        if($isToggleLandingCost === 1) $landingCostValues = $formdata['landingCostValues'];
-
+        $isToggleLandingCost = isset($formdata['toggleLandingCost']) ? $landingCostValues = $formdata['landingCostValues'] : $landingCostValues = null;
+        $isToggleLandingCostValue = $isToggleLandingCost ? 1 : 0;
+         
         $response = [
             'success' => false,
             'message'=> '',
@@ -297,18 +297,15 @@ class ExpenseFacade extends DBConnection
 
         if($isProductIDExist)
         {
-            if($isToggleLandingCost === 1)
-            {
-                $id = $formdata['expense_id'];
-   
-                $sql = $this->connect()->prepare("
-                    UPDATE expenses
-                    SET landingCost = ?, isLandingCostEnabled = ?
-                    WHERE id = ?
-                ");
-    
-                $sql->execute([$landingCostValues, $isToggleLandingCost, $id]);
-            }
+            $id = $formdata['expense_id'];
+
+            $sql = $this->connect()->prepare("
+                UPDATE expenses
+                SET landingCost = ?, isLandingCostEnabled = ?
+                WHERE id = ?
+            ");
+
+            $sql->execute([$landingCostValues, $isToggleLandingCostValue, $id]);
             $response['message'] = "Expense has been successfully updated!";
             $response['success'] = true;
         }
@@ -343,12 +340,17 @@ class ExpenseFacade extends DBConnection
                 $invoice_number = $formdata['invoice_number'];
                 $price = $response['data']['price'];
                 $discount = $formdata['discount'];
-                $total_amount = $formdata['total_amount'];
                 $description = $formdata['description'];
-                $taxable_amount = $formdata['vatable_amount'];
+        
                 $isTaxable= $formdata['isVatable'];
                 $date_of_transaction = DateTime::createFromFormat('m-d-Y', $response['data']['date_of_transaction'])->format('Y-m-d');
                 $invoice_photo_url = $response['data']['image_url'];
+
+                $cleanedTotalAmount = str_replace(',', '', $formdata['total_amount']);
+                $total_amount = (float)$cleanedTotalAmount;
+                $cleanedVatableAmount = str_replace(',', '', $formdata['vatable_amount']);
+                $taxable_amount = (float) $cleanedVatableAmount;
+
                 if(empty($formdata['expense_id']))
                 {
                     $isInvoiceNumberExist_SQL = $this->connect()->prepare("SELECT * FROM expenses WHERE invoice_number = :invoice_number");

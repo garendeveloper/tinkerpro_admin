@@ -155,7 +155,7 @@
                         <th  class = "text-right totalLandedCost" style="background-color: #262626; border: 1px solid #262626;" ></th>
                     </tr>
                     <tr style="background-color: #262626; font-size: 12px;">
-                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Overall Total:</th>
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Overall Expense Total:</th>
                         <th  class = "text-right overallTotal" style="background-color: #262626; border: 1px solid #262626;" ></th>
                     </tr>
                 </tbody>
