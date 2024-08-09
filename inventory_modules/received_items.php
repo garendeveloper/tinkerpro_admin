@@ -390,6 +390,8 @@
             else {
                 $("#tbl_receivedItems #receive_item").prop("checked", false);
                 $('#tbl_receivedItems tbody tr').each(function() {
+                    var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;' value = ''  placeholder='QTY'></input>";
+                    $(this).find('td').eq(3).empty().append(input);
                     $(this).find('td').eq(3).find('#qty_received').val('');
                 });
             }
@@ -580,7 +582,7 @@
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(4)', function () {
             var text = $(this).text();
             if (text !== "") {
-                var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;'  placeholder='QTY'></input>";
+                var input = "<input id  = 'qty_received' style = 'width: 50px;text-align:center; height: 20px;' value = ''  placeholder='QTY'></input>";
                 $(this).empty().append(input);
             }
         });

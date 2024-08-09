@@ -10495,3 +10495,13 @@
 2024-08-09 12:13:27 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000012 Supplier: GAISANO 
 2024-08-09 12:13:42 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000012 Supplier: GAISANO 
 2024-08-09 12:13:56 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000012 Supplier: GAISANO 
+2024-08-09 12:20:21 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000013 Supplier: GAISANO 
+2024-08-09 13:25:10 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 13:35:09 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer customer 0 012 
+2024-08-09 13:54:03 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer customer ako thailand 
+2024-08-09 13:57:28 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer CustomerD Data 
+2024-08-09 13:58:52 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer Hot mama Chup2x 
+2024-08-09 14:01:33 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer sa sdf 
+2024-08-09 14:01:41 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer asdf asdfasdf 
+2024-08-09 14:02:51 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer kini last name 
+2024-08-09 14:04:09 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer DATA CUSTOMER 33 

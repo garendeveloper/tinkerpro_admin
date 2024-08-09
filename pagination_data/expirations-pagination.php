@@ -55,6 +55,7 @@
                                   <th>Product</th>
                                   <th>Barcode</th>
                                   <th style="text-align: center">Expiration Date</th>
+                                <th style="text-align: center">QTY</th>
                                   <th style="text-align: center; background-color: red">Days Remaining</th>
                               </tr>
                           </thead>

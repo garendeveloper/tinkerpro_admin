@@ -441,10 +441,9 @@ input:checked + .sliderTax:before {
                     <tr>
                         <td id="roleNAME" class="td-height text-custom td-style td-bg">Role<sup>*</sup></td>
                         <td class="td-height text-custom-data"> <div class="dropdown custom-input">
-                          <input class="custom-input" readonly hidden name="customer_id" id="customer_id" style="width: 125px"/>
-                        
-                            <input class="custom-input" name="customer_type" id="customer_type" style="width: 180px" autocomplete = "off" readonly/>
-                            <button name="btnSPDropdown" id="btnSPDropdown" class="custom-btn">
+                            <input class="custom-input" readonly hidden name="role" id="role" style="width: 180px"/>
+                            <input class="custom-input" name="roleName" id="roleName" style="width: 180px" placeholder = "Enter a user to add / select" autocomplete = "off" />
+                            <button name="roleBtn" id="roleBtn" class="custom-btn">
                                 <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -457,9 +456,9 @@ input:checked + .sliderTax:before {
                             <div class="dropdown-content" id="dropdownContent">
                                 <?php
                                     $userFacade = new UserFacade();
-                                    $roleTypes = $userFacade->getRoleType();
+                                    $roleTypes = $userFacade->getAllDiscountUsers();
                                     while ($row = $roleTypes->fetch(PDO::FETCH_ASSOC)) {
-                                        echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['role_name']) . '</a>';
+                                        echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['name']) . '</a>';
                                     }
                                 ?>
                             </div>
@@ -572,22 +571,7 @@ input:checked + .sliderTax:before {
 </div>
 <script>
 
-$("#soloParentToggle").on("change", function(){
-  var isChecked = $(this).prop("checked");
-  isChecked ? $(".soloParentDiv").show() : $(".soloParentDiv").hide()
-})
 
-  $("#btnSPDropdown").on("click", function(event) {
-    event.stopPropagation();
-    $(".dropdownContent").toggleClass("show");
-  });
-
-  $(".dropdownContent a").on("click", function(event) {
-    event.preventDefault();
-    var value = $(this).data("value");
-    var roleName = $(this).text();
-    $(".dropdownContent").removeClass("show")
-  });
 
 function closeAddingModal()
 {
@@ -604,10 +588,20 @@ function closeAddingModal()
 
 
 
+// Role dropdown
+document.getElementById("roleBtn").addEventListener("click", function() {
+  var dropdownContent = document.getElementById("dropdownContent");
+  if (dropdownContent.style.display === "block") {
+    dropdownContent.style.display = "none";
+  } else {
+    dropdownContent.style.display = "block";
+  }
+});
+
 document.addEventListener("click", function(event) {
   var dropdownContent = document.getElementById("dropdownContent");
-  var soloParentToggle = document.getElementById("soloParentToggle");
-  if (event.target !== dropdownContent && event.target !== soloParentToggle && dropdownContent.style.display === "block") {
+  var roleBtn = document.getElementById("roleBtn");
+  if (event.target !== dropdownContent && event.target !== roleBtn && dropdownContent.style.display === "block") {
     dropdownContent.style.display = "none";
   }
 });
@@ -617,13 +611,21 @@ document.querySelectorAll("#dropdownContent a").forEach(item => {
     event.preventDefault(); 
     var value = this.getAttribute("data-value");
     var roleName = this.textContent;
+   
+
     document.getElementById("role").value = value;
     document.getElementById("roleName").value = roleName;
     document.getElementById("dropdownContent").style.display = "none";
+
+    if (roleName === 'SP') {
+      $(".soloParentDiv").show();
+    } else {
+      $(".soloParentDiv").hide();
+    }
   });
 });
 
-document.getElementById("soloParentToggle").addEventListener("click", function(event) {
+document.getElementById("roleBtn").addEventListener("click", function(event) {
   event.stopPropagation(); 
 });
 
@@ -690,8 +692,9 @@ function addCustomer(){
    var type = document.getElementById('customerType').checked ? 1 : 0;
    var taxExempt = document.getElementById('taxExempt').checked ? 1 : 0;
    var address = document.getElementById('address').value;
-   var isSoloParent = $("#soloParentToggle").prop("checked") ? 1 : 0;
-  alert(isSoloParent)
+   var role = $("#role").val();
+   var roleName = $("#roleName").val() === 4;
+ 
     if (firstname == '') {
         firstNameTd.style.color = 'red';
     } else {
@@ -710,16 +713,16 @@ function addCustomer(){
         var childName = "";
         var childBirth = "";
         var childAge = ""; 
-        if(isSoloParent === 1)
-        {
-          childName = $("#childName").val();
-          childBirth = $("#childBirth").val();
-          childAge = $("#childAge").val();
-        }
+
+
+        childName = $("#childName").val();
+        childBirth = $("#childBirth").val();
+        childAge = $("#childAge").val();
+
+        formData.append("role", role);
         formData.append("childName", childName);
         formData.append("childBirth", childBirth);
         formData.append("childAge", childAge);
-        formData.append("isSoloParent", isSoloParent)
         formData.append("firstName", firstname);
         formData.append("lastName", lastname);
         formData.append("customercontact", customercontact);
