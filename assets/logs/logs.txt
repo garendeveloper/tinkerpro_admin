@@ -10518,3 +10518,197 @@
 2024-08-09 15:13:09 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer CustomerD Data 
 2024-08-09 15:16:14 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
 2024-08-09 15:16:28 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
+2024-08-09 15:55:23 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000011 Supplier: GAISANO 
+2024-08-09 15:57:01 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000018 Amount:₱ 3,242.00 
+2024-08-09 15:57:25 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000018 Supplier: GAISANO 
+2024-08-09 16:39:35 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 16:51:45 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 16:54:08 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 16:56:42 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 16:58:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated THE BAR DRY GIN 700ML Barcode #:65889 
+2024-08-09 17:04:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:07:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR LEM&KAL 380G-OYT Barcode #:557976 
+2024-08-09 17:07:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR LEM&KAL 380G-OYT Barcode #:557976 
+2024-08-09 17:07:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR NATURE FRESH 130G-OYT Barcode #:4902430431156 
+2024-08-09 17:07:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE FOODS HOTDOG COCKTAIL Barcode #:4808887300277 
+2024-08-09 17:08:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE FOODS LUNCHEON MEAT 165G Barcode #:4808887030204 
+2024-08-09 17:08:07 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:08:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE FOODS LUNCHEON MEAT 230G Barcode #:4808887030013 
+2024-08-09 17:08:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE FOODS LUNCHEON MEAT 350G Barcode #:4808887030778 
+2024-08-09 17:08:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE FOODS STAR CHICKEN NUGGETS 150G. Barcode #:870418 
+2024-08-09 17:08:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE FOODS TJ HOTDOG REG. 230G. Barcode #:4808887300086 
+2024-08-09 17:08:35 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:08:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE FOODS TJ REG. 500G. Barcode #:4808887300093 
+2024-08-09 17:09:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR NATURE FRESH 380G-OYT Barcode #:4902430278096 
+2024-08-09 17:10:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE MINERAL OIL Barcode #:193676 
+2024-08-09 17:10:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE MURIATIC 960ML(CERES) Barcode #:258727 
+2024-08-09 17:11:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE SOFT BATHROOM TISSUE Barcode #:866685 
+2024-08-09 17:11:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR ORIG SCNT 130G-OYT Barcode #:4902430431149 
+2024-08-09 17:12:30 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:12:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE SOFT COTTON BALLS 150S Barcode #:916398 
+2024-08-09 17:12:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURE SOFT COTTON BALLS 50 BALLS Barcode #:903290 
+2024-08-09 17:13:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURES FOODS VIENNA SAUSAGE 230G. Barcode #:4808887000016 
+2024-08-09 17:13:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURESOFT COTTON 100G Barcode #:611401 
+2024-08-09 17:14:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURITY ABSORBENT COTTON 10 GRAMS Barcode #:311208 
+2024-08-09 17:14:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURITY ABSORBENT COTTON 10G Barcode #:745368 
+2024-08-09 17:14:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURITY COTTON 45G Barcode #:760359 
+2024-08-09 17:14:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR W/DOWNY 130G-OYT Barcode #:4902430411530 
+2024-08-09 17:14:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURITY COTTON 90G Barcode #:868174 
+2024-08-09 17:14:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURITY COTTON BALLS 140S Barcode #:694437 
+2024-08-09 17:14:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PURITY COTTON BUDS 200S Barcode #:59792 
+2024-08-09 17:15:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated push pin tm 30pcs pack Barcode #:946461 
+2024-08-09 17:15:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PVC CLAMP # 1/2 Barcode #:930937 
+2024-08-09 17:15:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PYRETHRIN LICEALIZ 10ML Barcode #:803744 
+2024-08-09 17:15:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OAT CEREAL 29G Barcode #:318568 
+2024-08-09 17:15:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OAT CEREAL CHOCO 29G Barcode #:729832 
+2024-08-09 17:15:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS BANANA BITES 35G Barcode #:254047 
+2024-08-09 17:16:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS BNNA&HNEY 200G Barcode #:4800274312009 
+2024-08-09 17:16:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS BNNA&HNEY 33G Barcode #:777872 
+2024-08-09 17:16:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR W/DOWNY 380G-OYT Barcode #:4902430411509 
+2024-08-09 17:16:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS BNNA&HNEY 400G Barcode #:717080 
+2024-08-09 17:16:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS CALDO 28G Barcode #:89408 
+2024-08-09 17:16:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS CHOCO 200G Barcode #:4800274332007 
+2024-08-09 17:16:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS CHOCO 33G Barcode #:4800274203512 
+2024-08-09 17:17:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS CHOCO 400G Barcode #:985822 
+2024-08-09 17:17:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS INSTNT (CHOCO) Barcode #:833562 
+2024-08-09 17:17:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS INSTNT (MENUDO) Barcode #:199859 
+2024-08-09 17:17:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS INSTNT FRUIT&NUTS 35G Barcode #:60276 
+2024-08-09 17:17:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS INSTNT ORIG 200G Barcode #:9556174902233 
+2024-08-09 17:17:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS INSTNT ORIG 33G Barcode #:637393 
+2024-08-09 17:18:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS INSTNT ORIG 400G Barcode #:9556174902257 
+2024-08-09 17:18:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS INSTNT ORIG 800G Barcode #:4800274080014 
+2024-08-09 17:18:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS W/MILK 200G Barcode #:969000 
+2024-08-09 17:18:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS W/MILK 400G Barcode #:674477 
+2024-08-09 17:18:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS W/MILK 40G Barcode #:190267 
+2024-08-09 17:19:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR W/SAFEGUARD 130G-OYT Barcode #:310067 
+2024-08-09 17:19:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS W/MILK 500G Barcode #:4800274600021 
+2024-08-09 17:20:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUAKER OATS W/MILK 800G BLUE Barcode #:94072 
+2024-08-09 17:20:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUEEN BAKING POWDER 100G Barcode #:156271 
+2024-08-09 17:20:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUEEN BAKING POWDER 50G Barcode #:684899 
+2024-08-09 17:20:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUEEN BAKING SODA 125G Barcode #:4800300300017 
+2024-08-09 17:21:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUEEN BAKING SODA 250G Barcode #:4800300300024 
+2024-08-09 17:21:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUEEN BAKING SODA 500G Barcode #:4800300300031 
+2024-08-09 17:21:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated QUIZ PAD 1/2 LENGTHWISE 60L. Barcode #:534821 
+2024-08-09 17:22:21 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:22:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RACUMIN READY-MADE BAIT 200G Barcode #:821824 
+2024-08-09 17:23:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RACUMIN READY-MADE-BAIT 50G Barcode #:4801962203036 
+2024-08-09 17:23:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RACUMIN READY-MATE BAIT 100G Barcode #:4801962203111 
+2024-08-09 17:23:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RACUMIN TRACKING POWDER 20G Barcode #:902759 
+2024-08-09 17:23:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR W/SAFEGUARD 380G-OYT Barcode #:835958 
+2024-08-09 17:23:45 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:24:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN APPLE PUNCH 8ML Barcode #:859103 
+2024-08-09 17:24:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN ASSTD COLOR 8ML Barcode #:466057 
+2024-08-09 17:24:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 47G Barcode #:331535 
+2024-08-09 17:24:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN BLACK OUT 8ML Barcode #:800565 
+2024-08-09 17:25:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN BLACK WIDOW 8ML Barcode #:955583 
+2024-08-09 17:25:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN BLUE GREEN 8ML Barcode #:831882 
+2024-08-09 17:26:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 47G 1/2DZ Barcode #:13896 
+2024-08-09 17:26:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN BLUE SPORT 8ML Barcode #:128681 
+2024-08-09 17:26:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 47G 1DZ-OYT Barcode #:89665 
+2024-08-09 17:26:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN EAGLES 8ML Barcode #:443187 
+2024-08-09 17:27:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN EXOTIC PLUM 8ML Barcode #:406829 
+2024-08-09 17:27:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:27:50 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:28:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 74G Barcode #:212834 
+2024-08-09 17:29:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated EIGHT O CLOCK DALANDAN 25G Barcode #:947376 
+2024-08-09 17:29:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN MARUM RIVERA 8ML Barcode #:391230 
+2024-08-09 17:29:33 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000007 Date: Aug 09 24 Total Amount₱ 70.00 
+2024-08-09 17:29:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAIN MOON SILVER 8ML Barcode #:378841 
+2024-08-09 17:29:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 74G 1/2DZ Barcode #:406637 
+2024-08-09 17:29:57 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000008 Date: Aug 09 24 Total Amount₱ 2,954.47 
+2024-08-09 17:32:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 74G 1DZ-OYT Barcode #:764190 
+2024-08-09 17:33:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAINBOW ASPEN NOTEBOOK Barcode #:413849 
+2024-08-09 17:33:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAINBOW MANGO PUDDING 12S Barcode #:18632 
+2024-08-09 17:33:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAISINS SEVILLA 30G. Barcode #:845796 
+2024-08-09 17:33:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 47G 1DZ-OYT Barcode #:89665 
+2024-08-09 17:33:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM ALL PURPOSE FLOUR 200G Barcode #:314078 
+2024-08-09 17:34:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM ALL PURPOSE FLOUR 400G Barcode #:665471 
+2024-08-09 17:34:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM BAKING SODA 125G Barcode #:64794 
+2024-08-09 17:34:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM BAKING SODA 250G Barcode #:898900 
+2024-08-09 17:34:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM BBQ MARINADE 150ML Barcode #:527470 
+2024-08-09 17:34:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM BLACK BEANS 100G Barcode #:4800017927408 
+2024-08-09 17:34:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 74G Barcode #:212834 
+2024-08-09 17:35:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM BREAD CRUMBS 100G Barcode #:490674 
+2024-08-09 17:35:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM BREAD CRUMBS 230G. Barcode #:544657 
+2024-08-09 17:35:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW FANTASY 47G 1/2DZ Barcode #:13896 
+2024-08-09 17:35:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM BREAD CRUMBS 500G Barcode #:929209 
+2024-08-09 17:35:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM CORNSTARCH 1KG Barcode #:859149 
+2024-08-09 17:35:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM CORNSTARCH 200GM Barcode #:595060 
+2024-08-09 17:35:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM CORNSTARCH 400G Barcode #:928865 
+2024-08-09 17:35:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM CREAM STYLE CORN 410G Barcode #:588770 
+2024-08-09 17:35:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM DESICATE COCONUT 200G Barcode #:145169 
+2024-08-09 17:36:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM DESICATED CCNUT 100G Barcode #:446034 
+2024-08-09 17:36:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM DESSICATED COCONUT 500G Barcode #:286195 
+2024-08-09 17:36:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM DRY PEAS 155G Barcode #:4800017905604 
+2024-08-09 17:36:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM ELBOW MACARONI 400G Barcode #:4800017909701 
+2024-08-09 17:36:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM GREEN PEAS 100G Barcode #:4800017900203 
+2024-08-09 17:36:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM GREEN PEAS 225G Barcode #:4800017905208 
+2024-08-09 17:36:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM GREEN PEAS 450G Barcode #:4800017905505 
+2024-08-09 17:37:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM KAONG ?GREEN 120.Z Barcode #:385125 
+2024-08-09 17:37:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM OYSTER SAUCE 150ML Barcode #:433742 
+2024-08-09 17:37:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PARTY PACK 900G Barcode #:860923 
+2024-08-09 17:37:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:37:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW G/BLOOM 50G Barcode #:25762 
+2024-08-09 17:37:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PARTY PACK ITALIAN Barcode #:647400 
+2024-08-09 17:37:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PASTA 450G Barcode #:968306 
+2024-08-09 17:37:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PICKLE RELISH 135G Barcode #:4800017934604 
+2024-08-09 17:38:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PICKLE WHOLE 270G Barcode #:4800017933201 
+2024-08-09 17:38:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PORK & BEANS 100G Barcode #:640025 
+2024-08-09 17:38:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PORK & BEANS 165G Barcode #:803415 
+2024-08-09 17:38:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PORK & BEANS 220G Barcode #:911083 
+2024-08-09 17:38:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM PURE CORN STARCH 75G Barcode #:348811 
+2024-08-09 17:38:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM RAISINS 100G Barcode #:4800017917102 
+2024-08-09 17:38:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM RAISINS 200G Barcode #:35332 
+2024-08-09 17:38:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW G/BLOOM 50G 1/2DZ Barcode #:601040 
+2024-08-09 17:38:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM RAISINS 30G Barcode #:469681 
+2024-08-09 17:38:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM RAISINS 50G Barcode #:665741 
+2024-08-09 17:39:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM SALAD MACARON 400G Barcode #:236127 
+2024-08-09 17:39:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM SWEET PICKLE RELISH 160G Barcode #:855394 
+2024-08-09 17:39:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM TOMATO PASTE 150G Barcode #:4800017938107 
+2024-08-09 17:39:17 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:39:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM TROPICAL FRUIT 3.06KGS. Barcode #:552299 
+2024-08-09 17:40:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM WHOLE KERNEL CORN 410G Barcode #:4800017999801 
+2024-08-09 17:40:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW G/BLOOM 50G 1DZ-OYT Barcode #:712632 
+2024-08-09 17:40:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM WHOLE MUSHROOMS 400G Barcode #:856683 
+2024-08-09 17:40:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM WHOLE PICKLES 270G Barcode #:382998 
+2024-08-09 17:40:17 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:40:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RAM YOUNG CORN 410G Barcode #:644548 
+2024-08-09 17:40:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REAL ME CHARGER Barcode #:40862 
+2024-08-09 17:40:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO BISKARTE GATAS Barcode #:138280 
+2024-08-09 17:40:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO BISKARTE KESO Barcode #:775450 
+2024-08-09 17:40:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO BISKARTE MANTIKILYA Barcode #:462411 
+2024-08-09 17:40:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO BUTTER SANDWICH-REB Barcode #:4800092113277 
+2024-08-09 17:41:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CHOCO SANDWICH MENUDO-REB Barcode #:82292 
+2024-08-09 17:41:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CHOCO SANDWICH-REB Barcode #:4800092110030 
+2024-08-09 17:41:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO COMBI CREAMY MILK (MENUDO)-REB Barcode #:874718 
+2024-08-09 17:41:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CRACKERS 330G 1PACK-REB Barcode #:4800092111822 
+2024-08-09 17:41:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CRACKERS 33G-REB Barcode #:802409 
+2024-08-09 17:41:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CRACKERS MENUDO-REB Barcode #:951742 
+2024-08-09 17:41:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CRACKERS PLAIN 20S Barcode #:4800092115349 
+2024-08-09 17:41:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW G/BLOOM 74G Barcode #:362791 
+2024-08-09 17:42:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CRACKERS W/ HONEY Barcode #:4800092115660 
+2024-08-09 17:42:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CREAM SANDWICH(PACK)-REB Barcode #:4800092110016 
+2024-08-09 17:42:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO CREAM SANDWICH-REB Barcode #:57246 
+2024-08-09 17:42:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO GRAHAMS 200G Barcode #:669509 
+2024-08-09 17:42:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO MARIE GOLD 1PACK-REB Barcode #:4800092111228 
+2024-08-09 17:42:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO MARIE GOLD-REB Barcode #:497555 
+2024-08-09 17:42:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 17:43:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO MARIE TIME MENUDO-REB Barcode #:273408 
+2024-08-09 17:43:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO PEANUT BUTTER MENUDO-REB Barcode #:39539 
+2024-08-09 17:44:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO PEANUT BUTTER-REB Barcode #:4800092111600 
+2024-08-09 17:45:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO STRAWBERRY 1PCK-REB Barcode #:4800092113260 
+2024-08-09 17:45:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO STRAWBERRY SANDWICH-REB Barcode #:239724 
+2024-08-09 17:45:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated REBISCO WAFER TIME DOUBLE CHOCO 13G-REB Barcode #:93730 
+2024-08-09 17:45:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW G/BLOOM 74G 1/2DZ Barcode #:760040 
+2024-08-09 17:46:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK 300S BLUE Barcode #:218628 
+2024-08-09 17:46:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK 300S LONG DARK BLUE Barcode #:999161 
+2024-08-09 17:48:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW G/BLOOM 74G 1DZ-OYT Barcode #:662306 
+2024-08-09 17:50:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK 300S SHORT DARK BLUE Barcode #:606805 
+2024-08-09 17:50:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK 500 LONG DARK BLUE Barcode #:504059 
+2024-08-09 17:50:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK 500S DARK BLUE Barcode #:163915 
+2024-08-09 17:50:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK 500S S D/BLUE Barcode #:110184 
+2024-08-09 17:50:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK 500S SKYBLUE Barcode #:174227 
+2024-08-09 17:51:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK ADVANCE 300S Barcode #:399463 
+2024-08-09 17:52:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK LONG 300S GREEN Barcode #:635130 
+2024-08-09 17:52:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK SHORT LIGHT BLUE 300S Barcode #:941029 
+2024-08-09 17:55:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

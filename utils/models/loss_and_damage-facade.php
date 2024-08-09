@@ -229,6 +229,8 @@
                 $lossDamageID = $row['damageID'];
                 $inventory_id = $row['inventory_id'];
                 $qty_damage = $row['qty_damage'];
+                $receiveditemid = $row['receiveditemid'];
+
                 $cost = $this->remove_nonBreakingSpace($this->clean_number($row['col_3']));
                 $sub_total = $this->remove_nonBreakingSpace($this->clean_number($row['col_4']));
 
@@ -244,6 +246,14 @@
                 }
                else
                {
+                    if($reason === "Expiring Soon" || $reason === "Expired Products")
+                    {
+                        if(isset($receiveditemid) && !empty($receiveditemid))
+                        {
+                            $receivedSQL = $this->connect()->prepare("UPDATE received_items SET status = 1 WHERE id = :id");
+                            $receivedSQL->execute([':id'=>$receiveditemid]);
+                        }
+                    }
                     $stmt = $this->connect()->prepare("INSERT INTO loss_and_damages (inventory_id, loss_and_damage_info_id, qty_damage, cost, total_cost)
                                                             VALUES (?,?, ?, ?, ?)");
                     $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);

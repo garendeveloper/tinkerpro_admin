@@ -186,6 +186,11 @@
         // case 'get_allInventoryCounts':
         //     echo json_encode($inventory_count->get_allData());
         //     break;
+
+        case 'get_expiringProductsForLossAndDamage':
+            $type = $_GET['type'];
+            echo json_encode($inventory->get_expiringProductsForLossAndDamage($type));
+            break;
         case 'get_realtime_orderExpirations':
             echo json_encode($order->get_realtime_orderExpirations());
             break;

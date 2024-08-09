@@ -241,6 +241,10 @@
  .child-h{
   width: 5% !important;
  }
+ .adminTableHead th{
+  font-weight: bold !important;
+  font-size: 12px !important;
+ }
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -284,9 +288,9 @@
                   <div id = "responsive-data" style=" width: 100%; overflow: hidden;">
                       <?php include('errors.php'); ?>
                       <table  >
-                        <thead class = "adminTableHead" style ="border: 1px solid var(--primary-color) !important">
+                        <thead class = "adminTableHead" style ="border: 1px solid var(--primary-color) !important; ">
                           <tr >
-                            <th class="text-center child-a" >No.</th>
+                            <th class="text-center child-a">No.</th>
                             <th class="text-center child-b">Customer</th>
                             <th class="text-center child-c">Contact</th>
                             <th class="text-center child-d">Code/Employee ID</th>

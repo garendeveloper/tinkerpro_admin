@@ -226,7 +226,10 @@
  .child-g{
   width: 5% !important;
  }
-
+ .adminTableHead th{
+  font-weight: bold !important;
+  font-size: 12px !important;
+ }
 
 </style>
 <?php include "layout/admin/css.php"?>

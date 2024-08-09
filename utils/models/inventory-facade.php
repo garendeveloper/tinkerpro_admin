@@ -430,27 +430,26 @@ class InventoryFacade extends DBConnection
         $data = $sql->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
-    public function get_productsForExpiring($searchInput, $offset, $recordsPerPage)
+    public function get_expiringProductsForLossAndDamage($type)
     {
-        date_default_timezone_set('Asia/Manila');
-        if(!empty($searchInput))
-        {
-            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired, transaction_qty
-                    FROM inventory
-                    INNER JOIN products ON products.id = inventory.product_id
-                    INNER JOIN received_items ON received_items.inventory_id = inventory.id
-                    WHERE received_items.date_expired IS NOT NULL  
-                    AND products.prod_desc LIKE :searchQuery OR
-                    products.barcode LIKE :searchQuery";
-            
-            $searchParam = "%_" . $searchInput . "";
-            $stmt = $this->connect()->prepare($query);
-            $stmt->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = $this->connect()->prepare("SELECT products.prod_desc, products.cost, products.id as product_id, 
+                                            products.barcode, inventory.isReceived, inventory.id as inventory_id, 
+                                            received_items.date_expired, transaction_qty, dateItemReceived, received_items.qty_received, 
+                                            received_items.id as received_item_id
+                                            FROM inventory
+                                            INNER JOIN products ON products.id = inventory.product_id
+                                            INNER JOIN received_items ON received_items.inventory_id = inventory.id
+                                            WHERE received_items.date_expired IS NOT NULL
+                                            AND received_items.status = 0
+                                            ORDER BY products.id");
+        $sql->execute();
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $products = []; $notifications = [];
 
-            $products = []; $notifications = [];
-            foreach( $result as $row )
+        foreach( $result as $row )
+        {
+            $transaction_qty = $row['transaction_qty'];
+            if($transaction_qty > 0)
             {
                 $expiration_date = new DateTime($row['date_expired'] ?? '');
                 $now = new DateTime();
@@ -465,12 +464,73 @@ class InventoryFacade extends DBConnection
                 }
                 $products[] = [
                     'inventory_id' => $row['inventory_id'],
+                    'product_id' => $row['product_id'],
                     'prod_desc'=>$row['prod_desc'],
+                    'cost'=>$row['cost'],
                     'barcode'=>$row['barcode'],
                     'is_received' =>$row['isReceived'],
                     'date_expired'=>$row['date_expired'],
+                    'transaction_qty'=>$row['transaction_qty'],
+                    'qty_received'=>$row['qty_received'],
+                    'dateItemReceived' => $row['dateItemReceived'],
                     'days_remaining'=>$days_remaining,
+                    'received_item_id' => $row['received_item_id']
+
                 ];
+            }
+        
+        }
+        return $products;
+    }
+    public function get_productsForExpiring($searchInput, $offset, $recordsPerPage)
+    {
+        date_default_timezone_set('Asia/Manila');
+        if(!empty($searchInput))
+        {
+            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired, transaction_qty, dateItemReceived
+                    FROM inventory
+                    INNER JOIN products ON products.id = inventory.product_id
+                    INNER JOIN received_items ON received_items.inventory_id = inventory.id
+                    WHERE received_items.date_expired IS NOT NULL  
+                    AND received_items.status = 0
+                    AND products.prod_desc LIKE :searchQuery OR
+                    products.barcode LIKE :searchQuery";
+            
+            $searchParam = "%_" . $searchInput;
+            $stmt = $this->connect()->prepare($query);
+            $stmt->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $products = []; $notifications = [];
+            foreach( $result as $row )
+            {
+                $transaction_qty = $row['transaction_qty'];
+                if($transaction_qty > 0)
+                {
+                    $expiration_date = new DateTime($row['date_expired'] ?? '');
+                    $now = new DateTime();
+                
+                    $interval = $now->diff($expiration_date);
+                    $days_remaining = $interval->days;
+                    if ($expiration_date > $now) {
+                        $days_remaining++;
+                    }
+                    else {
+                        $days_remaining = -$days_remaining; 
+                    }
+                    $products[] = [
+                        'inventory_id' => $row['inventory_id'],
+                        'prod_desc'=>$row['prod_desc'],
+                        'barcode'=>$row['barcode'],
+                        'is_received' =>$row['isReceived'],
+                        'date_expired'=>$row['date_expired'],
+                        'transaction_qty'=>$row['transaction_qty'],
+                        'dateItemReceived' => $row['dateItemReceived'],
+                        'days_remaining'=>$days_remaining
+                    ];
+                }
+            
             }
             $notify_before = $this->get_expirationNotification();
             foreach($notify_before as $nb)
@@ -487,11 +547,12 @@ class InventoryFacade extends DBConnection
         }
         else
         {
-            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired, transaction_qty
+            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired, transaction_qty, dateItemReceived
                         FROM inventory
                         INNER JOIN products ON products.id = inventory.product_id
                         INNER JOIN received_items ON received_items.inventory_id = inventory.id
                         WHERE received_items.date_expired IS NOT NULL
+                        AND received_items.status = 0
                         ORDER BY products.id ASC LIMIT $offset, $recordsPerPage";
             
             $stmt = $this->connect()->prepare($query);
@@ -501,7 +562,8 @@ class InventoryFacade extends DBConnection
             $products = []; $notifications = [];
             foreach( $result as $row )
             {
-                if($row['transaction_qty'] > 0)
+                $transaction_qty = $row['transaction_qty'];
+                if($transaction_qty > 0)
                 {
                     $expiration_date = new DateTime($row['date_expired'] ?? '');
                     $now = new DateTime();
@@ -522,6 +584,7 @@ class InventoryFacade extends DBConnection
                         'date_expired'=>$row['date_expired'],
                         'days_remaining'=>$days_remaining,
                         'transaction_qty'=>$row['transaction_qty'],
+                        'dateItemReceived' => $row['dateItemReceived'],
                     ];
                 }
               
@@ -548,7 +611,8 @@ class InventoryFacade extends DBConnection
                 FROM inventory
                 INNER JOIN products ON products.id = inventory.product_id
                 INNER JOIN received_items ON received_items.inventory_id = inventory.id
-                WHERE received_items.date_expired IS NOT NULL  ";
+                WHERE received_items.date_expired IS NOT NULL  
+                AND received_items.status = 0";
         
         $result = $this->connect()->prepare($query); 
         $result->execute();
@@ -556,7 +620,8 @@ class InventoryFacade extends DBConnection
         $products = []; $notifications = [];
         foreach( $result as $row )
         {
-            if($row['transaction_qty'] > 0)
+            $transaction_qty = $row['transaction_qty'];
+            if($transaction_qty > 0)
             {
                 $expiration_date = new DateTime($row['date_expired'] ?? '');
                 $now = new DateTime();
@@ -1191,15 +1256,17 @@ class InventoryFacade extends DBConnection
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
+                    $dateItemReceived = date('Y-m-d');
                     $stmt = $this->connect()->prepare("
-                        INSERT INTO received_items (inventory_id, qty_received, date_expired, transaction_qty)
-                        VALUES (:inventory_id, :qty_received, :date_expired, :transaction_qty)
+                        INSERT INTO received_items (inventory_id, qty_received, date_expired, transaction_qty, dateItemReceived)
+                        VALUES (:inventory_id, :qty_received, :date_expired, :transaction_qty, :dateItemReceived)
                     ");
                     $params = [
                         ':inventory_id' => $inventory_id,
                         ':qty_received' => $qty_received,
                         ':date_expired'=> $expired_date,
-                        ':transaction_qty' => $qty_received
+                        ':transaction_qty' => $qty_received,
+                        ':dateItemReceived' => $dateItemReceived,
                     ];
                     $stmt->execute($params);
 
@@ -1281,15 +1348,17 @@ class InventoryFacade extends DBConnection
                     $stmt->bindParam(":id", $inventory_id); 
                     $stmt->execute();
 
+                    $dateItemReceived = date('Y-m-d');
                     $stmt = $this->connect()->prepare("
-                        INSERT INTO received_items (inventory_id, qty_received, date_expired, transaction_qty)
-                        VALUES (:inventory_id, :qty_received, :date_expired, :transaction_qty)
+                        INSERT INTO received_items (inventory_id, qty_received, date_expired, transaction_qty, dateItemReceived)
+                        VALUES (:inventory_id, :qty_received, :date_expired, :transaction_qty, :dateItemReceived)
                     ");
                     $params = [
                         ':inventory_id' => $inventory_id,
                         ':qty_received' => $qty_received,
                         ':date_expired'=> $expired_date,
                         ':transaction_qty' => $qty_received,
+                        ':dateItemReceived' => $dateItemReceived,
                     ];
                     $stmt->execute($params);
 
