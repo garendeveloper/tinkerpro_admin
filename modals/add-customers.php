@@ -469,7 +469,7 @@ input:checked + .sliderTax:before {
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="c_tin" /></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">SC ID</td>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">ID</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="c_id"/></td>
                     </tr>
                     <tr hidden>
@@ -496,7 +496,7 @@ input:checked + .sliderTax:before {
                         $opposite_status = ($status == 'Active') ? 'Inactive' : 'Active';
                         ?>
                         <label class="switchTax" style="margin-left: 5px">
-                            <input readonly type="checkbox" id="taxExempt"<?php if($status == 'Active')?> >
+                            <input readonly type="checkbox" id="taxExempt" checked>
                             <span class="sliderTax round"></span>
                         </label>
                         </td>
@@ -543,7 +543,7 @@ input:checked + .sliderTax:before {
             <textarea id="address" class="address p-2" style="border-radius: 10px; border: 1px solid var(--border-color)"></textarea>
           </div>
 
-
+<!-- 
           <div class="d-flex loadBalance "style="">
               <div class="col-6">
                 <label for="" class="mt-2">Load Balance (Php)</label>
@@ -557,7 +557,7 @@ input:checked + .sliderTax:before {
                   <button class="btn btn-secondary mt-1">Redeem Points</button>
                   <button class="btn btn-secondary mt-1">View History</button>
               </div>
-          </div>
+          </div> -->
 
            <div class="button-container" style="display:flex;justify-content: right;">
               <button onclick="closeAddingModal()" class="cancelAddCustomer btn-error-custom" style="margin-right: 10px;width: 100px; height: 40px">Cancel</button>
@@ -586,9 +586,6 @@ function closeAddingModal()
     });
 }
 
-
-
-// Role dropdown
 document.getElementById("roleBtn").addEventListener("click", function() {
   var dropdownContent = document.getElementById("dropdownContent");
   if (dropdownContent.style.display === "block") {
@@ -618,9 +615,17 @@ document.querySelectorAll("#dropdownContent a").forEach(item => {
     document.getElementById("dropdownContent").style.display = "none";
 
     if (roleName === 'SP') {
+      $(".soloParentDiv input").val("");
       $(".soloParentDiv").show();
     } else {
       $(".soloParentDiv").hide();
+    }
+
+    if(roleName !== 'Regular'){
+      $("#taxExempt").prop("checked", true);
+    }
+    else{
+      $("#taxExempt").prop("checked", false);
     }
   });
 });
@@ -753,9 +758,10 @@ function addCustomer(){
    }
 }
 
-function  toUpdateCustomer(userId,customerId,firstName,lastName,contact,code,type, email,address,pwdID,pwdTIN,dueDate,taxExempt){
+function  toUpdateCustomer(userId,customerId,firstName,lastName,contact,code,type, email,address,pwdID,pwdTIN,dueDate,taxExempt, discountID, discountType, childName, childBirth, childAge){
   $('#add_customer_modal').show()
-  if($('#add_customer_modal').is(":visible")){
+  if($('#add_customer_modal').is(":visible"))
+  {
     userId ? document.getElementById('userid').value = userId  : null;
     customerId ? document.getElementById('customerid').value = customerId  : null;
     firstName ? document.getElementById('firstName').value = firstName  : null;
@@ -767,6 +773,22 @@ function  toUpdateCustomer(userId,customerId,firstName,lastName,contact,code,typ
     pwdID ? document.getElementById('c_id').value = pwdID  : null;
     pwdTIN ? document.getElementById('c_tin').value = pwdTIN  : null;
     dueDate ? document.getElementById('dueDate').value = dueDate  : null;
+    
+    if(discountID === 4)
+    {
+      $(".soloParentDiv").show(); 
+      $("#childName").val(childName);
+      $("#childBirth").val(childBirth);
+      $("#childAge").val(childAge);
+      
+    }
+    else
+    {
+      $(".soloParentDiv").hide(); 
+    }
+
+    $("#role").val(discountID);
+    $("#roleName").val(discountType);
 
     var typeCheckbox = document.getElementById('customerType');
           typeCheckbox.checked  = (type == 1) ? true: false;
@@ -776,6 +798,7 @@ function  toUpdateCustomer(userId,customerId,firstName,lastName,contact,code,typ
          }else{
           customerTypeLbl.innerText = "Customer Code";
          }
+
 
   var taxExempts = document.getElementById('taxExempt');
      taxExempts.checked = (taxExempt == 1) ? true: false;
@@ -803,6 +826,8 @@ function updateCustomer(){
    var type = document.getElementById('customerType').checked ? 1 : 0;
    var taxExempt = document.getElementById('taxExempt').checked ? 1 : 0;
    var address = document.getElementById('address').value;
+   var role = $("#role").val();
+   var roleName = $("#roleName").val() === 4;
 
         if (firstname == '') {
             firstNameTd.style.color = 'red';
@@ -818,8 +843,23 @@ function updateCustomer(){
 
    if(firstname){
         var formData = new FormData();
+        var childName = "";
+        var childBirth = "";
+        var childAge = ""; 
+
+
+        childName = $("#childName").val();
+        childBirth = $("#childBirth").val();
+        childAge = $("#childAge").val();
+
         formData.append("customerId", customerId);
         formData.append("userId",  userId);
+
+        formData.append("role", role);
+        formData.append("childName", childName);
+        formData.append("childBirth", childBirth);
+        formData.append("childAge", childAge);
+
         formData.append("firstName", firstname);
         formData.append("lastName", lastname);
         formData.append("customercontact", customercontact);

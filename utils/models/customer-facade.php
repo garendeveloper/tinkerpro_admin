@@ -12,7 +12,7 @@
                     c.code as code, c.type as type, c.email as email, c.address as address,
                     c.is_tax_exempt as is_tax_exempt,
                     c.pwdOrScId as pwdOrScId,c.scOrPwdTIN as scOrPwdTIN,c.dueDateInterval as dueDateInterval, c.privilege_id as privilege_id,
-                    d.name, d.discount_amount
+                    d.name, d.discount_amount, u.discount_id, c.child_name, c.child_birth, c.child_age
             FROM customer AS c 
             INNER JOIN users as u ON u.id = c.user_id
             INNER JOIN discounts as d ON d.id = u.discount_id';
@@ -42,7 +42,7 @@
                     c.code as code, c.type as type, c.email as email, c.address as address,
                     c.is_tax_exempt as is_tax_exempt,
                     c.pwdOrScId as pwdOrScId,c.scOrPwdTIN as scOrPwdTIN,c.dueDateInterval as dueDateInterval, c.privilege_id as privilege_id,
-                    d.name, d.discount_amount
+                    d.name, d.discount_amount, u.discount_id, c.child_name, c.child_birth, c.child_age
             FROM customer AS c 
             INNER JOIN users as u ON u.id = c.user_id
             INNER JOIN discounts as d ON d.id = u.discount_id
@@ -68,16 +68,22 @@
       $address = $formData['address'];
       $id = $formData['userId'];
       $customerid = $formData['customerId'];
+      $discountID = $formData['role'];
       $role = 4;
   
+      $childName = $formData['childName'];
+      $childBirth = $formData['childBirth'];
+      $childAge = $formData['childAge'];
+
       $sql = 'UPDATE users SET 
           first_name = ?,
           role_id = ?,
-          last_name = ?
+          last_name = ?,
+          discount_id = ?
           WHERE id = ?';
   
       $stmt = $this->connect()->prepare($sql);
-      $stmt->execute([$firstName, $role, $lastName, $id]);
+      $stmt->execute([$firstName, $role, $lastName, $discountID, $id]);
   
       $sql = 'UPDATE customer SET 
           contact = ?,
@@ -88,16 +94,17 @@
           is_tax_exempt = ?,
           pwdOrScId = ?,
           scOrPwdTIN = ?,
-          dueDateInterval = ?
+          dueDateInterval = ?,
+          child_name = ?,
+          child_birth = ?,
+          child_age = ?
           WHERE id = ?';
   
       $stmt = $this->connect()->prepare($sql);
-      $stmt->execute([$customerContact, $code, $type, $customeremail, $address, $taxExempt, $pwdOrSCid, $tin, $due, $customerid]);
+      $stmt->execute([$customerContact, $code, $type, $customeremail, $address, $taxExempt, $pwdOrSCid, $tin, $due, $childName, $childBirth, $childAge, $customerid]);
   
       return true;
   }
-  
-    
 }
     
 

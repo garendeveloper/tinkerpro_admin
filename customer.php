@@ -435,6 +435,7 @@
   $("#customers").addClass('active');
   $("#pointer").html("Customers");
   $('.addCustomer').on('click', function(){
+    $(".soloParentDiv").hide();
     $('#add_customer_modal').show()
     $("#add_customer_modal input").val("");
     $("#add_customer_modal input").attr("autocomplete", "off")
@@ -482,12 +483,16 @@
     var dueDate =  test.closest('tr').find('.dueDate').text();
     var taxExempt =  test.closest('tr').find('.taxExempt').text();
 
+    var discountID = test.closest('tr').find('.discountType').data('discountid')
+    var discountType = test.closest('tr').find('.discountType').text();
+    var childName = test.closest('tr').find('.discountType').data('childname');
+    var childBirth = test.closest('tr').find('.discountType').data('childbirth');
+    var childAge = test.closest('tr').find('.discountType').data('childage');
+
     $('.highlighteds').removeClass('highlighteds');
     var $row = test.closest('tr').addClass('highlighteds');
-    toUpdateCustomer(userId,customerId,firstName,lastName,contact,code,type, email,address,pwdID,pwdTIN,dueDate,taxExempt)
+    toUpdateCustomer(userId,customerId,firstName,lastName,contact,code,type, email,address,pwdID,pwdTIN,dueDate,taxExempt, discountID, discountType, childName, childBirth, childAge)
   }
-
-
 
   $(document.body).on('dblclick', '.customer-row', function () {
     clickCustomerRow($(this))
