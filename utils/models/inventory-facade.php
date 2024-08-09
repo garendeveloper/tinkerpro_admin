@@ -1182,23 +1182,24 @@ class InventoryFacade extends DBConnection
                     $stmt->execute();
 
                     $stmt = $this->connect()->prepare("
-                        INSERT INTO received_items (inventory_id, qty_received, date_expired)
-                        VALUES (:inventory_id, :qty_received, :date_expired)
+                        INSERT INTO received_items (inventory_id, qty_received, date_expired, transaction_qty)
+                        VALUES (:inventory_id, :qty_received, :date_expired, :transaction_qty)
                     ");
                     $params = [
                         ':inventory_id' => $inventory_id,
                         ':qty_received' => $qty_received,
-                        ':date_expired'=> $expired_date
+                        ':date_expired'=> $expired_date,
+                        ':transaction_qty' => $qty_received
                     ];
                     $stmt->execute($params);
 
 
                    
-                    $expense_quantity = $qty_received;
+                    $expense_quantity = (float) $qty_received;
                     $expense_type = "PURCHASED ORDER";
                     $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
                     $invoice_number = $po_number;
-                    $price = $product_info['amount_beforeTax'];
+                    $price = (float) $product_info['amount_beforeTax'];
                     $total_amount = $expense_quantity * $price;
                     $date_of_transaction = date('Y-m-d');
                     $uom_id_expense = $this->get_productInfo($product_id)['uom_id'];
@@ -1271,13 +1272,14 @@ class InventoryFacade extends DBConnection
                     $stmt->execute();
 
                     $stmt = $this->connect()->prepare("
-                        INSERT INTO received_items (inventory_id, qty_received, date_expired)
-                        VALUES (:inventory_id, :qty_received, :date_expired)
+                        INSERT INTO received_items (inventory_id, qty_received, date_expired, transaction_qty)
+                        VALUES (:inventory_id, :qty_received, :date_expired, :transaction_qty)
                     ");
                     $params = [
                         ':inventory_id' => $inventory_id,
                         ':qty_received' => $qty_received,
-                        ':date_expired'=> $expired_date
+                        ':date_expired'=> $expired_date,
+                        ':transaction_qty' => $qty_received,
                     ];
                     $stmt->execute($params);
 

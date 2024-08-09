@@ -212,6 +212,12 @@ class UserFacade extends DBConnection {
         return $sql;
     }
 
+    public function getAllCustomers() {
+        $sql = $this->connect()->prepare( "SELECT * FROM role WHERE role_name != 'Super Admin'" );
+        $sql->execute();
+        return $sql;
+    }
+
     public function getUsers() {
         $sql = $this->connect()->prepare( "SELECT id,first_name,last_name FROM users WHERE username NOT IN ('admin','superadmin') AND role_id != 4 ORDER BY id DESC" );
         $sql->execute();
@@ -257,6 +263,7 @@ class UserFacade extends DBConnection {
         $pdo = $this->connect();
 
         $role_id = $formData['role_id'];
+        $roleName = $formData['roleName'];
         $last_name = $formData['last_name'];
         $first_name = $formData['first_name'];
         $password = $formData['password'];
@@ -434,6 +441,7 @@ public function getCustomersData(){
     return $stmt;
 }
 public function addCustomer($formData){
+    $isSoloParent = $formData['isSoloParent'];
     $code = $formData['code'];
     $firstrName = $formData['firstName'];
     $lastName = $formData['lastName'];
@@ -447,7 +455,10 @@ public function addCustomer($formData){
     $address = $formData['address'];
     $role = 4;
 
-    
+    $childName = $formData['childName'];
+    $childBirth = $formData['childBirth'];
+    $childAge = $formData['childAge'];
+
     $sql = 'INSERT INTO users(first_name,role_id, last_name) VALUES (?, ?,?)';
     $pdo = $this->connect();
     $stmt = $pdo->prepare($sql);
@@ -455,10 +466,10 @@ public function addCustomer($formData){
     
     $lastInsertId = $pdo->lastInsertId();
     if($lastInsertId){
-        $sql = 'INSERT INTO customer(user_id,contact,code,type,email,address,is_tax_exempt,pwdOrScId,scOrPwdTIN,dueDateInterval	) VALUES (?,?,?,?,?,?,?,?,?,?)';
+        $sql = 'INSERT INTO customer(user_id,contact,code,type,email,address,is_tax_exempt,pwdOrScId,scOrPwdTIN,dueDateInterval, child_name, child_birth, child_age) VALUES (?,?,?,?,?,?,?,?,?,?, ?, ?, ?)';
         $pdo = $this->connect();
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$lastInsertId ,$customerContact, $code , $type, $customeremail,$address,$taxExempt,$pwdOrSCid,$tin,$due]);
+        $stmt->execute([$lastInsertId ,$customerContact, $code , $type, $customeremail,$address,$taxExempt,$pwdOrSCid,$tin,$due, $childName, $childBirth, $childAge]);
     }
     return true;
 

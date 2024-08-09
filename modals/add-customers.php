@@ -328,19 +328,82 @@ input:checked + .sliderTax:before {
     height: 120px;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+ 
+  .dropdown-content a {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    min-width: 210px;
+    border: none; 
+    background-color: transparent;
+    color: #000000; 
+    text-decoration: none; 
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;  
+  }
+  
+
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+
+  .td-height{
+    width:50%
+}
+.td-style{
+    font-style: italic;
+}
+.td-bg{
+    background-color: #404040;
+}
+.custom-input{
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;   
+}
+.custom-btn {
+  border-radius: 25%; 
+  background-color: #A6A6A6; 
+  transition: background-color 0.3s; 
+}
+
+.custom-btn:hover {
+  background-color: #808080; 
+}
+.show {
+  display: block;
+  overflow: auto;
+}
 </style>
 
 <div class="modal" id="add_customer_modal" tabindex="0">
   <div class="modal-dialog ">
-    <div class="modal-content customer-modal">
+    <div class="modal-content customer-modal" style = "overflow-y: auto;">
       <div class="modal-title">
         <div style="margin-top: 30px; margin-left: 20px">
            <h2 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:#FF6900;">Add New Customer</h2>
         </div>
         <div class="warning-container">
         <div style="margin-left: 20px;margin-right: 20px;margin-top: 20px">
-        <input class="custom-input" readonly hidden name="customerid" id="customerid" style="width: 180px"/>
-        <input class="custom-input" readonly hidden name="userid" id="userid" style="width: 180px"/>
+          <input class="custom-input" readonly hidden name="customerid" id="customerid" style="width: 180px"/>
+          <input class="custom-input" readonly hidden name="userid" id="userid" style="width: 180px"/>
             <table id="addCustomer" class="text-color table-border"> 
                 <tbody>
                     <tr>
@@ -376,11 +439,38 @@ input:checked + .sliderTax:before {
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="c_code"/></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">PWD/SC TIN</td>
+                        <td id="roleNAME" class="td-height text-custom td-style td-bg">Role<sup>*</sup></td>
+                        <td class="td-height text-custom-data"> <div class="dropdown custom-input">
+                          <input class="custom-input" readonly hidden name="customer_id" id="customer_id" style="width: 125px"/>
+                        
+                            <input class="custom-input" name="customer_type" id="customer_type" style="width: 180px" autocomplete = "off" readonly/>
+                            <button name="btnSPDropdown" id="btnSPDropdown" class="custom-btn">
+                                <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                    <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </g>
+                                </svg>
+                            </button>
+                            <div class="dropdown-content" id="dropdownContent">
+                                <?php
+                                    $userFacade = new UserFacade();
+                                    $roleTypes = $userFacade->getRoleType();
+                                    while ($row = $roleTypes->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['role_name']) . '</a>';
+                                    }
+                                ?>
+                            </div>
+                        </div></td>
+                    </tr>
+                    <tr>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">TIN</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="c_tin" /></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">PWD/SC ID</td>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">SC ID</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="c_id"/></td>
                     </tr>
                     <tr hidden>
@@ -416,18 +506,38 @@ input:checked + .sliderTax:before {
                     <tr>
                         <td id="customerStatus" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Customer Status</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px">
-                        <?php
-                        $status = 'Active'; 
-                        $opposite_status = ($status == 'Active') ? 'Inactive' : 'Active';
-                        ?>
-                        <label class="switchTax" style="margin-left: 5px">
-                            <input readonly type="checkbox" id="customerStat"<?php if($status == 'Active')?> >
-                            <span class="sliderTax round"></span>
-                        </label>
+                          <?php
+                            $status = 'Active'; 
+                            $opposite_status = ($status == 'Active') ? 'Inactive' : 'Active';
+                          ?>
+                          <label class="switchTax" style="margin-left: 5px">
+                              <input readonly type="checkbox" id="customerStat"<?php if($status == 'Active')?> >
+                              <span class="sliderTax round"></span>
+                          </label>
                         </td>
                     </tr>
               </tbody>
             </table>
+          </div>
+          <div style="margin-left: 20px;margin-right: 20px;margin-top: 20px; display: none" class = "soloParentDiv">
+            <h4 style = "color: var(--primary-color)">SOLO PARENT</h4>
+            <table>
+              <tbody>
+                <tr>
+                    <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Name of Child</td>
+                    <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input  type = "text" name = "childName" id = "childName"/></td>
+                </tr>
+                <tr>
+                    <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Birth Date</td>
+                    <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input  type = "date" name = "childBirth" id = "childBirth"/></td>
+                </tr>
+                <tr>
+                    <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Age</td>
+                    <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input type = "number" name = "childAge" id = "childAge"/></td>
+                </tr >
+              </tbody>
+            </table>
+
           </div>
           <div style="margin-top: 10px; margin-left: 20px">
             <label class="text-custom">Address</label><br>
@@ -462,6 +572,23 @@ input:checked + .sliderTax:before {
 </div>
 <script>
 
+$("#soloParentToggle").on("change", function(){
+  var isChecked = $(this).prop("checked");
+  isChecked ? $(".soloParentDiv").show() : $(".soloParentDiv").hide()
+})
+
+  $("#btnSPDropdown").on("click", function(event) {
+    event.stopPropagation();
+    $(".dropdownContent").toggleClass("show");
+  });
+
+  $(".dropdownContent a").on("click", function(event) {
+    event.preventDefault();
+    var value = $(this).data("value");
+    var roleName = $(this).text();
+    $(".dropdownContent").removeClass("show")
+  });
+
 function closeAddingModal()
 {
   $('.highlighteds').removeClass('highlighteds');
@@ -474,6 +601,32 @@ function closeAddingModal()
         clearFields()
     });
 }
+
+
+
+document.addEventListener("click", function(event) {
+  var dropdownContent = document.getElementById("dropdownContent");
+  var soloParentToggle = document.getElementById("soloParentToggle");
+  if (event.target !== dropdownContent && event.target !== soloParentToggle && dropdownContent.style.display === "block") {
+    dropdownContent.style.display = "none";
+  }
+});
+
+document.querySelectorAll("#dropdownContent a").forEach(item => {
+  item.addEventListener("click", function(event) {
+    event.preventDefault(); 
+    var value = this.getAttribute("data-value");
+    var roleName = this.textContent;
+    document.getElementById("role").value = value;
+    document.getElementById("roleName").value = roleName;
+    document.getElementById("dropdownContent").style.display = "none";
+  });
+});
+
+document.getElementById("soloParentToggle").addEventListener("click", function(event) {
+  event.stopPropagation(); 
+});
+
 
 function clearFields(){
  
@@ -537,21 +690,36 @@ function addCustomer(){
    var type = document.getElementById('customerType').checked ? 1 : 0;
    var taxExempt = document.getElementById('taxExempt').checked ? 1 : 0;
    var address = document.getElementById('address').value;
+   var isSoloParent = $("#soloParentToggle").prop("checked") ? 1 : 0;
+  alert(isSoloParent)
+    if (firstname == '') {
+        firstNameTd.style.color = 'red';
+    } else {
+        firstNameTd.style.color = ''; 
+    }
 
-        if (firstname == '') {
-            firstNameTd.style.color = 'red';
-        } else {
-            firstNameTd.style.color = ''; 
-        }
+    if(lastname == '' ){
+        lastNameTd.style.color = 'red';
+    }else{
+        lastNameTd.style.color = ''; 
+    }
 
-        if(lastname == '' ){
-            lastNameTd.style.color = 'red';
-        }else{
-            lastNameTd.style.color = ''; 
-        }
-
-   if(firstname){
+   if(firstname)
+   {
         var formData = new FormData();
+        var childName = "";
+        var childBirth = "";
+        var childAge = ""; 
+        if(isSoloParent === 1)
+        {
+          childName = $("#childName").val();
+          childBirth = $("#childBirth").val();
+          childAge = $("#childAge").val();
+        }
+        formData.append("childName", childName);
+        formData.append("childBirth", childBirth);
+        formData.append("childAge", childAge);
+        formData.append("isSoloParent", isSoloParent)
         formData.append("firstName", firstname);
         formData.append("lastName", lastname);
         formData.append("customercontact", customercontact);

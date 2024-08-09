@@ -4,6 +4,9 @@
   include( __DIR__ . '/utils/db/connector.php');
   include( __DIR__ . '/utils/models/product-facade.php');
   include( __DIR__ . '/utils/models/ingredients-facade.php');
+  include( __DIR__ . '/utils/models/user-facade.php');
+  include(__DIR__ . '/utils/models/ability-facade.php');
+
   $productFacade = new ProductFacade;
 
   $userId = 0;
