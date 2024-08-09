@@ -124,7 +124,6 @@ class DashboardFacade extends DBConnection
         ) AS subqeury
         ";
 
-
         $return_report = $pdo->prepare($return_query);
         $return_report->execute([$month, $year]);
         $returndData = $return_report->fetchAll(PDO::FETCH_ASSOC);

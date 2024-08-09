@@ -10562,6 +10562,19 @@
 2024-08-09 14:01:41 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer asdf asdfasdf 
 2024-08-09 14:02:51 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer kini last name 
 2024-08-09 14:04:09 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer DATA CUSTOMER 33 
+2024-08-09 14:15:15 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer sample 2415 
+2024-08-09 14:16:56 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer First name namelast 
+2024-08-09 14:17:29 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer Solo Parent poarent 
+2024-08-09 15:03:42 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
+2024-08-09 15:04:25 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
+2024-08-09 15:05:07 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
+2024-08-09 15:06:14 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer CustomerD Data 
+2024-08-09 15:10:34 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
+2024-08-09 15:11:29 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
+2024-08-09 15:12:00 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer JULIA MONTES 
+2024-08-09 15:13:09 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer CustomerD Data 
+2024-08-09 15:16:14 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
+2024-08-09 15:16:28 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
 >>>>>>> cda502dbd1de602623e91c6f408297634b28e270
 2024-08-09 13:22:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-09 13:23:23 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000022 Amount:₱ 2,000.00 
@@ -10580,3 +10593,8 @@
 2024-08-09 16:05:41 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Printed a coupon id #:2 
 2024-08-09 16:08:24 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 WEEK 
 2024-08-09 16:34:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 16:47:40 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer John Doe 
+2024-08-09 16:54:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 555 TUNA SPICY PAKSIW Barcode #:2131644570623 
+2024-08-09 16:54:16 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000025 Amount:₱ 2,000.00 
+2024-08-09 16:54:37 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000025 Supplier: GAISANO 
+2024-08-09 17:35:14 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
