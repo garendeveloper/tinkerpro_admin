@@ -9032,3 +9032,45 @@
 2024-08-07 18:36:27 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 555 Tuna Spicy Paksiw, Amount: 2000.00, Invoice#: 10-000000001 
 2024-08-07 18:37:20 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 555 Tuna Spicy Paksiw, Amount: 2000.00, Invoice#: 10-000000001 
 2024-08-07 18:38:43 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: 555 Tuna Spicy Paksiw, Amount: 2000.00, Invoice#: 10-000000001 
+2024-08-08 09:29:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 09:31:37 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: Lucky ME Pancit Canton Clamansi From: -70.00 To: 100 
+2024-08-08 09:32:12 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: 555 Tuna Spicy Paksiw From: -58.00 To: 100 
+2024-08-08 09:32:12 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: 555 Tuna Adobo From: 0.00 To: 100 
+2024-08-08 10:25:17 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 10:25:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Sample Product Barcode #:769758899622 
+2024-08-08 10:26:21 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 120,000.00 
+2024-08-08 10:28:22 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: GAISANO 
+2024-08-08 10:55:20 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 10:58:20 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 10:58:53 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000017 Amount:₱ 60,000.00 
+2024-08-08 10:59:17 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000017 Supplier: GAISANO 
+2024-08-08 11:25:15 | Zeus Baculio | 50 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000001 Date: Aug 08 24 Total Amount₱ 24,000.00 
+2024-08-08 12:59:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 12:59:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 24/7 ORNG 40G MENUDO Barcode #:874836339250 
+2024-08-08 13:01:54 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000018 Amount:₱ 24,000.00 
+2024-08-08 13:02:30 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000018 Supplier: GAISANO 
+2024-08-08 13:03:11 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000018 Supplier: GAISANO 
+2024-08-08 13:31:26 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 14:51:40 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 15:18:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 15:19:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Choco Barcode #:376436741216 
+2024-08-08 15:23:32 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 15:34:05 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 15:47:23 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:02:19 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-08 16:02:48 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:03:58 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-08 16:04:24 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:07:46 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-08 16:08:10 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:14:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 16:14:38 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000019 Amount:₱ 19,000.00 
+2024-08-08 16:15:04 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000019 Supplier: GAISANO 
+2024-08-08 16:16:10 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000019 Supplier: GAISANO 
+2024-08-08 16:25:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Energen Barcode #:254419329698 
+2024-08-08 16:33:20 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:35:22 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added Food Barcode #:250694296968 
+2024-08-08 16:38:32 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added Cane Norte Barcode #:907535011018 
+2024-08-08 17:08:21 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 17:33:00 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-09 09:07:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

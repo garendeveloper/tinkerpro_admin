@@ -171,7 +171,7 @@ class DashboardFacade extends DBConnection
         $product_sold_result->execute([$startDate, $endDate, $startTime, $endTime]);
         $hourlyProducts = $product_sold_result->fetchAll(PDO::FETCH_ASSOC);
         return $hourlyProducts;
-    }
+    } 
     public function getTopProducts($startDate, $endDate) 
     {
         $pdo = $this->connect();
