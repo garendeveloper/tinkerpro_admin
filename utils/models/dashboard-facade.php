@@ -308,9 +308,10 @@ class DashboardFacade extends DBConnection
             $grossAmount = $this->get_dataByMonthAndYear($month, $year);
             $month_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_expense_of_the_month'];
             $landingCost_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_landing_cost'];
-            $month_expense += $landingCost_expense;
-            $expensesData[] = $month_expense !== null ? $month_expense : 0;
-            $annual_expenses += $month_expense;
+            
+            $totalLandingCost = $landingCost_expense - $month_expense;
+            $expensesData[] = $month_expense !== null ? $month_expense + $totalLandingCost : 0;
+            $annual_expenses += $month_expense + $totalLandingCost;
             
             $salesData[] = $grossAmount;
             $annual_sales += $grossAmount;

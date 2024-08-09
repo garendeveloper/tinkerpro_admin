@@ -7179,22 +7179,35 @@ function printDocuments(id){
   }
  }
 
-function showReports(id) {
-
-  $("#showReportsModal .modal-dialog").css({
-    ' max-width': '1000px', 
-    'min-width': '500px' 
+function showReports(id) 
+{
+  $('#showReportsModal .modal-dialog').css({
+      'max-width': '1000px',
+      'min-width': '500px'
   });
 
-  $("#showReportsModal .modal-content").css({
-    'color': '#ffff',
-  'background': '#262625',
-  'border-radius': '0',
-  'position': 'relative',
-  'height': '800px',
-  'width': '1000px',
+  $('#showReportsModal .modal-content').css({
+      'color': '#ffff',
+      'background': '#262625',
+      'border-radius': '0',
+      'position': 'relative',
+      'height': '800px',
+      'width': '1000px'
   });
 
+  function applyMediaQueryStyles() {
+      if ($(window).width() <= 1000) {
+          $('#showReportsModal .modal-dialog').css('max-width', '90vw');
+      } else {
+          $('#showReportsModal .modal-dialog').css('max-width', '1000px');
+      }
+  }
+
+  applyMediaQueryStyles();
+
+  $(window).resize(function() {
+      applyMediaQueryStyles();
+  });
   $("#pdfViewer").attr('width', '935px'); 
 
   if(id == 2){

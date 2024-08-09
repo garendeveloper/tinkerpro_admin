@@ -19,11 +19,19 @@
     if (count($data) > 0) 
     {
         foreach($data as $row)
-        {
+        {   
+            $total_landing_cost = 0;
+
+            if($row['isLandingCostEnabled'] === 1)
+            {
+                $landing_cost = json_decode($row['landingCost'], true);
+                $totalLandingCost = $landing_cost['totalLandingCost'];
+                $total_landing_cost = $totalLandingCost-$row['total_amount'];
+            }
             ?> 
                 <tr  data-id = '<?= $row['id'] ?>' data-product_id = '<?= $row['product_id']?>' class = "tbl_rows">
                     <td style = "width: 3%" class = "text-center"><?= $counter?></td>
-                    <td style = "width: 20%"><?= $row['item_name'] === "" ? $row['product'] : $row['item_name']?></td>
+                    <td style = "width: 12%"><?= $row['item_name'] === "" ? $row['product'] : $row['item_name']?></td>
                     <td style = "width: 6%" class = "text-center"><?= $row['date_of_transaction']?></td>
                     <td style = "width: 6%"  class = "text-center"><?= $row['billable_receipt_no'] ?></td>
                     <td style = "width: 10%"  class = "center"><?= $row['expense_type'] ?></td>
@@ -34,6 +42,7 @@
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['price'], 2)?></td>
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['discount'], 2)?></td>
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['total_amount'], 2)?></td>
+                    <td style = "width: 8%" class = "text-right"><?= number_format($total_landing_cost,2)?></td>
                     <td class='text-center'  style="padding: 2px" >
                         <?php if($row['product_id'] !== 0) {?>
                             <a class="text-success productAnch " style="text-decoration: none;" >

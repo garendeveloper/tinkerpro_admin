@@ -19,24 +19,21 @@ while ($row = $fetchSupplier->fetch(PDO::FETCH_ASSOC)) {
 //   var_dump( $row)
     ?>
     <tr class="table-row supplier-rows">
-    <td class='text-center td-h' style="border-left: 1px solid transparent !important"><?= $counter?></td>
-    <td hidden class='text-center action-td td-h supplierStatus'><?= $row['status'] ?? null ?></td>
-    <td hidden class='text-center action-td td-h supplierId'><?= $row['id'] ?? null ?></td>
-    <td class='text-left action-td td-h supplierName'><?= $row['name'] ?? null ?></td>//
-    <td class='text-center action-td td-h supplierContact'><?= $row['contact'] ?? null ?></td>
-    <td class='text-left action-td td-h supplierEmail'><?= $row['email'] ?? null ?></td>
-    <td class='text-left action-td td-h supplierCompany'><?= $row['company'] ?? null ?></td>
-    <td class='text-center action-td td-h' style='color: <?= $row['status'] === 1 ? 'green' : 'red' ?>;'>
+    <td class='text-center child-a' ><?= $counter?></td>
+    <td hidden class='text-center action-td supplierStatus'><?= $row['status'] ?? null ?></td>
+    <td hidden class='text-center action-td supplierId'><?= $row['id'] ?? null ?></td>
+    <td class='text-left action-td supplierName child-b'><?= $row['name'] ?? null ?></td>//
+    <td class='text-center action-td supplierContact child-c'><?= $row['contact'] ?? null ?></td>
+    <td class='text-left action-td supplierEmail child-d'><?= $row['email'] ?? null ?></td>
+    <td class='text-left action-td supplierCompany child-e'><?= $row['company'] ?? null ?></td>
+    <td class='text-center action-td child-f' style='color: <?= $row['status'] === 1 ? 'green' : 'red' ?>;'>
     <?= $row['status']=== 1 ? 'Active' : 'Inactive' ?></td>
-    <td style="border-right: 1px solid transparent !important" class='text-center action-td td-h'>
+    <td  class='text-center action-td child-g'>
                <a class='text-success editSupplier' style='text-decoration: none;'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                </svg>
+               <i class = "bi bi-pencil-square normalIcon" style = "font-size: 16px; color: white"></i>
                </a>
                <a class='text-success deleteSupplier' style='text-decoration: none;'>
-                <i class = "bi bi-trash3 deleteIcon" style = "font-size: 14px; color: white"></i>
+                    <i class = "bi bi-trash3 deleteIcon" style = "font-size: 16px; color: white"></i>
                </a>
             <?php 
             ?>
@@ -60,13 +57,4 @@ $html = ob_get_clean();
 echo $html;
 
 ?>
-<style>
-.td-h {
-    font-size: 14px;
-    margin: 0; 
-    padding: 0;
-    height: auto; 
-}
-
-</style>
 

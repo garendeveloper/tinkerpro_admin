@@ -53,7 +53,7 @@
                 <thead class = 'adminTableHead'>
                     <tr>
                         <th style = "width: 3%" class='text-center auto-fit'>No.</th>
-                        <th style = "width: 20%" f>Item Name</th>
+                        <th style = "width: 12%">Item Name</th>
                         <th style = "width: 6%">Date</th>
                         <th style = "width: 6%">Billable</th>
                         <th style = "width: 10%" >Type</th>
@@ -63,7 +63,8 @@
                         <th style = "width: 8%" >Quantity</th>
                         <th style = "width: 8%" >Price (Php)</th>
                         <th style = "width: 8%" >Discount</th>
-                        <th style = "width: 8%; font-size: 10px;" >Total Amount(Php)</th>
+                        <th style = "width: 8%; font-size: 10px; text-align: center" >Total Amount(Php)</th>
+                        <th style = "width: 8%; font-size: 10px; text-align: center" >Landed Cost (Php)</th>
                         <th >Actions</th>
                     </tr>
                 </thead>
@@ -149,8 +150,12 @@
                         <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Discount:</th>
                         <th  class = "text-right totalDiscount" style="background-color: #262626; border: 1px solid #262626;" ></th>
                     </tr>
+                      <tr style="background-color: #262626; font-size: 12px;">
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Total Landed Cost:</th>
+                        <th  class = "text-right totalLandedCost" style="background-color: #262626; border: 1px solid #262626;" ></th>
+                    </tr>
                     <tr style="background-color: #262626; font-size: 12px;">
-                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Overall Total:</th>
+                        <th class='autofit text-right' style="background-color: #262626; border: 1px solid #262626;">Overall Expense Total:</th>
                         <th  class = "text-right overallTotal" style="background-color: #262626; border: 1px solid #262626;" ></th>
                     </tr>
                 </tbody>
@@ -160,8 +165,8 @@
         var totalQty = 0;
         var totalPrice = 0;
         var totalDiscount = 0;
-        var overallTotal = 0;
-
+        var subtotal = 0;
+        var totalLandedCost = 0;
         var itemCount = $('#responsive-data #tbl_expenses tbody .tbl_rows').length;
         $('#responsive-data #tbl_expenses tbody tr').each(function() {
             var tq = removeCommas($(this).find('td:eq(8)').text().trim());
@@ -189,17 +194,26 @@
             ot = parseFloat(ot);
             if (!isNaN(ot)) 
             {
-                overallTotal += ot;
+                subtotal += ot;
+            }
+
+            var lc = removeCommas($(this).find('td:eq(12)').text().trim());
+            lc = parseFloat(lc);
+            if (!isNaN(ot)) 
+            {
+                totalLandedCost += lc;
             }
         });
       
+        var total = subtotal + totalLandedCost;
         $("#preview_records").html(table);
 
         $('#total_items').text(numberWithCommas(itemCount));
         $('.totalQty').text(numberWithCommas(totalQty.toFixed(2)));
         $('.totalPrice').text(numberWithCommas(totalPrice.toFixed(2)));
         $('.totalDiscount').text(numberWithCommas(totalDiscount.toFixed(2)));
-        $('.overallTotal').text(numberWithCommas(overallTotal.toFixed(2)));
+        $('.totalLandedCost').text(numberWithCommas(totalLandedCost.toFixed(2)));
+        $('.overallTotal').text(numberWithCommas(total.toFixed(2)));
     }
     function updatePaginationButtons() 
     {

@@ -1670,18 +1670,31 @@ $(document).ready(function(){
       });
     }
   });
-
-  $('.landingCost').on('input', function(){
-    var total = parseFloat($("#vatable_amount").val());
+  function removeCommas(str) {
+      return str.replace(/,/g, '');
+  }
+  function numberWithCommas(number) 
+  {
+      var numString = number.toString();
+      var parts = numString.split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return parts.join('.');
+  }
+  function sumLandingCost(total)
+  {
     $('.landingCost').each(function() {
-        var value = parseFloat($(this).val()) || 0;
+        var value = parseFloat(removeCommas($(this).val())) || 0;
         total += value;
     });
-    $('#totalLandingCost').val(total.toFixed(2));
+    $('#totalLandingCost').val(numberWithCommas(total.toFixed(2)));
     var totalLandingCost = total;
     var purchaseQty = parseFloat($("#qty").val());
     var totalLandingCostPerPiece = parseFloat(totalLandingCost / purchaseQty);
-    $("#totalLandingCostPerPiece").val(totalLandingCostPerPiece.toFixed(2));
+    $("#totalLandingCostPerPiece").val(numberWithCommas(totalLandingCostPerPiece.toFixed(2)));
+  }
+  $('.landingCost').on('input', function(){
+    var total = parseFloat(removeCommas($("#vatable_amount").val()));
+    sumLandingCost(total);
   })
 
   function hide_dropdown()
@@ -1822,20 +1835,24 @@ $(document).ready(function(){
     var price = parseFloat($("#price").val()) || 0;
     var qty = parseFloat($("#qty").val()) || 0;
     var discount = parseFloat($("#discount").val()) || 0;
+    var totalLandingCostValue = parseFloat($("#totalLandingCost").val()) || 0;
     
     var total_amount = (qty * price) - discount;
-    $("#total_amount").val(total_amount.toFixed(2));
+    var newTotalLandingCost = total_amount + totalLandingCostValue;
+    $("#total_amount").val(numberWithCommas(total_amount.toFixed(2)));
+
+    sumLandingCost(total_amount);
 
     if ($("#toggleTaxIn").is(":checked")) {
       computeTax(total_amount);
     }
     else
     {
-      $("#vatable_amount").val(total_amount.toFixed(2));
+      $("#vatable_amount").val(numberWithCommas(total_amount.toFixed(2)));
     }
   });
   $("#toggleTaxIn").on("change", function(){
-    var total_amount = $("#total_amount").val();
+    var total_amount = parseFloat(removeCommas($("#total_amount").val()));
     if($(this).is(":checked"))
     {
       computeTax(total_amount);
@@ -1844,8 +1861,10 @@ $(document).ready(function(){
     else
     {
       $("#isVatable").val("0");
-      $("#vatable_amount").val(total_amount);
+      $("#vatable_amount").val(numberWithCommas(total_amount));
     }
+    var vatable_amount = parseFloat(removeCommas($("#vatable_amount").val()));
+    sumLandingCost(vatable_amount);
   })
   function computeTax(amount)
   {
@@ -1853,7 +1872,7 @@ $(document).ready(function(){
     var tax_amount = parseFloat(amount / 1.12);
     var tax = parseFloat(tax_amount * 0.12);
     var vatable_amount = parseFloat(currentAmount + tax);
-    $("#vatable_amount").val(vatable_amount.toFixed(2));
+    $("#vatable_amount").val(numberWithCommas(vatable_amount.toFixed(2)));
   }
 
 
@@ -1870,10 +1889,10 @@ $(document).ready(function(){
     var tax_amount = parseFloat(amount / 1.12)
     var tax = parseFloat(tax_amount * 0.12);
     var vatable_amount = parseFloat(currentAmount - tax);
-    $("#vatable_amount").val(vatable_amount.toFixed(2));
+    $("#vatable_amount").val(numberWithCommas(vatable_amount.toFixed(2)));
   }
   $("#price, #discount, #qty").on("input", function() {
-    var value = $(this).val();
+    var value = parseFloat(removeCommas($(this).val()));
     var formatted = value.replace(/[^0-9.]/g, '');
     var decimalIndex = formatted.indexOf('.');
     if (decimalIndex !== -1) {
@@ -1887,7 +1906,7 @@ $(document).ready(function(){
 
 
   $("#total_amount").on("input", function() {
-    var input = $(this).val();
+    var input = parseFloat(removeCommas($(this).val()));
     var formatted = input.replace(/[^0-9.]/g, '');
                 
     var decimalIndex = formatted.indexOf('.');

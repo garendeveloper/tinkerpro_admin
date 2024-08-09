@@ -128,7 +128,7 @@
 }
 
 input:checked + .sliderStatus {
-  background-color: #00CC00;
+  background-color: var(--primary-color);
 }
 
 input:focus + .sliderStatus {
@@ -149,7 +149,7 @@ input:checked + .sliderStatus:before {
   border-radius: 50%; 
 }
 .sliderStatus.active {
-  background-color: #00CC00;
+  background-color: var(--primary-color);
 }
 .suppliedProductsCard {
     border: 1px solid #ffff; 
@@ -282,7 +282,7 @@ input:checked + .sliderStatus:before {
 
 </style>
 
-<div class="modal" id="add_supplier_modal" tabindex="0">
+<div class="modal settingModal" id="add_supplier_modal" tabindex="0">
   <div class="modal-dialog ">
     <div class="modal-content supplier-modal">
       <div class="modal-title">
@@ -296,7 +296,7 @@ input:checked + .sliderStatus:before {
                 <tbody>
                     <tr>
                         <td class="supplierLbl td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Supplier Name<sup>*</sup></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="supplierName"/></td>
+                        <td class="td-height text-custom" style="font-size: 12px; width:75%; height: 10px"><input id="supplierName"/></td>
                     </tr>
                     <tr>
                         <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Contact</td>
@@ -360,9 +360,10 @@ input:checked + .sliderStatus:before {
                 </div>
                    </div>   
            <div class="button-container" style="display:flex;justify-content: right;">
+           <button onclick="closeAddSupplierModal()" class="cancelAddSupplier btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
                 <button onclick="addSupplier()" class="btn-success-custom saveSuppliedBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
                 <button hidden onclick=" updateSupplied()" class="btn-success-custom updateSuppliedBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
-                <button onclick="closeAddSupplierModal()" class="cancelAddSupplier btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
+              
             </div>
         </div>
       </div>
@@ -394,8 +395,8 @@ function toggleStatusSupplier(checkbox) {
     var slider = checkbox.parentNode.querySelector('.sliderStatus'); 
     var statusLabel = document.getElementById('statusSupplier');
     if (checkbox.checked) {
-        slider.style.backgroundColor = '#00CC00'; 
-        statusLabel.style.color = '#00CC00';
+        slider.style.backgroundColor = 'var(--primary-color)'; 
+        statusLabel.style.color = 'var(--primary-color)';
     } else {
         slider.style.backgroundColor = '#262626'; 
         statusLabel.style.color = '#fefefe'; 
@@ -423,8 +424,6 @@ function closeAddSupplierModal()
     $(this).hide();
     $(this).css('animation', '');
     $('.supplier-modal').css('animation', '');
-
-   
   });
 }
 function clearInputs()

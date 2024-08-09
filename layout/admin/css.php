@@ -591,4 +591,11 @@ button:hover{
     border-color: transparent transparent var(--primary-color) transparent; 
 }
 
+
+.deleteIcon:hover{
+  color: red !important;
+}
+.normalIcon:hover{
+  color: var(--primary-color) !important;
+}
 </style>

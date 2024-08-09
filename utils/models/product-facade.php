@@ -388,7 +388,9 @@
       $fileName = $uploadedFile['name'];
   
       $destination = './assets/products/' . $fileName;
-  
+      if (file_exists($destination)) {
+        unlink($destination);
+      }
       $imageInfo = getimagesize($tempPath);
       $imageType = $imageInfo[2];
   
@@ -537,6 +539,10 @@ public function updateProduct($formData)
   
       $destination = './assets/products/' . $fileName;
   
+      if (file_exists($destination)) {
+        unlink($destination);
+      }
+
       $imageInfo = getimagesize($tempPath);
       $imageType = $imageInfo[2];
   

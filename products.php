@@ -175,7 +175,7 @@ button.btn.btn-secondary.deleteBtn.deleteProductItem {
   }
 
 .paginationTag:hover{
-  color: #FF6900;
+  color: var(--primary-color);
 }
 
     .paginactionClass{
@@ -588,7 +588,7 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
       var multiLbl = document.getElementById('multiLbl');
       multiple.checked = false
       if(multiple.checked){
-        ultiLbl.style.color = "#FF6900";
+        ultiLbl.style.color = "var(--primary-color)";
         toggleMultiple(multiple)
       }else{
         toggleMultiple(multiple)
@@ -602,7 +602,7 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
       if(!service.checked){
         taxLabel.style.color = ''
       }else{
-        taxLabel.style.color = '#FF6900'
+        taxLabel.style.color = 'var(--primary-color)'
       }
       var other =  document.getElementById('otherChargesToggle');
       other.checked =false
@@ -610,7 +610,7 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
       if(!other.checked){
         serviceLabel.style.color = ''
       }else{
-        serviceLabel.style.color = '#FF6900'
+        serviceLabel.style.color = 'var(--primary-color)'
       }
       var displayServices = document.getElementById('displayServiceChargeReceipt');
       var serviceLabel = document.getElementById('serviceChargeLbl');

@@ -212,7 +212,8 @@ $(document).ready(function()
         $("#invoice_number").val(response['invoice_number']);
         $("#price").val(response['price']);
         $("#discount").val(response['discount']);
-        $("#total_amount").val(response['total_amount']);
+        $("#total_amount").val(addCommasToNumber(response['total_amount']));
+        $("#vatable_amount").val(addCommasToNumber(response['taxable_amount']));
         $("#description").val(response['description']);
         if (response['invoice_photo_url']) {
               $("#imagePreview").attr("src", response['invoice_photo_url']).show();
@@ -225,7 +226,7 @@ $(document).ready(function()
         {
           $("#landingCostDiv").show();
           $("#toggleLandingCost").prop("checked", "checked");
-          $("#totalLandingCost").val(response['total_amount']);
+          // $("#totalLandingCost").val(response['total_amount']);
           
           var totalLandingCost = $("#totalLandingCost").val();
           var landingCostPerPiece = totalLandingCost / response['quantity'];
@@ -235,7 +236,7 @@ $(document).ready(function()
           $.each(landingCosts, function(key, value) {
               var $element = $("#" + key);
               if ($element.length) {
-                  $element.val(value);
+                  $element.val(addCommasToNumber(value));
               } else {
                   console.warn("Element with ID '" + key + "' not found.");
               }
@@ -278,7 +279,10 @@ $(document).ready(function()
       });
 
       landingCostTotals.forEach(input => {
-        valuesObject[input.id] = input.value;
+        const cleanedValue = input.value.replace(/,/g, '');
+        const numericValue = parseFloat(cleanedValue);
+
+        valuesObject[input.id] = numericValue;
       });
       
       return valuesObject;
@@ -412,3 +416,28 @@ $(document).ready(function()
     toastr.success(message);
   }
 })
+
+
+$(document).click(function(event) {
+  var $target = $(event.target);
+  if (!$target.closest('#add_expense_modal').length) {
+      if ($('#add_expense_modal').is(':visible')) {
+          hide_modal();
+      }
+  }
+});
+
+
+
+function hide_modal()
+  {
+    $("#add_expense_modal").addClass('slideOutRight');
+    $(".expense_content").addClass('slideOutRight');
+    setTimeout(function () {
+      $("#add_expense_modal").removeClass('slideOutRight');
+      $("#add_expense_modal").hide();
+      $(".expense_content").removeClass('slideOutRight');
+      $(".expense_content").hide();
+    }, 100);
+    $("#searchInput").focus();
+  }

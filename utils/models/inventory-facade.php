@@ -1193,33 +1193,33 @@ class InventoryFacade extends DBConnection
                     $stmt->execute($params);
 
 
-                    if($isPaid === 0)
-                    {
-                        $expense_quantity = $qty_received;
-                        $expense_type = "PURCHASED ORDER";
-                        $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
-                        $invoice_number = $po_number;
-                        $price = $product_info['amount_beforeTax'];
-                        $total_amount = $expense_quantity * $price;
-                        $date_of_transaction = date('Y-m-d');
-                        $uom_id_expense = $this->get_productInfo($product_id)['uom_id'];
-    
-                        $expense_stmt = $this->connect()->prepare("
-                            INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )
-                        ");
-    
-                        $expense_stmt->bindParam(1, $product_id, PDO::PARAM_STR);
-                        $expense_stmt->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
-                        $expense_stmt->bindParam(3, $expense_type, PDO::PARAM_STR);
-                        $expense_stmt->bindParam(4, $expense_quantity, PDO::PARAM_INT);
-                        $expense_stmt->bindParam(5, $uom_id_expense, PDO::PARAM_INT);
-                        $expense_stmt->bindParam(6, $supplier_id, PDO::PARAM_INT);
-                        $expense_stmt->bindParam(7, $invoice_number, PDO::PARAM_STR);
-                        $expense_stmt->bindParam(8, $price, PDO::PARAM_STR);
-                        $expense_stmt->bindParam(9, $total_amount, PDO::PARAM_STR);
-                        $expense_stmt->execute();
-                    }
+                   
+                    $expense_quantity = $qty_received;
+                    $expense_type = "PURCHASED ORDER";
+                    $supplier_id = $this->get_supplierInfo($formData['supplier'])['id'];
+                    $invoice_number = $po_number;
+                    $price = $product_info['amount_beforeTax'];
+                    $total_amount = $expense_quantity * $price;
+                    $date_of_transaction = date('Y-m-d');
+                    $uom_id_expense = $this->get_productInfo($product_id)['uom_id'];
+                    $taxable_amount = $total_amount;
+                    $expense_stmt = $this->connect()->prepare("
+                        INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount, taxable_amount)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+                    ");
+
+                    $expense_stmt->bindParam(1, $product_id, PDO::PARAM_STR);
+                    $expense_stmt->bindParam(2, $date_of_transaction, PDO::PARAM_STR);
+                    $expense_stmt->bindParam(3, $expense_type, PDO::PARAM_STR);
+                    $expense_stmt->bindParam(4, $expense_quantity, PDO::PARAM_INT);
+                    $expense_stmt->bindParam(5, $uom_id_expense, PDO::PARAM_INT);
+                    $expense_stmt->bindParam(6, $supplier_id, PDO::PARAM_INT);
+                    $expense_stmt->bindParam(7, $invoice_number, PDO::PARAM_STR);
+                    $expense_stmt->bindParam(8, $price, PDO::PARAM_STR);
+                    $expense_stmt->bindParam(9, $total_amount, PDO::PARAM_STR);
+                    $expense_stmt->bindParam(10, $taxable_amount, PDO::PARAM_STR);
+                    $expense_stmt->execute();
+                   
 
                     if($qty_received > 0) {$qty_received = "+".$qty_received;}
                     $stmt = $this->connect()->prepare("UPDATE products SET product_stock = product_stock + :new_stock WHERE id = :id");

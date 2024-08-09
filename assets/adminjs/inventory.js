@@ -14,8 +14,7 @@
     display_datePurchased();
 
     show_allInventories();
-    $("#btn_openOption").attr('title', 'Click this to open option').tooltip();
-    $("#btn_openOption").tooltip({
+    $("#btn_openOption").attr('title', 'Click this to open option').tooltip({
         open: function(event, ui) {
             $('body').css('background-color', '#262626'); 
         },
@@ -23,15 +22,8 @@
             $('body').css('background-color', '#262626'); 
         }
     }).tooltip("open");
-    $("#btn_openOption").trigger('mouseenter');
-
+   
     $(document).ready(function () {
-    
-        $('.container-scroller').click(function(event) {
-          if ($(event.target).is('#optionModal')) {
-              $('#optionModal').fadeOut();
-          }
-      });
       
         $("#inventory").addClass('active');
         $("#inventories").addClass('active');
@@ -634,9 +626,9 @@
             $("#lossDamageInfoID").val(infoData['id']);
             $("#date_damage").val(date_format(infoData['date_transact']));
             $("#ld_reason").val(infoData['reason']);
-            $("#footer_lossand_damages #total_qty").html(infoData['total_qty']);
-            $("#footer_lossand_damages #total_cost").html("₱ " + infoData['total_cost']);
-            $("#footer_lossand_damages #overall_total_cost").html("₱ " + infoData['over_all_total_cost']);
+            $("#footer_lossand_damages #total_qty").html(addCommasToNumber(infoData['total_qty']));
+            $("#footer_lossand_damages #total_cost").html("₱ " + addCommasToNumber(infoData['total_cost']));
+            $("#footer_lossand_damages #overall_total_cost").html("₱ " + addCommasToNumber(infoData['over_all_total_cost']));
             $("#loss_and_damage_note").val(infoData['note']);
             var rows = [];
             for (var i = 0; i < ld_data.length; i++) {
@@ -2265,7 +2257,7 @@
       $(document).click(function(event) {
         var $target = $(event.target);
 
-        if (!$target.closest('#optionModal, #btn_openOption, #purchaseQty_modal, #removeOrder, .removeItem, #show_purchasePrintModal, #unpaid_purchase_modal, .ui-autocomplete, .ui-autocomplete-input').length) {
+        if (!$target.closest('#optionModal, #btn_openOption, #purchaseQty_modal, #removeOrder, .removeItem, #show_purchasePrintModal, #unpaid_purchase_modal, .ui-autocomplete, .ui-autocomplete-input, #date_expired').length) {
             if ($('#optionModal').is(':visible')) {
                 hideModals();
             }

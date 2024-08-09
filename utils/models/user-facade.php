@@ -460,7 +460,6 @@ public function addCustomer($formData){
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$lastInsertId ,$customerContact, $code , $type, $customeremail,$address,$taxExempt,$pwdOrSCid,$tin,$due]);
     }
-    
     return true;
 
 }
