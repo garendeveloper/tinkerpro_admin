@@ -253,7 +253,7 @@
                 <div class="group left-aligned">
                     <label for=""><strong style="color: #ffff;">RECEIVE ALL</strong></label>
                     <label class="switch">
-                        <input type="checkbox" name="receive_all" id="receive_all" checked>
+                        <input type="checkbox" name="receive_all" id="receive_all" >
                         <span class="slider round"></span>
                     </label>
                 </div>
@@ -285,6 +285,7 @@
 </div>
 <script>
     $(document).ready(function () {
+        $("#receive_all").prop("checked", false);
         show_allPurchaseOrders();
         var toastDisplayed = false;
         var po_numbers = [];
@@ -383,7 +384,7 @@
                 $("#tbl_receivedItems #receive_item").prop("checked", true);
                 $('#tbl_receivedItems tbody tr').each(function() {
                     var qty_on_hand = $(this).find('td').eq(2).text();
-                    $(this).find('td').eq(3).find('#qty_received').val(qty_on_hand); 
+                    $(this).find('td').eq(3).text(qty_on_hand);
                 });
             }
             else {
@@ -458,7 +459,7 @@
                                     }
                                     else
                                     {
-                                        table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox' checked style = 'height: 10px; width: 10px'></input></td>";
+                                        table += "<td data-id = " + data[i].inventory_id + " class='text-center' style = 'width: 5px;'><input type = 'checkbox' id = 'receive_item' class='custom-checkbox'  style = 'height: 10px; width: 10px'></input></td>";
                                         table += "<td data-id = " + data[i].inventory_id + " style = 'width: 45%'>" + data[i].prod_desc + "</td>";
                                     }
 
@@ -470,7 +471,7 @@
                                     }
                                     else
                                     {
-                                        table += "<td style = 'text-align: center; background-color: #262626;'  ><input id = 'qty_received'  placeholder='QTY' value = "+data[i].qty_purchased+" style = 'text-align:center; width: 50px; height: 20px;'></input></td>";
+                                        table += "<td style = 'text-align: center; background-color: #262626;'  ><input id = 'qty_received'  placeholder='QTY' value = '' style = 'text-align:center; width: 50px; height: 20px;' /></td>";
 
                                         table +=
                                                 "<td style = 'text-align: center; background-color: #262626; '><input placeholder = 'Expiry Date' style = 'width: 90px; height: 20px;' id = 'date_expired'></input></td>";

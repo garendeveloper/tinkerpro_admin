@@ -250,24 +250,24 @@
                         <td id="roleNAME" class="td-height text-custom td-style td-bg">Role<sup>*</sup></td>
                         <td class="td-height text-custom-data"> <div class="dropdown custom-input">
                             <input class="custom-input" readonly hidden name="role" id="role" style="width: 180px"/>
-                            <input class="custom-input" readonly name="roleName" id="roleName" style="width: 180px"/>
+                            <input class="custom-input" name="roleName" id="roleName" style="width: 180px" placeholder = "Enter a user to add / select" autocomplete = "off" />
                             <button name="roleBtn" id="roleBtn" class="custom-btn">
-                            <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
-                            </svg>
+                                <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                    <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </g>
+                                </svg>
                             </button>
                             <div class="dropdown-content" id="dropdownContent">
                                 <?php
-                                 $userFacade = new UserFacade();
-                                 $roleTypes = $userFacade->getRoleType();
-                                while ($row = $roleTypes->fetch(PDO::FETCH_ASSOC)) {
-                                    echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['role_name']) . '</a>';
-                                }
+                                    $userFacade = new UserFacade();
+                                    $roleTypes = $userFacade->getRoleType();
+                                    while ($row = $roleTypes->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['role_name']) . '</a>';
+                                    }
                                 ?>
                             </div>
                         </div></td>
@@ -294,8 +294,8 @@
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                 <g id="SVGRepo_iconCarrier">
-                                <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </g>
                             </svg>
                             </button>
@@ -346,7 +346,7 @@
             </div>
             <div class="accessLevel">
                 <div style="width: 50%">
-                <div style="display: flex;">
+                    <div style="display: flex;">
                         <input id="refund_permission"  readonly name="refund_permission" type="checkbox" class="refund_permission form-check-input" value="1" style="margin-right: 4px;">
                         <label for="refund_permission" class="text-color form-check-label">Refund</label>
                           </div>
@@ -382,7 +382,7 @@
                               <input id="promotionsPermission" name="promotionPermission" type="checkbox" class="promotionPermission form-check-input" value="1" style="margin-right: 4px;">
                               <label for="promotionPermission" class="promotionLbl text-color form-check-label">Promotions & Actions</label>
                           </div>
-                </div>
+                    </div>
                 <div style="width: 50%">
                     <div style="display: flex;">
                         <input id="startingCashPermission" name="startingCashPermission" type="checkbox" class="startingCashPermission form-check-input" value="1" style="margin-right: 4px;">
@@ -679,10 +679,12 @@ function generateUsername(firstName) {
     return username;
 }
 
-function addUsers() {
+function addUsers() 
+{
     $(".statusDropDown a[data-value='0']").click();
     //users
     var role_id = document.getElementById("role").value;
+    var roleName = document.getElementById("roleName").value;
     var lastname = document.getElementById("lastN").value;
     var firstname = document.getElementById("firstN").value;
     var pass = document.getElementById("password").value;
@@ -756,6 +758,7 @@ function addUsers() {
     var formData = new FormData();
     formData.append("uploadedImage", file); 
     formData.append("role_id", role_id); 
+    formData.append("roleName", roleName);
     formData.append("last_name", lastname); 
     formData.append("first_name", firstname); 
     formData.append("password", pass); 
