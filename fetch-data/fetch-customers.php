@@ -24,7 +24,7 @@ ob_start();
             <td class='action-td text-center customerContact child-c'><?= $row['contact'] ?? null ?></td>
             <td class='action-td text-center customerCode child-d'><?= $row['code'] ?? null ?></td>
             <td class='text-center action-td child-e'>
-            <?= ($row['type'] ?? null) == 0 ? 'customer' : 'employee' ?>
+              <?= $row['name'] ?>
             </td>
             <td hidden class='text-center action-td pwdID'><?= $row['pwdOrScId'] ?? null ?></td>
             <td hidden class='text-center action-td pwdTIN'><?= $row['scOrPwdTIN'] ?? null ?></td>

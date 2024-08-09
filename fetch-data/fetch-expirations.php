@@ -50,6 +50,7 @@
                         <td><?= $row['prod_desc']?></td>
                         <td class = "text-center"><?= $row['barcode'] ?></td>
                         <td class = "text-center"><?= $row['date_expired'] ?></td>
+                        <td class = "text-center"><?= $row['transaction_qty'] ?></td>
                         <td class = "text-center"><?= $expiration ?></td>
                     </tr>
                 <?php

@@ -435,7 +435,7 @@ class InventoryFacade extends DBConnection
         date_default_timezone_set('Asia/Manila');
         if(!empty($searchInput))
         {
-            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired
+            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired, transaction_qty
                     FROM inventory
                     INNER JOIN products ON products.id = inventory.product_id
                     INNER JOIN received_items ON received_items.inventory_id = inventory.id
@@ -443,7 +443,7 @@ class InventoryFacade extends DBConnection
                     AND products.prod_desc LIKE :searchQuery OR
                     products.barcode LIKE :searchQuery";
             
-            $searchParam = "%" . $searchInput . "%";
+            $searchParam = "%_" . $searchInput . "";
             $stmt = $this->connect()->prepare($query);
             $stmt->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
             $stmt->execute();
@@ -487,7 +487,7 @@ class InventoryFacade extends DBConnection
         }
         else
         {
-            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired
+            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired, transaction_qty
                         FROM inventory
                         INNER JOIN products ON products.id = inventory.product_id
                         INNER JOIN received_items ON received_items.inventory_id = inventory.id
@@ -501,25 +501,30 @@ class InventoryFacade extends DBConnection
             $products = []; $notifications = [];
             foreach( $result as $row )
             {
-                $expiration_date = new DateTime($row['date_expired'] ?? '');
-                $now = new DateTime();
-            
-                $interval = $now->diff($expiration_date);
-                $days_remaining = $interval->days;
-                if ($expiration_date > $now) {
-                    $days_remaining++;
+                if($row['transaction_qty'] > 0)
+                {
+                    $expiration_date = new DateTime($row['date_expired'] ?? '');
+                    $now = new DateTime();
+                
+                    $interval = $now->diff($expiration_date);
+                    $days_remaining = $interval->days;
+                    if ($expiration_date > $now) {
+                        $days_remaining++;
+                    }
+                    else {
+                        $days_remaining = -$days_remaining; 
+                    }
+                    $products[] = [
+                        'inventory_id' => $row['inventory_id'],
+                        'prod_desc'=>$row['prod_desc'],
+                        'barcode'=>$row['barcode'],
+                        'is_received' =>$row['isReceived'],
+                        'date_expired'=>$row['date_expired'],
+                        'days_remaining'=>$days_remaining,
+                        'transaction_qty'=>$row['transaction_qty'],
+                    ];
                 }
-                else {
-                    $days_remaining = -$days_remaining; 
-                }
-                $products[] = [
-                    'inventory_id' => $row['inventory_id'],
-                    'prod_desc'=>$row['prod_desc'],
-                    'barcode'=>$row['barcode'],
-                    'is_received' =>$row['isReceived'],
-                    'date_expired'=>$row['date_expired'],
-                    'days_remaining'=>$days_remaining,
-                ];
+              
             }
             $notify_before = $this->get_expirationNotification();
             foreach($notify_before as $nb)
@@ -539,7 +544,7 @@ class InventoryFacade extends DBConnection
     public function get_realtime_notifications()
     {
         date_default_timezone_set('Asia/Manila');
-        $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired
+        $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired,  received_items.transaction_qty
                 FROM inventory
                 INNER JOIN products ON products.id = inventory.product_id
                 INNER JOIN received_items ON received_items.inventory_id = inventory.id
@@ -551,25 +556,30 @@ class InventoryFacade extends DBConnection
         $products = []; $notifications = [];
         foreach( $result as $row )
         {
-            $expiration_date = new DateTime($row['date_expired'] ?? '');
-            $now = new DateTime();
-        
-            $interval = $now->diff($expiration_date);
-            $days_remaining = $interval->days;
-            if ($expiration_date >= $now) {
-                $days_remaining++;
+            if($row['transaction_qty'] > 0)
+            {
+                $expiration_date = new DateTime($row['date_expired'] ?? '');
+                $now = new DateTime();
+            
+                $interval = $now->diff($expiration_date);
+                $days_remaining = $interval->days;
+                if ($expiration_date >= $now) {
+                    $days_remaining++;
+                }
+                else {
+                    $days_remaining = -$days_remaining; 
+                }
+                $products[] = [
+                    'inventory_id' => $row['inventory_id'],
+                    'prod_desc'=>$row['prod_desc'],
+                    'barcode'=>$row['barcode'],
+                    'is_received' =>$row['isReceived'],
+                    'date_expired'=>$row['date_expired'],
+                    'days_remaining'=>$days_remaining,
+                    'transaction'=>$row['transaction_qty']
+                ];
             }
-            else {
-                $days_remaining = -$days_remaining; 
-            }
-            $products[] = [
-                'inventory_id' => $row['inventory_id'],
-                'prod_desc'=>$row['prod_desc'],
-                'barcode'=>$row['barcode'],
-                'is_received' =>$row['isReceived'],
-                'date_expired'=>$row['date_expired'],
-                'days_remaining'=>$days_remaining,
-            ];
+          
         }
         $notify_before = $this->get_expirationNotification();
         foreach($notify_before as $nb)

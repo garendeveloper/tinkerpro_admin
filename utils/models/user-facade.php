@@ -223,7 +223,12 @@ class UserFacade extends DBConnection {
         $sql->execute();
         return $sql;
     }
-
+    public function getAllDiscountUsers()
+    {
+        $sql = $this->connect()->prepare( "SELECT * FROM discounts ORDER BY id DESC" );
+        $sql->execute();
+        return $sql;
+    }
     public function getUsersStatus() {
         $sql = $this->connect()->prepare( 'SELECT * FROM user_status' );
         $sql->execute();
@@ -441,7 +446,6 @@ public function getCustomersData(){
     return $stmt;
 }
 public function addCustomer($formData){
-    $isSoloParent = $formData['isSoloParent'];
     $code = $formData['code'];
     $firstrName = $formData['firstName'];
     $lastName = $formData['lastName'];
@@ -453,16 +457,17 @@ public function addCustomer($formData){
     $tin =  $formData['tin'];
     $type =  $formData['type'];
     $address = $formData['address'];
-    $role = 4;
+    $discountID = $formData['role'];
 
     $childName = $formData['childName'];
     $childBirth = $formData['childBirth'];
     $childAge = $formData['childAge'];
 
-    $sql = 'INSERT INTO users(first_name,role_id, last_name) VALUES (?, ?,?)';
+    $roleType = 4;
+    $sql = 'INSERT INTO users(first_name,role_id, last_name, discount_id) VALUES (?,?,?,?)';
     $pdo = $this->connect();
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$firstrName ,$role, $lastName]);
+    $stmt->execute([$firstrName ,$roleType, $lastName, $discountID]);
     
     $lastInsertId = $pdo->lastInsertId();
     if($lastInsertId){
@@ -552,7 +557,7 @@ public function defaultCouponExpiration($value){
             return $default;
     }
 
-
+  
     public function deleteCustomer($customerId, $typeFunction) {
         $pdo = $this->connect();
 
