@@ -207,7 +207,6 @@ if (isset($_SESSION['user_id'])) {
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel h-100">
         <div class="content-wrapper">
-
           <div class="d-flex mb-2 w-10">
             <input  class="text-color searchUsers w-100 ms-2 searchInputs" placeholder="Search Suppliers"/>
             <span class="clearBtn" style="background: #7C7C7C; height: 35px; cursor: pointer">
@@ -328,7 +327,6 @@ $(document).ready(function() {
     });
     });
 
-    
 });
 
 

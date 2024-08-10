@@ -1003,14 +1003,15 @@ $('#exportProducts').click(function() {
                     var role_id = userInfo.roleId; 
 
                     insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Deleted' + ' ' +  productName +' '+ 'Barcode #:'+ productBarcode)
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Success!',
-                      text: 'Product Deleted Succesfully!',
-                      timer: 1000, 
-                      timerProgressBar: true, 
-                      showConfirmButton: false 
-                    });
+                    // Swal.fire({
+                    //   icon: 'success',
+                    //   title: 'Success!',
+                    //   text: 'Product Deleted Succesfully!',
+                    //   timer: 1000, 
+                    //   timerProgressBar: true, 
+                    //   showConfirmButton: false 
+                    // });
+                    showResponse("Product Deleted Successfully!");
 
                     } else {
                       $('#deleteProdModal').hide();
@@ -1020,24 +1021,10 @@ $('#exportProducts').click(function() {
                     var cid = userInfo.userId;
                     var role_id = userInfo.roleId; 
                     insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Tries to delete' + ' ' +  productName +' '+ 'Barcode #:'+ productBarcode)
-                    Swal.fire({
-                      icon: 'error',
-                      title: 'Error!',
-                      text: 'Unable to delete products!',
-                      timer: 1000, 
-                      timerProgressBar: true, 
-                      showConfirmButton: false 
-                    });
+                    showResponse("Unable to delete products", 0);
                   }
               }).catch(function(error){
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error!',
-                  text: 'Unable to delete products!',
-                  timer: 1000, 
-                  timerProgressBar: true, 
-                  showConfirmButton: false 
-                });
+                showResponse("Unable to delete products", 0);
               })
             }) 
           }
