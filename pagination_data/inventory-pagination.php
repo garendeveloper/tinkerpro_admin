@@ -55,7 +55,7 @@
             <thead class='adminTableHead'>
                 <tr >
                     <th style = "width: 5%" class=' text-center ' >No.</th>
-                    <th style = "width: 20%"  >Product</th>
+                    <th style = "width: 15%"  >Product</th>
                     <th >Barcode</th>
                     <th>UOM</th>
                     <th  >Qty Purchased</th>
@@ -63,7 +63,8 @@
                     <th  style='text-align: center'>Qty in Store</th>
                     <th  style='text-align: center'>Amount Before Tax</th>
                     <th  style='text-align: center'>Amount After Tax</th>
-                    <th style='text-align: center; width: 10%'>Document Type</th>
+                    <th  style='text-align: center'>Total Cost</th>
+                    <th style='text-align: center; width: 15%'>Document Type</th>
                 </tr>
             </thead>
             <tbody></tbody>
