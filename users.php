@@ -201,6 +201,96 @@ if (isset($_SESSION['user_id'])) {
   .deleteIcon:hover{
     color: red;
 }
+
+
+#responsive-data thead th,
+    #responsive-data tbody td {
+      padding: 6px 6px; 
+      height: auto; 
+      line-height: 0.5; 
+      border: 1px solid #292928;
+      color: #ffff;
+  }
+  #responsive-data{
+    width: 100%;
+  }
+  #responsive-data thead {
+      display: table; 
+      width: calc(100% - 4px);
+  }
+
+  #responsive-data tbody {
+      display: block; 
+      max-height: 76vh; 
+      overflow-y: scroll;
+  }
+
+  #responsive-data th, td {
+      width: 9%;
+      overflow-wrap: break-word; 
+      box-sizing: border-box;
+      font-size: 13px;
+  }
+  #responsive-data tr {
+      display: table;
+      width: 100%;
+  }
+  #responsive-data, table,  tbody{
+    border: 1px solid #292928;
+  }
+  #responsive-data table{
+      background-color: #1e1e1e;
+   
+      height: 5px;
+      padding: 10px 10px;
+  }
+  #responsive-data tbody::-webkit-scrollbar {
+    width: 4px; 
+}
+#responsive-data tbody::-webkit-scrollbar-track {
+    background: #151515;
+}
+#responsive-data tbody::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 50px; 
+}
+ .main-panel, .container-scroller, .card, .card-body, .content-wrapper{
+  overflow: hidden !important;
+ }
+ .child-a{
+  width: 3% !important;
+ }
+ .child-b{
+  width: 12% !important;
+ }
+ .child-c{
+  width: 5% !important;
+ }
+ .child-d{
+  width: 5% !important;
+ }
+ .child-e{
+  width: 5% !important;
+ }
+ .child-f{
+  width: 5% !important;
+ }
+ .child-g{
+  width: 5% !important;
+ }
+ .child-h{
+  width: 3% !important;
+ }
+ .adminTableHead th{
+  font-weight: bold !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+ }
+ .adminTableHead tbody td{
+  padding-left: 10px !important;
+ }
+
+
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -221,7 +311,7 @@ if (isset($_SESSION['user_id'])) {
               </svg>
             </button>
 
-            <button onclick="addUser()" class="addProducts searchAdd">
+            <button class="addProducts searchAdd">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
               </svg> 
@@ -254,20 +344,19 @@ if (isset($_SESSION['user_id'])) {
           <div class="row">
             <div>
               <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex" style="height:76vh; width: 100%">
-                <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
                   <div id="responsive-data" >
                     <table id="recentusers" class="text-color table-border">
                       <thead class = 'adminTableHead'>
                         <tr>
-                          <th class="text-center" style="width: 3%; border-left: 1px solid transparent !important">No.</th>
-                          <th class="text-center" style="width: 20%;">USERS</th>
-                          <th class="text-center" style="width: 10%;">ROLE</th>
-                          <th class="text-center" style="width: 8%;">ID</th>
-                          <th class="text-center" style="width: 10%;">EMPLOYEE NO.</th>
-                          <th class="text-center" style="width: 10%;">DATE HIRED</th>
-                          <th class="text-center" style="width: 10%;">STATUS</th>
-                          <th class="text-center" style="width: 10%; border-right: 1px solid transparent !important">ACTION</th>
+                          <th class="text-center child-a" style=" border-left: 1px solid transparent !important">No.</th>
+                          <th class="text-center child-b">USERS</th>
+                          <th class="text-center child-c">ROLE</th>
+                          <th class="text-center child-d">ID</th>
+                          <th class="text-center child-e">EMPLOYEE NO.</th>
+                          <th class="text-center child-f">DATE HIRED</th>
+                          <th class="text-center child-g">STATUS</th>
+                          <th class="text-center child-h" style="border-right: 1px solid transparent !important">ACTION</th>
                         </tr>
                       </thead>
                       <tbody  id="userTable">
@@ -301,13 +390,36 @@ if (isset($_SESSION['user_id'])) {
 <?php include("layout/footer.php") ?>
 <script>
 
+$(document).ready(function(){
+  var Request = {
+    show_allRoleTypes: function() {
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=getRoleType',
+        success: function(response)
+        {
+          var list = "";
+          response.forEach(item => {
+            list += '<a href="#" style="color:#000000; text-decoration: none;" data-value='+item.id+'>' +item.role_name+ '</a>';
+          });
+          $("#dropdownContent").html(list);
+        }
+      })
+    },
+    addUser: function(){
+      Request.show_allRoleTypes();
+      $('#add_users_modal').show();
+    }
+  }
 
-$(document).ready(function() {
 
   Request.show_allRoleTypes();
+
   $("#users").addClass('active');
   $("#pointer").html("Users");
-  $('#dropdownContent a').click(function() {
+
+  $(document).on('click', '#dropdownContent a', function(e) {
+    e.preventDefault();
     var roleId = $(this).data('value');
     var value = $(this).data('value');
     var roleName = $(this).text();
@@ -332,6 +444,10 @@ $(document).ready(function() {
     });
   });
   
+  $(".addProducts").on("click", function(){
+    Request.addUser();
+  })
+  
     document.querySelectorAll("#dropdownContents a").forEach(item => {
       item.addEventListener("click", function(event) {
           event.preventDefault(); 
@@ -342,31 +458,9 @@ $(document).ready(function() {
           document.getElementById("dropdownContents").style.display = "none";
       });
   });
-});
 
-var Request = {
-  show_allRoleTypes: function() {
-    $.ajax({
-      type: 'get',
-      url: 'api.php?action=getRoleType',
-      success: function(response)
-      {
-        var list = "";
-        response.forEach(item => {
-          list += '<a href="#" style="color:#000000; text-decoration: none;" data-value='+item.id+'>' +item.role_name+ '</a>';
-        });
-        $("#dropdownContent").html(list);
-      }
-    })
-  }
-}
 
-function addUser() 
-{
-  Request.show_allRoleTypes();
-  $('#add_users_modal').show();
-}
-
+})
 function selectedRole(id) {
     switch(id) {
         case 2:
@@ -432,26 +526,40 @@ function selectedRole(id) {
   refreshTable() 
   selectDataDisplay()
 
-    $(document.body).on('click', '.editBtn', function() {
-        var userId = $(this).closest('tr').find('.userId').text();
-        var dataFirstName =  $(this).closest('tr').find('.f_name').text();
-        var dataLastName =  $(this).closest('tr').find('.l_name').text();
-        var employeeNum =  $(this).closest('tr').find('.employeeNum').text();
-        var pw =  $(this).closest('tr').find('.pw').text();
-        var imageName =  $(this).closest('tr').find('.imageName').text();
-        var datastats =  $(this).closest('tr').find('.statsData').text();
-        var datastatsID =  $(this).closest('tr').find('.statsDataID').text();
-        var roleN =  $(this).closest('tr').find('.roleN').text();
-        var roleID =  $(this).closest('tr').find('.roleidNum').text();
-        var identification =  $(this).closest('tr').find('.identification').text();
-        var datehired =  $(this).closest('tr').find('.datehired').text();
-        var perm =  $(this).closest('tr').find('.permission').text();
-        $('.highlightedUser').removeClass('highlightedUser');
+  function userForm(tableRow)
+  {
+    var userId = tableRow.closest('tr').find('.userId').text();
+    var dataFirstName =  tableRow.closest('tr').find('.f_name').text();
+    var dataLastName =  tableRow.closest('tr').find('.l_name').text();
+    var employeeNum =  tableRow.closest('tr').find('.employeeNum').text();
+    var pw =  tableRow.closest('tr').find('.pw').text();
+    var imageName =  tableRow.closest('tr').find('.imageName').text();
+    var datastats =  tableRow.closest('tr').find('.statsData').text();
+    var datastatsID =  tableRow.closest('tr').find('.statsDataID').text();
+    var roleN =  tableRow.closest('tr').find('.roleN').text();
+    var roleID =  tableRow.closest('tr').find('.roleidNum').text();
+    var identification =  tableRow.closest('tr').find('.identification').text();
+    var datehired =  tableRow.closest('tr').find('.datehired').text();
+    var perm =  tableRow.closest('tr').find('.permission').text();
+    $('.highlightedUser').removeClass('highlightedUser');
 
 
-      var $row = $(this).closest('tr').addClass('highlightedUser');
-        updateUserForm(userId,dataFirstName,dataLastName,employeeNum,pw,imageName,datastats,datastatsID,roleN,roleID,identification,datehired,perm)
-    });
+    var $row = tableRow.closest('tr').addClass('highlightedUser');
+    updateUserForm(userId,dataFirstName,dataLastName,employeeNum,pw,imageName,datastats,datastatsID,roleN,roleID,identification,datehired,perm)
+  }
+  $(document.body).on('click', '.editBtn', function() {
+    userForm($(this));  
+  });
+  $(document).on("dblclick", "#recentusers tbody tr", function(e){
+    e.preventDefault();
+    userForm($(this));
+  })
+
+  $(document).on("click", "#recentusers tbody tr", function(e){
+    e.preventDefault();
+    $(this).siblings().removeClass('highlighteds');
+    $(this).closest('tr').toggleClass('highlighteds')
+  })
 
  
     $(document).ready(function() {

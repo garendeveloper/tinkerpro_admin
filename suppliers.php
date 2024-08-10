@@ -70,7 +70,7 @@
   background-color: red;
 }
 .btn-control:hover {
-    border-color: #FF6900; 
+    border-color: var(--primary-color); 
     color: #fefefe !important; 
 }
 .productTable{
@@ -153,9 +153,9 @@
 
   #responsive-data thead th,
     #responsive-data tbody td {
-      padding: 6px 6px; 
+      padding: 3px 3px; 
       height: auto; 
-      line-height: 0.5; 
+      line-height: 0.4; 
       border: 1px solid #292928;
       color: #ffff;
   }
@@ -229,6 +229,7 @@
  .adminTableHead th{
   font-weight: bold !important;
   font-size: 12px !important;
+  line-height: 18px !important;
  }
 
 </style>

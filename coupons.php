@@ -166,6 +166,95 @@
     background-color: transparent;
   }
 
+
+  #responsive-data thead th,
+    #responsive-data tbody td {
+      padding: 6px 6px; 
+      height: auto; 
+      line-height: 0.5; 
+      border: 1px solid #292928;
+      color: #ffff;
+  }
+  #responsive-data{
+    width: 100%;
+  }
+  #responsive-data thead {
+      display: table; 
+      width: calc(100% - 4px);
+  }
+
+  #responsive-data tbody {
+      display: block; 
+      max-height: 76vh; 
+      overflow-y: scroll;
+  }
+
+  #responsive-data th, td {
+      width: 9%;
+      overflow-wrap: break-word; 
+      box-sizing: border-box;
+      font-size: 13px;
+  }
+  #responsive-data tr {
+      display: table;
+      width: 100%;
+  }
+  #responsive-data, table,  tbody{
+    border: 1px solid #292928;
+  }
+  #responsive-data table{
+      background-color: #1e1e1e;
+   
+      height: 5px;
+      padding: 10px 10px;
+  }
+  #responsive-data tbody::-webkit-scrollbar {
+    width: 4px; 
+}
+#responsive-data tbody::-webkit-scrollbar-track {
+    background: #151515;
+}
+#responsive-data tbody::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 50px; 
+}
+ .main-panel, .container-scroller, .card, .card-body, .content-wrapper{
+  overflow: hidden !important;
+ }
+ .child-a{
+  width: 3% !important;
+ }
+ .child-b{
+  width: 5% !important;
+ }
+ .child-c{
+  width: 8% !important;
+ }
+ .child-d{
+  width: 5% !important;
+ }
+ .child-e{
+  width: 5% !important;
+ }
+ .child-f{
+  width: 5% !important;
+ }
+ .child-g{
+  width: 5% !important;
+ }
+ .child-h{
+  width: 3% !important;
+ }
+ .adminTableHead th{
+  font-weight: bold !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+ }
+ .adminTableHead tbody td{
+  padding-left: 10px !important;
+ }
+
+
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -237,26 +326,27 @@
           <div class="row">
             <div>
               <div class="card ms-1 ps-0 pe-0 pb-0 pt-0 d-flex containerTable"  style="height:76vh; width: 100%; overflow-y: auto;">
-                <!-- <div class="card-body"> -->
                   <?php include('errors.php'); ?>
-                  <!-- <div class="productTable" > -->
-                  <table id="recentusers" class="text-color table-border table-container-coupon">
-                    <thead>
-                      <tr>
-                        <th class="text-center" style="width: 3%; border-left: 1px solid transparent !important">No.</th>
-                        <th class="text-center" style="width: 20%;">QR Number</th>
-                        <th class="text-center" style="width: 10%;">Amount</th>
-                        <th class="text-center" style="width: 8%;">Transaction Date</th>
-                        <th class="text-center" style="width: 10%;">Used Date</th>
-                        <th class="text-center" style="width: 10%;">Expiry Date</th>
-                        <th class="text-center" style="width: 10%;">Status</th>
-                        <th class="text-center" style="width: 10%; border-right: 1px solid transparent !important">ACTION</th>
-                      </tr>
-                    </thead>
-                    <tbody  id="couponsTable">
-                      
-                    </tbody>
-                  </table>
+                    <div id="responsive-data">
+                      <table id="recentusers" class="text-color table-border">
+                        <thead class = "adminTableHead">
+                          <tr>
+                            <th class="text-center child-a" >No.</th>
+                            <th class="text-center child-b" >QR Number</th>
+                            <th class="text-center child-c" >Amount</th>
+                            <th class="text-center child-d" >Transaction Date</th>
+                            <th class="text-center child-e" >Used Date</th>
+                            <th class="text-center child-f">Expiry Date</th>
+                            <th class="text-center child-g">Status</th>
+                            <th class="text-center child-h">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody  id="couponsTable">
+                          
+                        </tbody>
+                      </table>
+                    </div>
+             
                   <!-- </div> -->
                 <!-- </div> -->
               </div>

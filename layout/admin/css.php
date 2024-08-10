@@ -524,8 +524,6 @@ button:hover{
     background: var(--primary-color);
     color: #fff;
 }
-
-/* Change the background color of navigation buttons */
 .ui-datepicker-prev, .ui-datepicker-next {
     background: #333;
     color: #fff;
@@ -541,34 +539,15 @@ button:hover{
     color: #fff;
 }
 
-
-/* 
-.progress-text {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-      color: #333;
-  } */
-
 .adminTableHead{
   border: 1px solid var(--primary-color) !important; 
   padding: 8px 8px; 
-  line-height: 0.5
+  line-height: 0.5;
+  color: var(--primary-color) !important;
 }
-
-/* .ui-tooltip {
-      background: var(--primary-color) !important;
-      color: white;
-      border: 1px solid var(--primary-color) !important;
-      width: 200px;
-      font-size: 12px;
-      font-family: Century Gothic;
-  } */
+.adminTableHead th{
+  color: var(--primary-color) !important;
+}
 
 .ui-tooltip {
   background: var(--primary-color) !important;

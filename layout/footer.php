@@ -362,13 +362,15 @@ let deleteValidation = "false";
     type === 1 ? toastr.success(message) : toastr.error(message);
   }
 
-  var test = '';
+  var DisplayService = '';
+  var s_charge = '';
+
+  var OtherDisplayService = '';
+  var Others_charge = '';
 
   function toUpdateProducts(productId, productName, productSKU, productCode, productBarcode, productOUM, productuomid, productBrand, productCost, productMakup, productPrice,
     productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable,
     stock_status,stock_count) {
-
-      test = displayService;
 
     $('#add_products_modal').show();
     productId ? document.getElementById('productid').value = productId : null;
@@ -456,23 +458,21 @@ let deleteValidation = "false";
     }
     var service = document.getElementById('serviceChargesToggle');
     var taxLabel = document.getElementById('taxtVatLbl');
-    service.checked = (serviceCharge == 1) ? true : false;
-    if (service.checked) {
-      taxLabel.style.color = '#FF6900';
-    } else {
-      taxLabel.style.color = '';
-    }
 
     // console.log(displayService);
     $('#displayServiceChargeReceipt, #serviceChargesToggle').on('change', function () {
       var isDisplayServiceChargeReceiptChecked = $('#displayServiceChargeReceipt').is(':checked');
       var isServiceChargesToggleChecked = $('#serviceChargesToggle').is(':checked');
       if (isDisplayServiceChargeReceiptChecked) {
-        console.log("Hi");
-      } 
+        DisplayService = 1
+      } else {
+        DisplayService = 0
+      }
       
       if (isServiceChargesToggleChecked) {
-        console.log("Hello");
+        s_charge = 1 
+      } else {
+        s_charge = 0
       }
     });
 
@@ -482,20 +482,39 @@ let deleteValidation = "false";
       $('#displayServiceChargeReceipt').prop('checked', false);
     }
 
-    var other = document.getElementById('otherChargesToggle');
-    other.checked = (otherCharges == 1) ? true : false;
-    var serviceLabel = document.getElementById('serviceChargeLbl');
-    if (other.checked) {
-      serviceLabel.style.color = '#FF6900';
+    if (serviceCharge == '1') {
+      $('#serviceChargesToggle').prop('checked', true);
     } else {
-      serviceLabel.style.color = ''
+      $('#serviceChargesToggle').prop('checked', false);
     }
-    var displayOtherCharge = document.getElementById('displayReceipt');
-    displayOtherCharge.checked = (displayOtherCharges == 1) ? true : false;
-    if (displayOtherCharge.checked) {
-      toggleOtherCharges(displayOtherCharge)
+   
+    $('#otherChargesToggle, #displayReceipt').on('change', function() {
+      var displayOtherCharge = $('#displayReceipt').is(':checked'); 
+      var other = $('#otherChargesToggle').is(':checked'); 
+
+      if (displayOtherCharge) {
+        OtherDisplayService = 1
+      } else {
+        OtherDisplayService = 0
+      }
+
+      if (other) {
+        Others_charge = 1 
+      } else {
+        Others_charge = 0
+      }
+    })
+
+    if (otherCharges == '1') {
+      $('#otherChargesToggle').prop('checked', true);
     } else {
-      toggleOtherCharges(displayOtherCharge)
+      $('#otherChargesToggle').prop('checked', false);
+    }
+
+    if (displayOtherCharges == '1') {
+      $('#displayReceipt').prop('checked', true);
+    } else {
+      $('#displayReceipt').prop('checked', false);
     }
 
     var stat = document.getElementById('statusValue');
@@ -542,8 +561,6 @@ let deleteValidation = "false";
 
  
   function updateProducts() {
-    var test = $('#displayServiceChargeReceipt').prop('checked', true) ? 1 : 0;
-    console.log(test);
     var p_id = document.getElementById('productid').value
     var productname = document.getElementById('productname').value;
     var sku = document.getElementById('skunNumber').value;
@@ -645,10 +662,10 @@ let deleteValidation = "false";
     formData.append("discount", discount);
     formData.append("vat", vat);
     formData.append("display_tax", display_tax);
-    formData.append("service_charge", service_charge);
-    formData.append("display_service_charge", display_service_charge);
-    formData.append("other_charges", other_charges);
-    formData.append("display_other_charges", display_other_charges);
+    formData.append("service_charge", s_charge);
+    formData.append("display_service_charge", DisplayService);
+    formData.append("other_charges", Others_charge);
+    formData.append("display_other_charges", OtherDisplayService);
     formData.append("status", status);
     formData.append("description", description);
     formData.append("product_id", p_id)
@@ -697,7 +714,12 @@ let deleteValidation = "false";
         // refreshProductsTable()
         closeAddProductsModal()
         if (currentRow) {
-          // currentRow.querySelector('.displayService').innerText = "New Text";
+          currentRow.querySelector('.service').innerText = s_charge;
+          currentRow.querySelector('.displayService').innerText = DisplayService;
+
+          currentRow.querySelector('.other').innerText = Others_charge;
+          currentRow.querySelector('.displayOthers').innerText = OtherDisplayService;
+        
           currentRow.querySelector('.previewImg .productImgs').textContent = filename;
           currentRow.querySelector('.productsName').innerText = productname;
           currentRow.querySelector('.sku').innerText = sku;

@@ -27,16 +27,16 @@ if ($fetchUser->rowCount() > 0) {
 while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
     ?>
     <tr class="table-row">
-        <td style="border-left: 1px solid transparent !important"  class='text-center td-h' ><?= $counter?><span hidden class="couponId"><?= $row['id'] ?></span></td>
-        <td  class='text-center text-color td-h'><?= $row['qrNumber'] ?></span></td>
-        <td  class='text-center text-color td-h'><?= number_format($row['c_amount'],2) ?></td>
-        <td  class='text-center text-color td-h'><?= $row['transaction_dateTime'] !== null ? date('F d, Y', strtotime($row['transaction_dateTime'])) : '' ?></td>
-        <td  class='text-center text-color employeeNum td-h'><?= $row['used_date'] !== null ? date('F d, Y', strtotime($row['used_date'])) : '' ?></td>
-        <td  class='text-center text-color td-h'><?= $row['expiry_dateTime'] !== null ? date('F d, Y', strtotime($row['expiry_dateTime'])) : '' ?><span hidden class="statsData"><?= $row['status']?></span><span hidden class="statsDataID"><?= $row['status_id']?></span></td>
-        <td class="text-center td-h <?= ($row["isUse"] == 0) ? 'text-success' : ($row["isUse"] == 1 ? 'text-danger' : '') ?>">
+        <td  class='text-center td-h child-a' ><?= $counter?><span hidden class="couponId"><?= $row['id'] ?></span></td>
+        <td  class='text-center text-color td-h child-b'><?= $row['qrNumber'] ?></span></td>
+        <td  class='text-center text-color td-h child-c'><?= number_format($row['c_amount'],2) ?></td>
+        <td  class='text-center text-color td-h child-d'><?= $row['transaction_dateTime'] !== null ? date('F d, Y', strtotime($row['transaction_dateTime'])) : '' ?></td>
+        <td  class='text-center text-color employeeNum td-h child-e'><?= $row['used_date'] !== null ? date('F d, Y', strtotime($row['used_date'])) : '' ?></td>
+        <td  class='text-center text-color td-h child-f'><?= $row['expiry_dateTime'] !== null ? date('F d, Y', strtotime($row['expiry_dateTime'])) : '' ?><span hidden class="statsData"><?= $row['status']?></span><span hidden class="statsDataID"><?= $row['status_id']?></span></td>
+        <td class="text-center td-h child-g <?= ($row["isUse"] == 0) ? 'text-success' : ($row["isUse"] == 1 ? 'text-danger' : '') ?>">
         <?= ($row["isUse"] == 0) ? 'Not Used' : ($row["isUse"] == 1 ? 'Used' : ($row['status'] ?? null)) ?>
         </td>
-        <td style="border-right: 1px solid transparent !important" class='text-center action-td td-h text-center'>
+        <td class='text-center action-td td-h text-center child-h'>
             <a href="#" class='text-success editBtn' style='text-decoration: none;'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
                     <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5M11.5 4a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1z"/>
@@ -53,8 +53,8 @@ while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
     ?>
     <tr>
         <td colspan="100%" rowspan="100%" style="text-align: center; padding: 20px; border: 1px solid transparent !important">
-            <!-- <img src="./assets/img/notFound2.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br> -->
-            No Data Found!
+            <img src="./assets/img/no-data.png" alt="No Products Found" style="display: block; margin: 0 auto 10px auto;"><br>
+        
         </td>
     </tr>
     <?php

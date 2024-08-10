@@ -14,14 +14,6 @@
     display_datePurchased();
 
     show_allInventories();
-    $("#btn_openOption").attr('title', 'Click this to open option').tooltip({
-        open: function(event, ui) {
-            $('body').css('background-color', '#262626'); 
-        },
-        close: function(event, ui) {
-            $('body').css('background-color', '#262626'); 
-        }
-    }).tooltip("open");
    
     $(document).ready(function () {
       
@@ -960,7 +952,6 @@
                           
                           $('#pdfViewer').attr('src', blobURL);
                       }
-                    
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);

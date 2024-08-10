@@ -118,6 +118,7 @@
 }
 .td-style{
     font-style: italic;
+
 }
 .td-bg{
     background-color: #404040;
@@ -206,7 +207,9 @@
     position: relative;
 }
 
-
+#addUsers tbody tr td{
+    border: 1px solid #d3d3d3 !important;
+}
 
 </style>
 
@@ -262,13 +265,7 @@
                                 </svg>
                             </button>
                             <div class="dropdown-content roleTypeDropdown" id="dropdownContent">
-                                <?php
-                                    $userFacade = new UserFacade();
-                                    $roleTypes = $userFacade->getRoleType();
-                                    foreach($roleTypes as $row) {
-                                        echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['role_name']) . '</a>';
-                                    }
-                                ?>
+                            
                             </div>
                         </div></td>
                     </tr>
@@ -300,7 +297,13 @@
                             </svg>
                             </button>
                             <div class="dropdown-content" id="dropdownContents">
-                        
+                                <?php
+                                 $userFacade = new UserFacade();
+                                 $status = $userFacade->getUsersStatus();
+                                    while ($row = $status->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['status']) . '</a>';
+                                    }
+                                ?>
                             </div>
                         </div></td>
                     </tr>
@@ -413,9 +416,9 @@
              </div>
             </div>
             <div class="button-container position-absolute d-flex justify-content-end w-100" style="bottom: 10px;">
+                <button onclick="closeAddUserModal()" class="cancelAddUser btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
                 <button onclick="addUsers()"  class="btn-success-custom saveBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
                 <button hidden onclick="updateDataUser()" class="btn-success-custom updateBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
-                <button onclick="closeAddUserModal()" class="cancelAddUser btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
             </div>
         </div>
       </div>
@@ -469,7 +472,6 @@ document.addEventListener("click", function(event) {
 });
 
 
-
 document.getElementById("roleBtn").addEventListener("click", function(event) {
   event.stopPropagation(); 
 });
@@ -491,10 +493,6 @@ document.addEventListener("click", function(event) {
     dropdownContent.style.display = "none";
   }
 });
-
-
-
-
 
 document.getElementById("statusBtn").addEventListener("click", function(event) {
   event.stopPropagation(); 
