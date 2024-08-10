@@ -678,6 +678,31 @@ function generateUsername(firstName) {
     var username = firstName + month + day + year;
     return username;
 }
+function showResponse(message, type) 
+{
+    toastr.options = {
+        "onShown": function () {
+        $('.custom-toast').css({
+            "opacity": 1,
+            "text-align": "center",
+        });
+        },
+        "closeButton": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "progressBar": true,
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "tapToDismiss": false,
+        "toastClass": "custom-toast",
+        "onclick": function () {  }
+
+    };
+    type === 1 ? toastr.success(message) : toastr.error(message);
+ }
 
 function addUsers() 
 {
@@ -799,23 +824,17 @@ function addUsers()
                     insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Added' + ' ' + firstname + ' '+ lastname);
                     refreshTable()
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'User added successfully!',
-                        timer: 1000, 
-                        timerProgressBar: true, 
-                        showConfirmButton: false 
-                    });
+                    // Swal.fire({
+                    //     icon: 'success',
+                    //     title: 'Success!',
+                    //     text: 'User added successfully!',
+                    //     timer: 1000, 
+                    //     timerProgressBar: true, 
+                    //     showConfirmButton: false 
+                    // });
+                    showResponse("User added successfully", 1);
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Invalid to Continue',
-                        text: response.data.message,
-                        timer: 1000, 
-                        timerProgressBar: true, 
-                        showConfirmButton: false 
-                    });
+                    showResponse("Invalid to continue", 0);
                 }
               closeAddUserModal()
             })
@@ -823,25 +842,11 @@ function addUsers()
             console.log(error);
            });
         }else{
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Password not match!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-            });
+            showResponse("Password not match", 0);
         }
        
     }else{
-        Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Check the required field!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-            });
+        showResponse("Check the required field", 0);
     }
 
    
@@ -1106,39 +1111,18 @@ function updateDataUser(){
                 insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Updated' + ' ' + firstname + ' '+ lastname);
 
                 refreshTable()
-                Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'User updated successfully!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-            });
+               showResponse("User updated successfully", 1);
               closeAddUserModal()
             })
             .catch(function(error) {
               console.log(error);
            });
         }else{
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Password not match!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-            });
+            showResponse("Password not match", 0);
         }
        
     }else{
-        Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Check the required field!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-            });
+       showResponse("Check the required fields", 0);
     }
 
    

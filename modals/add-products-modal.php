@@ -1500,23 +1500,23 @@ input:checked + .warningSpan:before {
                     </tr>
                     <tr>
                         <td id="serviceChargeLbl" class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Service Charge <span id="service_charge"></span></td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px">  
-                        <?php
-                          $serviceCharges = "no"; 
-                          $other_Charge = ($serviceCharges== "no") ? "yes" : "no";
-                          ?>
-                          <label class="serviceCharge" style="margin-left: 5px">
-                              <input type="checkbox" id="serviceChargesToggle"<?php if($serviceCharges == "no") ?> onclick="toggleDisplayServiceCharge(this)" >
-                              <span class="sliderServiceCharges round"></span>
-                          </label>
-                          <small id="displayOnReceiptServiceCharge" style="margin-left: 100px">Display on Receipt</small>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px">
                           <?php
-                          $showTheServiceCharge = 'no'; 
-                          $showOn= (  $showTheServiceCharge== 'no') ? 'yes' :' no';
+                            $serviceCharges = "no"; 
+                            $other_Charge = ($serviceCharges== "no") ? "yes" : "no";
+                            ?>
+                            <label class="serviceCharge" style="margin-left: 5px">
+                                <input type="checkbox" id="serviceChargesToggle"<?php if($serviceCharges == "no") ?> onclick="toggleDisplayServiceCharge(this)" >
+                                <span class="sliderServiceCharges round"></span>
+                            </label>
+                            <small id="displayOnReceiptServiceCharge" style="margin-left: 100px">Display on Receipt</small>
+                            <?php
+                            $showTheServiceCharge = 'no'; 
+                            $showOn= (  $showTheServiceCharge== 'no') ? 'yes' :' no';
                           ?>
                           <label class="displayServiceReceipt" style="display:flex;float: right; margin-right: 5px">
-                              <input type="checkbox" id="displayServiceChargeReceipt"<?php if($showTheServiceCharge== 'no') echo ' disabled'; ?> onclick=" toggleDisplayOnReceiptServiceCharge(this)" >
-                              <span class="spanDisplayServiceChargeReceipt round"></span>
+                            <input type="checkbox" id="displayServiceChargeReceipt"<?php if($showTheServiceCharge== 'no') echo ' disabled'; ?> onclick=" toggleDisplayOnReceiptServiceCharge(this)" >
+                            <span class="spanDisplayServiceChargeReceipt round"></span>
                           </label>
                         </td>
                     </tr>
@@ -1528,7 +1528,7 @@ input:checked + .warningSpan:before {
                           $other_changes = ($otherChanges == "no") ? "yes" : "no";
                           ?>
                           <label class="switchOtherCharges" style="margin-left: 5px">
-                              <input type="checkbox" id="otherChargesToggle"<?php if($otherChanges == "no") ?> onclick="toggleOtherCharges(this)">
+                              <input type="checkbox" id="otherChargesToggle"<?php if($otherChanges == "no") ?>>
                               <span class="sliderOtherCharges round"></span>
                           </label>
                           <small id="otherChargesDisplayOnReceipt" style="margin-left: 100px">Display on Receipt</small>
@@ -1749,52 +1749,68 @@ function toggleShowText(checkbox) {
   }
 
     function toggleStatus(checkbox) {
-            var slider = checkbox.parentNode.querySelector('.slider'); 
-            var statusLabel = document.getElementById('statusActive');
-            if (checkbox.checked) {
-                slider.style.backgroundColor = '#00CC00'; 
-                statusLabel.style.color = '#00CC00'; 
-            } else {
-                slider.style.backgroundColor = '#262626'; 
-                statusLabel.style.color = '#fefefe'; 
-            }
-        }
+      var slider = checkbox.parentNode.querySelector('.slider'); 
+      var statusLabel = document.getElementById('statusActive');
+      if (checkbox.checked) {
+          slider.style.backgroundColor = '#00CC00'; 
+          statusLabel.style.color = '#00CC00'; 
+      } else {
+          slider.style.backgroundColor = '#262626'; 
+          statusLabel.style.color = '#fefefe'; 
+      }
+    }
+
     function toggleDisplayOnReceipt(checkbox){
       var otherChargesDisplayOnReceipt = document.getElementById('otherChargesDisplayOnReceipt')
       var spanDisplayReceipt = checkbox.parentNode.querySelector('.spanDisplayReceipt'); 
       if (checkbox.checked) {
         otherChargesDisplayOnReceipt.style.color = "var(--primary-color)";
-            } else {
-              otherChargesDisplayOnReceipt.style.color = "#FFFFFF";  
-            }
+      } else {
+        otherChargesDisplayOnReceipt.style.color = "#FFFFFF";  
+      }
     }
 
+
+    $('#otherChargesToggle').on('change', function() {
+      if($(this).prop('checked')) {
+        $('#displayReceipt').prop('checked', true);
+      } else {
+        $('#displayReceipt').prop('checked', false);
+      }
+    })
+
     function toggleOtherCharges(checkbox){
-      var otherChargesDisplayOnReceipt = document.getElementById('otherChargesDisplayOnReceipt')
-        var otherChargesToggle= checkbox.parentNode.querySelector('.sliderOtherCharges'); 
-        if (checkbox.checked) {
-            var displayReceipt = document.getElementById('displayReceipt')
-            displayReceipt.disabled = false;
-            } else {
-            var displayReceipt = document.getElementById('displayReceipt')
-            displayReceipt.disabled = true;
-            displayReceipt.checked = false;
-            otherChargesDisplayOnReceipt.style.color = "#FFFFFF"; 
-            }
+      // console.log('Hello world')
+      // var otherChargesDisplayOnReceipt = document.getElementById('otherChargesDisplayOnReceipt')
+      //   var otherChargesToggle= checkbox.parentNode.querySelector('.sliderOtherCharges'); 
+      //   if (checkbox.checked) {
+      //       var displayReceipt = document.getElementById('displayReceipt')
+      //       displayReceipt.disabled = false;
+      //         // $('#otherChargesDisplayOnReceipt').prop('checked', true);
+      //       } else {
+      //         // $('#otherChargesDisplayOnReceipt').prop('checked', true);
+      //       var displayReceipt = document.getElementById('displayReceipt')
+      //       displayReceipt.disabled = true;
+      //       displayReceipt.checked = false;
+      //       otherChargesDisplayOnReceipt.style.color = "#FFFFFF"; 
+      //       }
       }
 
-      function toggleDisplayServiceCharge(checkbox){
+      function toggleDisplayServiceCharge(checkbox) {
       var otherServiceChargesDisplayOnReceipt = document.getElementById('displayOnReceiptServiceCharge')
       var spanDisplayServiceReceipt = checkbox.parentNode.querySelector('.sliderServiceCharges'); 
       if (checkbox.checked) {
-          var showServiceCharge = document.getElementById('displayServiceChargeReceipt')
-          showServiceCharge.disabled=false
-            } else {
-              var showServiceCharge = document.getElementById('displayServiceChargeReceipt')
-              showServiceCharge.disabled=true
-              showServiceCharge.checked= false
-              otherServiceChargesDisplayOnReceipt.style.color="#FFFFFF"
-            }
+        $('#displayServiceChargeReceipt').prop('checked', true);
+      
+      } else {
+        $('#displayServiceChargeReceipt').prop('checked', false);
+        // var showServiceCharge = document.getElementById('displayServiceChargeReceipt')
+        // showServiceCharge.disabled = true
+        // showServiceCharge.checked = false
+        // otherServiceChargesDisplayOnReceipt.style.color="#FFFFFF"
+      }
+
+     
     }
 
   function toggleDisplayOnReceiptServiceCharge(checkbox){
@@ -2163,11 +2179,13 @@ document.addEventListener('DOMContentLoaded', function() {
   var showTaxCheckbox = document.getElementById('showIncludesTaxVatToggle');
   var service = document.getElementById('serviceChargesToggle');
   var otherCharges = document.getElementById('otherChargesToggle');
-  if(!service.checked){
-    otherCharges.disabled = true
-  }else{
-    otherCharges.disabled = false
-  }
+
+  // if(!service.checked){
+  //   otherCharges.disabled = true
+  // } else {
+  //   otherCharges.disabled = false
+  // }
+
   var taxLabel = document.getElementById('taxtVatLbl');
   var serviceLabel = document.getElementById('serviceChargeLbl');
   var showTaxLbl = document.getElementById('showTaxVatLbl');
@@ -2196,6 +2214,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
    
     if ((isFirstInputZeroIndex && index === 1) || (isFirstInputOneIndex && index === 0)) {
+      console.log('Hello world');
       calculateSellingPrice();
     } else if ((isFirstInputZeroIndex && index === 2) || (isFirstInputTwoIndex && index === 0 )) {
       calculateMarkup();
@@ -2209,24 +2228,24 @@ document.addEventListener('DOMContentLoaded', function() {
   var tax = 0; // Declare tax outside the event listener function
 
 showTaxCheckbox.addEventListener('change', function() {
-    var sellingPrice = 0;
-    var s = parseFloat(document.getElementById('selling_price').value);
-    if(s){
-      sellingPrice = parseFloat(document.getElementById('selling_price').value);
-    }
-    var vatable = sellingPrice / 1.12;
-    if (!this.checked) {
-        tax = sellingPrice - vatable;
-        var newPrice = sellingPrice + tax;
-        document.getElementById('selling_price').value = newPrice.toFixed(2);
-    } else {
-        var newPrice = sellingPrice - tax;
-        showTaxLbl.style.color = ""
-        document.getElementById('selling_price').value = newPrice.toFixed(2);
-    }
+  var sellingPrice = 0;
+  var s = parseFloat(document.getElementById('selling_price').value);
+  if (s) {
+    sellingPrice = parseFloat(document.getElementById('selling_price').value);
+  }
+  var vatable = sellingPrice / 1.12;
+  if (!this.checked) {
+      tax = sellingPrice - vatable;
+      var newPrice = sellingPrice + tax;
+      document.getElementById('selling_price').value = newPrice.toFixed(2);
+  } else {
+      var newPrice = sellingPrice - tax;
+      showTaxLbl.style.color = ""
+      document.getElementById('selling_price').value = newPrice.toFixed(2);
+  }
 });
 var serviceCharge = 0; 
-function getServiceCharges(){
+function getServiceCharges() {
   axios.get('api.php?action=getServiceCharge').then(function(response){
      serviceCharge = response.data.result[0].rate
      var displayRate = parseFloat(serviceCharge) *100;
@@ -2237,35 +2256,36 @@ function getServiceCharges(){
   })
 }
 getServiceCharges()
-service.addEventListener('change', function() {
-  if(!service.checked){
-    otherCharges.disabled = true
-  }else{
-    otherCharges.disabled = false
-  }
-    var sellingPrice = 0;
-    var s = parseFloat(document.getElementById('selling_price').value);
-    if(s){
-      sellingPrice = parseFloat(document.getElementById('selling_price').value);
-    }
+// service.addEventListener('change', function() {
+//   // if(!service.checked){
+//   //   otherCharges.disabled = true
+//   // }else{
+//   //   otherCharges.disabled = false
+//   // }
+//   //   var sellingPrice = 0;
+//   //   var s = parseFloat(document.getElementById('selling_price').value);
+//   //   if(s){
+//   //     sellingPrice = parseFloat(document.getElementById('selling_price').value);
+//   //   }
     
-    if (this.checked) {
-        var serviceFee = sellingPrice * serviceCharge;
-        var newPrice = sellingPrice + serviceFee;
-        document.getElementById('selling_price').value = newPrice.toFixed(2);
-        // Disable tax checkboxes
-        taxCheckbox.disabled = true;
-        showTaxCheckbox.disabled = true;
-        taxLabel.style.color = 'var(--primary-color)';
-    } else {
-        var originalPrice = sellingPrice / (1 + serviceCharge);
-        document.getElementById('selling_price').value = parseFloat(0);
-        // Enable tax checkboxes
-        taxCheckbox.disabled = false;
-        showTaxCheckbox.disabled = false;
-        taxLabel.style.color = '';
-    }
-});
+//     // if (this.checked) {
+//     //     var serviceFee = sellingPrice * serviceCharge;
+//     //     var newPrice = sellingPrice + serviceFee;
+//     //     document.getElementById('selling_price').value = newPrice.toFixed(2);
+//     //     // Disable tax checkboxes
+//     //     taxCheckbox.disabled = true;
+//     //     showTaxCheckbox.disabled = true;
+//     //     taxLabel.style.color = 'var(--primary-color)';
+//     // } else {
+//     //     var originalPrice = sellingPrice / (1 + serviceCharge);
+//     //     document.getElementById('selling_price').value = parseFloat(0);
+//     //     // Enable tax checkboxes
+//     //     taxCheckbox.disabled = false;
+//     //     showTaxCheckbox.disabled = false;
+//     //     taxLabel.style.color = '';
+//     // }
+// });
+
 var otherCharge = 0;
 function getOtherCharges(){
   axios.get('api.php?action=getOtherCharges').then(function(response){
@@ -2278,36 +2298,6 @@ function getOtherCharges(){
   })
 }
 getOtherCharges()
-otherCharges.addEventListener('change', function() {
-    var sellingPrice = 0;
-    var s = parseFloat(document.getElementById('selling_price').value);
-    if(s){
-      sellingPrice = parseFloat(document.getElementById('selling_price').value);
-    }
-    
-    if (this.checked) {
-        var otherChargeFee = sellingPrice * otherCharge
-        var newPrice = sellingPrice + otherChargeFee;
-        document.getElementById('selling_price').value = newPrice.toFixed(2);
-        taxCheckbox.disabled = true;
-        showTaxCheckbox.disabled = true;
-        service.disabled = true
-        taxLabel.style.color = 'var(--primary-color)';
-        serviceLabel.style.color = 'var(--primary-color)';
-    } else {
-        var originalPrice = sellingPrice / (1 + otherCharge);
-        document.getElementById('selling_price').value = parseFloat(0);
-        service.disabled = false
-        serviceLabel.style.color = '';
-        if(!service.checked){
-          taxCheckbox.disabled = false;
-          showTaxCheckbox.disabled = false;
-        }
-        
-        
-       
-    }
-});
 
   function calculateSellingPrice() {
     var multipleToggle = document.getElementById('multipleToggle'); 

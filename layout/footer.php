@@ -315,7 +315,9 @@ let deleteValidation = "false";
       formData.append('bomStat', bomValue);
     }
     if (productname && barcode && cost && markup) {
+
       axios.post('api.php?action=addProduct', formData).then(function (response) {
+        showResponse("Product has been successfully added", 1);
         var userInfo = JSON.parse(localStorage.getItem('userInfo'));
         var firstName = userInfo.firstName;
         var lastName = userInfo.lastName;
@@ -334,13 +336,36 @@ let deleteValidation = "false";
 
   }
 
+  function showResponse(message, type) {
+    toastr.options = {
+      "onShown": function () {
+        $('.custom-toast').css({
+          "opacity": 1,
+          "width": "600px",
+          "text-align": "center",
+        });
+      },
+      "closeButton": true,
+      "positionClass": "toast-top-right",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "progressBar": true,
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut",
+      "tapToDismiss": false,
+      "toastClass": "custom-toast",
+      "onclick": function () {  }
 
+    };
+    type === 1 ? toastr.success(message) : toastr.error(message);
+  }
 
   function toUpdateProducts(productId, productName, productSKU, productCode, productBarcode, productOUM, productuomid, productBrand, productCost, productMakup, productPrice,
     productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable,
     stock_status,stock_count) {
     $('#add_products_modal').show();
-      console.log(image)
     productId ? document.getElementById('productid').value = productId : null;
     productName ? document.getElementById("productname").value = productName : null;
 
@@ -372,9 +397,9 @@ let deleteValidation = "false";
     var addButtons = document.getElementById('addIngredients');
     var delButtons = document.getElementById('delIngredients');
     if (checkbox.checked) {
-      bomText.style.color = '#00CC00';
+      bomText.style.color = 'var(--primary-color)';
       disAbled.textContent = 'Enabled';
-      disAbled.style.color = '#00CC00';
+      disAbled.style.color = 'var(--primary-color)';
       addButtons.disabled = false;
       delButtons.disabled = false;
     } else {
@@ -461,7 +486,7 @@ let deleteValidation = "false";
     stat.checked = (status == 1) ? true : false;
     if (stat.checked) {
       toggleStatus(stat)
-      statusLabel.style.color = '#00CC00';
+      statusLabel.style.color = 'var(--primary-color)';
     } else {
       toggleStatus(stat)
       statusLabel.style.color = '';
@@ -640,7 +665,7 @@ let deleteValidation = "false";
     if (productname && barcode && cost && markup) {
 
       axios.post('api.php?action=updateProduct', formData).then(function (response) {
-        
+        showResponse("Product has been successfully updated", 1);
         var userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
         var firstName = localStorage.getItem('firstName') ?? userInfo.firstName;
         var lastName = localStorage.getItem('lastName') ?? userInfo.lastName;

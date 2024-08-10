@@ -10795,7 +10795,94 @@
 2024-08-09 17:52:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RECORD BOOK SHORT LIGHT BLUE 300S Barcode #:941029 
 2024-08-09 17:55:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-09 18:08:20 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer alex gwapo 
+2024-08-10 09:02:19 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 09:02:19 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 09:10:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BUG OFF NAPTHALENE BALLS 12PCS Barcode #:838014 
+2024-08-10 09:14:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated buwad bodboron Barcode #:789074 
+2024-08-10 09:16:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Deleted buwad baknit Barcode #:503768 
+2024-08-10 09:16:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 09:25:29 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 09:25:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-08-10 09:27:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 TUNA HOT&SPC 155G Barcode #:748485700052 
+2024-08-10 09:27:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 SRDNS RED 155G Barcode #:4806504710126 
+2024-08-10 09:27:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 555 SRDNS RED 155G Barcode #:4806504710126 
+2024-08-10 09:31:55 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 09:33:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW ORIG SCNT 74G 1DZ-OYT Barcode #:170125 
+2024-08-10 09:35:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 50G Barcode #:466344 
+2024-08-10 09:35:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALASKA POW MILK 33G 1DZ Barcode #:2106271545542 
+2024-08-10 09:35:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 50G 1/2DZ Barcode #:933865 
+2024-08-10 09:35:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALASKA POW MILK 33G 1DZ Barcode #:2106271545542 
+2024-08-10 09:35:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 50G 1DZ-OYT Barcode #:481170 
+2024-08-10 09:36:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Kini Barcode #:687113525456 
+2024-08-10 09:36:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED BULL SUPREME 150ML Barcode #:8850228000267 
+2024-08-10 09:36:45 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 09:36:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED CHILI 55G Barcode #:948396 
+2024-08-10 09:36:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED CHILI 7G 1PCK Barcode #:501868 
+2024-08-10 09:37:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED DYE WAX WATERPROOF W/ DYE Barcode #:777406 
+2024-08-10 09:37:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G Barcode #:971994 
+2024-08-10 09:37:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G Barcode #:971994 
+2024-08-10 09:37:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED HORSE BEER 1L Barcode #:229035 
+2024-08-10 09:37:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED HORSE BEER 1L 1CS-NGM Barcode #:131578 
+2024-08-10 09:37:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1/2DZ Barcode #:4902430831338 
+2024-08-10 09:37:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED HORSE BEER 500ML Barcode #:4801032211077 
+2024-08-10 09:37:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-10 09:37:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-10 09:37:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-10 09:37:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-10 09:37:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-10 09:37:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED HORSE BEER 500ML 1CS-NGM Barcode #:454165 
+2024-08-10 09:37:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-10 09:37:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-10 09:37:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED HORSE BEER 500ML 1CS-NGM Barcode #:454165 
+2024-08-10 09:37:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-10 09:37:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED HORSE BEER STALLION 330ML Barcode #:25451 
+2024-08-10 09:37:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated RED HORSE BEER STALLION 330ML 1CS-NGM Barcode #:852359 
+2024-08-10 09:39:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC G/BLOOM 50G Barcode #:599956 
+2024-08-10 09:39:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC G/BLOOM 50G 1/2DZ Barcode #:4902430831161 
+2024-08-10 09:40:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC G/BLOOM 50G 1DZ Barcode #:85606 
+2024-08-10 09:41:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC G/BLOOM 74G Barcode #:453242 
+2024-08-10 09:41:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC G/BLOOM 74G Barcode #:453242 
+2024-08-10 09:41:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC G/BLOOM 74G 1/2DZ Barcode #:825023 
+2024-08-10 09:41:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC G/BLOOM 74G 1DZ Barcode #:586162 
+2024-08-10 09:45:02 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
+2024-08-10 09:45:25 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
+2024-08-10 09:45:34 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
 >>>>>>> 5eecceab48957bc31cbf058f91571535101fb28c
 2024-08-10 09:11:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-10 09:38:38 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-08-10 09:43:37 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 09:48:41 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added SURF ACTIVE CLEAN Barcode #:5115679621274 
+2024-08-10 09:50:34 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added CEMENT Barcode #:101010101010 
+2024-08-10 10:29:59 | Zeus Baculio | 50 | 2 | Expense | Updated expense: CEMENT, Amount: 20,000.00, Invoice#: 10-000000001 
+2024-08-10 10:35:45 | Zeus Baculio | 50 | 2 | Expense | Updated expense: 24/7 ORNG 40G MENUDO, Amount: 1,400.00, Invoice#: 10-000000001 
+2024-08-10 10:41:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 10:41:53 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 10:42:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF ACTIVE CLEAN Barcode #:5115679621274 
+2024-08-10 10:49:20 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 11:15:59 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 13:09:34 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 13:10:39 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete s121sa121 
+2024-08-10 13:10:40 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier s121sa121 
+2024-08-10 13:10:41 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete UNILIVER 
+2024-08-10 13:10:42 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier UNILIVER 
+2024-08-10 13:10:44 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete Jason 
+2024-08-10 13:10:45 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier Jason 
+2024-08-10 13:10:47 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete data 
+2024-08-10 13:10:48 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier data 
+2024-08-10 13:10:49 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete ss121s1 
+2024-08-10 13:10:50 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier ss121s1 
+2024-08-10 13:10:52 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete 2121s121 
+2024-08-10 13:10:53 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier 2121s121 
+2024-08-10 13:10:54 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete 212 
+2024-08-10 13:11:02 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier 212 
+2024-08-10 13:11:03 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete alex 
+2024-08-10 13:11:04 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier alex 
+2024-08-10 13:11:38 | Zeus Baculio | 50 | 2 | Expense | Updated expense: 24/7 ORNG 40G MENUDO, Amount: 1,400.00, Invoice#: 10-000000001 
+2024-08-10 13:11:51 | Zeus Baculio | 50 | 2 | Expense | Updated expense: 24/7 ORNG 40G MENUDO, Amount: 1,400.00, Invoice#: 10-000000001 
+2024-08-10 13:20:19 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 14:08:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 14:09:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 14:09:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 14:25:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 14:35:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 14:42:51 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 

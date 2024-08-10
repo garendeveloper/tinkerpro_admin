@@ -93,64 +93,58 @@ class BirFacade extends DBConnection {
                     $resetCount = $ZReadData->resetCount ?? 0;
                 }
 
-                $grandAccumulatedEnd += $ZReadData->present_accumulated_sale;
-                $totalIncome += $ZReadData->gross_amount; 
-                $vatableSales += $ZReadData->vatable_sales;
-                $vatAmount += $ZReadData->vat_amount;
-                $vatExempt += $ZReadData->vat_exempt;
-                $sc_discount += $ZReadData->senior_discount;
-                $pwd_discount += $ZReadData->pwd_discount;
-                $naac_discount += $ZReadData->naac_discount;
-                $solo_parent_discount += $ZReadData->solo_parent_discount;
-                $other_discount += $ZReadData->other_discount;
-                $returns +=  $ZReadData->return;
-                $voids += $ZReadData->void;
-                $totalDeductions += ($ZReadData->senior_discount + $ZReadData->pwd_discount + $ZReadData->naac_discount + $solo_parent_discount + $other_discount + $ZReadData->void + $returns);
+                $grandAccumulatedEnd = $ZReadData->present_accumulated_sale;
+                $totalIncome = $ZReadData->gross_amount; 
+                $vatableSales = $ZReadData->vatable_sales;
+                $vatAmount = $ZReadData->vat_amount;
+                $vatExempt = $ZReadData->vat_exempt;
+                $sc_discount = $ZReadData->senior_discount;
+                $pwd_discount = $ZReadData->pwd_discount;
+                $naac_discount = $ZReadData->naac_discount;
+                $solo_parent_discount = $ZReadData->solo_parent_discount;
+                $other_discount = $ZReadData->other_discount;
+                $returns =  $ZReadData->return;
+                $voids = $ZReadData->void;
+                $totalDeductions = ($ZReadData->senior_discount + $ZReadData->pwd_discount + $ZReadData->naac_discount + $solo_parent_discount + $other_discount + $ZReadData->void + $returns);
                 $z_counter = $ZReadData->zReadCounter;
-                $void_vat += (float)$ZReadData->total_void_vat;
-                $returnd_vat += (float)$ZReadData->vat_return;
-                $refund_vat += (float)$ZReadData->vat_refunded;
-                $netSales += (float)$ZReadData->net_amount;
+                $void_vat = (float)$ZReadData->total_void_vat;
+                $returnd_vat = (float)$ZReadData->vat_return;
+                $refund_vat = (float)$ZReadData->vat_refunded;
+                $netSales = (float)$ZReadData->net_amount;
+
+                $result[] = [
+                    'dateRange' => $startDate . ' - ' . $endDate,
+                    'beginning_si' => $beginning_si,
+                    'end_si' => $end_si,
+                    'grandEndAccumulated' => $grandAccumulatedEnd,
+                    'grandBegAccumulated' => $grandAccumulatedBeg,
+                    'issued_si' => 0,
+                    'grossSalesToday' => $TodaySales,
+                    'vatable_sales' => $vatableSales,
+                    'vatAmount' => $vatAmount,
+                    'vatExempt' => $vatExempt,
+                    'zero_rated' => 0,
+                    'sc_discount' => $sc_discount,
+                    'pwd_discount' => $pwd_discount,
+                    'naac_discount' => $naac_discount,
+                    'solo_parent_discount' => $solo_parent_discount,
+                    'other_discount' => $other_discount,
+                    'returned' => $returns,
+                    'voids' => $voids,
+                    'totalDeductions' => $totalDeductions,
+                    'void_vat' => $void_vat,
+                    'returnd_vat' => $returnd_vat,
+                    'othersVatAdjustment' => ($void_vat + $refund_vat),
+                    'totalVatAjustment' => ($void_vat + $refund_vat + $returnd_vat),
+                    'refund_vat' => $refund_vat,
+                    'netSales' => $netSales,
+                    'totalIncome' => $totalIncome,
+                    'resetCount' => $resetCount,
+                    'z_counter' => $z_counter,
+                ];
             }
-    
         }
     
-        $result = [
-            'dateRange' => $startDate . ' - ' . $endDate,
-            'beginning_si' => $beginning_si,
-            'end_si' => $end_si,
-            'grandEndAccumulated' => $grandAccumulatedEnd,
-            'grandBegAccumulated' => $grandAccumulatedBeg,
-            'issued_si' => 0,
-            'grossSalesToday' => $TodaySales,
-            'vatable_sales' => $vatableSales,
-            'vatAmount' => $vatAmount,
-            'vatExempt' => $vatExempt,
-            'zero_rated' => 0,
-            'sc_discount' => $sc_discount,
-            'pwd_discount' => $pwd_discount,
-            'naac_discount' => $naac_discount,
-            'solo_parent_discount' => $solo_parent_discount,
-            'other_discount' => $other_discount,
-            'returned' => $returns,
-            'voids' => $voids,
-            'totalDeductions' => $totalDeductions,
-            'void_vat' => $void_vat,
-            'returnd_vat' => $returnd_vat,
-            'othersVatAdjustment' => ($void_vat + $refund_vat),
-            'totalVatAjustment' => ($void_vat + $refund_vat + $returnd_vat),
-            'refund_vat' => $refund_vat,
-            'netSales' => $netSales,
-            'totalIncome' => $totalIncome,
-            'resetCount' => $resetCount,
-            'z_counter' => $z_counter,
-        ];
-
-
-        // echo json_encode([
-        //     'data' => $result,
-        // ]);
-
         return $result;
     }
   
