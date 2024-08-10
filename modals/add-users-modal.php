@@ -261,11 +261,11 @@
                                     </g>
                                 </svg>
                             </button>
-                            <div class="dropdown-content" id="dropdownContent">
+                            <div class="dropdown-content roleTypeDropdown" id="dropdownContent">
                                 <?php
                                     $userFacade = new UserFacade();
                                     $roleTypes = $userFacade->getRoleType();
-                                    while ($row = $roleTypes->fetch(PDO::FETCH_ASSOC)) {
+                                    foreach($roleTypes as $row) {
                                         echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['role_name']) . '</a>';
                                     }
                                 ?>
@@ -300,13 +300,7 @@
                             </svg>
                             </button>
                             <div class="dropdown-content" id="dropdownContents">
-                            <?php
-                                 $userFacade = new UserFacade();
-                                 $status = $userFacade->getUsersStatus();
-                                while ($row = $status->fetch(PDO::FETCH_ASSOC)) {
-                                    echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['status']) . '</a>';
-                                }
-                                ?>
+                        
                             </div>
                         </div></td>
                     </tr>
@@ -379,7 +373,7 @@
                               <label for="reportingPermission" class="reportingLbl text-color form-check-label">Reporting</label>
                           </div>
                           <div style="display: flex;">
-                              <input id="promotionsPermission" name="promotionPermission" type="checkbox" class="promotionPermission form-check-input" value="1" style="margin-right: 4px;">
+                              <input id="promotionPermission" name="promotionPermission" type="checkbox" class="promotionPermission form-check-input" value="1" style="margin-right: 4px;">
                               <label for="promotionPermission" class="promotionLbl text-color form-check-label">Promotions & Actions</label>
                           </div>
                     </div>
@@ -431,6 +425,7 @@
 
 <script>
 let userSValidate = false;
+
 function removeReadOnly(){
     $('#toChangeText').text("Users Abilities")
     var forUser = document.getElementById('forUser')
@@ -473,16 +468,7 @@ document.addEventListener("click", function(event) {
   }
 });
 
-document.querySelectorAll("#dropdownContent a").forEach(item => {
-  item.addEventListener("click", function(event) {
-    event.preventDefault(); 
-    var value = this.getAttribute("data-value");
-    var roleName = this.textContent;
-    document.getElementById("role").value = value;
-    document.getElementById("roleName").value = roleName;
-    document.getElementById("dropdownContent").style.display = "none";
-  });
-});
+
 
 document.getElementById("roleBtn").addEventListener("click", function(event) {
   event.stopPropagation(); 
@@ -507,16 +493,7 @@ document.addEventListener("click", function(event) {
 });
 
 
-document.querySelectorAll("#dropdownContents a").forEach(item => {
-    item.addEventListener("click", function(event) {
-        event.preventDefault(); 
-        var value = this.getAttribute("data-value");
-        var statusName = this.textContent;
-        document.getElementById("status").value = value;
-        document.getElementById("StatusName").value = statusName;
-        document.getElementById("dropdownContents").style.display = "none";
-    });
-});
+
 
 
 document.getElementById("statusBtn").addEventListener("click", function(event) {
@@ -776,7 +753,7 @@ function addUsers()
 
     document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "var(--primary-color)";
     document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "var(--primary-color)";
-    document.getElementById('roleNAME').style.color = (role_id == "" || role_id == null) ? "red" : "var(--primary-color)";
+    document.getElementById('roleNAME').style.color = (roleName == "" || roleName == null) ? "red" : "var(--primary-color)";
     document.getElementById('passWORD').style.color = (pass == "" || pass == null) ? "red" : "var(--primary-color)";
     document.getElementById('confirmPassword').style.color = (cpass == "" || cpass == null) ? "red" : "var(--primary-color)";
 
@@ -811,7 +788,7 @@ function addUsers()
     formData.append("promotions", promotionPermissionValue);
 
     
-    if(role_id && lastname && firstname && pass && cpass){
+    if(roleName && lastname && firstname && pass && cpass){
         if(validation == true){
             axios.post('api.php?action=addUsersData', formData)
              .then(function(response) { 
@@ -823,20 +800,9 @@ function addUsers()
                     var role_id = userInfo.roleId; 
                     insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Added' + ' ' + firstname + ' '+ lastname);
                     refreshTable()
-
-                    // Swal.fire({
-                    //     icon: 'success',
-                    //     title: 'Success!',
-                    //     text: 'User added successfully!',
-                    //     timer: 1000, 
-                    //     timerProgressBar: true, 
-                    //     showConfirmButton: false 
-                    // });
+                    closeAddUserModal()
                     showResponse("User added successfully", 1);
-                } else {
-                    showResponse("Invalid to continue", 0);
-                }
-              closeAddUserModal()
+                } 
             })
             .catch(function(error) {
             console.log(error);
@@ -998,6 +964,7 @@ function updateDataUser(){
     $(".statusDropDown a[data-value='0']").click();
     var u_id = document.getElementById('id').value;
     var role_id = document.getElementById("role").value;
+    var roleName = document.getElementById("roleName").value;
     var lastname = document.getElementById("lastN").value;
     var firstname = document.getElementById("firstN").value;
     var pass = document.getElementById("password").value;
@@ -1064,13 +1031,14 @@ function updateDataUser(){
     
     document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "var(--primary-color)";
     document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "var(--primary-color)";
-    document.getElementById('roleNAME').style.color = (role_id == "" || role_id == null) ? "red" : "var(--primary-color)";
+    document.getElementById('roleNAME').style.color = (roleName == "" || roleName == null) ? "red" : "var(--primary-color)";
     document.getElementById('passWORD').style.color = (pass == "" || pass == null) ? "red" : "var(--primary-color)";
     document.getElementById('confirmPassword').style.color = (cpass == "" || cpass == null) ? "red" : "var(--primary-color)";
 
     var formData = new FormData();
     formData.append("uploadedImage", file); 
     formData.append("role_id", role_id); 
+    formData.append("roleName", roleName); 
     formData.append("last_name", lastname); 
     formData.append("first_name", firstname); 
     formData.append("password", pass); 
@@ -1119,13 +1087,7 @@ function updateDataUser(){
            });
         }else{
             showResponse("Password not match", 0);
-        }
-       
-    }else{
-       showResponse("Check the required fields", 0);
+        }  
     }
-
-   
-
 }
 </script>

@@ -208,7 +208,7 @@ if (isset($_SESSION['user_id'])) {
       <div class="main-panel h-100">
         <div class="content-wrapper">
           <div class="d-flex mb-2 w-10">
-            <input  class="text-color searchUsers w-100 ms-2 searchInputs" placeholder="Search Suppliers"/>
+            <input  class="text-color searchUsers w-100 ms-2 searchInputs" placeholder="Search Users"/>
             <span class="clearBtn" style="background: #7C7C7C; height: 35px; cursor: pointer">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="38" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -303,36 +303,67 @@ if (isset($_SESSION['user_id'])) {
 
 
 $(document).ready(function() {
+
+  Request.show_allRoleTypes();
   $("#users").addClass('active');
   $("#pointer").html("Users");
+  $('#dropdownContent a').click(function() {
+    var roleId = $(this).data('value');
+    var value = $(this).data('value');
+    var roleName = $(this).text();
+    $("#role").val(value);
+    $("#roleName").val(roleName);
 
-    $('#dropdownContent a').click(function() {
-        var roleId = $(this).data('value');
-        selectedRole(roleId)
-        $('#roleNAME').css('color', (roleId !== "" && roleId !== null) ? "var(--primary-color)" : "");
-        $.ajax({
-        url: './api.php',
-        method: 'GET',
-        data: {
-            action: 'user_role',
-            roleId: roleId
-        },
-        success: function(response) {
-          $('.user_ID').val(response.role_id);
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-          
-        }
+    selectedRole(roleId)
+    $('#roleNAME').css('color', (roleId !== "" && roleId !== null) ? "var(--primary-color)" : "");
+    $.ajax({
+      url: './api.php',
+      method: 'GET',
+      data: {
+          action: 'user_role',
+          roleId: roleId
+      },
+      success: function(response) {
+        $('.user_ID').val(response.role_id);
+      },
+      error: function(xhr, status, error) {
+          console.error(error);
+      }
     });
-    });
-
+  });
+  
+    document.querySelectorAll("#dropdownContents a").forEach(item => {
+      item.addEventListener("click", function(event) {
+          event.preventDefault(); 
+          var value = this.getAttribute("data-value");
+          var statusName = this.textContent;
+          document.getElementById("status").value = value;
+          document.getElementById("StatusName").value = statusName;
+          document.getElementById("dropdownContents").style.display = "none";
+      });
+  });
 });
 
+var Request = {
+  show_allRoleTypes: function() {
+    $.ajax({
+      type: 'get',
+      url: 'api.php?action=getRoleType',
+      success: function(response)
+      {
+        var list = "";
+        response.forEach(item => {
+          list += '<a href="#" style="color:#000000; text-decoration: none;" data-value='+item.id+'>' +item.role_name+ '</a>';
+        });
+        $("#dropdownContent").html(list);
+      }
+    })
+  }
+}
 
-
-
-function addUser() {
+function addUser() 
+{
+  Request.show_allRoleTypes();
   $('#add_users_modal').show();
 }
 

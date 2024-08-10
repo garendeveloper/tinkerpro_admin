@@ -279,7 +279,7 @@ if (isset($_SESSION['user_id'])) {
 
             <?php if ($accessPromotions): ?>
             <li><a href="promotions" id="promotions"><i class="bi bi-megaphone"></i>&nbsp;&nbsp; <span
-            class="text dynamic-color">Promotion & Action</span></a></li>
+            class="text dynamic-color">Promotions</span></a></li>
             <?php endif ?>
 
             

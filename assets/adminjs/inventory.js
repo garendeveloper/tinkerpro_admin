@@ -925,40 +925,6 @@
                   insertLogs('P.O Created',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO) 
                 }
           
-                if($('#show_purchasePrintModal').is(":visible"))
-                {
-                
-                    var loadingImage = document.getElementById("loadingImage");
-                    loadingImage.removeAttribute("hidden");
-                    var pdfFile= document.getElementById("pdfFile");
-                    pdfFile.setAttribute('hidden',true);
-                    $.ajax({
-                        url: './toprint/purchaseorder_print.php',
-                        type: 'GET',
-                        xhrFields: {
-                            responseType: 'blob'
-                        },
-                        data: {
-                            order_id: order_id,
-                            po_number: po_number,
-                        },
-                        success: function(response) {
-                          loadingImage.setAttribute("hidden",true);
-                          var pdfFile = document.getElementById("pdfFile");
-                          pdfFile.removeAttribute('hidden')
-                          if( loadingImage.hasAttribute('hidden')) {
-                              var newBlob = new Blob([response], { type: 'application/pdf' });
-                              var blobURL = URL.createObjectURL(newBlob);
-                              
-                              $('#pdfViewer').attr('src', blobURL);
-                          }
-                        
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
-                        }
-                    });
-                }
                 show_sweetReponse(response.message);
                 show_purchaseOrderNo();
                 show_allSuppliers();
@@ -969,6 +935,37 @@
                 $(".grid-container button").removeClass('active');
                 $("#purchase-order").addClass('active');
                 show_allOrders();
+
+                var loadingImage = document.getElementById("loadingImage");
+                loadingImage.removeAttribute("hidden");
+                var pdfFile= document.getElementById("pdfFile");
+                pdfFile.setAttribute('hidden',true);
+                $.ajax({
+                    url: './toprint/purchaseorder_print.php',
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    data: {
+                        order_id: order_id,
+                        po_number: po_number,
+                    },
+                    success: function(response) {
+                      loadingImage.setAttribute("hidden",true);
+                      var pdfFile = document.getElementById("pdfFile");
+                      pdfFile.removeAttribute('hidden')
+                      if( loadingImage.hasAttribute('hidden')) {
+                          var newBlob = new Blob([response], { type: 'application/pdf' });
+                          var blobURL = URL.createObjectURL(newBlob);
+                          
+                          $('#pdfViewer').attr('src', blobURL);
+                      }
+                    
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
               }
               else {
                 $.each(response.errors, function (key, value) {

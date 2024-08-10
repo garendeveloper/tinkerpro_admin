@@ -1828,7 +1828,15 @@ $(document).ready(function(){
   });
 
   $("#toggleLandingCost").on("change", function(){
-    if($(this).is(":checked")) $("#landingCostDiv").show();
+    if($(this).is(":checked")) {
+      var vatable_amount = parseFloat(removeCommas($("#vatable_amount").val()));
+      var qty = parseFloat(removeCommas($("#qty").val()));
+      var perPiece = parseFloat(vatable_amount / qty);
+
+      $("#totalLandingCost").val(numberWithCommas(vatable_amount.toFixed(2)));
+      $("#totalLandingCostPerPiece").val(numberWithCommas(perPiece.toFixed(2)));
+      $("#landingCostDiv").show();
+    }
     else $("#landingCostDiv").hide();
   })
   $("#qty, #price, #discount").on("input", function() {
@@ -2011,7 +2019,7 @@ $(document).ready(function() {
       "hideMethod": "fadeOut",
       "tapToDismiss": false,
       "toastClass": "custom-toast",
-      "onclick": function () { alert('Clicked'); }
+      "onclick": function () {}
 
     };
     toastr.error(message);

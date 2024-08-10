@@ -14,7 +14,7 @@ class UserFacade extends DBConnection {
             users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
             user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
             FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
-            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.status_id = :status_id ORDER BY id DESC';
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.status_id = :status_id ORDER BY users.id ASC';
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':status_id', $value);
@@ -32,7 +32,7 @@ class UserFacade extends DBConnection {
                 $sql .= ' AND (users.first_name LIKE :searchQuery OR users.last_name LIKE :searchQuery OR users.employee_number LIKE :searchQuery OR role.role_name LIKE :searchQuery)';
             }
 
-            $sql .= ' ORDER BY users.id DESC';
+            $sql .= ' ORDER BY users.id ASC';
 
             $stmt = $this->connect()->prepare($sql);
 
@@ -50,7 +50,7 @@ class UserFacade extends DBConnection {
             users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
             user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
             FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
-            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.id = :selectedUser ORDER BY id DESC';
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.id = :selectedUser ORDER BY id ASC';
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':selectedUser', $selectedUser);
@@ -62,7 +62,7 @@ class UserFacade extends DBConnection {
             users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
             user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
             FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
-            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.date_hired = :singleDateData ORDER BY id DESC';
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND users.date_hired = :singleDateData ORDER BY id ASC';
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':singleDateData', $singleDateData);
@@ -75,7 +75,7 @@ class UserFacade extends DBConnection {
             users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
             user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
             FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
-            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND (users.date_hired BETWEEN :startDate AND :endDate) ORDER BY id DESC';
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" AND (users.date_hired BETWEEN :startDate AND :endDate) ORDER BY id ASC';
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':startDate', $startDate);
@@ -89,7 +89,7 @@ class UserFacade extends DBConnection {
             users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
             user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
             FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
-            WHERE role_id != 4 AND role_id != 1 AND username != "admin"  AND (users.id = :selectedUser AND users.date_hired = :singleDateData) ORDER BY id DESC';
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin"  AND (users.id = :selectedUser AND users.date_hired = :singleDateData) ORDER BY id ASC';
                
             $stmt = $this->connect()->prepare($sql);
             $stmt->bindParam(':singleDateData', $singleDateData);
@@ -117,7 +117,7 @@ class UserFacade extends DBConnection {
             users.username as username, users.password as password, users.users_identification as identification, users.employee_number as employeeNum, users.date_hired as dateHired,
             user_status.status as status, users.profileImage as imageName, users.status_id as status_id, users.role_id as role_id, abilities.permission as permission
             FROM users INNER JOIN role ON role.id = users.role_id LEFT JOIN abilities ON abilities.user_id=users.id LEFT JOIN user_status ON users.status_id = user_status.id 
-            WHERE role_id != 4 AND role_id != 1 AND username != "admin" ORDER BY id DESC';
+            WHERE role_id != 4 AND role_id != 1 AND username != "admin" ORDER BY id ASC';
 
             $stmt = $this->connect()->prepare($sql);
             $stmt->execute();
@@ -209,7 +209,7 @@ class UserFacade extends DBConnection {
     public function getRoleType() {
         $sql = $this->connect()->prepare( "SELECT * FROM role WHERE role_name != 'Customer' AND role_name != 'Super Admin';" );
         $sql->execute();
-        return $sql;
+        return $sql->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getAllCustomers() {
@@ -219,13 +219,13 @@ class UserFacade extends DBConnection {
     }
 
     public function getUsers() {
-        $sql = $this->connect()->prepare( "SELECT id,first_name,last_name FROM users WHERE username NOT IN ('admin','superadmin') AND role_id != 4 ORDER BY id DESC" );
+        $sql = $this->connect()->prepare( "SELECT id,first_name,last_name FROM users WHERE username NOT IN ('admin','superadmin') AND role_id != 4 ORDER BY id ASC" );
         $sql->execute();
         return $sql;
     }
     public function getAllDiscountUsers()
     {
-        $sql = $this->connect()->prepare( "SELECT * FROM discounts ORDER BY id DESC" );
+        $sql = $this->connect()->prepare( "SELECT * FROM discounts ORDER BY id ASC" );
         $sql->execute();
         return $sql;
     }
@@ -261,10 +261,26 @@ class UserFacade extends DBConnection {
         $incrementedNumberPadded = str_pad( $incrementedNumber, 4, '0', STR_PAD_LEFT );
         return $prefix . $incrementedNumberPadded;
     }
+    public function verify_role($roleName)
+    {
+        $sql = $this->connect()->prepare("SELECT * FROM role WHERE role_name = ?");
+        $sql->execute([$roleName]);
 
+        if ($sql->rowCount() > 0) 
+        {
+            $role = $sql->fetch(PDO::FETCH_ASSOC);
+            return $role['id'];
+        } 
+        else 
+        {
+            $roleSql = $this->connect();
+            $roleSql->prepare("INSERT INTO role (role_name) VALUES (?)");
+            $roleSql->execute([$roleName]);
+            return $roleType->lastInsertId();
+        }
+    }
     public function addNewUsers($formData)
     {
-
         $pdo = $this->connect();
 
         $role_id = $formData['role_id'];
@@ -292,6 +308,7 @@ class UserFacade extends DBConnection {
             $fileName = null; 
         }
 
+        $role_id = $this->verify_role($roleName);
 
         $existingUsers = $pdo->prepare('SELECT * FROM users WHERE role_id <> 4');
         $existingUsers->execute();
@@ -322,7 +339,8 @@ class UserFacade extends DBConnection {
                 $maxIdQuery = $this->connect()->query('SELECT MAX(id) AS max_id FROM users');
                 $maxId = $maxIdQuery->fetch(PDO::FETCH_ASSOC);
         
-                if ($maxId && isset($maxId['max_id'])) {
+                if ($maxId && isset($maxId['max_id'])) 
+                {
                     $userId = $maxId['max_id'];
                     $permissionData = array();
                     $permissionData[] = array(
@@ -359,6 +377,7 @@ class UserFacade extends DBConnection {
 
 public function updateDataUsers($formData) {
     $role_id = $formData['role_id'];
+    $roleName = $formData['roleName'];
     $last_name = $formData['last_name'];
     $first_name = $formData['first_name'];
     $password = $formData['password'];
@@ -390,6 +409,8 @@ public function updateDataUsers($formData) {
         $destination = './assets/profile/' . $fileName;
         move_uploaded_file($tempPath, $destination);
     }
+
+    $role_id = $this->verify_role($roleName);
 
     $sql = 'UPDATE users SET 
             role_id = ?, 
