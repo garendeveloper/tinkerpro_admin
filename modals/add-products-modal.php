@@ -204,7 +204,7 @@
 }
 
 input:checked + .slider {
-  background-color: #00CC00;
+  background-color: var(--primary-color);
 }
 
 input:focus + .slider {
@@ -225,7 +225,7 @@ input:checked + .slider:before {
   border-radius: 50%; 
 }
 .slider.active {
-  background-color: #00CC00;
+  background-color: var(--primary-color);
 }
 .switchOtherCharges {
   position: relative;
@@ -916,7 +916,7 @@ font-size: 13px;
 }
 
 input:checked + .sliderbom {
-  background-color: #00CC00;
+  background-color: var(--primary-color);
 }
 
 input:focus + .sliderbom {
@@ -938,7 +938,7 @@ input:checked + .sliderbom:before {
 }
 
 .sliderbom.active {
-  background-color: #00CC00;
+  background-color: var(--primary-color);
 }
 .enablingTxt{
   color: #ffff;
@@ -1665,9 +1665,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var addButtons = document.getElementById('addIngredients');
     var delButtons = document.getElementById('delIngredients');
     if (checkbox.checked) {
-            bomText.style.color = '#00CC00';
+            bomText.style.color = 'var(--primary-color)';
             disAbled.textContent = 'Enabled';
-            disAbled.style.color = '#00CC00';
+            disAbled.style.color = 'var(--primary-color)';
             addButtons.disabled = false;
             delButtons.disabled = false;
     }else{
@@ -1714,9 +1714,9 @@ function updateTextColor() {
     var delButtons = document.getElementById('delIngredients');
 
     if (checkbox.checked) {
-        bomText.style.color = '#00CC00';
+        bomText.style.color = 'var(--primary-color)';
         disAbled.textContent = 'Enabled';
-        disAbled.style.color = '#00CC00';
+        disAbled.style.color = 'var(--primary-color)';
          addButtons.disabled = false;
          delButtons.disabled = false;
     } else {
@@ -1752,8 +1752,8 @@ function toggleShowText(checkbox) {
             var slider = checkbox.parentNode.querySelector('.slider'); 
             var statusLabel = document.getElementById('statusActive');
             if (checkbox.checked) {
-                slider.style.backgroundColor = '#00CC00'; 
-                statusLabel.style.color = '#00CC00'; 
+                slider.style.backgroundColor = 'var(--primary-color)'; 
+                statusLabel.style.color = 'var(--primary-color)'; 
             } else {
                 slider.style.backgroundColor = '#262626'; 
                 statusLabel.style.color = '#fefefe'; 

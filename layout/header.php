@@ -76,10 +76,8 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/popper.min.js"></script>
   <script src="assets/js/JsBarcode.all.js"></script>
+  <script src="assets/adminjs/tooltip.js"></script>
   <!-- <script src="assets/js/choices.min.js"></script> -->
-
-
-
 </head>
 <body>
 <script>

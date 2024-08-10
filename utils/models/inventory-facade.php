@@ -487,7 +487,7 @@ class InventoryFacade extends DBConnection
         date_default_timezone_set('Asia/Manila');
         if(!empty($searchInput))
         {
-            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired, transaction_qty, dateItemReceived
+            $query = "SELECT products.prod_desc, products.barcode, inventory.isReceived, inventory.id as inventory_id, received_items.date_expired, received_items.qty_received as transaction_qty, dateItemReceived
                     FROM inventory
                     INNER JOIN products ON products.id = inventory.product_id
                     INNER JOIN received_items ON received_items.inventory_id = inventory.id
@@ -1638,7 +1638,7 @@ class InventoryFacade extends DBConnection
                         $uom_id_expense = $this->get_productInfo($product_id)['uom_id'];
 
                         $expense_stmt = $this->connect()->prepare("
-                            INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount, vatable_amount)
+                            INSERT INTO expenses (product_id, date_of_transaction, expense_type, quantity, uom_id, supplier, invoice_number, price, total_amount, taxable_amount)
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
                         ");
 

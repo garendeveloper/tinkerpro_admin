@@ -280,28 +280,6 @@ input:checked + .sliderTax:before {
     border: 1px solid var(--borer-color);
   }
 
-
-
-
-/* .supplied-product-table::-webkit-scrollbar {
-  width: 8px;
- 
-}
-
-.supplied-product-table::-webkit-scrollbar-track {
-  background: #151515;
-}
-
-.supplied-product-table::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-
-.supplied-product-table::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* new */
 .supplied-ingredients-table::-webkit-scrollbar {
   width: 8px;
  

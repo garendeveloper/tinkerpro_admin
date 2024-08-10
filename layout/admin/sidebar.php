@@ -264,14 +264,11 @@ if (isset($_SESSION['user_id'])) {
                         class="text dynamic-color">Suppliers</span></a></li>
             <li><a href="customer" id="customers"><i class="bi bi-people"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Customers</span></a></li>
-            <?php if ($accessReporting): ?>
-                <li><a href="reporting" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span
-                            class="text dynamic-color">Reporting</span></a>
-                </li>
-            <?php endif ?>
             <?php if ($accessUsers): ?>
                 <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text dynamic-color">Users</span></a></li>
             <?php endif ?>
+         
+        
             <li><a href="coupons" id="s_coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Coupons</span></a></li>
             <li><a href="charges" id="charges"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
@@ -281,7 +278,6 @@ if (isset($_SESSION['user_id'])) {
             <li><a href="promotions" id="promotions"><i class="bi bi-megaphone"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Promotions</span></a></li>
             <?php endif ?>
-
             
             <li><a href="priceLists" id="price_list"><i class="bi bi-cash-coin"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price List</span></a>
@@ -290,6 +286,11 @@ if (isset($_SESSION['user_id'])) {
             <li><a href="priceTags" id="price_tags"><i class="bi bi-tag fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price Tags</span></a>
             </li>
+            <?php if ($accessReporting): ?>
+                <li><a href="reporting" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span
+                            class="text dynamic-color">Reporting</span></a>
+                </li>
+            <?php endif ?>
             <li><a href="activityLogs" id="activity_logs"><i class="bi bi-activity fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Activity Logs</span></a>
             </li>

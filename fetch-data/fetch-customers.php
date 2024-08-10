@@ -20,7 +20,7 @@ ob_start();
             <tr class="table-row customer-row" >
             <td class='text-center col-1 child-a' ><?= $counter?></td>
             <td hidden class='text-center action-td td-h'><span class="userId"><?= $row['id'] ?? null ?></span><span class="customerId"><?= $row['customerId'] ?? null ?></span></td>
-            <td class='text-light child-b'><span class="firstName text-light"><?= $row['firstname'] ?? null ?></span>&nbsp;<span class="lastName text-light"><?= $row['lastname'] ?? null ?></span></td>
+            <td class='text-light child-b' style = "padding-left: 10px !important;"><span class="firstName text-light"><?= $row['firstname'] ?? null ?></span>&nbsp;<span class="lastName text-light"><?= $row['lastname'] ?? null ?></span></td>
             <td class='action-td text-center customerContact child-c'><?= $row['contact'] ?? null ?></td>
             <td class='action-td text-center customerCode  child-d'><?= $row['code'] ?? null ?></td>
             <td class='text-center action-td child-e discountType' data-discountID = '<?= $row['discount_id']?>' data-childName = '<?= $row['child_name']?>' data-childBirth = '<?= $row['child_birth']?>' data-childAge = '<?= $row['child_age']?>'>
@@ -31,8 +31,8 @@ ob_start();
             <td hidden class='text-center action-td dueDate'><?= $row['dueDateInterval'] ?? null ?></td>
             <td hidden class='text-center action-td taxExempt'><?= $row['is_tax_exempt'] ?? null ?></td>
             <td hidden class='text-center action-td customerType' ><?= $row['type'] ?? null ?></td>
-            <td class='action-td customerEmail child-f'><?= $row['email'] ?? null ?></td>
-            <td class='action-td customerAddress child-g'><?= $row['address'] ?? null ?></td>
+            <td class='action-td customerEmail child-f' style = "padding-left: 10px !important;"><?= $row['email'] ?? null ?></td>
+            <td class='action-td customerAddress child-g' style = "padding-left: 10px !important;"><?= $row['address'] ?? null ?></td>
             <td class='text-center action-td td-h child-h' style="border-right: 1px solid transparent !important">
                 <a class='text-success editCustomer' style='text-decoration: none; cursor: pointer;'>
                     <i class = "bi bi-pencil-square normalIcon" style = "font-size: 16px; color: white"></i>
