@@ -45,9 +45,6 @@ if (isset($_GET["delete_user"])) {
     array_push($info, $error);
 }
 ?>
-<script>
-  
-</script>
 
 <script>
 
@@ -874,3 +871,5 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
   outline: 0 !important;
 }
 </style>
+
+

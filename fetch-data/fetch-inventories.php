@@ -28,8 +28,10 @@ if (count($inventories) > 0)
         $qty_purchased = $row['all_qty_purchased'];
         $qty_received = $row['all_qty_received'];
 
+        $qty_received = $qty_purchased === '0' ? 0 : $qty_received;
+
         $partially_received = $qty_purchased !== 0 && $qty_purchased < $qty_received;
-        $fully_received = $qty_purchased === 0 && $qty_received !== 0;
+        $fully_received = $qty_purchased === 0 && $qty_received === 0;
         $is_lowstock = $stock_status && $stock < $stock_count;
 
         $product_stock = "<span style='color: red'>".$row['product_stock']."</span>";
@@ -49,7 +51,7 @@ if (count($inventories) > 0)
                 <td><?= $row['barcode']?></td>
                 <td class = "text-center"><?= $row['uom_name']?></td>
                 <td class = "text-right"><?= $row['all_qty_purchased']?></td>
-                <td class = "text-right"><?= $row['all_qty_received']?></td>
+                <td class = "text-right"><?= $qty_received ?></td>
                 <td class = "text-right"><?= $product_stock ?></td>
                 <td class = "text-right"><?= number_format($row['cost'],2)?></td>
                 <td class = "text-right"><?= number_format($row['prod_price'], 2)?></td>
