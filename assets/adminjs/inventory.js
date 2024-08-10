@@ -14,9 +14,17 @@
     display_datePurchased();
 
     show_allInventories();
-   
+    $("#btn_openOption").attr('title', 'Click this to open option').tooltip({
+        open: function(event, ui) {
+            $('body').css('background-color', '#262626'); 
+        },
+        close: function(event, ui) { 
+            $('body').css('background-color', '#262626'); 
+        }
+    }).tooltip("open");   
+    
     $(document).ready(function () {
-      
+       
         $("#inventory").addClass('active');
         $("#inventories").addClass('active');
         $("#pointer").html("Inventory");

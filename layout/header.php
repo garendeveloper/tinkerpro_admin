@@ -80,6 +80,10 @@
   <!-- <script src="assets/js/choices.min.js"></script> -->
 </head>
 <body>
+<div id="lock-screen" style = "display: none">
+        <p>The page is locked due to inactivity.</p>
+        <button id="unlock-button">Unlock</button>
+    </div>
 <script>
  function display_ct7() 
  {

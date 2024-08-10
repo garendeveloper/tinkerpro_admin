@@ -6,6 +6,7 @@
 <?php include ("./modals/access_granted.php") ?>
 <?php include ("./modals/access_denied.php") ?>
 <?php include ("./modals/logoutModal.php") ?>
+<?php include ("./modals/lockscreen.php") ?>
 
 <?php
 
@@ -45,9 +46,6 @@ if (isset($_GET["delete_user"])) {
     array_push($info, $error);
 }
 ?>
-<script>
-  
-</script>
 
 <script>
 
@@ -917,3 +915,39 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
   outline: 0 !important;
 }
 </style>
+
+
+<script>
+    $(document).ready(function() {
+      let inactivityTime = function () {
+          let timer;
+          let lockScreen = $('#lockscreen');
+
+          function resetTimer() {
+              clearTimeout(timer);
+              timer = setTimeout(function() {
+                  lockScreen.show(); 
+              }, 10000); 
+          }
+          $(window).on('mousemove keypress click scroll', resetTimer);
+          resetTimer();
+      };
+      inactivityTime();
+      
+      $('.cancelT').on('click', function(){
+        $('#lockscreen').hide();
+      })
+      $(".continueT").off("click").on("click", function(){
+        $('#lockscreen').hide();
+        window.location.href = "logout.php";
+        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        var firstName = userInfo.firstName;
+        var lastName = userInfo.lastName;
+        var cid = userInfo.userId;
+        var role_id = userInfo.roleId; 
+
+        insertLogs('Logout', 'User' + ' '+ firstName + ' ' + lastName + ' ' + role_id )
+        localStorage.removeItem('userInfo')
+      })
+  });
+</script>
