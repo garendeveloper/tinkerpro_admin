@@ -43,11 +43,12 @@
             {
         
                 $expiration = $days_remaining > 0 ?
-                    'This product has a remaining shelf life of <span style="color: #FF6900; font-size: 14px;">' . $days_remaining . '</span> days' :
-                    '<span style="font-size: 14px;"> This product has already expired. <span style = "color: red; ">' . $days_remaining . '</span> </span> days';
+                    '<span style="color: var(--primary-color); font-size: 14px;">' . $days_remaining . '</span> days Left' :
+                    '<span style="font-size: 14px;"> <span style = "color: red; ">' . $days_remaining . '</span> </span> days Past';
                 ?>
                     <tr  data-id = '<?= $row['inventory_id'] ?>' class = "tbl_rows">
                         <td><?= $row['prod_desc']?></td>
+                        <td class = "text-center"><?= $row['dateItemReceived'] ?></td>
                         <td class = "text-center"><?= $row['barcode'] ?></td>
                         <td class = "text-center"><?= $row['date_expired'] ?></td>
                         <td class = "text-center"><?= $row['transaction_qty'] ?></td>
@@ -57,7 +58,6 @@
             }
             $counter++;
         }
-    
     } 
     else 
     {

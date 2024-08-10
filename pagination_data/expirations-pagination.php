@@ -38,6 +38,23 @@
         height: 5px;
         padding: 10px 10px;
     }
+    .custom-checkbox {
+        width: 12px;
+        height: 15px;
+        border: 2px solid #ffff;
+        cursor: pointer;
+        text-align: center;
+        background-color: #ffff;
+        display: inline-block;
+    }
+    .ddContainer {
+        text-align: center; 
+    }
+    .ddContainer label {
+        display: flex;
+        align-items: center; 
+        justify-content: center; 
+    }
 </style>
 
 <script>
@@ -53,9 +70,10 @@
                           <thead class='adminTableHead'>
                               <tr>
                                   <th>Product</th>
+                                  <th>Date Received</th>
                                   <th>Barcode</th>
                                   <th style="text-align: center">Expiration Date</th>
-                                <th style="text-align: center">QTY</th>
+                                  <th style="text-align: center">Transaction Qty</th>
                                   <th style="text-align: center; background-color: red">Days Remaining</th>
                               </tr>
                           </thead>

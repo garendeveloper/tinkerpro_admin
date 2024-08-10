@@ -340,6 +340,58 @@
             $(this).closest('tr').remove();
             updateTotal();
         });
+        $("#ld_reason").on('change', function() {
+            const selectedValue = $(this).val();
+            $("#tbl_lossand_damages tbody").html("");
+            if (selectedValue === "Expiring Soon" || selectedValue === "Expired Products") {
+                $.ajax({
+                    type: 'GET',
+                    url: 'api.php?action=get_expiringProductsForLossAndDamage',
+                    data: { type: selectedValue },
+                    success: function(response) {
+                        var row = "";
+                        response.forEach(function(item) {
+                            if(selectedValue === "Expiring Soon")
+                            {
+                                if(item.days_remaining > 0)
+                                {
+                                    var total = parseFloat(item.qty_received * item.cost);
+                                    row += "<tr data-id = " + item.product_id + " data-ld_id = '' data-receiveditemid = "+item.received_item_id+">";
+                                    row += "<td data-id = " + item.product_id + " style = 'width: 40%'>" + item.prod_desc + " <span style = 'color: red; font-size: 10px;'>("+item.days_remaining+")</span></td>";
+                                    row += "<td style = 'text-align:center; width: 15%' ><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' autocomplete = 'off' value = "+item.qty_received+" ></input></td>";
+                                    row += "<td style = 'text-align:right; width: 15%' id = 'cost' class='editable' data-id=" + item.cost + ">₱ " + numberWithCommas(item.cost) + "</td>";
+                                    row += "<td style = 'text-align:right; width: 15%' id = 'total_row_cost'>₱ "+total+"</td>";
+                                    row += "<td class = 'text-center removeItem' style ='width: 15%'><i class = 'bi bi-trash3'></i></td>";
+                                    row += "</tr>";
+                                }
+                               
+                            }
+                            else
+                            {
+                                if(item.days_remaining <= 0)
+                                {
+                                    var total = parseFloat(item.qty_received * item.cost);
+                                    row += "<tr data-id = " + item.product_id + " data-ld_id = '' data-receiveditemid = "+item.received_item_id+">";
+                                    row += "<td data-id = " + item.product_id + " style = 'width: 40%'>" + item.prod_desc + " <span style = 'color: red; font-size: 10px;'>("+item.days_remaining+")</td>";
+                                    row += "<td style = 'text-align:center; width: 15%' ><input placeholder='QTY' style = 'text-align:center; width: 50px; height: 20px; font-size: 12px;' id = 'qty_damage' autocomplete = 'off' value = "+item.qty_received+"></input></td>";
+                                    row += "<td style = 'text-align:right; width: 15%' id = 'cost' class='editable' data-id=" + item.cost + ">₱ " + numberWithCommas(item.cost) + "</td>";
+                                    row += "<td style = 'text-align:right; width: 15%' id = 'total_row_cost'>₱ "+total+"</td>";
+                                    row += "<td class = 'text-center removeItem' style ='width: 15%'><i class = 'bi bi-trash3'></i></td>";
+                                    row += "</tr>";
+                                }
+                            }
+                        });
+                        $("#tbl_lossand_damages").append(row);
+                        updateTotal();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("AJAX request failed: ", textStatus, errorThrown);
+                    }
+                });
+        
+            }
+           
+        });
         function append_to_table()
         {
             var product_id = $("#loss_and_damage_input_inventory_id").val();

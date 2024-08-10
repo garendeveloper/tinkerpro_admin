@@ -226,7 +226,10 @@
  .child-g{
   width: 5% !important;
  }
-
+ .adminTableHead th{
+  font-weight: bold !important;
+  font-size: 12px !important;
+ }
 
 </style>
 <?php include "layout/admin/css.php"?>
@@ -314,21 +317,6 @@
   $("#suppliers").addClass('active');
   $("#pointer").html("Suppliers");
 
-  $(document).click(function(event) {
-        var $target = $(event.target);
-        if (!$target.closest('.settingModal').length) {
-            if ($('.settingModal').is(':visible')) {
-                $('#add_supplier_modal').css('animation', 'slideOutRight 0.5s forwards');
-                $('.supplier-modal').css('animation', 'slideOutRight 0.5s forwards');
-                
-                $('#add_supplier_modal').one('animationend', function() {
-                  $(this).hide();
-                  $(this).css('animation', '');
-                  $('.supplier-modal').css('animation', '');
-                });
-            }
-        }
-    });
  
 
   function addSuppliers(){
