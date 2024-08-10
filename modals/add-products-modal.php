@@ -1692,17 +1692,15 @@ $('#addIngredients').off('click').on('click',function(){
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    var checkbox = document.getElementById('bomToggle');
-    checkbox.addEventListener('change', updateTextColor);
-    checkbox.addEventListener('change', function(){
-      if(!checkbox.checked){
-      if($('#add_bom_modal').is(':visible')){
-           closeModalBom()
-       }
+  var checkbox = document.getElementById('bomToggle');
+  checkbox.addEventListener('change', updateTextColor);
+  checkbox.addEventListener('change', function(){
+    if(!checkbox.checked){
+    if($('#add_bom_modal').is(':visible')){
+      closeModalBom()
     }
-    });
-   
-  
+  }
+  });
 });
   
 
@@ -1727,6 +1725,7 @@ function updateTextColor() {
          delButtons.disabled = true;
     }
 }
+
 function toggleShowText(checkbox) {
     var triggers = document.getElementById('triggers');
     if (checkbox.checked) {
@@ -1773,13 +1772,15 @@ function toggleShowText(checkbox) {
 
     $('#otherChargesToggle').on('change', function() {
       if($(this).prop('checked')) {
+        $('#displayReceipt').prop('disabled', false);
         $('#displayReceipt').prop('checked', true);
       } else {
+        $('#displayReceipt').prop('disabled', true);
         $('#displayReceipt').prop('checked', false);
       }
     })
 
-    function toggleOtherCharges(checkbox){
+    function toggleOtherCharges(checkbox) {
       // console.log('Hello world')
       // var otherChargesDisplayOnReceipt = document.getElementById('otherChargesDisplayOnReceipt')
       //   var otherChargesToggle= checkbox.parentNode.querySelector('.sliderOtherCharges'); 
@@ -1797,21 +1798,16 @@ function toggleShowText(checkbox) {
       }
 
       function toggleDisplayServiceCharge(checkbox) {
-      var otherServiceChargesDisplayOnReceipt = document.getElementById('displayOnReceiptServiceCharge')
-      var spanDisplayServiceReceipt = checkbox.parentNode.querySelector('.sliderServiceCharges'); 
-      if (checkbox.checked) {
-        $('#displayServiceChargeReceipt').prop('checked', true);
-      
-      } else {
-        $('#displayServiceChargeReceipt').prop('checked', false);
-        // var showServiceCharge = document.getElementById('displayServiceChargeReceipt')
-        // showServiceCharge.disabled = true
-        // showServiceCharge.checked = false
-        // otherServiceChargesDisplayOnReceipt.style.color="#FFFFFF"
+        var otherServiceChargesDisplayOnReceipt = document.getElementById('displayOnReceiptServiceCharge')
+        var spanDisplayServiceReceipt = checkbox.parentNode.querySelector('.sliderServiceCharges'); 
+        if (checkbox.checked) {
+          $('#displayServiceChargeReceipt').prop('disabled', false)
+          $('#displayServiceChargeReceipt').prop('checked', true);
+        } else {
+          $('#displayServiceChargeReceipt').prop('disabled', true)
+          $('#displayServiceChargeReceipt').prop('checked', false);
+        }
       }
-
-     
-    }
 
   function toggleDisplayOnReceiptServiceCharge(checkbox){
     var otherServiceChargesDisplayOnReceipt = document.getElementById('displayOnReceiptServiceCharge')

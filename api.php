@@ -395,6 +395,9 @@
                 "credentials" =>  $crdentials
                 ]);
         break; 
+        case 'getRoleType':
+            echo json_encode($userFacade->getRoleType());
+            break;
         case 'getPermissionLevel':
             $userID =  isset($_GET['userID']) ? $_GET['userID'] : null;
             $permission = $abilitties->permission($userID);

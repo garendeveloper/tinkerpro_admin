@@ -362,9 +362,14 @@ let deleteValidation = "false";
     type === 1 ? toastr.success(message) : toastr.error(message);
   }
 
+  var test = '';
+
   function toUpdateProducts(productId, productName, productSKU, productCode, productBarcode, productOUM, productuomid, productBrand, productCost, productMakup, productPrice,
     productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable,
     stock_status,stock_count) {
+
+      test = displayService;
+
     $('#add_products_modal').show();
     productId ? document.getElementById('productid').value = productId : null;
     productName ? document.getElementById("productname").value = productName : null;
@@ -457,14 +462,26 @@ let deleteValidation = "false";
     } else {
       taxLabel.style.color = '';
     }
-    var displayServices = document.getElementById('displayServiceChargeReceipt');
-    displayServices.checked = (displayService == 1) ? true : false
 
-    if (displayServices.checked) {
-      toggleDisplayServiceCharge(displayServices)
+    // console.log(displayService);
+    $('#displayServiceChargeReceipt, #serviceChargesToggle').on('change', function () {
+      var isDisplayServiceChargeReceiptChecked = $('#displayServiceChargeReceipt').is(':checked');
+      var isServiceChargesToggleChecked = $('#serviceChargesToggle').is(':checked');
+      if (isDisplayServiceChargeReceiptChecked) {
+        console.log("Hi");
+      } 
+      
+      if (isServiceChargesToggleChecked) {
+        console.log("Hello");
+      }
+    });
+
+    if (displayService == '1') {
+      $('#displayServiceChargeReceipt').prop('checked', true);
     } else {
-      toggleDisplayServiceCharge(displayServices)
+      $('#displayServiceChargeReceipt').prop('checked', false);
     }
+
     var other = document.getElementById('otherChargesToggle');
     other.checked = (otherCharges == 1) ? true : false;
     var serviceLabel = document.getElementById('serviceChargeLbl');
@@ -525,6 +542,8 @@ let deleteValidation = "false";
 
  
   function updateProducts() {
+    var test = $('#displayServiceChargeReceipt').prop('checked', true) ? 1 : 0;
+    console.log(test);
     var p_id = document.getElementById('productid').value
     var productname = document.getElementById('productname').value;
     var sku = document.getElementById('skunNumber').value;
@@ -666,6 +685,7 @@ let deleteValidation = "false";
 
       axios.post('api.php?action=updateProduct', formData).then(function (response) {
         showResponse("Product has been successfully updated", 1);
+        console.log(response.data)
         var userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
         var firstName = localStorage.getItem('firstName') ?? userInfo.firstName;
         var lastName = localStorage.getItem('lastName') ?? userInfo.lastName;
@@ -677,6 +697,7 @@ let deleteValidation = "false";
         // refreshProductsTable()
         closeAddProductsModal()
         if (currentRow) {
+          // currentRow.querySelector('.displayService').innerText = "New Text";
           currentRow.querySelector('.previewImg .productImgs').textContent = filename;
           currentRow.querySelector('.productsName').innerText = productname;
           currentRow.querySelector('.sku').innerText = sku;
