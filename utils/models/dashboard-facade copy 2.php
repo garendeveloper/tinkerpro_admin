@@ -240,6 +240,7 @@ class DashboardFacade extends DBConnection
             'total_sales_by_period' => $total_sales_by_period,
             'total_gross_sales_by_period' => $total_sales_by_period,
             'total_expense_by_period' => $this->get_expenseValueFromDatePeriod($start_date, $end_date)['total_expense_of_the_month'],
+            'total_landing_cost' => $this->get_expenseValueFromDatePeriod($start_date, $end_date)['total_landing_cost']
         ];
     }
     public function get_salesDataByHour($start_date, $end_date)
@@ -307,7 +308,8 @@ class DashboardFacade extends DBConnection
             $month_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_expense_of_the_month'];
             $landingCost_expense = $this->get_totalExpenseOfTheMonth($month, $year)['total_landing_cost'];
             
-            $totalExpenses =  $month_expense + $landingCost_expense;
+            $totalLandingCost = $landingCost_expense != 0 ? $landingCost_expense - $month_expense : 0;
+            $totalExpenses =  $month_expense + $totalLandingCost;
             $expensesData[] = $totalExpenses;
             $annual_expenses += $totalExpenses;
             $salesData[] = $grossAmount;
@@ -337,60 +339,43 @@ class DashboardFacade extends DBConnection
     }
     public function get_expenseValueFromDatePeriod($start_date, $end_date)
     {
-        $stmt = $this->connect()->prepare("SELECT total_amount, landingCost
+        $stmt = $this->connect()->prepare("SELECT 
+                                                SUM(expenses.total_amount) AS total_expense_of_the_month,
+                                                SUM(
+                                                    CASE 
+                                                        WHEN JSON_VALID(expenses.landingCost) = 1 AND JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost') IS NOT NULL 
+                                                        THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost')) AS DECIMAL(10,2))
+                                                        ELSE 0
+                                                    END
+                                                ) AS total_landing_cost
                                             FROM expenses
                                             LEFT JOIN supplier ON supplier.id = expenses.supplier
                                             LEFT JOIN uom ON uom.id = expenses.uom_id
                                             WHERE DATE(expenses.date_of_transaction) BETWEEN ? AND ?");
         $stmt->execute([$start_date, $end_date]);
-        $total_amount = 0;
-        $totalLandingCost = 0;
-        $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
-     
-        foreach($expenses as $expense)
-        {
-            $landingCost = 0;
-            if($expense['landingCost'] !== null)
-            {
-                $landingCost = json_decode($expense['landingCost'], true);
-                $landingCost = $landingCost['totalLandingCost'] - $expense['total_amount'];
-            }
-            $total_amount += $expense['total_amount'];
-            $totalLandingCost += $landingCost;
-        }
-        return [
-            'total_expense_of_the_month' => $total_amount + $totalLandingCost,
-        ];
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function get_totalExpenseOfTheMonth($month, $year)
     {
-        $stmt = $this->connect()->prepare("SELECT total_amount, landingCost
+        $stmt = $this->connect()->prepare("SELECT SUM(expenses.total_amount) AS total_expense_of_the_month,
+                                                SUM(
+                                                    CASE 
+                                                        WHEN JSON_VALID(expenses.landingCost) = 1 AND JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost') IS NOT NULL 
+                                                        THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost')) AS DECIMAL(10,2))
+                                                        ELSE 0
+                                                    END
+                                                ) AS total_landing_cost
                                             FROM expenses
                                             LEFT JOIN supplier ON supplier.id = expenses.supplier
                                             LEFT JOIN uom ON uom.id = expenses.uom_id
                                             WHERE MONTH(expenses.date_of_transaction) = :currentMonth
                                             AND YEAR(expenses.date_of_transaction) = :currentYear");
-   
-        $stmt->execute([':currentMonth'=>$month, ':currentYear'=>$year]);
-        $total_amount = 0;
-        $totalLandingCost = 0;
-        $expenses = $stmt->fetchAll(PDO::FETCH_ASSOC);
-     
-        foreach($expenses as $expense)
-        {
-            $landingCost = 0;
-            if($expense['landingCost'] !== null)
-            {
-                $landingCost = json_decode($expense['landingCost'], true);
-                $landingCost = $landingCost['totalLandingCost'] - $expense['total_amount'];
-            }
-            $total_amount += $expense['total_amount'];
-            $totalLandingCost += $landingCost;
-        }
-        return [
-            'total_expense_of_the_month' => $total_amount,
-            'total_landing_cost' => $totalLandingCost,
-        ];
+        
+        // $total_amount = 0
+        // $landingCost = 0;
+        // foreach()
+      
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     function isAllZeros($array) 
     {

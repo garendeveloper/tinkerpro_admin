@@ -107,7 +107,7 @@ if($singleDateData !== null && ($startDate === null && $endDate === null))
 }
 
 $item = $birFacade->getAllZread( $startDate, $endDate);
-
+var_dump($item);
 $x = 2; 
 $y = 63; 
 $pdf->SetX($x);

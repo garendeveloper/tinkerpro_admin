@@ -128,20 +128,22 @@ class ExpenseFacade extends DBConnection
                                                 WHEN expense_type = 'PURCHASED ORDER' THEN 'Cost of goods sold'
                                                 ELSE CONCAT(UCASE(SUBSTRING(expense_type, 1, 1)), LOWER(SUBSTRING(expense_type, 2)))
                                             END AS expense_type,
-                                            ROUND(SUM(total_amount), 2) AS expense_amount,
+                                            ROUND(SUM(taxable_amount), 2) AS expense_amount,
                                             ROUND(SUM(
                                                 CASE 
                                                     WHEN isTaxable = 1 THEN expenses.taxable_amount - expenses.total_amount
                                                     ELSE 0
                                                 END
                                             ), 2) AS total_income_tax_expense,
-                                            SUM(
+                                             ROUND(SUM(
                                                 CASE 
-                                                    WHEN JSON_VALID(expenses.landingCost) = 1 AND JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost') IS NOT NULL 
-                                                    THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost')) AS DECIMAL(10,2))
+                                                    WHEN JSON_VALID(landingCost) = 1 
+                                                        AND JSON_EXTRACT(landingCost, '$.totalLandingCost') IS NOT NULL 
+                                                        AND CAST(JSON_UNQUOTE(JSON_EXTRACT(landingCost, '$.totalLandingCost')) AS DECIMAL(10,2)) IS NOT NULL
+                                                    THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(landingCost, '$.totalLandingCost')) AS DECIMAL(10,2)) - total_amount
                                                     ELSE 0
                                                 END
-                                            ) AS Landing_Cost
+                                            ), 2) AS Landing_Cost
                                         FROM expenses
                                         WHERE 
                                             date_of_transaction = COALESCE(:singleDateParam, :startDateParam, CURDATE())

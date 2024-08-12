@@ -219,7 +219,7 @@ if($expenses)
 
         if($row['Landing_Cost'] != 0)
         {
-            $landingCost = $row['Landing_Cost'] - $row['expense_amount'];
+            $landingCost = $row['Landing_Cost'];
             $pdf->Cell(15, $maxCellHeight, "", 0, 0, 'C');
             $pdf->SetFont('', 'I', autoAdjustFontSize($pdf, "", 15));
             $pdf->Cell(93, $maxCellHeight, "             Landed Cost", 0, 0, 'L');

@@ -79,6 +79,7 @@ class BirFacade extends DBConnection {
         $totalIncome = 0;
         $resetCount = 0;
 
+        $result = [];
         if (!empty($z_reports_data)) {
          
             foreach($z_reports_data as $index => $summary) {
