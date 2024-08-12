@@ -406,11 +406,9 @@ if (isset($_SESSION['user_id'])) {
 
 
 <script>
-    var products = [];
-    let productsCache = [];
-    var toastDisplayed = false;
+
     var promoType = 0;
-    show_allProducts();
+
     $("#btn_datePeriodSelected").on('click',function(){
       var date_period_selected = $("#date_selected").text();
       var promotion_type = $(".promotion_type").val();
@@ -422,151 +420,7 @@ if (isset($_SESSION['user_id'])) {
       $("#dateTimeModal").fadeOut(200);
     //   show_promotionByType(promotion_type);
     })
-    $("#btn_addProduct").click(function (e) {
-        e.preventDefault();
-        var prod_id = $(".search_product_id").val();
-        var product_name = $(".product_name").val();
-        var barcode = $(".w-barcode").val();
-
-        if(prod_id !== "" && prod_id !== "0")
-        {
-            if (!isDataExistInTable(prod_id)) 
-            {
-              open_modal(product_name, prod_id, barcode);
-            }
-            else
-            {
-              show_response("Product is already in the table.", 2);
-            }
-            $(".search_product").val("");
-            $(".search_product_id").val("0");
-        }
-        else
-        {
-          show_response("Product is not found.", 2);
-        }
-    })
-    function show_allProducts() 
-    {
-        $.ajax({
-        type: 'GET',
-        url: 'api.php?action=get_allProducts',
-        success: function (data) {
-            for (var i = 0; i < data.length; i++) 
-            {
-                var row = 
-                {
-                    product_id: data[i].id,
-                    product: data[i].prod_desc,
-                    barcode: data[i].barcode,
-                };
-                productsCache.push(row);
-            }
-        }
-        });
-    }
-
-    function filterProducts(term) {
-        return productsCache.filter(function(row) {
-            var lowercaseTerm = term.toLowerCase();
-            return row.product.toLowerCase().includes(lowercaseTerm) ||
-                row.barcode.includes(lowercaseTerm) ||
-                (row.brand && row.brand.toLowerCase().includes(lowercaseTerm)) ||
-                (!row.brand && lowercaseTerm === "");
-        }).map(function(row) {
-            var brand = row.brand === null ? " " : "( " + row.brand + " )";
-            return {
-                label: row.product,
-                value: row.product,
-                id: row.product_id,
-                barcode: row.barcode,
-            };
-        });
-    }
-    function show_response(message, type) 
-    {
-        if (toastDisplayed) {
-            return; 
-        }
-
-        toastDisplayed = true; 
-
-        toastr.options = {
-            "onShown": function () {
-                $('.custom-toast').css({
-                    "opacity": 1,
-                    "width": "600px",
-                    "text-align": "center",
-                    "border": "1px solid #1E1C11",
-                });
-            },
-            "onHidden": function () {
-                toastDisplayed = false; 
-            },
-            "closeButton": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "3500",
-            "extendedTimeOut": "1000",
-            "progressBar": true,
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut",
-            "tapToDismiss": false,
-            "toastClass": "custom-toast",
-            "onclick": function () { 
-                toastr.clear();
-                toastDisplayed = false;
-                }
-        };
-
-        type === 1 ? toastr.success(message) : toastr.error(message);
-    }
-
-    $(".search_product").autocomplete({
-        minLength: 2,
-        source: function (request, response) {
-            var term = request.term;
-            var filteredProducts = filterProducts(term);
-            var slicedProducts = filteredProducts.slice(0, 5);
-            response(slicedProducts);
-            if (slicedProducts.length > 0) {
-                $('#filters').show();
-                var slicedProductsLength = slicedProducts.length - 1;
-                var selectedProductId = slicedProducts[slicedProductsLength].id;
-                $(".search_product_id").val(selectedProductId);
-            } else {
-                $('#filters').hide();
-            }
-        },
-        select: function (event, ui) {
-            var selectedProductId = ui.item.id;
-            $(".search_product_id").val(selectedProductId);
-            var product_name = ui.item.value;
-            var barcode = ui.item.barcode;
-            if(selectedProductId !== "" && selectedProductId !== "0")
-            {
-                if(!isDataExistInTable(selectedProductId)) 
-                {
-                    open_modal(product_name, selectedProductId, barcode);
-                }
-                else
-                {
-                    show_response("Product is already in the table.", 2);
-                }
-                $(".search_product").val("");
-                $(".search_product_id").val("0");
-            }
-            return false;
-        },
-    });
-    
-    function isDataExistInTable(data) 
-    {
-        var $matchingRow = $('#tbl_promotions tbody tr[data-product_id="' + data + '"]');
-        return $matchingRow.length > 0;
-    }
-
+   
       $('.promotionType').off('click').on('click', function() {
         $('.search_product').prop('disabled', false)
         var id = $(this).data('id');
