@@ -931,7 +931,7 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
               clearTimeout(timer);
               timer = setTimeout(function() {
                   lockScreen.show(); 
-              }, 3000); 
+              }, 300000); 
           }
           $(window).on('mousemove keypress click scroll', resetTimer);
           resetTimer();
@@ -942,6 +942,7 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
       {
         $("#unlockscreen").fadeIn(100);
         $("#unlockPasswordTxt").focus();
+        $("#unlockPasswordTxt").val("");
       }
       $("#lockscreen").keydown(function(event) {
           if (event.key === 'Enter') {

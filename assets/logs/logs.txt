@@ -12059,3 +12059,5 @@
 2024-08-12 17:41:27 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
 2024-08-12 18:02:31 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-12 18:17:08 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-12 18:17:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-12 18:19:15 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
