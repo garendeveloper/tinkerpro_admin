@@ -15,7 +15,7 @@
         background-color: #333333;
         margin: 15% auto;
         max-width: 430px;
-        height: 480px;
+        height: 190px;
         max-height: 100%;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -38,14 +38,6 @@
     .modal-body {
         border: none;
     }
-
-    /* #priceListModal .modal-body {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 15px;
-        position: relative;
-    } */
-
     #priceListModal p {
         font-size: 10px;
     }
@@ -181,6 +173,7 @@ textarea::placeholder{
     top: 50%;
     right: 5px;
     color: #fff;
+    font-size:10px;
     transform: translateY(-50%);
 }
 
@@ -205,7 +198,7 @@ textarea::placeholder{
   border-radius: 5px;
 }
 
-#tbl_bundled tbody td{
+#tbl_productList tbody td{
   border: 1px solid #333333;
   color: white;
   line-height: 0.5;
@@ -223,9 +216,15 @@ td[contenteditable="true"]:focus {
 .editing {
     background-color: #262626;
 }
+#priceListModal select option{
+  margin-left: 20px;
+}
+.has-error{
+  border: 1px solid red !important;
+}
 </style>
 
-<div id="priceListModal" class="modal">
+<div id="priceListModal" class="modal" tabindex = "0" style = "overflow: hidden">
     <div class="modal-content">
         <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
             <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name">Add Price List</h6>
@@ -233,76 +232,38 @@ td[contenteditable="true"]:focus {
               <i class="bi bi-x" aria-hidden="true" style = "font-size: 30px; font-weight: bold"></i>
             </span>
         </div>
-        <form class = "promotionForm">
-          <input type="hidden" name = "product_id" class = "product_id">
+        <form class = "priceListForm">
+          <input type="hidden" name = "priceList_id" class = "priceList_id">
           <div class="modal-body" style = "padding: 10px;">
             <div class="row">
               <div class="col-md-12">
                   <label class = "tinker_label" for=""  style = "margin-right: 90px;">PRICE LIST NAME</label>
-                  <input  type="text" name = "qty" id = "qty" class = "inputAmount"  autocomplete="off">
+                  <input  type="text" name = "priceListName" id = "priceListName" class = "inputAmount"  autocomplete="off" oninput= "$(this).removeClass('has-error')" />
               </div>
               <div class="col-md-12" >
                   <label class = "tinker_label" for="" style = "margin-right: 70px;">PRICE ADJUSTMENT</label>
                   <div class="custom-select" style="margin-right: 0px; ">
-                      <select name="supplier" id = "supplier"
-                          style=" background-color: #262626; color: #ffff; width:80px; font-size: 14px; height: 30px;">
-                          <option value="1">%</option>
-                          <option value="2">Amt</option>
+                      <select name="rule" id = "rule"
+                          style=" background-color: #262626; color: #ffff; width:50px; font-size: 14px; height: 30px;">
+                          <option value="+">+</option>
+                          <option value="-">-</option>
                       </select>
-                      <i class="bi bi-menu-up"></i>
+                      <i class="bi bi-chevron-down"></i>
                   </div>
-                  <input type="text" name = "newprice" id = "newprice" class = "inputAmount"   autocomplete="off" style=" background-color: #262626; color: #ffff; width:100px; font-size: 14px; height: 30px;"/>  
-              </div>
-            </div>
-            <div class = "row" style = "padding: 10px;">
-              <div class="table-cotainer p-2">
-                <div class="d-flex justify-content-between align-items-center">
-                    <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="45" height="35" fill="var(--text-color)" class="bi bi-upc-scan" viewBox="0 0 16 16">
-                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
-                    </svg>
-                    <input type="hidden" class="w-100 search_product_b_id me-2 ms-2">
-                    <input type="text"  placeholder="SEARCH BARCODE/CODE/NAME" class="w-100 search_product_b ">
-                    <div class="btn-container b-addbutton" >
-                        <button class="btn btn-secondary" id= "btn_addBProduct" style = "height: 35px;">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
-                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                                </svg>
-                            </span>
-                        </button>
-                    </div>
+                  <div class="custom-select" style="margin-right: 0px; ">
+                      <select name="type" id = "type"
+                          style=" background-color: #262626; color: #ffff; width:50px; font-size: 14px; height: 30px;">
+                          <option value="Fix">Fix</option>
+                          <option value="%">%</option>
+                      </select>
+                      <i class="bi bi-chevron-down"></i>
                   </div>
-                </div>
-            </div>
-            <div class="row bundledDiv" style = "margin-top: -5px; border: 1px solid #757575 !important; margin-left: 3px; margin-right: 3px; height: 150px;overflow: auto; ">
-              <div class = "table-responsive" >
-                <table  style="width: 100%; border: collapse;  font-size: 12px;" id = "tbl_bundled">
-                    <thead style = "font-weight: bold">
-                      <tr>
-                        <th style = "background-color: #333333; border: 1px solid #333333">ITEM DESCRIPTION</th>
-                        <th style = "background-color: #333333; border: 1px solid #333333; text-align: center">ACTION</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-              </div>
-            </div>
-            <div class="row" style = "margin-top: 10px;">
-              <div class="col-md-12" >
-                  <div class="barcode-container">
-                    <label class="tinker_label" for="newbarcode" style="margin-right: 24px;">Generate New Barcode</label>
-                    <div class="input-icon-wrapper">
-                      <input type="text" name="newbarcode" id="newbarcode" style = "text-align: center; " class="inputAmount displayBarcode"  autocomplete="off"/>
-                      <div class="generate-button">
-                        <i class="bi bi-arrow-down-circle"></i>
-                      </div>
-                    </div>
-                  </div>
+                  <input type="text" name = "priceAdjustment" id = "priceAdjustment" oninput= "$(this).removeClass('has-error')" class = "inputAmount"   autocomplete="off" style=" background-color: #262626; color: #ffff; width:70px; font-size: 14px; height: 30px;"/>  
               </div>
             </div>
             <div class="row">
               <div class="col-md-12" style = "padding: 10px; bottom: 0px;">
-                  <button class = "button submitPromotion" type = "submit" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
+                  <button class = "button submitPriceList" type = "submit" style = "width: 100%; height: 30px; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
               </div>
             </div>
         </div>
@@ -310,7 +271,40 @@ td[contenteditable="true"]:focus {
     </div>
 </div>
 <script>
-    $("#priceListModal #close-modal, #btn_unpaidCancel").on("click", function () {
-        $("#priceListModal").hide();
+  function save_priceList()
+  {
+    $.ajax({
+      type: 'post',
+      url: 'api.php?action=save_priceList',
+      data: $(".priceListForm").serialize(),
+      success: function(response)
+      {
+        if(!response.status)
+        {
+          $.each(response, function(key, error){
+            $("#"+key).addClass('has-error');
+          })
+        }
+        else
+        {
+          $("#priceListModal").fadeOut(100);
+          $
+        }
+      }
     })
+  }
+  function resetPriceListForm()
+  {
+    $("#priceListModal input").val("");
+    $("#priceListModal *").removeClass('has-error');
+  }
+  function validatePriceListForm()
+  {
+    var pricelist = $("#priceListName").val().trim() !== "";
+    var priceAdjustment = $("#priceAdjustment").val().trim() !== "";
+    if(pricelist && priceAdjustment) return true;
+  }
+  $("#pricelistModal").on("keydown", function(){
+    console.log(validatePriceListForm())
+  })
 </script>

@@ -47,6 +47,9 @@
     $response = array("message" => "Hello from API");
     $action = isset($_GET['action']) ? $_GET['action'] : null;
     switch ($action) {
+        case 'unlockAdminUser':
+            echo json_encode($userFacade->verifyAdminUser($_GET['password']));
+            break;
         case 'pos_settings':
             echo json_encode($dashboard->pos_settings());
             break;

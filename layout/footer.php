@@ -6,7 +6,7 @@
 <?php include ("./modals/access_granted.php") ?>
 <?php include ("./modals/access_denied.php") ?>
 <?php include ("./modals/logoutModal.php") ?>
-<?php include ("./modals/lockscreen.php") ?>
+
 
 <?php
 
@@ -45,7 +45,9 @@ if (isset($_GET["delete_user"])) {
     $error = $_GET["delete_user"];
     array_push($info, $error);
 }
+
 ?>
+
 
 <script>
 
@@ -918,6 +920,8 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
 
 
 <script>
+  <?php include ("./modals/lockscreen.php") ?>
+  <?php include ("./modals/unlock-screen.php") ?>
     $(document).ready(function() {
       let inactivityTime = function () {
           let timer;
@@ -927,16 +931,28 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
               clearTimeout(timer);
               timer = setTimeout(function() {
                   lockScreen.show(); 
-              }, 10000); 
+              }, 400000); 
           }
           $(window).on('mousemove keypress click scroll', resetTimer);
           resetTimer();
       };
       // inactivityTime();
       
+      function openPasswordUnlock()
+      {
+        $("#unlockscreen").fadeIn(100);
+        $("#unlockPasswordTxt").focus();
+      }
+      $("#lockscreen").keydown(function(event) {
+          if (event.key === 'Enter') {
+              openPasswordUnlock();
+              event.preventDefault();
+          }
+      });
       $('.cancelT').on('click', function(){
-        $('#lockscreen').hide();
+        openPasswordUnlock();
       })
+     
       $(".continueT").off("click").on("click", function(){
         $('#lockscreen').hide();
         window.location.href = "logout.php";
@@ -949,5 +965,48 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
         insertLogs('Logout', 'User' + ' '+ firstName + ' ' + lastName + ' ' + role_id )
         localStorage.removeItem('userInfo')
       })
+  });
+  $(document).on("click", "#unlockscreen #btnCancelUnlock",function(){
+    $("#unlockscreen").hide();
+  })
+  function handleUnlock() {
+    var unlockPasswordTxt = $("#unlockPasswordTxt").val();
+    if (unlockPasswordTxt.trim() !== "") {
+      $("#unlockPasswordTxt").removeClass('has-error');
+      $.ajax({
+        type: 'get',
+        url: 'api.php?action=unlockAdminUser',
+        data: {
+          password: unlockPasswordTxt,
+        },
+        success: function(response)
+        {
+          if(response.status)
+          {
+            $("#unlockscreen").hide();
+            $('#lockscreen').hide();
+          }
+          else
+          {
+            $("#unlockPasswordTxt").addClass('has-error');
+            $(".errorResponse").html(response.message);
+          }
+        }
+      })
+    } else {
+      $(".errorResponse").html("Password is required!");
+      $("#unlockPasswordTxt").addClass('has-error');
+    }
+  }
+
+  $(document).on("click", "#unlockscreen #btnContinueUnlock", function() {
+    handleUnlock();
+  });
+
+  $(document).on("keydown", "#unlockPasswordTxt", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleUnlock();
+    }
   });
 </script>

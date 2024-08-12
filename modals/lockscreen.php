@@ -49,17 +49,24 @@ h4{
 #lockscreen .modal-header{
   border: none;
 }
+#lockscreen .modal-footer button {
+  width: 150px;
+  height: 30px;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  text-align: center; 
+}
 </style>
-<div class="modal" id="lockscreen" tabindex="-1" aria-labelledby="lockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.9)";>
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-logout">
+<div class="modal" id="lockscreen" tabindex="-1" aria-labelledby="lockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 1)";>
+  <div class="modal-dialog modal-dialog-centered" >
+    <div class="modal-content modal-logout" style = "background: transparent">
       <div class="modal-header">
-      <img src="assets/img/tinkerpro-logo-light.png" style = "width: 200px; height: 80px;" alt="logo"/>
+        <img src="assets/img/lock-icon.png" style = "width: auto; height: auto;" alt="logo"/>
       </div>
-      <h4>You've been away for 1 minute. Stay or logout?</h4>
-      <div class="confirmation-container" style="display: flex; align-items: center; width: 100%; ">
-        <button class="requestPermissionBtn continueT">LOGOUT</button>
-        <button class="requestPermissionBtn cancelT">STAY</button>
+      <div class="modal-footer" style = "border: none; margin-top: -20px;">
+        <button class="requestPermissionBtn continueT" style = "background-color: #d3d3d3">LOGOUT</button>
+        <button class="requestPermissionBtn cancelT" style = "background-color: var(--primary-color)">STAY</button>
       </div>
     </div>
   </div>

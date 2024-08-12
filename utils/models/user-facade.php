@@ -2,6 +2,26 @@
 
 class UserFacade extends DBConnection {
 
+    public function verifyAdminUser($password)
+    {
+        session_start();
+        $user_id = $_SESSION['user_id'];
+        $sql = $this->connect()->prepare("SELECT * FROM users WHERE password = ? and id = ?");
+        $sql->execute([$password, $user_id]);
+        $isExist = $sql->rowCount() > 0;
+
+        $status = false;
+        $message = "Invalid password!";
+        if($isExist)
+        {
+            $status = true;
+            $message = "Password is found";
+        }
+        return [
+            'status' => $status,
+            'message' => $message,
+        ];
+    }
     public function fetchUserForLogs()
     {
         $stmt = $this->connect()->query("SELECT * FROM users ORDER BY users.id asc");

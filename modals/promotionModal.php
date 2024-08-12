@@ -31,7 +31,7 @@
         background-color: black;
         height: 20px;
         font-size: 11px;
-        color: #FF6900;
+        color: var(--primary-color);
     }
 
     #promotionModal .modal-header,
@@ -132,7 +132,7 @@
 }
 
 input:checked + .stockeableSpan {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 
 input:focus + .stockeableSpan {
@@ -154,7 +154,7 @@ input:checked + .stockeableSpan:before {
 }
 
 .stockeableSpan.active {
-  background-color: #FF6900;
+  background-color: var(--primary-color);
 }
 textarea::placeholder{
   font-size: 12px;
@@ -225,7 +225,7 @@ td[contenteditable="true"]:focus {
 }
 </style>
 
-<div id="promotionModal" class="modal">
+<div id="promotionModal" class="modal" style = "overflow: hidden">
     <div class="modal-content">
         <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
             <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name"></h6>

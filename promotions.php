@@ -894,12 +894,6 @@ if (isset($_SESSION['user_id'])) {
     function show_promotionByType(type)
     {
         var date_selected_by_type = "";
-        // if(type == 1) date_selected_by_type = $("#date_picker_buy1").val();
-        // if(type == 2) date_selected_by_type = $("#date_picker_bundle").val();
-        // if(type == 3) date_selected_by_type = $("#date_picker_wholeSale").val();
-        // if(type == 4) date_selected_by_type = $("#date_picker_promo").val();
-        // if(type == 5) date_selected_by_type = $("#date_picker_stampCard").val();
-
         $("#tbl_promotions").html("");
         $.ajax({
             type: 'get',
