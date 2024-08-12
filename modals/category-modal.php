@@ -107,7 +107,7 @@
 }
 
 .variant.highlighted {
-    background-color: #f0f0f0; 
+    background-color: transparent; 
 }
 
 
@@ -190,7 +190,7 @@
     z-index: 10000; 
 }
 .black-text {
-    color: black !important;
+    color: white !important;
 }
 .white-text {
     color: #fefefe !important;
@@ -199,6 +199,8 @@
 .closeBom {
     border-radius: 50%;
     background: none;
+    border: none;
+    box-shadow: none;
 }
 
 .closeBom:hover {
@@ -227,7 +229,7 @@
 
                     <div class="catBtns">
                         <button  class="cat_btns deLbTN"><span><i class="bi bi-trash"></i> </span>Del</button>
-                        <button   class="cat_btns addCategory" ><span><i class="bi bi-plus-lg"></i> </span>Add</button>
+                        <button   class="cat_btns addCategory"><span><i class="bi bi-plus-lg"></i> </span>Add</button>
                         <button  id="editCat" name="editBtn" class="editCat cat_btns"><span><i class="bi bi-pencil-square"></i> </span>Edit</button>
                     </div>
 
@@ -239,7 +241,7 @@
             </div>
 
             <div class="done-div">
-                <button   class="btn-success-custom doneBtn"  style="margin-right: 10px; width: 100px; height: 40px">Done</button>
+                <button   class="btn-success-custom doneBtn"  style="margin-right: 10px; width: 100px; height: 100%">Done</button>
             </div>
         </div>
     </div>               
@@ -274,20 +276,19 @@ $(document).ready(function() {
         $('#categoriesDiv').toggle();
         categoriesVisible = !categoriesVisible; 
         $('.productsP').toggleClass('highlighted', categoriesVisible);
-        $('.productsBtn').toggleClass('black-text', categoriesVisible).toggleClass('white-text', !categoriesVisible);
+        $('.productsBtn').toggleClass('black-text', categoriesVisible).toggleClass('black-text', !categoriesVisible);
         
         if (categoriesVisible) {
             getCategories();
-            $(this).text('- Products');
+            $(this).text('- Products').css('color', 'black');
         } else {
-            $(this).text('+ Products'); 
+            $(this).text('+ Products').css('color', 'var(--primary-color)');; 
             $('.productsP').removeClass('highlighted');
         }
     });
 
 
 $(document).on("click", ".customAnchor", function() {
-   
     $('.customAnchor').removeClass('highlighted black-text');
     $('.categoriesParagraph').removeClass('highlighted');
     $('.productsP').removeClass('highlighted');
@@ -329,11 +330,17 @@ $(document).on("click", ".customAnchor", function() {
     var currentSpan = $(this).find('span');
     if ($(this).hasClass('highlighted')) {
         currentSpan.text('-')
-        currentSpan.css('font-size', '20px');
+        currentSpan.css({
+            'font-size' : '20px',
+            'color' : 'white'
+        });
        
     } else {
         currentSpan.text('+')
-        currentSpan.css('font-size', '20px');
+        currentSpan.css({
+            'font-size' : '20px',
+            'color' : 'white'
+        });
        
     }
     previousSpan = currentSpan;
@@ -342,9 +349,6 @@ $(document).on("click", ".customAnchor", function() {
 
 
 $('.addCategory').off('click').on('click', function() {
-
-    console.log('Hello worldsss')
-
     var index = $('.customAnchor.highlighted').index();
     var categoryId = $('.customAnchor.highlighted').data('category-id');
 
@@ -502,6 +506,8 @@ function handleClick(link, event) {
     $('.customAnchor').removeClass('highlighted black-text');
     const paragraph = link.closest('p.variants');
 
+    console.log('hello world')
+
     if (paragraph.classList.contains('highlighted')) {
         paragraph.classList.remove('highlighted');
         const linkText = link.querySelector('span');
@@ -545,7 +551,6 @@ function handleClick(link, event) {
 
 $(document).off('click', '.editCat').on("click", '.editCat', function (e) {
     e.preventDefault();
-
     var indexCat = $('.customAnchor.highlighted').data('index');
     var categoryId = $('.customAnchor.highlighted').data('category-id');
 
@@ -715,8 +720,8 @@ function addCtgory(inputElement){
 
 function editCategory(indexCat, categoryId) {
     $('#paragraph_' + categoryId).removeClass('highlighted');
-    var $anchorElement = $('#anchor_' + categoryId);
-    var $spanElement = $anchorElement.find('span');
+    var $anchorElement = $('#anchor_' + categoryId).css('color', 'green');
+    var $spanElement = $anchorElement.find('span')
     $anchorElement.hide();
     $spanElement.hide();
     var $inputElement = $('<input>').attr({

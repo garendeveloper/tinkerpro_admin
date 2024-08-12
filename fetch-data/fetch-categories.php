@@ -13,8 +13,8 @@ $index = 0; // Initialize index counter
 while ($row = $categories->fetch(PDO::FETCH_ASSOC)) {
     $rowId = htmlspecialchars($row['id']); 
     $categoryName = htmlspecialchars($row['category_name']); 
-    echo '<p id="paragraph_' . $rowId . '" class="categoriesParagraph">';
-    echo '<a id="anchor_' . $rowId . '" href="#" class="customAnchor" data-category-name="' .  $categoryName . '" data-index="' . $index . '" data-category-id="' . $rowId . '">';
+    echo '<p style="background: transparent; height: 20px" id="paragraph_' . $rowId . '" class="categoriesParagraph">';
+    echo '<a style="background: transparent; color: #fff; font-size: 14px" id="anchor_' . $rowId . '" href="#" class="customAnchor" data-category-name="' .  $categoryName . '" data-index="' . $index . '" data-category-id="' . $rowId . '">';
     echo '<span id="mainSpanCategory_' . $rowId . '">+</span>&nbsp;' . $categoryName . '</a>';
     echo '<div id="variants_' . $rowId . '"></div>';
     echo '</p>';
@@ -29,9 +29,11 @@ echo $html;
     text-decoration: none; 
     color: white;
     margin: 0;
-    padding: 0 
+    padding: 0;
+    height: 20px; 
 }
 .customAnchor:hover{
     color: #FF6900;
+    height: 40px;
 }
 </style>

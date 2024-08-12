@@ -932,7 +932,7 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
           $(window).on('mousemove keypress click scroll', resetTimer);
           resetTimer();
       };
-      inactivityTime();
+      // inactivityTime();
       
       $('.cancelT').on('click', function(){
         $('#lockscreen').hide();

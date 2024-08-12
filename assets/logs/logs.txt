@@ -11740,3 +11740,8 @@
 2024-08-10 17:47:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
 2024-08-10 17:47:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
 2024-08-10 17:47:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-12 09:06:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-12 09:09:42 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-12 12:49:19 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-12 12:49:43 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Zeus Baculio 
+2024-08-12 14:23:53 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
