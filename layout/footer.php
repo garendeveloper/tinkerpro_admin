@@ -918,10 +918,10 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
 }
 </style>
 
+<?php include ("./modals/lockscreen.php") ?>
+<?php include ("./modals/unlock-screen.php") ?>
 
 <script>
-  <?php include ("./modals/lockscreen.php") ?>
-  <?php include ("./modals/unlock-screen.php") ?>
     $(document).ready(function() {
       let inactivityTime = function () {
           let timer;
@@ -931,7 +931,7 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
               clearTimeout(timer);
               timer = setTimeout(function() {
                   lockScreen.show(); 
-              }, 400000); 
+              }, 3000); 
           }
           $(window).on('mousemove keypress click scroll', resetTimer);
           resetTimer();
