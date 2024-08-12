@@ -11806,3 +11806,5 @@
 2024-08-12 14:18:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CRISPY FRY ORIGINAL W/GRAVY 62G Barcode #:596554 
 2024-08-12 14:18:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GARBAGE BAG SMALL 25S Barcode #:625059 
 2024-08-12 14:18:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FRESH O MANGO 1BOX Barcode #:373683 
+2024-08-12 14:24:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DEL MONTE SPAGHETTI SAUCE FILIPINO STYLE 1KG Barcode #:4800024575500 
+2024-08-12 14:24:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DEL MONTE SPAGHETTI SAUCE FILIPINO STYLE 560G Barcode #:4800024580016 
