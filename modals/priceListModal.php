@@ -15,7 +15,7 @@
         background-color: #333333;
         margin: 15% auto;
         max-width: 430px;
-        height: 480px;
+        height: 405px;
         max-height: 100%;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -225,7 +225,7 @@ td[contenteditable="true"]:focus {
 }
 </style>
 
-<div id="priceListModal" class="modal">
+<div id="priceListModal" class="modal" tabindex = "0" style = "overflow: hidden">
     <div class="modal-content">
         <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
             <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name">Add Price List</h6>
@@ -287,22 +287,9 @@ td[contenteditable="true"]:focus {
                 </table>
               </div>
             </div>
-            <div class="row" style = "margin-top: 10px;">
-              <div class="col-md-12" >
-                  <div class="barcode-container">
-                    <label class="tinker_label" for="newbarcode" style="margin-right: 24px;">Generate New Barcode</label>
-                    <div class="input-icon-wrapper">
-                      <input type="text" name="newbarcode" id="newbarcode" style = "text-align: center; " class="inputAmount displayBarcode"  autocomplete="off"/>
-                      <div class="generate-button">
-                        <i class="bi bi-arrow-down-circle"></i>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div>
             <div class="row">
               <div class="col-md-12" style = "padding: 10px; bottom: 0px;">
-                  <button class = "button submitPromotion" type = "submit" style = "width: 100%; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
+                  <button class = "button submitPriceList" type = "submit" style = "width: 100%; height: 30px; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
               </div>
             </div>
         </div>
