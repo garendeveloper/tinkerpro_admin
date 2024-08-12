@@ -12055,3 +12055,4 @@
 2024-08-12 15:26:32 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: ZONROX COLORSAFE 95ML, Amount: 405.00, Invoice#: 10-000000020 
 2024-08-12 15:26:56 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000021 Amount:₱ 387.25 
 2024-08-12 15:27:10 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000021 Supplier: GAISANO 
+2024-08-12 17:12:22 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

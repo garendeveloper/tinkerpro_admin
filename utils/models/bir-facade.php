@@ -80,8 +80,8 @@ class BirFacade extends DBConnection {
         $resetCount = 0;
 
         $result = [];
-        if (!empty($z_reports_data)) {
-         
+        if (!empty($z_reports_data)) 
+        { 
             foreach($z_reports_data as $index => $summary) {
                 $ZReadData = json_decode($summary['all_data']);
                 if ($index === 0) {
