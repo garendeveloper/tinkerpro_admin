@@ -10256,6 +10256,63 @@
 2024-08-08 17:45:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated THAI HERITAGE COCONUT MILK Barcode #:965758 
 2024-08-08 17:45:46 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-08 17:48:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated THE BAR DRY GIN 375ML Barcode #:4800142113431 
+<<<<<<< HEAD
+2024-08-08 09:29:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 09:31:37 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: Lucky ME Pancit Canton Clamansi From: -70.00 To: 100 
+2024-08-08 09:32:12 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: 555 Tuna Spicy Paksiw From: -58.00 To: 100 
+2024-08-08 09:32:12 | Talkosoy Admin | 1 | 2 | Quick Inventory | Quick inventory: 555 Tuna Adobo From: 0.00 To: 100 
+2024-08-08 10:25:17 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 10:25:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Sample Product Barcode #:769758899622 
+2024-08-08 10:26:21 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 120,000.00 
+2024-08-08 10:28:22 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: GAISANO 
+2024-08-08 10:55:20 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 10:58:20 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 10:58:53 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000017 Amount:₱ 60,000.00 
+2024-08-08 10:59:17 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000017 Supplier: GAISANO 
+2024-08-08 11:25:15 | Zeus Baculio | 50 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000001 Date: Aug 08 24 Total Amount₱ 24,000.00 
+2024-08-08 12:59:36 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 12:59:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 24/7 ORNG 40G MENUDO Barcode #:874836339250 
+2024-08-08 13:01:54 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000018 Amount:₱ 24,000.00 
+2024-08-08 13:02:30 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000018 Supplier: GAISANO 
+2024-08-08 13:03:11 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000018 Supplier: GAISANO 
+2024-08-08 13:31:26 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 14:51:40 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 15:18:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 15:19:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Choco Barcode #:376436741216 
+2024-08-08 15:23:32 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 15:34:05 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 15:47:23 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:02:19 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-08 16:02:48 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:03:58 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-08 16:04:24 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:07:46 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-08 16:08:10 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:14:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-08 16:14:38 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000019 Amount:₱ 19,000.00 
+2024-08-08 16:15:04 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000019 Supplier: GAISANO 
+2024-08-08 16:16:10 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000019 Supplier: GAISANO 
+2024-08-08 16:25:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Energen Barcode #:254419329698 
+2024-08-08 16:33:20 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 16:35:22 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added Food Barcode #:250694296968 
+2024-08-08 16:38:32 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added Cane Norte Barcode #:907535011018 
+2024-08-08 17:08:21 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-08 17:33:00 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-09 09:07:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 09:10:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 3M ELECTRICAL TAPE BLACK BIG Barcode #:544125732324 
+2024-08-09 09:11:04 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000020 Amount:₱ 5,000.00 
+2024-08-09 09:36:33 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-09 09:44:33 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 09:47:12 | Talkosoy Admin | 1 | 2 | Loss and Damages | Declared loss and damages with reference #: 50-000000006 Date: Aug 09 24 Total Amount₱ 120,000.00 
+2024-08-09 09:49:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 10:08:45 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 10:41:04 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 11:40:40 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 11:41:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added PANCIT CANTON CHILIMANSI Barcode #:4807770273698 
+2024-08-09 11:42:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added SURF Barcode #:5115679621274 
+2024-08-09 11:43:16 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000021 Amount:₱ 70,000.00 
+2024-08-09 11:46:51 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000021 Supplier: GAISANO 
+=======
 2024-08-09 09:04:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-09 09:04:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-09 09:05:05 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
@@ -10518,6 +10575,31 @@
 2024-08-09 15:13:09 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer CustomerD Data 
 2024-08-09 15:16:14 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
 2024-08-09 15:16:28 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Updated customer First name namelast 
+<<<<<<< HEAD
+>>>>>>> cda502dbd1de602623e91c6f408297634b28e270
+2024-08-09 13:22:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 13:23:23 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000022 Amount:₱ 2,000.00 
+2024-08-09 13:23:55 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000022 Supplier: GAISANO 
+2024-08-09 14:11:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 14:12:31 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000023 Amount:₱ 50.00 
+2024-08-09 14:13:05 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000023 Supplier: GAISANO 
+2024-08-09 14:38:25 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 14:38:41 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000024 Amount:₱ 1,000.00 
+2024-08-09 14:39:16 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000024 Supplier: GAISANO 
+2024-08-09 15:18:18 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 15:19:34 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 10 DAYS 
+2024-08-09 15:20:36 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 10 DAYS 
+2024-08-09 16:01:26 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 16:05:30 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Printed a coupon id #:2 
+2024-08-09 16:05:41 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Printed a coupon id #:2 
+2024-08-09 16:08:24 | Talkosoy Admin | 1 | 2 | Coupons | Talkosoy Admin Updated the coupon expiration to 1 WEEK 
+2024-08-09 16:34:56 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-09 16:47:40 | Talkosoy Admin | 1 | 2 | Customers | Talkosoy Admin Added customer John Doe 
+2024-08-09 16:54:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 555 TUNA SPICY PAKSIW Barcode #:2131644570623 
+2024-08-09 16:54:16 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000025 Amount:₱ 2,000.00 
+2024-08-09 16:54:37 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000025 Supplier: GAISANO 
+2024-08-09 17:35:14 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+=======
 2024-08-09 15:55:23 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000011 Supplier: GAISANO 
 2024-08-09 15:57:01 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000018 Amount:₱ 3,242.00 
 2024-08-09 15:57:25 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000018 Supplier: GAISANO 
@@ -10765,6 +10847,47 @@
 2024-08-10 09:45:02 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
 2024-08-10 09:45:25 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
 2024-08-10 09:45:34 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Talkosoy Admin 
+<<<<<<< HEAD
+>>>>>>> 5eecceab48957bc31cbf058f91571535101fb28c
+2024-08-10 09:11:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 09:38:38 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 09:43:37 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 09:48:41 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added SURF ACTIVE CLEAN Barcode #:5115679621274 
+2024-08-10 09:50:34 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added CEMENT Barcode #:101010101010 
+2024-08-10 10:29:59 | Zeus Baculio | 50 | 2 | Expense | Updated expense: CEMENT, Amount: 20,000.00, Invoice#: 10-000000001 
+2024-08-10 10:35:45 | Zeus Baculio | 50 | 2 | Expense | Updated expense: 24/7 ORNG 40G MENUDO, Amount: 1,400.00, Invoice#: 10-000000001 
+2024-08-10 10:41:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 10:41:53 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 10:42:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF ACTIVE CLEAN Barcode #:5115679621274 
+2024-08-10 10:49:20 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 11:15:59 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 13:09:34 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 13:10:39 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete s121sa121 
+2024-08-10 13:10:40 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier s121sa121 
+2024-08-10 13:10:41 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete UNILIVER 
+2024-08-10 13:10:42 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier UNILIVER 
+2024-08-10 13:10:44 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete Jason 
+2024-08-10 13:10:45 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier Jason 
+2024-08-10 13:10:47 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete data 
+2024-08-10 13:10:48 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier data 
+2024-08-10 13:10:49 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete ss121s1 
+2024-08-10 13:10:50 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier ss121s1 
+2024-08-10 13:10:52 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete 2121s121 
+2024-08-10 13:10:53 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier 2121s121 
+2024-08-10 13:10:54 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete 212 
+2024-08-10 13:11:02 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier 212 
+2024-08-10 13:11:03 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Tries to delete alex 
+2024-08-10 13:11:04 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Deleted Supplier alex 
+2024-08-10 13:11:38 | Zeus Baculio | 50 | 2 | Expense | Updated expense: 24/7 ORNG 40G MENUDO, Amount: 1,400.00, Invoice#: 10-000000001 
+2024-08-10 13:11:51 | Zeus Baculio | 50 | 2 | Expense | Updated expense: 24/7 ORNG 40G MENUDO, Amount: 1,400.00, Invoice#: 10-000000001 
+2024-08-10 13:20:19 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 14:08:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 14:09:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 14:09:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 14:25:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 14:35:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 14:42:51 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+=======
 2024-08-10 09:48:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC LEM&KAL 80G Barcode #:270858 
 2024-08-10 09:49:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC LEM&KAL 80G 1/2DZ Barcode #:756398 
 2024-08-10 09:49:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POW PC LEM&KAL 80G 1DZ-OYT Barcode #:271619 
@@ -11035,6 +11158,45 @@
 2024-08-10 14:48:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANG PINEAPPLE Barcode #:688376 
 2024-08-10 14:49:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANG POMELO (MENUDO) Barcode #:7622210706768 
 2024-08-10 14:51:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANG STRAWBERRY (MENUDO) Barcode #:7622300638078 
+<<<<<<< HEAD
+>>>>>>> 4ae42f9a2522664da410a27eb1ac0836a5097cea
+2024-08-10 14:56:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 14:56:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 14:56:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 14:57:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 15:47:57 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 15:56:10 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-10 16:12:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:13:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:21:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:24:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:25:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:28:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:28:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:28:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:29:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:31:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:31:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:32:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:33:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G Barcode #:079795083773 
+2024-08-10 16:33:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:33:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:34:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:34:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:34:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:35:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:36:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:37:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:37:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:40:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:41:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:44:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:44:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:46:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:49:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:49:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 16:54:31 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+=======
 2024-08-10 14:53:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TAQUITOS BBQ 100G Barcode #:945340 
 2024-08-10 14:54:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TAQUITOS BBQ 27G Barcode #:457166 
 2024-08-10 14:56:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SNOWTIME FRUIT JELLY 130G Barcode #:263339 
@@ -11808,3 +11970,54 @@
 2024-08-12 14:18:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FRESH O MANGO 1BOX Barcode #:373683 
 2024-08-12 14:24:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DEL MONTE SPAGHETTI SAUCE FILIPINO STYLE 1KG Barcode #:4800024575500 
 2024-08-12 14:24:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DEL MONTE SPAGHETTI SAUCE FILIPINO STYLE 560G Barcode #:4800024580016 
+>>>>>>> 66fa3fa865fe601dfd74a1696c332d60d2ade334
+2024-08-10 17:02:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:02:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:03:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:05:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:08:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:08:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:08:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:08:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:09:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:09:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:09:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:10:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:10:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:12:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:16:25 | Zeus Baculio | 50 | 2 | P.O Created | Zeus Baculio P.0 # 10-000000032 Amount:₱ 10,000.00 
+2024-08-10 17:17:26 | Zeus Baculio | 50 | 2 | Received Items | Tender received items, PO Number: 10-000000032 Supplier: GAISANO 
+2024-08-10 17:17:48 | Zeus Baculio | 50 | 2 | P.O Created | Zeus Baculio P.0 # 10-000000033 Amount:₱ 10,000.00 
+2024-08-10 17:18:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:18:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:19:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:19:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:20:27 | Zeus Baculio | 50 | 2 | P.O Created | Zeus Baculio P.0 # 10-000000034 Amount:₱ 200.00 
+2024-08-10 17:20:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:23:01 | Zeus Baculio | 50 | 2 | Received Items | Tender received items, PO Number: 10-000000033 Supplier: GAISANO 
+2024-08-10 17:23:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:24:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:24:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:25:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:25:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:32:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:32:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:32:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:33:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:33:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:35:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:36:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:36:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:36:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:39:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:40:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:40:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated Sample Product Barcode #:217488206829 
+2024-08-10 17:45:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:45:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:46:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:46:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:46:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:47:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:47:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:47:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-10 17:47:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 

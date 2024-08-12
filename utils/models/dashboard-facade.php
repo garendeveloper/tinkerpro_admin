@@ -124,7 +124,6 @@ class DashboardFacade extends DBConnection
         ) AS subqeury
         ";
 
-
         $return_report = $pdo->prepare($return_query);
         $return_report->execute([$month, $year]);
         $returndData = $return_report->fetchAll(PDO::FETCH_ASSOC);
@@ -171,7 +170,7 @@ class DashboardFacade extends DBConnection
         $product_sold_result->execute([$startDate, $endDate, $startTime, $endTime]);
         $hourlyProducts = $product_sold_result->fetchAll(PDO::FETCH_ASSOC);
         return $hourlyProducts;
-    }
+    } 
     public function getTopProducts($startDate, $endDate) 
     {
         $pdo = $this->connect();

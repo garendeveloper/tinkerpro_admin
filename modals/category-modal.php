@@ -53,7 +53,7 @@
     outline: 0;
     color:#fefefe;
     text-decoration: none;
-    font-size: small;
+    font-size: 14px;
     padding-left: 25px;
 }
 .productsBtn:hover{
@@ -125,11 +125,11 @@
     margin: 0;
 }
 .cat_btns{
-    font-size: 10px;
-    font-family: Century Gothic;
+    font-size: 13px;
     border-radius: 5px;
     width: 70px;
     margin: 0;
+    height: 40px;
     background-color: #404040;
 }
 .inputCat{
@@ -196,40 +196,53 @@
     color: #fefefe !important;
 }
 
+.closeBom {
+    border-radius: 50%;
+    background: none;
+}
+
+.closeBom:hover {
+    background: transparent !important;
+}
+
+.categoriesParagraph {
+    height: 16px;
+}
+
+
 
 </style>
 <div class="modal" id="add_category_modal" tabindex="0">
-  <div class="modal-dialog ">
-    <div class="modal-content categoryAdd">
-      <div class="modal-title">
-        <div class="warning-container">
-         <div>
-                <button onclick="closeModalCategory()"class="closeBom">x</button>
+    <div class="modal-dialog ">
+        <div class="modal-content categoryAdd">
+            <div >
+                <div class="warning-container">
+                    <div class="d-flex">
+                        <button onclick="closeModalCategory()"class="closeBom"><i class="bi bi-x"></i></button>
+                    </div>
+
+                    <div id="categoryData"  style="margin-top: 60px; margin-left: 10px">
+                        <h6 class="text-custom" style="color:#FF6900;">Category</h6>
+                    </div>
+
+                    <div class="catBtns">
+                        <button  class="cat_btns deLbTN"><span><i class="bi bi-trash"></i> </span>Del</button>
+                        <button   class="cat_btns addCategory" ><span><i class="bi bi-plus-lg"></i> </span>Add</button>
+                        <button  id="editCat" name="editBtn" class="editCat cat_btns"><span><i class="bi bi-pencil-square"></i> </span>Edit</button>
+                    </div>
+
+                    <div class="productsHeader ">
+                        <p class="productsP" ><a href="#" onclick="changeValueInput(this)" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
+                        <div id="categoriesDiv" class="scrollable-content" style="display: none;"></div>
+                    </div>
+                </div>
             </div>
-            <div id="categoryData"  style="margin-top: 60px; margin-left: 10px">
-              <h6 class="text-custom" style="color:#FF6900;">Category</h6>
+
+            <div class="done-div">
+                <button   class="btn-success-custom doneBtn"  style="margin-right: 10px; width: 100px; height: 40px">Done</button>
             </div>
-            <div class="catBtns">
-              <button  class="cat_btns deLbTN">Del</button>
-              <button   class="cat_btns addCategory" >Add</button>
-               <button  id="editCat" name="editBtn" class="editCat cat_btns">Edit</button>
-            </div>
-            <div class="productsHeader ">
-               <p class="productsP" ><a href="#" onclick="changeValueInput(this)" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
-               <div id="categoriesDiv" class="scrollable-content" style="display: none;">
-    
-              </div>
-           </div>
-         </div>
-         
         </div>
-        <div class="done-div">
-        <button   class="btn-success-custom doneBtn"  style="margin-right: 10px; width: 100px; height: 40px">Done</button>
-    </div>
-      </div>
-      
-    </div>
-  </div>                      
+    </div>               
 </div>
 
 
@@ -315,10 +328,12 @@ $(document).on("click", ".customAnchor", function() {
     $('.categoriesParagraph').eq(index).addClass('highlighted');
     var currentSpan = $(this).find('span');
     if ($(this).hasClass('highlighted')) {
-        currentSpan.text('-');
+        currentSpan.text('-')
+        currentSpan.css('font-size', '20px');
        
     } else {
-        currentSpan.text('+');
+        currentSpan.text('+')
+        currentSpan.css('font-size', '20px');
        
     }
     previousSpan = currentSpan;
@@ -332,6 +347,8 @@ $('.addCategory').off('click').on('click', function() {
 
     var index = $('.customAnchor.highlighted').index();
     var categoryId = $('.customAnchor.highlighted').data('category-id');
+
+    $('#mainSpanCategory_' + categoryId).css('font-size', '20px');
     
     if ($('.productsP').hasClass('highlighted')) {
         $('.inputCat').removeAttr('hidden');

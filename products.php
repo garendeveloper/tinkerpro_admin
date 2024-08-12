@@ -1047,6 +1047,7 @@ $('#exportProducts').click(function() {
     
     var currentRow = null;
     function openModal(row){
+    
     currentRow = row;
     var productId = row.querySelector('.productsId').innerText;
     var productName =  row.querySelector('.productsName').innerText
@@ -1065,6 +1066,7 @@ $('#exportProducts').click(function() {
     var isTaxIncluded = row.querySelector('.isTaxIncluded').innerText;
     var serviceCharge = row.querySelector('.service').innerText;
     var displayService = row.querySelector('.displayService').innerText;
+    console.log(displayService);
     var otherCharges = row.querySelector('.other').innerText;
     var displayOtherCharges = row.querySelector('.displayOthers').innerText;
     var status = row.querySelector('.statusData').innerText;
@@ -1088,5 +1090,4 @@ $('#exportProducts').click(function() {
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
         stock_status,stock_count)
     }
-
 </script>
