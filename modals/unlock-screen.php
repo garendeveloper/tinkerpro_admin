@@ -61,7 +61,7 @@ h4{
 .has-error{
     border: 1px solid red !important;
 }
-.modal-header {
+/* .modal-header {
     display: flex;
     flex-direction: column; 
     align-items: center;    
@@ -73,16 +73,14 @@ h4{
   .modal-header h3 {
     margin: 0; 
     padding: 10px 0; 
-  }
+  } */
 </style>
-<div class="modal" id="unlockscreen" tabindex="-1" aria-labelledby="unlockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 1)";>
+<div class="modal" id="unlockscreen" tabindex="-1" aria-labelledby="unlockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 1);    z-index: 99999;";>
   <div class="modal-dialog modal-dialog-centered" >
     <div class="modal-content modal-logout" style = "background: transparent">
-      <div class="modal-header">
+      <div class = "modal-body">
         <h4 style = "color: var(--primary-color)">Please enter your password: </h4>
         <h4 style = "color: red">[<?= $_SESSION['first_name']." ".$_SESSION['last_name']?>]</h4>
-      </div>
-      <div class = "modal-body">
         <input type="password" id = "unlockPasswordTxt" style = "width: 400px; border: 1px solid #d3d3d3; background-color: grey;text-align: center" oninput = "$(this).removeClass('has-error'); $('.errorResponse').html('')" autocomplete = "off"/>
         <p class = "errorResponse" style = "color: red !important"></p>
       </div>

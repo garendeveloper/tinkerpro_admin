@@ -35,7 +35,7 @@ if($singleDateData !== null && ($startDate === null && $endDate === null))
     $endDate = $singleDateData;
 }
 
-$item = $birFacade->getAllZread( $startDate, $endDate);
+$items = $birFacade->getAllZread( $startDate, $endDate);
 
 $sheet->mergeCells('A1:AF1');
 $sheet->mergeCells('A2:AF2');
@@ -131,40 +131,48 @@ $sheet->setCellValue('AF13', 'Remarks');
 
 
 $rowIndex = 16;
-if($item)
+if($items)
 {
-    $sheet->setCellValue('A' . $rowIndex, $item['dateRange']); 
-    $sheet->setCellValue('B' . $rowIndex, $item['beginning_si']);
-    $sheet->setCellValue('C' . $rowIndex, $item['end_si']); 
-    $sheet->setCellValue('D' . $rowIndex, $item['grandEndAccumulated']); 
-    $sheet->setCellValue('E' . $rowIndex, $item['grandBegAccumulated']);
-    $sheet->setCellValue('F' . $rowIndex, $item['issued_si']); 
-    $sheet->setCellValue('G' . $rowIndex, $item['grossSalesToday']);
-    $sheet->setCellValue('H' . $rowIndex, number_format($item['vatable_sales'], 2)); 
-    $sheet->setCellValue('I' . $rowIndex, number_format($item['vatAmount'], 2)); 
-    $sheet->setCellValue('J' . $rowIndex, number_format($item['vatExempt'], 2)); 
-    $sheet->setCellValue('K' . $rowIndex, number_format($item['zero_rated'], 2)); 
-    $sheet->setCellValue('L' . $rowIndex, number_format($item['sc_discount'], 2));
-    $sheet->setCellValue('M' . $rowIndex, number_format($item['pwd_discount'], 2)); 
-    $sheet->setCellValue('N' . $rowIndex, number_format($item['naac_discount'], 2)); 
-    $sheet->setCellValue('O' . $rowIndex, number_format($item['solo_parent_discount'], 2)); 
-    $sheet->setCellValue('P' . $rowIndex, number_format($item['other_discount'], 2)); 
-    $sheet->setCellValue('Q' . $rowIndex, number_format($item['returned'], 2)); 
-    $sheet->setCellValue('R' . $rowIndex, number_format($item['voids'], 2)); 
-    $sheet->setCellValue('S' . $rowIndex, number_format($item['totalDeductions'], 2)); 
-    $sheet->setCellValue('T' . $rowIndex, number_format(0, 2)); 
-    $sheet->setCellValue('U' . $rowIndex, number_format(0, 2)); 
-    $sheet->setCellValue('V' . $rowIndex, number_format(0, 2)); 
-    $sheet->setCellValue('W' . $rowIndex, number_format($item['returnd_vat'], 2));
-    $sheet->setCellValue('X' . $rowIndex, number_format($item['othersVatAdjustment'], 2)); 
-    $sheet->setCellValue('Y' . $rowIndex, number_format($item['totalVatAjustment'], 2)); 
-    $sheet->setCellValue('Z' . $rowIndex, number_format(0, 2)); 
-    $sheet->setCellValue('AA' . $rowIndex, number_format($item['netSales'], 2)); 
-    $sheet->setCellValue('AB' . $rowIndex, number_format(0, 2)); 
-    $sheet->setCellValue('AC' . $rowIndex, number_format($item['totalIncome'], 2)); 
-    $sheet->setCellValue('AD' . $rowIndex, $item['resetCount']); 
-    $sheet->setCellValue('AE' . $rowIndex, $item['z_counter']); 
-    $sheet->setCellValue('AF' . $rowIndex, ''); 
+    function formatValue($value) 
+    {
+        return ($value == 0 || empty($value)) ? '' : number_format($value, 2);
+    }
+    for($i = 0; $i<count($items); $i++)
+    {
+        $sheet->setCellValue('A' . $rowIndex, $items[$i]['dateRange']); 
+        $sheet->setCellValue('B' . $rowIndex, $items[$i]['beginning_si']);
+        $sheet->setCellValue('C' . $rowIndex, $items[$i]['end_si']); 
+        $sheet->setCellValue('D' . $rowIndex, $items[$i]['grandEndAccumulated']); 
+        $sheet->setCellValue('E' . $rowIndex, $items[$i]['grandBegAccumulated']);
+        $sheet->setCellValue('F' . $rowIndex, $items[$i]['issued_si']); 
+        $sheet->setCellValue('G' . $rowIndex, $items[$i]['grossSalesToday']);
+        $sheet->setCellValue('H' . $rowIndex, formatValue($items[$i]['vatable_sales'])); 
+        $sheet->setCellValue('I' . $rowIndex, formatValue($items[$i]['vatAmount'])); 
+        $sheet->setCellValue('J' . $rowIndex, formatValue($items[$i]['vatExempt'])); 
+        $sheet->setCellValue('K' . $rowIndex, formatValue($items[$i]['zero_rated'])); 
+        $sheet->setCellValue('L' . $rowIndex, formatValue($items[$i]['sc_discount']));
+        $sheet->setCellValue('M' . $rowIndex, formatValue($items[$i]['pwd_discount'])); 
+        $sheet->setCellValue('N' . $rowIndex, formatValue($items[$i]['naac_discount'])); 
+        $sheet->setCellValue('O' . $rowIndex, formatValue($items[$i]['solo_parent_discount'])); 
+        $sheet->setCellValue('P' . $rowIndex, formatValue($items[$i]['other_discount'])); 
+        $sheet->setCellValue('Q' . $rowIndex, formatValue($items[$i]['returned'])); 
+        $sheet->setCellValue('R' . $rowIndex, formatValue($items[$i]['voids'])); 
+        $sheet->setCellValue('S' . $rowIndex, formatValue($items[$i]['totalDeductions'])); 
+        $sheet->setCellValue('T' . $rowIndex, formatValue(0)); 
+        $sheet->setCellValue('U' . $rowIndex, formatValue(0)); 
+        $sheet->setCellValue('V' . $rowIndex, formatValue(0)); 
+        $sheet->setCellValue('W' . $rowIndex, formatValue($items[$i]['returnd_vat']));
+        $sheet->setCellValue('X' . $rowIndex, formatValue($items[$i]['othersVatAdjustment'])); 
+        $sheet->setCellValue('Y' . $rowIndex, formatValue($items[$i]['totalVatAjustment'])); 
+        $sheet->setCellValue('Z' . $rowIndex, formatValue(0)); 
+        $sheet->setCellValue('AA' . $rowIndex, formatValue($items[$i]['netSales'])); 
+        $sheet->setCellValue('AB' . $rowIndex, formatValue(0)); 
+        $sheet->setCellValue('AC' . $rowIndex, formatValue($items[$i]['totalIncome'])); 
+        $sheet->setCellValue('AD' . $rowIndex, $items[$i]['resetCount']); 
+        $sheet->setCellValue('AE' . $rowIndex, $items[$i]['z_counter']); 
+        $sheet->setCellValue('AF' . $rowIndex, ''); 
+        $rowIndex++;
+    }
 }
 
 
@@ -321,7 +329,7 @@ $sheet->getStyle('A1:AF1')->applyFromArray($headerStyleAtoAF);
 $sheet->getStyle('A2:AF2')->applyFromArray($headerStyleAtoAF);
 $sheet->getStyle('A3:AF3')->applyFromArray($headerStyleAtoAF);
 $sheet->getStyle('A12:AF12')->applyFromArray($headerStyle);
-$sheet->getStyle('A16:AF16')->applyFromArray($headerStyleData);
+$sheet->getStyle('A'.$rowIndex.':AF'.$rowIndex)->applyFromArray($headerStyleData);
 
 
 foreach (range('A', 'K') as $column) {

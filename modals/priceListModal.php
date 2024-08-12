@@ -15,7 +15,7 @@
         background-color: #333333;
         margin: 15% auto;
         max-width: 430px;
-        height: 190px;
+        height: 187px;
         max-height: 100%;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -238,7 +238,7 @@ td[contenteditable="true"]:focus {
             <div class="row">
               <div class="col-md-12">
                   <label class = "tinker_label" for=""  style = "margin-right: 90px;">PRICE LIST NAME</label>
-                  <input  type="text" name = "priceListName" id = "priceListName" class = "inputAmount"  autocomplete="off" oninput= "$(this).removeClass('has-error')" />
+                  <input  type="text" name = "priceListName" id = "priceListName" class = "inputAmount" style = "height: 30px;" autocomplete="off" oninput= "$(this).removeClass('has-error')" />
               </div>
               <div class="col-md-12" >
                   <label class = "tinker_label" for="" style = "margin-right: 70px;">PRICE ADJUSTMENT</label>
@@ -304,7 +304,10 @@ td[contenteditable="true"]:focus {
     var priceAdjustment = $("#priceAdjustment").val().trim() !== "";
     if(pricelist && priceAdjustment) return true;
   }
-  $("#pricelistModal").on("keydown", function(){
+  $("#priceListModal").on("keydown", function(e)
+  {
+    e.preventDefault();
+    alert(validatePriceListForm())
     console.log(validatePriceListForm())
   })
 </script>

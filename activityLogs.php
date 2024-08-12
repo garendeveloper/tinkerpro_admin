@@ -262,7 +262,6 @@ select::-webkit-scrollbar-thumb {
               </div>
             </div>
             <div class = "row">
-
                 <div style = "background-color: #1e1e1e; border-color: white; width: 15%; border-radius: 10px;">
                   <div class="mainDiv" style = "margin-left: 15px; height: 90vh">
                   <br>

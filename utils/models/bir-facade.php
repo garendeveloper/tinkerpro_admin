@@ -80,8 +80,8 @@ class BirFacade extends DBConnection {
         $resetCount = 0;
 
         $result = [];
-        if (!empty($z_reports_data)) {
-         
+        if (!empty($z_reports_data)) 
+        { 
             foreach($z_reports_data as $index => $summary) {
                 $ZReadData = json_decode($summary['all_data']);
                 if ($index === 0) {
@@ -442,7 +442,7 @@ class BirFacade extends DBConnection {
                     'overAllDiscounts' => $refunded_map[$payment_id]['overAllDiscounts'] ?? 0,
                     'credits' => $refunded_map[$payment_id]['credits'] ?? 0,
                     'cartDiscount' => $refunded_map[$payment_id]['cartDiscount'] ?? 0,
-                    'customerDiscount' => $customerDis,
+                    // 'customerDiscount' => $customerDis,
                     'itemDiscount_refunded' => $refunded_map[$payment_id]['itemDiscount'] ?? 0,
                     'date_refunded' => $refunded_map[$payment_id]['date'] ?? 0,
                     'vatRef' => $refunded_map[$payment_id]['vat_amount'] ?? 0,
