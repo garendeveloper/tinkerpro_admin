@@ -39,8 +39,6 @@
                         $("#expirationNotification").css('display', 'inline-block');
                         $("#expirationNotification").text(totalExpired.toString());
                     }
-                   
-                   
                 }   
             });
         }
@@ -48,8 +46,9 @@
         function isReset() {
             axios.get('api.php?action=getResetVal')
                 .then(function(response) {
-                    if (response.data) {
-                    //    $('#reloginModal').show();
+                    if (response.data.success) {
+                       $('#reloginModal').show();
+                       $('#update_id').val(response.data.data.id)
                     }
                 })
                 .catch(function(error) {

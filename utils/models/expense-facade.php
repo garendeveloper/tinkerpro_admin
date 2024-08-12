@@ -135,13 +135,15 @@ class ExpenseFacade extends DBConnection
                                                     ELSE 0
                                                 END
                                             ), 2) AS total_income_tax_expense,
-                                            SUM(
+                                             ROUND(SUM(
                                                 CASE 
-                                                    WHEN JSON_VALID(expenses.landingCost) = 1 AND JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost') IS NOT NULL 
-                                                    THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(expenses.landingCost, '$.totalLandingCost')) AS DECIMAL(10,2))
+                                                    WHEN JSON_VALID(landingCost) = 1 
+                                                        AND JSON_EXTRACT(landingCost, '$.totalLandingCost') IS NOT NULL 
+                                                        AND CAST(JSON_UNQUOTE(JSON_EXTRACT(landingCost, '$.totalLandingCost')) AS DECIMAL(10,2)) IS NOT NULL
+                                                    THEN CAST(JSON_UNQUOTE(JSON_EXTRACT(landingCost, '$.totalLandingCost')) AS DECIMAL(10,2)) - total_amount
                                                     ELSE 0
                                                 END
-                                            ) AS Landing_Cost
+                                            ), 2) AS Landing_Cost
                                         FROM expenses
                                         WHERE 
                                             date_of_transaction = COALESCE(:singleDateParam, :startDateParam, CURDATE())

@@ -106,7 +106,7 @@ if($singleDateData !== null && ($startDate === null && $endDate === null))
     $endDate = $singleDateData;
 }
 
-$item = $birFacade->getAllZread( $startDate, $endDate);
+$items = $birFacade->getAllZread( $startDate, $endDate);
 
 $x = 2; 
 $y = 63; 
@@ -187,7 +187,7 @@ $html = '<style>
             }
         </style>';
 
-if($item)
+if($items)
 {
     $html .= '<table border="1" cellpadding="3">
                 <thead >
@@ -240,42 +240,50 @@ if($item)
                         <th style = "width: 3%" class = "ty">Others</th>
                     </tr>
                 </thead>
-                <tbody >
-                    <tr style = "border: 1px solid black; font-size: 6px;">
-                        <td style = "width: 3%">'.$item['dateRange'].'</td>
-                        <td style = "width: 3%">'.$item['beginning_si'].'</td>
-                        <td style = "width: 3%">'.$item['end_si'].'</td>
-                        <td style = "width: 5%">'.$item['grandEndAccumulated'].'</td>
-                        <td style = "width: 5%">'.$item['grandBegAccumulated'].'</td>
-                        <td style = "width: 5%; text-align: center">'.$item['issued_si'].'</td>
-                        <td style = "width: 5%; text-align: right">'.number_format($item['grossSalesToday'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['vatable_sales'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['vatAmount'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['vatExempt'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['zero_rated'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['sc_discount'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['pwd_discount'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['naac_discount'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['solo_parent_discount'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['other_discount'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['returned'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['voids'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['totalDeductions'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format(0,2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format(0,2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format(0,2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['returnd_vat'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['othersVatAdjustment'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['totalVatAjustment'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format(0,2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['netSales'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format(0,2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['totalIncome'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['resetCount'],2).'</td>
-                        <td style = "width: 3%; text-align: right">'.number_format($item['z_counter'],2).'</td>
-                        <td style = "width: 3%; text-align: right"></td>
-                    </tr>
-                </tbody>
+                <tbody>';
+                foreach($items as $item)
+                {
+                    function formatValue($value) 
+                    {
+                        return ($value == 0 || empty($value)) ? '' : number_format($value, 2);
+                    }
+                
+                    $html .= '<tr style="border: 1px solid black; font-size: 6px;">
+                                <td style="width: 3%">' . htmlspecialchars($item['dateRange']) . '</td>
+                                <td style="width: 3%">' . htmlspecialchars($item['beginning_si']) . '</td>
+                                <td style="width: 3%">' . htmlspecialchars($item['end_si']) . '</td>
+                                <td style="width: 5%">' . htmlspecialchars($item['grandEndAccumulated']) . '</td>
+                                <td style="width: 5%">' . htmlspecialchars($item['grandBegAccumulated']) . '</td>
+                                <td style="width: 5%; text-align: center">' . htmlspecialchars($item['issued_si']) . '</td>
+                                <td style="width: 5%; text-align: right">' . formatValue($item['grossSalesToday']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['vatable_sales']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['vatAmount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['vatExempt']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['zero_rated']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['sc_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['pwd_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['naac_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['solo_parent_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['other_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['returned']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['voids']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['totalDeductions']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['returnd_vat']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['othersVatAdjustment']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['totalVatAjustment']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['netSales']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['totalIncome']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['resetCount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($item['z_counter']) . '</td>
+                                <td style="width: 3%; text-align: right"></td>
+                            </tr>';
+                }
+                $html.='</tbody>
             </table>';
 }
 else

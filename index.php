@@ -755,7 +755,7 @@ body, div, h1, h2, h3, h4, h5, p{
             if(responseData['top_expensive_by_period'] !== 0)
             {
               var totalSales = responseData['total_gross_sales_by_period'];
-              var total_expense = responseData['total_landing_cost'] != 0 ? responseData['total_landing_cost'] : responseData['total_expense_by_period'];
+              var total_expense = responseData['total_expense_by_period'];
               var total_net_income = totalSales - total_expense;
               total_net_income = formatAmount(total_net_income);
               $("#net_income").html("<h1>"+total_net_income+"</h1>");

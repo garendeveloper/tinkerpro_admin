@@ -12021,6 +12021,40 @@
 2024-08-10 17:47:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
 2024-08-10 17:47:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
 2024-08-10 17:47:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORNG 40G MENUDO Barcode #:532644744549 
+2024-08-12 14:25:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DEL MONTE SPAGHETTI SAUCE ITALIAN STYLE 560G Barcode #:837148408133 
+2024-08-12 14:25:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL 40% 150ML Barcode #:501908 
+2024-08-12 14:26:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DEL MONTE SPAGHETTI SAUCE SWEET STYLE 560G Barcode #:792876103925 
+2024-08-12 14:27:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL 40% 250ML Barcode #:255987 
+2024-08-12 14:27:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL 40% 500ML Barcode #:616242 
+2024-08-12 14:27:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREENCROSS ALCOHOL 70% 500ML Barcode #:242938 
+2024-08-12 14:27:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL 70% 500ML Barcode #:242938 
+2024-08-12 14:28:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL 70% 75ML Barcode #:252650 
+2024-08-12 14:28:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL ETHYL 70% 150ML Barcode #:728778 
+2024-08-12 14:28:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL ETHYL 70% 250ML Barcode #:534354 
+2024-08-12 14:28:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL ETHYL 70% 500ML Barcode #:4800047820304 
+2024-08-12 14:28:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL WITH MOISTURIZER 150ML Barcode #:643189 
+2024-08-12 14:28:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL WITH MOISTURIZER 500ML 40% Barcode #:431211 
+2024-08-12 14:29:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL WITH MOIST 300ML Barcode #:4800047820557 
+2024-08-12 14:29:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ALCOHOL WITH MOIST 75ML Barcode #:601045861870 
+2024-08-12 14:29:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS ISOPROPYL ALCOHOL 70% 250ML Barcode #:287227 
+2024-08-12 14:30:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS SANITIZING GEL SPARKLING BERRY 60ML Barcode #:4800047865169 
+2024-08-12 14:31:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS SANITIZING GEL WITHMOISTURE 60ML Barcode #:4800047865008 
+2024-08-12 14:31:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS SOAP COOL MOUNTAIN 55G. Barcode #:4800047863158 
+2024-08-12 14:31:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN WTIH MOISTURE 70% 150ML Barcode #:434465 
+2024-08-12 14:32:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS SANITIZING GEL WITH MOISTURE 60ML Barcode #:4800047865008 
+2024-08-12 14:32:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS WITH MOISTURE 70% 250ML Barcode #:4800047820311 
+2024-08-12 14:32:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS WITH MOISTURE 70% 500ML Barcode #:4800047820182 
+2024-08-12 14:32:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREEN CROSS WITH MOISTURE 70% 60ML Barcode #:4800047820250 
+2024-08-12 14:33:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GIFT WRAP(ASSORTED) Barcode #:462530 
+2024-08-12 14:33:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DM CARBONARA SPAGHETTI SAUCE 200G Barcode #:4800024572523 
+2024-08-12 14:33:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GILLETE RUBIE BLADE 1BOX-OYT Barcode #:245201 
+2024-08-12 14:33:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GINEBRA SAN MIGUEL PREMIUM 750ML-NGM Barcode #:598125 
+2024-08-12 14:33:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GINEBRA SAN MIGUEL ROUND 350ML-NGM Barcode #:4800130100023 
+2024-08-12 14:53:07 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-12 15:26:06 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000020 Amount:₱ 405.00 
+2024-08-12 15:26:32 | Talkosoy Admin | 1 | 2 | Expense | Updated expense: ZONROX COLORSAFE 95ML, Amount: 405.00, Invoice#: 10-000000020 
+2024-08-12 15:26:56 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000021 Amount:₱ 387.25 
+2024-08-12 15:27:10 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000021 Supplier: GAISANO 
 2024-08-12 09:06:51 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-12 09:09:42 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
 2024-08-12 12:49:19 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 

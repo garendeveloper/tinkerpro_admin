@@ -560,6 +560,13 @@
             $cat_id = isset($data->cat_id) ? $data->cat_id : 0;
             $products->getVariantsData($cat_id);
             break;
+        case 'updateReset' :
+
+            $test_stat = isset($_GET['test_stat']) ? $_GET['test_stat'] : 0;
+            $stat_id = isset($_GET['stat_id']) ? $_GET['stat_id'] : null;
+
+            $dashboard->updateReset($stat_id, $test_stat);
+            break;
         case 'getProductsData':
             $products->getAllProducts();
             break;
