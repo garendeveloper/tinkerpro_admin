@@ -442,7 +442,7 @@ class BirFacade extends DBConnection {
                     'overAllDiscounts' => $refunded_map[$payment_id]['overAllDiscounts'] ?? 0,
                     'credits' => $refunded_map[$payment_id]['credits'] ?? 0,
                     'cartDiscount' => $refunded_map[$payment_id]['cartDiscount'] ?? 0,
-                    'customerDiscount' => $customerDis,
+                    // 'customerDiscount' => $customerDis,
                     'itemDiscount_refunded' => $refunded_map[$payment_id]['itemDiscount'] ?? 0,
                     'date_refunded' => $refunded_map[$payment_id]['date'] ?? 0,
                     'vatRef' => $refunded_map[$payment_id]['vat_amount'] ?? 0,
