@@ -1,3 +1,4 @@
+
 <script>
     $(document).ready(function () {
         var totalExpired = 0;
@@ -43,7 +44,23 @@
                 }   
             });
         }
+
+        function isReset() {
+            axios.get('api.php?action=getResetVal')
+                .then(function(response) {
+                    if (response.data) {
+                    //    $('#reloginModal').show();
+                    }
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        }
+
+       
+    isReset();
     setInterval(expiration, 2000);
     expiration();
+   
 });
 </script>
