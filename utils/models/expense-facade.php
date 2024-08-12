@@ -128,7 +128,7 @@ class ExpenseFacade extends DBConnection
                                                 WHEN expense_type = 'PURCHASED ORDER' THEN 'Cost of goods sold'
                                                 ELSE CONCAT(UCASE(SUBSTRING(expense_type, 1, 1)), LOWER(SUBSTRING(expense_type, 2)))
                                             END AS expense_type,
-                                            ROUND(SUM(taxable_amount), 2) AS expense_amount,
+                                            ROUND(SUM(total_amount), 2) AS expense_amount,
                                             ROUND(SUM(
                                                 CASE 
                                                     WHEN isTaxable = 1 THEN expenses.taxable_amount - expenses.total_amount
