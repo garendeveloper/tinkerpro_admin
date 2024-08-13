@@ -58,7 +58,7 @@ h4{
   text-align: center; 
 }
 </style>
-<div class="modal" id="lockscreen" tabindex="-1" aria-labelledby="lockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 1);    z-index: 9999;";>
+<div class="modal" id="lockscreen" tabindex="-1" aria-labelledby="lockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.8);    z-index: 9999;";>
   <div class="modal-dialog modal-dialog-centered" >
     <div class="modal-content modal-logout" style = "background: transparent">
       <div class="modal-header">

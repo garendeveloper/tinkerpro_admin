@@ -2,6 +2,9 @@ var toastDisplayed = false;
 $("#activity_logs").addClass('active');
 $("#pointer").html("Activity Logs");
 
+
+
+
 var initialApplicationValue = $("#application").val();
 function getPHTDateTime() 
 {
@@ -50,7 +53,7 @@ $('#downloadFile').on('click', function() {
   $(link).remove();
   window.URL.revokeObjectURL(url);
 
-  show_response(`File "${applicationType}.txt" has been downloaded. Check your Downloads folder.`, 1)
+  show_response(`File "${applicationType}.txt" has been downloaded. Check your Downloads folder.`, 1);
 });
 
 $("#btn_datePicker").off("click").on("click", function(){
@@ -74,8 +77,8 @@ function convertDateRange(dateRange)
     const startFormatted = formatDates(startDateStr);
     const endFormatted = formatDates(endDateStr);
     return `${startFormatted} - ${endFormatted}`;
-    }
-    $("#btn_datePeriodSelected").on("click", function(){
+}
+$("#btn_datePeriodSelected").on("click", function(){
     var date_selected = $("#date_selected").text();
     $("#date_range").val(date_selected);
     $("#period_reports").hide();
@@ -129,9 +132,7 @@ function show_response(message, type)
 $("#user").on("change", function(){
     var selectedDates = $('#datepicker').val();
     var selectedUser = $(this).val();
-
-      filterTable(selectedDates, selectedUser);
- 
+    filterTable(selectedDates, selectedUser);
 });
 $("#searchBtn").off("click").on("click", function(){
   var selectedDates = $('#datepicker').val();
@@ -242,35 +243,45 @@ function displayLogData(logText)
   var lines = logText.split('\n');
   var tableBody = $('#logTable tbody');
   tableBody.empty();
- 
-  lines.forEach(function(line) {
-      line = line.trim();
-      if (line) 
-      {
-          var columns = line.split('|');
-          if (columns.length >= 6) 
-          {
-            var role = columns[3].trim() || '';
-            var datetime = columns[0].trim() || '';
-            if(datetime !== '') datetime = formatDateToAMPM(datetime);
-            
-            if(role === "1") role = "Super Admin";
-            if(role === "2") role = "Admin";
-            if(role === "3") role = "Cashier";
 
-            var row = $('<tr>');
-            row.append($('<td style = "width: 15%; ">').text(datetime));
-            row.append($('<td style = "width: 15%">').text(columns[1].trim() || ''));
-            row.append($('<td style = "width: 10%">').text(role));
-            row.append($('<td style = "width: 15%">').text(columns[4].trim() || ''));
-            row.append($('<td style = "width: 50%">').text(columns[5].trim() || '')); 
+  if(lines.length > 1)
+  {
+    lines.forEach(function(line) {
+        line = line.trim();
+        if (line) 
+        {
+            var columns = line.split('|');
+            if (columns.length >= 6) 
+            {
+              var role = columns[3].trim() || '';
+              var datetime = columns[0].trim() || '';
+              if(datetime !== '') datetime = formatDateToAMPM(datetime);
+              
+              if(role === "1") role = "Super Admin";
+              if(role === "2") role = "Admin";
+              if(role === "3") role = "Cashier";
+  
+              var row = $('<tr>');
+              row.append($('<td style = "width: 15%; ">').text(datetime));
+              row.append($('<td style = "width: 15%">').text(columns[1].trim() || ''));
+              row.append($('<td style = "width: 10%">').text(role));
+              row.append($('<td style = "width: 15%">').text(columns[4].trim() || ''));
+              row.append($('<td style = "width: 50%">').text(columns[5].trim() || '')); 
+  
+              tableBody.prepend(row);
+            } else {
+                console.error('Line does not have enough columns:', line);
+            }
+        }
+    });
+  }
+  else
+  {
+    var row = $('<tr>');
+    row.append($('<td style = "width: 100%; text-align: center; font-size: 12px;" colspan = "5">No available logs.</td>'));
 
-            tableBody.prepend(row);
-          } else {
-              console.error('Line does not have enough columns:', line);
-          }
-      }
-  });
+    tableBody.prepend(row);
+  }
 }
 function formatDateToAMPM(datetimeString) 
 {
@@ -306,7 +317,6 @@ function fetchData(applicationValue)
             url: 'fetch-data/log_reader.php',
             dataType: 'text',
             success: function(data) {
-             
                 displayLogData(data); 
                 $('#modalCashPrint').hide();
             },
@@ -322,7 +332,6 @@ function fetchData(applicationValue)
             url: './assets/logs/logs.txt',
             dataType: 'text',
             success: function(data) {
-              console.log(data)
                 displayLogData(data); 
                 $('#modalCashPrint').hide();
             },
@@ -337,7 +346,21 @@ fetchData(initialApplicationValue);
 
 $("#application").on("change", function() {
     var applicationValue = $(this).val();
-    $("#datepicker").val("");
     $("#user").val();
     fetchData(applicationValue);
 });
+
+
+function formatDateToday(date) {
+    var day = String(date.getDate()).padStart(2, '0');
+    var month = String(date.getMonth() + 1).padStart(2, '0');
+    var year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+var today = new Date();
+var formattedDate = formatDateToday(today) + " - " + formatDateToday(today);
+
+var todayDate = convertDateRange(formattedDate);
+$("#datepicker").val(todayDate);
+$("#searchBtn").click();

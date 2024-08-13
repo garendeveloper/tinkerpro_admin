@@ -278,7 +278,7 @@ class ExpenseFacade extends DBConnection
         $isProductIDExist = isset($formdata['isProductIDExist']) && $formdata['isProductIDExist'] != 0;
         $landingCostValues = null;
         $isToggleLandingCost = isset($formdata['toggleLandingCost']) ? $landingCostValues = $formdata['landingCostValues'] : $landingCostValues = null;
-        $isToggleLandingCostValue = $isToggleLandingCost ? 1 : 0;
+        $isToggleLandingCostValue = $isToggleLandingCost != null ? 1 : 0;
          
         $response = [
             'success' => false,
@@ -381,7 +381,7 @@ class ExpenseFacade extends DBConnection
                         $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
                         $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
                         $sql->bindParam(16, $landingCostValues, PDO::PARAM_STR);
-                        $sql->bindParam(17, $isToggleLandingCost, PDO::PARAM_STR);
+                        $sql->bindParam(17, $isToggleLandingCostValue, PDO::PARAM_STR);
                         $sql->execute();
     
                         $response['message'] = "Expense has been successfully saved!";
@@ -424,7 +424,7 @@ class ExpenseFacade extends DBConnection
                         $sql->bindParam(14, $taxable_amount, PDO::PARAM_STR);
                         $sql->bindParam(15, $isTaxable, PDO::PARAM_STR);
                         $sql->bindParam(16, $landingCostValues, PDO::PARAM_STR);
-                        $sql->bindParam(17, $isToggleLandingCost, PDO::PARAM_STR);
+                        $sql->bindParam(17, $isToggleLandingCostValue, PDO::PARAM_STR);
                         $sql->bindParam(18, $id, PDO::PARAM_INT);
                         $sql->execute();
     

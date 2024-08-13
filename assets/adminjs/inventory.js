@@ -2286,7 +2286,7 @@
       $(document).click(function(event) {
         var $target = $(event.target);
 
-        if (!$target.closest('#optionModal, #btn_openOption, #purchaseQty_modal, #removeOrder, .removeItem, #show_purchasePrintModal, #unpaid_purchase_modal, .ui-autocomplete, .ui-autocomplete-input, #date_expired, .ui-datepicker-month, .ui-datepicker-year').length) {
+        if (!$target.closest('#optionModal, #btn_openOption, #purchaseQty_modal, #removeOrder, .removeItem, #show_purchasePrintModal, #unpaid_purchase_modal, .ui-autocomplete, .ui-autocomplete-input, #date_expired, .ui-datepicker-month, .ui-datepicker-year, #ui-datepicker-div, #date_expired, #unlockscreen, #lockscreen').length) {
             if ($('#optionModal').is(':visible')) {
                 hideModals();
             }

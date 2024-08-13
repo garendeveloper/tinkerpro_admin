@@ -293,10 +293,10 @@ class UserFacade extends DBConnection {
         } 
         else 
         {
-            $roleSql = $this->connect();
-            $sql = $roleSql->prepare("INSERT INTO role (role_name) VALUES (?)");
+            $pdo = $this->connect();
+            $sql = $pdo->prepare("INSERT INTO role (role_name) VALUES (?)");
             $sql->execute([$roleName]);
-            return $roleSql->lastInsertId();
+            return $pdo->lastInsertId();
         }
     }
     public function addNewUsers($formData)
