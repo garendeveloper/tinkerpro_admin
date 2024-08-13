@@ -12903,3 +12903,121 @@
 2024-08-12 17:09:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 24/7 ORNG 40G MENUDO Barcode #:677916542155 
 2024-08-12 17:09:52 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 12,000.00 
 2024-08-12 17:10:17 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: GAISANO 
+2024-08-13 16:11:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3L UBE-MACAPUNO-SEL Barcode #:4800086048721 
+2024-08-13 16:12:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3L UBE-MACAPUNO-SEL Barcode #:4800086048721 
+2024-08-13 16:14:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.4L CHOCO ALMOND FUDGE /COKIES &CREAM-SEL Barcode #:687147 
+2024-08-13 16:16:54 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 16:16:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 16:23:58 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 16:24:01 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 16:24:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER ORIGINAL SCENT 74G Barcode #:944981 
+2024-08-13 16:24:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER ORIGINAL SCENT 74G 1/2DZ Barcode #:31408 
+2024-08-13 16:24:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER ORIGINAL SCENT 74G 1DZ-OYT Barcode #:170125 
+2024-08-13 16:25:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN FANTASY 50G Barcode #:466344 
+2024-08-13 16:25:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN FANTASY 50G 1/2DZ Barcode #:933865 
+2024-08-13 16:25:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN FANTASY 50G 1DZ-OYT Barcode #:481170 
+2024-08-13 16:26:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN FANTASY 74G Barcode #:971994 
+2024-08-13 16:26:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN FANTASY 74G 1/2DZ Barcode #:4902430831338 
+2024-08-13 16:26:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN FANTASY 74G 1DZ-OYT Barcode #:225813 
+2024-08-13 16:27:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER GARDEN BLOOM 50G Barcode #:599956 
+2024-08-13 16:27:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER GARDEN BLOOM 50G 1/2DZ Barcode #:4902430831161 
+2024-08-13 16:27:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER GARDEN BLOOM 50G 1DZ Barcode #:85606 
+2024-08-13 16:27:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER GARDEN BLOOM 74G Barcode #:453242 
+2024-08-13 16:27:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER GARDEN BLOOM 74G 1/2DZ Barcode #:825023 
+2024-08-13 16:37:17 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 16:37:20 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 16:38:24 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 16:39:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1300ML DREAM AVOCADO-SEL Barcode #:4800086050212 
+2024-08-13 16:39:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1300ML BUKO PANDAN-SEL Barcode #:163590 
+2024-08-13 16:41:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1300ML DREAM AVOCADO-SEL Barcode #:4800086050212 
+2024-08-13 16:42:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1300ML BLACK FOREST SEL Barcode #:521038 
+2024-08-13 16:43:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1300ML BROWNIE-COKIE CRUMBLE-SEL Barcode #:813019 
+2024-08-13 16:43:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER GARDEN BLOOM 74G 1/2DZ Barcode #:760040 
+2024-08-13 16:44:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Deleted SELECTA 1300ML BRWNIE-CCMBL-SEL Barcode #:280739 
+2024-08-13 16:45:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1300ML MANGO-MOCHI-SEL Barcode #:839375 
+2024-08-13 16:48:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1300ML CHOCO HAZELNUT-SEL Barcode #:764951 
+2024-08-13 16:48:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1300ML MANGO FLOAT-SEL Barcode #:158654 
+2024-08-13 16:52:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1500ML BLACK FOREST-SEL Barcode #:619732 
+2024-08-13 16:53:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1500ML COKIES &CREAM -COKIE CRUMBLE-SEL Barcode #:449226 
+2024-08-13 16:56:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 16:57:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3 BIRTHDAY ESPESYAL DOUBLE DUTCH Barcode #:8273499 
+2024-08-13 16:57:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3L BIRTHDAY ESPESYAL ROCKY ROAD Barcode #:616439 
+2024-08-13 16:59:06 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 16:59:10 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 17:01:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF FABRIC SPRING BREEZE 1DZ Barcode #:352081 
+2024-08-13 17:01:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF FABRIC SPRING BREEZE 28ML Barcode #:969246 
+2024-08-13 17:07:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1500ML QUEZO REAL SEL Barcode #:910238 
+2024-08-13 17:07:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Deleted SELECTA 1500ML QUEZO REAL SEL Barcode #:910238 
+2024-08-13 17:10:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1L CHOCO-MANGO-UBE-SEL Barcode #:823183 
+2024-08-13 17:11:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1L CHOCO NUT-UBE-PAN-SEL Barcode #:799543 
+2024-08-13 17:11:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML ALMOND FUDGE-SEL Barcode #:950944 
+2024-08-13 17:12:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML DREAM AVOCADO-SEL Barcode #:158386 
+2024-08-13 17:12:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML BLACK FOREST-SEL Barcode #:232902 
+2024-08-13 17:12:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML COKIE CRUMBLE-SEL Barcode #:338413 
+2024-08-13 17:12:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML COOKIES&CREAM-SEL Barcode #:543537 
+2024-08-13 17:13:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML DOUBLE DUTCH-SEL Barcode #:696194 
+2024-08-13 17:13:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML MANGO GRAHAM CAKE-SEL Barcode #:378431 
+2024-08-13 17:14:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML MANGO FLOAT-SEL Barcode #:104696 
+2024-08-13 17:15:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML TABLEA FUDGE-SEL Barcode #:315971 
+2024-08-13 17:15:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML BOOM2X COKIES&CREAM Barcode #:447851 
+2024-08-13 17:16:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML BOOM2X COKIES&CREAM 24X110ML-SEL Barcode #:175603 
+2024-08-13 17:17:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML BOOM2X COFFEE COOKIES Barcode #:776364 
+2024-08-13 17:17:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML BOOM2X COFFEE COOKIES Barcode #:776364 
+2024-08-13 17:18:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML COKIES &CREAM-SEL Barcode #:494875 
+2024-08-13 17:18:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TEMPURA SHRIMP FLAVOURED 1PACK Barcode #:796841 
+2024-08-13 17:18:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML CHOCO MALLOW Barcode #:680358 
+2024-08-13 17:18:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML BLACK FOREST-SEL Barcode #:663374 
+2024-08-13 17:18:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML BUKO PANDAN-SEL Barcode #:30219 
+2024-08-13 17:20:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML BUKO PANDAN-MANGO FLOAT-SEL Barcode #:972533 
+2024-08-13 17:21:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML BROWNIE-COOKIE CRUMBLE-SEL Barcode #:447239 
+2024-08-13 17:21:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML COOKIES &CREAM-SEL Barcode #:494875 
+2024-08-13 17:21:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML BOOM2X COOKIES&CREAM 24X110ML-SEL Barcode #:175603 
+2024-08-13 17:21:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 60ML BOOM2X COOKIES&CREAM Barcode #:447851 
+2024-08-13 17:21:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 450ML COOKIE CRUMBLE-SEL Barcode #:338413 
+2024-08-13 17:22:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1500ML COOKIES &CREAM -COKIE CRUMBLE-SEL Barcode #:449226 
+2024-08-13 17:22:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.4L CHOCO ALMOND FUDGE /COOKIES &CREAM-SEL Barcode #:687147 
+2024-08-13 17:22:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3L ROCKY ROAD-COOKIES & CREAM-SEL Barcode #:4800086049742 
+2024-08-13 17:22:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3L DOUBLE DUTCH -COOKIES & CREAM-SEL Barcode #:191516 
+2024-08-13 17:22:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3L CHOCO MALLOWS-COOKIES & CREAM-SEL Barcode #:251839 
+2024-08-13 17:22:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3 BIRTH. ESPESYAL COOKIES & CREAM Barcode #:8273475 
+2024-08-13 17:24:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML COOKIES&CREAM-COOKIE/CRUMBLE-SEL Barcode #:51583 
+2024-08-13 17:24:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML CHOCO ALMOND FUDGE Barcode #:895434 
+2024-08-13 17:25:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML COFEE CRUMBLE-SEL Barcode #:374706 
+2024-08-13 17:25:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR LEMON & KALAMANSI 130G-OYT Barcode #:984724 
+2024-08-13 17:25:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR LEMON & KALAMANSI 380G-OYT Barcode #:557976 
+2024-08-13 17:25:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML COOKIES&CREAM]-COFFEE/CRUMBLE-SEL Barcode #:51583 
+2024-08-13 17:25:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML COOKIES&CREAM-COFFEE/CRUMBLE-SEL Barcode #:51583 
+2024-08-13 17:27:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML COCO-MANGO-MOCHI-SEL Barcode #:51143 
+2024-08-13 17:28:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN GARDE BLOOM 74G 1DZ Barcode #:586162 
+2024-08-13 17:28:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML COOKIES&CREAM-SEL Barcode #:171418 
+2024-08-13 17:28:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML DOUBLE DUTCH-C&C-SEL Barcode #:334858 
+2024-08-13 17:29:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML DOUBLE DUTCH-ROCKY ROAD-SEL Barcode #:398183 
+2024-08-13 17:29:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER GARDEN BLOOM 74G 1DZ-OYT Barcode #:662306 
+2024-08-13 17:29:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN GARDEN BLOOM 74G 1DZ Barcode #:586162 
+2024-08-13 17:29:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML DOUBLE DUTCH-SEL Barcode #:99740 
+2024-08-13 17:29:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 50G Barcode #:335567 
+2024-08-13 17:30:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML ROCKY ROAD -COFFEE &CRUMBLE-SEL Barcode #:874241 
+2024-08-13 17:30:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 50G 1/2DZ Barcode #:881526 
+2024-08-13 17:30:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML ROCKY ROAD -COOKIES AND CREAM-SEL Barcode #:874241 
+2024-08-13 17:31:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 50G 1DZ-OYT Barcode #:518695 
+2024-08-13 17:31:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA CUPS COOKIES CREAM 100ML Barcode #:822254 
+2024-08-13 17:31:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 80G Barcode #:270858 
+2024-08-13 17:31:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA CUPS DOUBLE DUTCH Barcode #:603678 
+2024-08-13 17:31:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 80G 1/2DZ Barcode #:756398 
+2024-08-13 17:31:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA PINEAPPLE SLICE 70ML Barcode #:568401 
+2024-08-13 17:31:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 80G 1DZ-OYT Barcode #:271619 
+2024-08-13 17:32:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN ORIGINAL 50G Barcode #:460940 
+2024-08-13 17:32:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN ORIGINAL 1/2DZ Barcode #:490662 
+2024-08-13 17:32:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN ORIGINAL 50G 1DZ-OYT Barcode #:657380 
+2024-08-13 17:33:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN ORIGINAL 80G Barcode #:388716 
+2024-08-13 17:33:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN ORIGINAL 80G 1/2DZ Barcode #:88900 
+2024-08-13 17:33:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN ORIGINAL 80G 1DZ-OYT Barcode #:629645 
+2024-08-13 17:38:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 50G 1/2DZ Barcode #:881526 
+2024-08-13 17:39:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAGNOLIA HEALTH TEA STRAWBERRY 250ml. Barcode #:779102 
+2024-08-13 17:43:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAX STAPLE WIRE #10 Barcode #:754976 
+2024-08-13 17:43:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SISTERS PANTYLINERS N/USE 20S Barcode #:248385 
+2024-08-13 17:49:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SAN MIG SUGAR FREE ORIG 7GX10S Barcode #:4806513740855 
+2024-08-13 17:52:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 750ML CHOCO HAZELNUT-SEL Barcode #:322269 
+2024-08-13 17:53:15 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 17:53:30 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 18:01:20 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 

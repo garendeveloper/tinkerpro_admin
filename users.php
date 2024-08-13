@@ -558,7 +558,7 @@ function selectedRole(id) {
   $(document).on("click", "#recentusers tbody tr", function(e){
     e.preventDefault();
     $(this).siblings().removeClass('highlighteds');
-    $(this).closest('tr').toggleClass('highlighteds')
+    $(this).closest('tr').addClass('highlighteds')
   })
 
  

@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+  var currentRow = "";
   $("#date_range").click(function (e) {
       e.preventDefault();
       $("#period_reports").fadeIn(200);
@@ -169,6 +170,7 @@ $(document).ready(function()
   })
   $("#responsive-data").on("dblclick", ".tbl_rows", function() {
     createExpense();
+    currentRow = $(this);
     var expense_id = $(this).data("id");
     var product_id = $(this).data('product_id');
     $("#add_expense_modal").find(".modalHeaderTxt").html("Edit Expense");
@@ -289,6 +291,10 @@ $(document).ready(function()
       
       return valuesObject;
   }
+  function removeCommas(str) 
+  {
+    return str.replace(/,/g, '');
+  }
   $("#expense_form").on("submit", function(e){
     e.preventDefault();
     var errorCount = $('#expense_form td.form-error').length;
@@ -329,28 +335,48 @@ $(document).ready(function()
               });
               $("#expense_errorMessages").html(errors)
           } else {
-            $("#expense_form")[0].reset();
-            $("#isProductIDExist").val("0");
-            $("table td").removeClass('form-error');
-            show_sweetReponse(response.message);
             hide_modal();
-            show_allExpenses();
-
-            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            var firstName = userInfo.firstName;
-            var lastName = userInfo.lastName;
-            var cid = userInfo.userId;
-            var role_id = userInfo.roleId; 
-
-            if(expense_id !== "" && expense_id !== "0")
+            show_sweetReponse(response.message);
+            if(expense_id != "")
             {
+              var dateValue = $("#date_of_transaction").val();
+              var formattedDate = moment(dateValue).format('YYYY-MM-DD');
+
+              currentRow.find("td").eq(1).text($("#item_name").val());
+              currentRow.find("td").eq(2).text(formattedDate);
+              currentRow.find("td").eq(3).text($("#billable_receipt_no").val());
+              currentRow.find("td").eq(4).text($("#expense_type").val());
+              currentRow.find("td").eq(5).text($("#uomType").val());
+              currentRow.find("td").eq(6).text($("#supplier").val());
+              currentRow.find("td").eq(7).text($("#invoice_number").val());
+              currentRow.find("td").eq(8).text($("#quantity").val());
+              currentRow.find("td").eq(9).text($("#price").val());
+              currentRow.find("td").eq(10).text($("#discount").val());
+              currentRow.find("td").eq(11).text($("#vatable_amount").val());
+              if($("#toggleLandingCost").is(":checked"))
+              {
+                var landingCost = parseFloat(removeCommas($("#totalLandingCost").val()));
+                var vatable_amount = parseFloat(removeCommas($("#vatable_amount").val()));
+                var totalLandingCost = landingCost - vatable_amount;
+                currentRow.find("td").eq(12).text(addCommasToNumber(totalLandingCost.toFixed(2)));
+                recalculateTotal();
+              }
+              else
+              {
+                currentRow.find("td").eq(12).text("0.00");
+              }
+              
               insertLogs('Expense', "Updated expense: "+expense + ", Amount: "+total_amount + ", Invoice#: "+invoice_number)
             }
             else
             {
-              insertLogs('Expense', "Created expense: "+expense + ", Amount: "+total_amount + ", Invoice#: "+invoice_number)
+              insertLogs('Expense', "Created expense: "+expense + ", Amount: "+total_amount + ", Invoice#: "+invoice_number);
+              show_allExpenses();
             }
-
+            $("#expense_form")[0].reset();
+            $("#isProductIDExist").val("0");
+            $("table td").removeClass('form-error');
+          
           }
         },
         error: function(e){
@@ -359,6 +385,60 @@ $(document).ready(function()
       })
     }
   })
+  function recalculateTotal()
+  {
+    var totalQty = 0;
+    var totalPrice = 0;
+    var totalDiscount = 0;
+    var subtotal = 0;
+    var totalLandedCost = 0;
+    var itemCount = $('#responsive-data #tbl_expenses tbody .tbl_rows').length;
+    $('#tbl_expenses tbody tr').each(function() {
+        var tq = removeCommas($(this).find('td:eq(8)').text().trim());
+        tq = parseFloat(tq);
+        if (!isNaN(tq)) 
+        {
+            totalQty += tq;
+        }
+
+        var tp = removeCommas($(this).find('td:eq(9)').text().trim());
+        tp = parseFloat(tp);
+        if (!isNaN(tp)) 
+        {
+            totalPrice += tp;
+        } 
+
+        var td = removeCommas($(this).find('td:eq(10)').text().trim());
+        td = parseFloat(td);
+        if (!isNaN(td)) 
+        {
+            totalDiscount += td;
+        }
+
+        var ot = removeCommas($(this).find('td:eq(11)').text().trim());
+        ot = parseFloat(ot);
+        if (!isNaN(ot)) 
+        {
+            subtotal += ot;
+        }
+
+        var lc = removeCommas($(this).find('td:eq(12)').text().trim());
+        lc = parseFloat(lc);
+        if (!isNaN(ot)) 
+        {
+            totalLandedCost += lc;
+        }
+    });
+  
+    var total = subtotal + totalLandedCost;
+
+    $('#total_items').text(numberWithCommas(itemCount));
+    $('.totalQty').text(numberWithCommas(totalQty.toFixed(2)));
+    $('.totalPrice').text(numberWithCommas(totalPrice.toFixed(2)));
+    $('.totalDiscount').text(numberWithCommas(totalDiscount.toFixed(2)));
+    $('.totalLandedCost').text(numberWithCommas(totalLandedCost.toFixed(2)));
+    $('.overallTotal').text(numberWithCommas(total.toFixed(2)));
+  }
   $(".continue_deleteExpense").off("click").on("click", function(){
     $.ajax({
       type: 'get',

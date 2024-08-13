@@ -791,12 +791,7 @@ function addUsers()
             axios.post('api.php?action=addUsersData', formData)
              .then(function(response) { 
                 if(response.data.success) {
-                    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                    var firstName = userInfo.firstName;
-                    var lastName = userInfo.lastName;
-                    var cid = userInfo.userId;
-                    var role_id = userInfo.roleId; 
-                    insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Added' + ' ' + firstname + ' '+ lastname);
+                    insertLogs('Users', 'Added' + ' ' + firstname + ' '+ lastname);
                     refreshTable()
                     closeAddUserModal()
                     showResponse("User added successfully", 1);
