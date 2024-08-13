@@ -931,6 +931,7 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
               clearTimeout(timer);
               timer = setTimeout(function() {
                   lockScreen.show(); 
+                  disableRefresh();
               }, 300000); 
           }
           $(window).on('mousemove keypress click scroll', resetTimer);
@@ -956,20 +957,23 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
      
       $(".continueT").off("click").on("click", function(){
         $('#lockscreen').hide();
-        window.location.href = "logout.php";
-        var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        var firstName = userInfo.firstName;
-        var lastName = userInfo.lastName;
-        var cid = userInfo.userId;
-        var role_id = userInfo.roleId; 
-
-        insertLogs('Logout', 'User' + ' '+ firstName + ' ' + lastName + ' ' + role_id )
-        localStorage.removeItem('userInfo')
+        $(".continue_logout").click();
       })
   });
   $(document).on("click", "#unlockscreen #btnCancelUnlock",function(){
     $("#unlockscreen").hide();
   })
+  function disableRefresh()
+  {
+    $(document).on("keydown", function(event){
+      if (event.keyCode === 116) {
+            event.preventDefault();
+        }
+        if (event.ctrlKey && (event.keyCode === 82 || event.keyCode === 116)) {
+            event.preventDefault();
+        }
+    })
+  }
   function handleUnlock() {
     var unlockPasswordTxt = $("#unlockPasswordTxt").val();
     if (unlockPasswordTxt.trim() !== "") {
@@ -1003,11 +1007,12 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
   $(document).on("click", "#unlockscreen #btnContinueUnlock", function() {
     handleUnlock();
   });
-
+ 
   $(document).on("keydown", "#unlockPasswordTxt", function(event) {
     if (event.key === "Enter") {
       event.preventDefault();
       handleUnlock();
     }
+   
   });
 </script>

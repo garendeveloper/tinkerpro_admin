@@ -233,7 +233,7 @@ td[contenteditable="true"]:focus {
             </span>
         </div>
         <form class = "priceListForm">
-          <input type="hidden" name = "priceList_id" class = "priceList_id">
+          <input type="hidden" name = "priceList_id" class = "priceList_id" value = "">
           <div class="modal-body" style = "padding: 10px;">
             <div class="row">
               <div class="col-md-12">
@@ -263,51 +263,10 @@ td[contenteditable="true"]:focus {
             </div>
             <div class="row">
               <div class="col-md-12" style = "padding: 10px; bottom: 0px;">
-                  <button class = "button submitPriceList" type = "submit" style = "width: 100%; height: 30px; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;">UPDATE</button>
+                  <button class = "button submitPriceList" type = "submit" style = "width: 100%; height: 30px; background-color: var(--primary-color); border-radius: 5px; margin-bottom:5px;"></button>
               </div>
             </div>
         </div>
       </form>
     </div>
 </div>
-<script>
-  function save_priceList()
-  {
-    $.ajax({
-      type: 'post',
-      url: 'api.php?action=save_priceList',
-      data: $(".priceListForm").serialize(),
-      success: function(response)
-      {
-        if(!response.status)
-        {
-          $.each(response, function(key, error){
-            $("#"+key).addClass('has-error');
-          })
-        }
-        else
-        {
-          $("#priceListModal").fadeOut(100);
-          $
-        }
-      }
-    })
-  }
-  function resetPriceListForm()
-  {
-    $("#priceListModal input").val("");
-    $("#priceListModal *").removeClass('has-error');
-  }
-  function validatePriceListForm()
-  {
-    var pricelist = $("#priceListName").val().trim() !== "";
-    var priceAdjustment = $("#priceAdjustment").val().trim() !== "";
-    if(pricelist && priceAdjustment) return true;
-  }
-  $("#priceListModal").on("keydown", function(e)
-  {
-    e.preventDefault();
-    alert(validatePriceListForm())
-    console.log(validatePriceListForm())
-  })
-</script>

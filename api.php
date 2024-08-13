@@ -106,6 +106,12 @@
         case 'save_promotion':
             echo json_encode($promotionFacade->save($_POST));
             break;
+        case 'get_allPriceList':
+            echo json_encode($promotionFacade->get_allPriceList());
+            break;
+        case 'save_priceList':
+            echo json_encode($promotionFacade->save_priceList($_POST));
+            break;
         case 'addUsersData': 
             $formData = $_POST;
             $result = $userFacade->addNewUsers($formData);

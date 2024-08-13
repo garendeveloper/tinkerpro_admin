@@ -269,7 +269,7 @@ select::-webkit-scrollbar-thumb {
                       <h6 class = "text-custom">Select Date</h6>
                       <div class="custom-select">
                         <a  href="#"  class="custom-input mt-1" id="btn_datePicker" >
-                            <input readonly type="text" id="datepicker" style="padding-left: 35px; background: transparent !important; border-radius: 10px; text-align: center; height: 35px; border: 1px solid var(--border-color) !important;">
+                            <input readonly type="text" placeholder="Select Date" id="datepicker" style="padding-left: 35px; background: transparent !important; border-radius: 10px; text-align: center; height: 35px; border: 1px solid var(--border-color) !important;">
                             <svg class="calendar-icon" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

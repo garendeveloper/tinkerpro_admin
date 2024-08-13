@@ -245,4 +245,43 @@ class PromotionFacade extends DBConnection
 
         return $hasData;
     }
+    public function get_allPriceList()
+    {
+        $stmt = $this->connect()->prepare("SELECT * FROM pricelist ORDER BY id ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function verify_priceList($pricelist_name)
+    {
+        $sql = $this->connect()->prepare("SELECT * FROM pricelist WHERE price_list_name = ?");
+        $sql->execute([$pricelist_name]);
+        return $sql->rowCount() > 0;
+    }
+    public function save_priceList($formData)
+    {
+        $pricelist_name = $formData['priceListName'];
+        $rule = $formData['rule'];
+        $type = $formData['type'];
+        $priceAdjustment = $formData['priceAdjustment'];
+
+        $priceList_id = $formData['priceList_id'];
+        if(isset($priceList_id) && !empty($priceList_id))
+        {
+            $stmt = $this->connect()->prepare("UPDATE pricelist SET price_list_name = ?, rule = ?, type = ?, adjustment = ? WHERE id = ?");
+            $stmt->execute([$pricelist_name, $rule, $type, $priceAdjustment, $priceList_id]);
+            return [
+                'success'=>true,
+                'message'=>'Price List has been updated successfully.'
+            ];
+        }
+        else
+        {
+            $stmt = $this->connect()->prepare("INSERT INTO pricelist (price_list_name, rule, type, adjustment) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$pricelist_name, $rule, $type, $priceAdjustment]);
+            return [
+                'success'=>true,
+                'message'=>'Price List has been added successfully.'
+            ];
+        }
+    }
 }

@@ -588,7 +588,7 @@
         });
         $('#tbl_receivedItems tbody').on('click', 'td:nth-child(5)', function () {
             var currentText = $(this).text();
-            var input = $('<input type="text" placeholder = "Date Expired" style = "width: 90px; height: 20px;">');
+            var input = $('<input type="text" id = "date_expired" placeholder = "Date Expired" style = "width: 90px; height: 20px;">');
             $(this).empty().append(input);
             input.datepicker({
                 changeMonth: true,

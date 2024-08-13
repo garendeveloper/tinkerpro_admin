@@ -151,6 +151,96 @@ if (isset($_SESSION['user_id'])) {
     .active-row{
         background-color: var(--primary-color);
     }
+
+    
+#responsive-data thead th,
+    #responsive-data tbody td {
+      padding: 6px 6px; 
+      height: auto; 
+      line-height: 0.5; 
+      border: 1px solid #10253F;
+      color: #ffff;
+  }
+  #responsive-data{
+    width: 100%;
+  }
+  #responsive-data thead {
+      display: table; 
+      width: calc(100% - 4px);
+  }
+
+  #responsive-data tbody {
+      display: block; 
+      max-height: 76vh; 
+      overflow-y: scroll;
+  }
+
+  #responsive-data th, td {
+      width: 9%;
+      overflow-wrap: break-word; 
+      box-sizing: border-box;
+      font-size: 13px;
+  }
+  #responsive-data tr {
+      display: table;
+      width: 100%;
+  }
+  #responsive-data, table,  tbody{
+    border: 1px solid #10253F;
+  }
+  #responsive-data table{
+      background-color: #10253F;
+   
+      height: 5px;
+      padding: 10px 10px;
+  }
+  #responsive-data tbody::-webkit-scrollbar {
+    width: 4px; 
+}
+#responsive-data tbody::-webkit-scrollbar-track {
+    background: #151515;
+}
+#responsive-data tbody::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 50px; 
+}
+ .main-panel, .container-scroller, .card, .card-body, .content-wrapper{
+  overflow: hidden !important;
+ }
+ .child-a{
+  width: 3% !important;
+ }
+ .child-b{
+  width: 12% !important;
+ }
+ .child-c{
+  width: 5% !important;
+ }
+ .child-d{
+  width: 5% !important;
+ }
+ .child-e{
+  width: 5% !important;
+ }
+ .child-f{
+  width: 5% !important;
+ }
+ .child-g{
+  width: 5% !important;
+ }
+ .child-h{
+  width: 3% !important;
+ }
+ .adminTableHead th{
+  font-weight: bold !important;
+  font-size: 12px !important;
+  line-height: 18px !important;
+ }
+ .adminTableHead tbody td{
+  padding-left: 10px !important;
+ }
+
+
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -205,9 +295,19 @@ if (isset($_SESSION['user_id'])) {
                             </button>
                         </div>
                     </div>
-                    <div class = "scrollable" style = "overflow-y:auto; height: 80vh">
-                        <table id = "tbl_promotions" >
-                      
+                    <div class = "scrollable" id = "responsive-data" style = "overflow-y:auto; height: 80vh; margin-top: 10px;">
+                        <table id = "tbl_allPriceLists" >
+                            <thead class = "adminTableHead">
+                                <tr>
+                                    <th class = "child-a">No</th>
+                                    <th class = "child-b">Price List</th>
+                                    <th class = "child-c">Rule</th>
+                                    <th class = "child-d">Type</th>
+                                    <th class = "child-e text-center">Adjustment</th>
+                                    <th class = "child-f text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
                        </table>
                     </div>
                 </div>
@@ -218,7 +318,6 @@ if (isset($_SESSION['user_id'])) {
   </div>
 
 <?php 
-
     include("layout/footer.php");
     include("modals/priceListModal.php")
 ?>
@@ -230,14 +329,9 @@ if (isset($_SESSION['user_id'])) {
  $("#price_list").addClass('active');
  $("#pointer").html("Price List");
 
-
- 
-
-
  $(document).ready(function() {
     $('.search_product').focus();
     var isClick = false;
-
 
     $('.search_product').on('input', function() {
         if ($(this).val() != '') {
@@ -261,12 +355,14 @@ if (isset($_SESSION['user_id'])) {
 
 
     $('#addPromotion').on('click', function() {
-        $('#priceListModal').fadeIn();
+        $('#priceListModal').fadeIn(100);
+        $(".submitPriceList").text("ADD");
         $(".promo-error").html("");
+        $("#priceListName").focus();
     });
 
     $('.closeModalPromotion').click(function() {
-        $('#priceListModal').fadeOut();
+        $('#priceListModal').fadeOut(100);
     });
  })
 
@@ -402,445 +498,151 @@ if (isset($_SESSION['user_id'])) {
     .form-error{
         border: 2px solid red;
     }
+    .highlight{
+        background-color: var(--primary-color) !important;
+        color: white;
+    }
+    .highlight:hover{
+        background-color: var(--primary-color) !important;
+        color: white;
+    }
+    #tbl_allPriceLists tbody tr:hover{
+        background-color: #333333;
+    }
 </style>
 
-
 <script>
-
-    var promoType = 0;
-
-    $("#btn_datePeriodSelected").on('click',function(){
-      var date_period_selected = $("#date_selected").text();
-      var promotion_type = $(".promotion_type").val();
-      if(promotion_type == 1) $("#date_picker_buy1").val(date_period_selected);
-      if(promotion_type == 2) $("#date_picker_bundle").val(date_period_selected);
-      if(promotion_type == 3) $("#date_picker_wholeSale").val(date_period_selected);
-      if(promotion_type == 4) $("#date_picker_promo").val(date_period_selected);
-      if(promotion_type == 5) $("#date_picker_stampCard").val(date_period_selected);
-      $("#dateTimeModal").fadeOut(200);
-    //   show_promotionByType(promotion_type);
+    var currentRow = "";
+    var id = "";
+    var pricelist = "";
+    var rule = "";
+    var type = "";
+    $(document).ready(function(e){
+        show_allPriceList();
     })
-   
-      $('.promotionType').off('click').on('click', function() {
-        $('.search_product').prop('disabled', false)
-        var id = $(this).data('id');
-    
-        promoType = id;
-        $(".promotion_type").val(id);
-        $("._promotionType").val(id);
-        $('.promotionType').removeClass('selected-promo').css('border-color', 'var(--border-color)');
-        $('.titleBtn').css('color', '#757575');
-        $('.promoLabel').css('color', '#757575');
-
-        $(this).addClass('selected-promo').css('border-color', 'transparent');
-        $(this).find('.titleBtn').css('color', 'var(--primary-color)');
-        $(this).find('.promoLabel').css('color', '#fff');
-
-        show_promotionByType(id)
-    });
-    function reset_form()
-    {
-        $(".promotion_id").val("");
-        $(".product_id").val("");
-        $(".promotionForm input").val("");
-        $("body").find(".error-highlight").removeClass("error-highlight");
-        $("#tbl_bundled tbody").html("");
-    }
-    function open_modal(product_name, product_id, barcode)
-    {
-        reset_form();
-        var promotion_type = $(".promotion_type").val();
-        $("._promotionType").val(promotion_type);
-        $(".submitPromotion").text("ADD");
-        if(promotion_type === "0") show_response("Please choose a promotion type!");
-        if(promotion_type === "1")
-        {
-            $(".qty").val("1");
-            $("#buy1Take1Modal").show();
-            $("#buy1Take1Modal #newprice").focus();
-        }
-        if(promotion_type === "2") $("#promotionModal").show();
-        if(promotion_type === "3") {
-            $(".w-barcode").val(barcode);
-            $("#wholesaleModal").show();
-        }
-        if(promotion_type === "4") {
-            $(".w-barcode").val(barcode);
-            $("#pointPromoModal").show();
-        }
-
-        $(".appQty").focus();
-        $(".product_name").html(product_name);
-        $(".product_id").val(product_id);
-    }
-    $(".promotionForm").on("submit", function(e){
+    $(document).on("click", "#tbl_allPriceLists tbody tr", function(e){
         e.preventDefault();
-        var type = $("._promotionType").val();
-        var promo_datePeriod = "";
-        if(type == 1) promo_datePeriod = $("#date_picker_buy1").val();
-        if(type == 2) promo_datePeriod = $("#date_picker_bundle").val();
-        if(type == 3) promo_datePeriod = $("#date_picker_wholeSale").val();
-        if(type == 4) promo_datePeriod = $("#date_picker_promo").val();
-        if(type == 5) promo_datePeriod = $("#date_picker_stampCard").val();
-
-        var formData = $(this).serialize();
-        var tbl_data = [];
-        $("#tbl_bundled tbody tr").each(function () {
-            var rowData = {};
-            rowData['product_id'] = $(this).data('id');
-            rowData['product_name'] = $(this).find("td:nth-child(1)").text().trim();
-            rowData['qty'] = $(this).find("td:nth-child(2)").text().trim();
-            tbl_data.push(rowData);
-        })
-    
-        $.ajax({
-            type: 'post',
-            url: 'api.php?action=save_promotion',
-            data: {
-                formData: formData,
-                promo_datePeriod: promo_datePeriod,
-                bundledData: JSON.stringify(tbl_data),
-            },
-            success: function(response)
-            {
-                if(response.success !== 405)
-                {
-                    if (!response.success) 
-                    {
-                        $.each(response.errors, function(key, error) {
-                            $('.promotionForm #' + key + '').addClass("error-highlight");
-                        });
-                    }
-                    else
-                    {
-                        reset_form();
-                        show_promotionByType(promoType);
-                        $('.modal').fadeOut(300);
-                        show_response(response.message, 1);
-                    }
-                }
-                else show_response(response.message, 2);
-            },
-            error: function(error)
-            {
-                console.log("error");
-            }
-        })
+        $(this).siblings().removeClass('highlight');
+        $(this).addClass('highlight');
     })
-    
-    function show_promotionByType(type)
+    $(".search_product").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#tbl_allPriceLists tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    function editPriceList(currentRow)
+    {   
+        $(".submitPriceList").html("UPDATE");
+        $("#priceListName").focus();
+        id = currentRow.data('id');
+        pricelist = currentRow.find("td").eq(1).text();
+        rule = currentRow.find("td").eq(2).text();
+        type = currentRow.find("td").eq(3).text();
+        adjustment = currentRow.find("td").eq(4).text();
+ 
+        $("#priceListModal").fadeIn(100);
+        $(".priceListForm").find(".priceList_id").val(id);
+        $(".priceListForm").find("#priceListName").val(pricelist);
+        $(".priceListForm").find("#rule").val(rule);
+        $(".priceListForm").find("#type").val(type);
+        $(".priceListForm").find("#priceAdjustment").val(adjustment);
+    }
+    $(".priceListForm").on("submit", function(e){
+        e.preventDefault();
+        save_priceList();
+    })
+    $(document).on("dblclick", "#tbl_allPriceLists tbody tr", function(e){
+        e.preventDefault();
+        currentRow = $(this);
+        editPriceList(currentRow);
+    });
+    $(document).on("click", "#tbl_allPriceLists tbody tr .editItem", function(e){
+        e.preventDefault();
+        currentRow = $(this).closest("tr");
+        editPriceList(currentRow);
+    });
+    function show_allPriceList()
     {
-        var date_selected_by_type = "";
-        // if(type == 1) date_selected_by_type = $("#date_picker_buy1").val();
-        // if(type == 2) date_selected_by_type = $("#date_picker_bundle").val();
-        // if(type == 3) date_selected_by_type = $("#date_picker_wholeSale").val();
-        // if(type == 4) date_selected_by_type = $("#date_picker_promo").val();
-        // if(type == 5) date_selected_by_type = $("#date_picker_stampCard").val();
-
-        $("#tbl_promotions").html("");
         $.ajax({
             type: 'get',
-            url: 'api.php?action=get_allPromotions',
-            success: function(data)
+            url: 'api.php?action=get_allPriceList',
+            success: function(response)
             {
                 var html = "";
-                switch(type)
-                {
-                    case 1:
-                        html = " <thead>";
-                        html += "<tr>";
-                        html += "<th>SN</th>";
-                        html += "<th>PRODUCTS</th>";
-                        html += "<th>BARCODE</th>";
-                        html += "<th style = 'text-align: right'>APPLY TO QTY</th>";
-                        html += "<th style = 'text-align: right'>PRICE</th>"
-                        html += "<th style = 'text-align: center; width: 1%;'>ACTION</th>"
-                        html += "</tr>";
-                        html += "</thead>";
-                        for(var i = 0; i<data.length; i++)
-                        {
-                            if(data[i].promotion_type === 1)
-                            {
-                                html += "<tr data-product_id = "+data[i].product_id+" ondblclick = 'editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")'>";
-                                html += "<td>"+data[i].sku+"</td>";
-                                html += "<td>"+data[i].prod_desc+"</td>";
-                                html += "<td>"+data[i].promotion_barcode+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].qty+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].newprice+"</td>";
-                                html += "<td style = 'text-align: center;'><i class='bi bi-pencil-square edit' onclick='editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")' data-id = "+data[i].promotion_id+"></i>&nbsp;<i class='bi bi-trash3 delete' onclick='deleteItem("+data[i].promotion_id+", "+data[i].promotion_type+")' data-id="+data[i].promotion_id+" ></i></td>";
-                                html += "</tr>";   
-                            }
-                        }
-                        break;
-                    case 2:
-                        html = " <thead>";
-                        html += "<tr>";
-                        html += "<th>SN</th>";
-                        html += "<th>PRODUCTS</th>";
-                        html += "<th>BARCODE</th>";
-                        html += "<th style = 'text-align: right'>APPLY TO QTY</th>";
-                        html += "<th style = 'text-align: right'>PRICE</th>"
-                        html += "<th style = 'text-align: center; width: 1%;'>ACTION</th>"
-                        html += "</tr>";
-                        html += "</thead>";
-                        html += "<tbody>";
-                        for(var i = 0; i<data.length; i++)
-                        {
-                            if(data[i].promotion_type === 2)
-                            {
-                                html += "<tr data-product_id = "+data[i].product_id+" ondblclick = 'editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")'>";
-                                html += "<td>"+data[i].sku+"</td>";
-                                html += "<td>"+data[i].prod_desc+"</td>";
-                                html += "<td>"+data[i].promotion_barcode+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].qty+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].newprice+"</td>";
-                                html += "<td style = 'text-align: center;'><i class='bi bi-pencil-square edit' onclick='editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")' data-id = "+data[i].promotion_id+"></i>&nbsp;<i class='bi bi-trash3 delete' onclick='deleteItem("+data[i].promotion_id+", "+data[i].promotion_type+")' data-id="+data[i].promotion_id+" ></i></td>";
-                                html += "</tr>";   
-                            }
-                        }
-                        html += "</tbody>";
-                        break;
-                    case 3:
-                        html = " <thead>";
-                        html += "<tr>";
-                        html += "<th>SN</th>";
-                        html += "<th>PRODUCTS</th>";
-                        html += "<th>BARCODE</th>";
-                        html += "<th style = 'text-align: right'>APPLY TO QTY</th>";
-                        html += "<th style = 'text-align: right'>PRICE</th>"
-                        html += "<th style = 'text-align: right'>TOTAL WHOLESALE PRICE</th>"
-                        html += "<th style = 'text-align: center; width: 1%;'>ACTION</th>"
-                        html += "</tr>";
-                        html += "</thead>";
-                        for(var i = 0; i<data.length; i++)
-                        {
-                            if(data[i].promotion_type === 3)
-                            {
-                                html += "<tr data-product_id = "+data[i].product_id+" ondblclick = 'editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")'>";
-                                html += "<td>"+data[i].sku+"</td>";
-                                html += "<td>"+data[i].prod_desc+"</td>";
-                                html += "<td>"+data[i].promotion_barcode+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].qty+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].newprice+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].totalPrice+"</td>";
-                                html += "<td style = 'text-align: center;'><i class='bi bi-pencil-square edit' onclick='editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")' data-id = "+data[i].promotion_id+"></i>&nbsp;<i class='bi bi-trash3 delete' onclick='deleteItem("+data[i].promotion_id+", "+data[i].promotion_type+")' data-id="+data[i].promotion_id+" ></i></td>";
-                                html += "</tr>";   
-                            }
-                        }
-                        break;
-                    case 4:
-                        html = " <thead>";
-                        html += "<tr>";
-                        html += "<th>SN</th>";
-                        html += "<th>PRODUCTS</th>";
-                        html += "<th>BARCODE</th>";
-                        html += "<th style = 'text-align: right'>APPLY TO QTY</th>";
-                        html += "<th style = 'text-align: right'>PRICE</th>"
-                        html += "<th style = 'text-align: right'>POINTS TO EARN</th>"
-                        html += "<th style = 'text-align: center; width: 1%;'>ACTION</th>"
-                        html += "</tr>";
-                        html += "</thead>";
-                        for(var i = 0; i<data.length; i++)
-                        {
-                            if(data[i].promotion_type === 4)
-                            {
-                                html += "<tr data-product_id = "+data[i].product_id+" ondblclick = 'editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")'>";
-                                html += "<td>"+data[i].sku+"</td>";
-                                html += "<td>"+data[i].prod_desc+"</td>";
-                                html += "<td>"+data[i].promotion_barcode+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].qty+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].newprice+"</td>";
-                                html += "<td style = 'text-align: right'>"+data[i].points+"</td>";
-                                html += "<td style = 'text-align: center;'><i class='bi bi-pencil-square edit' onclick='editItem("+data[i].promotion_id+ ", " +data[i].promotion_type+")' data-id = "+data[i].promotion_id+"></i>&nbsp;<i class='bi bi-trash3 delete' onclick='deleteItem("+data[i].promotion_id+", "+data[i].promotion_type+")' data-id="+data[i].promotion_id+" ></i></td>";
-                                html += "</tr>";   
-                            }
-                        }
-                        break;
-                    default: break;
-                }
-              
-                $("#tbl_promotions").html(html);
+                var counter = 1;
+                response.forEach(item => {
+                    html += "<tr data-id = "+item['id']+">";
+                    html += "<td class = 'child-a'>"+counter+"</td>";
+                    html += "<td class = 'child-b'>"+item['price_list_name']+"</td>";
+                    html += "<td class = 'child-c'>"+item['rule']+"</td>";
+                    html += "<td class = 'child-d'>"+item['type']+"</td>";
+                    html += "<td class = 'child-e' style = 'text-align: right'>"+item['adjustment']+"</td>";
+                    html += "<td class = 'child-f' style = 'text-align: right'><i class='bi bi-pencil-square editItem'></i>&nbsp;<i class = 'bi bi-trash3deleteItem'></i></td>";
+                    html += "</tr>";
+                    counter++;
+                });
+                $("#tbl_allPriceLists tbody").html(html);
             }
         })
     }
-    function editItem(id, promotion_type)
-    { 
-        reset_form();
-        $("._promotionType").val(promotion_type)
-        $(".promotion_id").val(id);
-        $.ajax({
-            type: 'get',
-            url: 'api.php?action=get_promotionDetails',
-            data: {
-                promotion_id: id,
-            },
-            success: function(responseData)
-            {
-                $(".product_id").val(responseData['product_id']);
-                $(".submitPromotion").text("UPDATE");
-                $(".product_name").text(responseData['prod_desc']);
-                switch(promotion_type)
+    function save_priceList()
+    {
+        if(validatePriceListForm())
+        {
+            var priceListID = $(".priceList_id").val();
+            $.ajax({
+                type: 'post',
+                url: 'api.php?action=save_priceList',
+                data: $(".priceListForm").serialize(),
+                success: function(response)
                 {
-                    case 1:
-                        $("#buy1Take1Modal #qty").val(responseData['qty']);
-                        $("#buy1Take1Modal #newprice").val(responseData['newprice']);
-                        $("#buy1Take1Modal #newbarcode").val(responseData['promotion_barcode']);
-                        $("#buy1Take1Modal").fadeIn(200);
-                        $("#date_picker_buy1").val(responseData['promo_period']);
-                        break;
-                    case 2:
-                        $("#promotionModal #qty").val(responseData['qty']);
-                        $("#promotionModal #newprice").val(responseData['newprice']);
-                        $("#promotionModal #newbarcode").val(responseData['promotion_barcode']);
-                        $("#date_picker_bundle").val(responseData['promo_period']);
-                        var bundleData = JSON.parse(responseData['promotion_items']);
-                        var row = "";
-                        for(var i = 0; i<bundleData.length; i++)
+                    if(response.success)
+                    {
+                        $("#priceListModal").fadeOut(100);
+                        if(priceListID !== "")
                         {
-                            row += "<tr data-id = " + bundleData[i].product_id + ">";
-                            row += "<td>" + bundleData[i].product_name + "</td>";
-                            row += "<td style = 'text-align:center' contenteditable='true'>"+bundleData[i].qty+"</td>";
-                            row += "<td style = 'text-align:center' ><i class = 'bi bi-trash3 delete' onclick='removeItem.call(this)'></i></td>";
-                            row += "</tr>";
+                            currentRow.find("td").eq(1).html($(".priceListForm").find("#priceListName").val());
+                            currentRow.find("td").eq(2).html($(".priceListForm").find("#rule").val());
+                            currentRow.find("td").eq(3).html($(".priceListForm").find("#type").val());
+                            currentRow.find("td").eq(4).html($(".priceListForm").find("#priceAdjustment").val());
                         }
-                        $("#tbl_bundled tbody").html(row);
-                        $("#promotionModal").fadeIn(200);
-                        break;
-                    case 3:
-                        $("#wholesaleModal #qty").val(responseData['qty']);
-                        $("#wholesaleModal #newprice").val(responseData['newprice']);
-                        $("#wholesaleModal #newbarcode").val(responseData['promotion_barcode']);
-                        $("#wholesaleModal #totalPrice").val(responseData['totalPrice']);
-                        $("#date_picker_wholeSale").val(responseData['promo_period']);
-                        $("#wholesaleModal").fadeIn(200);
-                        break;
-                    case 4:
-                        $("#pointPromoModal #qty").val(responseData['qty']);
-                        $("#pointPromoModal #newprice").val(responseData['newprice']);
-                        $("#pointPromoModal #newbarcode").val(responseData['promotion_barcode']);
-                        $("#pointPromoModal #points").val(responseData['points']);
-                        $("#date_picker_promo").val(responseData['promo_period']);
-                        $("#pointPromoModal").fadeIn(200);
-                        break;
-                    default:
-                        break;
+                        else
+                        {
+                            show_allPriceList();
+                        }
+                        resetPriceListForm();
+                    }
                 }
-              
-            }
-        });
-    }
-    function deleteItem(id, promotion_type)
-    { 
-        $(".promotion_id").val(id);
-        $.ajax({
-            type: 'get',
-            url: 'api.php?action=get_promotionDetails',
-            data: {
-                promotion_id: id,
-            },
-            success: function(responseData)
-            {
-                $(".product_id").val(responseData['product_id']);
-                $(".ProdName").text(responseData['prod_desc']);
-             
-                var info = "";
-                switch(promotion_type)
-                {
-                    case 1:
-                        info += `<div class="d-flex justify-content-center text-center align-items-center w-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-                                </svg>
-                                </div>
-                                <div class="d-flex align-items-center justify-content text-center mt-2">
-                                <h4 class="w-100">Are you sure you want to delete this item in the Buy 1 Take 1 promotion?</h4>
-                                </div>`;
-                        break;
-                    case 2:
-                        info += `<div class="d-flex justify-content-center text-center align-items-center w-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-                                </svg>
-                                </div>
-                                <div class="d-flex align-items-center justify-content text-center mt-2">
-                                <h4 class="w-100">Are you sure you want to delete this item in the Bundle Sale?</h4>
-                                </div>`;
-                        break;
-                     case 3:
-                        info += `<div class="d-flex justify-content-center text-center align-items-center w-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-                                </svg>
-                                </div>
-                                <div class="d-flex align-items-center justify-content text-center mt-2">
-                                <h4 class="w-100">Are you sure you want to delete this item in the Whole Sale?</h4>
-                                </div>`;
-                        break;
-                    case 4:
-                        info += `<div class="d-flex justify-content-center text-center align-items-center w-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="red" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
-                                </svg>
-                                </div>
-                                <div class="d-flex align-items-center justify-content text-center mt-2">
-                                <h4 class="w-100">Are you sure you want to delete this item in the Point Promo?</h4>
-                                </div>`;
-                        break;
-                    default: break;
-                }
-                $(".show_product_info").html(info);
-                $("#deleteProdModal").fadeIn(200);
-            }
-        });
-    }
-    $(".deleteProductItem").on("click", function(){
-        var id = $(".promotion_id").val();
-        var type = $(".promotion_type").val();
-        $.ajax({
-            type: 'get',
-            url: 'api.php?action=deletePromotion',
-            data: {
-                promotion_id: id,
-            },
-            success: function(response)
-            {
-                if(response.success)
-                {
-                    $("#deleteProdModal").hide();
-                    show_promotionByType(promoType);
-                    show_response(response.message, 1);
-                }
-            }
-        })
-    })
-    $(".generate-button").on("click", function(){
-        generateEAN();
-    })
-    function generateEAN() 
-    {
-      let eanBase = Math.floor(100000000000 + Math.random() * 900000000000).toString();
-      let checkDigit = calculateCheckDigit(eanBase);
-      let fullEAN = eanBase + checkDigit;
-      $(".displayBarcode").val(fullEAN);
-    }
-
-    function calculateCheckDigit(eanBase) 
-    {
-      let sum = 0;
-      for (let i = 0; i < eanBase.length; i++) {
-        let digit = parseInt(eanBase.charAt(i));
-        if (i % 2 === 0) {
-          sum += digit;
-        } else {
-          sum += digit * 3;
+            })
         }
-      }
-      let checkDigit = (10 - (sum % 10)) % 10;
-      return checkDigit;
     }
-    $("input").on("input", function(){
-        $("input").removeClass('error-highlight');
-  
+    function resetPriceListForm()
+    {
+        $("#priceListModal input").val("");
+        $("#priceListModal *").removeClass('has-error');
+    }
+    function validatePriceListForm()
+    {
+        var pricelist = $("#priceListName").val().trim() !== "";
+        var priceAdjustment = $("#priceAdjustment").val().trim() !== "";
+        if(pricelist || priceAdjustment) return true;
+        else
+        {
+            $("#priceListName").addClass('has-error');
+            $("#priceAdjustment").addClass('has-error');
+        }
+    }
+    $(document).on("click", "#priceListModal #close-modal", function(e){
+        e.preventDefault();
+        $("#priceListModal").fadeOut(100);
+        resetPriceListForm();
     })
-
+    $(document).on("keydown", "#priceListModal", function(e){
+        if(e.key == "Enter")
+        {
+            e.preventDefault();
+            save_priceList();
+        }
+    })
 </script>

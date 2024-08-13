@@ -163,12 +163,14 @@ $(document).ready(function()
       }
     })
   })
+  $("#responsive-data").on("click", ".tbl_rows", function(){
+    $("#tbl_expenses tbody").find(".tbl_rows").removeClass('highlighted-row')
+    $(this).toggleClass('highlighted-row');
+  })
   $("#responsive-data").on("dblclick", ".tbl_rows", function() {
     createExpense();
     var expense_id = $(this).data("id");
     var product_id = $(this).data('product_id');
-    $("#tbl_expenses tbody").find(".tbl_rows").removeClass('highlighted-row')
-    $(this).toggleClass('highlighted-row');
     $("#add_expense_modal").find(".modalHeaderTxt").html("Edit Expense");
 
     if(product_id == 0)
