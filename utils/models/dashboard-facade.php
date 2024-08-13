@@ -517,4 +517,30 @@ class DashboardFacade extends DBConnection
         $salesByPeriod = $monthlySales - $monthlyRefund - $monthlyReturn;
         return $salesByPeriod;
     }
+
+    public function getResetValue() {
+        $pdo = $this->connect();
+        $sql = $pdo->prepare('SELECT * FROM z_read_reset_counter WHERE status = 1  ORDER BY id DESC  LIMIT 1');
+        $sql->execute();
+        $response = $sql->fetch(PDO::FETCH_ASSOC);
+
+        if (!empty($response)) {
+            echo json_encode([
+                'success' => true,
+                'data' => $response,
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false
+            ]);
+        }
+    }
+
+    public function updateReset($id, $status) {
+        $pdo = $this->connect();
+        $sql = $pdo->prepare('UPDATE `z_read_reset_counter` SET `status`= ? WHERE id = ?');
+        $sql->execute([$status, $id]);
+
+        echo json_encode('SUCCESS');
+    }
 }

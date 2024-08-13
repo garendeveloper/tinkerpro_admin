@@ -5,7 +5,9 @@
 <?php include ("./modals/permissionModal.php") ?>
 <?php include ("./modals/access_granted.php") ?>
 <?php include ("./modals/access_denied.php") ?>
-<?php include ("./modals/logoutModal.php") ?>
+<?php include ("./modals/logoutModal.php"); 
+      include ("./modals/relogin.php");
+?>
 
 
 <?php
@@ -790,6 +792,7 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
 }
 
 </script>
+
 <style>
    #permModal .modal-dialog {
     max-width: fit-content;
