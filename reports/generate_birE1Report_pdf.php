@@ -83,6 +83,9 @@ $pdf->Ln(10);
 $hostname = gethostname();  
 $user_id = $_SESSION['users_identification'] ?? null;
 
+
+$firstname = $_SESSION['first_name'];
+
 $products = new ProductFacade();
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
@@ -124,7 +127,7 @@ $pdf->Cell(0, 10, 'Serial No: '.$shop['series_num'].'', 0, false, 'L');
 $pdf->Ln();
 $pdf->SetX($x);
 $pdf->SetFont('helvetica', '', 11);
-$pdf->Cell(0, 10, 'POS Terminal No: 123456789', 0, false, 'L');
+$pdf->Cell(0, 10, 'POS Terminal No: POS 1', 0, false, 'L');
 $pdf->Ln(5);
 $pdf->SetX($x);
 $pdf->SetFont('helvetica', '', 11);
@@ -132,7 +135,7 @@ $pdf->Cell(0, 10, 'Date and Time Generated: '.$currentDateTime.'', 0, false, 'L'
 $pdf->Ln(5);
 $pdf->SetX($x);
 $pdf->SetFont('helvetica', '', 11);
-$pdf->Cell(0, 10, 'User ID: '.$user_id.'', 0, false, 'L');
+$pdf->Cell(0, 10, 'User ID: '.$firstname.'', 0, false, 'L');
 $pdf->Ln();
 $pdf->SetX($x);
 $hexColor = '#F5F5F5';

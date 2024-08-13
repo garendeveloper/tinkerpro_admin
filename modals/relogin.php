@@ -69,11 +69,11 @@
                 type: 'GET',
                 data: {
                     test_stat: 0,
-                    stat_id: 2,
+                    stat_id: stat_id,
                 },
                 success: function(response) {
-                    console.log(response);
                     $('#reloginModal').hide();
+                    $(".continue_logout").click();
                 },
                 error: function(xhr, status, error) {
                     console.log(error);

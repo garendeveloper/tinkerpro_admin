@@ -560,7 +560,7 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
     axios.post('api.php?action=importProduct',formData)
     .then(function(response) {
         refreshProductsTable();
-        show_allProducts()
+        // show_allProducts()
     })
     .catch(function(error) {
         console.error(error);

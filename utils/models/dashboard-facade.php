@@ -24,9 +24,9 @@ class DashboardFacade extends DBConnection
     {
         $pdo =  $this->connect();
         $sales = 'SELECT
-                SUM(DISTINCT payments.payment_amount - payments.change_amount) AS totalPaid,
+                ROUND(SUM(DISTINCT (payments.payment_amount - payments.change_amount) - transactions.service_charge),2) AS totalPaid,
                 payments.id AS paymentId,
-                payments.payment_amount AS totalAmount,
+                ROUND(payments.payment_amount - SUM(DISTINCT transactions.service_charge),2) AS totalAmount,
                 payments.date_time_of_payment,
                 receipt.id AS receiptId,
                 SUM(transactions.subtotal) AS totalAmount1,
@@ -149,7 +149,7 @@ class DashboardFacade extends DBConnection
                         receipt.barcode,
                         CASE 
                         	WHEN payments.id = transactions.payment_id THEN
-                            	payments.payment_amount
+                            	ROUND(payments.payment_amount - SUM(DISTINCT transactions.service_charge), 2)
                             ELSE 0
                         END AS totalSales,
                         receipt.id AS receiptId,
@@ -188,7 +188,7 @@ class DashboardFacade extends DBConnection
                         receipt.barcode,
                         CASE 
                         	WHEN payments.id = transactions.payment_id THEN
-                            	payments.payment_amount
+                            	ROUND(payments.payment_amount - SUM(DISTINCT transactions.service_charge), 2)
                             ELSE 0
                         END AS totalSales,
                         receipt.id AS receiptId,

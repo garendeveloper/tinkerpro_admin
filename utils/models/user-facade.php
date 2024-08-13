@@ -294,9 +294,9 @@ class UserFacade extends DBConnection {
         else 
         {
             $roleSql = $this->connect();
-            $roleSql->prepare("INSERT INTO role (role_name) VALUES (?)");
-            $roleSql->execute([$roleName]);
-            return $roleType->lastInsertId();
+            $sql = $roleSql->prepare("INSERT INTO role (role_name) VALUES (?)");
+            $sql->execute([$roleName]);
+            return $roleSql->lastInsertId();
         }
     }
     public function addNewUsers($formData)

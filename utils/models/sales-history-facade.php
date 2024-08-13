@@ -53,7 +53,7 @@ class SalesHistoyFacade extends DBConnection {
                 transactions.is_transact,
                 transactions.payment_id,
                 payments.change_amount,   
-                payments.payment_amount,
+                ROUND(payments.payment_amount - SUM(DISTINCT transactions.service_charge), 2) AS payment_amount,
                 payments.date_time_of_payment,
                 return_exchange.id AS returnID,
                 SUM(transactions.subtotal) AS total,
@@ -78,7 +78,7 @@ class SalesHistoyFacade extends DBConnection {
             LEFT JOIN temporary_names ON temporary_names.id = transactions.tempo_name
             LEFT JOIN return_exchange ON payments.id = return_exchange.payment_id
             LEFT JOIN void_reason ON void_reason.id = transactions.void_id";
-        
+
         $whereClause = ($roleId == 1 || $allUsers == 1) ? "" : " WHERE transactions.cashier_id = ?";
         $groupClause = "
             GROUP BY
@@ -156,6 +156,7 @@ class SalesHistoyFacade extends DBConnection {
 
         $returnProducts = "
         SELECT DISTINCT
+            return_exchange.return_qty,
             users.id AS customer_id,
             return_exchange.id AS returnID,
             discounts.discount_amount AS customer_discount,
@@ -191,6 +192,7 @@ class SalesHistoyFacade extends DBConnection {
         INNER JOIN discounts ON discounts.id = users.discount_id
         LEFT JOIN temporary_names ON temporary_names.id = transactions.tempo_name
         WHERE return_exchange.payment_id = payments.id";
+
 
         $groupClause3 = " GROUP BY return_exchange.id";
 
