@@ -222,12 +222,16 @@ td[contenteditable="true"]:focus {
 .has-error{
   border: 1px solid red !important;
 }
+.errorMessages{
+  color: red !important;
+  font-size: 10px;
+}
 </style>
 
 <div id="priceListModal" class="modal" tabindex = "0" style = "overflow: hidden">
     <div class="modal-content">
         <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
-            <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name">Add Price List</h6>
+            <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name">Add Price List   <span class = "errorMessages"></span></h6>
             <span id="close-modal">
               <i class="bi bi-x" aria-hidden="true" style = "font-size: 30px; font-weight: bold"></i>
             </span>
@@ -238,7 +242,7 @@ td[contenteditable="true"]:focus {
             <div class="row">
               <div class="col-md-12">
                   <label class = "tinker_label" for=""  style = "margin-right: 90px;">PRICE LIST NAME</label>
-                  <input  type="text" name = "priceListName" id = "priceListName" class = "inputAmount" style = "height: 30px;" autocomplete="off" oninput= "$(this).removeClass('has-error')" />
+                  <input  type="text" name = "priceListName" id = "priceListName" class = "inputAmount" style = "height: 30px;" autocomplete="off" oninput= "$(this).removeClass('has-error'); $('.errorMessages').html('')" />
               </div>
               <div class="col-md-12" >
                   <label class = "tinker_label" for="" style = "margin-right: 70px;">PRICE ADJUSTMENT</label>

@@ -48,7 +48,7 @@
         $sql = $this->connect()->prepare($sqlQuery);
 
         if (!empty($searchQuery)) {
-          $searchParam = $searchQuery . "_%";
+          $searchParam = "%".$searchQuery . "%";
           $sql->bindParam(':searchQuery', $searchParam, PDO::PARAM_STR);
           $sql->execute();
           return $sql;
@@ -1010,7 +1010,7 @@ public function importProducts($fileData) {
                    VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status, :isDiscounted, :is_stockable, :uom_id, :product_stock, :stock_count)";
 
   $stockQuery = "INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
-                 VALUES (?, ?, ?, ?, ?, ?, ?)";
+                 VALUES (:inventory_id, :stock_customer, :stock_qty, :stock, :document_number, :transaction_type, :date)";
 
   $inventoryQuery = 'INSERT INTO inventory (product_id) VALUES (:product_id)';
 
@@ -1021,18 +1021,21 @@ public function importProducts($fileData) {
   $currentDate = date('Y-m-d H:i:s'); // Use 'H:i:s' for 24-hour format
 
   try {
-      // Prepare statements outside the loop
+      // Prepare statements once
       $stmtProduct = $conn->prepare($productQuery);
       $stmtStock = $conn->prepare($stockQuery);
       $stmtInventory = $conn->prepare($inventoryQuery);
 
-      $lastInsertIds = [];
+      // Collect data for batch insert
+      $productData = [];
+      $stockData = [];
+      $inventoryData = [];
 
       foreach ($csvData as $row) {
           $product = array_combine($headers, $row);
 
-          // Bind parameters for products
-          $stmtProduct->execute([
+          // Collect product data
+          $productData[] = [
               ':prod_desc' => $product['Name'],
               ':sku' => $product['SKU'],
               ':barcode' => $product['Barcode'],
@@ -1050,24 +1053,43 @@ public function importProducts($fileData) {
               ':uom_id' => $product['UOM'],
               ':product_stock' => $product['Stock'],
               ':stock_count' => $product['LSW']
-          ]);
+          ];
 
+          // Collect stock data (note: handle batching of stock data separately if large)
+          $stockData[] = [
+              ':inventory_id' => null, // Placeholder for product_id
+              ':stock_customer' => 'User',
+              ':stock_qty' => $product['Store Qty'],
+              ':stock' => $product['Store Qty'],
+              ':document_number' => '---',
+              ':transaction_type' => 'Beginning Stock',
+              ':date' => $currentDate
+          ];
+
+          // Collect inventory data
+          $inventoryData[] = [':product_id' => null]; // Placeholder for product_id
+      }
+
+      // Insert products in batch
+      foreach ($productData as $product) {
+          $stmtProduct->execute($product);
+      }
+
+      // Fetch last insert ids and update stock and inventory data
+      foreach ($productData as $index => $product) {
           $productId = $conn->lastInsertId();
-          $lastInsertIds[] = $productId;
+          $stockData[$index][':inventory_id'] = $productId;
+          $inventoryData[$index][':product_id'] = $productId;
+      }
 
-          // Prepare stock entry
-          $stmtStock->execute([
-              $productId, // inventory_id
-              'User', // stock_customer
-              $product['Store Qty'], // stock_qty
-              $product['Store Qty'], // stock
-              '---', // document_number
-              'Beginning Stock', // transaction_type
-              $currentDate // date
-          ]);
+      // Insert stocks in batch
+      foreach ($stockData as $stock) {
+          $stmtStock->execute($stock);
+      }
 
-          // Insert into inventory table
-          $stmtInventory->execute([':product_id' => $productId]);
+      // Insert inventories in batch
+      foreach ($inventoryData as $inventory) {
+          $stmtInventory->execute($inventory);
       }
 
       $conn->commit(); 

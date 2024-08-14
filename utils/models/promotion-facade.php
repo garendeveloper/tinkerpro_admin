@@ -251,11 +251,20 @@ class PromotionFacade extends DBConnection
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function verify_priceList($pricelist_name)
+    public function verify_priceList($pricelist_name, $id)
     {
-        $sql = $this->connect()->prepare("SELECT * FROM pricelist WHERE price_list_name = ?");
-        $sql->execute([$pricelist_name]);
-        return $sql->rowCount() > 0;
+        if(!empty($id))
+        {
+            $sql = $this->connect()->prepare("SELECT * FROM pricelist WHERE price_list_name = ? AND id <> ?");
+            $sql->execute([$pricelist_name, $id]);
+            return $sql->rowCount() > 0;
+        }
+        else
+        {
+            $sql = $this->connect()->prepare("SELECT * FROM pricelist WHERE price_list_name = ?");
+            $sql->execute([$pricelist_name]);
+            return $sql->rowCount() > 0;
+        }
     }
     public function save_priceList($formData)
     {
@@ -265,23 +274,33 @@ class PromotionFacade extends DBConnection
         $priceAdjustment = $formData['priceAdjustment'];
 
         $priceList_id = $formData['priceList_id'];
-        if(isset($priceList_id) && !empty($priceList_id))
+        if($this->verify_priceList($pricelist_name, $priceList_id))
         {
-            $stmt = $this->connect()->prepare("UPDATE pricelist SET price_list_name = ?, rule = ?, type = ?, adjustment = ? WHERE id = ?");
-            $stmt->execute([$pricelist_name, $rule, $type, $priceAdjustment, $priceList_id]);
             return [
-                'success'=>true,
-                'message'=>'Price List has been updated successfully.'
+                'success'=>false,
+                'message'=>'Price List already exists.'
             ];
         }
         else
         {
-            $stmt = $this->connect()->prepare("INSERT INTO pricelist (price_list_name, rule, type, adjustment) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$pricelist_name, $rule, $type, $priceAdjustment]);
-            return [
-                'success'=>true,
-                'message'=>'Price List has been added successfully.'
-            ];
+            if(isset($priceList_id) && !empty($priceList_id))
+            {
+                $stmt = $this->connect()->prepare("UPDATE pricelist SET price_list_name = ?, rule = ?, type = ?, adjustment = ? WHERE id = ?");
+                $stmt->execute([$pricelist_name, $rule, $type, $priceAdjustment, $priceList_id]);
+                return [
+                    'success'=>true,
+                    'message'=>'Price List has been updated successfully.'
+                ];
+            }
+            else
+            {
+                $stmt = $this->connect()->prepare("INSERT INTO pricelist (price_list_name, rule, type, adjustment) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$pricelist_name, $rule, $type, $priceAdjustment]);
+                return [
+                    'success'=>true,
+                    'message'=>'Price List has been added successfully.'
+                ];
+            }
         }
     }
 }
