@@ -12903,6 +12903,81 @@
 2024-08-12 17:09:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added 24/7 ORNG 40G MENUDO Barcode #:677916542155 
 2024-08-12 17:09:52 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 12,000.00 
 2024-08-12 17:10:17 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: GAISANO 
+<<<<<<< HEAD
+2024-08-13 09:05:32 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 09:09:12 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 09:09:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 09:09:57 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 09:10:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 09:12:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Sample Product Barcode #:779135687129 
+2024-08-13 09:20:26 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 09:20:37 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 09:20:39 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 09:21:03 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-13 09:21:05 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 09:39:35 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 09:51:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added Sample Product Barcode #:016248418235 
+2024-08-13 09:51:48 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 12,000.00 
+2024-08-13 09:52:08 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: GAISANO 
+2024-08-13 10:07:55 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-13 10:11:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 10:22:37 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 10:57:43 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-13 10:58:20 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000022 Amount:₱ 15,400.00 
+2024-08-13 11:00:50 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000023 Amount:₱ 15,400.00 
+2024-08-13 11:01:19 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000023 Supplier: GAISANO 
+2024-08-13 11:03:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779554 
+2024-08-13 11:03:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:3538616594578 
+2024-08-10 11:33:22 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-10 11:33:45 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000024 Supplier: GAISANO 
+2024-08-10 11:35:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ABSOLUTE 1L Barcode #:4800014145089 
+2024-08-10 11:35:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ABSOLUTE 1.5L Barcode #:4800014146086 
+2024-08-10 11:35:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ABSOLUTE 1.5L Barcode #:4800014146086 
+2024-08-10 11:36:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ABSOLUTE 1L Barcode #:4800014145089 
+2024-08-10 11:41:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ABSOLUTE 350ML Barcode #:4800014147083 
+2024-08-12 12:34:16 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-12 12:35:09 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-11 13:22:22 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-11 13:23:25 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-11 13:23:35 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-11 13:30:25 | Talkosoy Admin | 1 | 1 | Login | User Talkosoy Admin 1 
+2024-08-11 13:38:07 | Talkosoy Admin | 1 | 1 | Login | User Talkosoy Admin 1 
+2024-08-13 13:56:21 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 13:58:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 13:58:05 | Admin Admin | 1 | 2 | Products | Admin Admin Added 555 ADOBO TUNA Barcode #:250569473089 
+2024-08-13 14:00:13 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000001 Amount:₱ 60,000.00 
+2024-08-13 14:04:31 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: GAISANO 
+2024-08-13 14:06:43 | Admin Admin | 1 | 2 | Users | Admin Admin Updated thomas Edison 
+2024-08-13 14:06:59 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Heidi Caones 
+2024-08-13 14:07:19 | Admin Admin | 1 | 2 | Users | Admin Admin Updated User  1 
+2024-08-13 14:07:31 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Thomas Edison 
+2024-08-13 14:08:45 | Admin Admin | 1 | 2 | Products | Super Admin Updated 555 ADOBO TUNA Barcode #:250569473089 
+2024-08-13 14:16:44 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-13 14:16:46 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 14:37:53 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 14:47:47 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 ADOBO TUNA Barcode #:250569473089 
+2024-08-13 14:51:18 | Admin Admin | 1 | 2 | Users | Admin Admin Added Jay Hanzo 
+2024-08-13 14:55:42 | Admin Admin | 1 | 2 | Users | Admin Admin Added Rey Garren 
+2024-08-13 15:01:07 | Admin Admin | 1 | 2 | Products | Admin Admin Added PRINGLES Barcode #:3538616594578 
+2024-08-13 15:01:24 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000045 Amount:₱ 200,000.00 
+2024-08-13 15:01:49 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000045 Supplier: GAISANO 
+2024-08-13 15:23:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 15:49:38 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-13 15:49:40 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 15:56:26 | Admin Admin | 1 | 2 | Products | Admin Admin Added 555 TUNA SPICY PAKSIW Barcode #:348640334561 
+2024-08-13 16:06:14 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000046 Amount:₱ 22.00 
+2024-08-13 16:06:37 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 TUNA SPICY PAKSIW Barcode #:348640334561 
+2024-08-13 16:07:13 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000046 Supplier: GAISANO 
+2024-08-13 16:13:14 | Admin Admin | 1 | 2 | Products | Admin Admin Added Sample Product Barcode #:255207318493 
+2024-08-13 16:34:06 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-13 16:42:58 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 16:43:02 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 17:12:49 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-13 17:12:52 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 17:38:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 18:03:31 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-13 18:04:00 | Admin Admin | 1 | 2 | Users | Admin Admin Updated John Vince K 
+=======
 2024-08-13 16:11:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3L UBE-MACAPUNO-SEL Barcode #:4800086048721 
 2024-08-13 16:12:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.3L UBE-MACAPUNO-SEL Barcode #:4800086048721 
 2024-08-13 16:14:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SELECTA 1.4L CHOCO ALMOND FUDGE /COKIES &CREAM-SEL Barcode #:687147 
@@ -13021,6 +13096,7 @@
 2024-08-13 17:53:15 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
 2024-08-13 17:53:30 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-13 18:01:20 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+<<<<<<< HEAD
 2024-08-14 09:03:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-14 09:03:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-14 09:05:01 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
@@ -13047,3 +13123,6 @@
 2024-08-14 09:16:09 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-14 09:16:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Exported productList.csv 
 2024-08-14 09:17:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated UFC SPAGHETTI SUPREME PACK Barcode #:4801668607619 
+=======
+>>>>>>> f377cbe71c4571fe439bdf67202b6bd77c539d11
+>>>>>>> 5640ec2f0a6735ce8f127d5b0da56e624fe7774e

@@ -40,12 +40,15 @@ h4{
 .cancel_logout:hover{
   background-color: darkred;
 }
+
 .continue_logout{
   background-color: green;
 }
+
 .continue_logout:hover{
   background-color: darkgreen;
 }
+
 #logoutModal .modal-header{
   border: none;
 }
