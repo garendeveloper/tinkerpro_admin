@@ -921,85 +921,162 @@ public function deleteProducts($prod_id) {
 
   return $rowCount > 0; 
 }
+// public function importProducts($fileData) {
+//   $file = $fileData['tmp_name'];
+//   $csvData = array_map('str_getcsv', file($file));
+//   $headers = array_shift($csvData);
+
+//   $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable,uom_id, product_stock, stock_count) 
+//               VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable,:uom_id, :product_stock, :stock_count)";
+  
+//   $conn = $this->connect();
+//   $conn->beginTransaction(); 
+//   date_default_timezone_set('Asia/Manila');
+//   $currentDate = date('Y-m-d h:i:s');
+//   try {
+//       $stmt = $conn->prepare($query);
+    
+//       foreach ($csvData as $row) {
+//           $product = array_combine($headers, $row);
+
+//           // Bind parameters
+//           $stmt->bindParam(':prod_desc', $product['Name']);
+//           $stmt->bindParam(':sku', $product['SKU']);
+//           $stmt->bindParam(':barcode', $product['Barcode']);
+//           $stmt->bindParam(':cost', $product['Cost']);
+//           $stmt->bindParam(':markup', $product['Markup']);
+//           $stmt->bindParam(':prod_price', $product['Price']);
+//           $stmt->bindParam(':isVAT', $product['Tax']);
+//           $stmt->bindParam(':is_taxIncluded', $product['IsTaxInclusivePrice']);
+//           $stmt->bindParam(':IsPriceChangeAllowed', $product['IsPriceChangeAllowed']);
+//           $stmt->bindParam(':IsUsingDefaultQuantity', $product['IsUsingDefaultQuantity']);
+//           $stmt->bindParam(':IsService', $product['IsService']);
+//           $stmt->bindParam(':status', $product['IsEnabled']);
+//           $stmt->bindParam(':isDiscounted', $product['isDiscounted']);
+//           $stmt->bindParam(':is_stockable', $product['Stockable']);
+//           $stmt->bindParam(':uom_id', $product['UOM']);
+//           $stmt->bindParam(':product_stock', $product['Store Qty']);
+//           $stmt->bindParam(':stock_count', $product['Low stock warning']);
+
+//           $stmt->execute();
+//           $productId = $conn->lastInsertId();
+        
+       
+//           $currentStock = 0;
+//           $newqty = $product['Store Qty'];
+//           $movement = $product['Store Qty'];
+//           $stock_customer = 'User';
+//           $document_number = "---";
+//           $transaction_type = "Beginning Stock";
+//           $stmt = $conn->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+//                                               VALUES (?, ?, ?, ?, ?, ?, ?)");
+  
+//           $stmt->bindParam(1, $productId, PDO::PARAM_INT);
+//           $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+//           $stmt->bindParam(3, $movement, PDO::PARAM_STR); 
+//           $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
+//           $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+//           $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+//           $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
+//           $stmt->execute();
+
+//           $lastInsertIds[] = $productId;
+//       }
+
+
+//       $conn->commit(); 
+//       foreach ($lastInsertIds as $productId) {
+//         $sqlInventory = 'INSERT INTO inventory (product_id) VALUES (:product_id)';
+//         $stmtInventory = $conn->prepare($sqlInventory);
+//         $stmtInventory->bindParam(':product_id', $productId);
+//         $stmtInventory->execute();
+
+      
+//       }
+//       return true;
+//   } catch (PDOException $e) {
+//       $conn->rollBack(); 
+//       error_log("Import failed: " . $e->getMessage());
+//       return false;
+//   }
+  
+// }
 public function importProducts($fileData) {
   $file = $fileData['tmp_name'];
   $csvData = array_map('str_getcsv', file($file));
   $headers = array_shift($csvData);
 
-  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable,uom_id, product_stock, stock_count) 
-              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable,:uom_id, :product_stock, :stock_count)";
-  
+  $productQuery = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status, is_discounted, is_stockable, uom_id, product_stock, stock_count) 
+                   VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status, :isDiscounted, :is_stockable, :uom_id, :product_stock, :stock_count)";
+
+  $stockQuery = "INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+  $inventoryQuery = 'INSERT INTO inventory (product_id) VALUES (:product_id)';
+
   $conn = $this->connect();
   $conn->beginTransaction(); 
+
   date_default_timezone_set('Asia/Manila');
-  $currentDate = date('Y-m-d h:i:s');
+  $currentDate = date('Y-m-d H:i:s'); // Use 'H:i:s' for 24-hour format
+
   try {
-      $stmt = $conn->prepare($query);
-    
+      // Prepare statements outside the loop
+      $stmtProduct = $conn->prepare($productQuery);
+      $stmtStock = $conn->prepare($stockQuery);
+      $stmtInventory = $conn->prepare($inventoryQuery);
+
+      $lastInsertIds = [];
+
       foreach ($csvData as $row) {
           $product = array_combine($headers, $row);
 
-          // Bind parameters
-          $stmt->bindParam(':prod_desc', $product['Name']);
-          $stmt->bindParam(':sku', $product['SKU']);
-          $stmt->bindParam(':barcode', $product['Barcode']);
-          $stmt->bindParam(':cost', $product['Cost']);
-          $stmt->bindParam(':markup', $product['Markup']);
-          $stmt->bindParam(':prod_price', $product['Price']);
-          $stmt->bindParam(':isVAT', $product['Tax']);
-          $stmt->bindParam(':is_taxIncluded', $product['IsTaxInclusivePrice']);
-          $stmt->bindParam(':IsPriceChangeAllowed', $product['IsPriceChangeAllowed']);
-          $stmt->bindParam(':IsUsingDefaultQuantity', $product['IsUsingDefaultQuantity']);
-          $stmt->bindParam(':IsService', $product['IsService']);
-          $stmt->bindParam(':status', $product['IsEnabled']);
-          $stmt->bindParam(':isDiscounted', $product['isDiscounted']);
-          $stmt->bindParam(':is_stockable', $product['Stockable']);
-          $stmt->bindParam(':uom_id', $product['UOM']);
-          $stmt->bindParam(':product_stock', $product['Store Qty']);
-          $stmt->bindParam(':stock_count', $product['Low stock warning']);
+          // Bind parameters for products
+          $stmtProduct->execute([
+              ':prod_desc' => $product['Name'],
+              ':sku' => $product['SKU'],
+              ':barcode' => $product['Barcode'],
+              ':cost' => $product['Cost'],
+              ':markup' => $product['Markup'],
+              ':prod_price' => $product['Price'],
+              ':isVAT' => $product['Tax'],
+              ':is_taxIncluded' => $product['IsTaxInclusivePrice'],
+              ':IsPriceChangeAllowed' => $product['IsPriceChangeAllowed'],
+              ':IsUsingDefaultQuantity' => $product['IsUsingDefaultQuantity'],
+              ':IsService' => $product['IsService'],
+              ':status' => $product['IsEnabled'],
+              ':isDiscounted' => $product['isDiscounted'],
+              ':is_stockable' => $product['Stockable'],
+              ':uom_id' => $product['UOM'],
+              ':product_stock' => $product['Stock'],
+              ':stock_count' => $product['LSW']
+          ]);
 
-          $stmt->execute();
           $productId = $conn->lastInsertId();
-        
-       
-          $currentStock = 0;
-          $newqty = $product['Store Qty'];
-          $movement = $product['Store Qty'];
-          $stock_customer = 'User';
-          $document_number = "---";
-          $transaction_type = "Beginning Stock";
-          $stmt = $conn->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
-                                              VALUES (?, ?, ?, ?, ?, ?, ?)");
-  
-          $stmt->bindParam(1, $productId, PDO::PARAM_INT);
-          $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
-          $stmt->bindParam(3, $movement, PDO::PARAM_STR); 
-          $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
-          $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
-          $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
-          $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
-          $stmt->execute();
-
           $lastInsertIds[] = $productId;
-      }
 
+          // Prepare stock entry
+          $stmtStock->execute([
+              $productId, // inventory_id
+              'User', // stock_customer
+              $product['Store Qty'], // stock_qty
+              $product['Store Qty'], // stock
+              '---', // document_number
+              'Beginning Stock', // transaction_type
+              $currentDate // date
+          ]);
+
+          // Insert into inventory table
+          $stmtInventory->execute([':product_id' => $productId]);
+      }
 
       $conn->commit(); 
-      foreach ($lastInsertIds as $productId) {
-        $sqlInventory = 'INSERT INTO inventory (product_id) VALUES (:product_id)';
-        $stmtInventory = $conn->prepare($sqlInventory);
-        $stmtInventory->bindParam(':product_id', $productId);
-        $stmtInventory->execute();
-
-      
-      }
       return true;
   } catch (PDOException $e) {
       $conn->rollBack(); 
       error_log("Import failed: " . $e->getMessage());
       return false;
   }
-  
 }
 public function getTotalProductsCount() {
   try {
