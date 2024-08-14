@@ -14,14 +14,16 @@
     display_datePurchased();
 
     show_allInventories();
-    $("#btn_openOption").attr('title', 'Click this to open option').tooltip({
-        open: function(event, ui) {
-            $('body').css('background-color', '#262626'); 
-        },
-        close: function(event, ui) { 
-            $('body').css('background-color', '#262626'); 
-        }
-    }).tooltip("open");   
+    // $("#btn_openOption").attr('title', 'Click this to open option').tooltip({
+    //     open: function(event, ui) {
+    //       event.preventDefault();
+    //         $('body').css('background-color', '#262626'); 
+    //     },
+    //     close: function(event, ui) { 
+    //       event.preventDefault();
+    //         $('body').css('background-color', '#262626'); 
+    //     }
+    // }).tooltip("open");   
     
     $(document).ready(function () {
        
@@ -41,6 +43,7 @@
         });
         $("#tab1").show();
         $(".tablinks[data-tab='tab1']").addClass("active");
+        
         $('#paidSwitch').change(function () {
           if ($(this).is(':checked')) {
             $('.toggle-switch-container').css('color', '#28a745');
