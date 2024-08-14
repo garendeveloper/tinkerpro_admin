@@ -346,15 +346,13 @@ if (isset($_SESSION['user_id'])) {
         $('.clearInput').addClass('d-none');
     })
     
-
-
     $('.editBtns').click(function() {
         isClick = true;
         $('#dateTimeModal').show();
     })
 
-
     $('#addPromotion').on('click', function() {
+        $(".errorMessages").html("");
         $('#priceListModal').fadeIn(100);
         $(".submitPriceList").text("ADD");
         $(".promo-error").html("");
@@ -533,6 +531,7 @@ if (isset($_SESSION['user_id'])) {
     });
     function editPriceList(currentRow)
     {   
+        $(".errorMessages").html("");
         $(".submitPriceList").html("UPDATE");
         $("#priceListName").focus();
         id = currentRow.data('id');
@@ -597,7 +596,12 @@ if (isset($_SESSION['user_id'])) {
                 data: $(".priceListForm").serialize(),
                 success: function(response)
                 {
-                    if(response.success)
+                    if(!response.success)
+                    {
+                       $("#priceListName").addClass('has-error');
+                       $(".errorMessages").html("*"+response.message);
+                    }
+                    else
                     {
                         $("#priceListModal").fadeOut(100);
                         if(priceListID !== "")
