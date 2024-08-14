@@ -13021,3 +13021,29 @@
 2024-08-13 17:53:15 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
 2024-08-13 17:53:30 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-13 18:01:20 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-14 09:03:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-14 09:03:15 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-14 09:05:01 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-14 09:05:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 50G 1DZ-OYT Barcode #:518695 
+2024-08-14 09:05:58 | Talkosoy Admin | 1 | 2 | Users | Added Jakoi ff 
+2024-08-14 09:06:08 | Talkosoy Admin | 1 | 2 | Users | Talkosoy Admin Updated Jakoi ff 
+2024-08-14 09:06:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 80G Barcode #:270858 
+2024-08-14 09:07:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 80G 1/2DZ Barcode #:756398 
+2024-08-14 09:07:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE POWDER PERFECT CLEAN LEMON & KALAMANSI 80G 1DZ-OYT Barcode #:271619 
+2024-08-14 09:07:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added  TJ CORN PEAS 100G Barcode #:806503643425 
+2024-08-14 09:09:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE TABA LEMON & KALAMANSI 450G Barcode #:221741 
+2024-08-14 09:10:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE ULTRA ORIGINAL SCENT 380G Barcode #:791122 
+2024-08-14 09:10:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIGER CHOCO 1PACK Barcode #:7622300742171 
+2024-08-14 09:10:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIGER CRACKERS 1PACK Barcode #:390822 
+2024-08-14 09:10:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIGER VANILLA 1PACK Barcode #:7622300743048 
+2024-08-14 09:10:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIGER KATOL 1BOX Barcode #:434207 
+2024-08-14 09:11:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIN TIN BIHON 1PACK Barcode #:544940 
+2024-08-14 09:12:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated THREAD ASSORTED COLOR Barcode #:206377 
+2024-08-14 09:12:41 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-14 09:13:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TORTILLOS CHILI FLAVOR Barcode #:253936766833 
+2024-08-14 09:14:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TOSTILLAS NACHO CHEESE-FAMILY 72G X 50 Barcode #:4800016652134 
+2024-08-14 09:15:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TRIANGLE RULER Barcode #:868433 
+2024-08-14 09:16:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TJ CORN PEAS 100G Barcode #:806503643425 
+2024-08-14 09:16:09 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-14 09:16:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Exported productList.csv 
+2024-08-14 09:17:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated UFC SPAGHETTI SUPREME PACK Barcode #:4801668607619 
