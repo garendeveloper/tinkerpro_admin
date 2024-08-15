@@ -9067,6 +9067,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9090,7 +9091,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+               INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9200,6 +9201,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9223,8 +9225,8 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
-                    GROUP BY payment_id) as t ON t.payment_id = p.id
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
+                GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9332,6 +9334,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9355,7 +9358,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9465,6 +9468,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9488,7 +9492,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9598,6 +9602,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9621,7 +9626,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9732,6 +9737,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9755,7 +9761,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, ROUND(SUM(service_charge),2) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9866,6 +9872,7 @@ GROUP BY
             u.first_name AS first_name,
             u.last_name AS last_name, 
             CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+            service_charge,
             CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
             p.date_time_of_payment AS date,
             p.cart_discount AS cart_discount,
@@ -9888,7 +9895,7 @@ GROUP BY
             
         FROM 
             payments AS p 
-            INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+              INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, cashier_id, SUM(service_charge) as service_charge FROM transactions
                  GROUP BY payment_id) as t ON t.payment_id = p.id
             INNER JOIN users AS u ON u.id = t.cashier_id
             INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -9996,6 +10003,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -10018,7 +10026,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                  INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, cashier_id, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -10126,6 +10134,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -10149,7 +10158,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                  INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, cashier_id, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -10258,6 +10267,7 @@ GROUP BY
                  u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -10279,7 +10289,7 @@ GROUP BY
            
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                  INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, cashier_id, SUM(service_charge) as service_charge FROM transactions
                     GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -10388,6 +10398,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -10410,7 +10421,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+                  INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, cashier_id, SUM(service_charge) as service_charge FROM transactions
                     GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.cashier_id
                 INNER JOIN products AS ps ON ps.id = t.prod_id
@@ -10569,7 +10580,7 @@ GROUP BY
             
         FROM 
             payments AS p 
-            INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void,cashier_id FROM transactions
+              INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, cashier_id, SUM(service_charge) as service_charge FROM transactions
                     GROUP BY payment_id) as t ON t.payment_id = p.id
             INNER JOIN users AS u ON u.id = t.cashier_id
             INNER JOIN products AS ps ON ps.id = t.prod_id

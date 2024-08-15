@@ -180,29 +180,29 @@ class BirFacade extends DBConnection {
         totalCredit,
         payment_details,
         date_time_of_payment,
-        VAT_EXEMPT,
+        VAT_EXEMPTS,
         vatable_price,
             CASE
-                WHEN ROUND((vatable_price ), 2) >= 2500 THEN
-                    ROUND((vatable_price ) - 2500, 2)
+                WHEN ROUND((vatable_price), 2) THEN
+                    ROUND((vatable_price / 1.12), 2)
                 ELSE 
                     0
                 END AS VAT_SALES,
             CASE 
-                WHEN ROUND((vatable_price ), 2) >= 2500 THEN
-                    ROUND(ROUND((vatable_price ) - 2500, 2) * 0.12, 2)
+                WHEN ROUND((vatable_price), 2) THEN
+                    ROUND(ROUND((vatable_price / 1.12), 2) * 0.12, 2)
                 ELSE 
                     0
                 END AS VAT_AMOUNT,
             CASE 
-                WHEN ROUND((vatable_price ), 2) >= 2500 THEN
-                    ROUND((2500 ), 2)
+                WHEN ROUND((nonVat ), 2) THEN
+                    ROUND((nonVat), 2)
                 ELSE
-                    ROUND((vatable_price ), 2)
+                    0
                 END AS VAT_EXEMPT,
                 
             CASE 
-                WHEN ROUND(((vatDiscounted) ), 2) >= 2500 THEN
+                WHEN ROUND(((vatDiscounted)), 2) >= 2500 THEN
                     (2500) * ROUND((customer_discount / 100), 2)
                 ELSE 
                     ROUND((vatable_price ),2) * ROUND((customer_discount / 100), 2)
@@ -238,7 +238,7 @@ class BirFacade extends DBConnection {
                     payments.payment_details,
                     payments.date_time_of_payment,
                     discounts.discount_amount AS customer_discount,
-                    payments.vatable_sales AS VAT_EXEMPT,
+                    payments.vatable_sales AS VAT_EXEMPTS,
             
                     CASE 
                         WHEN products.isVAT = 1 AND products.is_discounted = 1 THEN
@@ -251,6 +251,11 @@ class BirFacade extends DBConnection {
                             ROUND((SUM(transactions.subtotal)),2)
                         ELSE 0
                         END AS nonVatDiscounted,
+           			CASE 
+                        WHEN products.isVAT = 0 THEN
+                            ROUND((SUM(transactions.subtotal)),2)
+                        ELSE 0
+                        END AS nonVat,
                     CASE 
                         WHEN products.isVAT = 1 THEN
                             ROUND((SUM(transactions.subtotal)),2)

@@ -37,6 +37,7 @@ class DashboardFacade extends DBConnection
                 INNER JOIN receipt ON receipt.id = transactions.receipt_id
                 WHERE MONTH(payments.date_time_of_payment) = ?
                 AND YEAR(payments.date_time_of_payment) = ?
+                AND transactions.is_void NOT IN (1,2)
                 GROUP BY payments.id;';
 
         $sales_result = $pdo->prepare($sales); 

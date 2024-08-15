@@ -53,6 +53,7 @@ h4{
   height: 30px;
   align-items: center;  
   text-align: center;  
+  vertical-align: center;
   font-size: 12px;
   margin-top: -100px;
 }
