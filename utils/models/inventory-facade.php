@@ -1386,18 +1386,18 @@ class InventoryFacade extends DBConnection
                     $status = 1;
                     $isSelected = 1;
 
-                    $isVat = $this->get_productInfo($product_id)['isVat'] === 1;
+                    $isVat = $this->get_productInfo($product_id)['isVat'] == 1;
 
                     $amount_beforeTax = $price;
                     $amount_afterTax = 0;
                     $tax = 0;
                     if ($isVat) {
-                        $tax = $price / 1.12;
+                        $tax = (float) $price / 1.12;
                         $amount_afterTax = $price - $tax;
                     }
 
-                    $isPriceNotChange = $this->get_productInfo($product_id)['cost'] === $price;
-                    $is_taxInclusive = $this->get_productInfo($product_id)['is_taxIncluded'] === 1;
+                    $isPriceNotChange = $this->get_productInfo($product_id)['cost'] == $price;
+                    $is_taxInclusive = $this->get_productInfo($product_id)['is_taxIncluded'] == 1;
                     $new_selling_price = $this->get_productInfo($product_id)['prod_price'];
                     $new_cost_price = $price;
 
@@ -1408,7 +1408,7 @@ class InventoryFacade extends DBConnection
                             $mark_up = $this->get_productInfo($product_id)['markup']; 
                             $interest = $price * ($mark_up/100);
                             $new_selling_price = (float) $new_cost_price + $interest;
-                            $new_selling_price = number_format($new_selling_price, 2, '.', '');
+                            $new_selling_price = number_format($new_selling_price, 2);
                         }
                         else
                         {
@@ -1417,14 +1417,12 @@ class InventoryFacade extends DBConnection
                             $selling_price = $new_cost_price + $interest;
             
                             $withTax = ($new_selling_price/1.12) * 0.12;
-                            $new_selling_price = $withTax;
-                            $new_selling_price = number_format($new_selling_price, 2, '.', '');
+                            $new_selling_price = number_format($withTax, 2);
                         }
                     } 
 
                     if ($inventory_id === 0) 
                     {
-
                         $sqlStatement = $this->connect()->prepare("INSERT INTO inventory (order_id, product_id, qty_purchased, amount_beforeTax, amount_afterTax, status, isSelected, total, tax) 
                                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
@@ -1446,7 +1444,7 @@ class InventoryFacade extends DBConnection
                         $product_sql->execute();
                       
                     }
-                     else 
+                    else 
                     {
                         $sql = "UPDATE inventory SET qty_purchased = :v1, amount_beforeTax = :v2, amount_afterTax = :v3, status = :v4, total = :v5, tax = :v6, order_id = :v7, product_id = :v8 WHERE id = :id";
                         $sqlStatement = $this->connect()->prepare($sql);
@@ -1470,7 +1468,9 @@ class InventoryFacade extends DBConnection
                     }
 
                 }
-            } else {
+            } 
+            else 
+            {
                 $order_id = $this->save_order($formData);
                 foreach ($tbldata as $row) {
                     $product_id = $row['product_id'];

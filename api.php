@@ -425,7 +425,8 @@
             }
             break;
         case 'importProduct':
-                if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+                if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) 
+                {
                     $formData = $_FILES['file'];
                     $importProduct = $products->importProducts($formData);
                     if ($importProduct) {

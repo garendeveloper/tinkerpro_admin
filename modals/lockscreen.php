@@ -56,6 +56,7 @@ h4{
   align-items: center; 
   justify-content: center; 
   text-align: center; 
+  margin-left: 30px;
 }
 </style>
 <div class="modal" id="lockscreen" tabindex="-1" aria-labelledby="lockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.8);    z-index: 9999;";>
@@ -64,7 +65,7 @@ h4{
       <div class="modal-header">
         <img src="assets/img/lock-icon.png" style = "width: auto; height: auto;" alt="logo"/>
       </div>
-      <div class="modal-footer" style = "border: none; margin-top: -20px; padding: 20px; ">
+      <div class="modal-footer" style = "border: none; margin-top: -20px; padding: 20px; align-items: center; justify-content: center; ">
         <button class="requestPermissionBtn continueT" style = "background-color: #d3d3d3; margin-right: 20px;">LOGOUT</button>
         <button class="requestPermissionBtn cancelT" style = "background-color: var(--primary-color)">STAY</button>
       </div>

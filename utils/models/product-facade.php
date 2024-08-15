@@ -926,17 +926,19 @@ public function importProducts($fileData) {
   $csvData = array_map('str_getcsv', file($file));
   $headers = array_shift($csvData);
 
-  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable,uom_id, product_stock, stock_count) 
-              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable,:uom_id, :product_stock, :stock_count)";
+  $query = "INSERT INTO products (prod_desc, sku, barcode, cost, markup, prod_price, isVAT, is_taxIncluded, IsPriceChangeAllowed, IsUsingDefaultQuantity, IsService, status,is_discounted,is_stockable,uom_id) 
+              VALUES (:prod_desc, :sku, :barcode, :cost, :markup, :prod_price, :isVAT, :is_taxIncluded, :IsPriceChangeAllowed, :IsUsingDefaultQuantity, :IsService, :status,:isDiscounted,:is_stockable,:uom_id)";
   
   $conn = $this->connect();
   $conn->beginTransaction(); 
   date_default_timezone_set('Asia/Manila');
   $currentDate = date('Y-m-d h:i:s');
-  try {
+  try 
+  {
       $stmt = $conn->prepare($query);
     
-      foreach ($csvData as $row) {
+      foreach ($csvData as $row) 
+      {
           $product = array_combine($headers, $row);
 
           // Bind parameters
@@ -962,7 +964,8 @@ public function importProducts($fileData) {
           $lastInsertIds[] = $productId;
       }
       $conn->commit(); 
-      foreach ($lastInsertIds as $productId) {
+      foreach ($lastInsertIds as $productId) 
+      {
         $sqlInventory = 'INSERT INTO inventory (product_id) VALUES (:product_id)';
         $stmtInventory = $conn->prepare($sqlInventory);
         $stmtInventory->bindParam(':product_id', $productId);

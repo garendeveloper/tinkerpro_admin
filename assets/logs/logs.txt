@@ -13448,6 +13448,32 @@
 2024-08-14 14:50:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DEL MONTE CREAMY & CHEESY 900G Barcode #:311104 
 2024-08-14 14:57:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DING DONG 5G 1PACK-REB Barcode #:4800092330100 
 2024-08-14 14:58:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DII DIP CREAMY CHOCO Barcode #:4806521797568 
+2024-08-14 16:17:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TJ CORN PEAS 100G Barcode #:806503643425 
+2024-08-14 16:17:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TJ CORN PEAS 100G Barcode #:4806503643425 
+2024-08-14 16:18:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TJ CORN PEAS 100G Barcode #:4806503643425 
+2024-08-14 16:20:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SKIN WHITE SOAP POWER WHITENING 90G. Barcode #:494743 
+2024-08-14 16:20:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SKIN WHITE SOAP POWER WHITENING 65G Barcode #:20772 
+2024-08-14 16:20:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated LUCKY STAR COTTON BUDS 80S Barcode #:850642 
+2024-08-14 16:21:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAMAS LOVE COTTON BUDS 100S Barcode #:853991 
+2024-08-14 16:21:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAMAS LOVE COTTON BUDS 200S Barcode #:440811 
+2024-08-14 16:21:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAMAS LOVE COTTON BUDS 400S Barcode #:642082 
+2024-08-14 16:21:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MAMAS LOVE COTTON BUDS 50S Barcode #:609715 
+2024-08-14 16:24:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SISTERS NAPKIN N/WING 8S Barcode #:4806506318955 
+2024-08-14 16:27:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR ANTIBAC 380G Barcode #:4800888219343 
+2024-08-14 16:27:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TJ CORN PEAS 100G Barcode #:4806503643425 
+2024-08-14 16:32:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TURMERIC SOOTHING GEL 60ML Barcode #:807088 
+2024-08-14 16:41:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GUMMY CATERPILLAR Barcode #:864574 
+2024-08-14 16:41:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GUMMY BANANA Barcode #:35977 
+2024-08-14 16:46:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HIPON Barcode #:424388 
+2024-08-14 16:48:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated HIPON Barcode #:424388 
+2024-08-14 17:22:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SALICYLIC ACID 30ML Barcode #:430175 
+2024-08-14 17:24:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SALICYLIC ACID 25ML IPI Barcode #:963737 
+2024-08-14 17:28:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SPONGE W/STEEL Barcode #:274024 
+2024-08-14 17:32:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated STEELWALL Barcode #:81436 
+2024-08-14 17:36:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated STYRO CUP 8OZ 1PCK WB Barcode #:680611 
+2024-08-14 17:39:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SWEETENED COCOA 250G Barcode #:265731 
+2024-08-14 17:41:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TOSTILLAS NACHO CHEESE-FAMILY 72G Barcode #:4800016652134 
+2024-08-14 17:46:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated VANILLA EXTRACT Barcode #:467743 
 >>>>>>> 4deb3b4ccb6d0a3c188c7cfe4b056fe9036a2fde
 2024-08-14 09:22:14 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-14 09:35:48 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
