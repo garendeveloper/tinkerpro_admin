@@ -1226,7 +1226,7 @@ class InventoryFacade extends DBConnection
                     $currentDate = date('Y-m-d h:i:s');
                     $stock_customer = $formData['user_name'];
                     $document_number = $po_number;
-                    $transaction_type = "Received";
+                    $transaction_type = "Purchased";
                     $stmt = $this->connect()->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
                                                         VALUES (?, ?, ?, ?, ?, ?, ?)");
         

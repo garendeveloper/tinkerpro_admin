@@ -1026,7 +1026,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0  AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -1062,7 +1062,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1105,7 +1105,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1  AND discounts.discount_amount > 0 THEN
@@ -1167,7 +1167,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0  AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -1203,7 +1203,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1246,7 +1246,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1307,7 +1307,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0  AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -1343,7 +1343,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1386,7 +1386,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1447,7 +1447,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0   AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -1483,7 +1483,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1526,7 +1526,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1588,7 +1588,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0  AND products.is_discounted = 1 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -1624,7 +1624,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1667,7 +1667,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1764,7 +1764,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -1800,7 +1800,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1843,7 +1843,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1907,7 +1907,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -1943,7 +1943,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -1986,7 +1986,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -2049,7 +2049,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat =  1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -2085,7 +2085,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -2128,7 +2128,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -2192,7 +2192,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1  AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -2228,7 +2228,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -2271,7 +2271,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0  AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -2336,7 +2336,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1 AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -2372,7 +2372,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0 AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -2415,7 +2415,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0 AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -2481,7 +2481,7 @@ class OtherReportsFacade extends DBConnection {
         LEAST(
         CASE
             WHEN products.isVat = 1 AND products.is_discounted = 1 THEN
-            ((SUM(t.subtotal) / 1.12) * (d.discount_amount / 100))
+            ((SUM(t.subtotal)) * (d.discount_amount / 100))
             WHEN products.isVat = 0 AND d.discount_amount > 0 THEN
             (SUM(t.subtotal) * (d.discount_amount / 100))
             ELSE
@@ -2517,7 +2517,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         ((refunded.refunded_qty * products.prod_price) - 
                         ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0 AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -2560,7 +2560,7 @@ class OtherReportsFacade extends DBConnection {
                     (
                         (( return_exchange.return_qty * products.prod_price) - 
                         (( return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
-                    ) / 1.12) * discounts.discount_amount / 100,
+                    )) * discounts.discount_amount / 100,
                     2
                 )
             WHEN products.isVAT = 0 AND products.is_discounted = 1 AND discounts.discount_amount > 0 THEN
@@ -6779,7 +6779,7 @@ GROUP BY
             SUM(transactions.discount_amount) AS itemDiscount,
             CASE 
                 WHEN products.isVAT = 1 THEN
-                    ROUND(((SUM(transactions.prod_qty) * products.prod_price) / 1.12) * 0.12, 2)
+                    ROUND(((SUM(transactions.prod_qty) * products.prod_price)) * 0.12, 2)
                 ELSE 0
             END AS totalVat,
             products.is_discounted,
@@ -6918,8 +6918,8 @@ GROUP BY
                 SUM(return_qty) AS return_qty,
                 SUM(return_amount) AS return_amount, 
                 SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) as lessItemDiscount,
-                ROUND(((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12) * 0.12 ,2) AS vat_amount,
-                ROUND((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) / 1.12 ,2) VatExempt,
+                ROUND(((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))))) * 0.12 ,2) AS vat_amount,
+                ROUND((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) ,2) VatExempt,
                 ROUND(SUM(return_amount) - (SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))), 2) AS totalReturnAmount,
                 SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
                 SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].credits'))) AS credits,
@@ -7028,10 +7028,10 @@ GROUP BY
             CAST(SUM(t.discount_amount)- COALESCE(ret.overAlldiscounts,0)-COALESCE(tr.overAlldiscounts,0)AS DECIMAL(10,2))as itemDiscount,
             CAST(SUM(
                 CASE 
-                     WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0 AND ROUND(((t.prod_qty) * p.prod_price) / 1.12, 2) >= 2500
+                     WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0 AND ROUND(((t.prod_qty) * p.prod_price), 2) >= 2500
                         THEN ROUND((2500) * (d.discount_amount / 100), 2)
-        	        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0 AND ROUND(((t.prod_qty) * p.prod_price) / 1.12, 2) < 2500
-                        THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+        	        WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0 AND ROUND(((t.prod_qty) * p.prod_price), 2) < 2500
+                        THEN (((t.prod_qty * p.prod_price)-t.discount_amount)) * (d.discount_amount / 100)
                     ELSE 0 
                 END)AS DECIMAL(10,2))-COALESCE(ret.total_customer_discount,0)-COALESCE(tr.total_customer_discount,0)  AS overallDiscounts,
 
@@ -7039,7 +7039,7 @@ GROUP BY
             CASE
                 WHEN p.isVAT = 1 THEN 
                     CAST(
-                        ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                        ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price)) * 0.12
                         AS DECIMAL(10,2)
                     )
                 ELSE 0
@@ -7145,7 +7145,7 @@ GROUP BY
                     (
                         ((rs.qty * rs.prod_price) - 
                                         (rs.total_item_discounts)
-                                    ) / 1.12) 
+                                    )) 
                         ELSE 0 END 
                     ) * (rs.discountRate / 100 )) AS vatableResult,
                     (SUM(
@@ -7153,7 +7153,7 @@ GROUP BY
                     (
                         ((rs.qty * rs.prod_price) - 
                                         (rs.total_item_discounts)
-                                    ) / 1.12) 
+                                    )) 
                         ELSE 0 END 
                     ) * (rs.discountRate / 100 )) AS nonVatableResult,
 
@@ -7162,14 +7162,14 @@ GROUP BY
                     (
                         ((rs.qty * rs.prod_price) - 
                                         (rs.total_item_discounts)
-                                    ) / 1.12) 
+                                    )) 
                         ELSE 0 END 
                     ) * (rs.discountRate / 100 )) + (SUM(
                     CASE  WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0  THEN
                     (
                         ((rs.qty * rs.prod_price) - 
                                         (rs.total_item_discounts)
-                                    ) / 1.12) 
+                                    )) 
                         ELSE 0 END 
                     ) * (rs.discountRate / 100 ))) total_customer_discount
                 
@@ -7246,7 +7246,7 @@ GROUP BY
                     (
                         ((rs.qty * rs.prod_price) - 
                                         (rs.total_item_discounts)
-                                    ) / 1.12) 
+                                    )) 
                         ELSE 0 END 
                     ) * (rs.discountRate / 100 )) AS vatableResult,
                     (SUM(
@@ -7254,7 +7254,7 @@ GROUP BY
                     (
                         ((rs.qty * rs.prod_price) - 
                                         (rs.total_item_discounts)
-                                    ) / 1.12) 
+                                    )) 
                         ELSE 0 END 
                     ) * (rs.discountRate / 100 )) AS nonVatableResult,
 
@@ -7263,14 +7263,14 @@ GROUP BY
                     (
                         ((rs.qty * rs.prod_price) - 
                                         (rs.total_item_discounts)
-                                    ) / 1.12) 
+                                    )) 
                         ELSE 0 END 
                     ) * (rs.discountRate / 100 )) + (SUM(
                     CASE  WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0  THEN
                     (
                         ((rs.qty * rs.prod_price) - 
                                         (rs.total_item_discounts)
-                                    ) / 1.12) 
+                                    )) 
                         ELSE 0 END 
                     ) * (rs.discountRate / 100 ))) total_customer_discount
                 FROM RefundSums AS rs
@@ -7372,7 +7372,7 @@ GROUP BY
     SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount)) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
@@ -7381,7 +7381,7 @@ GROUP BY
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
-                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price)) * 0.12
                 AS DECIMAL(10,2)
             )
         ELSE 0
@@ -7485,7 +7485,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        )) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -7575,7 +7575,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100
+                        )) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -7641,7 +7641,7 @@ newQty > 0;";
     SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount)) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
@@ -7650,7 +7650,7 @@ newQty > 0;";
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
-                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price)) * 0.12
                 AS DECIMAL(10,2)
             )
         ELSE 0
@@ -7754,7 +7754,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        )) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -7844,7 +7844,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100
+                        )) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -7909,7 +7909,7 @@ newQty > 0;";
     SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount)) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
@@ -7918,7 +7918,7 @@ newQty > 0;";
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
-                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price)) * 0.12
                 AS DECIMAL(10,2)
             )
         ELSE 0
@@ -8022,7 +8022,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        )) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -8112,7 +8112,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100
+                        )) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -8179,7 +8179,7 @@ newQty > 0;";
     SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount)) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
@@ -8188,7 +8188,7 @@ newQty > 0;";
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
-                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price)) * 0.12
                 AS DECIMAL(10,2)
             )
         ELSE 0
@@ -8292,7 +8292,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        )) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -8382,7 +8382,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100
+                        )) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -8448,7 +8448,7 @@ newQty > 0;";
     SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount)) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
@@ -8457,7 +8457,7 @@ newQty > 0;";
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
-                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price)) * 0.12
                 AS DECIMAL(10,2)
             )
         ELSE 0
@@ -8561,7 +8561,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        )) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -8651,7 +8651,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100
+                        )) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -8719,7 +8719,7 @@ newQty > 0;";
     SUM(
         CASE 
             WHEN p.isVAT = 1 AND p.is_discounted = 1 AND d.discount_amount > 0
-                THEN (((t.prod_qty * p.prod_price)-t.discount_amount) / 1.12) * (d.discount_amount / 100)
+                THEN (((t.prod_qty * p.prod_price)-t.discount_amount)) * (d.discount_amount / 100)
             WHEN p.isVAT = 0 AND p.is_discounted = 1 AND d.discount_amount > 0
                 THEN ((t.prod_qty * p.prod_price)-t.discount_amount) * (d.discount_amount / 100)
             ELSE 0 
@@ -8728,7 +8728,7 @@ newQty > 0;";
     CASE
         WHEN p.isVAT = 1 THEN 
             CAST(
-                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price) / 1.12) * 0.12
+                ((( COALESCE((SUM(t.prod_qty)), 0)) * p.prod_price)) * 0.12
                 AS DECIMAL(10,2)
             )
         ELSE 0
@@ -8832,7 +8832,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        )) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -8921,7 +8921,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100
+                        )) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -9067,6 +9067,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9090,7 +9091,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+               INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9200,6 +9201,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9223,7 +9225,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                     GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9332,6 +9334,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9355,7 +9358,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9465,6 +9468,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9488,7 +9492,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9598,6 +9602,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9621,7 +9626,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, SUM(service_charge) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9732,6 +9737,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -9755,7 +9761,7 @@ GROUP BY
                 
             FROM 
                 payments AS p 
-                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void FROM transactions
+                INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, ROUND(SUM(service_charge),2) as service_charge FROM transactions
                 GROUP BY payment_id) as t ON t.payment_id = p.id
                 INNER JOIN users AS u ON u.id = t.user_id
                 INNER JOIN discounts AS d ON d.id = u.discount_id
@@ -9866,6 +9872,7 @@ GROUP BY
             u.first_name AS first_name,
             u.last_name AS last_name, 
             CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+            service_charge,
             CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
             p.date_time_of_payment AS date,
             p.cart_discount AS cart_discount,
@@ -9996,6 +10003,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -10126,6 +10134,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -10258,6 +10267,7 @@ GROUP BY
                  u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -10388,6 +10398,7 @@ GROUP BY
                 u.first_name AS first_name,
                 u.last_name AS last_name, 
                 CAST(COALESCE(SUM(p.payment_amount), 0)AS DECIMAL(10,2)) AS paid_amount,
+                service_charge,
                 CAST(COALESCE(SUM(p.change_amount), 0)AS DECIMAL(10,2)) AS totalChange,
                 p.date_time_of_payment AS date,
                 p.cart_discount AS cart_discount,
@@ -10657,7 +10668,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100 AS DECIMAL(10,2)
+                        )) * rs.discountRate / 100 AS DECIMAL(10,2)
                         
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN
@@ -10747,7 +10758,7 @@ CustomerDiscounts AS (
                         (
                             ((rs.qty * rs.prod_price) - 
                             (rs.total_item_discounts)
-                        ) / 1.12) * rs.discountRate / 100
+                        )) * rs.discountRate / 100
                         AS DECIMAL(10,2)
                     )
                 WHEN rs.isVAT = 0 AND rs.is_discounted = 1 AND rs.discountRate > 0 THEN

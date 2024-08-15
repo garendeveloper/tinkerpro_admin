@@ -122,7 +122,7 @@ $formatted_tax = 0;
 while ($row = $fetchProducts->fetch(PDO::FETCH_ASSOC)) {
     if ($row['prod_price'] && $row['isVAT'] == 1) {
         $product_price = $row['prod_price'];
-        $vatable = round($product_price / 1.12, 2);
+        $vatable = round($product_price, 2);
         $tax = $product_price - $vatable;
         $totalTax += $tax; 
         $formatted_tax = number_format($tax, 2);

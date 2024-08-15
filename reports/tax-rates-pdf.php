@@ -152,8 +152,8 @@ $pdf->Ln();
 $totalZeroRated = 0;
 $totalOther = 0;
 
-$vatableSales = (float)  $sales / 1.12;
-$vat = (float) $tax * 1.12;
+$vatableSales = (float)  $sales;
+$vat = (float) $tax;
 $totalSales = (float) $tax + $vatableSales;
 
 $pdf->SetFont('', '', autoAdjustFontSize($pdf, $totalZeroRated, $headerWidths[0]));

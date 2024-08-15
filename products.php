@@ -1066,7 +1066,7 @@ $('#exportProducts').click(function() {
     var isTaxIncluded = row.querySelector('.isTaxIncluded').innerText;
     var serviceCharge = row.querySelector('.service').innerText;
     var displayService = row.querySelector('.displayService').innerText;
-    console.log(displayService);
+
     var otherCharges = row.querySelector('.other').innerText;
     var displayOtherCharges = row.querySelector('.displayOthers').innerText;
     var status = row.querySelector('.statusData').innerText;
