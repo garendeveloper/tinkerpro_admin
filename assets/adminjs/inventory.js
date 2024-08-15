@@ -246,8 +246,6 @@
             error: function (xhr, status, error) {
               console.error(xhr.responseText);
             },
-           
-        
           });
         }
         else {

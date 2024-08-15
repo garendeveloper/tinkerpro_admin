@@ -13518,3 +13518,86 @@
 2024-08-15 09:11:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-15 09:18:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-15 09:18:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 09:38:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CHARMEE PANTYLINER MENUDO Barcode #:692247 
+2024-08-15 09:40:00 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 09:40:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CHESTERFIELD RED ORIGINAL 20S Barcode #:272132 
+2024-08-15 09:43:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS STRAWBERRY 100G REFILL Barcode #:669789 
+2024-08-15 09:43:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS STRAWBERRY 50G REFILL Barcode #:4800067600061 
+2024-08-15 09:43:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS SAMBA REFILL Barcode #:9526 
+2024-08-15 09:43:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS KIWI 50G REFILL Barcode #:685985 
+2024-08-15 09:43:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS JASMINE 50G REFILL Barcode #:120548 
+2024-08-15 09:56:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ASHLEY HAIR COLOR ASSORTED Barcode #:555761 
+2024-08-15 09:58:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE DARK TEMPTATION BODY SPRAY 50ML Barcode #:4800888141101 
+2024-08-15 09:58:55 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 10:31:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CHIPPY CHILI & CHEESE BLUE 110G Barcode #:4800016641503 
+2024-08-15 10:32:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA SPAGHET TIPID Barcode #:415880 
+2024-08-15 10:33:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA SPAGHET TIPID 1KG Barcode #:507539 
+2024-08-15 10:33:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA SPAGHET TIPID 350G Barcode #:873777 
+2024-08-15 10:33:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA SPAGHET TIPID 850G Barcode #:4800110061009 
+2024-08-15 10:33:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CHOCO MUCHO W/ CHOCO 1PACK Barcode #:4800092660641 
+2024-08-15 10:34:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA SPAGHETTI TIPID Barcode #:415880 
+2024-08-15 10:34:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA SPAGHETTI TIPID 1KG Barcode #:507539 
+2024-08-15 10:34:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA SPAGHETTI TIPID 350G Barcode #:873777 
+2024-08-15 10:34:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIESTA SPAGHETTI TIPID 850G Barcode #:4800110061009 
+2024-08-15 10:38:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CLOVER CHIPS BARBECUE 85G Barcode #:4800216110113 
+2024-08-15 10:38:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GINISA MIX 100G Barcode #:4801958377000 
+2024-08-15 10:40:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GLUTA C BODY SCRUB 120G Barcode #:755332317578 
+2024-08-15 10:46:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GREAT TASTE WHITE SINGLE 30G Barcode #:4800016635892 
+2024-08-15 10:50:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AHOS Barcode #:7435741990908 
+2024-08-15 10:50:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AHOS Barcode #:7435741990908 
+2024-08-15 10:52:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO 11G 1PACK-AJI Barcode #:4801958341100 
+2024-08-15 10:53:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING  1KG-AJI Barcode #:4801958310007 
+2024-08-15 10:53:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 100G-AJI Barcode #:4801958240007 
+2024-08-15 10:53:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 11G 1PACK-AJI Barcode #:4801958341100 
+2024-08-15 10:54:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 11G MENUDO Barcode #:270262 
+2024-08-15 10:54:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 22G Barcode #:718211 
+2024-08-15 10:55:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO  UMAMI SEASONING 22G 8S 1PACK Barcode #:4801958302101 
+2024-08-15 10:55:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 250G-AJI Barcode #:561886 
+2024-08-15 10:55:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 500G-AJI Barcode #:104754 
+2024-08-15 10:55:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 50G 6S 1PACK Barcode #:628547 
+2024-08-15 10:56:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 50G-AJI Barcode #:825977 
+2024-08-15 10:56:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 9G (PACK) Barcode #:952343 
+2024-08-15 10:56:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 9GX21X2 Barcode #:958082 
+2024-08-15 10:56:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 250G-AJI Barcode #:4801958250006 
+2024-08-15 10:57:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 500G-AJI Barcode #:4801958260005 
+2024-08-15 10:58:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AJINOMOTO UMAMI SEASONING 50G-AJI Barcode #:4801958146002 
+2024-08-15 11:08:04 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 11:08:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY POWDER BEDTIME 100G Barcode #:885137539872 
+2024-08-15 11:11:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALASKA POWDERED CHOCO 33G Barcode #:4800575142633 
+2024-08-15 11:13:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALASKA POWDERED CHOCO 33G Barcode #:371931936103 
+2024-08-15 11:13:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALASKA POWDERED MILK 33G Barcode #:4800575142633 
+2024-08-15 11:27:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALAXAN FAST RELAX CAPSULE 200MG/325MG Barcode #:488204 
+2024-08-15 11:30:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROS STRAWBERRY-RH 50G Barcode #:4800067600061 
+2024-08-15 11:30:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS STRAWBERRY 50G REFILL Barcode #:145716685343 
+2024-08-15 11:31:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS APPLE 50G Barcode #:4800067600139 
+2024-08-15 11:34:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER HAIR FALL RESCUE 10ML Barcode #:927880 
+2024-08-15 11:34:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER HAIR FALL RESCUE 10ML 1/2DZ Barcode #:922980 
+2024-08-15 11:34:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER HAIR FALL RESCUE 10ML 1DZ Barcode #:78060 
+2024-08-15 11:34:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER INTENSE 10ML Barcode #:685644 
+2024-08-15 11:34:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER INTENSE 10ML 1/2DZ Barcode #:237575 
+2024-08-15 11:34:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER INTENSE 10ML 1DZ Barcode #:531148 
+2024-08-15 11:35:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER OIL CARE 10ML Barcode #:102737 
+2024-08-15 11:35:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER OIL CARE 10ML 1/2DZ Barcode #:134662 
+2024-08-15 11:35:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER CARE 10ML 1DZ Barcode #:278061 
+2024-08-15 11:35:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER OXYGEN 10ML Barcode #:324155 
+2024-08-15 11:35:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER OXYGEN 10ML 1/2DZ Barcode #:744821 
+2024-08-15 11:35:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER OXYGEN 10ML 1DZ Barcode #:380720 
+2024-08-15 11:35:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SERUM NOURISHING OIL CARE 10ML Barcode #:511909 
+2024-08-15 11:36:02 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SERUM NOURISHING OIL CARE 10ML 1/2DZ Barcode #:383987 
+2024-08-15 11:36:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SERUM NOURISHING OIL CARE 10ML 1DZ Barcode #:988721 
+2024-08-15 11:36:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SERUM REPAIR 10ML Barcode #:220800 
+2024-08-15 11:36:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SERUM REPAIR 10ML 1/2DZ Barcode #:121008 
+2024-08-15 11:36:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SERUM REPAIR 10ML 1DZ Barcode #:202576 
+2024-08-15 11:36:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SOOTHING MOISTURE 1/2DZ Barcode #:790271 
+2024-08-15 11:36:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SOOTHING MOISTURE 10ML Barcode #:897144 
+2024-08-15 11:36:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER SOOTHING MOISTURE 1DZ Barcode #:361566 
+2024-08-15 11:37:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER STRAIGHT & SILKY PINK 10ML Barcode #:120010 
+2024-08-15 11:37:18 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER STRAIGHT & SILKY PINK 10ML 1/2DZ Barcode #:822440 
+2024-08-15 11:37:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE CONDITIONER STRAIGHT & SILKY PINK 10ML 1DZ Barcode #:11381 
+2024-08-15 11:41:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS JASMINE 50G REFILL Barcode #:4800067600146 
+2024-08-15 11:42:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DOVE SHAMPOO STRAIGHT & SILKY PINK 12ML Barcode #:410016 
+2024-08-15 11:44:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS SAMBA REFILL Barcode #:4800067600429 
+2024-08-15 11:45:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated DORCO BLADE 10S 1BOX Barcode #:789434 
+2024-08-15 11:45:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ORCHID DEODORIZER STRAWBERRY 100G Barcode #:260543178652 
+2024-08-15 11:45:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS STRAWBERRY 100G REFILL Barcode #:4800067600443 
+2024-08-15 11:50:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated EFFICASCENT OIL EXTRA SRENGTH 25ML-IPI Barcode #:48035156 

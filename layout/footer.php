@@ -119,7 +119,7 @@ $(document).ready(function() {
         type: 'get',
         url: 'api.php?action=pos_settings',
         success:function(response){
-          var defaultColor = "#FF6900";
+          var defaultColor = "var(--primary-color)";
 
           
           if(!$.isEmptyObject(response))
@@ -819,7 +819,7 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
     position: absolute;
     right: 1.6em;
     top: 10px;
-    background: #FF6900;
+    background: var(--primary-color);
     color: #fff;
     border: none;
     width: 40px;
@@ -910,12 +910,12 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
 
 .permissions:active,
 .permissions:focus {
-  background-color: #FF6900 !important;
+  background-color: var(--primary-color) !important;
   color: #fff;
   outline: 0 !important;
 }
 .permissions{
-  background-color: #FF6900 !important;
+  background-color: var(--primary-color) !important;
   color:#fff;
   outline: 0 !important;
 }
@@ -941,75 +941,75 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
           resetTimer();
       };
       inactivityTime();
-      
-      function openPasswordUnlock()
-      {
-        $("#unlockscreen").fadeIn(100);
-        $("#unlockPasswordTxt").focus();
-        $("#unlockPasswordTxt").val("");
-      }
-      $("#lockscreen").on("keydown", function(event) {
-          if (event.key === 'Enter') {
-              openPasswordUnlock();
+  });
+  function openPasswordUnlock()
+  {
+    $("#unlockscreen").fadeIn(100);
+    $("#unlockPasswordTxt").focus();
+    $("#unlockPasswordTxt").val("");
+  }
+   $(document).on("keydown", "#lockscreen", function(event) {
+        if (event.key === 'Enter') {
+            openPasswordUnlock();
+            event.preventDefault();
+        }
+    });
+
+    $('.cancelT').on('click', function(){
+      openPasswordUnlock();
+    })
+    
+    $(document).off("click").on("click", ".continueT", function(){
+      $('#lockscreen').hide();
+      $(".continue_logout").click();
+    })
+
+
+    $(document).on("click", "#unlockscreen #btnCancelUnlock", function(){
+      $("#unlockscreen").hide();
+    })
+    function disableRefresh()
+    {
+      $(document).on("keydown", function(event){
+        if (event.keyCode === 116) {
               event.preventDefault();
           }
-      });
-    
-      $('.cancelT').on('click', function(){
-        openPasswordUnlock();
+          if (event.ctrlKey && (event.keyCode === 82 || event.keyCode === 116)) {
+              event.preventDefault();
+          }
       })
-     
-      $(".continueT").off("click").on("click", function(){
-        $('#lockscreen').hide();
-        $(".continue_logout").click();
-      })
-
-
-      $("#btnCancelUnlock").on("click", function(){
-        $("#unlockscreen").hide();
-      })
-      function disableRefresh()
-      {
-        $(document).on("keydown", function(event){
-          if (event.keyCode === 116) {
-                event.preventDefault();
-            }
-            if (event.ctrlKey && (event.keyCode === 82 || event.keyCode === 116)) {
-                event.preventDefault();
-            }
-        })
-      }
-      function handleUnlock() {
-        var unlockPasswordTxt = $("#unlockPasswordTxt").val();
-        if (unlockPasswordTxt.trim() !== "") {
-          $("#unlockPasswordTxt").removeClass('has-error');
-          $.ajax({
-            type: 'get',
-            url: 'api.php?action=unlockAdminUser',
-            data: {
-              password: unlockPasswordTxt,
-            },
-            success: function(response)
+    }
+    function handleUnlock() {
+      var unlockPasswordTxt = $("#unlockPasswordTxt").val();
+      if (unlockPasswordTxt.trim() !== "") {
+        $("#unlockPasswordTxt").removeClass('has-error');
+        $.ajax({
+          type: 'get',
+          url: 'api.php?action=unlockAdminUser',
+          data: {
+            password: unlockPasswordTxt,
+          },
+          success: function(response)
+          {
+            if(response.status)
             {
-              if(response.status)
-              {
-                $("#unlockscreen").hide();
-                $('#lockscreen').hide();
-              }
-              else
-              {
-                $("#unlockPasswordTxt").addClass('has-error');
-                $(".errorResponse").html(response.message);
-              }
+              $("#unlockscreen").hide();
+              $('#lockscreen').hide();
             }
-          })
-        } else {
-          $(".errorResponse").html("Password is required!");
-          $("#unlockPasswordTxt").addClass('has-error');
-        }
+            else
+            {
+              $("#unlockPasswordTxt").addClass('has-error');
+              $(".errorResponse").html(response.message);
+            }
+          }
+        })
+      } else {
+        $(".errorResponse").html("Password is required!");
+        $("#unlockPasswordTxt").addClass('has-error');
       }
+    }
 
-    $("#btnContinueUnlock").on("click",  function() {
+    $(document).on("click", "#unlockscreen #btnContinueUnlock", function() {
       handleUnlock();
     });
   
@@ -1019,6 +1019,4 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
         handleUnlock();
       }
     });
-  });
-  
 </script>
