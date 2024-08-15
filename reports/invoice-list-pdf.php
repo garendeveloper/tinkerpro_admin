@@ -4,7 +4,6 @@ include(__DIR__ . '/../utils/db/connector.php');
 include(__DIR__ . '/../utils/models/other-reports-facade.php');
 include(__DIR__ . '/../utils/models/product-facade.php');
 
-use TCPDF;
 $pdfFolder = __DIR__ . '/../assets/pdf/invoice/';
 
 $files = glob($pdfFolder . '*');
@@ -32,7 +31,7 @@ $singleDateData = $_GET['singleDateData'] ?? null;
 $startDate = $_GET['startDate'] ?? null;
 $endDate = $_GET['endDate'] ?? null;
 
-$salesHistory = json_decode($_GET['salesHistory'], true);
+$salesHistory = json_decode($_POST['salesHistory'], true);
 
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
@@ -191,4 +190,7 @@ $pdf->SetFont('', '', 8);
 $pdfPath = $pdfFolder . 'invoiceList.pdf';
 $pdf->Output($pdfPath, 'F');
 $pdf->Output('invoiceList.pdf', 'I');
+
+header('Content-Type: application/pdf');
+header('Content-Disposition: attachment; filename="invoiceList.pdf"');
 ?>
