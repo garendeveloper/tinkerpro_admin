@@ -51,7 +51,7 @@ h4{
 }
 #lockscreen .modal-footer button {
   width: 100px;
-  height: 30px;
+  height: 25px;
   display: flex;
   align-items: center; 
   justify-content: center; 
@@ -65,9 +65,9 @@ h4{
       <div class="modal-header">
         <img src="assets/img/lock-icon.png" style = "width: auto; height: auto;" alt="logo"/>
       </div>
-      <div class="modal-footer" style = "border: none; margin-top: -20px; padding: 20px; align-items: center; justify-content: center; ">
-        <button class="requestPermissionBtn continueT" style = "background-color: #d3d3d3; margin-right: 20px;">LOGOUT</button>
-        <button class="requestPermissionBtn cancelT" style = "background-color: var(--primary-color)">STAY</button>
+      <div class="modal-footer" style = "border: none; margin-top: -10px; padding: 20px; align-items: center; justify-content: center; ">
+        <button class="requestPermissionBtn continueT" style = "background-color: grey; margin-right: -20px; font-weight: normal; border-radius: 5px;">LOGOUT</button>
+        <button class="requestPermissionBtn cancelT" style = "background-color: var(--primary-color); font-weight: normal; border-radius: 5px;">STAY</button>
       </div>
     </div>
   </div>

@@ -49,31 +49,39 @@ h4{
   border: none;
 }
 #unlockscreen .modal-footer button {
-  width: 150px;
-  height: 30px;
-  align-items: center;  
-  text-align: center;  
-  vertical-align: center;
-  font-size: 12px;
-  margin-top: -100px;
+  width: 100px;
+  height: 25px;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  text-align: center; 
+  margin-left: 30px;
+  margin-top: 
 }
 .has-error{
     border: 1px solid red !important;
 }
+input::placeholder{
+  color: white;
+  font-style: italic;
+}
 </style>
-<div class="modal" id="unlockscreen" tabindex="-1" aria-labelledby="unlockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 1);    z-index: 99999;";>
+<div class="modal" id="unlockscreen" tabindex="-1" aria-labelledby="unlockscreenLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.9);    z-index: 99999;";>
   <div class="modal-dialog modal-dialog-centered" >
-    <div class="modal-content modal-logout" style = "background: #262626; height: 100px;">
-      <div class = "modal-body">
+    <div class="modal-content modal-logout" style = "background: #262626; height: 80px;">
+      <div class = "modal-body" >
         <h4 style = "color: #fffff; font-weight: bold">For security reason, please log back in</h4>
         <h4 style = "color: var(--primary-color); margin-top: -20px;">[<?= $_SESSION['first_name']." ".$_SESSION['last_name']?>]</h4>
-        <h6 style = "color: #d3d3d3; margin-top: -20px;">Scan your ID or enter your password</h6>
-        <input type="password" id = "unlockPasswordTxt" style = "width: 380px; border: 1px solid #d3d3d3; background-color: grey;text-align: center" oninput = "$(this).removeClass('has-error'); $('.errorResponse').html('')" autocomplete = "off"/>
+        <h6 style = "color: #d3d3d3; margin-top: 30px;"></h6>
+        <input type="password" id = "unlockPasswordTxt" placeholder = "Scan your ID or enter your password" style = "width: 380px; border: 1px solid #d3d3d3; background-color: grey;text-align: center" oninput = "$(this).removeClass('has-error'); $('.errorResponse').html('')" autocomplete = "off"/> 
         <p class = "errorResponse" style = "color: red !important"></p>
       </div>
-      <div class="modal-footer" style = "border: none; ">
-        <button id="btnCancelUnlock" style = "background-color: #d3d3d3">CANCEL</button>
-        <button id = "btnContinueUnlock" style = "background-color: var(--primary-color)">CONTINUE</button>
+      <div class="modal-footer" style = "border: none; margin-top: -30px; padding: 20px; align-items: center; justify-content: center; ">
+        <!-- <button id="btnCancelUnlock" style = "background-color: #d3d3d3">CANCEL</button>
+        <button  style = "background-color: var(--primary-color)">CONTINUE</button> -->
+
+        <button id="btnCancelUnlock" style = "background-color: grey; margin-right: 10px; font-weight: normal; border-radius: 5px;">CANCEL</button>
+        <button id = "btnContinueUnlock" style = "background-color: var(--primary-color); font-weight: normal; border-radius: 5px;">CONTINUE</button>
       </div>
     </div>
   </div>

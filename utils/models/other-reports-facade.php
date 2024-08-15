@@ -10152,10 +10152,6 @@ GROUP BY
                 COALESCE(SUM(res.discountsReturnTender), 0) AS totalDiscountsReturnTender,
                 COALESCE(SUM(res.cartRateReturn), 0) AS cartRateReturnTotal,
                 COALESCE(SUM(res.returnCart), 0) AS cartReturnTotal
-             
-             
-               
-                
             FROM 
                 payments AS p 
                   INNER JOIN (SELECT payment_id,user_id,prod_id,is_paid,is_void, cashier_id, service_charge FROM transactions

@@ -43,7 +43,6 @@ $pdf->SetKeywords('TCPDF, PDF, product, table');
 
 $pdf->AddPage();
 
-
 $pdf->SetCellHeightRatio(1.5);
 $imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
 $imageWidth = 45; 
@@ -59,6 +58,31 @@ function isActive($value)
 switch($active_id)
 {
     case "tbl_products":
+        $paperSize = 'A4'; 
+
+        if ($paperSize == 'A4') 
+        {
+            $pageWidth = 210;
+            $pageHeight = 297;
+        }
+        $pdf = new TCPDF('L', PDF_UNIT, array($pageWidth, $pageHeight), true, 'UTF-8', false);
+        $pdf->SetCreator('TinkerPro Inc.');
+        $pdf->SetAuthor('TinkerPro Inc.');
+        $pdf->SetTitle('Inventory Table PDF');
+        $pdf->SetDrawColor(255, 199, 60); 
+        $pdf->SetSubject('Inventory Table PDF Document');
+        $pdf->SetKeywords('TCPDF, PDF, product, table');
+
+        $pdf->AddPage();
+
+        $pdf->SetCellHeightRatio(1.5);
+        $imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
+        $imageWidth = 45; 
+        $imageHeight = 15; 
+        $imageX = 10; 
+        $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+        $pdf->SetFont('', 'I', 8);
+
         $pdf->SetFont('', 'B', 10);
         $pdf->Cell(0, 10, 'Inventories', 0, 1, 'R', 0); 
         $pdf->Ln(-5);
@@ -93,8 +117,8 @@ switch($active_id)
         $items = $inventory->get_allInventoriesData();
         $pdf->SetDrawColor(192, 192, 192); 
         $pdf->SetLineWidth(0.3); 
-        $header = array('No.', 'Product', 'Barcode', 'UOM', 'Qty in Store', 'Amt. Bef. Tax(Php)', 'Amt. Aft Tax (Php)');
-        $headerWidths = array(8, 50, 35, 15, 20, 30, 30);
+        $header = array('No.', 'Product', 'Barcode', 'UOM', 'Qty in Store', 'Amt. Bef. Tax(Php)', 'Amt. Aft Tax (Php)', 'Total Amount');
+        $headerWidths = array(10, 80, 35, 30, 30, 30, 30, 30);
         $maxCellHeight = 5;
         
         $hexColor = '#F5F5F5';
@@ -104,7 +128,12 @@ switch($active_id)
         
         $pdf->SetFont('', 'B',8);
         for ($i = 0; $i < count($header); $i++) {
-            $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
+            if($i == 4 || $i == 5 || $i == 6 || $i == 7) {
+                $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'C', true);
+            }
+            else {
+                $pdf->Cell($headerWidths[$i], $maxCellHeight, $header[$i], 1, 0, 'L', true);
+            }
         }
         $pdf->Ln();
         
@@ -117,11 +146,12 @@ switch($active_id)
         $total_amountBeforeTax = 0;        
         $total_amountAfterTax = 0;
         $total_qty = 0;
+        $overall_amount = 0;
         foreach ($items as $item) 
         {
             $amountBeforeTaxFormatted = number_format($item['cost'], 2);
             $amountAfterTaxFormatted = number_format($item['prod_price'], 2);
-
+            $total = (float)$item['product_stock'] * (float)$item['prod_price'];
             $pdf->Cell($headerWidths[0], $maxCellHeight, $counter, 1, 0, 'C');
             $pdf->SetFont('', '', autoAdjustFontSize($pdf, $counter, $headerWidths[0]));
             $pdf->Cell($headerWidths[1], $maxCellHeight, $item['prod_desc'], 1, 0, 'L');
@@ -136,34 +166,43 @@ switch($active_id)
             $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountBeforeTaxFormatted, $headerWidths[5]));
             $pdf->Cell($headerWidths[6], $maxCellHeight, $amountAfterTaxFormatted, 1, 0, 'R');
             $pdf->SetFont('', '', autoAdjustFontSize($pdf, $amountAfterTaxFormatted, $headerWidths[6]));
+            $pdf->Cell($headerWidths[7], $maxCellHeight, number_format($total,2), 1, 0, 'R');
+            $pdf->SetFont('', '', autoAdjustFontSize($pdf, number_format($total,2), $headerWidths[7]));
             $pdf->Ln(); 
+
             $total_amountBeforeTax +=$item['cost'];
             $total_amountAfterTax += $item['prod_price'];
             $total_qty += $item['product_stock'];
+            $overall_amount += $total;
             $counter++;
         }
         $tax = $total_amountAfterTax - $total_amountBeforeTax;
         $pdf->Ln();
         
         $pdf->SetFont('', 'B', 8); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total Qty in Store', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Total Qty in Store', 1, 0, 'L'); 
         $pdf->Cell($headerWidths[5] + $headerWidths[6], $maxCellHeight, number_format( $total_qty, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
         $pdf->Ln(); 
 
         $pdf->SetFont('', 'B', 8); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total Amount Before Tax', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Total Amount Before Tax', 1, 0, 'L'); 
         $pdf->Cell($headerWidths[5] + $headerWidths[6], $maxCellHeight, number_format( $total_amountBeforeTax, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
 
         $pdf->SetFont('', 'B', 8); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Tax', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Tax', 1, 0, 'L'); 
         $pdf->Cell($headerWidths[5] + $headerWidths[6], $maxCellHeight, number_format( $tax, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
 
         $pdf->SetFont('', 'B', 8); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total Amount After Tax', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Total Amount After Tax', 1, 0, 'L'); 
         $pdf->Cell($headerWidths[5] + $headerWidths[6], $maxCellHeight, number_format( $total_amountAfterTax, 2), 1, 0, 'R'); 
+        $pdf->Ln(); 
+
+        $pdf->SetFont('', 'B', 8); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Overall Total Amount', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[5] + $headerWidths[6], $maxCellHeight, number_format( $overall_amount, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
 
         break;
@@ -258,15 +297,15 @@ switch($active_id)
         }
         $pdf->Ln(); 
         $pdf->SetFont('', 'B', 8); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total Qty', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Total Qty', 1, 0, 'L'); 
         $pdf->Cell($headerWidths[5] + $headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format( $over_all_qty, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
         $pdf->Ln(); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total Price', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Total Price', 1, 0, 'L'); 
         $pdf->Cell($headerWidths[5] + $headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format( $over_all_price, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
         $pdf->SetFont('', 'B', 8); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Overall Total', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Overall Total', 1, 0, 'L'); 
         $pdf->Cell($headerWidths[5] + $headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format( $over_all_total, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
         
@@ -366,21 +405,21 @@ switch($active_id)
         }
         $pdf->Ln(); 
         $pdf->SetFont('', 'B', 8); 
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Total Qty', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5] + $headerWidths[5], $maxCellHeight, 'Total Qty', 1, 0, 'L'); 
         $pdf->SetTextColor(255, 0, 0); 
         $pdf->Cell($headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format( $over_all_qty, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
 
         $pdf->SetFont('', 'B', 8); 
         $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Total Cost', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5] + $headerWidths[5], $maxCellHeight, 'Total Cost', 1, 0, 'L'); 
         $pdf->SetTextColor(255, 0, 0); 
         $pdf->Cell($headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format( $over_all_cost, 2), 1, 0, 'R'); 
         $pdf->Ln(); 
 
         $pdf->SetFont('', 'B', 8); 
         $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Overall Total Cost', 1, 0, 'L'); 
+        $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5] + $headerWidths[5], $maxCellHeight, 'Overall Total Cost', 1, 0, 'L'); 
         $pdf->SetTextColor(255, 0, 0); 
         $pdf->Cell($headerWidths[6] + $headerWidths[7], $maxCellHeight, number_format($over_all_totalCost, 2), 1, 0, 'R'); 
         $pdf->SetTextColor(0, 0, 0);
@@ -486,7 +525,7 @@ switch($active_id)
 
 
 // $pdf->SetFont('', 'B', 10);
-// $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4], $maxCellHeight, 'Total', 1, 0, 'C');
+// $pdf->Cell($headerWidths[0] + $headerWidths[1] + $headerWidths[2] + $headerWidths[3] + $headerWidths[4] + $headerWidths[5], $maxCellHeight, 'Total', 1, 0, 'C');
 // $pdf->Cell($headerWidths[5], $maxCellHeight, number_format($totalCost, 2), 1, 0, 'L');
 // $pdf->Cell($headerWidths[6], $maxCellHeight, number_format($totalSellingPrice, 2), 1, 0, 'L');
 // $pdf->Cell($headerWidths[7], $maxCellHeight, number_format($totalTax, 2), 1, 0, 'L');
