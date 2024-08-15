@@ -13471,3 +13471,9 @@
 2024-08-14 17:39:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SWEETENED COCOA 250G Barcode #:265731 
 2024-08-14 17:41:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TOSTILLAS NACHO CHEESE-FAMILY 72G Barcode #:4800016652134 
 2024-08-14 17:46:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated VANILLA EXTRACT Barcode #:467743 
+2024-08-14 18:12:39 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-14 18:14:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Exported productList.csv 
+2024-08-15 09:07:33 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 09:11:12 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 09:18:47 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 09:18:57 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
