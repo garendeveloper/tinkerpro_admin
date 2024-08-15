@@ -61,7 +61,7 @@ $pdf->Image($imageFile, $imageX, 10, $imageWidth, $imageHeight, '', '', '', fals
 $pdf->SetFont('', 'I', 8);
 
 $pdf->SetFont('', 'B', 10);
-$pdf->Cell(0, 10, 'JOURNAL', 0, 1, 'R', 0);
+$pdf->Cell(0, 10, 'INVOICE LIST', 0, 1, 'R', 0);
 $pdf->Ln(-5);
 $pdf->SetFont('', '', 10);
 $pdf->Cell(0, 10, "{$shop['shop_name']}", 0, 1, 'R', 0);

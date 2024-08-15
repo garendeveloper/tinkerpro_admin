@@ -242,23 +242,23 @@ class BirFacade extends DBConnection {
             
                     CASE 
                         WHEN products.isVAT = 1 AND products.is_discounted = 1 THEN
-                            ROUND((SUM(transactions.subtotal)),2)
+                            ROUND((SUM( transactions.subtotal)),2)
                         ELSE 0
                         END AS vatDiscounted,
             
                     CASE 
                         WHEN products.isVAT = 0 AND products.is_discounted = 1 THEN
-                            ROUND((SUM(transactions.subtotal)),2)
+                            ROUND((SUM( transactions.subtotal)),2)
                         ELSE 0
                         END AS nonVatDiscounted,
            			CASE 
                         WHEN products.isVAT = 0 THEN
-                            ROUND((SUM(transactions.subtotal)),2)
+                            ROUND((SUM( transactions.subtotal)),2)
                         ELSE 0
                         END AS nonVat,
                     CASE 
                         WHEN products.isVAT = 1 THEN
-                            ROUND((SUM(transactions.subtotal)),2)
+                            ROUND((SUM( transactions.subtotal)),2)
                         END AS vatable_price,
                     payments.change_amount, 
                     receipt.barcode

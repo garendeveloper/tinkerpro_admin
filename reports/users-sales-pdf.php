@@ -158,7 +158,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
     $totalChange = $row['totalChange'];
 
     $sales = $paid_amount - $totalChange;
-
+    $service_charge = $row['service_charge'];
     //refund data
     $refunded_amt = $row['refunded_amt'];
     $refudned_item_discount = $row['total_item_discounts'];
@@ -185,7 +185,7 @@ while ($row = $fetchRefund->fetch(PDO::FETCH_ASSOC)) {
 
     $totalReturnAmt = $return_amount-$return_item_discounts-$totalReturnDiscountsTender-$cartDiscountReturnAmount;
 
-    $totalGrossSales = $sales-$totalRefundedAmt-$totalReturnAmt;
+    $totalGrossSales = ($sales-$totalRefundedAmt-$totalReturnAmt)- $service_charge;
     $totalSales += $totalGrossSales;
 
 

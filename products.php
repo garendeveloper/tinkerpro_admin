@@ -559,7 +559,9 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
     formData.append('file', file);
     axios.post('api.php?action=importProduct',formData)
     .then(function(response) {
+      $('#modalCashPrint').hide();
         refreshProductsTable();
+        showResponse("Product successfully uploaded!", 1);
         // show_allProducts()
     })
     .catch(function(error) {
@@ -1011,7 +1013,7 @@ $('#exportProducts').click(function() {
                     //   timerProgressBar: true, 
                     //   showConfirmButton: false 
                     // });
-                    showResponse("Product Deleted Successfully!");
+                    showResponse("Product Deleted Successfully!", 1);
 
                     } else {
                       $('#deleteProdModal').hide();
