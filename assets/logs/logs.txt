@@ -13626,3 +13626,13 @@
 2024-08-15 11:07:45 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-15 12:57:14 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-08-15 12:57:17 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-15 14:48:49 | Admin Admin | 1 | 2 | Products | Admin Admin Added Sample Product Barcode #:867364931527 
+2024-08-15 14:49:18 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000051 Amount:₱ 20,000.00 
+2024-08-15 14:50:35 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000051 Supplier: GAISANO 
+2024-08-15 15:17:27 | Admin Admin | 1 | 2 | Products | Admin Admin Added Table Barcode #:526748418166 
+2024-08-15 15:17:48 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000052 Amount:₱ 1,000,000.00 
+2024-08-15 15:18:18 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000052 Supplier: GAISANO 
+2024-08-15 15:57:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-15 16:49:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Jasmine Rice 5KG Barcode #:263564440024 
+2024-08-15 17:08:48 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Barcode #:526748418166 
+2024-08-15 17:09:07 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 

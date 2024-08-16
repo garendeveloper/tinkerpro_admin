@@ -270,7 +270,7 @@ class BirFacade extends DBConnection {
                 INNER JOIN customer ON users.id = customer.user_id
                 INNER JOIN receipt ON receipt.id = transactions.receipt_id
                 WHERE transactions.is_paid = 1 AND transactions.is_void NOT IN (1, 2) AND users.discount_id = ?';
-        // Append WHERE clause for date range if specified
+  
         $whereClause = " AND DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
         $groupBy = " GROUP BY transactions.payment_id ORDER BY receipt.barcode DESC
 		) AS subquery";
@@ -285,8 +285,6 @@ class BirFacade extends DBConnection {
         
         $e_reports_data = $e_reports->fetchAll(PDO::FETCH_ASSOC);
         
-        
-        // Fetch refundedTransactions
         $refunded_query = "SELECT 
         id,
         refunded_method_id,

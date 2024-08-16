@@ -612,7 +612,7 @@ axios.post('api.php?action=getSalesHistory', {
       var salesHistoryJSON = JSON.stringify(filteredSalesHistory);
         $.ajax({
             url: './reports/invoice-list-pdf.php',
-            type: 'GET',
+            type: 'POST',
             xhrFields: {
                 responseType: 'blob'
             },
@@ -620,6 +620,16 @@ axios.post('api.php?action=getSalesHistory', {
                 salesHistory:  salesHistoryJSON
             },
             success: function(response) {
+                // var blob = new Blob([response], { type: 'application/pdf' });
+                // var url = window.URL.createObjectURL(blob);
+                // var a = document.createElement('a');
+                // a.href = url;
+                // a.download = 'invoiceList.pdf';
+                // document.body.appendChild(a);
+                // a.click();
+
+                // window.URL.revokeObjectURL(url);
+                // document.body.removeChild(a);
                 var blob = new Blob([response], { type: 'application/pdf' });
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
