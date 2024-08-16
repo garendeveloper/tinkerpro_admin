@@ -307,7 +307,7 @@ input:checked + .sliderStatus:before {
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input type="email" id="supplierEmail"/></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Company</td>
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px; width:35%">Address</td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input id="supplierCompany" /></td>
                     </tr>
                     <tr>

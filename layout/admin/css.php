@@ -577,4 +577,32 @@ button:hover{
 .normalIcon:hover{
   color: var(--primary-color) !important;
 }
+
+
+
+/* Create the circular background effect on hover */
+.circularBG::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(255, 255, 255, 0.3); /* Light background color */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s;
+    opacity: 0; /* Initially hidden */
+    z-index: 0; /* Place it behind the text */
+}
+
+.circularBG:hover::before {
+    opacity: 1; /* Show the circular background on hover */
+}
+
+.circularBG:hover {
+    color: #007bff; 
+    background-color: #333333; 
+    border-radius: 10%;
+    font-size: 12px;
+    z-index: 1; 
+}
 </style>

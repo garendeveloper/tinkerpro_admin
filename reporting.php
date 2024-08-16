@@ -459,6 +459,14 @@ body, html {
                       <i class = "bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Sales Report</span>
                     </a>
                   </div> 
+
+                  <div id="highlightDiv56" style="width: 100%">
+                    <a href="#" onclick=" highlightDiv(56)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                      <i class="bi bi-folder2-open"></i>&nbsp; 
+                      <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-1 (Daily Transaction)</span>
+                    </a>
+                  </div>
+
                   <!-- <div id="highlightDiv33" style="width: 100%"><a href="#" onclick=" highlightDiv(33)" class="text-color reorderAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Z-Reading</span></a></div>   -->
                   <div id="highlightDiv55" style="width: 100%"><a href="#" onclick=" highlightDiv(55)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
@@ -938,70 +946,66 @@ $("#pointer").html("Reporting");
   // }
 
 
-  function contentTest(id) {
+  function contentTest(id) 
+  {
 
     generatePdf(id)
     generateExcel(id)
     printDocuments(id)
     showReports(id)
      
-      
-    
-      var eportal = document.getElementById('e-portal');
-      eportal.setAttribute('hidden',true);
+    var eportal = document.getElementById('e-portal');
+    eportal.setAttribute('hidden',true);
 
-      var entriesDiv = document.getElementById('entries');
-      entriesDiv.setAttribute('hidden',true);
+    var entriesDiv = document.getElementById('entries');
+    entriesDiv.setAttribute('hidden',true);
 
-      var soldDiv = document.getElementById('soldDiv');
-      soldDiv.setAttribute('hidden',true);
+    var soldDiv = document.getElementById('soldDiv');
+    soldDiv.setAttribute('hidden',true);
 
-      var ingredientsDIV = document.getElementById('ingredientsDIV');
-      ingredientsDIV.setAttribute('hidden', true);
+    var ingredientsDIV = document.getElementById('ingredientsDIV');
+    ingredientsDIV.setAttribute('hidden', true);
 
-      var usersSelect = document.getElementById('usersDIV');
-      usersSelect.setAttribute('hidden',true);
+    var usersSelect = document.getElementById('usersDIV');
+    usersSelect.setAttribute('hidden',true);
 
-      var dateTimeAnchor = document.getElementById('dateTimeAnchor');
-      dateTimeAnchor.removeAttribute('hidden');
+    var dateTimeAnchor = document.getElementById('dateTimeAnchor');
+    dateTimeAnchor.removeAttribute('hidden');
 
-      var customerDIV = document.getElementById('customerDIV');
-      customerDIV.setAttribute('hidden',true);
+    var customerDIV = document.getElementById('customerDIV');
+    customerDIV.setAttribute('hidden',true);
 
-      var suppliersDIV = document.getElementById('suppliersDIV');
-      suppliersDIV.setAttribute('hidden',true);
+    var suppliersDIV = document.getElementById('suppliersDIV');
+    suppliersDIV.setAttribute('hidden',true);
 
-      var cashRegisterDIV = document.getElementById('cashRegisterDIV');
-      cashRegisterDIV.setAttribute('hidden',true);
+    var cashRegisterDIV = document.getElementById('cashRegisterDIV');
+    cashRegisterDIV.setAttribute('hidden',true);
 
-      var productsDIV = document.getElementById('productsDIV');
-      productsDIV.setAttribute('hidden', true);
+    var productsDIV = document.getElementById('productsDIV');
+    productsDIV.setAttribute('hidden', true);
 
-      var subCategoriesDIV = document.getElementById('subCategoriesDIV');
-      subCategoriesDIV.setAttribute('hidden',true);
+    var subCategoriesDIV = document.getElementById('subCategoriesDIV');
+    subCategoriesDIV.setAttribute('hidden',true);
 
-      var categoriesDiv = document.getElementById('categoriesDiv');
-      categoriesDiv.setAttribute('hidden',true);
+    var categoriesDiv = document.getElementById('categoriesDiv');
+    categoriesDiv.setAttribute('hidden',true);
 
-      var methodDIV = document.getElementById('methodDIV');
-      methodDIV.setAttribute('hidden',true);
+    var methodDIV = document.getElementById('methodDIV');
+    methodDIV.setAttribute('hidden',true);
 
-      var discountDIV = document.getElementById('discountDIV');
-      discountDIV.setAttribute('hidden',true);
+    var discountDIV = document.getElementById('discountDIV');
+    discountDIV.setAttribute('hidden',true);
 
-      var paymentMethodDIV = document.getElementById('paymentMethodDIV');
-      paymentMethodDIV.setAttribute('hidden',true);
+    var paymentMethodDIV = document.getElementById('paymentMethodDIV');
+    paymentMethodDIV.setAttribute('hidden',true);
 
-      var toggleDivExcludes = document.getElementById('toggleDivExcludes');
-      toggleDivExcludes.setAttribute('hidden',true);
+    var toggleDivExcludes = document.getElementById('toggleDivExcludes');
+    toggleDivExcludes.setAttribute('hidden',true);
 
-      var toggleDivExcludes = document.getElementById('statusExcludes');
-      toggleDivExcludes.checked = false
+    var toggleDivExcludes = document.getElementById('statusExcludes');
+    toggleDivExcludes.checked = false
   
   }
-
-
-
 function highlightDiv(id) {
   console.log(id)
   document.querySelectorAll('.anchor-container div').forEach(div => {
@@ -1643,7 +1647,7 @@ function highlightDiv(id) {
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
         }
-        else if(id === 50 || id === 55 || id === 51 || id === 52 || id === 53 ){
+        else if(id === 50 || id === 55 || id === 51 || id === 52 || id === 53 || id === 56){
           contentTest(id)
         }
         else if(id == 1){
@@ -2532,7 +2536,7 @@ function openModalDatePicker(){
 // USERS
 function generatePdf(id)
 {
-  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 55)
+  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 55 || id == 56)
   {
     $('#PDFBtn').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
@@ -2570,7 +2574,8 @@ function generatePdf(id)
       }
 
       var e = "";
-          if(id === 55) e = 1;
+        if(id === 56) e = 0;
+        if(id === 55) e = 1;
         if(id === 50) e = 2;
         if(id === 51) e = 3;
         if(id === 52) e = 4;
@@ -5603,7 +5608,7 @@ error: function(xhr, status, error) {
 }
 
 function printDocuments(id){
-  if(id==50 || id == 51 || id == 52 || id == 53 || id == 55){
+  if(id==50 || id == 51 || id == 52 || id == 53 || id == 55 || id == 56){
       $('#printDocu').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
@@ -5640,6 +5645,7 @@ function printDocuments(id){
         endDate = ""
       }
         var e = "";
+        if(id === 56) e = 0;
         if(id === 50) e = 2;
         if(id === 51) e = 3;
         if(id === 52) e = 4;
@@ -7877,8 +7883,8 @@ function showReports(id)
      }
     })
   }
-  else if(id == 50 || id == 55){
-    if(id === 55)
+  else if(id == 50 || id == 55 || id == 56) {
+    if(id === 55 || id === 56)
     {
       $("#showReportsModal  .modal-dialog").css({
         'max-width': '1500px',
@@ -7937,6 +7943,7 @@ function showReports(id)
           endDate = ""
         }
         var e = "";
+        if(id === 56) e = 0;
         if(id === 55) e = 1;
         if(id === 50) e = 2;
       $.ajax({

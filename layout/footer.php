@@ -742,7 +742,8 @@ let deleteValidation = "false";
         deleteValidation = "false";
         // refreshProductsTable()
         closeAddProductsModal()
-        if (currentRow) {
+        if (currentRow) 
+        {
           
           var isDiscounted = $("#discountToggle").is(":checked") ? 1 : 0;
   
@@ -1013,12 +1014,15 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
     function disableRefresh()
     {
       $(document).on("keydown", function(event){
-        if (event.keyCode === 116) {
-              event.preventDefault();
-          }
-          if (event.ctrlKey && (event.keyCode === 82 || event.keyCode === 116)) {
-              event.preventDefault();
-          }
+  
+          // if (event.ctrlKey && (event.keyCode === 82 || event.keyCode === 116)) {
+          //     event.preventDefault();
+          // }
+          $(document).on("keydown", function(event){
+        if (event.keyCode === 116 || (event.ctrlKey && (event.keyCode === 82 || event.keyCode === 116))) {
+          event.preventDefault();
+        }
+      });
       })
     }
     function handleUnlock() {
@@ -1062,3 +1066,144 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
       }
     });
 </script>
+<!-- <script>
+  $(document).ready(function() {
+    let inactivityTime = function () {
+      let timer;
+      let lockScreen = $('#lockscreen');
+
+      function resetTimer() {
+        clearTimeout(timer);
+        timer = setTimeout(function() {
+          setCookie('locked', 'true', 1); // Set cookie to lock the screen after inactivity
+          lockScreen.show(); 
+          disableRefresh();
+        }, 300000); // 5 minutes of inactivity
+      }
+
+      function checkLockStatus() {
+        if (getCookie('locked') === 'true') {
+          lockScreen.show();
+          disableRefresh();
+        }
+      }
+
+      $(window).on('mousemove keypress click scroll', function() {
+        resetTimer();
+        if (getCookie('locked') === 'true') {
+          eraseCookie('locked'); // Remove the lock cookie if activity is detected
+          lockScreen.hide();
+          enableRefresh();
+        }
+      });
+
+      resetTimer();
+      checkLockStatus();
+    };
+
+    inactivityTime();
+
+    function setCookie(name, value, days) {
+      let expires = "";
+      if (days) {
+        let date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+      let nameEQ = name + "=";
+      let ca = document.cookie.split(';');
+      for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function eraseCookie(name) {
+      document.cookie = name + '=; Max-Age=-99999999;';
+    }
+
+    function openPasswordUnlock() {
+      $("#unlockscreen").fadeIn(100);
+      $("#unlockPasswordTxt").focus();
+      $("#unlockPasswordTxt").val("");
+    }
+
+    $(document).on("keydown", "#lockscreen", function(event) {
+      if (event.key === 'Enter') {
+        openPasswordUnlock();
+        event.preventDefault();
+      }
+    });
+
+    $('.cancelT').on('click', function(){
+      openPasswordUnlock();
+    });
+
+    $(document).on("click", ".continueT", function(){
+      $('#lockscreen').hide();
+      eraseCookie('locked'); 
+      $(".continue_logout").click();
+    });
+
+    $(document).on("click", "#unlockscreen #btnCancelUnlock", function(){
+      $("#unlockscreen").hide();
+    });
+
+    function disableRefresh() {
+      $(document).on("keydown", function(event){
+        if (event.keyCode === 116 || (event.ctrlKey && (event.keyCode === 82 || event.keyCode === 116))) {
+          event.preventDefault();
+        }
+      });
+    }
+
+    function enableRefresh() {
+      $(document).off("keydown");
+    }
+
+    function handleUnlock() {
+      var unlockPasswordTxt = $("#unlockPasswordTxt").val();
+      if (unlockPasswordTxt.trim() !== "") {
+        $("#unlockPasswordTxt").removeClass('has-error');
+        $.ajax({
+          type: 'get',
+          url: 'api.php?action=unlockAdminUser',
+          data: {
+            password: unlockPasswordTxt,
+          },
+          success: function(response) {
+            if(response.status) {
+              $("#unlockscreen").hide();
+              $('#lockscreen').hide();
+              eraseCookie('locked'); 
+              enableRefresh(); // Re-enable refresh functionality
+            } else {
+              $("#unlockPasswordTxt").addClass('has-error');
+              $(".errorResponse").html(response.message);
+            }
+          }
+        });
+      } else {
+        $(".errorResponse").html("Password is required!");
+        $("#unlockPasswordTxt").addClass('has-error');
+      }
+    }
+
+    $(document).on("click", "#unlockscreen #btnContinueUnlock", function() {
+      handleUnlock();
+    });
+
+    $(document).on("keydown", "#unlockPasswordTxt", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        handleUnlock();
+      }
+    });
+  });
+</script> -->

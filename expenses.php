@@ -336,9 +336,9 @@ h1, label, textarea, input, table,h5{
 }
 #tbl_preview tbody th,
 #tbl_preview tbody td {
-    padding: 7px 7px; 
+    padding: 8px 8px; 
     height: 30px; 
-    line-height: 1;
+    line-height: 1.5;
     font-weight: normal;
     font-size: 12px;
 }
