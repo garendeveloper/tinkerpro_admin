@@ -57,7 +57,7 @@
     padding-left: 25px;
 }
 .productsBtn:hover{
-    color: var(--primary-color) !important;
+    color: #FF6900 !important;
 }
 .productsHeader{
     margin-top: 50px;
@@ -77,7 +77,7 @@
     padding-left: 50px
 }
 .productCategory:hover{
-    color: var(--primary-color) !important;
+    color: #FF6900 !important;
 }
 #categoriesDiv p a {
     margin: 0; 
@@ -112,13 +112,12 @@
 
 
 .variant:hover {
-    color: var(--primary-color) !important;
+    color: #FF6900;
 }
 
 .highlighted {
-    color: var(--primary-color) !important;
-    /* background-color: grey !important;
-    color: black !important; */
+    background-color: #fefefe;
+    color: black !important;
 }
 
 .catBtns{
@@ -143,7 +142,7 @@
     padding-left: 100px;
     display: block;
 }
-.productsItem{
+.productsP{
   margin: 0;
   padding: 0
 }
@@ -212,11 +211,7 @@
     height: 16px;
 }
 
-.categoryInput::placeholder{
-    font-size: 10px;
-    font-style: italic;
-    color: #ffff;
-}
+
 
 </style>
 <div class="modal" id="add_category_modal" tabindex="0">
@@ -229,7 +224,7 @@
                     </div>
 
                     <div id="categoryData"  style="margin-top: 60px; margin-left: 10px">
-                        <h6 class="text-custom" style="color:var(--primary-color);">Category</h6>
+                        <h6 class="text-custom" style="color:#FF6900;">Category</h6>
                     </div>
 
                     <div class="catBtns">
@@ -239,7 +234,7 @@
                     </div>
 
                     <div class="productsHeader ">
-                        <p class="productsItem" ><a href="#" onclick="changeValueInput(this)" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
+                        <p class="productsP" ><a href="#" onclick="changeValueInput(this)" class="productsBtn" id="showCategories"><span>+</span>&nbsp;Products</a></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>
                         <div id="categoriesDiv" class="scrollable-content" style="display: none;"></div>
                     </div>
                 </div>
@@ -254,7 +249,7 @@
 
 
 <script>
-var categoryCount = 0;
+
 function closeModalCategory() {
     closeModal()
 }
@@ -280,7 +275,7 @@ $(document).ready(function() {
     $('#showCategories').click(function() {
         $('#categoriesDiv').toggle();
         categoriesVisible = !categoriesVisible; 
-        $('.productsItem').toggleClass('highlighted', categoriesVisible);
+        $('.productsP').toggleClass('highlighted', categoriesVisible);
         $('.productsBtn').toggleClass('black-text', categoriesVisible).toggleClass('black-text', !categoriesVisible);
         
         if (categoriesVisible) {
@@ -288,7 +283,7 @@ $(document).ready(function() {
             $(this).text('- Products').css('color', 'black');
         } else {
             $(this).text('+ Products').css('color', 'var(--primary-color)');; 
-            $('.productsItem').removeClass('highlighted');
+            $('.productsP').removeClass('highlighted');
         }
     });
 
@@ -296,7 +291,7 @@ $(document).ready(function() {
 $(document).on("click", ".customAnchor", function() {
     $('.customAnchor').removeClass('highlighted black-text');
     $('.categoriesParagraph').removeClass('highlighted');
-    $('.productsItem').removeClass('highlighted');
+    $('.productsP').removeClass('highlighted');
     $('.productsBtn').addClass('white-text');
     if (previousSpan !== null) {
         previousSpan.text('+');
@@ -354,34 +349,24 @@ $(document).on("click", ".customAnchor", function() {
 
 
 $('.addCategory').off('click').on('click', function() {
-    // var hasHighlightedChild = $('.productsHeader').find('.highlighted').length > 0;
-    // if(!hasHighlightedChild) 
-    // {
-    //     categoryCount++;
-    //     $(".productsHeader").append('<p class="productsItem" ><input class = "categoryInput" placeholder = "Enter a category"/></p><input hidden type="checkbox" id="addCategoryCheckbox" class="forAddCategory"/>');
-    // }
-    // else
-    // {
-        var index = $('.customAnchor.highlighted').index();
-        var categoryId = $('.customAnchor.highlighted').data('category-id');
+    var index = $('.customAnchor.highlighted').index();
+    var categoryId = $('.customAnchor.highlighted').data('category-id');
 
-        $('#mainSpanCategory_' + categoryId).css('font-size', '20px');
-        
-        if ($('.productsItem').hasClass('highlighted')) {
-            $('.inputCat').removeAttr('hidden');
-            $('#inputCat').focus();
-        } else if ($('.categoriesParagraph').hasClass('highlighted') && $('#mainSpanCategory_' + categoryId).text() === '-') {
-                
-                $('#spanVar').removeAttr('hidden');
-                $('#cat_' + categoryId).removeAttr('hidden');
-                addVariant(categoryId)
+    $('#mainSpanCategory_' + categoryId).css('font-size', '20px');
+    
+    if ($('.productsP').hasClass('highlighted')) {
+        $('.inputCat').removeAttr('hidden');
+        $('#inputCat').focus();
+    } else if ($('.categoriesParagraph').hasClass('highlighted') && $('#mainSpanCategory_' + categoryId).text() === '-') {
             
-        } else {
-            $('#spanVar').attr('hidden', 'hidden');
-            $('.variant_input').attr('hidden', 'hidden');
-        }
-    // }
-   
+            $('#spanVar').removeAttr('hidden');
+            $('#cat_' + categoryId).removeAttr('hidden');
+            addVariant(categoryId)
+        
+    } else {
+        $('#spanVar').attr('hidden', 'hidden');
+        $('.variant_input').attr('hidden', 'hidden');
+    }
 });
 
 
@@ -828,7 +813,7 @@ function changeValueInput(element) {
         $('.doneBtn').off('click').on('click', function(){
             categoriesInput.value = prd_value;
             closeModal();
-            $('.productsItem').addClass('highlighted');       
+            $('.productsP').addClass('highlighted');
         });
     }
 }

@@ -906,37 +906,6 @@
                 $('#modalCashPrint').hide();
                 var order_id = response.order_id;
                 var po_number = response.po_number;
-                resetPurchaseOrderForm();
-                $("#paid_purchase_modal").hide();
-                $("#unpaid_form")[0].reset();
-                $("#unpaid_purchase_modal").hide();
-                $("#totalTax").html("0.00");
-                $("#totalQty").html("0");
-                $("#totalPrice").html("&#x20B1;&nbsp;0.00");
-                $("#overallTotal").html("&#x20B1;&nbsp;0.00");
-                $('#show_purchasePrintModal').show()
-                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                var firstName = userInfo.firstName;
-                var lastName = userInfo.lastName;
-                var cid = userInfo.userId;
-                var role_id = userInfo.roleId; 
-                if(validationID > 0){
-                  insertLogs('P.O Updated',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO)
-                }else{
-                  insertLogs('P.O Created',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO) 
-                }
-          
-                show_sweetReponse(response.message);
-                show_purchaseOrderNo();
-                show_allSuppliers();
-                display_datePurchased();
-                show_allReceivedItems_PurchaseOrders();
-                hideModals();
-                $(".inventoryCard").html("");
-                $(".grid-container button").removeClass('active');
-                $("#purchase-order").addClass('active');
-                show_allOrders();
-
                 var loadingImage = document.getElementById("loadingImage");
                 loadingImage.removeAttribute("hidden");
                 var pdfFile= document.getElementById("pdfFile");
@@ -966,6 +935,37 @@
                         console.error(xhr.responseText);
                     }
                 });
+             
+                resetPurchaseOrderForm();
+                $("#paid_purchase_modal").hide();
+                $("#unpaid_form")[0].reset();
+                $("#unpaid_purchase_modal").hide();
+                $("#totalTax").html("0.00");
+                $("#totalQty").html("0");
+                $("#totalPrice").html("&#x20B1;&nbsp;0.00");
+                $("#overallTotal").html("&#x20B1;&nbsp;0.00");
+                $('#show_purchasePrintModal').show()
+                var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                var firstName = userInfo.firstName;
+                var lastName = userInfo.lastName;
+                var cid = userInfo.userId;
+                var role_id = userInfo.roleId; 
+                if(validationID > 0){
+                  insertLogs('P.O Updated',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO)
+                }else{
+                  insertLogs('P.O Created',firstName + ' ' + lastName + ' '+ 'P.0 #' + ' ' + po_number + ' ' + 'Amount:'+  totalPO) 
+                }
+          
+                show_sweetReponse(response.message);
+                hideModals();
+                $(".inventoryCard").html("");
+                $(".grid-container button").removeClass('active');
+                $("#purchase-order").addClass('active');
+                show_allOrders();
+                show_purchaseOrderNo();
+                show_allSuppliers();
+                display_datePurchased();
+                show_allReceivedItems_PurchaseOrders();
               }
               else {
                 $.each(response.errors, function (key, value) {

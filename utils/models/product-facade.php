@@ -36,7 +36,11 @@
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
         products.stock_count as stock_count,
-        products.product_stock as product_stock
+        products.product_stock as product_stock,
+        products.isSCEnabled as isSC,
+        products.isPWDEnabled as isPWD,
+        products.isNAACEnabled as isNAAC,
+        products.isSPEnabled as isSP
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.prod_desc LIKE :searchQuery OR 
@@ -86,7 +90,11 @@
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
         products.stock_count as stock_count,
-        products.product_stock as product_stock
+        products.product_stock as product_stock,
+        products.isSCEnabled as isSC,
+        products.isPWDEnabled as isPWD,
+        products.isNAACEnabled as isNAAC,
+        products.isSPEnabled as isSP
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id = :selectedProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -128,7 +136,11 @@
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
         products.stock_count as stock_count,
-        products.product_stock as product_stock
+        products.product_stock as product_stock,
+        products.isSCEnabled as isSC,
+        products.isPWDEnabled as isPWD,
+        products.isNAACEnabled as isNAAC,
+        products.isSPEnabled as isSP
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.category_id= :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -169,7 +181,11 @@
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
          products.stock_count as stock_count,
-        products.product_stock as product_stock
+        products.product_stock as product_stock,
+        products.isSCEnabled as isSC,
+        products.isPWDEnabled as isPWD,
+        products.isNAACEnabled as isNAAC,
+        products.isSPEnabled as isSP
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.variant_id= :selectedVariantroduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -210,7 +226,11 @@
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
         products.stock_count as stock_count,
-        products.product_stock as product_stock
+        products.product_stock as product_stock,
+        products.isSCEnabled as isSC,
+        products.isPWDEnabled as isPWD,
+        products.isNAACEnabled as isNAAC,
+        products.isSPEnabled as isSP
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -252,7 +272,11 @@
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
          products.stock_count as stock_count,
-        products.product_stock as product_stock
+        products.product_stock as product_stock,
+        products.isSCEnabled as isSC,
+        products.isPWDEnabled as isPWD,
+        products.isNAACEnabled as isNAAC,
+        products.isSPEnabled as isSP
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -294,7 +318,11 @@
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
         products.stock_count as stock_count,
-        products.product_stock as product_stock
+        products.product_stock as product_stock,
+        products.isSCEnabled as isSC,
+        products.isPWDEnabled as isPWD,
+        products.isNAACEnabled as isNAAC,
+        products.isSPEnabled as isSP
     FROM products
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -337,7 +365,11 @@
         products.is_stockable as is_stockable,
         products.stock_status as stock_status,
          products.stock_count as stock_count,
-        products.product_stock as product_stock
+        products.product_stock as product_stock,
+        products.isSCEnabled as isSC,
+        products.isPWDEnabled as isPWD,
+        products.isNAACEnabled as isNAAC,
+        products.isSPEnabled as isSP
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
@@ -353,6 +385,11 @@
   public function addProduct($formData) {
     date_default_timezone_set('Asia/Manila');
     $currentDate = date('Y-m-d h:i:s');
+
+    $discount_sc = $formData['discount_sc'];
+    $discount_sp = $formData['discount_sp'];
+    $discount_naac = $formData['discount_naac'];
+    $discount_pwd = $formData['discount_pwd'];
 
     $productname = $formData['productname'];
     $barcode = $formData['barcode'];
@@ -432,10 +469,10 @@
     }
 
     // Insert product information into the database
-    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty,is_stockable,stock_status,stock_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)';
+    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty,is_stockable,stock_status,stock_count, isSCEnabled, isPWDEnabled, isNAACEnabled, isSPEnabled) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?, ?,?,?,? )';
     $pdo = $this->connect();
     $stmt = $pdo->prepare($sql); 
-    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty,$stockable,$warning,$stockQuantity]);
+    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty,$stockable,$warning,$stockQuantity, $discount_sc, $discount_pwd, $discount_naac, $discount_sp]);
     $lastInsertId = $pdo->lastInsertId();
 
   
@@ -503,6 +540,13 @@
 
 public function updateProduct($formData) 
 {
+
+  $discount_sc = $formData['discount_sc'];
+  $discount_sp = $formData['discount_sp'];
+  $discount_naac = $formData['discount_naac'];
+  $discount_pwd = $formData['discount_pwd'];
+
+
   $productname = $formData['productname'] ?? null;
   $barcode = $formData['barcode'] ?? null;
   $brand = $formData['brand'] ?? null;
@@ -622,12 +666,16 @@ public function updateProduct($formData)
           is_multiple = ?,
           is_stockable = ?,
           stock_status = ?,
-          stock_count = ?
+          stock_count = ?,
+          isSCEnabled = ?,
+          isPWDEnabled = ?,
+          isNAACEnabled = ?,
+          isSPEnabled = ?
           WHERE id = ?';
 
   $stmt = $this->connect()->prepare($sql);
   $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
-  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty,0,$stockable,$warning,$stockQuantity, $id]);
+  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty,0,$stockable,$warning,$stockQuantity, $discount_sc, $discount_pwd, $discount_naac, $discount_sp, $id]);
   
   $bomData = $formData['productBOM'] ?? [];
   $updateData = [];

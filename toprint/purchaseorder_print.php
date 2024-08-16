@@ -9,11 +9,15 @@ session_start();
 date_default_timezone_set('Asia/Manila');
 $pdfFolder = __DIR__ . '/../assets/pdf/bir/';
 
-$files = glob($pdfFolder . '*'); 
-foreach ($files as $file) {
-    if (is_file($file)) {
-        unlink($file); 
-    }
+// $files = glob($pdfFolder . '*'); 
+// foreach ($files as $file) {
+//     if (is_file($file)) {
+//         unlink($file); 
+//     }
+// }
+$pdfPath = $pdfFolder . 'purchaseOrder.pdf';
+if (file_exists($pdfPath)) {
+    unlink($pdfPath);
 }
 
 function autoAdjustFontSize($pdf, $text, $maxWidth, $initialFontSize = 7) {
@@ -346,7 +350,9 @@ $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 $pdf->SetFont('times', 'BI', 5);
 
-$pdfPath = $pdfFolder . 'e1.pdf';
+$pdfPath = $pdfFolder . 'purchaseOrder.pdf';
 $pdf->Output($pdfPath, 'F');
 
-$pdf->Output('e1.pdf', 'I');
+$pdf->Output('purchaseOrder.pdf', 'I');
+
+
