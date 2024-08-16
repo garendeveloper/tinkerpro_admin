@@ -13739,6 +13739,121 @@
 2024-08-16 10:41:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
 2024-08-16 10:41:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
 2024-08-16 10:44:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G 1/2T Barcode #:759247 
+2024-08-16 10:47:44 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TENDER CARE CLASSIC MILD (BLUE)80G Barcode #:480888 
+2024-08-16 10:48:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TENDER CARE 55G Barcode #:4808888002620 
+2024-08-16 10:48:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TENDER CARE 55G Barcode #:480886 
+2024-08-16 11:03:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON ANTI DENGUE 300ML Barcode #:4801234106010 
+2024-08-16 11:04:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TAWAS BLUE 25G Barcode #:4806515163744 
+2024-08-16 11:05:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON ANTI DENGUE 500ML Barcode #:4801234106027 
+2024-08-16 11:11:36 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON COIL 1BOX Barcode #:4801234134426 
+2024-08-16 11:15:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON MULTI INSECT KILLER 300ML Barcode #:4801234107710 
+2024-08-16 11:17:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON MULTI INSECT KILLER 500ML Barcode #:4801234107727 
+2024-08-16 11:19:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON MULTI INSECT KILLER WATER BASE 500ML Barcode #:4801234108229 
+2024-08-16 11:20:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON MULTI INSECT SPRAY 100ML Barcode #:4801234111755 
+2024-08-16 11:21:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON PROTECTOR CRAWLING INSECT 500ML. Barcode #:4801234107321 
+2024-08-16 11:22:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON PROTECTOR MULTI INSECT KILLER 300ML Barcode #:77619 
+2024-08-16 11:22:14 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAYGON PROTECTOR MULTI INSECT KILLER 500ML Barcode #:834591 
+2024-08-16 11:32:18 | Talkosoy Admin | 1 | 2 | Supplier | Talkosoy Admin Added supplier Gaisano 
+2024-08-16 11:32:35 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000001 Amount:₱ 37,930.05 
+2024-08-16 11:32:45 | Talkosoy Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: Gaisano 
+2024-08-16 11:35:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TABLIA DARK CHOCO 1PACK Barcode #:178053 
+2024-08-16 12:56:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 12:59:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KERATIN HAIR DIRECTOR 20G Barcode #:754173 
+2024-08-16 13:14:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANDUAY 5 YRS FLAT (1BOX) Barcode #:480022 
+2024-08-16 13:16:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR CREAM OF CHICKEN 70G Barcode #:4801668607947 
+2024-08-16 13:16:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR CREARM OF CORN 80G Barcode #:671019 
+2024-08-16 13:16:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR CREAM OF MSHRM 38G Barcode #:4800888213082 
+2024-08-16 13:17:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR CREAM OF MUSHROOM 70G Barcode #:4808680221250 
+2024-08-16 13:17:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANDUAY 5 YRS LONG 1/2BOX Barcode #:4800221 
+2024-08-16 13:17:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR CREAM OF MUSHROOM 38G Barcode #:4800888213082 
+2024-08-16 13:28:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR SINIGANG SA ISDA Barcode #:4800888603180 
+2024-08-16 13:28:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR SINIGANG ORIGINAL + PLATE Barcode #:693241428081 
+2024-08-16 13:28:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR SINIGANG ORIGINAL + PLATE Barcode #:69324142 
+2024-08-16 13:28:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated KNORR SNGANG SMPALOK MX 40G Barcode #:546516 
+2024-08-16 13:54:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANDUAY WHITE 375ML Barcode #:48002214 
+2024-08-16 13:54:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANDUAY WHITE 750ML Barcode #:4800220559151 
+2024-08-16 14:08:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANG DALANDAN 19G MENUDO Barcode #:7622300858575 
+2024-08-16 14:09:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEAR BRAND STERILIZED 140ML Barcode #:4800361396271 
+2024-08-16 14:09:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TANG FOUR SEASONS 19G Barcode #:7622300808365 
+2024-08-16 14:14:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated LACTACYD WHITE INTIMATE 60 ML Barcode #:8854515088136 
+2024-08-16 14:28:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated LUCKLY ME SUPREME SPICY BULALO 70G Barcode #:4807770273629 
+2024-08-16 14:29:32 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH ATLANTIS 100ML Barcode #:4800417005256 
+2024-08-16 14:29:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH EIGHT 75ML Barcode #:804085938404 
+2024-08-16 14:30:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH ATLANTIS 75ML Barcode #:4800417005225 
+2024-08-16 14:30:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH ATLANTIS 75ML Barcode #:4800417005225 
+2024-08-16 14:30:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH B2O 100ML Barcode #:4800417005232 
+2024-08-16 14:32:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH BRATSPLASH STRAWBERRY 100ML Barcode #:4800417003764 
+2024-08-16 14:34:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH DAILY SCENT COLOGNE SPRING BREAK 125 ML Barcode #:4800417059587 
+2024-08-16 14:35:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENCH TICKLED PINK 100ML Barcode #:4800417008219 
+2024-08-16 14:35:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BENG BENG CHOCOLATE 20G Barcode #:8996001355008 
+2024-08-16 14:47:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TATTOOS 1PACK 12S Barcode #:4806511019908 
+2024-08-16 14:50:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TATTOOS CORN TUBE Barcode #:4806521 
+2024-08-16 14:59:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS MAYO MAGIC 220ML DOY-ECSI Barcode #:4808680027159 
+2024-08-16 15:00:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS MAYO MAGIC 470ML DOY-ECSI Barcode #:4800888603173 
+2024-08-16 15:00:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS MAYO MAGIC 80ML-ECSI Barcode #:4808680652757 
+2024-08-16 15:06:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS PEANUT SPREAD 340G Barcode #:4808680653310 
+2024-08-16 15:07:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Deleted BEST FOODS REAL MAYONNAISE 220ML DOY Barcode #:761032 
+2024-08-16 15:18:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS SALAD & SANDWICH 220ML DOY-ECSI Barcode #:4808680022611 
+2024-08-16 15:19:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS SANDWICH SPREAD 220ML BOT-ECSI Barcode #:582105 
+2024-08-16 15:19:16 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS SANDWICH SPREAD 220ML DOY-ECSI Barcode #:431482 
+2024-08-16 15:19:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS SANDWICH SPREAD 80ML Barcode #:989385 
+2024-08-16 15:20:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MODESS WINGS 10S Barcode #:4801010327202 
+2024-08-16 15:21:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS SANDWICH SPREAD 220ML BOT-ECSI Barcode #:4808680022482 
+2024-08-16 15:21:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS SANDWICH SPREAD 220ML BOT-ECSI Barcode #:597506136199 
+2024-08-16 15:21:23 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS SANDWICH SPREAD 220ML DOY-ECSI Barcode #:4808680022482 
+2024-08-16 15:21:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOGU MOGU COCONUT 320ML Barcode #:8850389106273 
+2024-08-16 15:24:33 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BEST FOODS SANDWICH SPREAD 80ML Barcode #:4808680652771 
+2024-08-16 15:25:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOGU MOGU GRAPE 320ML Barcode #:8850389101391 
+2024-08-16 15:27:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BETADINE FEMININE WASH 50ML Barcode #:4800204008620 
+2024-08-16 15:28:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOGU MOGU LYCHEE 320ML Barcode #:8850389100684 
+2024-08-16 15:30:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOGU MOGU MANGO 320ml Barcode #:8850389100769 
+2024-08-16 15:32:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOGU MOGU MELON 320ml Barcode #:8850389113004 
+2024-08-16 15:34:41 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOGU MOGU STRAWBERRY 320ML Barcode #:8850389100691 
+2024-08-16 15:36:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIODERM TIMELESS 135G-IPI Barcode #:4800011111162 
+2024-08-16 15:37:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOGU MOGU YOGURT 320ML Barcode #:8850389109229 
+2024-08-16 15:37:58 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-16 15:39:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOGU MUGO GRAPEFRUIT 320ml Barcode #:8850389115237 
+2024-08-16 15:41:13 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOJITOS GOLD 75D Barcode #:4806512270278 
+2024-08-16 15:42:28 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 15:43:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MOJITOS SILVER 75D Barcode #:4806512270285 
+2024-08-16 15:48:59 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MUNCHER GREEN PEAS ORIGINAL Barcode #:634750 
+2024-08-16 15:49:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MUNCHER GREEN PEAS ORIGINAL Barcode #:4806511011506 
+2024-08-16 15:50:30 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 15:52:46 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated THE BAR GREEN GRAPE 700ML Barcode #:4800142113622 
+2024-08-16 15:52:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated MUNCHER GREEN PEAS 10G Barcode #:4806511010097 
+2024-08-16 15:55:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SWISS MISS DARK CHOCO 31G Barcode #:48000 
+2024-08-16 16:08:35 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 16:20:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF POWDER SUN FRESH 57G Barcode #:473232 
+2024-08-16 16:20:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF POWDER TAWAS 1/2DOZ Barcode #:4800888151834 
+2024-08-16 16:23:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated NISSIN CUP HOT SEAFOOD 50G Barcode #:4800016561481 
+2024-08-16 16:29:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BIRCH TREE CHOCO 29G Barcode #:0748485401621 
+2024-08-16 16:31:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BL CREAM 7G Barcode #:6922748503015 
+2024-08-16 16:34:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF POWDER ROSE FRESH 1DZ Barcode #:4800888 
+2024-08-16 16:34:27 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 16:35:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF POWDER PURPLE 50G Barcode #:480088 
+2024-08-16 16:37:26 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF POWDER PURPLE 1/2DOZ Barcode #:4800888199133 
+2024-08-16 16:39:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated NOVA HOME STYLE BBQ 78G Barcode #:4800016604232 
+2024-08-16 16:43:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated NOVELLINO ROSSO CLASSICO 750ML Barcode #:4806508630000 
+2024-08-16 16:48:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated NOVELLINO SANGRIA 750ML Barcode #:4806508630277 
+2024-08-16 17:03:09 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated OISHI SPICY 60G Barcode #:4800194105958 
+2024-08-16 17:04:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated OISHI SPICY SEAFOOD 24G Barcode #:4800194116169 
+2024-08-16 17:13:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CDO MEAT LOAF 150G Barcode #:4800249909333 
+2024-08-16 17:16:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CELETEQUE FACIAL WASH 75ML Barcode #:4807788545565 
+2024-08-16 17:17:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF POWDER CHERRY 1/2DOZ Barcode #:4800886 
+2024-08-16 17:20:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated OREO ORIGINAL BUDGET PACK 6'S Barcode #:970816 
+2024-08-16 17:28:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PALMOLIVE ANTI DANDRUFF 180ML Barcode #:4808888417806 
+2024-08-16 17:28:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SUPERSTIX MILK 402.0G Barcode #:480009 
+2024-08-16 17:29:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SUPERSTIX DOUBLE CHOCO 1JAR Barcode #:4800092663192 
+2024-08-16 17:30:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SUPERSTIX PANDAN 330G Barcode #:4800092110542 
+2024-08-16 17:31:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF ANTIBACTERIAL 1/2DOZ Barcode #:4800821 
+2024-08-16 17:36:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated PAPA BANANA CATSUP 550G Barcode #:142624 
+2024-08-16 17:37:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR BLOSSOM FRESH 360G Barcode #:4800888136688 
+2024-08-16 17:37:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR ANTIBAC 380G Barcode #:480085 
+2024-08-16 17:47:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR CHERRY 360G Barcode #:4800888190987 
+2024-08-16 17:48:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR PURPLE 360G Barcode #:4800888199126 
+2024-08-16 17:49:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR SUNFRESH 360G Barcode #:4800888136787 
+2024-08-16 17:49:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR TAWAS 360G Barcode #:4800888136800 
+2024-08-16 17:50:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CLOVER CHIPS HAM & CHEESE 55G Barcode #:4800216130012 
 >>>>>>> 98a7b01bbdd736240f5e7506d0d533cb0a9f4bb0
 2024-08-16 11:24:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-16 11:25:44 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
@@ -13776,3 +13891,10 @@
 2024-08-16 16:32:05 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO SUPERMARKET 
 2024-08-16 17:14:55 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
 2024-08-17 09:08:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 10:46:30 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 10:57:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 10:57:18 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 10:59:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 11:00:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 11:00:33 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 11:05:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 

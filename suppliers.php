@@ -271,10 +271,10 @@
                       <table id="recentsuppliers">
                         <thead class = "adminTableHead">
                           <th class="text-center child-a">No.</th>
-                          <th class="text-center child-b" >Supplier</th>
+                          <th class="text-left child-b" >Supplier</th>
                           <th class="text-center child-c" >Contact</th>
-                          <th class="text-center child-d" >Email</th>
-                          <th class="text-center child-e">Company</th>
+                          <th class="text-left child-d" >Email</th>
+                          <th class="text-left child-e">Address</th>
                           <th class="text-center child-f" >Status</th>
                           <th class="text-center child-g" >Action</th>
                         </thead>

@@ -53,15 +53,15 @@
                 <thead class = 'adminTableHead'>
                     <tr>
                         <th style = "width: 3%" class='text-center auto-fit'>No.</th>
-                        <th style = "width: 12%">Item Name</th>
+                        <th style = "width: 14%; height: auto;">Item Name</th>
                         <th style = "width: 6%">Date</th>
                         <th style = "width: 6%">Billable</th>
                         <th style = "width: 10%" >Type</th>
                         <th style = "width: 6%" >UOM</th>
                         <th style = "width: 6%" >Supplier</th>
                         <th style = "width: 7%;font-size: 10px; text-align: center" >Invoice Number</th>
-                        <th style = "width: 8%" >Quantity</th>
-                        <th style = "width: 8%" >Price (Php)</th>
+                        <th style = "width: 7%" >Quantity</th>
+                        <th style = "width: 7%" >Price (Php)</th>
                         <th style = "width: 8%" >Discount</th>
                         <th style = "width: 8%; font-size: 10px; text-align: center" >Total Amount(Php)</th>
                         <th style = "width: 8%; font-size: 10px; text-align: center" >Landed Cost (Php)</th>

@@ -3,6 +3,55 @@
 class BirFacade extends DBConnection {
 
 
+    public function getDailyESummary() {
+        $pdo = $this->connect();
+    
+        $daily = 'SELECT
+            business_date.id AS business_date_id,
+            business_date.business_date,
+            SUM(transactions.subtotal) AS totalSales
+            FROM transactions
+            INNER JOIN payments ON payments.id = transactions.payment_id
+            INNER JOIN receipt ON receipt.id = transactions.receipt_id
+            INNER JOIN business_date ON business_date.id = payments.business_date_id
+            GROUP BY business_date.id, business_date.business_date';
+
+        $dailyReport = $pdo->prepare($daily);
+        $dailyReport->execute();
+
+        $dailyResult = $dailyReport->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $beg_and_end_si = 'SELECT
+            (SELECT receipt.barcode 
+            FROM payments
+            INNER JOIN transactions ON payments.id = transactions.payment_id
+            INNER JOIN receipt ON receipt.id = transactions.receipt_id
+            WHERE payments.business_date_id = 20
+            ORDER BY receipt.id ASC
+            LIMIT 1) AS first_receipt_num,
+            
+            (SELECT receipt.barcode 
+            FROM payments
+            INNER JOIN transactions ON payments.id = transactions.payment_id
+            INNER JOIN receipt ON receipt.id = transactions.receipt_id
+            WHERE payments.business_date_id = 20
+            ORDER BY receipt.id DESC
+            LIMIT 1) AS last_receipt_num
+        FROM DUAL;'
+
+        $beg_end_si_Report = $pdo->prepare($beg_and_end_si);
+        $beg_end_si_Report->execute();
+        $beg_end_si_Result = $beg_end_si_Report->fetchAll(PDO::FETCH_ASSOC);
+
+        $resutl = [];
+        
+        $resutl = [
+            'date' => 
+        ];   
+    }
+
+
     public function getAllZread($startDate, $endDate) {
         $pdo = $this->connect();
 
@@ -461,6 +510,215 @@ class BirFacade extends DBConnection {
 
         return $result;
     }
+    public function getDailyTransaction($startDate, $endDate)
+    {
+        $dateToday = "";
+        $start = new DateTime($startDate);
+        $end = new DateTime($endDate);
+        $end->modify('+1 day');
+        $interval = new DateInterval('P1D');
+        $period = new DatePeriod($start, $interval, $end);
+        
+       
+        $result = [];
+        foreach($period as $date)
+        {
+            $dateToday = $date->format('Y-m-d');
+            $pdo =  $this->connect();
+            $sales = "WITH SalesData AS (
+                            SELECT 
+                                ROUND(SUM(py.payment_amount) - SUM(py.change_amount) - SUM(t.service_charge), 2) AS grossSale,
+                                p.isVAT AS isVat,
+                                p.isSCEnabled,
+                                p.isSPEnabled,
+                                p.isPWDEnabled,
+                                p.isNAACEnabled,
+                                d.name AS discountType,
+                                d.discount_amount AS discount
+                            FROM payments py
+                            INNER JOIN transactions t ON t.payment_id = py.id
+                            INNER JOIN products p ON t.prod_id = p.id
+                            INNER JOIN receipt r ON t.receipt_id = r.id
+                            INNER JOIN users u ON t.user_id = u.id
+                            INNER JOIN discounts d ON u.discount_id = d.id 
+                            WHERE t.is_void NOT IN (1, 2)
+                            AND is_paid = 1
+                            AND py.date_time_of_payment = ?
+                            GROUP BY p.isVAT, p.isSCEnabled, p.isSPEnabled, p.isPWDEnabled, p.isNAACEnabled, d.name, d.discount_amount
+                        )
+                        SELECT 
+                        (SELECT barcode FROM receipt ORDER BY id ASC LIMIT 1) AS beg_si,
+                        (SELECT barcode FROM receipt ORDER BY id DESC LIMIT 1) AS end_si,
+                            grossSale,
+                            CASE 
+                                WHEN isVat = 1 THEN  
+                                    ROUND(grossSale / 1.12, 2) 
+                                ELSE  0
+                            END AS vatableSales,
+                            CASE 
+                                WHEN isVat = 1 THEN 
+                                    ROUND(grossSale * 0.12, 2) 
+                                ELSE 0
+                            END AS vatAmount,
+                            CASE 
+                                WHEN isSCEnabled = 1 AND discountType = 'SC' THEN
+                                    ROUND(grossSale * (discount / 100), 2)
+                                ELSE 0
+                            END AS totalSCDiscount,
+                            CASE 
+                                WHEN isPWDEnabled = 1 AND discountType = 'PWD' THEN
+                                    ROUND(grossSale * (discount / 100), 2)
+                                ELSE 0
+                            END AS totalPWDDiscount,
+                            CASE 
+                                WHEN isSPEnabled = 1 AND discountType = 'SP' THEN
+                                    ROUND(grossSale * (discount / 100), 2)
+                                ELSE 0
+                            END AS totalSPDiscount,
+                            CASE 
+                                WHEN isNAACEnabled = 1 AND discountType = 'NAAC' THEN
+                                    ROUND(grossSale * (discount / 100), 2)
+                                ELSE 0
+                            END AS totalNAACDiscount
+                        FROM SalesData;";
 
+            $sales_result = $pdo->prepare($sales); 
+            $sales_result->execute([$dateToday]);
+            $salesReport = $sales_result->fetchAll(PDO::FETCH_ASSOC);
+    
+            $refunded_query = "SELECT 
+                                    id,
+                                    refunded_method_id,
+                                    payment_id,
+                                    refunded_qty, 
+                                    reference_num, 
+                                    OriginalAmountRef,
+                                    vat_amount,
+                                    VatExempt,
+                                    ROUND((totalRefAmount - cartDiscount), 2) AS totalRefAmount,
+                                    ROUND((overAllDiscounts + cartDiscount), 2) AS overAllDiscounts,
+                                    credits,
+                                    cartDiscount,
+                                    customerDiscount,
+                                    itemDiscount,
+                                    date
+                                FROM (
+                                    SELECT 
+                                        id, 
+                                        refunded_method_id, 
+                                        payment_id, 
+                                        refunded_qty, 
+                                        reference_num, 
+                                        SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS OriginalAmountRef,
+                                        ROUND(((SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))))) * 0.12 ,2) AS vat_amount,
+                                        ROUND((SUM(refunded_amt) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) ,2) AS VatExempt,
+                                        ROUND(SUM(refunded_amt) - (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount')) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) ), 2) AS totalRefAmount,
+                                        (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
+                                        SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].credits'))) AS credits,
+                                        SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * (refunded_amt)) AS cartDiscount,
+                                        (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) AS customerDiscount,
+                                        SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS itemDiscount,
+                                        date 
+                                        FROM refunded
+                                        WHERE date = ?
+                                        GROUP BY payment_id
+                                ) AS subquery";
+
+            $refund_report = $pdo->prepare($refunded_query);
+            $refund_report->execute([$dateToday]);
+            $refundData = $refund_report->fetchAll(PDO::FETCH_ASSOC);
+
+            $return_query = "SELECT 
+                                id,
+                                product_id,
+                                payment_id,
+                                return_qty,
+                                lessItemDiscount,
+                                vat_amount,
+                                VatExempt,
+                                totalReturnAmount,
+                                overAllDiscounts,
+                                credits,
+                                cartDiscount,
+                                customerDiscount,
+                                itemDiscount,
+                                date   
+                            FROM (
+                                SELECT 
+                                    id, 
+                                    product_id,
+                                    payment_id, 
+                                    return_qty, 
+                                    SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) as lessItemDiscount,
+                                    ROUND(((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))))) * 0.12 ,2) AS vat_amount,
+                                    ROUND((SUM(return_amount) - SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))) ,2) VatExempt,
+                                    ROUND(SUM(return_amount) - (SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData')))), 2) AS totalReturnAmount,
+                                    SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) + SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS overAllDiscounts,
+                                    SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].credits'))) AS credits,
+                                    SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].cartRate')) * return_amount) AS cartDiscount,
+                                    (JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].discount'))) AS customerDiscount,
+                                    SUM(JSON_UNQUOTE(JSON_EXTRACT(otherDetails, '$[0].itemDiscountsData'))) AS itemDiscount,
+                                    date 
+                                    FROM return_exchange
+                                    WHERE date = ?
+                                    GROUP BY payment_id
+                            ) AS subqeury
+                            ";
+
+            $return_report = $pdo->prepare($return_query);
+            $return_report->execute([$dateToday]);
+            $returndData = $return_report->fetchAll(PDO::FETCH_ASSOC);
+
+            $dailySales = array_sum(array_column($salesReport, 'grossSale'));
+            $dailyRefund = array_sum(array_column($refundData, 'totalRefAmount'));
+            $dailyReturn = array_sum(array_column($returndData, 'totalReturnAmount'));
+
+            $dailyNetSales = $dailySales - $dailyRefund - $dailyReturn;
+            
+
+            $vatableSales = array_sum(array_column($salesReport, 'vatableSales'));
+            $vatAmount = array_sum(array_column($salesReport, 'vatAmount'));
+
+            $sc_discount = array_sum(array_column($salesReport, 'totalSCDiscount'));
+            $pwd_discount =  array_sum(array_column($salesReport, 'totalPWDDiscount'));
+            $naac_discount =  array_sum(array_column($salesReport, 'totalNAACDiscount'));
+            $sp_discount = array_sum(array_column($salesReport, 'totalSPDiscount'));
+            $totalDeductions = $sc_discount + $pwd_discount + $naac_discount + $sp_discount;
+            $result[] = [
+                'dateRange' => $dateToday,
+                'beginning_si' => array_column($salesReport, 'beg_si'),
+                'end_si' => array_column($salesReport, 'end_si'),
+                'grandEndAccumulated' => 0,
+                'grandBegAccumulated' => 0,
+                'issued_si' => 0,
+                'grossSalesToday' => $dailySales,
+                'vatable_sales' => $vatableSales,
+                'vatAmount' => $vatAmount,
+                'vatExempt' => 0,
+                'zero_rated' => 0,
+                'sc_discount' => $sc_discount,
+                'pwd_discount' => $pwd_discount,
+                'naac_discount' => $naac_discount,
+                'solo_parent_discount' => $sp_discount,
+                'other_discount' => 0,
+                'returned' => 0,
+                'voids' => 0,
+                'totalDeductions' => $totalDeductions,
+                'void_vat' => 0,
+                'returnd_vat' => 0,
+                'othersVatAdjustment' =>0,
+                'totalVatAjustment' => 0,
+                'refund_vat' =>0,
+                'netSales' => $dailyNetSales,
+                'totalIncome' => 0,
+                'resetCount' => 0,
+                'z_counter' => 0,
+            ];
+
+            if($startDate === $endDate) return $result;
+        }
+        if($startDate !== $endDate)
+            return $result;
+    }
 }
 ?>

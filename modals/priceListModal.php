@@ -232,7 +232,7 @@ td[contenteditable="true"]:focus {
     <div class="modal-content">
         <div class="modal-header" style = "background-color: #1E1C11;padding: 20px; ">
             <h6 style = "color: var(--primary-color); font-weight: bold; margin-left: -10px;" class = "product_name">Add Price List   <span class = "errorMessages"></span></h6>
-            <span id="close-modal">
+            <span id="close-modal" class = "circularBG">
               <i class="bi bi-x" aria-hidden="true" style = "font-size: 30px; font-weight: bold"></i>
             </span>
         </div>

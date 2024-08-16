@@ -31,15 +31,15 @@
             ?> 
                 <tr  data-id = '<?= $row['id'] ?>' data-product_id = '<?= $row['product_id']?>' class = "tbl_rows">
                     <td style = "width: 3%" class = "text-center"><?= $counter?></td>
-                    <td style = "width: 12%"><?= $row['item_name'] === "" ? $row['product'] : $row['item_name']?></td>
+                    <td style = "width: 14%"><?= $row['item_name'] === "" ? $row['product'] : $row['item_name']?></td>
                     <td style = "width: 6%" class = "text-center"><?= $row['date_of_transaction']?></td>
                     <td style = "width: 6%"  class = "text-center"><?= $row['billable_receipt_no'] ?></td>
                     <td style = "width: 10%"  class = "center"><?= $row['expense_type'] ?></td>
                     <td style = "width: 6%"  class = "text-center"><?= $row['uom_name']?></td>
                     <td style = "width: 6%" ><?= $row['supplier']?></td>
                     <td style = "width: 7%" class = "text-center"><?= $row['invoice_number']?></td>
-                    <td style = "width: 8%" class = "text-right"><?= number_format($row['quantity'], 2)?></td>
-                    <td style = "width: 8%" class = "text-right"><?= number_format($row['price'], 2)?></td>
+                    <td style = "width: 7%" class = "text-right"><?= number_format($row['quantity'], 2)?></td>
+                    <td style = "width: 7%" class = "text-right"><?= number_format($row['price'], 2)?></td>
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['discount'], 2)?></td>
                     <td style = "width: 8%" class = "text-right"><?= number_format($row['total_amount'], 2)?></td>
                     <td style = "width: 8%" class = "text-right"><?= number_format($total_landing_cost,2)?></td>
