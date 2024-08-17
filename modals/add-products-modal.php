@@ -1327,6 +1327,21 @@ input:checked + .warningSpan:before {
 
 
 
+.checkbox-container {
+  display: flex;
+  align-items: center; /* Align items vertically centered */
+  padding: 10px;
+}
+
+.checkbox-container label {
+  margin-right: -10px; 
+}
+
+.checkbox-container input {
+  margin-right: 5px; /* Space between checkboxes */
+  height: 10px;
+}
+
 </style>
 
 <div class="modal" id="add_products_modal" tabindex="0">
@@ -1408,16 +1423,19 @@ input:checked + .warningSpan:before {
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px"><input readonly class="categoriesInput" name="categoriesInput" id="categoriesInput" style="width: 242px"/><button onclick="openCategoryModal()" class="addCategory">+Add</button></td>
                     </tr>
                     <tr>
-                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Discount (SR/PWD/UP)</td>
-                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;">
+                        <td class="td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Discount
+             
                         <?php
                           $discount = "no"; 
                           $other_Charge = ($discount== "no") ? "yes" : "no";
                           ?>
-                          <label class="discount" style="margin-left: 5px">
-                              <input type="checkbox" id="discountToggle"<?php if($discount == "no") ?>  >
-                              <span class="discountSpan round"></span>
-                          </label>
+                          <label class="discount" style="margin-left: 50px; ">
+                                  <input type="checkbox" id="discountToggle"<?php if($discount == "no") ?>  >
+                                  <span class="discountSpan round"></span>
+                              </label>
+                        </td>
+                        <td class="td-height text-custom" style="font-size: 12px; height: 10px;">
+                      
 
                           <!-- <div class="dropdown custom-input">
                             <input class="custom-input" readonly hidden name="disCountID" id="disCountID" style="width: 210px"/>
@@ -1435,6 +1453,20 @@ input:checked + .warningSpan:before {
                             <div class="dropdown-content" id="discountDropDown">
                            
                             </div> -->
+                            <!-- </div> -->
+                            <div class="checkbox-container" style = "width: 100%">
+                            
+                              <label for="sc">SC</label>
+                              <input type="checkbox" id="discount_sc" class="discountList" checked />
+
+                              <label for="sp">SP</label>
+                              <input type="checkbox" id="discount_sp" class="discountList" checked />
+
+                              <label for="naac">NAAC</label>
+                              <input type="checkbox" id="discount_naac" class="discountList" checked />
+
+                              <label for="naac">PWD</label>
+                              <input type="checkbox" id="discount_pwd" class="discountList" checked />
                             </div>
                         </div>
                       </td>
@@ -1637,6 +1669,18 @@ input:checked + .warningSpan:before {
 <!-- </div> -->
 <script>
 
+  $(document).on("change", "#discountToggle", function(e){
+    e.preventDefault();
+
+    var isChecked = $(this).is(":checked");
+    if(isChecked)
+    {
+      $(".discountList").prop("checked", true);
+    }
+    else{
+      $(".discountList").prop("checked", false);
+    }
+  })
 
   document.getElementById('stockToggle').addEventListener('change', function() {
         var quantityInput = document.querySelector('.quantity');

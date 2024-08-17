@@ -13601,6 +13601,7 @@
 2024-08-15 11:45:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ORCHID DEODORIZER STRAWBERRY 100G Barcode #:260543178652 
 2024-08-15 11:45:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS STRAWBERRY 100G REFILL Barcode #:4800067600443 
 2024-08-15 11:50:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated EFFICASCENT OIL EXTRA SRENGTH 25ML-IPI Barcode #:48035156 
+<<<<<<< HEAD
 2024-08-15 09:36:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-15 10:07:45 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-08-15 10:08:21 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 555 Tuna Adobo Barcode #:1523288843286 
@@ -13636,3 +13637,142 @@
 2024-08-15 16:49:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Jasmine Rice 5KG Barcode #:263564440024 
 2024-08-15 17:08:48 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Barcode #:526748418166 
 2024-08-15 17:09:07 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+=======
+2024-08-15 15:22:31 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000051 Amount:₱ 877.00 
+2024-08-15 15:23:27 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000052 Amount:₱ 1,320.00 
+2024-08-15 15:24:25 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000053 Amount:₱ 12,605.00 
+2024-08-15 15:45:44 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-15 15:50:44 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 15:51:16 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 SARDINES RED 155G Barcode #:480650 
+2024-08-15 15:53:04 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 24/7 PINEAPLE 40G Barcode #:762230 
+2024-08-15 15:53:13 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 15:53:16 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-15 15:53:34 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 24/7 ORANGE 40G 1T Barcode #:353863 
+2024-08-15 15:54:04 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-15 16:07:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALPINE EVAPORATED MILK 360ML Barcode #:4800575884007 
+2024-08-15 16:20:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIT N RIGHT BURN FOUR SEASONS 330ML Barcode #:4800024570024 
+2024-08-15 16:21:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIT N RIGHT BURN PINEAPPLE 330ML Barcode #:4800024570017 
+2024-08-15 16:22:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FIT N RIGHT DETOX CUCUMBER 330ML Barcode #:4800024584922 
+2024-08-15 16:26:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ANGEL SWEETENED CONDENSADA 380G Barcode #:748485400808 
+2024-08-15 16:29:21 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ANGEL EVAPORADA LIQUID CREAMER 410ML Barcode #:748485400716 
+2024-08-15 16:30:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ANGEL KREMDENSEDA 410ML Barcode #:748485401225 
+2024-08-15 16:30:31 | Admin Admin | 1 | 2 | Products | Admin Admin Updated UFC TAMIS ANGHANG 530G Barcode #:14285000075 
+2024-08-15 16:34:28 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ANLENE 3X MOVEMAX CHOCOLATE 35G Barcode #:4806501597614 
+2024-08-15 16:34:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FRESH O PINEAPPLE 200ML Barcode #:814696 
+2024-08-15 16:34:39 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FRESH O ORANGE Barcode #:159049 
+2024-08-15 16:35:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FRESH O GRAPE Barcode #:382770 
+2024-08-15 16:35:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FRESH O MANGO 1BOX Barcode #:373683 
+2024-08-15 16:35:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Deleted ANLENE GOLD PLAIN 180G Barcode #:758504 
+2024-08-15 16:36:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated FRESH O GRAPE Barcode #:382770 
+2024-08-15 16:39:21 | Admin Admin | 1 | 2 | Products | Admin Admin Updated FRESH O MANGO 1BOX Barcode #:373683 
+2024-08-15 16:47:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ANLENE PLAIN 30G Barcode #:4806501597607 
+2024-08-15 16:47:29 | Admin Admin | 1 | 2 | Products | Admin Admin Updated FRESH O MANGO 1BOX Barcode #:373683 
+2024-08-15 16:50:58 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-15 17:04:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ANMUM MATERNA 375G PLAIN Barcode #:4806501596235 
+2024-08-15 17:09:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ANMUM MATERNA CHOCOLATE 375G Barcode #:4806501596242 
+2024-08-15 17:11:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated APOLLO SEBO DE MACHO 10G Barcode #:48037617 
+2024-08-15 17:13:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOHNSON BABY OIL REGULAR 50ML Barcode #:4801010501213 
+2024-08-15 17:28:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ARGENTINA MEAT LOAF 150G Barcode #:748485801490 
+2024-08-15 17:28:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ARGENTINA MEAT LOAF 150G Barcode #:748485801490 
+2024-08-15 17:29:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ARGENTINA MEAT LOAF 100G Barcode #:748485801261 
+2024-08-15 17:36:22 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE APOLLO 50ML Barcode #:8851901189750 
+2024-08-15 17:36:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY SANDWICH COOKIES 27G Barcode #:4800040341639 
+2024-08-15 17:37:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY WHOLE MUSHROOMS 284G Barcode #:4806014093290 
+2024-08-15 17:38:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE BODY SPRAY GOLD TEMPTATION 50ML. Barcode #:8851932323901 
+2024-08-15 17:39:29 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOLLY YOUNG CORN WHOLE 425G Barcode #:4806014000021 
+2024-08-15 17:39:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE BLACK 50ML BODY SPRAY Barcode #:8851932349130 
+2024-08-15 17:45:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY CORRECTION FLUID 15ML Barcode #:4361893 
+2024-08-15 17:46:00 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated JOY CORRECTION FLUID 15ML Barcode #:578065741832 
+2024-08-15 17:48:48 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE GOLD TEMPTATION ROLL-ON 40 ML Barcode #:4800888183064 
+2024-08-15 17:48:49 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE GOLD TEMPTATION ROLL-ON 40 ML Barcode #:4800888183064 
+2024-08-15 17:48:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE GOLD TEMPTATION ROLL-ON 40 ML Barcode #:4800888183064 
+2024-08-15 17:48:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE GOLD TEMPTATION ROLL-ON 40 ML Barcode #:4800888183064 
+2024-08-15 17:48:52 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE GOLD TEMPTATION ROLL-ON 40 ML Barcode #:4800888183064 
+2024-08-15 17:48:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE GOLD TEMPTATION ROLL-ON 40 ML Barcode #:4800888183064 
+2024-08-15 17:49:57 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE ICE CHILL 40ML Barcode #:4800888209856 
+2024-08-15 17:50:25 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated AXE ICE CHILL 50ML Barcode #:8851932401289 
+2024-08-15 18:08:34 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added asdf Barcode #:450437703612 
+2024-08-15 18:15:01 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added WIth discount Barcode #:106927323405 
+2024-08-16 09:05:02 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 09:06:14 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 09:10:03 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 09:15:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added GOYA RAISINS WITH MILK 33G Barcode #:4806517045017 
+2024-08-16 09:22:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated TIDE BAR W/DOWNY 125G-OYT Barcode #:4902430411530 
+2024-08-16 09:23:40 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GSM MOJITO 700ML Barcode #:4800130728128 
+2024-08-16 09:24:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated GSM BLUE 700 ML Barcode #:316519880354 
+2024-08-16 09:24:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G 1T Barcode #:236133 
+2024-08-16 09:25:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-16 09:25:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated THE BAR PINK GIN 375ML Barcode #:480014 
+2024-08-16 09:27:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated THE BAR GREEN GRAPE 700ML Barcode #:4800142113622 
+2024-08-16 09:28:24 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:353863 
+2024-08-16 09:29:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:353863 
+2024-08-16 09:29:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Added ALCOPLUS ALCOHOL 70% SOLUTION ISOPROPYL 150ML Barcode #:4806515160781 
+2024-08-16 09:58:07 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:353863 
+2024-08-16 10:01:52 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-16 10:04:45 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BABY BENCH COLONIA 100ML Barcode #:4800417000893 
+2024-08-16 10:05:47 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BABY BENCH COLONIA  BUBBLE GUM 100ML Barcode #:4800417000893 
+2024-08-16 10:06:08 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BABY BENCH COLONIA BUBBLE GUM 200ML Barcode #:860542 
+2024-08-16 10:06:19 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BABY BENCH COLONIA BUBBLE GUM 200ML Barcode #:4800417000589 
+2024-08-16 10:08:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:353863 
+2024-08-16 10:08:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:353863 
+2024-08-16 10:09:05 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:353863 
+2024-08-16 10:09:10 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BABY BENCH COLONIA BUBBLE GUM 200ML Barcode #:4800417000589 
+2024-08-16 10:09:15 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BABY BENCH COLONIA BUBBLE GUM 200ML Barcode #:4800417000589 
+2024-08-16 10:09:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-16 10:09:20 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BABY BENCH COLONIA BUBBLE GUM 200ML Barcode #:4800417000589 
+2024-08-16 10:10:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:10:17 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:17:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:21:51 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:31:35 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G 1T Barcode #:353863 
+2024-08-16 10:31:53 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:33:38 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BACTIDOL 60ML Barcode #:4800140001082 
+2024-08-16 10:34:04 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:34:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:34:30 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:34:37 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated BAKING SODA ARM & HAMMER 454G Barcode #:649664963513 
+2024-08-16 10:34:43 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-16 10:34:50 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-16 10:34:56 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-16 10:40:58 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-16 10:41:03 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-16 10:41:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-16 10:41:11 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24 7 MANGO 40G Barcode #:888779 
+2024-08-16 10:44:12 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated 24/7 PINEAPLE 40G 1/2T Barcode #:759247 
+>>>>>>> 98a7b01bbdd736240f5e7506d0d533cb0a9f4bb0
+2024-08-16 11:24:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 11:25:44 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-16 12:54:13 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 12:54:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 13:19:48 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-16 13:19:53 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-16 13:19:58 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 13:20:04 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Casino sanitizer spray Barcode #:4800011145327 
+2024-08-16 13:20:09 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-16 13:20:18 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Champion twin pack Barcode #:8996001603444 
+2024-08-16 13:20:24 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-16 13:20:28 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Glade Barcode #:4801234145514 
+2024-08-16 13:20:33 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Jasmine Rice 5KG Barcode #:263564440024 
+2024-08-16 13:20:37 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Lucky Me Pancit Canton Barcode #:4807770273698 
+2024-08-16 13:20:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Pringles Barcode #:3538616594578 
+2024-08-16 13:20:46 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Sample Product Barcode #:867364931527 
+2024-08-16 13:20:50 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Supremo Beer 1L Barcode #:325836272782 
+2024-08-16 13:20:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Surf Active Clean Barcode #:5115679621274 
+2024-08-16 13:20:58 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-16 14:00:06 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Sample Product Barcode #:867364931527 
+2024-08-16 14:00:38 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Sample Product Barcode #:867364931527 
+2024-08-16 14:29:22 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-16 14:31:55 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 14:32:05 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 14:32:20 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 14:32:33 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 16:29:10 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO 
+2024-08-16 16:30:06 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier PRINCE 
+2024-08-16 16:30:19 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO 
+2024-08-16 16:31:05 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Added supplier La Nueva 
+2024-08-16 16:31:22 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO 
+2024-08-16 16:31:39 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier LA NUEVA STORE 
+2024-08-16 16:31:57 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier THE PRINCE WHOLESALE 
+2024-08-16 16:32:05 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO SUPERMARKET 
+2024-08-16 17:14:55 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-17 09:08:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 

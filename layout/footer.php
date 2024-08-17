@@ -273,7 +273,18 @@ let deleteValidation = "false";
     var stocksWarning = stockWarning.checked ? 1 : 0;
     var stockQuantity = document.getElementById('quantity').value;
 
+
+    var discount_sc = $("#discount_sc").is(":checked") ? 1 : 0;
+    var discount_sp = $("#discount_sp").is(":checked") ? 1 : 0;
+    var discount_naac = $("#discount_naac").is(":checked") ? 1 : 0;
+    var discount_pwd = $("#discount_pwd").is(":checked") ? 1 : 0;
+
+
     var formData = new FormData();
+    formData.append("discount_sc", discount_sc);
+    formData.append("discount_sp", discount_sp);
+    formData.append("discount_naac", discount_naac);
+    formData.append("discount_pwd", discount_pwd);
     formData.append("uploadedImage", file);
     formData.append("productname", productname);
     formData.append("sku", sku);
@@ -372,7 +383,7 @@ let deleteValidation = "false";
 
   function toUpdateProducts(productId, productName, productSKU, productCode, productBarcode, productOUM, productuomid, productBrand, productCost, productMakup, productPrice,
     productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable,
-    stock_status,stock_count) {
+    stock_status,stock_count , isSC, isPWD, isNAAC, isSP) {
 
     $('#add_products_modal').show();
     productId ? document.getElementById('productid').value = productId : null;
@@ -387,6 +398,12 @@ let deleteValidation = "false";
     } else {
       $('.modalHeaderTxt').text("Add New Product")
     }
+
+    $("#discount_sc").prop("checked", isSC == 1);
+    $("#discount_pwd").prop("checked", isPWD == 1);
+    $("#discount_naac").prop("checked", isNAAC == 1);
+    $("#discount_sp").prop("checked", isSP == 1);
+
     productSKU ? document.getElementById("skunNumber").value = productSKU : null;
     productCode ? document.getElementById("code").value = productCode : null;
     productBarcode ? document.getElementById("barcode").value = productBarcode : null
@@ -437,8 +454,10 @@ let deleteValidation = "false";
     variantid ? document.getElementById('varID').value = variantid : null;
 
 
-    var discountedCheckbox = document.getElementById('discountToggle');
-    discountedCheckbox.checked = (isDiscounted == 1) ? true : false;
+    // var discountedCheckbox = document.getElementById('discountToggle');
+    // discountedCheckbox.checked = (isDiscounted == 1) ? true : false;
+
+    $("#discountToggle").prop("checked", isDiscounted == 1);
 
   
     var stockable = document.getElementById('stockeableToggle');
@@ -649,8 +668,17 @@ let deleteValidation = "false";
    
     var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
     // console.log(existingData,'checking');
+
+    var discount_sc = $("#discount_sc").is(":checked") ? 1 : 0;
+    var discount_sp = $("#discount_sp").is(":checked") ? 1 : 0;
+    var discount_naac = $("#discount_naac").is(":checked") ? 1 : 0;
+    var discount_pwd = $("#discount_pwd").is(":checked") ? 1 : 0;
+
     var formData = new FormData();
-  
+    formData.append("discount_sc", discount_sc);
+    formData.append("discount_sp", discount_sp);
+    formData.append("discount_naac", discount_naac);
+    formData.append("discount_pwd", discount_pwd);
     formData.append("uploadedImage", file);
     formData.append("productname", productname);
     formData.append("sku", sku);
@@ -704,7 +732,6 @@ let deleteValidation = "false";
 
       axios.post('api.php?action=updateProduct', formData).then(function (response) {
         showResponse("Product has been successfully updated", 1);
-        console.log(response.data)
         var userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
         var firstName = localStorage.getItem('firstName') ?? userInfo.firstName;
         var lastName = localStorage.getItem('lastName') ?? userInfo.lastName;
@@ -716,6 +743,21 @@ let deleteValidation = "false";
         // refreshProductsTable()
         closeAddProductsModal()
         if (currentRow) {
+          
+          var isDiscounted = $("#discountToggle").is(":checked") ? 1 : 0;
+  
+          var discount_sc = $("#discount_sc").is(":checked") ? 1 : 0;
+          var discount_sp = $("#discount_sp").is(":checked") ? 1 : 0;
+          var discount_naac = $("#discount_naac").is(":checked") ? 1 : 0;
+          var discount_pwd = $("#discount_pwd").is(":checked") ? 1 : 0;
+          var discountTypesElement = currentRow.querySelector('.discountTypes');
+
+          discountTypesElement.setAttribute('data-isSC', discount_sc);
+          discountTypesElement.setAttribute('data-isPWD', discount_pwd);
+          discountTypesElement.setAttribute('data-isNAAC', discount_naac);
+          discountTypesElement.setAttribute('data-isSP', discount_sp);
+          
+          currentRow.querySelector('.isDiscounted').innerText = isDiscounted;
           currentRow.querySelector('.service').innerText = s_charge;
           currentRow.querySelector('.displayService').innerText = DisplayService;
 

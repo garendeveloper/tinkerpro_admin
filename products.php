@@ -917,7 +917,7 @@ $('#exportProducts').click(function() {
         var is_stockable = $(this).closest('tr').find('.is_stockable').text();
         var stock_status = $(this).closest('tr').find('.stock_status').text();
         var stock_count = $(this).closest('tr').find('.stock_count').text();
-       
+
         $('.highlighteds').removeClass('highlighteds');
         $('.highlightedss').removeClass('highlightedss')
       
@@ -932,7 +932,7 @@ $('#exportProducts').click(function() {
 
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
-        stock_status,stock_count)
+        stock_status,stock_count, isSC, isPWD, isNAAC, isSP)
     });
 
     $(document.body).off('click').on('click', '.deleteProducts', function() {
@@ -1083,6 +1083,13 @@ $('#exportProducts').click(function() {
     var stock_status = row.querySelector('.stock_status').innerText;
     var stock_count = row.querySelector('.stock_count').innerText;
   
+    var discountTypes =  row.querySelector('.discountTypes');
+
+    var isSC = discountTypes.getAttribute('data-isSC');
+    var isPWD = discountTypes.getAttribute('data-isPWD');
+    var isNAAC = discountTypes.getAttribute('data-isNAAC');
+    var isSP = discountTypes.getAttribute('data-isSP');
+
     $('.highlighteds').removeClass('highlightedss');
     $('.highlightedss').removeClass('highlightedss');
 
@@ -1090,6 +1097,6 @@ $('#exportProducts').click(function() {
 
     toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
-        stock_status,stock_count)
+        stock_status,stock_count,  isSC, isPWD, isNAAC, isSP)
     }
 </script>
