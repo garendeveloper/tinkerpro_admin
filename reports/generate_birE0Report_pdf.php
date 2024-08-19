@@ -107,9 +107,7 @@ if($singleDateData !== null && ($startDate === null && $endDate === null))
     $endDate = $singleDateData;
 }
 
-// $items = $birFacade->getDailyTransaction($startDate, $endDate);
-$items = $birFacade->getDailyESummary();
-
+$items = $birFacade->getDailyTransaction($startDate, $endDate);
 
 $x = 2; 
 $y = 63; 
@@ -190,8 +188,7 @@ $html = '<style>
             }
         </style>';
 
-$itemeResults = $items['daily_report'];      
-if($itemeResults)
+if($items)
 {
     $html .= '<table border="1" cellpadding="3">
                 <thead >
@@ -245,46 +242,44 @@ if($itemeResults)
                     </tr>
                 </thead>
                 <tbody>';
-
                 function formatValue($value) 
                 {
                     return ($value == 0 || empty($value)) ? '' : number_format($value, 2);
                 }
-
-                for($i = 0; $i < count($itemeResults); $i++)
+                for($i = 0; $i<count($items); $i++)
                 {
                     $html .= '<tr style="border: 1px solid black; font-size: 6px;">
-                                <td style="width: 3%">' . ($itemeResults[$i]['business_date']) . '</td>
-                                <td style="width: 3%">' . ($itemeResults[$i]['beginning_si']) . '</td>
-                                <td style="width: 3%">' . ($itemeResults[$i]['end_si']) . '</td>
-                                <td style="width: 5%">' . ($itemeResults[$i]['grandEndAccumulated']) . '</td>
-                                <td style="width: 5%">' . ($itemeResults[$i]['grandBegAccumulated']) . '</td>
-                                <td style="width: 5%; text-align: center">' . ($itemeResults[$i]['issued_si']) . '</td>
-                                <td style="width: 5%; text-align: right">' . formatValue($itemeResults[$i]['grossSalesToday']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['vatable_sales']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['vatAmount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['vatExempt']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['zero_rated']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['sc_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['pwd_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['naac_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['solo_parent_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['other_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['returned']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['voids']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['totalDeductions']) . '</td>
+                                <td style="width: 3%">' . ($items[$i]['dateRange']) . '</td>
+                                <td style="width: 3%">' . ($items[$i]['beginning_si']) . '</td>
+                                <td style="width: 3%">' . ($items[$i]['end_si']) . '</td>
+                                <td style="width: 5%">' . ($items[$i]['grandEndAccumulated']) . '</td>
+                                <td style="width: 5%">' . ($items[$i]['grandBegAccumulated']) . '</td>
+                                <td style="width: 5%; text-align: center">' . ($items[$i]['issued_si']) . '</td>
+                                <td style="width: 5%; text-align: right">' . formatValue($items[$i]['grossSalesToday']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['vatable_sales']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['vatAmount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['vatExempt']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['zero_rated']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sc_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['pwd_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['naac_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['solo_parent_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['other_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['returned']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['voids']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalDeductions']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['returnd_vat']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['othersVatAdjustment']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['totalVatAjustment']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['returnd_vat']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['othersVatAdjustment']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalVatAjustment']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['netSales']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['netSales']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['totalIncome']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['resetCount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($itemeResults[$i]['z_counter']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalIncome']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['resetCount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['z_counter']) . '</td>
                                 <td style="width: 3%; text-align: right"></td>
                             </tr>';
                 }
