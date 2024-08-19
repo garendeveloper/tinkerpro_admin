@@ -107,7 +107,10 @@ if($singleDateData !== null && ($startDate === null && $endDate === null))
     $endDate = $singleDateData;
 }
 
-$items = $birFacade->getDailyTransaction($startDate, $endDate);
+// $items = $birFacade->getDailyTransaction($startDate, $endDate);
+
+$items = $birFacade->getSalesDaily();
+
 
 $x = 2; 
 $y = 63; 
@@ -248,38 +251,47 @@ if($items)
                 }
                 for($i = 0; $i<count($items); $i++)
                 {
+                    $prev_z_read = json_decode($items[$i]['all_data'], true);
+                    $totalDeduction = $items[$i]['CUSTOMER_DIS'];
+                    $prev_acc_sales = 0;
+                    if ((float)$prev_z_read['previous_accumulated_sale'] != 0) {
+                        $prev_acc_sales = (float)$prev_z_read['previous_accumulated_sale'] + (float)$items[$i]['subtotal'];
+                    } else {
+                        $prev_acc_sales = (float)$prev_z_read['present_accumulated_sale'] + (float)$items[$i]['subtotal'];
+                    }
+
                     $html .= '<tr style="border: 1px solid black; font-size: 6px;">
-                                <td style="width: 3%">' . ($items[$i]['dateRange']) . '</td>
-                                <td style="width: 3%">' . ($items[$i]['beginning_si']) . '</td>
-                                <td style="width: 3%">' . ($items[$i]['end_si']) . '</td>
-                                <td style="width: 5%">' . ($items[$i]['grandEndAccumulated']) . '</td>
-                                <td style="width: 5%">' . ($items[$i]['grandBegAccumulated']) . '</td>
+                                <td style="width: 3%">' . ($prev_z_read ? $prev_z_read['present_accumulated_sale'] : 0) . '</td>
+                                <td style="width: 3%">' . ($prev_z_read ? $prev_z_read['beg_si'] : $items[$i]['first_receipt_num']) . '</td>
+                                <td style="width: 3%">' . ($prev_z_read ? $prev_z_read['beg_si'] : $items[$i]['last_receipt_num']) . '</td>
+                                <td style="width: 5%">' . ($prev_z_read ? (float)$prev_z_read['present_accumulated_sale'] : $prev_acc_sales) . '</td>
+                                <td style="width: 5%">' . ($prev_z_read ? (float)$prev_z_read['previous_accumulated_sale'] : $prev_acc_sales) . '</td>
                                 <td style="width: 5%; text-align: center">' . ($items[$i]['issued_si']) . '</td>
-                                <td style="width: 5%; text-align: right">' . formatValue($items[$i]['grossSalesToday']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['vatable_sales']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['vatAmount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['vatExempt']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['zero_rated']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sc_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['pwd_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['naac_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['solo_parent_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['other_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['returned']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['voids']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalDeductions']) . '</td>
+                                <td style="width: 5%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['gross_amount'] : $items[$i]['subtotal']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['vatable_sales'] : $items[$i]['VAT_SALES']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['vat_amount'] : $items[$i]['VAT_AMOUNT']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['vat_exempt'] : $items[$i]['VAT_EXEMPT']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['senior_discount'] : $items[$i]['SC_DIS']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['pwd_discount'] : $items[$i]['PWD_DIS']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['naac_discount'] : $items[$i]['NAAC_DIS']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['solo_parent_discount'] : $items[$i]['SP_DIS']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['other_discount'] : 0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? ($prev_z_read['return'] + $prev_z_read['refund']) : 0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['void'] : 0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? $prev_z_read['less_discount'] : $totalDeduction) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['returnd_vat']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['othersVatAdjustment']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalVatAjustment']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? ($prev_z_read['vat_return'] + $prev_z_read['vat_refunded']) : $items[$i]['returnd_vat']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? ($prev_z_read['total_void_vat']) : $items[$i]['othersVatAdjustment']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? ($prev_z_read['less_vat_adjustment']) : $items[$i]['totalVatAjustment']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['netSales']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? ($prev_z_read['net_amount']) : $items[$i]['paidAmount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? ($prev_z_read['short_or_over']) : 0) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalIncome']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['resetCount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['z_counter']) . '</td>
+                                <td style="width: 3%; text-align: right">' . ($prev_z_read ? ($prev_z_read['resetCount']) : $items[$i]['resetCount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . ($prev_z_read ? ($prev_z_read['zReadCounter']) : $items[$i]['z_counter']) . '</td>
                                 <td style="width: 3%; text-align: right"></td>
                             </tr>';
                 }

@@ -13915,6 +13915,40 @@
 2024-08-16 14:57:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-16 15:43:57 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-16 15:50:25 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-18 09:52:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 09:53:17 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-18 09:55:15 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-18 09:55:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 09:56:03 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-18 10:52:13 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 10:52:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-18 12:52:32 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-18 12:52:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 12:52:45 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-18 12:52:55 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 12:55:35 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 13:41:56 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-19 15:34:21 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:34:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-19 15:34:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:39:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 11:12:02 | Admin Admin | 1 | 2 | Products | Admin Admin Added Basket Ball Barcode #:796408896220 
+2024-08-16 11:13:02 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000053 Amount:₱ 80,000.00 
+2024-08-16 11:13:28 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000053 Supplier: GAISANO SUPERMARKET 
+2024-08-16 11:14:12 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
+2024-08-16 11:14:21 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-16 13:06:41 | Admin Admin | 1 | 2 | Products | Admin Admin Added Diapers Barcode #:790581017527 
+2024-08-16 13:07:15 | Admin Admin | 1 | 2 | Products | Admin Admin Added Bonakid Barcode #:951742829415 
+2024-08-16 13:07:34 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000054 Amount:₱ 42,000.00 
+2024-08-16 13:08:08 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000054 Supplier: GAISANO SUPERMARKET 
+2024-08-16 13:13:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Diapers Barcode #:790581017527 
+2024-08-16 13:13:53 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-16 14:50:14 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 14:50:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 14:57:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 14:57:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 15:43:57 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 15:50:25 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
 2024-08-19 10:04:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-19 10:35:46 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-19 10:47:52 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 

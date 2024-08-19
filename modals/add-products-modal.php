@@ -624,6 +624,7 @@ document.getElementById("fileInputs").addEventListener("change", function(event)
 
 
 function openCategoryModal(){
+  console.log('Hello world ')
    $('#add_category_modal').show()
    if($('#add_bom_modal').is(':visible')){
       closeModalBom()
