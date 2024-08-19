@@ -3,54 +3,168 @@
 class BirFacade extends DBConnection {
 
 
-    public function getDailyESummary() {
+    public function getSalesDaily() {
         $pdo = $this->connect();
-    
-        $daily = 'SELECT
-            business_date.id AS business_date_id,
-            business_date.business_date,
-            SUM(transactions.subtotal) AS totalSales
+
+        $daily = "SELECT 
+            subquery.business_date_id,
+            all_data,
+            first_receipt_num,
+            last_receipt_num,
+            paidAmount,
+            subtotal,
+            SP_DIS,
+            NAAC_DIS,
+            CUSTOMER_DIS,
+            SUM(CASE 
+                WHEN SC_PWD_VAT_PRICE >= 2500 AND customer_type = 'SC' THEN
+                    ROUND((SC_PWD_VAT_PRICE) * (customer_discount / 100), 2)
+                WHEN SC_PWD_VAT_PRICE < 2500 AND customer_type = 'SC' THEN
+                    ROUND((SC_PWD_VAT_PRICE) * (customer_discount / 100), 2)
+                WHEN SC_PWD_NOT_VAT_DIS < 2500 AND customer_type = 'SC' THEN
+                    ROUND((SC_PWD_NOT_VAT_DIS) * (customer_discount / 100), 2)
+                WHEN SC_PWD_NOT_VAT_DIS >= 2500 AND customer_type = 'SC' THEN
+                    ROUND((2500) * (customer_discount / 100), 2)
+                ELSE 0
+            END) AS SC_DIS,
+            
+            SUM(CASE 
+                WHEN SC_PWD_VAT_PRICE >= 2500 AND customer_type = 'PWD' THEN
+                    ROUND((SC_PWD_VAT_PRICE) * (customer_discount / 100), 2)
+                WHEN SC_PWD_VAT_PRICE < 2500 AND customer_type = 'PWD' THEN
+                    ROUND((SC_PWD_VAT_PRICE) * (customer_discount / 100), 2)
+                WHEN SC_PWD_NOT_VAT_DIS < 2500 AND customer_type = 'PWD' THEN
+                    ROUND((SC_PWD_NOT_VAT_DIS) * (customer_discount / 100), 2)
+                WHEN SC_PWD_NOT_VAT_DIS >= 2500 AND customer_type = 'PWD' THEN
+                    ROUND((2500) * (customer_discount / 100), 2)
+                ELSE 0
+            END) AS PWD_DIS,
+            
+            ROUND(
+                CASE 
+                WHEN customer_type = 'SP' THEN 0
+                ELSE vatable_price / 1.12
+                END, 2
+            ) AS VAT_SALES,
+            
+            ROUND(
+                CASE 
+                WHEN customer_type = 'SP' THEN 0
+                ELSE (vatable_price / 1.12) * 0.12
+                END, 2
+            ) AS VAT_AMOUNT,
+            VAT_EXEMPT
+        FROM (
+            SELECT
+                z_read.all_data,
+                MIN(receipt.barcode) AS first_receipt_num,
+                MAX(receipt.barcode) AS last_receipt_num,
+                business_date.id AS business_date_id,
+                discounts.discount_amount AS customer_discount,
+                discounts.name AS customer_type,
+                transactions.receipt_id,
+                transactions.payment_id,
+                transactions.user_id,
+                transactions.cashier_id,
+                SUM(DISTINCT payments.sc_pwd_discount) AS CUSTOMER_DIS,
+                SUM(DISTINCT payments.payment_amount - payments.change_amount) AS paidAmount,
+                SUM(transactions.subtotal) AS subtotal,
+            
+                SUM(ROUND(
+                    CASE 
+                    WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN
+                        ROUND((transactions.subtotal / 1.12), 2)
+                    WHEN products.isVAT = 0 THEN
+                        ROUND(transactions.subtotal, 2)
+                    ELSE 0
+                    END, 2
+                )) AS VAT_EXEMPT, 
+
+                SUM(CASE
+                    WHEN discounts.name = 'NAAC' AND products.isVAT = 1 AND products.isNAACEnabled = 1 THEN
+                        ROUND((transactions.subtotal / 1.12) * (discounts.discount_amount / 100), 2)
+                    WHEN discounts.name = 'NAAC' AND products.isVAT = 0 AND products.isNAACEnabled = 1 THEN
+                        ROUND((transactions.subtotal) * (discounts.discount_amount / 100), 2)
+                    ELSE 0
+                END) AS NAAC_DIS,
+                
+                SUM(CASE
+                    WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isNAACEnabled = 1 THEN
+                        ROUND((transactions.subtotal / 1.12) * (discounts.discount_amount / 100), 2)
+                    WHEN discounts.name = 'SP' AND products.isVAT = 0 AND products.isNAACEnabled = 1 THEN
+                        ROUND((transactions.subtotal) * (discounts.discount_amount / 100), 2)
+                    ELSE 0
+                END) AS SP_DIS,
+
+                ROUND(
+                SUM(CASE 
+                    WHEN products.isVAT = 1 AND (products.isSCEnabled = 1 OR products.isPWDEnabled = 1) AND (discounts.name = 'SC' OR discounts.name = 'PWD') THEN 
+                        transactions.subtotal ELSE 0
+                END), 2) AS SC_PWD_VAT_PRICE,
+                
+                SUM(CASE
+                    WHEN products.isVAT = 0 AND (products.isSCEnabled = 1 OR products.isPWDEnabled = 1) AND (discounts.name = 'SC' OR discounts.name = 'PWD') THEN
+                        transactions.subtotal 
+                    ELSE 0
+                END) AS SC_PWD_NOT_VAT_DIS,
+                
+                CASE 
+                    WHEN products.isVAT = 0 AND products.is_discounted = 1 THEN
+                        ROUND(SUM(transactions.subtotal), 2)
+                    ELSE 0
+                END AS nonVatDiscounted,
+                
+                CASE 
+                    WHEN products.isVAT = 0 THEN
+                        ROUND(SUM(transactions.subtotal), 2)
+                    ELSE 0
+                END AS nonVat,
+                
+                CASE 
+                    WHEN products.isVAT = 1 THEN
+                        ROUND(SUM(transactions.subtotal), 2)
+                END AS vatable_price
             FROM transactions
             INNER JOIN payments ON payments.id = transactions.payment_id
             INNER JOIN receipt ON receipt.id = transactions.receipt_id
+            INNER JOIN users ON users.id = transactions.user_id
+            INNER JOIN discounts ON discounts.id = users.discount_id
+            INNER JOIN products ON products.id = transactions.prod_id
             INNER JOIN business_date ON business_date.id = payments.business_date_id
-            GROUP BY business_date.id, business_date.business_date';
+            LEFT JOIN z_read ON z_read.id = business_date.z_read_id
+            GROUP BY business_date.id
+        ) AS subquery
+        GROUP BY subquery.business_date_id";
 
         $dailyReport = $pdo->prepare($daily);
         $dailyReport->execute();
-
         $dailyResult = $dailyReport->fetchAll(PDO::FETCH_ASSOC);
 
 
-        $beg_and_end_si = 'SELECT
-            (SELECT receipt.barcode 
-            FROM payments
-            INNER JOIN transactions ON payments.id = transactions.payment_id
-            INNER JOIN receipt ON receipt.id = transactions.receipt_id
-            WHERE payments.business_date_id = 20
-            ORDER BY receipt.id ASC
-            LIMIT 1) AS first_receipt_num,
-            
-            (SELECT receipt.barcode 
-            FROM payments
-            INNER JOIN transactions ON payments.id = transactions.payment_id
-            INNER JOIN receipt ON receipt.id = transactions.receipt_id
-            WHERE payments.business_date_id = 20
-            ORDER BY receipt.id DESC
-            LIMIT 1) AS last_receipt_num
-        FROM DUAL;'
+        // $sales_receipt = "SELECT
+        //     DATE(business_date.business_date) AS date,
+        //     MIN(receipt.barcode) AS first_receipt_num,
+        //     MAX(receipt.barcode) AS last_receipt_num
+        // FROM
+        //     payments
+        //     INNER JOIN business_date ON business_date.id = payments.business_date_id
+        //     INNER JOIN transactions ON payments.id = transactions.payment_id
+        //     INNER JOIN receipt ON receipt.id = transactions.receipt_id
+        // WHERE
+        //     transactions.is_void NOT IN (1, 2)
+        //     AND transactions.is_transact = 1
+        // GROUP BY business_date.id";
 
-        $beg_end_si_Report = $pdo->prepare($beg_and_end_si);
-        $beg_end_si_Report->execute();
-        $beg_end_si_Result = $beg_end_si_Report->fetchAll(PDO::FETCH_ASSOC);
+        // $sales_receipt_report = $pdo->prepare($sales_receipt);
+        // $sales_receipt_report->execute();
+        // $sales_receipt_result = $sales_receipt_report->fetchAll(PDO::FETCH_ASSOC);
 
-        $resutl = [];
-        
-        $resutl = [
-            'date' => 
-        ];   
+
+        $results = ($dailyResult);
+
+        return $results;
+
     }
-
 
     public function getAllZread($startDate, $endDate) {
         $pdo = $this->connect();
@@ -201,9 +315,9 @@ class BirFacade extends DBConnection {
     public function E_reports($customerType, $startDate, $endDate) {
      
         $pdo = $this->connect();
-
         // Base query for e_reports
-        $e_reports_query = 'SELECT
+        $e_reports_query = "SELECT
+		customer_type,
         first_name,
         last_name,
         scOrPwdTIN,
@@ -231,32 +345,61 @@ class BirFacade extends DBConnection {
         date_time_of_payment,
         VAT_EXEMPTS,
         vatable_price,
-            CASE
-                WHEN ROUND((vatable_price), 2) THEN
-                    ROUND((vatable_price / 1.12), 2)
-                ELSE 
-                    0
-                END AS VAT_SALES,
+        ROUND(
+          CASE 
+          WHEN customer_type = 'SP' THEN 0
+          ELSE vatable_price / 1.12
+          END, 2
+        ) AS VAT_SALES,
+
+        ROUND(
             CASE 
-                WHEN ROUND((vatable_price), 2) THEN
-                    ROUND(ROUND((vatable_price / 1.12), 2) * 0.12, 2)
-                ELSE 
-                    0
-                END AS VAT_AMOUNT,
+            WHEN customer_type = 'SP' THEN 0
+            ELSE (vatable_price / 1.12) * 0.12
+            END, 2
+        ) AS VAT_AMOUNT,
+
+        SUM(ROUND(
             CASE 
-                WHEN ROUND((nonVat ), 2) THEN
-                    ROUND((nonVat), 2)
-                ELSE
-                    0
-                END AS VAT_EXEMPT,
-                
-            CASE 
-                WHEN ROUND(((vatDiscounted)), 2) >= 2500 THEN
-                    (2500) * ROUND((customer_discount / 100), 2)
-                ELSE 
-                    ROUND((vatable_price ),2) * ROUND((customer_discount / 100), 2)
-                END AS CUSTOMER_DIS,
-                
+            WHEN (customer_type = 'SP') THEN
+            	(ROUND(vatable_price / 1.12, 2)) + nonVat
+            ELSE nonVat
+            END, 2
+        )) AS VAT_EXEMPT,
+       
+       SUM(
+        CASE
+            WHEN (customer_type = 'SP' OR customer_type = 'NAAC') THEN
+                ROUND((SP_NAAC_VAT_PRICE / 1.12) * (customer_discount / 100), 2)
+            ELSE 0
+        END +
+        CASE
+            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) < 2500 THEN
+                ROUND(SC_PWD_VAT_PRICE * (customer_discount / 100), 2)
+            ELSE 0
+        END +
+        CASE
+            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) >= 2500 THEN
+                ROUND(2500 * (customer_discount / 100), 2)
+            ELSE 0
+        END +
+        CASE
+            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) >= 2500 AND ROUND(nonVat, 2) <> 0 THEN
+                ROUND(2500 * (customer_discount / 100), 2)
+            ELSE 0
+        END +
+        CASE
+            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) < 2500 AND ROUND(nonVat, 2) <> 0 THEN
+                ROUND(nonVat * (customer_discount / 100), 2)
+            ELSE 0
+        END +
+          
+        CASE
+            WHEN (customer_type = 'SP' OR customer_type = 'NAAC') AND ROUND(nonVat, 2) <> 0 THEN
+                ROUND(nonVat * (customer_discount / 100), 2)
+            ELSE 0
+        END  
+    	) AS CUSTOMER_DIS,
         change_amount,
         barcode
         FROM (
@@ -286,8 +429,19 @@ class BirFacade extends DBConnection {
                     payments.creditTotal AS totalCredit,
                     payments.payment_details,
                     payments.date_time_of_payment,
+            		discounts.name AS customer_type,
                     discounts.discount_amount AS customer_discount,
                     payments.vatable_sales AS VAT_EXEMPTS,
+            
+            		ROUND(
+                        SUM(CASE WHEN products.isVAT = 1 AND (products.isSPEnabled = 1 OR products.isNAACEnabled = 1) THEN 
+                           transactions.subtotal ELSE 0 
+                      END),2) AS SP_NAAC_VAT_PRICE,
+
+                    ROUND(
+                        SUM(CASE WHEN products.isVAT = 1 AND (products.isSCEnabled = 1 OR products.isPWDEnabled = 1) THEN 
+                           transactions.subtotal ELSE 0 
+                      END),2) AS SC_PWD_VAT_PRICE,
             
                     CASE 
                         WHEN products.isVAT = 1 AND products.is_discounted = 1 THEN
@@ -307,7 +461,7 @@ class BirFacade extends DBConnection {
                         END AS nonVat,
                     CASE 
                         WHEN products.isVAT = 1 THEN
-                            ROUND((SUM( transactions.subtotal)),2)
+                            ROUND((SUM(transactions.subtotal)),2)
                         END AS vatable_price,
                     payments.change_amount, 
                     receipt.barcode
@@ -318,7 +472,7 @@ class BirFacade extends DBConnection {
                 INNER JOIN discounts ON discounts.id = users.discount_id
                 INNER JOIN customer ON users.id = customer.user_id
                 INNER JOIN receipt ON receipt.id = transactions.receipt_id
-                WHERE transactions.is_paid = 1 AND transactions.is_void NOT IN (1, 2) AND users.discount_id = ?';
+                WHERE transactions.is_paid = 1 AND transactions.is_void NOT IN (1, 2) AND users.discount_id = ?";
   
         $whereClause = " AND DATE(payments.date_time_of_payment) BETWEEN ? AND ?";
         $groupBy = " GROUP BY transactions.payment_id ORDER BY receipt.barcode DESC
@@ -504,9 +658,6 @@ class BirFacade extends DBConnection {
             }
             
         }
-
-
-        
 
         return $result;
     }
