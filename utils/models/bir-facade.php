@@ -9,36 +9,23 @@ class BirFacade extends DBConnection {
         $daily = "SELECT 
             subquery.business_date_id,
             all_data,
+            z_read_date,
             first_receipt_num,
             last_receipt_num,
             paidAmount,
             subtotal,
+            SC_DIS,
+            PWD_DIS,
             SP_DIS,
             NAAC_DIS,
             CUSTOMER_DIS,
-            SUM(CASE 
-                WHEN SC_PWD_VAT_PRICE >= 2500 AND customer_type = 'SC' THEN
-                    ROUND((SC_PWD_VAT_PRICE) * (customer_discount / 100), 2)
-                WHEN SC_PWD_VAT_PRICE < 2500 AND customer_type = 'SC' THEN
-                    ROUND((SC_PWD_VAT_PRICE) * (customer_discount / 100), 2)
-                WHEN SC_PWD_NOT_VAT_DIS < 2500 AND customer_type = 'SC' THEN
-                    ROUND((SC_PWD_NOT_VAT_DIS) * (customer_discount / 100), 2)
-                WHEN SC_PWD_NOT_VAT_DIS >= 2500 AND customer_type = 'SC' THEN
-                    ROUND((2500) * (customer_discount / 100), 2)
-                ELSE 0
-            END) AS SC_DIS,
-            
-            SUM(CASE 
-                WHEN SC_PWD_VAT_PRICE >= 2500 AND customer_type = 'PWD' THEN
-                    ROUND((SC_PWD_VAT_PRICE) * (customer_discount / 100), 2)
-                WHEN SC_PWD_VAT_PRICE < 2500 AND customer_type = 'PWD' THEN
-                    ROUND((SC_PWD_VAT_PRICE) * (customer_discount / 100), 2)
-                WHEN SC_PWD_NOT_VAT_DIS < 2500 AND customer_type = 'PWD' THEN
-                    ROUND((SC_PWD_NOT_VAT_DIS) * (customer_discount / 100), 2)
-                WHEN SC_PWD_NOT_VAT_DIS >= 2500 AND customer_type = 'PWD' THEN
-                    ROUND((2500) * (customer_discount / 100), 2)
-                ELSE 0
-            END) AS PWD_DIS,
+            VOID,
+            VOID_DISCOUNT,
+            VAT_ADJUST,
+            VOID_NAAC_DISCOUNT,
+            VOID_PWD_DISCOUNT,
+            VOID_SP_DISCOUNT,
+            VOID_SC_DISCOUNT,
             
             ROUND(
                 CASE 
@@ -56,6 +43,7 @@ class BirFacade extends DBConnection {
             VAT_EXEMPT
         FROM (
             SELECT
+                DATE(z_read.date_time) AS z_read_date,
                 z_read.all_data,
                 MIN(receipt.barcode) AS first_receipt_num,
                 MAX(receipt.barcode) AS last_receipt_num,
@@ -69,6 +57,70 @@ class BirFacade extends DBConnection {
                 SUM(DISTINCT payments.sc_pwd_discount) AS CUSTOMER_DIS,
                 SUM(DISTINCT payments.payment_amount - payments.change_amount) AS paidAmount,
                 SUM(transactions.subtotal) AS subtotal,
+
+                SUM(DISTINCT ROUND(
+                    CASE 
+                        WHEN transactions.is_void = 2 THEN
+                            payments.sc_pwd_discount
+                        ELSE 0
+                    END, 2
+                )) AS VOID_DISCOUNT,
+            
+            
+            	SUM(DISTINCT ROUND(
+                    CASE 
+                        WHEN transactions.is_void = 2 AND discounts.name = 'SP' THEN
+                            payments.sc_pwd_discount
+                        ELSE 0
+                    END, 2
+                )) AS VOID_SP_DISCOUNT,
+            
+            	SUM(DISTINCT ROUND(
+                    CASE 
+                        WHEN transactions.is_void = 2 AND discounts.name = 'SC' THEN
+                            payments.sc_pwd_discount
+                        ELSE 0
+                    END, 2
+                )) AS VOID_SC_DISCOUNT,
+            
+            	SUM(DISTINCT ROUND(
+                    CASE 
+                        WHEN transactions.is_void = 2 AND discounts.name = 'PWD' THEN
+                            payments.sc_pwd_discount
+                        ELSE 0
+                    END, 2
+                )) AS VOID_PWD_DISCOUNT,
+            
+            
+            	SUM(DISTINCT ROUND(
+                    CASE 
+                        WHEN transactions.is_void = 2 AND discounts.name = 'NAAC' THEN
+                            payments.sc_pwd_discount
+                        ELSE 0
+                    END, 2
+                )) AS VOID_NAAC_DISCOUNT,
+            
+            	SUM(ROUND(
+                    CASE 
+                        WHEN transactions.is_void = 2 THEN
+                            (transactions.subtotal)
+                        ELSE 0
+                    END, 2
+                )) AS VOID,
+            
+            	 SUM(ROUND(
+                    CASE 
+                        WHEN transactions.is_void = 2 AND discounts.name = 'SP' AND products.isVAT = 1 THEN
+                            ROUND((transactions.subtotal / 1.12) * 0.12, 2)
+                        WHEN transactions.is_void = 2 AND discounts.name <> 'SP' AND products.isVAT = 1 THEN
+                            ROUND((transactions.subtotal / 1.12) * 0.12, 2)
+                      	WHEN transactions.is_void = 2 AND discounts.name = 'SP' AND products.isVAT = 0 THEN
+                            ROUND((transactions.subtotal) - ROUND(payments.sc_pwd_discount, 2), 2)
+                        WHEN transactions.is_void = 2 AND discounts.name <> 'SP' AND products.isVAT = 0 THEN
+                            ROUND((transactions.subtotal) * 0.12, 2)
+                        ELSE 0
+                    END, 2
+                )) AS VAT_ADJUST,
             
                 SUM(ROUND(
                     CASE 
@@ -79,20 +131,28 @@ class BirFacade extends DBConnection {
                     ELSE 0
                     END, 2
                 )) AS VAT_EXEMPT, 
+            
+                SUM(DISTINCT CASE 
+					WHEN discounts.name = 'SC' THEN
+                        payments.sc_pwd_discount
+                    ELSE 0
+                END) AS SC_DIS,
 
-                SUM(CASE
-                    WHEN discounts.name = 'NAAC' AND products.isVAT = 1 AND products.isNAACEnabled = 1 THEN
-                        ROUND((transactions.subtotal / 1.12) * (discounts.discount_amount / 100), 2)
-                    WHEN discounts.name = 'NAAC' AND products.isVAT = 0 AND products.isNAACEnabled = 1 THEN
-                        ROUND((transactions.subtotal) * (discounts.discount_amount / 100), 2)
+                SUM(DISTINCT CASE 
+					WHEN discounts.name = 'PWD' THEN
+                        payments.sc_pwd_discount
+                    ELSE 0
+                END) AS PWD_DIS,
+
+                SUM(DISTINCT CASE
+                    WHEN discounts.name = 'NAAC' THEN
+                        payments.sc_pwd_discount
                     ELSE 0
                 END) AS NAAC_DIS,
                 
-                SUM(CASE
-                    WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isNAACEnabled = 1 THEN
-                        ROUND((transactions.subtotal / 1.12) * (discounts.discount_amount / 100), 2)
-                    WHEN discounts.name = 'SP' AND products.isVAT = 0 AND products.isNAACEnabled = 1 THEN
-                        ROUND((transactions.subtotal) * (discounts.discount_amount / 100), 2)
+                SUM(DISTINCT CASE
+                    WHEN discounts.name = 'SP' THEN
+                        payments.sc_pwd_discount
                     ELSE 0
                 END) AS SP_DIS,
 
@@ -109,20 +169,21 @@ class BirFacade extends DBConnection {
                 END) AS SC_PWD_NOT_VAT_DIS,
                 
                 CASE 
-                    WHEN products.isVAT = 0 AND products.is_discounted = 1 THEN
+                    WHEN products.isVAT = 0 AND products.is_discounted = 1 AND transactions.is_void <> 2 THEN
                         ROUND(SUM(transactions.subtotal), 2)
                     ELSE 0
                 END AS nonVatDiscounted,
                 
                 CASE 
-                    WHEN products.isVAT = 0 THEN
+                    WHEN products.isVAT = 0 AND transactions.is_void <> 2 THEN
                         ROUND(SUM(transactions.subtotal), 2)
                     ELSE 0
                 END AS nonVat,
                 
                 CASE 
-                    WHEN products.isVAT = 1 THEN
+                    WHEN products.isVAT = 1 AND transactions.is_void <> 2 THEN
                         ROUND(SUM(transactions.subtotal), 2)
+                    ELSE 0
                 END AS vatable_price
             FROM transactions
             INNER JOIN payments ON payments.id = transactions.payment_id
@@ -132,9 +193,10 @@ class BirFacade extends DBConnection {
             INNER JOIN products ON products.id = transactions.prod_id
             INNER JOIN business_date ON business_date.id = payments.business_date_id
             LEFT JOIN z_read ON z_read.id = business_date.z_read_id
+            
             GROUP BY business_date.id
         ) AS subquery
-        GROUP BY subquery.business_date_id";
+        GROUP BY subquery.business_date_id;";
 
         $dailyReport = $pdo->prepare($daily);
         $dailyReport->execute();

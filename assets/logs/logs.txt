@@ -13932,3 +13932,35 @@
 2024-08-19 15:34:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-08-19 15:34:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-19 15:39:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 18:02:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-20 09:03:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-20 09:32:35 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 09:41:22 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:41:32 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 09:41:37 | Rey Garren Balingit | 51 | 3 | Login | User Rey Garren Balingit 3 
+2024-08-20 09:41:48 | Rey Garren Balingit | 51 | 3 | Logout | User Rey Garren Balingit 3 
+2024-08-20 09:41:52 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 09:43:22 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:43:36 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:46:34 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:34:34 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:34:57 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Zeus Baculio 
+2024-08-20 11:35:00 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:35:02 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:37:21 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:39:06 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:39:14 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 13:38:46 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-20 13:38:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 14:48:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:07:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 16:00:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 16:15:13 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-19 16:15:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:20:09 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:20:57 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Basket Ball Barcode #:796408896220 
+2024-08-20 17:31:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
