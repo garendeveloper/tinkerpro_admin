@@ -738,7 +738,7 @@ let deleteValidation = "false";
         var cid = localStorage.getItem('userId') ?? userInfo.userId;
         var role_id = localStorage.getItem('roleId') ?? userInfo.roleId;
         insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Updated' + ' ' +  productname +' '+ 'Barcode #:'+barcode)
-        // refreshProductsTable()
+        refreshProductsTable()
         deleteValidation = "false";
         // refreshProductsTable()
         closeAddProductsModal()

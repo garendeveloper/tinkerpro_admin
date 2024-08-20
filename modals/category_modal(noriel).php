@@ -624,7 +624,6 @@ function closeModal(){
     if($('#add_bom_modal').is(':visible')){
            closeModalBom()
        } 
-  $('#add_category_modal').css('animation', 'slideOutRight 0.5s forwards');
   $('.categoryAdd').css('animation', 'slideOutRight 0.5s forwards');
   $('.highlighted').removeClass('highlighted');
  
@@ -635,6 +634,11 @@ function closeModal(){
      getCategories()  
   });
 }
+
+$('.addCategory').on('click', function(event) {
+    event.preventDefault();
+    openCategoryModal();
+});
 
 
 </script>

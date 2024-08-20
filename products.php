@@ -226,6 +226,34 @@ if (isset($_SESSION['user_id'])) {
 
 <script>
 
+
+$('.addCategory').on('click', function(event) {
+    event.preventDefault();
+    openCategoryModal();
+});
+
+
+// add category modal
+function openCategoryModal() {
+    console.log('Opening category modal');
+
+
+    $('#add_category_modal').show();
+
+    if ($('#add_bom_modal').is(':visible')) {
+        console.log('BOM modal is visible, closing it');
+        closeModalBom();
+    }
+    
+    
+    setTimeout(function() {
+      refreshProductsTable();
+      closeAddProductsModal()
+    }, 2.88e+7); 
+    
+    console.log('Category modal should now be visible');
+}
+
 $(document).ready(function() {
 
   var editClicked = false;
@@ -292,7 +320,7 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
     axios.post('api.php?action=importProduct', formData)
   .then(function(response) {
     $('#modalCashPrint').hide();
-    refreshProductsTable(); // Refresh the table after importing products
+    refreshProductsTable(); 
     showResponse("Product successfully uploaded!", 1);
   })
   .catch(function(error) {
@@ -830,4 +858,6 @@ $('#exportProducts').click(function() {
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
         stock_status,stock_count,  isSC, isPWD, isNAAC, isSP)
     }
+
+    
 </script>

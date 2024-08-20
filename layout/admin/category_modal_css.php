@@ -127,14 +127,21 @@
     padding-left: 10px;
     margin: 0;
 }
-.cat_btns{
+.cat_btns {
     font-size: 13px;
     border-radius: 5px;
     width: 70px;
     margin: 0;
     height: 40px;
-    background-color: #404040;
+    background-color: #404040; 
+    color: #fefefe;
 }
+
+.cat_btns:hover {
+    background-color: #333333; /* Example hover color, adjust as needed */
+    color: #ffffff; /* Example hover text color */
+}
+
 .inputCat{
     padding-left: 50px;
     font-family: Century Gothic;

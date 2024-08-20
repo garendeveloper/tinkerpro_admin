@@ -326,18 +326,27 @@
 <!-- </div> -->
 <script>
 
-  $(document).on("change", "#discountToggle", function(e){
+
+// discount toogle
+$(document).on("change", "#discountToggle", function(e){
     e.preventDefault();
 
     var isChecked = $(this).is(":checked");
-    if(isChecked)
-    {
-      $(".discountList").prop("checked", true);
+    $(".discountList").prop("checked", isChecked);
+});
+
+$(document).on("change", ".discountList", function() {
+    
+    if(!$(this).is(":checked")) {
+        $("#discountToggle").prop("checked", false);
     }
-    else{
-      $(".discountList").prop("checked", false);
+    
+    var allChecked = $(".discountList").length === $(".discountList:checked").length;
+    if(allChecked) {
+        $("#discountToggle").prop("checked", true);
     }
-  })
+});
+
 
   document.getElementById('stockToggle').addEventListener('change', function() {
         var quantityInput = document.querySelector('.quantity');
@@ -623,13 +632,31 @@ document.getElementById("fileInputs").addEventListener("change", function(event)
 });
 
 
-function openCategoryModal(){
-  console.log('Hello world ')
-   $('#add_category_modal').show()
-   if($('#add_bom_modal').is(':visible')){
-      closeModalBom()
+$('.addCategory').on('click', function(event) {
+    event.preventDefault();
+    openCategoryModal();
+});
+
+
+// add category modal
+function openCategoryModal() {
+    console.log('Opening category modal');
+
+
+    $('#add_category_modal').show();
+
+    if ($('#add_bom_modal').is(':visible')) {
+        console.log('BOM modal is visible, closing it');
+        closeModalBom();
     }
+    
+    setTimeout(function() {
+   
+    }, 2.88e+7); 
+    
+    console.log('Category modal should now be visible');
 }
+
 
 function clearStorage() {
   var existingData = JSON.parse(localStorage.getItem('bomData')) || [];
