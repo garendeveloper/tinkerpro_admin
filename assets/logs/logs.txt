@@ -14054,6 +14054,7 @@
 2024-08-20 13:01:36 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-20 13:02:02 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-20 16:40:15 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+<<<<<<< HEAD
 2024-08-21 11:07:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-21 11:07:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-21 11:10:57 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added supplier METRO SUPERMARKET 
@@ -14081,3 +14082,37 @@
 2024-08-21 17:25:13 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
 2024-08-21 17:32:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
 2024-08-21 17:36:45 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+=======
+2024-08-19 18:02:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-20 09:03:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-20 09:32:35 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 09:41:22 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:41:32 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 09:41:37 | Rey Garren Balingit | 51 | 3 | Login | User Rey Garren Balingit 3 
+2024-08-20 09:41:48 | Rey Garren Balingit | 51 | 3 | Logout | User Rey Garren Balingit 3 
+2024-08-20 09:41:52 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 09:43:22 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:43:36 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:46:34 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:34:34 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:34:57 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Zeus Baculio 
+2024-08-20 11:35:00 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:35:02 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:37:21 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:39:06 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:39:14 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 13:38:46 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-20 13:38:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 14:48:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:07:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 16:00:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 16:15:13 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-19 16:15:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:20:09 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:20:57 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Basket Ball Barcode #:796408896220 
+2024-08-20 17:31:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+>>>>>>> 6b605d917de325e4ee0c879959273fa3055c54a7
