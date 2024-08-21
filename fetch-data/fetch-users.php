@@ -26,7 +26,7 @@ ob_start();
 if ($fetchUser->rowCount() > 0) {
 while ($row = $fetchUser->fetch(PDO::FETCH_ASSOC)) {
     ?>
-    <tr>
+   <tr class="table-row user-row" >
     <td hidden><span hidden class="roleN td-h"><?= $row['role_name'] ?></span><span hidden class="roleidNum"><?= $row['role_id'] ?></span><span hidden class="identification"><?= $row['identification'] ?></span></span><span hidden class="datehired"><?= $row['dateHired'] ?></span><span hidden class="permission"><?= $row['permission'] ?></span></td>
         <td style="border-left: 1px solid transparent !important"  class='text-center td-h child-a' ><?= $counter?><span hidden class="userId"><?= $row['id'] ?></span></td>
         <td  class='text-left text-color td-h child-b' style = "padding-left: 10px !important"><?= $row['first_name'] . ' ' . $row['last_name'] ?><span hidden class="f_name"><?= $row['first_name']?></span><span hidden class="l_name"><?= $row['last_name']?></span></td>
@@ -83,3 +83,29 @@ echo $html;
 }
 
 </style>
+
+
+<script>
+$(document).ready(function() {
+    // Add click event listener to table rows
+    $(document).on('click', '.user-row', function() {
+        // Check if the modal is visible
+        if ($('#add_users_modal').is(':visible')) {
+            closeAddUserModal();
+        }
+    });
+
+    // Prevent modal from closing when clicking inside the modal
+    $(document).on('click', '#add_users_modal, .customer-modal', function(event) {
+        event.stopPropagation();
+    });
+
+    // Add click event listener to edit icon to open the modal
+    $(document).on('click', '.editBtn', function(event) {
+        event.stopPropagation(); // Prevent this click from closing the modal
+     
+        $('#add_users_modal').show(); 
+        $('.user-modal').show(); 
+    });
+});
+</script>

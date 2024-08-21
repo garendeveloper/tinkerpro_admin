@@ -149,7 +149,7 @@ if (isset($_SESSION['user_id'])) {
                 <div class="charges-container" style="float: right">
                   <div class="inner-border p-2 d-flex">
                     <div class="col-8 charges-label pe-5">
-                        <label for="">Senior Citizen/PWD/SP</label>
+                        <label for="">Senior Citizen/PWD</label>
                         <select name="" id="" class="mt-3 selectTypeAmount">
                           <option value="">Percentage</option>
                           <option value="">Fixed</option>
@@ -162,6 +162,52 @@ if (isset($_SESSION['user_id'])) {
                   </div>
                 </div>
               </div>
+
+
+              <div class="d-flex mb-4 charges-discount">
+                <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
+                  
+                </span>
+                <div class="charges-container" style="float: right">
+                  <div class="inner-border p-2 d-flex">
+                    <div class="col-8 charges-label pe-5">
+                        <label for="">Solo Parent</label>
+                        <select name="" id="" class="mt-3 selectTypeAmount">
+                          <option value="">Percentage</option>
+                          <option value="">Fixed</option>
+                        </select>     
+                    </div>
+
+                    <div class="col-4 charges-input">
+                        <input type="number" id="sp_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="d-flex mb-4 charges-discount">
+                <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
+                  
+                </span>
+                <div class="charges-container" style="float: right">
+                  <div class="inner-border p-2 d-flex">
+                    <div class="col-8 charges-label pe-5">
+                        <label for="">NAAC</label>
+                        <select name="" id="" class="mt-3 selectTypeAmount">
+                          <option value="">Percentage</option>
+                          <option value="">Fixed</option>
+                        </select>     
+                    </div>
+
+                    <div class="col-4 charges-input">
+                        <input type="number" id="naac_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
 
             <div class="d-flex mb-4 charges-discount">
               <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
@@ -307,6 +353,8 @@ if (isset($_SESSION['user_id'])) {
     var conver_points = $('#conversionVal').val();
 
     var sc_pwd_sp = $('#sc_pwd_sp_discount').val();
+    var solo_parent = $('#sp_discount').val();       
+    var naac = $('#naac_discount').val();    
     var tax = $('#tax_value').val();
 
     var service_charge = $('#serviceCharge').val();
@@ -318,6 +366,8 @@ if (isset($_SESSION['user_id'])) {
       'points' : points ?? 0,
       'conver_points' : conver_points ?? 0,
       'sc_pwd_sp' : sc_pwd_sp ?? 0,
+      'solo_parent' : solo_parent ?? 0,            
+      'naac' : naac ?? 0,
       'tax' : tax ?? 0,
       'service_charge' : service_charge ?? 0,
       'other_charge' : other_charge ?? 0,
@@ -403,7 +453,12 @@ if (isset($_SESSION['user_id'])) {
       var charges = response.data.data;
       var tax = response.data.tax.tax;
       var customer_discount = response.data.cusDiscount.discount_amount;
+      var solo_parent = response.data.soloParentDiscount.discount_amount; 
+      var naac = response.data.naacDiscount.discount_amount;  
       var loyaltySet = response.data.loyaltyPoits
+      
+
+
       $.each(charges, function(index, data) {
 
         if (data.charges == "Service Charge") { // Services Charges
@@ -419,6 +474,9 @@ if (isset($_SESSION['user_id'])) {
 
       $('#tax_value').val(parseFloat(tax).toFixed(2))
       $('#sc_pwd_sp_discount').val(parseFloat(customer_discount).toFixed(2))
+      $('#sp_discount').val(parseFloat(solo_parent).toFixed(2));  
+        $('#naac_discount').val(parseFloat(naac).toFixed(2));    
+   
 
 
       $('#minPurchase').val(loyaltySet.min_amount);

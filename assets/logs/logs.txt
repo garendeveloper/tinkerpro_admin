@@ -14054,3 +14054,30 @@
 2024-08-20 13:01:36 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-20 13:02:02 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-20 16:40:15 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 11:07:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 11:07:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 11:10:57 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added supplier METRO SUPERMARKET 
+2024-08-21 11:11:05 | Admin Admin | 1 | 2 | Supplier | Admin Admin Updated supplier METRO SUPERMARKET 
+2024-08-21 11:11:12 | Admin Admin | 1 | 2 | Supplier | Admin Admin Updated supplier METRO SUPERMARKET 
+2024-08-21 11:11:23 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added supplier gege 
+2024-08-21 11:11:28 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete gege 
+2024-08-21 11:11:29 | Admin Admin | 1 | 2 | Supplier | Admin Admin Deleted Supplier gege 
+2024-08-21 11:12:26 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer noriel bagacay 
+2024-08-21 11:12:40 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer noriel bagacay 
+2024-08-21 13:58:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 13:59:09 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 13:59:23 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 16:16:45 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Fritza Hanz 
+2024-08-21 16:16:56 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Fritz Hanz 
+2024-08-21 16:17:27 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer 3t3wt efgegf 
+2024-08-21 16:21:45 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Heidiv Caones 
+2024-08-21 16:21:52 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Heidi Caones 
+2024-08-21 16:29:55 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:29:56 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:30:16 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:30:27 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:31:42 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:39:58 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:25:13 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:32:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:36:45 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 

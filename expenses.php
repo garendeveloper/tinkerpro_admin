@@ -117,6 +117,7 @@ if (isset($_SESSION['user_id'])) {
 .table-border th, td {
   border: 1px solid white;
   padding: 8px;
+ 
 }
 .table-border th{
   background-color: var(--primary-color);
@@ -135,6 +136,8 @@ if (isset($_SESSION['user_id'])) {
     width: 100px;
     border-collapse: collapse;
 }
+
+
 .card {
   background-color: #1e1e1e;
   border-color: #242424;
@@ -292,9 +295,10 @@ h1, label, textarea, input, table,h5{
     border-color: #ccc; 
 }
 #tbl_expenses tbody td {
+  
     padding: 8px 8px; 
-    height: 20px; 
-    line-height: 0.5; 
+    height: 25px; 
+    line-height: 1.1; 
     border: 1px solid #292928;
 }
 #tbl_expenses tbody tr:hover{
@@ -337,7 +341,7 @@ h1, label, textarea, input, table,h5{
 #tbl_preview tbody th,
 #tbl_preview tbody td {
     padding: 8px 8px; 
-    height: 30px; 
+    height: 35px; 
     line-height: 1.5;
     font-weight: normal;
     font-size: 12px;
@@ -462,13 +466,13 @@ h1, label, textarea, input, table,h5{
                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
               </svg> 
             </button>
-
             <div class="input-wrapper ms-2 w-auto">
-                <input class="text-color searchProducts" id="date_range" placeholder="Select Period" autocomplete="off" readonly>
-                <span class="calendar-icon">
-                  <i class="bi bi-calendar3" style = "color: #ffffff"></i>
+                <input class="text-color searchProducts" id="date_range" placeholder="Select Period" autocomplete="off" readonly style="cursor: pointer;">
+                <span class="calendar-icon" style="cursor: pointer;">
+                  <i class="bi bi-calendar3" style="color: #ffffff"></i>
                 </span>
             </div>
+
             <input class="custom-input" readonly hidden name="productid" id="productid" style="width: 180px"/>
           </div>
           <div>
