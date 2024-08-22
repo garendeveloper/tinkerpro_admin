@@ -14116,3 +14116,26 @@
 2024-08-20 17:20:57 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Basket Ball Barcode #:796408896220 
 2024-08-20 17:31:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 >>>>>>> 6b605d917de325e4ee0c879959273fa3055c54a7
+2024-08-22 08:52:29 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-22 09:51:59 | Admin Admin | 1 | 2 | Expense | Updated expense: Casino sanitizer spray, Amount: 2,000.00, Invoice#: 10-000000001 
+2024-08-22 09:52:19 | Admin Admin | 1 | 2 | Expense | Updated expense: Casino sanitizer spray, Amount: 2,000.00, Invoice#: 10-000000001 
+2024-08-22 10:29:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 10:29:50 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 10:34:31 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-08-22 10:55:58 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 10:58:04 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 11:50:13 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 11:50:58 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 12:12:21 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-08-22 12:59:36 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 13:40:41 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 13:45:32 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete METRO SUPERMARKET 
+2024-08-22 13:45:42 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete LA NUEVA STORE 
+2024-08-22 13:51:02 | Admin Admin | 1 | 2 | Products | Admin Admin Added bnfgnhnb Barcode #:640643073844 
+2024-08-22 13:51:13 | Admin Admin | 1 | 2 | Products | Admin Admin Updated bnfgnhnb Barcode #:640643073844 
+2024-08-22 13:51:33 | Admin Admin | 1 | 2 | Products | Admin Admin Updated bnfgnhnb Barcode #:640643073844 
+2024-08-22 13:51:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-22 13:52:01 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-22 13:52:09 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted bnfgnhnb Barcode #:640643073844 
+2024-08-22 13:57:16 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-22 13:57:45 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete METRO SUPERMARKET 

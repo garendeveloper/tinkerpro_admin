@@ -101,41 +101,7 @@ if (isset($_SESSION['user_id'])) {
     border-color: var(--primary-color); 
     color: #fefefe !important; 
 }
-.productTable{
-    position: absolute; 
-    left: 2px;
-    right:2px;
-    top:2px;
-    
-}
-.table-border{
-    border-collapse: collapse;
-   
-    border: 1px solid white;
-}
 
-.table-border th, td {
-  border: 1px solid white;
-  padding: 8px;
- 
-}
-.table-border th{
-  background-color: var(--primary-color);
-}
-.text-color{
-    color: #ffff;
-    font-family: Century Gothic;
-  }
-  .table-responsive {
-    max-height: 600px;
-
-   
-}
-
-.table-responsive table {
-    width: 100px;
-    border-collapse: collapse;
-}
 
 
 .card {
@@ -271,29 +237,13 @@ if (isset($_SESSION['user_id'])) {
     color: white;
     outline: none;
 }
-
-h1, label, textarea, input, table,h5{
-  font-family: Century Gothic;
-}
 .daterangepicker {
     background-color: #f0f0f0; 
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.daterangepicker .calendar-table {
-    background-color: #fff; 
-}
 
-.daterangepicker .calendar-table thead {
-    background-color: green; 
-    color: #fff;
-}
-
-.daterangepicker .calendar-table th,
-.daterangepicker .calendar-table td {
-    border-color: #ccc; 
-}
 #tbl_expenses tbody td {
   
     padding: 8px 8px; 

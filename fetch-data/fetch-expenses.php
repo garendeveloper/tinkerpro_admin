@@ -33,12 +33,12 @@
                     <td style = "width: 3%" class = "text-center"><?= $counter?></td>
                     <td style = "width: 14%; cursor: pointer;"><?= $row['item_name'] === "" ? $row['product'] : $row['item_name']?></td>
                     <td style = "width: 6%; cursor: pointer;"  class = "text-center"><?= $row['date_of_transaction']?></td>
-                    <td style = "width: 6%; cursor: pointer;"  class = "text-center"><?= $row['billable_receipt_no'] ?></td>
+                    <td style = "width: 5%; cursor: pointer;"  class = "text-center"><?= $row['billable_receipt_no'] ?></td>
                     <td style = "width: 10%; cursor: pointer;" class = "center"><?= $row['expense_type'] ?></td>
-                    <td style = "width: 6%; cursor: pointer;"  class = "text-center"><?= $row['uom_name']?></td>
-                    <td style = "width: 6%; cursor: pointer;" ><?= $row['supplier']?></td>
+                    <td style = "width: 4%; cursor: pointer;"  class = "text-center"><?= $row['uom_name']?></td>
+                    <td style = "width: 12%; cursor: pointer;"   class = "text-center" ><?= $row['supplier']?></td>
                     <td style = "width: 7%; cursor: pointer;" class = "text-center"><?= $row['invoice_number']?></td>
-                    <td style = "width: 7%; cursor: pointer;" class = "text-right"><?= number_format($row['quantity'], 2)?></td>
+                    <td style = "width: 4.2%; cursor: pointer;" class = "text-right"><?= number_format($row['quantity'], 2)?></td>
                     <td style = "width: 7%; cursor: pointer;" class = "text-right"><?= number_format($row['price'], 2)?></td>
                     <td style = "width: 8%; cursor: pointer;" class = "text-right"><?= number_format($row['discount'], 2)?></td>
                     <td style = "width: 8%; cursor: pointer;" class = "text-right"><?= number_format($row['total_amount'], 2)?></td>
