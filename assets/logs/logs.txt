@@ -14086,3 +14086,8 @@
 2024-08-20 17:20:09 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
 2024-08-20 17:20:57 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Basket Ball Barcode #:796408896220 
 2024-08-20 17:31:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 09:01:22 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-21 09:12:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 13:06:56 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-21 13:06:59 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-22 09:50:37 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
