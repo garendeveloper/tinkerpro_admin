@@ -14139,3 +14139,7 @@
 2024-08-22 13:52:09 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted bnfgnhnb Barcode #:640643073844 
 2024-08-22 13:57:16 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-22 13:57:45 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete METRO SUPERMARKET 
+2024-08-22 14:40:52 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete LA NUEVA STORE 
+2024-08-22 14:57:31 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Unknown   
+2024-08-22 15:24:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-22 15:25:06 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 

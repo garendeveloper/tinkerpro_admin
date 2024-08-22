@@ -48,7 +48,7 @@
                             <a class="text-success productAnch" style="text-decoration: none; cursor: pointer;">
                                 <i class="bi bi-receipt" style="font-size: 16px;"></i>
                             </a>
-
+                            
                         <?php }?>
                         <?php if($row['product_id'] == 0) {?>
                             <a id="btn_removeExpense" data-id='<?= $row['id']?>'  class="text-success productAnch " style="text-decoration: none;" disabled>

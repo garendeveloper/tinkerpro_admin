@@ -89,7 +89,7 @@ if (isset($_SESSION['user_id'])) {
                       </div>
 
                       <div class="col-4 charges-input">
-                          <input type="number" id="tax_value" value="12" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                          <input disabled type="number" id="tax_value" value="12" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
                       </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ if (isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="col-4 charges-input">
-                        <input type="number" id="serviceCharge" value="12" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                        <input disabled type="number" id="serviceCharge" value="12" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
                     </div>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ if (isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="col-4 charges-input">
-                        <input type="number" id="sc_pwd_sp_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                        <input disabled type="number" id="sc_pwd_sp_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
                     </div>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ if (isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="col-4 charges-input">
-                        <input type="number" id="sp_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                        <input disabled type="number" id="sp_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
                     </div>
                   </div>
                 </div>
@@ -187,9 +187,7 @@ if (isset($_SESSION['user_id'])) {
 
 
               <div class="d-flex mb-4 charges-discount">
-                <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon">
-                  
-                </span>
+                <span class="me-2 d-flex h-100 justify-content-center align-items-center svgIcon"></span>
                 <div class="charges-container" style="float: right">
                   <div class="inner-border p-2 d-flex">
                     <div class="col-8 charges-label pe-5">
@@ -201,7 +199,7 @@ if (isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="col-4 charges-input">
-                        <input type="number" id="naac_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                        <input disabled type="number" id="naac_discount" value="5" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
                     </div>
                   </div>
                 </div>
@@ -288,6 +286,13 @@ if (isset($_SESSION['user_id'])) {
           </div>
 
           <div class="d-flex justify-content-end position-absolute saveBtnSetting w-100">
+            
+          <button type="button" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit
+          </button>
+  &nbsp;  
+  &nbsp; 
+  &nbsp; 
             <button class="btn btn-secondary me-4" id="saveBtnSet">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy" viewBox="0 0 16 16">
               <path d="M11 2H9v3h2z"/>
