@@ -379,6 +379,16 @@
                               <input id="promotionPermission" name="promotionPermission" type="checkbox" class="promotionPermission form-check-input" value="1" style="margin-right: 4px;">
                               <label for="promotionPermission" class="promotionLbl text-color form-check-label">Promotions & Actions</label>
                           </div>
+                             <!-- New Add -->
+
+                             <div style="display: flex;">
+                              <input id="couponPermission" name="couponPermission" type="checkbox" class="couponPermission form-check-input" value="1" style="margin-right: 4px;">
+                              <label for="couponPermission" class="promotionLbl text-color form-check-label">Coupon</label>
+                          </div>
+                          <div style="display: flex;">
+                              <input id="chargesPermission" name="chargesPermission" type="checkbox" class="chargesPermission form-check-input" value="1" style="margin-right: 4px;">
+                              <label for="chargesPermission" class="promotionLbl text-color form-check-label">Charges</label>
+                          </div>
                     </div>
                 <div style="width: 50%">
                     <div style="display: flex;">
@@ -446,7 +456,7 @@ function removeReadOnly(){
     reportingsValidate = false;
     inventoryValidate = false;
     userValidate = false;
-    permModals()
+    permModals();
     }
 
 var checkboxes = document.querySelectorAll('.accessLevel input[type="checkbox"]');
@@ -745,9 +755,15 @@ function addUsers()
     //users
     var checkbox = document.getElementById("usersPermission");
     var userPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //users
+    //promotion
     var checkbox = document.getElementById("promotionPermission");
     var promotionPermissionValue = checkbox.checked ? checkbox.value : "0";
+    //coupon
+    var checkbox = document.getElementById("couponPermission");
+    var couponPermissionValue = checkbox.checked ? checkbox.value : "0";
+    //charges
+    var checkbox = document.getElementById("chargesPermission");
+    var chargesPermissionValue = checkbox.checked ? checkbox.value : "0";
 
     document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "var(--primary-color)";
     document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "var(--primary-color)";
@@ -783,7 +799,11 @@ function addUsers()
     formData.append("voidcart", voidCartPermissionValue);
     formData.append("cancelreceipt", cancelReceiptPermissionValue);
     formData.append("users", userPermissionValue);
-    formData.append("promotions", promotionPermissionValue);
+    formData.append("promotion", promotionPermissionValue);
+    //new
+    formData.append("coupon", couponPermissionValue);
+    formData.append("charges", chargesPermissionValue);
+
 
     
     if(roleName && lastname && firstname && pass && cpass){
@@ -911,6 +931,10 @@ function updateUserForm(id, dataFirstName, dataLastName, employeeNum, pw, imageN
     var voidCart = data[0]?.VoidCart;
     var cancelReceipt = data[0]?.CancelReceipt;
     var us_er = data[0]?.Users;
+    var promo = data[0]?.Promotion;
+    //new
+    var coupon = data[0]?.coupon;
+    var charges = data[0]?.charges;
    
 
     var refundCheckbox = document.getElementById("refund_permission");
@@ -945,6 +969,13 @@ function updateUserForm(id, dataFirstName, dataLastName, employeeNum, pw, imageN
     cancelOfficialCheckbox.checked = cancelReceipt === "Access Granted" ? true : false;
     var usersCheckbox = document.getElementById("usersPermission");
     usersCheckbox.checked = us_er === "Access Granted" ? true : false;
+    var promotionCheckbox = document.getElementById("promotionPermission");
+    promotionCheckbox.checked = promo === "Access Granted" ? true : false;
+    //new
+    var promotionCheckbox = document.getElementById("couponPermission");
+    couponCheckbox.checked = coupon === "Access Granted" ? true : false;
+    var promotionCheckbox = document.getElementById("chargesPermission");
+    chargesCheckbox.checked = charges === "Access Granted" ? true : false;
     
   }
     var uptBtn = document.querySelector('.updateBtn');
@@ -1018,10 +1049,17 @@ function updateDataUser(){
     //users
     var checkbox = document.getElementById("usersPermission");
     var userPermissionValue = checkbox.checked ? checkbox.value : "0";
-
-    var checkbox = document.getElementById("usersPermission");
+    //promotion
+    var checkbox = document.getElementById("promotionPermission");
     var promotionPermissionValue = checkbox.checked ? checkbox.value : "0";
-    
+     //coupon
+     var checkbox = document.getElementById("couponPermission");
+    var couponPermissionValue = checkbox.checked ? checkbox.value : "0";
+     //charges
+    var checkbox = document.getElementById("couponPermission");
+    var chargesPermissionValue = checkbox.checked ? checkbox.value : "0";
+
+
     document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "var(--primary-color)";
     document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "var(--primary-color)";
     document.getElementById('roleNAME').style.color = (roleName == "" || roleName == null) ? "red" : "var(--primary-color)";
@@ -1056,7 +1094,9 @@ function updateDataUser(){
     formData.append("voidcart", voidCartPermissionValue);
     formData.append("cancelreceipt", cancelReceiptPermissionValue);
     formData.append("users", userPermissionValue);
-    formData.append("promotions", promotionPermissionValue);
+    formData.append("promotion", promotionPermissionValue);
+    formData.append("coupon", couponPermissionValue);
+    formData.append("charges", chargesPermissionValue);
     formData.append("id",u_id);
 
    

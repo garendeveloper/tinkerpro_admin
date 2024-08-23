@@ -14,6 +14,8 @@ if (isset($_SESSION['user_id'])) {
     $accessReporting = false;
     $accessUsers = false;
     $accessPromotions = false;
+    $accesscoupon = false;
+    $accesscharges = false;
     foreach ($permissions as $permission) {
         if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
             $accessInventory = true;
@@ -27,8 +29,14 @@ if (isset($_SESSION['user_id'])) {
         if (isset($permission['Users']) && $permission['Users'] == "Access Granted") {
             $accessUsers = true;
         }
-        if (isset($permission['Promotions']) && $permission['Promotions'] == "Access Granted") {
+        if (isset($permission['Promotion']) && $permission['Promotion'] == "Access Granted") {
             $accessPromotions = true;
+        }
+        if (isset($permission['coupon']) && $permission['coupon'] == "Access Granted") {
+            $accesscharges = true;
+        }
+        if (isset($permission['charges']) && $permission['charges'] == "Access Granted") {
+            $accesscharges = true;
         }
     }
 }
@@ -268,11 +276,15 @@ if (isset($_SESSION['user_id'])) {
                 <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text dynamic-color">Users</span></a></li>
             <?php endif ?>
          
-        
+            <?php if ($accesscoupon): ?>
             <li><a href="coupons" id="s_coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Coupons</span></a></li>
+             <?php endif ?>
+
+            <?php if ($accesscharges): ?>
             <li><a href="charges" id="charges"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Charges</span></a></li>
+            <?php endif ?>
 
             <?php if ($accessPromotions): ?>
             <li><a href="promotions" id="promotions"><i class="bi bi-megaphone"></i>&nbsp;&nbsp; <span

@@ -14143,3 +14143,73 @@
 2024-08-22 14:57:31 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Unknown   
 2024-08-22 15:24:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
 2024-08-22 15:25:06 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-23 08:58:32 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 11:58:26 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-23 11:59:41 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-23 14:37:02 | Admin Admin | 1 | 2 | Users | Added Noriel Bagacay 
+2024-08-23 14:37:44 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 14:38:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 14:38:17 | Noriel Bagacay | 109 | 3 | Login | User Noriel Bagacay 3 
+2024-08-23 14:39:14 | Noriel Bagacay | 109 | 3 | Logout | User Noriel Bagacay 3 
+2024-08-23 14:39:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 14:50:30 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 14:51:03 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 14:51:06 | Noriel Bagacay | 109 | 3 | Login | User Noriel Bagacay 3 
+2024-08-23 14:51:43 | Noriel Bagacay | 109 | 3 | Logout | User Noriel Bagacay 3 
+2024-08-23 14:51:46 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 14:52:07 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 14:54:52 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:02:12 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:16:54 | Admin Admin | 1 | 2 | Users | Added noriel admin noriel admin 
+2024-08-23 15:16:59 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 15:17:04 | noriel admin noriel admin | 110 | 2 | Login | User noriel admin noriel admin 2 
+2024-08-23 15:17:21 | noriel admin noriel admin | 110 | 2 | Logout | User noriel admin noriel admin 2 
+2024-08-23 15:17:24 | Noriel Bagacay | 109 | 3 | Login | User Noriel Bagacay 3 
+2024-08-23 15:18:04 | Noriel Bagacay | 109 | 3 | Logout | User Noriel Bagacay 3 
+2024-08-23 15:18:07 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 15:33:14 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:36:24 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:36:36 | Admin Admin | 1 | 2 | Users | Admin Admin Updated noriel admin noriel admin 
+2024-08-23 15:36:55 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 15:36:58 | Noriel Bagacay | 109 | 3 | Login | User Noriel Bagacay 3 
+2024-08-23 15:39:32 | Noriel Bagacay | 109 | 3 | Logout | User Noriel Bagacay 3 
+2024-08-23 15:39:38 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 15:40:31 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:41:15 | Admin Admin | 1 | 2 | Users | Added wefwef fw 
+2024-08-23 15:41:59 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 15:42:23 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 15:42:26 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 15:42:28 | darth zeether | 111 | 5 | Login | User darth zeether 5 
+2024-08-23 15:49:38 | darth zeether | 111 | 5 | Logout | User darth zeether 5 
+2024-08-23 15:49:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 16:20:21 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 16:31:16 | Admin Admin | 1 | 2 | Users | Added fwef fefe 
+2024-08-23 16:36:06 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:36:14 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:36:31 | Admin Admin | 1 | 2 | Users | Admin Admin Updated noriel admin noriel admin 
+2024-08-23 16:36:36 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:37:28 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:41:16 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:41:31 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 16:42:01 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:46:00 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 16:46:48 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:47:03 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:48:06 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:48:20 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:51:02 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:51:38 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 16:51:43 | Noriel Bagacay | 109 | 5 | Login | User Noriel Bagacay 5 
+2024-08-23 16:52:20 | Noriel Bagacay | 109 | 5 | Logout | User Noriel Bagacay 5 
+2024-08-23 16:55:00 | Noriel Bagacay | 109 | 5 | Login | User Noriel Bagacay 5 
+2024-08-23 16:55:21 | Noriel Bagacay | 109 | 5 | Logout | User Noriel Bagacay 5 
+2024-08-23 16:55:24 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 16:58:54 | Noriel Bagacay | 109 | 5 | Login | User Noriel Bagacay 5 
+2024-08-23 17:00:16 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:00:47 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:04:38 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:05:22 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:09:09 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:12:36 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:12:52 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:31:27 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 

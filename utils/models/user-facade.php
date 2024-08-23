@@ -466,7 +466,16 @@ public function updateDataUsers($formData) {
                 'VoidCart' => ($formData["voidcart"] == 1) ? 'Access Granted' : 'No Access',
                 'CancelReceipt' => ($formData["cancelreceipt"] == 1) ? 'Access Granted' : 'No Access',
                 'Users' => ($formData["users"] == 1) ? 'Access Granted' : 'No Access',
-                'Promotions' => ($formData["promotions"] == 1) ? 'Access Granted' : 'No Access',
+                'Promotion' => ($formData["promotion"] == 1) ? 'Access Granted' : 'No Access',
+                //new add
+                'coupon' => ($formData["coupon"] == 1) ? 'Access Granted' : 'No Access',
+                'charges' => ($formData["charges"] == 1) ? 'Access Granted' : 'No Access',
+                'pricelist' => ($formData["pricelist"] == 1) ? 'Access Granted' : 'No Access',
+                'expenses' => ($formData["expenses"] == 1) ? 'Access Granted' : 'No Access',
+                'supplier' => ($formData["supplier"] == 1) ? 'Access Granted' : 'No Access',
+                'customer' => ($formData["customer"] == 1) ? 'Access Granted' : 'No Access',
+
+
     );
 
     $jsonData = json_encode($permissionData);

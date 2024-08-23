@@ -147,9 +147,6 @@ if (isset($_SESSION['user_id'])) {
   }
 
 
-  .clearSupplierBtn {
-  
-  }
 
   .searchDis, .addProducts {
     background: #7C7C7C;
