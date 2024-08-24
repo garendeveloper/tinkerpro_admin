@@ -64,7 +64,29 @@ echo $html;
 
 
 ?>
-<style>
 
-</style>
+<script>
+$(document).ready(function() {
+    // Add click event listener to table rows
+    $(document).on('click', '.customer-row', function() {
+        // Check if the modal is visible
+        if ($('#add_customer_modal').is(':visible')) {
+            closeAddingModal();
+        }
+    });
+
+    // Prevent modal from closing when clicking inside the modal
+    $(document).on('click', '#add_customer_modal, .customer-modal', function(event) {
+        event.stopPropagation();
+    });
+
+    // Add click event listener to edit icon to open the modal
+    $(document).on('click', '.editCustomer', function(event) {
+        event.stopPropagation(); // Prevent this click from closing the modal
+     
+        $('#add_customer_modal').show(); 
+        $('.customer-modal').show(); 
+    });
+});
+</script>
 

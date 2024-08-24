@@ -14054,6 +14054,35 @@
 2024-08-20 13:01:36 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-20 13:02:02 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-20 16:40:15 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+<<<<<<< HEAD
+2024-08-21 11:07:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 11:07:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 11:10:57 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added supplier METRO SUPERMARKET 
+2024-08-21 11:11:05 | Admin Admin | 1 | 2 | Supplier | Admin Admin Updated supplier METRO SUPERMARKET 
+2024-08-21 11:11:12 | Admin Admin | 1 | 2 | Supplier | Admin Admin Updated supplier METRO SUPERMARKET 
+2024-08-21 11:11:23 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added supplier gege 
+2024-08-21 11:11:28 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete gege 
+2024-08-21 11:11:29 | Admin Admin | 1 | 2 | Supplier | Admin Admin Deleted Supplier gege 
+2024-08-21 11:12:26 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer noriel bagacay 
+2024-08-21 11:12:40 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer noriel bagacay 
+2024-08-21 13:58:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 13:59:09 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 13:59:23 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 16:16:45 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Fritza Hanz 
+2024-08-21 16:16:56 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Fritz Hanz 
+2024-08-21 16:17:27 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer 3t3wt efgegf 
+2024-08-21 16:21:45 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Heidiv Caones 
+2024-08-21 16:21:52 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Heidi Caones 
+2024-08-21 16:29:55 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:29:56 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:30:16 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:30:27 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:31:42 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:39:58 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:25:13 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:32:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:36:45 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+=======
 2024-08-19 18:02:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-08-20 09:03:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-20 09:32:35 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
@@ -14086,8 +14115,19 @@
 2024-08-20 17:20:09 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
 2024-08-20 17:20:57 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Basket Ball Barcode #:796408896220 
 2024-08-20 17:31:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
 2024-08-21 09:01:22 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-08-21 09:12:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-21 13:06:56 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-08-21 13:06:59 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-22 09:50:37 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+=======
+>>>>>>> 6b605d917de325e4ee0c879959273fa3055c54a7
+>>>>>>> 3a957b267eade719541a5eb6e26ec5d247801fc7
+2024-08-23 09:02:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 09:02:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 09:04:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 14:03:07 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 15:27:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 16:02:54 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-24 16:02:56 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
