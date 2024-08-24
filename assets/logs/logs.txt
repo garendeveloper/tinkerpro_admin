@@ -13601,6 +13601,43 @@
 2024-08-15 11:45:42 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ORCHID DEODORIZER STRAWBERRY 100G Barcode #:260543178652 
 2024-08-15 11:45:54 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated ALBATROSS STRAWBERRY 100G REFILL Barcode #:4800067600443 
 2024-08-15 11:50:31 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated EFFICASCENT OIL EXTRA SRENGTH 25ML-IPI Barcode #:48035156 
+<<<<<<< HEAD
+2024-08-15 09:36:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-15 10:07:45 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-15 10:08:21 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-15 10:08:26 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-15 10:08:36 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-15 10:30:02 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Casino sanitizer spray Barcode #:4800011145327 
+2024-08-15 10:30:23 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Champion twin pack Barcode #:8996001603444 
+2024-08-15 10:30:33 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Champion twin pack Barcode #:8996001603444 
+2024-08-15 10:30:38 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Glade Barcode #:4801234145514 
+2024-08-15 10:30:43 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Lucky Me Pancit Canton Barcode #:4807770273698 
+2024-08-15 10:30:48 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Pringles Barcode #:3538616594578 
+2024-08-15 10:30:53 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Surf Active Clean Barcode #:5115679621274 
+2024-08-15 10:34:57 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added Supremo Beer 1L Barcode #:325836272782 
+2024-08-15 10:37:32 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-15 10:39:07 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added Jasmine Rice 5KG Barcode #:263564440024 
+2024-08-15 10:40:06 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Added Cabbage 1KG Barcode #:342192035607 
+2024-08-15 10:41:04 | Zeus Baculio | 50 | 2 | P.O Created | Zeus Baculio P.0 # 10-000000050 Amount:₱ 14,600.00 
+2024-08-15 10:50:40 | Zeus Baculio | 50 | 2 | Received Items | Tender received items, PO Number: 10-000000050 Supplier: PRINCE 
+2024-08-15 10:55:11 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-15 10:55:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-15 10:56:25 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Printing a pdf 
+2024-08-15 11:07:42 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-15 11:07:45 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-15 12:57:14 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-15 12:57:17 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-15 14:48:49 | Admin Admin | 1 | 2 | Products | Admin Admin Added Sample Product Barcode #:867364931527 
+2024-08-15 14:49:18 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000051 Amount:₱ 20,000.00 
+2024-08-15 14:50:35 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000051 Supplier: GAISANO 
+2024-08-15 15:17:27 | Admin Admin | 1 | 2 | Products | Admin Admin Added Table Barcode #:526748418166 
+2024-08-15 15:17:48 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000052 Amount:₱ 1,000,000.00 
+2024-08-15 15:18:18 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000052 Supplier: GAISANO 
+2024-08-15 15:57:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-15 16:49:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Jasmine Rice 5KG Barcode #:263564440024 
+2024-08-15 17:08:48 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Barcode #:526748418166 
+2024-08-15 17:09:07 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+=======
 2024-08-15 15:22:31 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000051 Amount:₱ 877.00 
 2024-08-15 15:23:27 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000052 Amount:₱ 1,320.00 
 2024-08-15 15:24:25 | Talkosoy Admin | 1 | 2 | P.O Created | Talkosoy Admin P.0 # 10-000000053 Amount:₱ 12,605.00 
@@ -13817,6 +13854,380 @@
 2024-08-16 17:49:06 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR SUNFRESH 360G Barcode #:4800888136787 
 2024-08-16 17:49:27 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated SURF BAR TAWAS 360G Barcode #:4800888136800 
 2024-08-16 17:50:55 | Talkosoy Admin | 1 | 2 | Products | Talkosoy Admin Updated CLOVER CHIPS HAM & CHEESE 55G Barcode #:4800216130012 
+>>>>>>> 98a7b01bbdd736240f5e7506d0d533cb0a9f4bb0
+2024-08-16 11:24:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 11:25:44 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-16 12:54:13 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 12:54:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 13:19:48 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-16 13:19:53 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-16 13:19:58 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 13:20:04 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Casino sanitizer spray Barcode #:4800011145327 
+2024-08-16 13:20:09 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-16 13:20:18 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Champion twin pack Barcode #:8996001603444 
+2024-08-16 13:20:24 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-16 13:20:28 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Glade Barcode #:4801234145514 
+2024-08-16 13:20:33 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Jasmine Rice 5KG Barcode #:263564440024 
+2024-08-16 13:20:37 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Lucky Me Pancit Canton Barcode #:4807770273698 
+2024-08-16 13:20:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Pringles Barcode #:3538616594578 
+2024-08-16 13:20:46 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Sample Product Barcode #:867364931527 
+2024-08-16 13:20:50 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Supremo Beer 1L Barcode #:325836272782 
+2024-08-16 13:20:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Surf Active Clean Barcode #:5115679621274 
+2024-08-16 13:20:58 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-16 14:00:06 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Sample Product Barcode #:867364931527 
+2024-08-16 14:00:38 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Sample Product Barcode #:867364931527 
+2024-08-16 14:29:22 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-16 14:31:55 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 14:32:05 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 14:32:20 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 14:32:33 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 16:29:10 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO 
+2024-08-16 16:30:06 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier PRINCE 
+2024-08-16 16:30:19 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO 
+2024-08-16 16:31:05 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Added supplier La Nueva 
+2024-08-16 16:31:22 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO 
+2024-08-16 16:31:39 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier LA NUEVA STORE 
+2024-08-16 16:31:57 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier THE PRINCE WHOLESALE 
+2024-08-16 16:32:05 | Zeus Baculio | 50 | 2 | Supplier | Zeus Baculio Updated supplier GAISANO SUPERMARKET 
+2024-08-16 17:14:55 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-17 09:08:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 10:46:30 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-16 10:57:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 10:57:18 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 10:59:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 11:00:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 11:00:33 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 11:05:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 11:12:02 | Admin Admin | 1 | 2 | Products | Admin Admin Added Basket Ball Barcode #:796408896220 
+2024-08-16 11:13:02 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000053 Amount:₱ 80,000.00 
+2024-08-16 11:13:28 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000053 Supplier: GAISANO SUPERMARKET 
+2024-08-16 11:14:12 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
+2024-08-16 11:14:21 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-16 13:06:41 | Admin Admin | 1 | 2 | Products | Admin Admin Added Diapers Barcode #:790581017527 
+2024-08-16 13:07:15 | Admin Admin | 1 | 2 | Products | Admin Admin Added Bonakid Barcode #:951742829415 
+2024-08-16 13:07:34 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000054 Amount:₱ 42,000.00 
+2024-08-16 13:08:08 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000054 Supplier: GAISANO SUPERMARKET 
+2024-08-16 13:13:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Diapers Barcode #:790581017527 
+2024-08-16 13:13:53 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-16 14:50:14 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 14:50:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 14:57:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 14:57:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 15:43:57 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 15:50:25 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-18 09:52:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 09:53:17 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-18 09:55:15 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-18 09:55:19 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 09:56:03 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-18 10:52:13 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 10:52:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-18 12:52:32 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-18 12:52:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 12:52:45 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-18 12:52:55 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 12:55:35 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-18 13:41:56 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-19 15:34:21 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:34:28 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-19 15:34:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:39:01 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 11:12:02 | Admin Admin | 1 | 2 | Products | Admin Admin Added Basket Ball Barcode #:796408896220 
+2024-08-16 11:13:02 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000053 Amount:₱ 80,000.00 
+2024-08-16 11:13:28 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000053 Supplier: GAISANO SUPERMARKET 
+2024-08-16 11:14:12 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
+2024-08-16 11:14:21 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-16 13:06:41 | Admin Admin | 1 | 2 | Products | Admin Admin Added Diapers Barcode #:790581017527 
+2024-08-16 13:07:15 | Admin Admin | 1 | 2 | Products | Admin Admin Added Bonakid Barcode #:951742829415 
+2024-08-16 13:07:34 | Admin Admin | 1 | 2 | P.O Created | Admin Admin P.0 # 10-000000054 Amount:₱ 42,000.00 
+2024-08-16 13:08:08 | Admin Admin | 1 | 2 | Received Items | Tender received items, PO Number: 10-000000054 Supplier: GAISANO SUPERMARKET 
+2024-08-16 13:13:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Diapers Barcode #:790581017527 
+2024-08-16 13:13:53 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-16 14:50:14 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 14:50:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 14:57:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-16 14:57:15 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 15:43:57 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-16 15:50:25 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-19 10:04:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 10:35:46 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 10:47:52 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 10:48:31 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 10:50:15 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 10:50:30 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 10:55:06 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-19 10:59:02 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 11:00:34 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-19 11:00:51 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 11:01:28 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-19 11:12:24 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-19 11:14:08 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
+2024-08-19 11:14:57 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 11:15:12 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
+2024-08-19 11:15:47 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-19 13:04:11 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-19 13:15:15 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 13:17:06 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 13:43:00 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-19 13:46:53 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 13:57:23 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-19 14:03:49 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 14:04:00 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 14:04:17 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cementff Barcode #:101010101010 
+2024-08-19 14:04:28 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-19 14:07:03 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-08-19 14:07:13 | Admin Admin | 1 | 2 | Products | Admin Admin Generate a pdf 
+2024-08-19 14:08:39 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-19 14:08:47 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-19 14:09:25 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-19 14:10:08 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-19 14:10:37 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-19 14:11:28 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-19 14:13:03 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Surf Active Clean Barcode #:5115679621274 
+2024-08-19 14:28:29 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 14:36:16 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Champion twin pack Barcode #:8996001603444 
+2024-08-19 14:56:09 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:06:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Diapers Barcode #:790581017527 
+2024-08-19 15:08:45 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:31:55 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Champion twin pack Barcode #:8996001603444 
+2024-08-19 15:32:11 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Champion twin pack Barcode #:8996001603444 
+2024-08-19 15:54:16 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Casino sanitizer spray Barcode #:4800011145327 
+2024-08-19 15:57:29 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Diapers Barcode #:790581017527 
+2024-08-19 15:59:58 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 16:00:18 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-19 16:04:09 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Glade Barcode #:4801234145514 
+2024-08-19 16:10:01 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Jasmine Rice 5KG Barcode #:263564440024 
+2024-08-19 16:53:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Supremo Beer 1L Barcode #:325836272782 
+2024-08-19 17:20:38 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Lucky Me Pancit Canton Barcode #:4807770273698 
+2024-08-19 17:27:45 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-19 17:27:52 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-19 17:36:59 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Sample Product Barcode #:867364931527 
+2024-08-19 17:40:01 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-19 17:40:37 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-19 17:41:12 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-19 17:50:48 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-19 17:51:02 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-19 17:54:28 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-19 17:55:45 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-20 09:00:47 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-20 09:01:15 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
+2024-08-20 09:53:07 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Champion twin pack Barcode #:8996001603444 
+2024-08-20 10:07:57 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 10:28:14 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 10:28:32 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 10:37:52 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 10:40:51 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobos Barcode #:1523288843286 
+2024-08-20 10:40:59 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 10:41:27 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobox Barcode #:1523288843286 
+2024-08-20 10:41:45 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 10:49:23 | Admin Admin | 1 | 2 | Products | Admin Admin Added Dove Men Barcode #:489689075693 
+2024-08-20 10:49:59 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Dove Men Barcode #:489689075693 
+2024-08-20 10:50:18 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Dove Men Barcode #:489689075693 
+2024-08-20 10:54:08 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:00:13 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:00:34 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-20 11:00:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:00:56 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-20 11:01:22 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Pringles Barcode #:3538616594578 
+2024-08-20 11:02:17 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-08-20 11:04:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:07:29 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:10:20 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:11:00 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:13:59 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-20 11:15:25 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-20 11:16:59 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:18:49 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:19:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:20:05 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:21:24 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:28:12 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Dove Men Barcode #:489689075693 
+2024-08-20 11:29:47 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:31:26 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:31:50 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Casino sanitizer spray Barcode #:4800011145327 
+2024-08-20 11:32:34 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-20 11:33:32 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:34:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:38:47 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 11:44:27 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
+2024-08-20 11:49:35 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 13:01:36 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 13:02:02 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-20 16:40:15 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+<<<<<<< HEAD
+2024-08-21 11:07:27 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 11:07:42 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 11:10:57 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added supplier METRO SUPERMARKET 
+2024-08-21 11:11:05 | Admin Admin | 1 | 2 | Supplier | Admin Admin Updated supplier METRO SUPERMARKET 
+2024-08-21 11:11:12 | Admin Admin | 1 | 2 | Supplier | Admin Admin Updated supplier METRO SUPERMARKET 
+2024-08-21 11:11:23 | Admin Admin | 1 | 2 | Supplier | Admin Admin Added supplier gege 
+2024-08-21 11:11:28 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete gege 
+2024-08-21 11:11:29 | Admin Admin | 1 | 2 | Supplier | Admin Admin Deleted Supplier gege 
+2024-08-21 11:12:26 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer noriel bagacay 
+2024-08-21 11:12:40 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer noriel bagacay 
+2024-08-21 13:58:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 13:59:09 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 13:59:23 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-21 16:16:45 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Fritza Hanz 
+2024-08-21 16:16:56 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Fritz Hanz 
+2024-08-21 16:17:27 | Admin Admin | 1 | 2 | Customers | Admin Admin Added customer 3t3wt efgegf 
+2024-08-21 16:21:45 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Heidiv Caones 
+2024-08-21 16:21:52 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Heidi Caones 
+2024-08-21 16:29:55 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:29:56 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:30:16 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:30:27 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:31:42 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 16:39:58 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:25:13 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:32:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-21 17:36:45 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+=======
+2024-08-19 18:02:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-20 09:03:43 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-20 09:32:35 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 09:41:22 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:41:32 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 09:41:37 | Rey Garren Balingit | 51 | 3 | Login | User Rey Garren Balingit 3 
+2024-08-20 09:41:48 | Rey Garren Balingit | 51 | 3 | Logout | User Rey Garren Balingit 3 
+2024-08-20 09:41:52 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 09:43:22 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:43:36 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Rey Garren Balingit 
+2024-08-20 09:46:34 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:34:34 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:34:57 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Zeus Baculio 
+2024-08-20 11:35:00 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:35:02 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:37:21 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 11:39:06 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-08-20 11:39:14 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-20 13:38:46 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-20 13:38:50 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 14:48:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 15:07:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 16:00:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-19 16:15:13 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-19 16:15:16 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:18:28 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:20:09 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-20 17:20:57 | Zeus Baculio | 50 | 2 | Products | Zeus Baculio Updated Basket Ball Barcode #:796408896220 
+2024-08-20 17:31:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+<<<<<<< HEAD
+2024-08-21 09:01:22 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-21 09:12:34 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-21 13:06:56 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-21 13:06:59 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-22 09:50:37 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+=======
+>>>>>>> 6b605d917de325e4ee0c879959273fa3055c54a7
+2024-08-22 08:52:29 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-22 09:51:59 | Admin Admin | 1 | 2 | Expense | Updated expense: Casino sanitizer spray, Amount: 2,000.00, Invoice#: 10-000000001 
+2024-08-22 09:52:19 | Admin Admin | 1 | 2 | Expense | Updated expense: Casino sanitizer spray, Amount: 2,000.00, Invoice#: 10-000000001 
+2024-08-22 10:29:49 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 10:29:50 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 10:34:31 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-08-22 10:55:58 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 10:58:04 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 11:50:13 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 11:50:58 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 12:12:21 | Admin Admin | 1 | 2 | Products | Admin Admin Printing a pdf 
+2024-08-22 12:59:36 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 13:40:41 | Admin Admin | 1 | 2 | Coupons | Admin Admin Printed a coupon id #:1 
+2024-08-22 13:45:32 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete METRO SUPERMARKET 
+2024-08-22 13:45:42 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete LA NUEVA STORE 
+2024-08-22 13:51:02 | Admin Admin | 1 | 2 | Products | Admin Admin Added bnfgnhnb Barcode #:640643073844 
+2024-08-22 13:51:13 | Admin Admin | 1 | 2 | Products | Admin Admin Updated bnfgnhnb Barcode #:640643073844 
+2024-08-22 13:51:33 | Admin Admin | 1 | 2 | Products | Admin Admin Updated bnfgnhnb Barcode #:640643073844 
+2024-08-22 13:51:40 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-22 13:52:01 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-22 13:52:09 | Admin Admin | 1 | 2 | Products | Admin Admin Deleted bnfgnhnb Barcode #:640643073844 
+2024-08-22 13:57:16 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-22 13:57:45 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete METRO SUPERMARKET 
+2024-08-22 14:40:52 | Admin Admin | 1 | 2 | Supplier | Admin Admin Tries to delete LA NUEVA STORE 
+2024-08-22 14:57:31 | Admin Admin | 1 | 2 | Customers | Admin Admin Updated customer Unknown   
+2024-08-22 15:24:54 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-22 15:25:06 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-23 08:58:32 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 11:58:26 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-23 11:59:41 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Table Tennis Table Barcode #:526748418166 
+2024-08-23 14:37:02 | Admin Admin | 1 | 2 | Users | Added Noriel Bagacay 
+2024-08-23 14:37:44 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 14:38:12 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 14:38:17 | Noriel Bagacay | 109 | 3 | Login | User Noriel Bagacay 3 
+2024-08-23 14:39:14 | Noriel Bagacay | 109 | 3 | Logout | User Noriel Bagacay 3 
+2024-08-23 14:39:22 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 14:50:30 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 14:51:03 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 14:51:06 | Noriel Bagacay | 109 | 3 | Login | User Noriel Bagacay 3 
+2024-08-23 14:51:43 | Noriel Bagacay | 109 | 3 | Logout | User Noriel Bagacay 3 
+2024-08-23 14:51:46 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 14:52:07 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 14:54:52 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:02:12 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:16:54 | Admin Admin | 1 | 2 | Users | Added noriel admin noriel admin 
+2024-08-23 15:16:59 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 15:17:04 | noriel admin noriel admin | 110 | 2 | Login | User noriel admin noriel admin 2 
+2024-08-23 15:17:21 | noriel admin noriel admin | 110 | 2 | Logout | User noriel admin noriel admin 2 
+2024-08-23 15:17:24 | Noriel Bagacay | 109 | 3 | Login | User Noriel Bagacay 3 
+2024-08-23 15:18:04 | Noriel Bagacay | 109 | 3 | Logout | User Noriel Bagacay 3 
+2024-08-23 15:18:07 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 15:33:14 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:36:24 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:36:36 | Admin Admin | 1 | 2 | Users | Admin Admin Updated noriel admin noriel admin 
+2024-08-23 15:36:55 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 15:36:58 | Noriel Bagacay | 109 | 3 | Login | User Noriel Bagacay 3 
+2024-08-23 15:39:32 | Noriel Bagacay | 109 | 3 | Logout | User Noriel Bagacay 3 
+2024-08-23 15:39:38 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 15:40:31 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 15:41:15 | Admin Admin | 1 | 2 | Users | Added wefwef fw 
+2024-08-23 15:41:59 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 15:42:23 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 15:42:26 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 15:42:28 | darth zeether | 111 | 5 | Login | User darth zeether 5 
+2024-08-23 15:49:38 | darth zeether | 111 | 5 | Logout | User darth zeether 5 
+2024-08-23 15:49:41 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 16:20:21 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 16:31:16 | Admin Admin | 1 | 2 | Users | Added fwef fefe 
+2024-08-23 16:36:06 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:36:14 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:36:31 | Admin Admin | 1 | 2 | Users | Admin Admin Updated noriel admin noriel admin 
+2024-08-23 16:36:36 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:37:28 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:41:16 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:41:31 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 16:42:01 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:46:00 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 16:46:48 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:47:03 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:48:06 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:48:20 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:51:02 | Admin Admin | 1 | 2 | Users | Admin Admin Updated darth zeether 
+2024-08-23 16:51:38 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-23 16:51:43 | Noriel Bagacay | 109 | 5 | Login | User Noriel Bagacay 5 
+2024-08-23 16:52:20 | Noriel Bagacay | 109 | 5 | Logout | User Noriel Bagacay 5 
+2024-08-23 16:55:00 | Noriel Bagacay | 109 | 5 | Login | User Noriel Bagacay 5 
+2024-08-23 16:55:21 | Noriel Bagacay | 109 | 5 | Logout | User Noriel Bagacay 5 
+2024-08-23 16:55:24 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 16:58:54 | Noriel Bagacay | 109 | 5 | Login | User Noriel Bagacay 5 
+2024-08-23 17:00:16 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:00:47 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:04:38 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:05:22 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:09:09 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:12:36 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:12:52 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+2024-08-23 17:31:27 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Noriel Bagacay 
+>>>>>>> 3a957b267eade719541a5eb6e26ec5d247801fc7
+2024-08-23 09:02:04 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 09:02:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-23 09:04:23 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 14:03:07 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 15:27:33 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 16:02:54 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-24 16:02:56 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-08-17 09:10:55 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-17 09:21:34 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-17 09:28:38 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 

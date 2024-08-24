@@ -303,11 +303,15 @@
             $result = $products->checkSku($sku,$barcode,$code);
             echo json_encode(['success'=> true,'sku' => $result]);
             break;
+
+            
         case "updateProduct":
              $formData = $_POST;
              $result = $products->updateProduct($formData);
              echo json_encode( $result);
              break;
+
+
         case "deleteCategory":
             $id = isset($_GET['id']) ? $_GET['id'] : null;
             $success = $products->deleteCategories($id);

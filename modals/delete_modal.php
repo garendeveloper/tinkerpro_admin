@@ -55,10 +55,12 @@
 .deleteBtn {
   background: transparent;
   border-radius: 0;
+  width: 120px;
 }
 
 button.btn.btn-secondary.deleteBtn.deleteProductItem {
   border: 1px solid var(--border-color);
+  width: 120px;
 
 }
 

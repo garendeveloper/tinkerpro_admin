@@ -147,9 +147,6 @@ if (isset($_SESSION['user_id'])) {
   }
 
 
-  .clearSupplierBtn {
-  
-  }
 
   .searchDis, .addProducts {
     background: #7C7C7C;
@@ -323,15 +320,18 @@ if (isset($_SESSION['user_id'])) {
             <input class="custom-input texct-color filterStatus" readonly hidden name="filterStatus" id="filterStatus" style="width: 180px"/>
             <!-- <input class="text-color filterStatusName" readonly name="filterStatusName" id="filterStatusName" >    -->
             <select class="text-color ms-2 filterStatusName" name="filterStatusName" id="filterStatusName">
-                <?php
+              <?php
                   $userFacade = new UserFacade();
                   $status = $userFacade->getUsersStatus();
                   echo '<option value="0" data-value="0">All</option>';
                   while ($row = $status->fetch(PDO::FETCH_ASSOC)) {
-                      echo '<option value="'. $row['id'] .'" data-value="'. $row['id'] .'">'. $row['status'] .'</option>';
+                      // Check if the status is 'Active' and set it as selected
+                      $selected = ($row['status'] == 'Active') ? 'selected' : '';
+                      echo '<option value="'. $row['id'] .'" data-value="'. $row['id'] .'" '. $selected .'>'. $row['status'] .'</option>';
                   }
-                ?>       
-            </select>
+              ?>       
+          </select>
+
 
             <button name="filterStatusBtn" id="filterStatusBtn" class="filterBtn">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter-right" viewBox="0 0 16 16">
@@ -525,6 +525,15 @@ function selectedRole(id) {
 
   refreshTable() 
   selectDataDisplay()
+
+  function initializeTable() {
+        var defaultValue = $('#filterStatusName').val(); 
+        $('#filterStatusName').trigger('change'); 
+    }
+
+    selectDataDisplay();
+    initializeTable(); 
+
 
   function userForm(tableRow)
   {

@@ -58,3 +58,29 @@ echo $html;
 
 ?>
 
+
+<script>
+$(document).ready(function() {
+    // Add click event listener to table rows
+    $(document).on('click', '.supplier-rows', function() {
+        // Check if the modal is visible
+        if ($('#add_supplier_modal').is(':visible')) {
+            closeAddSupplierModal();
+        }
+    });
+
+    // Prevent modal from closing when clicking inside the modal
+    $(document).on('click', '#add_supplier_modal, .supplier-modal', function(event) {
+        event.stopPropagation();
+    });
+
+    // Add click event listener to edit icon to open the modal
+    $(document).on('click', '.editSupplier', function(event) {
+        event.stopPropagation(); // Prevent this click from closing the modal
+     
+        $('#add_supplier_modal').show(); 
+        $('.supplier-modal').show(); 
+    });
+});
+</script>
+

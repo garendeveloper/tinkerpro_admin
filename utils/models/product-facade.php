@@ -1237,6 +1237,18 @@ public function getServiceCharge(){
   $getCustomerDis->execute();
   $discount = $getCustomerDis->fetch(PDO::FETCH_ASSOC);
 
+
+    // Fetching discount for Solo Parent
+    $getSoloParentDis = $pdo->prepare('SELECT discount_amount FROM discounts WHERE name = "SP" LIMIT 1');
+    $getSoloParentDis->execute();
+    $soloParentDiscount = $getSoloParentDis->fetch(PDO::FETCH_ASSOC);
+
+    // Fetching discount for NAAC
+    $getNaacDis = $pdo->prepare('SELECT discount_amount FROM discounts WHERE name = "NAAC" LIMIT 1');
+    $getNaacDis->execute();
+    $naacDiscount = $getNaacDis->fetch(PDO::FETCH_ASSOC);
+
+
   $lastId = $pdo->prepare("SELECT * FROM point_system ORDER BY id DESC LIMIT 1");
   $lastId->execute();
   $loyaltyPoits = $lastId->fetch(PDO::FETCH_ASSOC);
@@ -1246,6 +1258,8 @@ public function getServiceCharge(){
     'data' => $serviceCharge,
     'tax' => $tax,
     'cusDiscount' => $discount,
+    'soloParentDiscount' => $soloParentDiscount,
+    'naacDiscount' => $naacDiscount,
     'loyaltyPoits' => $loyaltyPoits,
   ]);
 }
@@ -1358,8 +1372,21 @@ $dataValue =  $serviceValue/100;
 
     $update_sc_pwd_sp = $pdo->prepare("UPDATE `discounts`
     SET `discount_amount` = ?
-    WHERE `name` IN ('SP', 'SC', 'PWD');");
+    WHERE `name` IN ('SC', 'PWD');");
     $update_sc_pwd_sp->execute([$valusToUpdate->sc_pwd_sp]);
+
+    
+    $update_sp = $pdo->prepare("UPDATE `discounts`
+    SET `discount_amount` = ?
+    WHERE `name` IN ('SP');");
+    $update_sp->execute([$valusToUpdate->solo_parent]);
+
+    
+    $update_naac = $pdo->prepare("UPDATE `discounts`
+    SET `discount_amount` = ?
+    WHERE `name` IN ('NAAC');");
+    $update_naac->execute([$valusToUpdate->naac]);
+
 
     $update_tax = $pdo->prepare("UPDATE `shop` SET `tax`= ? WHERE 1");
     $update_tax->execute([$valusToUpdate->tax]);
