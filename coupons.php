@@ -257,10 +257,14 @@
 
 </style>
 <?php include "layout/admin/css.php"?>
+
+    <!-- print coupon modal -->
+<?php include "./modals/print-coupon-modal.php"?>
+
   <div class="container-scroller">
     <!-- <div class="" > -->
       <?php include 'layout/admin/sidebar.php' ?>
-      <div class="main-panel h-100">
+      <div class="main-panel">
         <div class="content-wrapper">
           <div class="d-flex mb-2 w-10">
             <input hidden id="couponID"/>
@@ -282,6 +286,7 @@
             <?php include('errors.php'); ?>    
             <input class="custom-input texct-color filterStatus" readonly hidden name="filterStatus" id="filterStatus" style="width: 180px"/>
 
+          
             <div class="select-container ms-2">
               <select id="expirationSelect">
               <option  selected >Select Expiration Date</option>
@@ -411,48 +416,55 @@
   }
 
   selectDataDisplay()
+  $(document.body).on('click', '.editBtn', function() {
+    var id = $(this).closest('tr').find('.couponId').text();
 
-$(document.body).on('click', '.editBtn', function() {
-        var id = $(this).closest('tr').find('.couponId').text();
-        
-        $('.highlightedCoupon').removeClass('highlightedCoupon');
-        var $row = $(this).closest('tr').addClass('highlightedCoupon');
-        printCoupon(id)
-        
-    });
-function printCoupon(id){
+    $('.highlightedCoupon').removeClass('highlightedCoupon');
+    var $row = $(this).closest('tr').addClass('highlightedCoupon');
+    
+    // Set the coupon ID to a variable
+    couponIdToPrint = id;
+    
+    // Show the confirmation modal
+    $('#confirmModal').modal('show');
+});
+
+var couponIdToPrint = null;
+
+$('#confirmPrintBtn').on('click', function() {
     $.ajax({
-            url: './reports/coupons-print.php', 
-            type: 'GET',
-            data:{id:id},
-            success: function(response) {
-              var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-              var firstName = userInfo.firstName;
-              var lastName = userInfo.lastName;
-              var cid = userInfo.userId;
-              var role_id = userInfo.roleId; 
-              insertLogs('Coupons', firstName + ' ' + lastName + ' ' + 'Printed a coupon id #:' + id);
-                Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Coupon Printed Successfully!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-        })
-            },
-            error: function(xhr, status, error) {
-                Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'Error Printing!',
-                timer: 1000, 
-                timerProgressBar: true, 
-                showConfirmButton: false 
-        })
-            }
-        });
-}
+        url: './reports/coupons-print.php', 
+        type: 'GET',
+        data: { id: couponIdToPrint },
+        success: function(response) {
+            var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            var firstName = userInfo.firstName;
+            var lastName = userInfo.lastName;
+            var cid = userInfo.userId;
+            var role_id = userInfo.roleId; 
+            insertLogs('Coupons', firstName + ' ' + lastName + ' ' + 'Printed a coupon id #:' + couponIdToPrint);
+            
+            // Hide the modal and display success message
+            $('#confirmModal').modal('hide');
+           //alert('Coupon Printed Successfully!');
+        },
+        error: function(xhr, status, error) {
+            // Hide the modal and display error message
+            $('#confirmModal').modal('hide');
+            alert('Error Printing!');
+        }
+    });
+});
+
+// Explicitly handle Cancel button click
+$('#cancelPrintBtn').on('click', function() {
+    $('#confirmModal').modal('hide');
+});
+
+// Explicitly handle Cancel button click
+$('#closebtn').on('click', function() {
+    $('#confirmModal').modal('hide');
+});
 
 $(document).ready(function() {
 

@@ -158,9 +158,9 @@ $('.close-button').on('click', function(){
         }
       e.preventDefault(); 
     }); 
-   //products
 
-  
+
+   //products
    $('#forProducts').on('click',function() {
           $('#add_users_modal').hide()
            var crdntials = document.getElementById('adminCredentials').value

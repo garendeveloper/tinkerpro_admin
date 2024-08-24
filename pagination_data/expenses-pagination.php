@@ -36,6 +36,8 @@
         border: 2px solid #262626;
         height: 5px;
         padding: 10px 10px;
+        font-size: 12px;
+        line-height: 1.2;
     }
 </style>
 
@@ -53,18 +55,18 @@
                 <thead class = 'adminTableHead'>
                     <tr>
                         <th style = "width: 3%" class='text-center auto-fit'>No.</th>
-                        <th style = "width: 14%; height: auto;">Item Name</th>
-                        <th style = "width: 6%">Date</th>
-                        <th style = "width: 6%">Billable</th>
-                        <th style = "width: 10%" >Type</th>
-                        <th style = "width: 6%" >UOM</th>
-                        <th style = "width: 6%" >Supplier</th>
-                        <th style = "width: 7%;font-size: 10px; text-align: center" >Invoice Number</th>
-                        <th style = "width: 7%" >Quantity</th>
-                        <th style = "width: 7%" >Price (Php)</th>
-                        <th style = "width: 8%" >Discount</th>
-                        <th style = "width: 8%; font-size: 10px; text-align: center" >Total Amount(Php)</th>
-                        <th style = "width: 8%; font-size: 10px; text-align: center" >Landed Cost (Php)</th>
+                        <th style = "width: 14%; text-align: center;">Item Name</th>
+                        <th style = "width: 6%; text-align: center;">Date</th>
+                        <th style = "width: 5%; text-align: center;">Billable</th>
+                        <th style = "width: 10%; text-align: center;">Type</th>
+                        <th style = "width: 4%; text-align: center;" >UOM</th>
+                        <th style = "width: 12%; text-align: center;" >Supplier</th>
+                        <th style = "width: 7%;font-size: 12px; text-align: center" >Invoice Number</th>
+                        <th style = "width: 4%; text-align: center;" >Quantity</th>
+                        <th style = "width: 7%; text-align: center;" >Price (Php)</th>
+                        <th style = "width: 8%; text-align: center;" >Discount</th>
+                        <th style = "width: 8%; font-size: 12px; text-align: center" >Total Amount(Php)</th>
+                        <th style = "width: 8%; font-size: 12px; text-align: center" >Landed Cost (Php)</th>
                         <th >Actions</th>
                     </tr>
                 </thead>
