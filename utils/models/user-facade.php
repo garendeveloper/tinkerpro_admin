@@ -380,7 +380,17 @@ class UserFacade extends DBConnection {
                         'VoidCart' => ($formData["voidcart"] == 1) ? 'Access Granted' : 'No Access',
                         'CancelReceipt' => ($formData["cancelreceipt"] == 1) ? 'Access Granted' : 'No Access',
                         'Users' => ($formData["users"] == 1) ? 'Access Granted' : 'No Access',
-                        'Promotions' => ($formData["users"] == 1) ? 'Access Granted' : 'No Access',
+                        'Promotion' => ($formData["promotion"] == 1) ? 'Access Granted' : 'No Access',
+                        //new
+                        'Coupon' => ($formData["coupon"] == 1) ? 'Access Granted' : 'No Access',
+                        'Charges' => ($formData["charges"] == 1) ? 'Access Granted' : 'No Access',
+                        'Pricelist' => ($formData["pricelist"] == 1) ? 'Access Granted' : 'No Access',
+                        'Expenses' => ($formData["expenses"] == 1) ? 'Access Granted' : 'No Access',
+                        'Supplier' => ($formData["supplier"] == 1) ? 'Access Granted' : 'No Access',
+                        'Customer' => ($formData["customer"] == 1) ? 'Access Granted' : 'No Access',
+                        'Pricetag' => ($formData["pricetag"] == 1) ? 'Access Granted' : 'No Access',
+                        'Activitylogs' => ($formData["activitylogs"] == 1) ? 'Access Granted' : 'No Access',
+                        'Management' => ($formData["management"] == 1) ? 'Access Granted' : 'No Access',
             );
         
                     $jsonData = json_encode($permissionData);
@@ -468,12 +478,15 @@ public function updateDataUsers($formData) {
                 'Users' => ($formData["users"] == 1) ? 'Access Granted' : 'No Access',
                 'Promotion' => ($formData["promotion"] == 1) ? 'Access Granted' : 'No Access',
                 //new add
-                'coupon' => ($formData["coupon"] == 1) ? 'Access Granted' : 'No Access',
-                'charges' => ($formData["charges"] == 1) ? 'Access Granted' : 'No Access',
-                'pricelist' => ($formData["pricelist"] == 1) ? 'Access Granted' : 'No Access',
-                'expenses' => ($formData["expenses"] == 1) ? 'Access Granted' : 'No Access',
-                'supplier' => ($formData["supplier"] == 1) ? 'Access Granted' : 'No Access',
-                'customer' => ($formData["customer"] == 1) ? 'Access Granted' : 'No Access',
+                'Coupon' => ($formData["coupon"] == 1) ? 'Access Granted' : 'No Access',
+                'Charges' => ($formData["charges"] == 1) ? 'Access Granted' : 'No Access',
+                'Pricelist' => ($formData["pricelist"] == 1) ? 'Access Granted' : 'No Access',
+                'Expenses' => ($formData["expenses"] == 1) ? 'Access Granted' : 'No Access',
+                'Supplier' => ($formData["supplier"] == 1) ? 'Access Granted' : 'No Access',
+                'Customer' => ($formData["customer"] == 1) ? 'Access Granted' : 'No Access',
+                'Pricetag' => ($formData["pricetag"] == 1) ? 'Access Granted' : 'No Access',
+                'Activitylogs' => ($formData["activitylogs"] == 1) ? 'Access Granted' : 'No Access',
+                'Management' => ($formData["management"] == 1) ? 'Access Granted' : 'No Access',
 
 
     );
