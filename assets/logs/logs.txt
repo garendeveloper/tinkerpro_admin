@@ -17280,3 +17280,29 @@
 2024-08-24 16:22:32 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
 2024-08-24 16:39:25 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
 2024-08-24 16:40:41 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
+2024-08-24 09:13:03 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 09:21:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 11:32:20 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 11:33:58 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-24 11:34:00 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-24 11:35:08 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-24 11:35:10 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-28 14:48:42 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-28 14:49:00 | Admin Admin | 1 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-28 14:49:18 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-28 14:49:27 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-28 14:53:03 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-28 14:55:44 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 14:56:50 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 14:57:13 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-28 14:57:24 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-28 15:03:01 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 15:03:06 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 15:03:15 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-28 15:07:39 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 15:07:46 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 15:28:20 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-28 16:11:52 | Admin Admin | 1 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-28 16:46:04 | Admin Admin | 1 | 2 | Users | Added Alexander Caones 
+2024-08-28 16:46:09 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-28 16:46:13 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 

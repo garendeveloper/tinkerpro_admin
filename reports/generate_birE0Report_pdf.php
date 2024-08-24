@@ -110,6 +110,7 @@ if($singleDateData !== null && ($startDate === null && $endDate === null))
 // $items = $birFacade->getDailyTransaction($startDate, $endDate);
 
 $items = $birFacade->getSalesDaily();
+var_dump($items);
 
 $x = 2; 
 $y = 63; 
@@ -144,7 +145,6 @@ $pdf->SetDrawColor(0,0,0);
 $pdf->SetLineWidth(0.1); 
 
 $pdf->SetMargins(10, 10, 20); 
-
 
 $html = '<style>
              table {
@@ -252,11 +252,11 @@ if($items)
                 {
                     
                     $html .= '<tr style="border: 1px solid black; font-size: 6px;">
-                                <td style="width: 3%">' . (date('Y-m-d')) . '</td>
+                                <td style="width: 3%">' . ($items[$i]['DATE']) . '</td>
                                 <td style="width: 3%">' . ($items[$i]['BEG_SI']) . '</td>
                                 <td style="width: 3%">' . ($items[$i]['END_SI']) . '</td>
                                 <td style="width: 5%">' . ($items[$i]['PRESENT_ACC_SALES']) . '</td>
-                                <td style="width: 5%">' . (0) . '</td>
+                                <td style="width: 5%">' . ($items[$i]['PREVIOUS_ACC_SALES']) . '</td>
                                 <td style="width: 5%; text-align: center">' . (null) . '</td>
                                 <td style="width: 5%; text-align: right">' . formatValue(($items[$i]['subtotal'])) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(($items[$i]['VAT_SALES'])) . '</td>
@@ -279,10 +279,10 @@ if($items)
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['VAT_AMOUNT_REF_RET']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['NET']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($prev_z_read ? ($prev_z_read['short_or_over']) : 0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['SHORT_OVER']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['NET']) . '</td>
-                                <td style="width: 3%; text-align: right">' . ($items[$i]['resetCount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . (1) . '</td>
+                                <td style="width: 3%; text-align: right">' . ($items[$i]['RESET_COUNT']) . '</td>
+                                <td style="width: 3%; text-align: right">' . ($items[$i]['Z_READ_COUNT']) . '</td>
                                 <td style="width: 3%; text-align: right"></td>
                             </tr>';
                 }

@@ -794,24 +794,23 @@ input:checked + .discountSpan:before {
     margin-bottom: 0;  
   }
   
-
   .dropdown-content a:hover {
     background-color: #ddd;
   }
 
   .custom-btn {
-  border-radius: 25%; 
-  background-color: #A6A6A6; 
-  transition: background-color 0.3s; 
-}
+    border-radius: 25%; 
+    background-color: #A6A6A6; 
+    transition: background-color 0.3s; 
+  }
 
-.custom-btn:hover {
-  background-color: #808080; 
-}
+  .custom-btn:hover {
+    background-color: #808080; 
+  }
 
-#discountType{
-text-align: right;
-}
+  #discountType{
+    text-align: right;
+  }
 
 #uomDropDown {
     display: none;
@@ -822,7 +821,8 @@ text-align: right;
     z-index: 1;
     top: 25px; 
     left: 82px; 
-    
+    overflow-y: auto;
+    max-height: 300px;
 }
 .serial::placeholder{
 font-style: italic;
