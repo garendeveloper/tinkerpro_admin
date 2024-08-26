@@ -862,7 +862,7 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
     position: absolute;
     right: 1.6em;
     top: 10px;
-    background: var(--primary-color);
+    background: #262625;
     color: #fff;
     border: none;
     width: 40px;
@@ -870,9 +870,20 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
     line-height: 30px;
     text-align: center;
     cursor: pointer;
-    margin-top: 1vh;
-    
-  }
+    margin-top: 2px;
+    margin-left: 30px;
+    font-size: 25px;
+   transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#permModal .close-button:hover {
+ 
+    transform: scale(1.1);
+    color:#fff
+}
+
+
+
 
   #permModalLabel{
     font-family: Century Gothic;

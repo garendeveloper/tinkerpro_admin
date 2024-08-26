@@ -22,6 +22,22 @@ class UserFacade extends DBConnection {
             'message' => $message,
         ];
     }
+
+
+    public function getValidateAccess($id) {
+        $pdo = $this->connect();
+
+        $sql = $pdo->prepare("SELECT
+        JSON_UNQUOTE(JSON_EXTRACT(permission, '$[0].Management')) AS access
+        FROM abilities WHERE user_id = ? LIMIT 1;");
+
+        $sql->execute([$id]);
+        $access = $sql->fetch(PDO::FETCH_ASSOC);
+
+        return $access;
+    }
+
+
     public function fetchUserForLogs()
     {
         $stmt = $this->connect()->query("SELECT * FROM users ORDER BY users.id asc");

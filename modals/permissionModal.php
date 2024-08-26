@@ -1,5 +1,5 @@
 <style>
- 
+
 </style>
 <div class="modal" id="permModal" tabindex="-1" aria-labelledby="permModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.9)";>
   <div class="modal-dialog modal-dialog-centered">
@@ -24,6 +24,8 @@
             <p class="warning-title"><b>ATTENTION</b></p>
             <p style="font-family: Century Gothic; color: var(--primary-color);"><b>[PERMISSION REQUIRED]</b></p>
           </div>
+
+         
         </h5>
         <div class="warningCards">
         <div style="width: 100%">

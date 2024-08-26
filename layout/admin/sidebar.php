@@ -225,6 +225,14 @@ if (isset($_SESSION['user_id'])) {
         padding: 10px;
         text-align: center;
     }
+    @media screen and (max-width: 1400px) {
+     
+     .sidebar{
+       zoom: 72%;
+       margin-top: 11px;
+     }
+   
+       }
 </style>
 <header class="site-header">
     <div class="header-container">

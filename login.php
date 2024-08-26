@@ -39,6 +39,13 @@
       $signIn = $userFacade->signIn( $password);
       if ($verifyUsernameAndPassword > 0) {
         while ($row = $signIn->fetch(PDO::FETCH_ASSOC)) {
+
+          $access_right = $userFacade->getValidateAccess($row['id']);
+          if ($access_right['access'] == 'No Access') {
+            array_push($invalid, 'NO ACCESS RIGHT');
+            break;
+          }
+
           $_SESSION['user_id'] = $row['id'];
           $_SESSION['first_name'] = $row['first_name'];
           $_SESSION['last_name'] = $row['last_name'];
@@ -180,8 +187,19 @@
     border-radius: 10px;
     /* background-color: rgba(255, 103, 0, 2); */
 }
+
+@media screen and (max-width: 1400px) {
+     
+  .login-header{
+    zoom: 67%;
+  }
+  .wrap-login100{
+    zoom: 67%;
+  }
+    }
 </style>
 </head>
+
 <body>
 	<div class="">
 		<div class="container-login100" >
@@ -245,7 +263,9 @@
         }
       })
     }
-    
+
+
+ 
   </script>
 
 </body>

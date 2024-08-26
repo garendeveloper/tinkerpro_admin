@@ -6,61 +6,60 @@
   include(__DIR__ . '/utils/models/ability-facade.php');
 
 
-  $userId = 0;
+//   $userId = 0;
   
-  $abilityFacade = new AbilityFacade;
+//   $abilityFacade = new AbilityFacade;
 
-if (isset($_SESSION['user_id'])) {
+// if (isset($_SESSION['user_id'])) {
  
-    $userID = $_SESSION['user_id'];
+//     $userID = $_SESSION['user_id'];
+//     $permissions = $abilityFacade->perm($userID);
 
     
-    $permissions = $abilityFacade->perm($userID);
-
+//     $accessGranted = false;
     
-    $accessGranted = false;
-    foreach ($permissions as $permission) {
-        if (isset($permission['Users']) && $permission['Users'] == "Access Granted") {
-            $accessGranted = true;
-            break;
-        }
-    }
-    if (!$accessGranted) {
-      header("Location: 403.php");
-      exit;
-  }
-} else {
-    header("Location: login.php");
-    exit;
+//     foreach ($permissions as $permission) {
+//       if (isset($permission['Charges']) && $permission['Charges'] == "Access Granted") {
+//         $accessGranted = true;
+//         break;
+//       }
+//     }
 
-}
+//     if (!$accessGranted) {
+//       header("Location: 403.php");
+//       exit;
+//   }
+// } else {
+//     header("Location: login.php");
+//     exit;
+// }
 
-  if (isset($_SESSION["user_id"])){
-    $userId = $_SESSION["user_id"];
-  }
-  if (isset($_SESSION["first_name"])){
-    $firstName = $_SESSION["first_name"];
-  }
-  if (isset($_SESSION["last_name"])){
-    $lastName = $_SESSION["last_name"];
-  }
+//   if (isset($_SESSION["user_id"])){
+//     $userId = $_SESSION["user_id"];
+//   }
+//   if (isset($_SESSION["first_name"])){
+//     $firstName = $_SESSION["first_name"];
+//   }
+//   if (isset($_SESSION["last_name"])){
+//     $lastName = $_SESSION["last_name"];
+//   }
 
-  // Redirect to login page if user has not been logged in
-  if ($userId == 0) {
-    header("Location: login");
-  }
-  if (isset($_GET["add_user"])) {
-		$error = $_GET["add_user"];
-    array_push($success, $error);
-	}
-  if (isset($_GET["update_user"])) {
-		$error = $_GET["update_user"];
-    array_push($info, $error);
-	}
-  if (isset($_GET["delete_user"])) {
-		$error = $_GET["delete_user"];
-    array_push($info, $error);
-	}
+//   // Redirect to login page if user has not been logged in
+//   if ($userId == 0) {
+//     header("Location: login");
+//   }
+//   if (isset($_GET["add_user"])) {
+// 		$error = $_GET["add_user"];
+//     array_push($success, $error);
+// 	}
+//   if (isset($_GET["update_user"])) {
+// 		$error = $_GET["update_user"];
+//     array_push($info, $error);
+// 	}
+//   if (isset($_GET["delete_user"])) {
+// 		$error = $_GET["delete_user"];
+//     array_push($info, $error);
+// 	}
 
   
 
@@ -91,7 +90,7 @@ if (isset($_SESSION['user_id'])) {
                       </div>
 
                       <div class="col-4 charges-input">
-                          <input disabled type="number" id="tax_value" value="12" style="border: 1px solid --primary-color)" class="taxVal text-center">
+                          <input disabled type="number" id="tax_value" value="12" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
                       </div>
                     </div>
                 </div>

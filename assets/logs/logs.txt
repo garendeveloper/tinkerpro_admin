@@ -17306,14 +17306,25 @@
 2024-08-28 16:46:04 | Admin Admin | 1 | 2 | Users | Added Alexander Caones 
 2024-08-28 16:46:09 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-08-28 16:46:13 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
-2024-08-24 17:33:06 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
-2024-08-24 17:38:14 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
-2024-08-24 17:38:17 | darth zeether | 111 | 3 | Login | User darth zeether 3 
-2024-08-24 17:38:33 | darth zeether | 111 | 3 | Logout | User darth zeether 3 
-2024-08-24 17:38:36 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
-2024-08-24 17:39:25 | darth zeether | 111 | 3 | Login | User darth zeether 3 
-2024-08-26 09:02:23 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
-2024-08-26 09:02:42 | darth zeether | 111 | 3 | Login | User darth zeether 3 
-2024-08-26 09:37:01 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated Noriel Bagacay 
-2024-08-26 09:37:35 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
-2024-08-26 09:38:24 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-26 11:13:19 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
+2024-08-26 11:13:31 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-26 11:13:33 | darth zeether | 111 | 3 | Login | User darth zeether 3 
+2024-08-26 11:15:15 | darth zeether | 111 | 3 | Logout | User darth zeether 3 
+2024-08-26 11:15:18 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-26 11:16:41 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
+2024-08-26 11:21:41 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
+2024-08-26 11:21:57 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
+2024-08-26 13:04:43 | Noriel Bagacay | 113 | 2 | Users | Noriel Bagacay Updated darth zeether 
+2024-08-26 13:09:35 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-26 13:09:47 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-26 14:27:23 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-26 14:51:58 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-26 14:52:05 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-26 15:12:21 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-26 15:12:25 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-26 15:57:38 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-26 16:03:04 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-26 16:16:28 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-26 16:16:44 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-26 16:29:43 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-26 16:37:17 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 

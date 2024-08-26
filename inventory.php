@@ -216,6 +216,8 @@ include ('./modals/optionModal.php');
         height: 5px;
         padding: 10px 10px;
     }
+
+   
   @media (max-width: 1200px) {
       .inventoryCard th, .inventoryCard td {
           width: 9%; 
