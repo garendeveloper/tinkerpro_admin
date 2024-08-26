@@ -91,7 +91,7 @@ if (isset($_SESSION['user_id'])) {
                       </div>
 
                       <div class="col-4 charges-input">
-                          <input disabled type="number" id="tax_value" value="12" style="border: 1px solid var(--primary-color)" class="taxVal text-center">
+                          <input disabled type="number" id="tax_value" value="12" style="border: 1px solid --primary-color)" class="taxVal text-center">
                       </div>
                     </div>
                 </div>
