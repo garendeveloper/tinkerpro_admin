@@ -17337,3 +17337,71 @@
 2024-08-30 09:28:20 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
 2024-08-30 09:59:17 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Sample  U 
 2024-08-30 09:59:20 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-08-30 10:03:52 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-30 10:41:50 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-30 10:57:11 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-30 10:57:16 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-30 10:57:21 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-30 11:31:29 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-08-30 11:31:31 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-30 14:30:50 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-30 15:00:30 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-30 15:01:57 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-30 15:23:11 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Diapers Barcode #:790581017527 
+2024-08-30 15:49:32 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-31 09:03:21 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-27 09:10:53 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-27 09:12:36 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-27 09:14:14 | Zeus Baculio | 50 | 2 | Users | Zeus Baculio Updated Zeus Baculio 
+2024-08-27 09:21:00 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Mega Sardines Barcode #:760315917766 
+2024-08-27 09:21:12 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-27 09:21:37 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-27 09:21:50 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Casino sanitizer spray Barcode #:4800011145327 
+2024-08-27 09:21:55 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Cement Barcode #:101010101010 
+2024-08-27 09:22:01 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Champion twin pack Barcode #:8996001603444 
+2024-08-27 09:22:16 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Diapers Barcode #:790581017527 
+2024-08-27 09:22:20 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-27 09:22:27 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Glade Barcode #:4801234145514 
+2024-08-27 09:22:36 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Lucky Me Pancit Canton Barcode #:4807770273698 
+2024-08-27 09:22:47 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Pringles Barcode #:3538616594578 
+2024-08-27 09:22:58 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Supremo Beer 1L Barcode #:325836272782 
+2024-08-27 09:23:06 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Surf Active Clean Barcode #:5115679621274 
+2024-08-27 09:23:18 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Mega Sardines Barcode #:760315917766 
+2024-08-27 09:26:05 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Coffee Blanca Barcode #:315606678416 
+2024-08-27 09:26:56 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Bear Brand Barcode #:685668897189 
+2024-08-27 09:28:12 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Anlene Barcode #:265482883286 
+2024-08-27 09:32:24 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000055 Amount:₱ 340,000.00 
+2024-08-27 09:33:17 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000055 Supplier: GAISANO SUPERMARKET 
+2024-08-27 09:36:48 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-27 09:38:46 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Mega Sardines Barcode #:760315917766 
+2024-08-27 09:42:20 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Bread Barcode #:949749282281 
+2024-08-27 09:43:08 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Beef Barcode #:737361564553 
+2024-08-27 09:44:16 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Orange Barcode #:758091387148 
+2024-08-27 09:45:56 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Eggs Barcode #:360569167795 
+2024-08-27 09:47:05 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000056 Amount:₱ 510,000.00 
+2024-08-27 09:47:37 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000056 Supplier: GAISANO SUPERMARKET 
+2024-08-27 09:48:51 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000057 Amount:₱ 110,000.00 
+2024-08-27 09:49:16 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000057 Supplier: GAISANO SUPERMARKET 
+2024-08-27 09:50:11 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Beef 1KG Barcode #:737361564553 
+2024-08-27 09:50:24 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Beef 1KG Barcode #:737361564553 
+2024-08-27 09:51:54 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Electrical Tape Barcode #:565883458299 
+2024-08-27 09:52:38 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Canola Oil 1KG Barcode #:951892645532 
+2024-08-27 09:53:14 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Downy Barcode #:797133065904 
+2024-08-27 09:54:17 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000058 Amount:₱ 130,000.00 
+2024-08-27 09:55:15 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Onions 1KG Barcode #:896938091260 
+2024-08-27 09:56:02 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Garlic 1KG Barcode #:358268103423 
+2024-08-27 09:56:22 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000059 Amount:₱ 200,000.00 
+2024-08-27 09:56:57 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000058 Supplier: GAISANO SUPERMARKET 
+2024-08-27 09:57:09 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000059 Supplier: GAISANO SUPERMARKET 
+2024-08-27 09:58:11 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Beef 1KG Barcode #:737361564553 
+2024-08-27 09:58:26 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-27 09:58:32 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Bonakid Barcode #:951742829415 
+2024-08-27 09:58:45 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Bread Barcode #:949749282281 
+2024-08-27 09:58:53 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Cabbage 1KG Barcode #:342192035607 
+2024-08-27 09:59:19 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Electrical Tape Barcode #:565883458299 
+2024-08-27 09:59:45 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Mega Sardines Barcode #:760315917766 
+2024-08-27 09:59:58 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Downy Barcode #:797133065904 
+2024-08-27 10:00:06 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Coffee Blanca Barcode #:315606678416 
+2024-08-27 10:00:36 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Anlene Barcode #:265482883286 
+2024-08-27 10:00:45 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
+2024-08-27 10:00:52 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
