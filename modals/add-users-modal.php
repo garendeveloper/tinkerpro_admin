@@ -29,6 +29,29 @@
   
 }
 
+.no-background-btn {
+    background: none; 
+    border: none; 
+    padding: 0; 
+    margin: 0;
+    margin-left: 15px;
+    cursor: pointer; 
+    transition: background 0.3s, transform 0.3s; 
+}
+
+
+.no-background-btn:hover {
+    background: rgba(0, 0, 0, 0.1); 
+    transform: scale(1.05); 
+}
+
+
+.no-background-btn:focus {
+    outline: 2px solid var(--primary-color); 
+    outline-offset: 2px; 
+}
+
+
 @keyframes slideInRight {
   from {
     margin-right: -100%;
@@ -228,10 +251,10 @@
                  <div style="width:50%">
                  <input hidden type="file" id="fileInput" style="display: none;" accept="image/jpeg, image/jpg, image/png">
                  <button class="btn-control" id="browseButton" name="browseButton" style="background-color:transparent; height: 40px; width:180px"><svg width="25px" height="25px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><defs><style>
-              .cls-1 {
+              <!-- .cls-1 {
                 fill: #699f4c;
                 fill-rule: evenodd;
-              }
+              } -->
             </style></defs><path class="cls-1" d="M1080,270a30,30,0,1,1,30-30A30,30,0,0,1,1080,270Zm14-34h-10V226a4,4,0,0,0-8,0v10h-10a4,4,0,0,0,0,8h10v10a4,4,0,0,0,8,0V244h10A4,4,0,0,0,1094,236Z" id="add" transform="translate(-1050 -210)"/></svg>&nbsp;Browse Picture</button>
                  <button onclick="clearFileInput()" id="removeImage" class="btn-control"  style="background-color:transparent; height: 40px;width:180px; margin-top:10px"><svg height="25px" width="25px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.001 512.001" xml:space="preserve" fill="#f20707" stroke="#f20707"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path style="fill:#f20707;" d="M256.001,512c141.384,0,255.999-114.615,255.999-256.001C512.001,114.615,397.386,0,256.001,0 S0.001,114.615,0.001,256.001S114.616,512,256.001,512z"></path> <path style="opacity:0.1;enable-background:new ;" d="M68.873,256.001c0-129.706,96.466-236.866,221.564-253.688 C279.172,0.798,267.681,0,256.001,0C114.616,0,0.001,114.615,0.001,256.001S114.616,512.001,256,512.001 c11.68,0,23.171-0.798,34.436-2.313C165.339,492.865,68.873,385.705,68.873,256.001z"></path> <path style="fill:#FFFFFF;" d="M313.391,256.001l67.398-67.398c4.899-4.899,4.899-12.842,0-17.74l-39.65-39.65 c-4.899-4.899-12.842-4.899-17.74,0l-67.398,67.398l-67.398-67.398c-4.899-4.899-12.842-4.899-17.74,0l-39.65,39.65 c-4.899,4.899-4.899,12.842,0,17.74l67.398,67.398l-67.398,67.398c-4.899,4.899-4.899,12.842,0,17.741l39.65,39.65 c4.899,4.899,12.842,4.899,17.74,0l67.398-67.398L323.4,380.79c4.899,4.899,12.842,4.899,17.74,0l39.65-39.65 c4.899-4.899,4.899-12.842,0-17.741L313.391,256.001z"></path> </g></svg>&nbsp;Remove Picture</button>
                  <input class="custom-input" readonly hidden name="id" id="id" style="width: 180px"/>
@@ -254,15 +277,10 @@
                         <td class="td-height text-custom-data"> <div class="dropdown custom-input">
                             <input class="custom-input" readonly hidden name="role" id="role" style="width: 180px"/>
                             <input class="custom-input" name="roleName" id="roleName" style="width: 180px" placeholder = "Enter a user to add / select" autocomplete = "off" />
-                            <button name="roleBtn" id="roleBtn" class="custom-btn">
-                                <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                    <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    </g>
-                                </svg>
+                            <button class="no-background-btn" name="roleBtn" id="roleBtn">
+                            <svg fill="var(--primary-color)" width="15px" height="15px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>dropdown</title>
+                             <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path> </g>
+                            </svg>
                             </button>
                             <div class="dropdown-content roleTypeDropdown" id="dropdownContent">
                             
@@ -286,14 +304,9 @@
                         <td class="td-height text-custom-data"> <div class="dropdown custom-input">
                             <input class="custom-input" readonly hidden name="status" id="status" style="width: 180px"/>
                             <input class="custom-input" readonly name="statusName" id="StatusName" style="width: 180px"/>
-                            <button name="statusBtn" id="statusBtn" class="custom-btn">
-                            <svg width="13px" height="13px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </g>
+                            <button name="statusBtn" id="statusBtn"class="no-background-btn">
+                            <svg fill="var(--primary-color)" width="15px" height="15px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>dropdown</title>
+                             <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path> </g>
                             </svg>
                             </button>
                             <div class="dropdown-content" id="dropdownContents">
@@ -341,8 +354,12 @@
                     <button style="margin-right:20px; width:100px;" class="btn-success-custom" onclick="removeReadOnly()">Edit</button>
                 </div>
             </div>
+         
             <div class="accessLevel">
                 <div style="width: 50%">
+
+              
+
                     <div style="display: flex;">
                         <input id="refund_permission"  readonly name="refund_permission" type="checkbox" class="refund_permission form-check-input" value="1" style="margin-right: 4px;">
                         <label for="refund_permission" class="text-color form-check-label">Refund</label>

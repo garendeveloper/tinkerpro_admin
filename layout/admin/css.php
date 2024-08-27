@@ -605,4 +605,40 @@ button:hover{
     font-size: 12px;
     z-index: 1; 
 }
+
+@media screen and (max-width: 1400px) {
+     
+    .header-container{
+      zoom:72%;
+    }
+       }
+
 </style>
+
+<script>
+
+  // Function to adjust zoom level based on screen resolution
+function adjustZoom() {
+    // Get the screen width
+    const screenWidth = window.screen.width;
+
+    // Check if the screen width matches the target resolution
+    if (screenWidth === 1336) {
+        // Apply zoom level by setting the CSS scale transform
+        document.body.style.transform = 'scale(0.75)';
+        document.body.style.transformOrigin = '0 0'; // Adjust origin if necessary
+        document.body.style.width = '1336px'; // Optional: ensure content width is correct
+    } else {
+        // Reset zoom if resolution does not match
+        document.body.style.transform = 'none';
+        document.body.style.width = '100%'; // Reset to default width
+    }
+}
+
+// Call the function on page load
+window.addEventListener('load', adjustZoom);
+
+// Optional: Call the function on window resize
+window.addEventListener('resize', adjustZoom);
+
+</script>

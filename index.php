@@ -310,7 +310,7 @@ body, div, h1, h2, h3, h4, h5, p{
 .topValue{
   font-size: 1rem;
 }
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .annual_total_sales h3, .annual_total_expenses h3, #total_sales_data h1{
     font-size: 2.5rem;
   }
@@ -394,6 +394,23 @@ body, div, h1, h2, h3, h4, h5, p{
     background: #888; 
     border-radius: 20px; 
 }
+
+
+@media screen and (max-width: 1400px) {
+     
+     .container{
+     margin-left: -20px;
+  
+     }
+     .annual_total_sales h3, .annual_total_expenses h3, #total_sales_data h1{
+    font-size: 1.5rem;
+  }
+
+       
+       }
+
+
+
 </style>
 <?php include "layout/admin/css.php" ?>
 <div class="container-scroller" style = "background-color: #262626">
