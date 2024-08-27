@@ -55,7 +55,7 @@
                 <thead class = 'adminTableHead'>
                     <tr>
                         <th style = "width: 3%" class='text-center auto-fit'>No.</th>
-                        <th style = "width: 14%; text-align: center;">Item Name</th>
+                        <th style = "width: 18%; text-align: center;">Item Name</th>
                         <th style = "width: 6%; text-align: center;">Date</th>
                         <th style = "width: 5%; text-align: center;">Billable</th>
                         <th style = "width: 10%; text-align: center;">Type</th>
@@ -65,8 +65,8 @@
                         <th style = "width: 4%; text-align: center;" >Quantity</th>
                         <th style = "width: 7%; text-align: center;" >Price (Php)</th>
                         <th style = "width: 8%; text-align: center;" >Discount</th>
-                        <th style = "width: 8%; font-size: 12px; text-align: center" >Total Amount(Php)</th>
-                        <th style = "width: 8%; font-size: 12px; text-align: center" >Landed Cost (Php)</th>
+                        <th style = "width: 5%; font-size: 12px; text-align: center" >Total Amount(Php)</th>
+                        <th style = "width: 5%; font-size: 12px; text-align: center" >Landed Cost (Php)</th>
                         <th >Actions</th>
                     </tr>
                 </thead>

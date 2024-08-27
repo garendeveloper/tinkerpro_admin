@@ -17396,3 +17396,4 @@
 2024-08-27 10:00:36 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Anlene Barcode #:265482883286 
 2024-08-27 10:00:45 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
 2024-08-27 10:00:52 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-27 15:33:32 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Added customer Rose  Bagacay 

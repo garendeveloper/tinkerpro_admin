@@ -125,6 +125,8 @@ include ('./modals/optionModal.php');
       margin-top: 10px;
     }
   }
+
+ 
   /* tr.normal td {
       color: black;
       background-color: white;
@@ -243,6 +245,55 @@ include ('./modals/optionModal.php');
           -webkit-overflow-scrolling: touch;
       }
   }
+
+  
+/* for 1336px screen */
+
+@media screen and (max-width: 1400px) {
+     
+     .inventoryCard th, .inventoryCard td {
+           width: 9%; 
+       }
+       .division{
+         zoom:70%;
+       
+       }
+       .main-panel{
+         margin-left: -30px;
+     
+         width: 100%;
+       }
+ 
+       .row{
+         zoom:70%;
+       }
+       .modal{
+      zoom: 70%;
+       }
+
+       #paginationDiv{
+        margin-top: 150px;
+    
+       }
+       #preview_records{
+         zoom:80%;
+       }
+       .btn-control{
+         zoom:70%;
+         margin-top: 50px;
+       }
+       .search{
+        zoom:70%;
+       }
+
+       .inventoryCard tbody {
+        display: block; 
+        max-height: 100vh; 
+        overflow-y: scroll;
+        max-width: 120% ;
+    }
+ 
+             }
 .inventoryCard tbody::-webkit-scrollbar {
     width: 4px; 
 }
@@ -407,7 +458,55 @@ i:hover{
  margin-left: -18px !important;
  width: 101% !important;
 }
+
+/*   start for search bar css*/
+
+::selection {
+  color: black;
+  background: white;
+}
+
+
+#searchInput{
+    caret-color: white; 
+    color: white; 
+    background-color: #555; 
+    font-size: 15px; 
+  
+}
+
+
+.inventoryBtn{
+  background-color: #555;  
+  margin-left: -5px;
+}
+
+#clear_inventory_search{
+  background-color: #555;  
+  height: 35px; 
+  margin-left: -5px;
+  cursor: pointer;
+}
+
+
+
+.inventoryBtn.clearproductsBtn svg {
+  transition: fill 0.3s ease, transform 0.3s ease; 
+}
+
+
+.inventoryBtn.clearproductsBtn:hover svg {
+  fill: var(--primary-color); 
+  transform: scale(1.1);
+}
+
+/*   end for search bar css*/
+
+
+
 </style>
+
+
 
 <?php include "layout/admin/css.php" ?>
 <div class="container-scroller" style = "background-color: #262626">
@@ -461,13 +560,15 @@ i:hover{
           </div>
         </div>
 
+        <div class="search">
           <div class="d-flex justify-content-center align-items-center mb-3" style= "margin-top: -10px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
               <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
             </svg>
             <input id = "searchInput" class="text-color searchProducts ms-2 ps-3" placeholder="Search Product,[code, barcode, name, brand]" autocomplete="off" autofocus/>
-            <span class="inventoryBtn clearproductsBtn" id = "clear_inventory_search" style="background: #7C7C7C; height: 35px; cursor: pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="38" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
+            
+            <span class="inventoryBtn clearproductsBtn" id = "clear_inventory_search">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="35" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
               </svg>
             </span>
@@ -484,10 +585,11 @@ i:hover{
             </button>
             <!-- <button class="inventoryBtn clearproductsBtn" style="width:auto; order: 1" id = "clear_inventory_search">&nbsp;Clear</button> -->
           </div>
-    
+          </div>
      
         <div class="row " >
           <div class="card inventoryCard" style="width: 100%; height: 64vh; background-color: #262626 !important;margin-top: -20px; margin-left: 5px;"></div>   
+         
           <div id="paginationDiv" ></div>
         </div>
 
@@ -530,3 +632,27 @@ i:hover{
 
   <?php include ("layout/footer.php") ?>
   <script src="assets/adminjs/inventory.js"></script>
+
+  
+
+  <script>
+  
+  const searchInput = document.getElementById('searchInput');
+  const clearInventorySearch = document.getElementById('clear_inventory_search');
+
+
+  function toggleSVGVisibility() {
+    if (searchInput.value.trim() === '') {
+      clearInventorySearch.style.display = 'none'; 
+      
+    } else {
+      clearInventorySearch.style.display = 'inline-block'; 
+    }
+  }
+
+ 
+  searchInput.addEventListener('input', toggleSVGVisibility);
+
+
+  toggleSVGVisibility();
+  </script> 

@@ -30,7 +30,7 @@ if (isset($_SESSION['user_id'])) {
     
     $accessGranted = false;
     foreach ($permissions as $permission) {
-        if (isset($permission['Products']) && $permission['Products'] == "Access Granted") {
+        if (isset($permission['Activitylogs']) && $permission['Activitylogs'] == "Access Granted") {
             $accessGranted = true;
             break;
         }
@@ -251,6 +251,7 @@ select::-webkit-scrollbar-thumb {
 }
 
 </style>
+
   <div class="container-scroller">
     <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel h-100" style = "overflow: hidden">

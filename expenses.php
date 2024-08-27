@@ -245,11 +245,12 @@ if (isset($_SESSION['user_id'])) {
 
 
 #tbl_expenses tbody td {
-  
-    padding: 8px 8px; 
-    height: 25px; 
     line-height: 1.1; 
     border: 1px solid #292928;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 #tbl_expenses tbody tr:hover{
   background-color: #242424;
@@ -383,6 +384,58 @@ if (isset($_SESSION['user_id'])) {
       background: #888; 
       border-radius: 50px; 
   }
+
+
+
+  /* start for search bar css*/
+
+::selection {
+  color: black;
+  background: white;
+}
+
+#searchInput{
+    caret-color: white; 
+    color: white; 
+    background-color: #555; 
+    font-size: 15px; 
+  
+}
+
+#searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.expensesBtn{
+  background-color: #555;  
+  margin-left: -5px;
+}
+
+#clear_all_search{
+  background-color: #555;  
+  height: 35px; 
+  margin-left: -5px;
+  cursor: pointer;
+}
+
+.expensesBtn.clearproductsBtn svg {
+  transition: fill 0.3s ease, transform 0.3s ease; 
+ 
+
+}
+
+.expensesBtn.clearproductsBtn:hover svg {
+  fill: var(--primary-color); 
+  transform: scale(1.1);
+}
+
+.text-color.searchProducts {
+    background-color: #555;
+}
+
+/*   end for search bar css */
+
+
 </style>
 
 <?php include "layout/admin/css.php"?> 
@@ -395,10 +448,10 @@ if (isset($_SESSION['user_id'])) {
             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16" style = "margin-right: 10px; margin-left: 10px;">
               <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"/>
             </svg>
+
             <input  class="text-color searchProducts w-100 ps-3" id = "searchInput" placeholder="Search Expenses,[ Item name, Billable, Type, UOM, Supplier, Invoice Number ]" autocomplete = "off" autofocus = "autofocus"/>
-            
-            <span class="expensesBtn clearproductsBtn" id = "clear_all_search" style="background: #7C7C7C; height: 35px; cursor: pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="38" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
+            <span class="expensesBtn clearproductsBtn" id = "clear_all_search" >
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="35" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
               </svg>
             </span>
@@ -470,3 +523,32 @@ if (isset($_SESSION['user_id'])) {
 ?>
 
 <script src="assets/adminjs/expenses.js"></script>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  var searchInput = document.getElementById('searchInput');
+  var clearBtn = document.getElementById('clear_all_search');
+
+
+  function toggleClearButton() {
+    if (searchInput.value.length > 0) {
+      clearBtn.style.display = 'block';
+    } else {
+      clearBtn.style.display = 'none';
+    }
+  }
+
+  toggleClearButton();
+
+ 
+  searchInput.addEventListener('input', toggleClearButton);
+
+  clearBtn.addEventListener('click', function() {
+    searchInput.value = '';
+    toggleClearButton();
+    searchInput.focus();
+  });
+});
+
+</script>

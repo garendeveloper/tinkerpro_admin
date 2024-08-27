@@ -97,7 +97,41 @@ if (isset($_SESSION['user_id'])) {
   .font-size{
     font-size: 12px !important;
   }
+
+/*   start for search bar css*/
+
+  ::selection {
+  color: black;
+  background: white;
+}
+
+
+.search_design {
+    caret-color: white; 
+    color: white; 
+    background-color: #555;  
+}
+
+.search_design::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.productBTNs{
+  background-color: #555;  
+}
+.productBTNs:hover {
+    background-color: var(--primary color); 
+    color: #fff; 
+}
+
+.addProducts:hover {
+    background-color: var(--primary color); 
+    color: #fff; 
   
+}
+
+/*   end for search bar css*/
+
   @media screen and (max-width: 1400px) {
      
 .main-panel{
@@ -119,24 +153,26 @@ if (isset($_SESSION['user_id'])) {
       <div class="main-panel" style="height: 100vh">
         <div class="content-wrapper" style="height: 95vh">
 
+        <div class="searchbar">
           <div class="d-flex mb-2 justify-content-center align-items-center">
             <input  class="text-color searchProducts ms-1 ps-3 search_design" placeholder="Search Product,[code, barcode, name, brand]"/>
-            <span class="clear-button d-none d-flex" id="clearButton">
+            <span class="clear-button d-none d-flex" id="clearButton" style="background-color: #555;  ">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="38" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
             </svg>
             </span>
-            <button onclick="searchProducts()" id="searchBtn" name="productSearch" class="productBTNs searchIconD">
+            <button onclick="searchProducts()" id="searchBtn" name="productSearch" class="productBTNs searchIconD" >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
               </svg>
             </button>
 
-            <button onclick="addproducts()" class="addProducts productBTNs" style="width: auto">
+            <button onclick="addproducts()" class="addProducts productBTNs" style="width: auto" >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
               </svg> 
             </button>
+            </div>
 
            <div style="display: flex;">
             <button class="clearproductsBtn productBTNs d-none">
