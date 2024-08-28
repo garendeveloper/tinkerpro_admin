@@ -17397,3 +17397,27 @@
 2024-08-27 10:00:45 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated 555 Tuna paksiw Barcode #:2131644570623 
 2024-08-27 10:00:52 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated 555 Tuna Adobo Barcode #:1523288843286 
 2024-08-27 15:33:32 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Added customer Rose  Bagacay 
+2024-08-28 09:00:44 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-28 09:51:28 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-28 11:00:55 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Added rf3wgfw34gwergegewgfuywweu8ffhuiewhfueghfuw8ef8wughf8ufewfewghufweufhewufhweufehfuefheufh Barcode #:809407134237 
+2024-08-28 11:01:09 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Deleted rf3wgfw34gwergegewgfuywweu8ffhuiewhfueghfuw8ef8wughf8ufewfewghufweufhewufhweufehfuefheufh Barcode #:809407134237 
+2024-08-28 11:28:55 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated Dove Men Barcode #:489689075693 
+2024-08-28 11:29:12 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated Dove Men Barcode #:489689075693 
+2024-08-28 11:29:51 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated Dove Men Barcode #:489689075693 
+2024-08-28 11:33:25 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated Dove Men Barcode #:489689075693 
+2024-08-28 11:33:29 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated Fortune Cigarette 1 Pack Barcode #:637975557049 
+2024-08-28 11:54:29 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated Dove Men Barcode #:489689075693 
+2024-08-28 11:54:55 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated Dove Men Barcode #:489689075693 
+2024-08-28 11:55:07 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated 555 Tuna Adobo hrhtrhtrhtrhtrhtrhrthrthrthtrhrth Barcode #:1523288843286 
+2024-08-28 11:55:22 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated 555 Tuna Adobo hrhtrhtrhtrhtrhtrhrthrthrthtrhrthhtrjnrfjgngfngfngfngfngfn Barcode #:1523288843286 
+2024-08-28 11:55:45 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated 555 Tuna Adobo  Barcode #:1523288843286 
+2024-08-28 13:27:53 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated 555 Tuna Adobogsgdsgdsgdsgdsgsdgdsgdsgdsgd Barcode #:1523288843286 
+2024-08-28 13:30:39 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 13:35:17 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Printing a pdf 
+2024-08-28 13:35:40 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Generate a pdf 
+2024-08-28 13:42:31 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Added jhtdfhrthfdbfd Barcode #:609699594426 
+2024-08-28 13:42:58 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated jhtdfhrthfdbfd Barcode #:609699594426 
+2024-08-28 13:43:35 | Noriel Bagacay | 113 | 2 | Products | darth zeether Updated jhtdfhrthfdbfd Barcode #:609699594426 
+2024-08-28 13:43:40 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Deleted jhtdfhrthfdbfd Barcode #:609699594426 
+2024-08-28 14:41:22 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-28 15:52:58 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Added Big Rolls Barcode #:8993175540520 

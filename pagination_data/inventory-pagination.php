@@ -51,7 +51,7 @@
     $('#searchInput').focus();
     $(".inventoryCard").html("");
     var tblData = `
-        <table tabindex='0' id='tbl_products'  style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
+        <table tabindex='0' id='tbl_products'  style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%; '>
             <thead class='adminTableHead'>
                 <tr >
                     <th style = "width: 5%" class=' text-center ' >No.</th>

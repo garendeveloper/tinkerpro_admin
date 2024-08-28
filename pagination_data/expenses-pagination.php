@@ -51,6 +51,7 @@
     $("#responsive-data").html("");
 
     var tblData = `
+    <div class="table-wrapper">
             <table id='tbl_expenses' class='text-color table-border display' style='font-size: 12px;'>
                 <thead class = 'adminTableHead'>
                     <tr>
@@ -71,7 +72,8 @@
                     </tr>
                 </thead>
                 <tbody></tbody>
-            </table>`;
+            </table>
+            </div>`;
 
     $("#responsive-data").html(tblData);
  

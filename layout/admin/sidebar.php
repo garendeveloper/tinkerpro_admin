@@ -228,8 +228,8 @@ if (isset($_SESSION['user_id'])) {
     @media screen and (max-width: 1400px) {
      
      .sidebar{
-       zoom: 72%;
-       margin-top: 11px;
+       zoom: 90%;
+       margin-top: 5px;
      }
    
        }

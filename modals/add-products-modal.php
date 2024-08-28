@@ -30,7 +30,7 @@
                         <td class="barcodeTd td-height text-custom td-style td-bg" style="font-size: 12px; height: 10px">Barcode<sup>*</sup></td>
                         <td class="td-height text-custom" style="font-size: 12px; height: 10px;">
                           <div class="d-flex">
-                            <input  oninput="validateNumber(this)" class="barcode" id="barcode" name="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button>
+                            <input  oninput="validateNumber(this)" class="barc" id="barcode" name="barcode" style="width: 220px"/><button class="generate" id="generate">Generate</button>
                           </div>
                         </td>
                     </tr>

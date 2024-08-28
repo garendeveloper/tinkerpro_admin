@@ -282,6 +282,7 @@ select::-webkit-scrollbar-thumb {
                       </div>
                     </div>
                     <br>
+
                     <div class = "row">
                         <h6 class = "text-custom">Choose Application</h6>
                         <div class="custom-select" style="margin-right: 0px; ">
@@ -291,6 +292,7 @@ select::-webkit-scrollbar-thumb {
                             </select>
                         </div>
                     </div>
+                    
                     <br>
                     <div class = "row">
                         <h6 class = "text-custom">Select User</h6>

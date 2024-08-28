@@ -132,19 +132,65 @@ if (isset($_SESSION['user_id'])) {
 
 /*   end for search bar css*/
 
+      
+
   @media screen and (max-width: 1400px) {
      
 .main-panel{
-  zoom:75%;
+  zoom:100%;
 }
  
    .modal{
-    zoom: 75%;
+    zoom: 90%;
    }
+   
+ .card{
 
+  width:100% !important;
+  overflow: hidden !important;
+ }
+
+ .btn-control{
+  zoom: 90%;
+  margin-top: -60px;
+ }
+ .productHeader{
+  width: 100% !important;
+ }
+
+ #responsive-data {
+    height: 100%;
+    overflow: auto;     
+        }
+
+  .productsName {
+    width: 20% !important;
+       
+    }
+
+    .th-name{
+      width: 20% !important;
+    }
+
+    .th-barcode {
+        width: 12% !important;
+      }
+       .barcode {
+        width: 12% !important;
+      }
+
+      .category {
+        font-size: 10px !important;
+      }
+
+      .td-h {
+      overflow-wrap: break-word !important; 
+      word-wrap: break-word !important;     
+      white-space: normal !important;       
+}
+  }
   
-       }
-  
+   
   </style>
 
     <!-- partial:partials/_navbar.html -->
@@ -187,6 +233,7 @@ if (isset($_SESSION['user_id'])) {
           <div>
           <div class="row">
             <div>
+
               <div class="card p-0" style="height: 78vh; width: 100%; overflow: hidden">
                 <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
@@ -200,20 +247,20 @@ if (isset($_SESSION['user_id'])) {
 
                       <thead class="productHeader">
                         <tr>
-                          <th class="text-center font-size" style="width: 5%;">No.</th>
-                          <th class="text-center font-size" style="width: 20%">Name</th>
-                          <th class="text-center font-size" style="width: 6%" >Barcode</th>
-                          <th class="text-center font-size" style="width: 6%" >SKU</th>
-                          <th class="text-center font-size" style="width: 6%" >Code</th>
-                          <th class="text-center font-size" style="width: 6%"  >Unit</th>
-                          <th class="text-center font-size"  style="width: 6%" >Brand</th>
-                          <th class="text-center font-size"  style="width: 6%" >Price (Php)</th>
-                          <th class="text-center font-size"  style="width: 6%" >Mark-up (%)</th>
-                          <th class="text-center font-size" style="width: 6%"  >Cost (Php)</th>
+                          <th class="th-No text-center font-size" style="width: 5%;">No.</th>
+                          <th class="th-name text-center font-size" style="width: 20%">Name</th>
+                          <th class="th-barcode text-center font-size" style="width: 6%" >Barcode</th>
+                          <th class="th-sku text-center font-size" style="width: 6%" >SKU</th>
+                          <th class="th-code text-center font-size" style="width: 6%" >Code</th>
+                          <th class="th-unit text-center font-size" style="width: 6%"  >Unit</th>
+                          <th class="th-brand text-center font-size"  style="width: 6%" >Brand</th>
+                          <th class="th-price text-center font-size"  style="width: 6%" >Price (Php)</th>
+                          <th class="th-markup text-center font-size"  style="width: 6%" >Mark-up (%)</th>
+                          <th class="th-cost text-center font-size" style="width: 6%"  >Cost (Php)</th>
                           <!-- <th class="text-center" style="width: 7%;">Serial No.</th> -->
-                          <th class="text-center font-size"  style="width: 10%" >Category</th>
-                          <th class="text-center font-size" style="width: 6%" >Status</th>
-                          <th class="text-center font-size"  style="width: 6%" >Action</th>
+                          <th class="th-category text-center font-size"  style="width: 10%" >Category</th>
+                          <th class="th-status text-center font-size" style="width: 6%" >Status</th>
+                          <th class="th-action text-center font-size"  style="width: 6%" >Action</th>
                         </tr>
                       </thead> 
 
@@ -227,9 +274,8 @@ if (isset($_SESSION['user_id'])) {
 
                 <!-- </div> -->
               </div>
-              <div id="paginationDiv" class="paginactionClass" style="position: absolute; bottom: 33px;">
-
-              </div>
+              
+              <div id="paginationDiv" class="paginactionClass" style="position: absolute; bottom: 3px;"></div>
          
               <div class="d-flex w-100 text-center justify-content-center" style="position: absolute; bottom: 0;">
                 <input type="file" id="fileImports" style="display: none;" accept=".csv, text/csv">

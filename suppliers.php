@@ -283,6 +283,41 @@
 /*   end for search bar css */
 
 
+
+
+@media screen and (max-width: 1400px) {
+     
+     .d-flex{
+       zoom: 80%;
+     }
+     
+      .modal{
+       zoom: 90%;
+   
+      }
+   
+   
+    #recentsuppliers td {
+        font-size: 12px;
+        padding: 2 !important;
+    }
+
+
+    #recentsuppliers th {
+        font-size: 14px !important;
+       
+    }
+    
+   
+
+#paginationDiv{
+  zoom: 80%;
+  margin-top: 0px;
+}
+
+
+
+       }
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -319,6 +354,7 @@
                 <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
                   <!-- <div class="productTable" > -->
+             
                     <div id="responsive-data" style= "overflow: hidden">
                       <table id="recentsuppliers">
                         <thead class = "adminTableHead">
@@ -335,6 +371,8 @@
                         </tbody>
                       </table>
                     </div>
+                   
+                  
                    
                   <!-- </div> -->
                 <!-- </div> -->

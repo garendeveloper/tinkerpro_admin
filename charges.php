@@ -1064,4 +1064,15 @@ height: 40px;
 .highlightedCoupon {
     border: 2px solid #00B050 !important; 
 }
+
+
+@media screen and (max-width: 1400px) {
+.main-panel{
+  zoom:90%;
+}
+.charges-container{
+ 
+  height: 100px;
+}
+}
 </style>
