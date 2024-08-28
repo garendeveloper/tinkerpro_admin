@@ -44,12 +44,12 @@
                               &#129171;
                             </button>
                             <div class="dropdown-content" id="uomDropDown">
-                            <?php
-                                 $productFacade = new ProductFacade;
-                                 $uom = $productFacade->getUOM();
-                                while ($row =  $uom->fetch(PDO::FETCH_ASSOC)) {
-                                    echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['uom_name']) . '</a>';
-                                }
+                                <?php
+                                  $productFacade = new ProductFacade;
+                                  $uom = $productFacade->getUOM();
+                                  while ($row =  $uom->fetch(PDO::FETCH_ASSOC)) {
+                                      echo '<a href="#" style="color:#000000; text-decoration: none;" data-value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['uom_name']) . '</a>';
+                                  }
                                 ?>
                             </div>
                             <div id="variants" style="display: none;">
@@ -561,6 +561,7 @@ document.getElementById("uomBtn").addEventListener("click", function() {
   }
   event.stopImmediatePropagation();
 });
+
 
 document.addEventListener("click", function(event) {
   var dropdownContent = document.getElementById("uomDropDown");

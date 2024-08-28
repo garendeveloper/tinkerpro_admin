@@ -293,9 +293,13 @@ $(document).ready(function() {
   });
 
   $('.editProductBtn').on('click', function() {
-      openModal($(this).closest('tr'));
+    openModal($(this).closest('tr'));
   });
 
+
+  $('.searchProducts').click(function() {
+    closeAddProductsModal();
+  })
 
   $('.searchProducts').on('input', function() {
     if($(this).val() != '') {
