@@ -6,7 +6,8 @@ class BirFacade extends DBConnection {
     public function getAllZread($startDate, $endDate) {
         $pdo = $this->connect();
 
-        if ($startDate == null && $endDate == null) {
+        if ($startDate == null && $endDate == null) 
+        {
             return;
         } 
 

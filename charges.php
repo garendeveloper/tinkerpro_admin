@@ -13,18 +13,18 @@
 if (isset($_SESSION['user_id'])) {
  
     $userID = $_SESSION['user_id'];
-
-    
     $permissions = $abilityFacade->perm($userID);
 
     
     $accessGranted = false;
+    
     foreach ($permissions as $permission) {
-        if (isset($permission['Users']) && $permission['Users'] == "Access Granted") {
-            $accessGranted = true;
-            break;
-        }
+      if (isset($permission['Users']) && $permission['Users'] == "Access Granted") {
+        $accessGranted = true;
+        break;
+      }
     }
+
     if (!$accessGranted) {
       header("Location: 403.php");
       exit;
@@ -32,7 +32,6 @@ if (isset($_SESSION['user_id'])) {
 } else {
     header("Location: login.php");
     exit;
-
 }
 
   if (isset($_SESSION["user_id"])){

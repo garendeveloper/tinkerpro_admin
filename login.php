@@ -39,6 +39,13 @@
       $signIn = $userFacade->signIn( $password);
       if ($verifyUsernameAndPassword > 0) {
         while ($row = $signIn->fetch(PDO::FETCH_ASSOC)) {
+
+          $access_right = $userFacade->getValidateAccess($row['id']);
+          if ($access_right['access'] == 'No Access') {
+            array_push($invalid, 'NO ACCESS RIGHT');
+            return;
+          }
+
           $_SESSION['user_id'] = $row['id'];
           $_SESSION['first_name'] = $row['first_name'];
           $_SESSION['last_name'] = $row['last_name'];

@@ -17306,3 +17306,28 @@
 2024-08-28 16:46:04 | Admin Admin | 1 | 2 | Users | Added Alexander Caones 
 2024-08-28 16:46:09 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-08-28 16:46:13 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-28 16:58:54 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Alexander Caones 
+2024-08-28 17:00:25 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-28 17:01:44 | Alexander Caones | 107 | 2 | Products | Alexander Caones Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 17:01:52 | Alexander Caones | 107 | 2 | Products | Alexander Caones Updated 555 Tuna Adobo Barcode #:1523288843286 
+2024-08-28 17:02:20 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Alexander Caones 
+2024-08-28 17:04:01 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-08-28 17:36:48 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-28 17:36:51 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-28 17:42:55 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-28 17:42:59 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-08-28 17:56:47 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-28 17:57:23 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-28 17:57:25 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-28 17:57:47 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Sample  U 
+2024-08-28 17:57:55 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-28 17:57:59 | Sample  U | 108 | 3 | Login | User Sample  U 3 
+2024-08-28 17:59:15 | Sample  U | 108 | 3 | Users | Sample  U Updated Sample  U 
+2024-08-28 17:59:48 | Sample  U | 108 | 3 | Users | Sample  U Updated Sample  U 
+2024-08-28 18:02:53 | Sample  U | 108 | 3 | Logout | User Sample  U 3 
+2024-08-28 18:02:54 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-28 18:03:09 | Admin Admin | 1 | 2 | Users | Admin Admin Updated Sample  U 
+2024-08-28 18:03:19 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-28 18:03:58 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-28 18:04:08 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-28 18:04:52 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
