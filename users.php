@@ -461,6 +461,7 @@ $(document).ready(function(){
 
 
 })
+
 function selectedRole(id) {
     switch(id) {
         case 2:
@@ -491,8 +492,7 @@ function selectedRole(id) {
 }
 
 
-
-  function refreshTable() {
+function refreshTable() {
     $.ajax({
         url: './fetch-data/fetch-users.php', 
         type: 'GET',
@@ -503,7 +503,8 @@ function selectedRole(id) {
             console.error(xhr.responseText); 
         }
     });
-  }
+}
+
 
   function selectDataDisplay() {
     $('#filterStatusName').off('change').on('change', function() {
@@ -525,6 +526,7 @@ function selectedRole(id) {
 
   refreshTable() 
   selectDataDisplay()
+
 
   function initializeTable() {
         var defaultValue = $('#filterStatusName').val(); 

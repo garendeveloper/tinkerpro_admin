@@ -681,7 +681,7 @@ body, html {
             </div>
 
             <a hidden href="#" onclick="openModalDatePicker()"class="custom-input" id="dateTimeAnchor" style="margin-top: 20px">
-                <input readonly type="text" id="datepicker" style="padding-left: 35px; flex: 1; text-align: center;">
+                <input readonly type="text" id="datepicker" style="padding-left: 35px; flex: 1; text-align: center;"> 
                 <svg class="calendar-icon" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

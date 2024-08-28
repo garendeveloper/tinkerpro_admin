@@ -9,35 +9,68 @@ if (isset($_SESSION['user_id'])) {
     $userId = $_SESSION['user_id'];
     $abilityFacade = new AbilityFacade;
     $permissions = $abilityFacade->perm($userId);
-    $accessInventory = false;
+
     $accessProducts = false;
-    $accessReporting = false;
+    $accessInventory = false;
+    $accessExpenses = false;
+    $accessSupplier = false;
+    $accessCustomer = false;
     $accessUsers = false;
+    $accessCoupon = false;
+    $accessCharges = false;
     $accessPromotions = false;
-    $accesscoupon = false;
-    $accesscharges = false;
+    $accessPricelist = false;
+    $accessPricetag = false;
+    $accessReporting = false;
+    $accessActivitylogs = false;
+ 
     foreach ($permissions as $permission) {
-        if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
-            $accessInventory = true;
-        }
+
         if (isset($permission['Products']) && $permission['Products'] == "Access Granted") {
             $accessProducts = true;
         }
-        if (isset($permission['Reports']) && $permission['Reports'] == "Access Granted") {
-            $accessReporting = true;
+        if (isset($permission['Inventory']) && $permission['Inventory'] == "Access Granted") {
+            $accessInventory = true;
+        }
+        //new
+        if (isset($permission['Expenses']) && $permission['Expenses'] == "Access Granted") {
+            $accessExpenses = true;
+        }
+        if (isset($permission['Supplier']) && $permission['Supplier'] == "Access Granted") {
+            $accessSupplier = true;
+        }
+        if (isset($permission['Customer']) && $permission['Customer'] == "Access Granted") {
+            $accessCustomer = true;
         }
         if (isset($permission['Users']) && $permission['Users'] == "Access Granted") {
             $accessUsers = true;
         }
+        if (isset($permission['Coupon']) && $permission['Coupon'] == "Access Granted") {
+            $accessCoupon = true;
+        }
+        if (isset($permission['Charges']) && $permission['Charges'] == "Access Granted") {
+            $accessCharges = true;
+        }
+
         if (isset($permission['Promotion']) && $permission['Promotion'] == "Access Granted") {
             $accessPromotions = true;
         }
-        if (isset($permission['coupon']) && $permission['coupon'] == "Access Granted") {
-            $accesscharges = true;
+
+        if (isset($permission['Pricelist']) && $permission['Pricelist'] == "Access Granted") {
+            $accessPricelist = true;
         }
-        if (isset($permission['charges']) && $permission['charges'] == "Access Granted") {
-            $accesscharges = true;
+
+        if (isset($permission['Pricetag']) && $permission['Pricetag'] == "Access Granted") {
+            $accessPricetag = true;
         }
+       
+        if (isset($permission['Reports']) && $permission['Reports'] == "Access Granted") {
+            $accessReporting = true;
+        }
+        if (isset($permission['Activitylogs']) && $permission['Activitylogs'] == "Access Granted") {
+            $accessActivitylogs = true;
+        }
+        
     }
 }
 ?>
@@ -49,7 +82,6 @@ if (isset($_SESSION['user_id'])) {
 <?php include ("./modals/access_denied.php")
 
 ?>
-
 
 
 <style>
@@ -253,6 +285,8 @@ if (isset($_SESSION['user_id'])) {
         <ul>
             <li><a href="index" id="index"><i class="bi bi-house-door"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Dashboard</span></a></li>
+
+
             <?php if ($accessProducts): ?>
                 <li><a href="products" id="products"><i class="bi bi-bag-check"></i>&nbsp;&nbsp; <span
                             class="text dynamic-color">Products</span></a>
@@ -265,48 +299,67 @@ if (isset($_SESSION['user_id'])) {
                 </li>
             <?php endif ?>
          
+            <?php if ($accessExpenses): ?>
             <li><a href="expenses" id="expenses"><i class="bi bi-wallet"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Expenses</span></a></li>
+            <?php endif ?>
 
+            <?php if ($accessSupplier): ?>
             <li><a href="suppliers" id="suppliers"><i class="bi bi-building"></i>&nbsp;&nbsp; <span
-                        class="text dynamic-color">Suppliers</span></a></li>
+            class="text dynamic-color">Suppliers</span></a></li>
+            <?php endif ?>
+
+            <?php if ($accessCustomer): ?>
             <li><a href="customer" id="customers"><i class="bi bi-people"></i>&nbsp;&nbsp; <span
-                        class="text dynamic-color">Customers</span></a></li>
+            class="text dynamic-color">Customers</span></a></li>
+            <?php endif ?>
+                        
+
             <?php if ($accessUsers): ?>
                 <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text dynamic-color">Users</span></a></li>
             <?php endif ?>
          
-            <?php if ($accesscoupon): ?>
+            <?php if ($accessCoupon): ?>
             <li><a href="coupons" id="s_coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
-                        class="text dynamic-color">Coupons</span></a></li>
-             <?php endif ?>
+            class="text dynamic-color">Coupons</span></a></li>
+            <?php endif ?>
+          
 
-            <?php if ($accesscharges): ?>
+            <?php if ($accessCharges): ?>
             <li><a href="charges" id="charges"><i class="bi bi-gear-fill"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Charges</span></a></li>
             <?php endif ?>
 
+        
             <?php if ($accessPromotions): ?>
             <li><a href="promotions" id="promotions"><i class="bi bi-megaphone"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Promotions</span></a></li>
             <?php endif ?>
             
+            <?php if ($accessPricelist): ?>
             <li><a href="priceLists" id="price_list"><i class="bi bi-cash-coin"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price List</span></a>
             </li>
+            <?php endif ?>
 
+
+            <?php if ($accessPricetag): ?>
             <li><a href="priceTags" id="price_tags"><i class="bi bi-tag fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price Tags</span></a>
             </li>
+            <?php endif ?>
+
             <?php if ($accessReporting): ?>
                 <li><a href="reporting" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span
                             class="text dynamic-color">Reporting</span></a>
                 </li>
             <?php endif ?>
+
+            <?php if ($accessActivitylogs): ?>
             <li><a href="activityLogs" id="activity_logs"><i class="bi bi-activity fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Activity Logs</span></a>
             </li>
-        
+            <?php endif ?>
 
             <li><a href="#" id="btn_logout"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Logout</span></a></li>
@@ -323,4 +376,5 @@ if (isset($_SESSION['user_id'])) {
     let reportingsValidate = false;
     let inventoryValidate = false;
     let userValidate = false;
+ 
 </script>
