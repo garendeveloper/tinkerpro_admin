@@ -151,43 +151,22 @@ if (isset($_SESSION['user_id'])) {
  }
 
  .btn-control{
-  zoom: 90%;
+  zoom: 80%;
   margin-top: -60px;
- }
- .productHeader{
-  width: 100% !important;
  }
 
  #responsive-data {
-    height: 100%;
-    overflow: auto;     
-        }
-
-  .productsName {
-    width: 20% !important;
-       
+        width: 100%;  
+        overflow-x: auto; 
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: thin;
+    scrollbar-color: #333 ; 
     }
 
-    .th-name{
-      width: 20% !important;
+    #recentusers {
+        width: 1700px; 
     }
 
-    .th-barcode {
-        width: 12% !important;
-      }
-       .barcode {
-        width: 12% !important;
-      }
-
-      .category {
-        font-size: 10px !important;
-      }
-
-      .td-h {
-      overflow-wrap: break-word !important; 
-      word-wrap: break-word !important;     
-      white-space: normal !important;       
-}
   }
   
    
@@ -242,7 +221,7 @@ if (isset($_SESSION['user_id'])) {
                     
                   </table> -->
 
-                  <div id="responsive-data" style="height: 100%; overflow: hidden">
+                  <div id="responsive-data" >
                     <table id="recentusers" class="text-color table-border">
 
                       <thead class="productHeader">

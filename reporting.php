@@ -294,6 +294,23 @@ body, html {
 .highlight {
   background-color: var(--primary-color);
 }
+
+
+@media screen and (max-width: 1400px) {
+
+.content-wrapper{
+  zoom:90%;
+}
+.cardLeft{
+  width:950px !important;
+
+}
+
+.cardRight{
+  zoom:90%
+
+}
+}
 </style>
 
  <?php include "layout/admin/css.php"?> 

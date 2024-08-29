@@ -240,6 +240,16 @@
   padding-left: 10px !important;
  }
 
+ @media screen and (max-width: 1400px) {
+
+.main-panel{
+    zoom:90%;
+}
+.d-flex{
+    zoom:90%;
+}
+
+}
 
 </style>
 <?php include "layout/admin/css.php"?>

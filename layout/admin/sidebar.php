@@ -229,7 +229,7 @@ if (isset($_SESSION['user_id'])) {
      
      .sidebar{
        zoom: 90%;
-       margin-top: 5px;
+       margin-top: 2px;
      }
    
        }

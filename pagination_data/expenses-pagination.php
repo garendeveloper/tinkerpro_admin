@@ -68,14 +68,27 @@
                         <th style = "width: 8%; text-align: center;" >Discount</th>
                         <th style = "width: 5%; font-size: 12px; text-align: center" >Total Amount(Php)</th>
                         <th style = "width: 5%; font-size: 12px; text-align: center" >Landed Cost (Php)</th>
-                        <th >Actions</th>
+                        <th style = "text-align: center" >Actions</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
             </div>`;
 
+            
+
     $("#responsive-data").html(tblData);
+
+
+// Add horizontal scroll on mouse wheel
+document.querySelector('.table-wrapper').addEventListener('wheel', function(e) {
+    if (e.deltaY !== 0) {
+        e.preventDefault();
+        this.scrollLeft += e.deltaY;
+    }
+});
+
+    
  
     $("#searchInput").on("input", function(){
         var searchInput = $(this).val();
@@ -278,5 +291,7 @@
     }
 
     show_allExpensesData(1, '', '', '');
+   
+
    
 </script>

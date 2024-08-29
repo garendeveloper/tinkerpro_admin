@@ -545,6 +545,37 @@ h4 {
         margin-top: -1mm; 
     }
 } */
+
+@media screen and (max-width: 1400px) {
+
+
+.row{
+  zoom:90%;
+  display: flex;
+   
+}
+.scrollable{
+  zoom:90%;
+ height: 800px !important;
+  width:500px !important;
+}
+
+.printable-area{
+
+  margin-top: 10px;
+}
+.text-custom{
+  zoom: 80%;
+}
+.mainDiv{
+  height: 750px !important;
+}
+.button{
+  zoom:110%;
+}
+}
+
+
 </style>
 <script>
 		Number.prototype.zeroPadding = function(){
@@ -577,6 +608,7 @@ h4 {
     color: #ffffff; 
 }
 </style>
+
   <div class="container-scroller" style = "background-color: #262626;">
     <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
@@ -589,7 +621,7 @@ h4 {
               </div>
             </div>
             <div class = "row">
-                <div  style = "width:600px; background-color: #262626; ;">
+                <div style = "width:600px; background-color: #262626; ;">
                   <div class="mainDiv" style = "margin-left: 10px;">
                     <div class="tableCard" >
                         <div class="fcontainer"  >

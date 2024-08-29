@@ -307,6 +307,38 @@
 
 
 
+@media screen and (max-width: 1400px) {
+     
+     #responsive-data th.child-a, #responsive-data td.child-a { width: 50px !important; }
+       #responsive-data th.child-b, #responsive-data td.child-b { width: 150px !important; }
+       #responsive-data th.child-c, #responsive-data td.child-c { width: 100px !important; }
+       #responsive-data th.child-d, #responsive-data td.child-d { width: 80px !important; }
+       #responsive-data th.child-e, #responsive-data td.child-e { width: 120px !important; }
+       #responsive-data th.child-f, #responsive-data td.child-f { width: 100px !important; }
+       #responsive-data th.child-g, #responsive-data td.child-g { width: 90px !important; }
+       #responsive-data th.child-h, #responsive-data td.child-h { width: 70px !important; }
+        
+   
+       #responsive-data td{
+   
+         font-size: 13px !important;
+         padding-bottom: 5px;
+       
+       }
+       .card{
+         height: 68vh !important;
+        
+       }
+   
+       .btn-control{
+         zoom:90%;
+       }
+   
+    .d-flex{
+      zoom: 90%;
+    }
+       }
+
 </style>
 <?php include "layout/admin/css.php"?>
 

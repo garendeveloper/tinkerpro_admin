@@ -403,7 +403,7 @@ body, div, h1, h2, h3, h4, h5, p{
   
      }
      .annual_total_sales h3, .annual_total_expenses h3, #total_sales_data h1{
-    font-size: 1.5rem;
+    font-size: 12px;
   }
 
        

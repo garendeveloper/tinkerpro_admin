@@ -288,7 +288,7 @@
 @media screen and (max-width: 1400px) {
      
      .d-flex{
-       zoom: 80%;
+       zoom: 90%;
      }
      
       .modal{
@@ -313,7 +313,21 @@
 #paginationDiv{
   zoom: 80%;
   margin-top: 0px;
+
+    
 }
+
+#responsive-data {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: thin;
+    scrollbar-color: #555 ; 
+        }
+
+        #recentsuppliers {
+            min-width: 1800px; 
+            font-size: 12px;
+        }
 
 
 
@@ -355,7 +369,7 @@
                   <?php include('errors.php'); ?>
                   <!-- <div class="productTable" > -->
              
-                    <div id="responsive-data" style= "overflow: hidden">
+                    <div id="responsive-data">
                       <table id="recentsuppliers">
                         <thead class = "adminTableHead">
                           <th class="text-center child-a">No.</th>
@@ -399,6 +413,55 @@
 
 <?php include("layout/footer.php") ?>
 <script>
+// mouse wheel for table
+
+
+document.addEventListener('DOMContentLoaded', function () {
+        const scrollContainer = document.getElementById('responsive-data');
+        
+        // Check if screen width is 1400px or less
+        function isScrollable() {
+            return window.innerWidth <= 1400;
+        }
+
+        // Add event listener for mouse wheel event
+        scrollContainer.addEventListener('wheel', function (event) {
+            if (isScrollable()) {
+                event.preventDefault();
+                scrollContainer.scrollLeft += event.deltaY; // Scroll horizontally based on vertical scroll
+            }
+        });
+
+        // Allow drag scrolling
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        scrollContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            scrollContainer.classList.add('active');
+            startX = e.pageX - scrollContainer.offsetLeft;
+            scrollLeft = scrollContainer.scrollLeft;
+        });
+
+        scrollContainer.addEventListener('mouseleave', () => {
+            isDown = false;
+            scrollContainer.classList.remove('active');
+        });
+
+        scrollContainer.addEventListener('mouseup', () => {
+            isDown = false;
+            scrollContainer.classList.remove('active');
+        });
+
+        scrollContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - scrollContainer.offsetLeft;
+            const walk = (x - startX) * 2; // Scroll speed
+            scrollContainer.scrollLeft = scrollLeft - walk;
+        });
+    });
 
 // for clear button in search bar
 

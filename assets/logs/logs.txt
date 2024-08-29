@@ -17421,3 +17421,10 @@
 2024-08-28 13:43:40 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Deleted jhtdfhrthfdbfd Barcode #:609699594426 
 2024-08-28 14:41:22 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
 2024-08-28 15:52:58 | Noriel Bagacay | 113 | 2 | Products | Noriel Bagacay Added Big Rolls Barcode #:8993175540520 
+2024-08-28 18:27:23 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-29 08:54:47 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-29 09:05:38 | Noriel Bagacay | 113 | 2 | Supplier | Noriel Bagacay Tries to delete METRO SUPERMARKET 
+2024-08-29 09:18:45 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Added customer Noriel  Bagacay 
+2024-08-29 09:19:11 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Updated customer Noriel  Bagacay 
+2024-08-29 09:22:04 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
+2024-08-29 09:34:12 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Printing pdf 

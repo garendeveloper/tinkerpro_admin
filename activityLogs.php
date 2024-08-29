@@ -250,6 +250,19 @@ select::-webkit-scrollbar-thumb {
   background-color: #333333;
 }
 
+
+
+@media screen and (max-width: 1400px) {
+
+.content-wrapper{
+  zoom:90%;
+}
+.custom-select input::placeholder {
+   
+        font-size: 12px; 
+    }
+}
+
 </style>
 
   <div class="container-scroller">
@@ -263,7 +276,7 @@ select::-webkit-scrollbar-thumb {
               </div>
             </div>
             <div class = "row">
-                <div style = "background-color: #1e1e1e; border-color: white; width: 15%; border-radius: 10px;">
+                <div class="bg" style = "background-color: #1e1e1e; border-color: white; width: 15%; border-radius: 10px;">
                   <div class="mainDiv" style = "margin-left: 15px; height: 90vh">
                   <br>
                     <div class="row">

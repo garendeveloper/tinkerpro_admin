@@ -477,14 +477,8 @@ i:hover{
     zoom:70%;
    }
 
-   .adminTableHead{
-    line-height: 1 !important;
-    font-size: 10px !important;
-   
-   }
- 
    #paginationDiv{
-    margin-top: 50px;
+    margin-top: 40px;
     zoom:80%;
    }
 
@@ -493,41 +487,53 @@ i:hover{
     zoom: 80%;
    }
 
-  td {
-        font-size: 11px;
-        line-height: 1 !important;   
-    }
+   .adminTableHead{
+    margin-top: 10px;
+    position: sticky !important;
+    z-index: 1 !important;
+    top: 0;
+   }
 
-    .td-desc{
-      width: 15% !important; 
-    }
-    .th-barcode {
-      width: 15% !important; 
-    }
-    .td-barcode{
-      width: 15% !important; 
-    }
 
-      /* Styles for the 'TO PURCHASE' span */
-      .to-purchase {
-        font-size: 8px !important;
-       
-    }
+   #tbl_products{
+        width: 1800px !important;
+      }
 
-    /* Styles for the 'FULLY RECEIVED' span */
-    .fully-received {
-     
-        font-size: 8px !important;
-      
-    }
+      #tbl_products th{
+       text-align: center !important;
+      }
 
-    /* Styles for the 'PARTIALLY RECEIVED' span */
-    .partially-received {
+.wrapper{
+  overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: thin;
+    scrollbar-color: #333 ; 
+ 
 
-        font-size: 6px !important;
-       
-    }
+}
+#tbl_all_stocks{
+  width: 1200px !important;
+      }
+ #tbl_all_stocks th{
+       text-align: center !important;
+      }
+
+      #tbl_orders{
+        width: 1800px !important;
+      }
+
+      #tbl_orders th{
+       text-align: center !important;
+      }
+
+
+     #tbl_all_lostanddamages{
+      width: 1800px !important;
+     }
     
+     #tbl_all_lostanddamages th{
+      text-align: center !important;
+     }
     }
  
 

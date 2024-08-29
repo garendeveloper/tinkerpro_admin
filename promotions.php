@@ -151,6 +151,18 @@ if (isset($_SESSION['user_id'])) {
     .active-row{
         background-color: var(--primary-color);
     }
+
+    
+@media screen and (max-width: 1400px) {
+
+.main-panel{
+    zoom:90%;
+}
+.d-flex{
+    zoom:90%;
+}
+
+}
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">

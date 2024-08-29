@@ -51,6 +51,7 @@
     $(".inventoryCard").html("");
 
     var tblData = `
+    <div class="wrapper">
               <table tabindex = '0' id='tbl_orders' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
                   <thead class='adminTableHead'>
                       <tr>
@@ -68,7 +69,8 @@
                       </tr>
                   </thead>
                   <tbody></tbody>
-              </table> `;
+              </table>
+              </div> `;
 
     $(".inventoryCard").html(tblData);
  

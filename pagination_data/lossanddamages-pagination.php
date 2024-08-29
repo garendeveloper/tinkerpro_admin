@@ -50,6 +50,7 @@
     $(".inventoryCard").html("");
 
     var tblData = `
+    <div class="wrapper">
              <table id='tbl_all_lostanddamages' class='text-color table-border display' style='font-size: 12px; margin-top: -8px; margin-right: -10px; margin-left: -3px; width: 100%;'>
                 <thead class='adminTableHead'>
                     <tr>
@@ -64,7 +65,8 @@
                     </tr>
                 </thead>
                 <tbody></tbody>
-              </table>`;
+              </table>
+              </div>`;
 
     $(".inventoryCard").html(tblData);
  

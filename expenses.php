@@ -462,8 +462,13 @@ if (isset($_SESSION['user_id'])) {
     #tbl_expenses th:nth-child(12),
     #tbl_expenses th:nth-child(13) {
         padding-top: 0;
+        text-align: center !important;
     }
    
+    #tbl_expenses th:nth-child(12) {
+        width: 110px !important;
+    }
+    
     #tbl_expenses td {
         font-size: 12px;
         padding: 2 !important;
@@ -476,7 +481,7 @@ if (isset($_SESSION['user_id'])) {
     
     
       #tbl_expenses{
-        width: 1700px !important;
+        width: 1800px !important;
       }
 
       .table-wrapper {
@@ -618,5 +623,6 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.focus();
   });
 });
+
 
 </script>
