@@ -37,7 +37,7 @@ if ($fetchProduct->rowCount() > 0) {
         <td hidden class='text-center td-h'><span hidden class="isDiscounted"><?= $row['discounted'] ?></span><span hidden class="isTax"><?= $row['isVAT'] ?></span></td>
         <td class='text-center td-h discountTypes' style="width: 5%"  data-isSC = "<?= $row['isSC']?>" data-isPWD = "<?= $row['isPWD']?>" data-isNAAC = "<?= $row['isNAAC']?>" data-isSP = "<?= $row['isSP']?>"><?= $counter?><span hidden class="productsId"><?= $row['id'] ?></span><span hidden class="oumId"><?= $row['uom_id'] ?></span></td>
         <td class='productsName text-left td-h' style='padding-left: 10px; width: 20%' ><?= $row['prod_desc']?></td>
-        <td class='barcode text-center td-h'  style="width: 6%"><?= $row['barcode']?></td>
+        <td class='barcode  td-h'  style='padding-left: 10px; width: 6%'><?= $row['barcode']?></td>
         <td class='sku text-center td-h'    style="width: 6%" ><?= $row['sku']?></td>
         <td class='code text-center td-h'    style="width: 6%" ><?= $row['code']?></td>
         <td class='uom_name text-center td-h'    style="width: 6%" ><?= $row['uom_name'] ?? null ?></td>
@@ -45,7 +45,7 @@ if ($fetchProduct->rowCount() > 0) {
         <td class='prod_price text-end td-h pe-1'    style="width: 6%" ><?= number_format((float)$row['prod_price'], 2, '.', '')?></td>
         <td class='markup text-end td-h pe-1'    style="width: 6%" ><?= number_format((float)$row['markup'], 2, '.', '')?></td>
         <td class='cost text-end td-h pe-1'  style="width: 6%" ><?= number_format((float)$row['cost'], 2, '.', '') ?></td>
-        <td class='text-center td-h' style="width: 10%">
+        <td class='category text-center td-h' style="width: 10%">
         <?php
         if ($row['category_details'] !== null) {
             $category_details = json_decode($row['category_details'], true);
@@ -107,6 +107,9 @@ echo $html;
     margin: 0; 
     padding: 0;
     height: auto; 
+    word-wrap: break-word; 
+        white-space: normal;
+        overflow-wrap: break-word;
 }
 
 
@@ -114,6 +117,7 @@ echo $html;
 table tbody td {
     border: 1px solid #292928;
 }
+
 
 </style>
 <script>

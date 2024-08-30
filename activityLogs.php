@@ -30,7 +30,7 @@ if (isset($_SESSION['user_id'])) {
     
     $accessGranted = false;
     foreach ($permissions as $permission) {
-        if (isset($permission['Products']) && $permission['Products'] == "Access Granted") {
+        if (isset($permission['Activitylogs']) && $permission['Activitylogs'] == "Access Granted") {
             $accessGranted = true;
             break;
         }
@@ -250,7 +250,21 @@ select::-webkit-scrollbar-thumb {
   background-color: #333333;
 }
 
+
+
+@media screen and (max-width: 1400px) {
+
+.content-wrapper{
+  zoom:90%;
+}
+.custom-select input::placeholder {
+   
+        font-size: 12px; 
+    }
+}
+
 </style>
+
   <div class="container-scroller">
     <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel h-100" style = "overflow: hidden">
@@ -262,7 +276,7 @@ select::-webkit-scrollbar-thumb {
               </div>
             </div>
             <div class = "row">
-                <div style = "background-color: #1e1e1e; border-color: white; width: 15%; border-radius: 10px;">
+                <div class="bg" style = "background-color: #1e1e1e; border-color: white; width: 15%; border-radius: 10px;">
                   <div class="mainDiv" style = "margin-left: 15px; height: 90vh">
                   <br>
                     <div class="row">
@@ -281,6 +295,7 @@ select::-webkit-scrollbar-thumb {
                       </div>
                     </div>
                     <br>
+
                     <div class = "row">
                         <h6 class = "text-custom">Choose Application</h6>
                         <div class="custom-select" style="margin-right: 0px; ">
@@ -290,6 +305,7 @@ select::-webkit-scrollbar-thumb {
                             </select>
                         </div>
                     </div>
+                    
                     <br>
                     <div class = "row">
                         <h6 class = "text-custom">Select User</h6>

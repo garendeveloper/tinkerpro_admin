@@ -2,169 +2,164 @@ var toastDisplayed = false;
 $("#activity_logs").addClass('active');
 $("#pointer").html("Activity Logs");
 
+var initialApplicationValue = $("#application").val(); // Initialize with the default value
+var selectedApplicationValue = initialApplicationValue; // Store the selected application value
 
-
-
-var initialApplicationValue = $("#application").val();
-function getPHTDateTime() 
-{
-  const now = new Date();
-  const options = {
-    timeZone: 'Asia/Manila',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false 
-  };
-  const formatter = new Intl.DateTimeFormat('en-PH', options);
-  return formatter.format(now).replace(/[/\s:]/g, '_');
+function getPHTDateTime() {
+    const now = new Date();
+    const options = {
+        timeZone: 'Asia/Manila',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false 
+    };
+    const formatter = new Intl.DateTimeFormat('en-PH', options);
+    return formatter.format(now).replace(/[/\s:]/g, '_');
 }
-
-
 
 $("#logTable tbody").on("click", "tr", function() {
     $("#logTable tbody tr").removeClass('highlighted-row');
-
-  $(this).addClass('highlighted-row');
+    $(this).addClass('highlighted-row');
 });
+
 $('#downloadFile').on('click', function() {
-  var applicationType = $("#application").val() === "1" ? "Cashiering_Logs_"+getPHTDateTime() : "Back_Office_Logs_"+getPHTDateTime();
-  var tableData = '';
-  $('#logTable tbody tr:visible').each(function(index, row) {
-      $(row).find('td').each(function(index, col) {
-          tableData += $(col).text().trim() + '\t';
-      });
-      tableData = tableData.slice(0, -1) + '\n';
-  });
+    var applicationType = selectedApplicationValue === "1" ? "Cashiering_Logs_" + getPHTDateTime() : "Back_Office_Logs_" + getPHTDateTime();
+    var tableData = '';
+    $('#logTable tbody tr:visible').each(function(index, row) {
+        $(row).find('td').each(function(index, col) {
+            tableData += $(col).text().trim() + '\t';
+        });
+        tableData = tableData.slice(0, -1) + '\n';
+    });
 
-  var blob = new Blob([tableData], { type: 'text/plain' });
-  var url = window.URL.createObjectURL(blob);
+    var blob = new Blob([tableData], { type: 'text/plain' });
+    var url = window.URL.createObjectURL(blob);
 
-  var link = $('<a></a>');
-  link.attr('href', url);
-  link.attr('download', applicationType + ".txt");
+    var link = $('<a></a>');
+    link.attr('href', url);
+    link.attr('download', applicationType + ".txt");
 
-  $('body').append(link);
-  link[0].click();
+    $('body').append(link);
+    link[0].click();
 
-  $(link).remove();
-  window.URL.revokeObjectURL(url);
+    $(link).remove();
+    window.URL.revokeObjectURL(url);
 
-  show_response(`File "${applicationType}.txt" has been downloaded. Check your Downloads folder.`, 1);
+    show_response(`File "${applicationType}.txt" has been downloaded. Check your Downloads folder.`, 1);
 });
 
 $("#btn_datePicker").off("click").on("click", function(){
-  $('#period_reports').fadeIn(200)
-})
-function formatDates(dateStr) 
-{
+    $('#period_reports').fadeIn(200)
+});
+
+function formatDates(dateStr) {
     const parts = dateStr.split('/');
     const date = new Date(parts[2], parts[1] - 1, parts[0]);
     const options = {
-    timeZone: 'Asia/Manila',
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit'
+        timeZone: 'Asia/Manila',
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
     };
     return new Intl.DateTimeFormat('en-PH', options).format(date);
 }
-function convertDateRange(dateRange) 
-{
+
+function convertDateRange(dateRange) {
     const [startDateStr, endDateStr] = dateRange.split(' - ');
     const startFormatted = formatDates(startDateStr);
     const endFormatted = formatDates(endDateStr);
     return `${startFormatted} - ${endFormatted}`;
 }
-$("#btn_datePeriodSelected").on("click", function(){
+
+$("#btn_datePeriodSelected").on("click", function() {
     var date_selected = $("#date_selected").text();
     $("#date_range").val(date_selected);
     $("#period_reports").hide();
-    $("#datepicker").val(convertDateRange(date_selected))
+    $("#datepicker").val(convertDateRange(date_selected));
     var selectedDate = $("#datepicker").val();
     var selectedUser = $('#user').val();
     filterTable(selectedDate, selectedUser);
-})
+});
 
-function show_response(message, type) 
-{
-  if (toastDisplayed) {
-      return; 
-  }
+function show_response(message, type) {
+    if (toastDisplayed) {
+        return;
+    }
 
-  toastDisplayed = true; 
+    toastDisplayed = true;
 
-  toastr.options = {
-      "onShown": function () {
-          $('.custom-toast').css({
-              "opacity": 1,
-              "width": "600px",
-              "text-align": "center",
-              "border": "1px solid #1E1C11",
-          });
-      },
-      "onHidden": function () {
-          toastDisplayed = false; 
-      },
-      "closeButton": true,
-      "positionClass": "toast-top-right",
-      "timeOut": "3500",
-      "extendedTimeOut": "1000",
-      "progressBar": true,
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut",
-      "tapToDismiss": false,
-      "toastClass": "custom-toast",
-      "onclick": function () { 
-          toastr.clear();
-          toastDisplayed = false;
-          }
-  };
+    toastr.options = {
+        "onShown": function () {
+            $('.custom-toast').css({
+                "opacity": 1,
+                "width": "600px",
+                "text-align": "center",
+                "border": "1px solid #1E1C11",
+            });
+        },
+        "onHidden": function () {
+            toastDisplayed = false;
+        },
+        "closeButton": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "3500",
+        "extendedTimeOut": "1000",
+        "progressBar": true,
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut",
+        "tapToDismiss": false,
+        "toastClass": "custom-toast",
+        "onclick": function () { 
+            toastr.clear();
+            toastDisplayed = false;
+        }
+    };
 
-  type === 1 ? toastr.success(message) : toastr.error(message);
+    type === 1 ? toastr.success(message) : toastr.error(message);
 }
 
-
-$("#user").on("change", function(){
+$("#user").on("change", function() {
     var selectedDates = $('#datepicker').val();
     var selectedUser = $(this).val();
     filterTable(selectedDates, selectedUser);
 });
-$("#searchBtn").off("click").on("click", function(){
-  var selectedDates = $('#datepicker').val();
-  var selectedUser = $("#user").val();
-  filterTable(selectedDates, selectedUser);
-})
+
+$("#searchBtn").off("click").on("click", function() {
+    var selectedDates = $('#datepicker').val();
+    var selectedUser = $("#user").val();
+    filterTable(selectedDates, selectedUser);
+});
+
 function filterTable(selectedDates, selectedUser) {
-  if (!selectedDates || selectedDates.trim() === '') {
-      const lowerCaseSelectedUser = selectedUser ? selectedUser.toLowerCase() : '';
+    if (!selectedDates || selectedDates.trim() === '') {
+        const lowerCaseSelectedUser = selectedUser ? selectedUser.toLowerCase() : '';
 
-    $('#logTable tbody tr').each(function() {
-        const rowUser = $(this).find('td:eq(1)').text().trim();
-        const lowerCaseRowUser = rowUser.toLowerCase();
+        $('#logTable tbody tr').each(function() {
+            const rowUser = $(this).find('td:eq(1)').text().trim();
+            const lowerCaseRowUser = rowUser.toLowerCase();
 
-        if ((!lowerCaseSelectedUser || lowerCaseRowUser === lowerCaseSelectedUser)) {
-            $(this).show();
-        } else {
-            $(this).hide();
-        }
-    });
+            if ((!lowerCaseSelectedUser || lowerCaseRowUser === lowerCaseSelectedUser)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
 
-    return;
-  }
+        return;
+    }
 
-  if (selectedDates.indexOf(" - ") === -1) {
-      filterSingleDate(selectedDates, selectedUser);
-  } else {
-      filterDateRange(selectedDates, selectedUser);
-  }
+    if (selectedDates.indexOf(" - ") === -1) {
+        filterSingleDate(selectedDates, selectedUser);
+    } else {
+        filterDateRange(selectedDates, selectedUser);
+    }
 }
-
-
 
 function filterSingleDate(selectedDate, selectedUser) {
     var date = new Date(selectedDate);
@@ -224,143 +219,84 @@ function filterDateRange(selectedDates, selectedUser) {
         }
     });
 }
-$("#btn_reload").on("click", function(){
-  $("#datepicker").val("");
-  $("#user").val("");
-  var initialApplicationValue = $("#application").val();
-  fetchData(initialApplicationValue);
-})
 
-$('#search_log').on('keyup', function() {
-    var value = $(this).val().toLowerCase(); 
-    $('#logTable tbody tr').filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1); 
-    });
+$("#btn_reload").on("click", function() {
+    $("#datepicker").val("");
+    $("#user").val("");
+    fetchData(selectedApplicationValue); // Fetch logs based on the stored application value
 });
 
-function displayLogData(logText) 
-{
-  var lines = logText.split('\n');
-  var tableBody = $('#logTable tbody');
-  tableBody.empty();
+// Update the selectedApplicationValue when the application is changed
+$("#application").on("change", function() {
+    selectedApplicationValue = $(this).val(); // Update the stored value when the selection changes
+});
 
-  if(lines.length > 1)
-  {
-    lines.forEach(function(line) {
-        line = line.trim();
-        if (line) 
-        {
-            var columns = line.split('|');
-            if (columns.length >= 6) 
-            {
-              var role = columns[3].trim() || '';
-              var datetime = columns[0].trim() || '';
-              if(datetime !== '') datetime = formatDateToAMPM(datetime);
-              
-              if(role === "1") role = "Super Admin";
-              if(role === "2") role = "Admin";
-              if(role === "3") role = "Cashier";
-  
-              var row = $('<tr>');
-              row.append($('<td style = "width: 15%; ">').text(datetime));
-              row.append($('<td style = "width: 15%">').text(columns[1].trim() || ''));
-              row.append($('<td style = "width: 10%">').text(role));
-              row.append($('<td style = "width: 15%">').text(columns[4].trim() || ''));
-              row.append($('<td style = "width: 50%">').text(columns[5].trim() || '')); 
-  
-              tableBody.prepend(row);
-            } else {
-                console.error('Line does not have enough columns:', line);
+// Function to display log data
+function displayLogData(logText) {
+    var lines = logText.split('\n');
+    var tableBody = $('#logTable tbody');
+    tableBody.empty();
+
+    if (lines.length > 1) {
+        lines.forEach(function(line) {
+            line = line.trim();
+            if (line) {
+                var columns = line.split('|');
+                if (columns.length >= 6) {
+                    var role = columns[3].trim() || '';
+                    var datetime = columns[0].trim() || '';
+                    if (datetime !== '') datetime = formatDateToAMPM(datetime);
+
+                    if (role === "1") role = "Super Admin";
+                    if (role === "2") role = "Admin";
+                    if (role === "3") role = "Cashier";
+
+                    var row = $('<tr>');
+                    row.append($('<td style="width: 15%; ">').text(datetime));
+                    row.append($('<td style="width: 15%">').text(columns[1].trim() || ''));
+                    row.append($('<td style="width: 10%">').text(role));
+                    row.append($('<td style="width: 15%">').text(columns[4].trim() || ''));
+                    row.append($('<td style="width: 50%">').text(columns[5].trim() || ''));
+
+                    tableBody.append(row);
+                }
             }
+        });
+    } else {
+        $('#logTable tbody').html("<tr><td colspan='5' style='text-align: center;'>No activity logs found.</td></tr>");
+    }
+}
+
+function fetchData(applicationValue) {
+    $('#modalCashPrint').show();
+    $("#logTable tbody").empty();
+
+    var url = (applicationValue === "1") ? 'fetch-data/log_reader.php' : './assets/logs/logs.txt';
+
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'text',
+        success: function(data) {
+            displayLogData(data); 
+            $('#modalCashPrint').hide();
+        },
+        error: function(xhr, status, error) {
+            console.log('Error: ' + error);
         }
     });
-  }
-  else
-  {
-    var row = $('<tr>');
-    row.append($('<td style = "width: 100%; text-align: center; font-size: 12px;" colspan = "5">No available logs.</td>'));
-
-    tableBody.prepend(row);
-  }
-}
-function formatDateToAMPM(datetimeString) 
-{
-  var date = new Date(datetimeString);
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-
-  var period = hours >= 12 ? 'PM' : 'AM';
-
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-  
-  hours = hours < 10 ? '0' + hours : hours;
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-
-  var formattedTime = hours + ':' + minutes + ':' + seconds + ' ' + period;
-
-  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var formattedDay = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-  var formattedDate = monthNames[date.getMonth()] + ' ' + formattedDay + ', ' + date.getFullYear();
-
-  return formattedDate + ' ' + formattedTime;
-}
-function fetchData(applicationValue) 
-{
-  $('#modalCashPrint').show();
-  $("#logTable tbody").empty();
-    if (applicationValue === "1") {
-        $.ajax({
-            type: 'GET',
-            url: 'fetch-data/log_reader.php',
-            dataType: 'text',
-            success: function(data) {
-                displayLogData(data); 
-                $('#modalCashPrint').hide();
-            },
-            error: function(xhr, status, error) {
-                console.log('Error: ' + error);
-            }
-        });
-    }
-    else
-    {
-      $.ajax({
-            type: 'GET',
-            url: './assets/logs/logs.txt',
-            dataType: 'text',
-            success: function(data) {
-                displayLogData(data); 
-                $('#modalCashPrint').hide();
-            },
-            error: function(xhr, status, error) {
-                console.log('Error: ' + error);
-            }
-        });
-    }
 }
 
-fetchData(initialApplicationValue);
+// Call fetchData initially with the default application value if needed
+// fetchData(initialApplicationValue);
 
-$("#application").on("change", function() {
-    var applicationValue = $(this).val();
-    $("#user").val();
-    fetchData(applicationValue);
+// Utility function to format date to AM/PM
+function formatDateToAMPM(dateString) {
+    const dateObj = new Date(dateString);
+    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    return dateObj.toLocaleString('en-US', options);
+}
+
+$(document).ready(function() {
+    $('#modalCashPrint').hide();
 });
-
-
-function formatDateToday(date) {
-    var day = String(date.getDate()).padStart(2, '0');
-    var month = String(date.getMonth() + 1).padStart(2, '0');
-    var year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-}
-
-var today = new Date();
-var formattedDate = formatDateToday(today) + " - " + formatDateToday(today);
-
-var todayDate = convertDateRange(formattedDate);
-$("#datepicker").val(todayDate);
-$("#searchBtn").click();

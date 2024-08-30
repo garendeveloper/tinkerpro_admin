@@ -61,6 +61,7 @@
   font-family: Century Gothic;
   border-radius: 10px;
   border-color: #33557F;
+  margin-top: -15px;
 }
 .btn-success-custom{
   background-color: #00B050
@@ -246,6 +247,103 @@
   font-size: 12px !important;
   line-height: 18px !important;
  }
+
+
+
+  /* start for search bar css*/
+
+  ::selection {
+  color: black;
+  background: white;
+}
+
+.text-color.searchCustomer{
+    caret-color: white; 
+    color: white; 
+    background-color: #555; 
+    font-size: 15px; 
+}
+
+.text-color.searchCustomer::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.clearCustomerBtn{
+  background-color: #555;  
+  margin-left: -5px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.clearCustomerBtn svg {
+  transition: fill 0.3s ease, transform 0.3s ease; 
+}
+
+.clearCustomerBtn:hover svg {
+  fill: var(--primary-color); 
+  transform: scale(1.1);
+}
+
+.searchbtn {
+   background-color: #555;  
+  border:none;
+  }
+
+.addCustomer.searchAdd {
+    background-color: #555;
+}
+.addProducts.searchAdd:hover {
+    background-color: var(--primary-color);
+}
+
+/*   end for search bar css */
+
+
+
+@media screen and (max-width: 1400px) {
+     
+     .d-flex{
+       zoom: 90%;
+     }
+     
+      .modal{
+       zoom: 90%;
+      
+   
+      }
+
+      .card-body{
+        height: 73vh !important;
+      }
+      
+#responsive-data {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: thin;
+    scrollbar-color: #555 ; 
+
+        }
+
+
+        #recentsuppliers th{
+          font-size: 14px;
+        }
+
+        .customer {
+            min-width: 1800px; 
+            font-size: 12px;
+           
+        }
+     
+
+  #paginationDiv{
+  zoom: 80%;
+  margin-top: 5px;
+
+    
+}
+    }
+
 </style>
 <?php include "layout/admin/css.php"?>
   <div class="container-scroller">
@@ -254,16 +352,16 @@
       <div class="main-panel ">
         <div class="content-wrapper">
           <div class="d-flex mb-2 w-10">
-            <input  class="text-color searchCustomer w-100 ms-2 ps-3 searchInputs" placeholder="Search Customer"/>
 
-            <span style="background: #7C7C7C; height: 35px; cursor: pointer" class="clearBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="38" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
+            <input  class="text-color searchCustomer w-100 ms-2 ps-3 searchInputs" id="searchInput" placeholder="Search Customer"/>
+            <span  class="clearCustomerBtn" id="clearBtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="35" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
               </svg>
             </span>
 
-            <button class="searchAdd">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <button class="searchbtn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
               </svg>
             </button>
@@ -286,9 +384,9 @@
             <div>
               <div class="card" style = "background-color: #292928;">
                 <div class="card-body" style="height: 76vh; width: 100%; " >
-                  <div id = "responsive-data" style=" width: 100%; overflow: hidden;">
+                  <div id = "responsive-data">
                       <?php include('errors.php'); ?>
-                      <table  >
+                      <table class="customer" >
                         <thead class = "adminTableHead" style ="border: 1px solid var(--primary-color) !important; ">
                           <tr >
                             <th class="text-center child-a">No.</th>
@@ -333,6 +431,103 @@
   include('./modals/delete_modal.php');
 ?>
 <script>
+
+document.addEventListener('DOMContentLoaded', function () {
+        const scrollContainer = document.getElementById('responsive-data');
+        
+        // Check if screen width is 1400px or less
+        function isScrollable() {
+            return window.innerWidth <= 1400;
+        }
+
+        // Add event listener for mouse wheel event
+        scrollContainer.addEventListener('wheel', function (event) {
+            if (isScrollable()) {
+                event.preventDefault();
+                scrollContainer.scrollLeft += event.deltaY; // Scroll horizontally based on vertical scroll
+            }
+        });
+
+        // Allow drag scrolling
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        scrollContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            scrollContainer.classList.add('active');
+            startX = e.pageX - scrollContainer.offsetLeft;
+            scrollLeft = scrollContainer.scrollLeft;
+        });
+
+        scrollContainer.addEventListener('mouseleave', () => {
+            isDown = false;
+            scrollContainer.classList.remove('active');
+        });
+
+        scrollContainer.addEventListener('mouseup', () => {
+            isDown = false;
+            scrollContainer.classList.remove('active');
+        });
+
+        scrollContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - scrollContainer.offsetLeft;
+            const walk = (x - startX) * 2; // Scroll speed
+            scrollContainer.scrollLeft = scrollLeft - walk;
+        });
+    });
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearBtn');
+
+  // Function to update the visibility of the SVG
+  function updateClearBtnVisibility() {
+    if (input.value.trim() !== '') {
+      clearBtn.style.display = 'inline'; // Show the SVG
+    } else {
+      clearBtn.style.display = 'none'; // Hide the SVG
+    }
+  }
+
+  // Function to refresh the customer table
+  function refreshCustomerTable() {
+    $.ajax({
+      url: './fetch-data/fetch-customers.php', 
+      type: 'GET',
+      success: function(response) {
+        $('#fetchCustomer').html(response); 
+      },
+      error: function(xhr, status, error) {
+        console.error(xhr.responseText); 
+      }
+    });
+  }
+
+  // Initial check
+  updateClearBtnVisibility();
+
+  // Event listener for input changes
+  input.addEventListener('input', updateClearBtnVisibility);
+
+  // Clear input, hide SVG, and refresh customer table on SVG click
+  clearBtn.addEventListener('click', function() {
+    input.value = '';
+    updateClearBtnVisibility(); 
+    input.focus(); 
+    refreshCustomerTable(); 
+  });
+});
+
+
+
+  
   $(document.body).on('click', '.deleteCustomer', function() {
     var warningDelete = ``;
     $("#deleteProdModal").show();
@@ -512,22 +707,24 @@
        refreshCustomerTable()
     })
 
-    $('.searchCustomer').on('input', function() {
+    $('#searchInput').on('input', function() {
     var searchData = $(this).val();
-      $.ajax({
-          url: './fetch-data/fetch-customers.php',
-          type: 'GET',
-          data: {
-              searchQuery: searchData
-          },
-          success: function(response) {
-            $('#fetchCustomer').html(response);                  
-          },
-          error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-          }
-      });
+    console.log('Search Data:', searchData);  // Debugging line
+    $.ajax({
+        url: './fetch-data/fetch-customers.php',
+        type: 'GET',
+        data: {
+            searchQuery: searchData
+        },
+        success: function(response) {
+          console.log('Response:', response);  // Debugging line
+          $('#fetchCustomer').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', xhr.responseText);  // Improved error logging
+        }
     });
+});
 
 
 $('#generateCustomerDFBtn').click(function() {

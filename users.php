@@ -287,6 +287,101 @@ if (isset($_SESSION['user_id'])) {
   padding-left: 10px !important;
  }
 
+   /* start for search bar css*/
+
+   ::selection {
+  color: black;
+  background: white;
+}
+
+.text-color.searchUsers{
+    caret-color: white; 
+    color: white; 
+    background-color: #555; 
+    font-size: 15px; 
+}
+
+.text-color.searchUsers::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.clearBtn{
+  background-color: #555;  
+  margin-left: -5px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.clearBtn svg {
+  transition: fill 0.3s ease, transform 0.3s ease; 
+}
+
+.clearBtn:hover svg {
+  fill: var(--primary-color); 
+  transform: scale(1.1);
+}
+
+.searchbtn {
+   background-color: #555;  
+  border:none;
+  }
+
+.addProducts.searchAdd {
+    background-color: #555;
+}
+.addProducts.searchAdd:hover {
+    background-color: var(--primary-color);
+}
+
+/*   end for search bar css */
+
+
+
+
+
+@media screen and (max-width: 1400px) {
+     
+  #responsive-data th.child-a, #responsive-data td.child-a { width: 50px !important; }
+    #responsive-data th.child-b, #responsive-data td.child-b { width: 150px !important; }
+    #responsive-data th.child-c, #responsive-data td.child-c { width: 100px !important; }
+    #responsive-data th.child-d, #responsive-data td.child-d { width: 80px !important; }
+    #responsive-data th.child-e, #responsive-data td.child-e { width: 120px !important; }
+    #responsive-data th.child-f, #responsive-data td.child-f { width: 100px !important; }
+    #responsive-data th.child-g, #responsive-data td.child-g { width: 90px !important; }
+    #responsive-data th.child-h, #responsive-data td.child-h { width: 70px !important; }
+     
+
+    #responsive-data td{
+
+      font-size: 12px !important;
+    }
+    .card{
+      height: 68vh !important;
+    }
+
+    .btn-control{
+      zoom:90%;
+    }
+  .modal{
+   zoom: 80% !important;
+
+  }
+
+  #addUsers td{
+    font-size: 14px !important;
+  }
+
+  .accessLevel{
+   
+    font-size: 15px;
+  }
+  .imageCard{
+    height:50px;
+  }
+    }
+
+
+
 
 </style>
 <?php include "layout/admin/css.php"?>
@@ -295,14 +390,15 @@ if (isset($_SESSION['user_id'])) {
       <div class="main-panel h-100">
         <div class="content-wrapper">
           <div class="d-flex mb-2 w-10">
-            <input  class="text-color searchUsers w-100 ms-2 searchInputs" placeholder="Search Users"/>
-            <span class="clearBtn" style="background: #7C7C7C; height: 35px; cursor: pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="38" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
+
+            <input  class="text-color searchUsers w-100 ms-2 searchInputs" id="searchInput" placeholder="Search Users"/>
+            <span class="clearBtn" id="clearbtn" >
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="35" fill="#fff" class="bi bi-x" viewBox="0 0 16 16">
                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
               </svg>
             </span>
 
-            <button class="searchAdd">
+            <button class="searchbtn">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
               </svg>
@@ -363,7 +459,6 @@ if (isset($_SESSION['user_id'])) {
                         
                       </tbody>
                     </table>
-                    </table>
                   </div>
                 <!-- </div> -->
               </div>
@@ -389,6 +484,37 @@ if (isset($_SESSION['user_id'])) {
 
 <?php include("layout/footer.php") ?>
 <script>
+
+
+// for clear button in search bar
+
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearbtn');
+
+  // Function to update the visibility of the SVG
+  function updateClearBtnVisibility() {
+    if (input.value.trim() !== '') {
+      clearBtn.style.display = 'inline'; // Show the SVG
+    } else {
+      clearBtn.style.display = 'none'; // Hide the SVG
+    }
+  }
+
+  // Initial check
+  updateClearBtnVisibility();
+
+  // Event listeners for input changes
+  input.addEventListener('input', updateClearBtnVisibility);
+
+  // Optional: Clear input on SVG click
+  clearBtn.addEventListener('click', function() {
+    input.value = '';
+    updateClearBtnVisibility(); // Hide SVG after clearing input
+    input.focus(); // Optional: refocus input field
+  });
+});
+
 
 $(document).ready(function(){
   var Request = {

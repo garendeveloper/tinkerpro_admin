@@ -57,9 +57,10 @@
             <div class="custom-select" style="margin-right: 30px; ">
                 <select name="inventory_type"
                     style=" background: #1E1C11; color: #ffff; width: 250px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
+                    <option value="2">Product Inventory</option>
                     <option value="">Select Inventory</option>
                     <!-- <option value="1">B.O.M Inventory</option> -->
-                    <option value="2">Product Inventory</option>
+                  
                     <!-- <option value="3">All</option> -->
                 </select>
                 <i class="bi bi-chevron-double-down"></i>

@@ -609,7 +609,7 @@ button:hover{
 @media screen and (max-width: 1400px) {
      
     .header-container{
-      zoom:72%;
+      zoom:90%;
     }
        }
 
