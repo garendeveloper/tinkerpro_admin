@@ -516,6 +516,7 @@ i:hover{
       </div>
     </div>
   </div>
+  <?php include ("./modals/update_receive_items.php") ?>
   <?php include ("./modals/purchaseQty_modal.php") ?>
   <?php include ("./modals/unpaid_purchase-modal.php") ?>
   <?php include ("./modals/paid_purchase-modal.php") ?>
