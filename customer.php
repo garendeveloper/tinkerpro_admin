@@ -308,12 +308,20 @@
      
       .modal{
        zoom: 90%;
-      
-   
+    
+      }
+
+      #add_customer_modal{
+     height: 1000px !important;
+      }
+
+      .modal-content{
+        height: 800px !important;
+
       }
 
       .card-body{
-        height: 73vh !important;
+        height: 70vh !important;
       }
       
 #responsive-data {
@@ -321,6 +329,7 @@
     -webkit-overflow-scrolling: touch; 
     scrollbar-width: thin;
     scrollbar-color: #555 ; 
+    max-height: 530px !important;
 
         }
 
@@ -338,9 +347,12 @@
 
   #paginationDiv{
   zoom: 80%;
-  margin-top: 5px;
+  margin-top: 5px;  
+}
 
-    
+.btn-control{
+  zoom:90%;
+  margin-top: 15px;
 }
     }
 
@@ -386,7 +398,7 @@
                 <div class="card-body" style="height: 76vh; width: 100%; " >
                   <div id = "responsive-data">
                       <?php include('errors.php'); ?>
-                      <table class="customer" >
+                      <table class="customer" id="recentusers" >
                         <thead class = "adminTableHead" style ="border: 1px solid var(--primary-color) !important; ">
                           <tr >
                             <th class="text-center child-a">No.</th>
@@ -431,56 +443,6 @@
   include('./modals/delete_modal.php');
 ?>
 <script>
-
-document.addEventListener('DOMContentLoaded', function () {
-        const scrollContainer = document.getElementById('responsive-data');
-        
-        // Check if screen width is 1400px or less
-        function isScrollable() {
-            return window.innerWidth <= 1400;
-        }
-
-        // Add event listener for mouse wheel event
-        scrollContainer.addEventListener('wheel', function (event) {
-            if (isScrollable()) {
-                event.preventDefault();
-                scrollContainer.scrollLeft += event.deltaY; // Scroll horizontally based on vertical scroll
-            }
-        });
-
-        // Allow drag scrolling
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        scrollContainer.addEventListener('mousedown', (e) => {
-            isDown = true;
-            scrollContainer.classList.add('active');
-            startX = e.pageX - scrollContainer.offsetLeft;
-            scrollLeft = scrollContainer.scrollLeft;
-        });
-
-        scrollContainer.addEventListener('mouseleave', () => {
-            isDown = false;
-            scrollContainer.classList.remove('active');
-        });
-
-        scrollContainer.addEventListener('mouseup', () => {
-            isDown = false;
-            scrollContainer.classList.remove('active');
-        });
-
-        scrollContainer.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - scrollContainer.offsetLeft;
-            const walk = (x - startX) * 2; // Scroll speed
-            scrollContainer.scrollLeft = scrollLeft - walk;
-        });
-    });
-
-
-
 
 
 document.addEventListener('DOMContentLoaded', function() {

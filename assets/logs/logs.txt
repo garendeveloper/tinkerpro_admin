@@ -17428,3 +17428,16 @@
 2024-08-29 09:19:11 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Updated customer Noriel  Bagacay 
 2024-08-29 09:22:04 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
 2024-08-29 09:34:12 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Printing pdf 
+2024-08-29 16:48:19 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-29 16:48:26 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-30 17:14:21 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
+2024-08-30 17:14:54 | Talkosoy Admin | 1 | 2 | Logout | User Talkosoy Admin 2 
+2024-08-30 17:14:56 | Noriel Bagacay | 112 | 2 | Login | User Noriel Bagacay 2 
+2024-08-30 17:15:23 | Noriel Bagacay | 112 | 2 | Logout | User Noriel Bagacay 2 
+2024-08-31 10:16:00 | Noriel Bagacay | 112 | 2 | Login | User Noriel Bagacay 2 
+2024-08-31 10:55:51 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 ORANGE 40G MENUDO Barcode #:210832 
+2024-08-31 11:27:51 | Noriel Bagacay | 112 | 2 | Login | User Noriel Bagacay 2 
+2024-08-31 17:09:51 | Noriel Bagacay | 112 | 2 | Users | Noriel Bagacay Updated ghdg dghgd 
+2024-08-31 17:46:41 | Noriel Bagacay | 112 | 2 | Supplier | Noriel Bagacay Added supplier bfdbvfdb 
+2024-08-31 17:46:45 | Noriel Bagacay | 112 | 2 | Supplier | Noriel Bagacay Added supplier vbfdbvfdbvfd 
+2024-08-31 17:46:49 | Noriel Bagacay | 112 | 2 | Supplier | Noriel Bagacay Added supplier vbrfdbfdbfdb 

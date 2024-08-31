@@ -164,10 +164,15 @@ $(document).ready(function()
       }
     })
   })
-  $("#responsive-data").on("click", ".tbl_rows", function(){
-    $("#tbl_expenses tbody").find(".tbl_rows").removeClass('highlighted-row')
-    $(this).toggleClass('highlighted-row');
-  })
+
+
+  
+  // $("#responsive-data").on("click", ".tbl_rows", function(){
+  //   $("#tbl_expenses tbody").find(".tbl_rows").removeClass('highlighted-row')
+  //   $(this).toggleClass('highlighted-row');
+  // })
+
+
   $("#responsive-data").on("dblclick", ".tbl_rows", function() {
     createExpense();
     currentRow = $(this);

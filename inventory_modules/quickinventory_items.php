@@ -53,7 +53,7 @@
             <div class="custom-select" style="margin-right: 30px; ">
                 <select name="inventory_type"
                     style=" background: #1E1C11; color: #ffff; width: 250px; border: 1px solid #ffff; font-size: 12px; height: 30px;">
-                    <option value="2">Product Inventory</option>
+                    <option value="2" selected>Product Inventory</option>
                     <option value="">Select Inventory</option>
                     <!-- <option value="1">B.O.M Inventory</option> -->
                   
@@ -114,6 +114,9 @@
         var toastDisplayed = false;
         var products = [];
         var productsCache = [];
+
+        show_allProducts();
+        
         $("select[name='inventory_type']").on("change", function (e) {
             e.preventDefault();
             productsCache = [];
