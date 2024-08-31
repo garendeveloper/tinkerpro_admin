@@ -251,6 +251,10 @@
             $formData = $_POST;
             echo json_encode($inventory->save_quickInventory($formData));
             break;
+        case 'save_quickInventory1':
+            $data_to_update = isset($data->data_to_update) ? $data->data_to_update : null;
+            $inventory->save_quickInventory1($data_to_update);
+            break;
         case 'get_allSuppliers':
             echo json_encode($inventory->get_allSuppliers());
             break;
@@ -583,6 +587,10 @@
             break;
         case 'getResetVal':
             $dashboard->getResetValue();
+            break;
+        case 'getReceivedItems':
+            $inventory_id = isset($data->inventory_id) ? $data->inventory_id : null;
+            echo json_encode($inventory->getReceivedItems($inventory_id));
             break;
         default:
             header("HTTP/1.0 400 Bad Request");

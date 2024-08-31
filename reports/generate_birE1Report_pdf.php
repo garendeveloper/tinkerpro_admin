@@ -35,14 +35,12 @@ $now = new DateTime();
 $currentDateTime = date('F j, Y h:i:s A');
 
 class MYPDF extends TCPDF {
-
     //Page header
     public function Header() 
     {
         $products = new ProductFacade();
         $fetchShop = $products->getShopDetails();
         $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
-        
         $this->Ln(8);
         $this->Cell(0, 1, "{$shop['shop_name']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
         $this->SetFont('helvetica', 'B', 12);
@@ -53,8 +51,8 @@ class MYPDF extends TCPDF {
         $this->Ln();
         $this->SetFont('helvetica', '', 11);
         $this->Cell(0, 1, "{$shop['tin']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
-       
     }
+
     public function Footer() 
     {
         $this->SetY(-15);
@@ -271,12 +269,12 @@ if($items)
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sc_discount_ret_ref_void']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['pwd_discount_ret_ref_void']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalDeductions']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['naac_discount_ret_ref_void'] + $items[$i]['solo_parent_discount_ret_ref_void']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['returnd_vat']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['othersVatAdjustment']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalVatAjustment']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['netSales']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['short_over']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['netSales']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['resetCount']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['z_counter']) . '</td>

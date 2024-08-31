@@ -15,6 +15,10 @@
 
     }
 
+    .r_text {
+        font-size: small;
+    }
+
     .custom-select select {
         appearance: none;
         -webkit-appearance: none;
@@ -108,7 +112,10 @@
 
 
 <script>
-    $(document).ready(function () {
+
+    var received_data = [];
+
+    // $(document).ready(function () {
         
         var products_forquickInventory = [];
         var toastDisplayed = false;
@@ -141,18 +148,20 @@
             {
                 if ($("select[name='inventory_type']").val() === "") {
                     $("select[name='inventory_type']").css('border', '1px solid red');
-                }
-                else {
+                } else {
                     $("select[name='inventory_type']").css('border', '1px solid #ffff');
                     if (!isDataExistInTable(inventory_id)) 
                     {
-                        display_productBy(inventory_id);
+                        validateMultipleReceived(inventory_id);
+                        // display_productBy(inventory_id);
                     }
                     else
                     {
                         show_errorResponse("Product is already in the table.");
                     }
                 }
+
+
             }
             else
             {
@@ -293,7 +302,8 @@
                 {
                     if (!isDataExistInTable(selectedProductId)) 
                     {
-                        display_productBy(selectedProductId);
+                        validateMultipleReceived(selectedProductId);
+                        // display_productBy(selectedProductId);
                     }
                     else
                     {
@@ -313,6 +323,56 @@
             var $matchingRow = $('#tbl_quickInventories tbody td[data-id="' + data + '"]').closest('tr');
             return $matchingRow.length > 0;
         }
+
+
+        function validateMultipleReceived (inventory_id)  
+        {
+            var totalQty = 0;
+            axios.post('api.php?action=getReceivedItems', {
+                'inventory_id' : inventory_id
+            })
+            .then(function(res) {
+                var received_items = res.data.data;
+                if (received_items.length > 1) {
+                    $(document).click();
+                    $('#update_received').show();
+                    $('.received_items tbody').empty();
+                    $.each(received_items, function(index, receive) {
+                        var expiring_date = receive.expirations ?? 'No Date!'
+                        var row = '<tr class="received_items_row"' + 
+                        'data-receiveid="' + receive.id +  '"' +
+                        'data-prodid="' + receive.productIds +  '"' +
+                        '>'+
+                        '<td class="text-center r_text">' + receive.id + '</td>' + 
+                        '<td class="text-center r_text">' + receive.prod_desc + '</td>' + 
+                        '<td class="text-center r_text">' + expiring_date + '</td>';
+
+                        if (expiring_date == 'No Date!') {
+                            row += '<td class="text-success text-center r_text">' + 'No Expiration' + '</td>' ; 
+                        } else {
+                            row += '<td class="text-danger text-center r_text">' + 'Expiring' + '</td>' ; 
+                        }
+                        row += '<td class="align-items-center r_text">' + 
+                        '<div class="d-flex justify-content-center"><input type="number" class="text-end update_qty_inputs" value="'+ receive.qty_received +'"></div>' + '</td>';
+                        '</tr>';
+                        row += '</tr>';
+                        totalQty += parseFloat(receive.qty_received)
+                        $('.received_items tbody').append(row); 
+                    })
+
+                    $('#totalOnHand').text(totalQty);
+                    
+                } else {
+                    display_productBy(inventory_id) 
+                }
+
+                
+            })
+            .catch(function(error) {
+                console.log(error)
+            })
+        }
+
         function display_productBy(inventory_id) 
         {
             $.ajax({
@@ -331,5 +391,5 @@
                 }
             })
         }
-    })
+    // })
 </script>

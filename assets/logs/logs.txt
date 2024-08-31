@@ -17428,6 +17428,7 @@
 2024-08-29 09:19:11 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Updated customer Noriel  Bagacay 
 2024-08-29 09:22:04 | Noriel Bagacay | 113 | 2 | Login | User Noriel Bagacay 2 
 2024-08-29 09:34:12 | Noriel Bagacay | 113 | 2 | Customers | Noriel Bagacay Printing pdf 
+<<<<<<< HEAD
 2024-08-29 16:48:19 | Noriel Bagacay | 113 | 2 | Logout | User Noriel Bagacay 2 
 2024-08-29 16:48:26 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
 2024-08-30 17:14:21 | Talkosoy Admin | 1 | 2 | Login | User Talkosoy Admin 2 
@@ -17441,3 +17442,44 @@
 2024-08-31 17:46:41 | Noriel Bagacay | 112 | 2 | Supplier | Noriel Bagacay Added supplier bfdbvfdb 
 2024-08-31 17:46:45 | Noriel Bagacay | 112 | 2 | Supplier | Noriel Bagacay Added supplier vbfdbvfdbvfd 
 2024-08-31 17:46:49 | Noriel Bagacay | 112 | 2 | Supplier | Noriel Bagacay Added supplier vbrfdbfdbfdb 
+=======
+2024-08-27 10:36:48 | Julia Samonte | 31 | 3 | Login | User Julia Samonte 3 
+2024-08-27 10:41:29 | Julia Samonte | 31 | 3 | Logout | User Julia Samonte 3 
+2024-08-27 10:41:34 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-27 10:57:09 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-08-27 10:57:11 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-27 10:59:31 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-27 10:59:34 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-27 10:59:36 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-27 11:10:11 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-27 11:23:24 | Zeus Baculio | 50 | 2 | Customers | Zeus Baculio Updated customer Unknown   
+2024-08-27 11:24:00 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-08-27 11:24:03 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-27 12:18:22 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-28 15:42:06 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-28 16:57:40 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-08-28 16:57:55 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-28 17:04:26 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-28 17:13:49 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-28 17:15:07 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-28 17:40:49 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-29 09:10:59 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-08-29 09:15:48 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-29 09:29:13 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Cabbage 1KG From: 0.00 To: 100 
+2024-08-29 09:57:51 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-08-29 10:49:53 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Beef 1KG Barcode #:737361564553 
+2024-08-29 10:52:34 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Beef 1KG Barcode #:737361564553 
+2024-08-29 10:56:18 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Beef 1KG Barcode #:737361564553 
+2024-08-29 16:24:52 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Chicken 1KG Barcode #:127191721676 
+2024-08-29 16:25:20 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000060 Amount:₱ 12,000.00 
+2024-08-29 16:26:01 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000060 Supplier: GAISANO SUPERMARKET 
+2024-08-29 16:29:13 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Chicken 1KG From: 50.00 To: 50 
+2024-08-29 16:30:25 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Chicken 1KG From: 50.00 To: 100 
+2024-08-29 16:30:54 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Chicken 1KG From: 100.00 To: 50 
+2024-08-29 18:07:59 | Alexander Caones | 107 | 2 | Coupons | Alexander Caones Updated the coupon expiration to 1 MONTH 
+2024-08-29 18:11:36 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-30 10:12:34 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-30 13:48:28 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000061 Amount:₱ 30,000.00 
+2024-08-30 13:48:40 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000061 Supplier: GAISANO SUPERMARKET 
+2024-08-30 16:11:18 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+>>>>>>> af6a2dbd7ce0ea619d397b67a3e6a5bce6fa33ff

@@ -1310,29 +1310,32 @@
                   user_name: $("#first_name").val()+" "+$("#last_name").val(),
                 },
                 success: function (response) {
-                  if (response.status) 
-                  {
-                    show_sweetReponse(response.msg);
-                    var po_number = $("#q_product").val();
-                    $("#tbl_quickInventories tbody").empty();
-                    hideModals();
 
-                    $(".inventoryCard").html("");
-                    $(".grid-container button").removeClass('active');
-                    $("#stocks").addClass('active');
-                    show_allStocks();
+                  console.log(response);
 
-                    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                    var firstName = userInfo.firstName;
-                    var lastName = userInfo.lastName;
-                    var cid = userInfo.userId;
-                    var role_id = userInfo.roleId; 
+                  // if (response.status) 
+                  // {
+                  //   show_sweetReponse(response.msg);
+                  //   var po_number = $("#q_product").val();
+                  //   $("#tbl_quickInventories tbody").empty();
+                  //   hideModals();
 
-                    $.each(tbl_data, function(index, item){
-                      insertLogs('Quick Inventory', "Quick inventory: "+item.col_1 + " From: "+item.col_2 + " To: "+item.newqty);
-                    })
-                    $('#modalCashPrint').hide();
-                  }
+                  //   $(".inventoryCard").html("");
+                  //   $(".grid-container button").removeClass('active');
+                  //   $("#stocks").addClass('active');
+                  //   show_allStocks();
+
+                  //   var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                  //   var firstName = userInfo.firstName;
+                  //   var lastName = userInfo.lastName;
+                  //   var cid = userInfo.userId;
+                  //   var role_id = userInfo.roleId; 
+
+                  //   $.each(tbl_data, function(index, item){
+                  //     insertLogs('Quick Inventory', "Quick inventory: "+item.col_1 + " From: "+item.col_2 + " To: "+item.newqty);
+                  //   })
+                  //   $('#modalCashPrint').hide();
+                  // }
                 }
               })
             }

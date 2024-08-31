@@ -47,9 +47,13 @@ class BirFacade extends DBConnection {
                 SUM(DISTINCT payments.payment_amount - payments.change_amount) AS paidAmount,
                 SUM(
                     CASE
-                    	WHEN discounts.name = 'SP' THEN
+                    	WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN
                     		(transactions.subtotal) / 1.12 
-                		WHEN discounts.name <> 'SP' THEN
+                    	WHEN discounts.name = 'SP' AND products.isVAT = 0 THEN
+                    		(transactions.subtotal)
+                    	WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
+                    		(transactions.subtotal)
+                		WHEN discounts.name <> 'SP' AND products.isVAT = 0 THEN
                     		(transactions.subtotal)
                         ELSE 0
                     	END
@@ -222,8 +226,20 @@ class BirFacade extends DBConnection {
         $dailyResult = $dailyReport->fetchAll(PDO::FETCH_ASSOC);
 
 
-        $refund_transactions = "SELECT 
-        SUM(DISTINCT refunded.refunded_amt) AS totalRefunded,
+        $refund_transactions = "SELECT
+        ROUND(SUM(DISTINCT
+            CASE
+            WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN
+            (refunded.refunded_amt) / 1.12 
+            WHEN discounts.name = 'SP' AND products.isVAT = 0 THEN
+            (refunded.refunded_amt)
+            WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
+            (refunded.refunded_amt)
+            WHEN discounts.name <> 'SP' AND products.isVAT = 0 THEN
+            (refunded.refunded_amt)
+            ELSE 0
+            END
+        ),2) AS totalRefunded,
         refunded.refunded_method_id,
         refunded.reference_num,
         refunded.otherDetails,
@@ -308,7 +324,19 @@ class BirFacade extends DBConnection {
 
 
         $returnTransaction = "SELECT 
-        SUM(DISTINCT return_exchange.return_amount) AS totalReturn,
+        ROUND(SUM(DISTINCT
+            CASE
+            WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN
+            (return_exchange.return_amount) / 1.12 
+            WHEN discounts.name = 'SP' AND products.isVAT = 0 THEN
+            (return_exchange.return_amount)
+            WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
+            (return_exchange.return_amount)
+            WHEN discounts.name <> 'SP' AND products.isVAT = 0 THEN
+            (return_exchange.return_amount)
+            ELSE 0
+            END
+        ),2) AS totalReturn,
         return_exchange.otherDetails,
         return_exchange.payment_id,
         receipt.barcode,
@@ -397,12 +425,13 @@ class BirFacade extends DBConnection {
 
         $lastDateVal = $lastDateResult['id'];
         $getPrev_acc_sales = "SELECT 
-            SUM(DISTINCT ROUND(payments.payment_amount - payments.change_amount,2)) AS prev_acc_sales
-            FROM payments
-            INNER JOIN transactions ON payments.id = transactions.payment_id
-            INNER JOIN receipt ON receipt.id = transactions.receipt_id
-            INNER JOIN business_date ON business_date.id = payments.business_date_id
-            WHERE business_date.id < $lastDateVal AND transactions.is_void = 0 AND receipt.is_refunded = 0
+            JSON_UNQUOTE(JSON_EXTRACT(z_read.all_data, '$[0].present_accumulated_sale')) AS prev_acc_sales
+        FROM payments
+        INNER JOIN transactions ON payments.id = transactions.payment_id
+        INNER JOIN receipt ON receipt.id = transactions.receipt_id
+        INNER JOIN business_date ON business_date.id = payments.business_date_id
+        LEFT JOIN z_read ON z_read.id = business_date.z_read_id
+        WHERE business_date.id < $lastDateVal LIMIT 1
         ";
 
         $getReportPrevSales = $pdo->prepare($getPrev_acc_sales);
@@ -421,7 +450,7 @@ class BirFacade extends DBConnection {
 
         $result = [];
         foreach ($dailyResult as $daily) {
-            $z_read_data = $daily['all_data'];
+            $z_read_data_report = $daily['all_data'];
             $z_read_date = $daily['z_read_date'];
             $business_date = $daily['business_date_id'];
             $VOID = $daily['VOID'];
@@ -528,44 +557,52 @@ class BirFacade extends DBConnection {
                 $VAT_EXEMPT -= $return_map[$business_date]['vatExempt'];
                 $VAT_ADJUST += $VAT_AMOUNT_REF_RET;
             }
+            $z_read_data = [];
 
-            $z_read_report = json_decode($z_read_data, true);
-            $prev_acc_sales = 0;
+            $totalDeduction = 0;
+            if (!empty($z_read_data_report)) {
+                $z_read_data = json_decode($z_read_data_report, true);
+                $totalDeduction += ($z_read_data['less_discount'] + $z_read_data['less_return_amount'] + $z_read_data['less_refund_amount']);
+                
+            }
             
-            if ($z_read_data == null) {
+            $prev_acc_sales = 0;
+            if (empty($z_read_data_report)) {
+                var_dump($previous_acc_sales['prev_acc_sales']);
                 $prev_acc_sales = $previous_acc_sales['prev_acc_sales'];
             }
-
+            
             $result[] = [
-                'DATE' => $z_read_report ? $z_read_date : date('Y-m-d'),
-                'PREVIOUS_ACC_SALES' => $z_read_report ? $z_read_report['previous_accumulated_sale'] : max(0, number_format($prev_acc_sales,2)), 
-                'PRESENT_ACC_SALES' => $z_read_report ? $z_read_report['present_accumulated_sale'] : max(0, number_format(($totalAmount - $totalCustomerDiscount) + $prev_acc_sales,2)),
-                'less_discount' => $z_read_report ? $z_read_report['less_discount'] : number_format($totalCustomerDiscount,2),
-                'VOID' => $z_read_report ? $z_read_report['void'] : number_format($VOID - $VOID_DISCOUNT,2),
-                'totalReturn' => $z_read_report ? ($z_read_report['refund'] + $z_read_report['return']) : $total_Ref_Ret_amount,
-                'BEG_SI' => $z_read_report ? ($z_read_report['beg_si']) : $BEG_SI,
-                'END_SI' => $z_read_report ? ($z_read_report['end_si']) : $END_SI,
-                'subtotal' => $z_read_report ? ($z_read_report['gross_amount']) : number_format($totalAmount,2),
-                'sc_discount' => $z_read_report ? ($z_read_report['senior_discount']) : number_format($sc_discount,2),
-                'sp_discount' => $z_read_report ? ($z_read_report['solo_parent_discount']) : number_format($sp_discount,2),
-                'naac_discount' => $z_read_report ? ($z_read_report['naac_discount']) : number_format($naac_discount,2),
-                'pwd_discount' => $z_read_report ? ($z_read_report['pwd_discount']) : number_format($pwd_discount,2),
-                'VAT_SALES' => $z_read_report ? ($z_read_report['vatable_sales']) : number_format((float)$VAT_SALES - (float)$VOID_SALES_ADJUST,2),
-                'VAT_AMOUNT' => $z_read_report ? ($z_read_report['vat_amount']) : number_format((float)$VAT_AMOUNT - (float)$VOID_ADJUST,2),
-                'VAT_EXEMPT' => $z_read_report ? ($z_read_report['vat_exempt']) : number_format($VAT_EXEMPT,2),
-                'sc_ref_ret_void_discount' => number_format($sc_ref_ret_void_discount,2),
-                'sp_ref_ret_void_discount' => number_format($sp_ref_ret_void_discount,2),
-                'naac_ref_ret_void_discount' => number_format($naac_ref_ret_void_discount,2),
-                'pwd_ref_ret_void_discount' => number_format($pwd_ref_ret_void_discount,2),
-                'total_Ref_CustomerDiscount' => number_format($total_Ref_CustomerDiscount,2),
-                'VAT_SALES_REF_RETURN' => number_format($VAT_SALES_REF_RETURN,2),
-                'VAT_AMOUNT_REF_RET' => $z_read_report ? ($z_read_report['total_void_vat'] + $z_read_report['vat_refunded'] + $z_read_report['vat_return']) : number_format($VAT_AMOUNT_REF_RET + $VOID_ADJUST,2),
-                'VAT_ADJUST' => number_format($VAT_ADJUST,2),
-                'Z_READ_COUNT' => $z_read_report ? ($z_read_report['zReadCounter']) : null,
-                'RESET_COUNT' => $z_read_report ? ($z_read_report['resetCount']) : null,
-                'SHORT_OVER' => $z_read_report ? ($z_read_report['short_or_over']) : null,
-                'NET' => $z_read_report ? $z_read_report['net_amount'] : (number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST),2)),
+                'DATE' => ($z_read_data_report) ? $z_read_date : date('Y-m-d'),
+                'PREVIOUS_ACC_SALES' => ($z_read_data_report) ? $z_read_data['previous_accumulated_sale'] : number_format(max(0, $prev_acc_sales), 2), 
+                'PRESENT_ACC_SALES' => ($z_read_data_report) ? $z_read_data['present_accumulated_sale'] : number_format(max(0, ($totalAmount - $totalCustomerDiscount) + $prev_acc_sales), 2),
+                'less_discount' => ($z_read_data_report) ? $totalDeduction : number_format($totalCustomerDiscount, 2),
+                'VOID' => ($z_read_data_report) ? $z_read_data['void'] : number_format($VOID - $VOID_DISCOUNT, 2),
+                'totalReturn' => ($z_read_data_report) ? ($z_read_data['refund'] + $z_read_data['return']) : number_format($total_Ref_Ret_amount, 2),
+                'BEG_SI' => ($z_read_data_report) ? $z_read_data['beg_si'] : $BEG_SI,
+                'END_SI' => ($z_read_data_report) ? $z_read_data['end_si'] : $END_SI,
+                'subtotal' => ($z_read_data_report) ? $z_read_data['gross_amount'] : number_format($totalAmount, 2),
+                'sc_discount' => ($z_read_data_report) ? $z_read_data['senior_discount'] : number_format($sc_discount, 2),
+                'sp_discount' => ($z_read_data_report) ? $z_read_data['solo_parent_discount'] : number_format($sp_discount, 2),
+                'naac_discount' => ($z_read_data_report) ? $z_read_data['naac_discount'] : number_format($naac_discount, 2),
+                'pwd_discount' => ($z_read_data_report) ? $z_read_data['pwd_discount'] : number_format($pwd_discount, 2),
+                'VAT_SALES' => ($z_read_data_report) ? $z_read_data['vatable_sales'] : number_format((float)$VAT_SALES - (float)$VOID_SALES_ADJUST, 2),
+                'VAT_AMOUNT' => ($z_read_data_report) ? $z_read_data['vat_amount'] : number_format((float)$VAT_AMOUNT - (float)$VOID_ADJUST, 2),
+                'VAT_EXEMPT' => ($z_read_data_report) ? $z_read_data['vat_exempt'] : number_format($VAT_EXEMPT, 2),
+                'sc_ref_ret_void_discount' => number_format($sc_ref_ret_void_discount, 2),
+                'sp_ref_ret_void_discount' => number_format($sp_ref_ret_void_discount, 2),
+                'naac_ref_ret_void_discount' => number_format($naac_ref_ret_void_discount, 2),
+                'pwd_ref_ret_void_discount' => number_format($pwd_ref_ret_void_discount, 2),
+                'total_Ref_CustomerDiscount' => number_format($total_Ref_CustomerDiscount, 2),
+                'VAT_SALES_REF_RETURN' => number_format($VAT_SALES_REF_RETURN, 2),
+                'VAT_AMOUNT_REF_RET' => ($z_read_data_report) ? ($z_read_data['total_void_vat'] + $z_read_data['vat_refunded'] + $z_read_data['vat_return']) : number_format($VAT_AMOUNT_REF_RET + $VOID_ADJUST, 2),
+                'VAT_ADJUST' => number_format($VAT_ADJUST, 2),
+                'Z_READ_COUNT' => ($z_read_data_report) ? $z_read_data['zReadCounter'] : null,
+                'RESET_COUNT' => ($z_read_data_report) ? $z_read_data['resetCount'] : null,
+                'SHORT_OVER' => ($z_read_data_report) ? $z_read_data['short_or_over'] : null,
+                'NET' => ($z_read_data_report) ? $z_read_data['net_amount'] : number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST), 2),
             ];
+            
             
         }
 
@@ -682,13 +719,15 @@ class BirFacade extends DBConnection {
                 
                 $other_discount = $ZReadData->other_discount;
                 $returns =  $ZReadData->return;
+                $refunds =  $ZReadData->refund;
                 $voids = $ZReadData->void;
-                $totalDeductions = ($ZReadData->senior_discount + $ZReadData->pwd_discount + $ZReadData->naac_discount + $solo_parent_discount + $other_discount + $ZReadData->void + $returns);
+                $totalDeductions = ($ZReadData->senior_discount + $ZReadData->pwd_discount + $ZReadData->naac_discount + $solo_parent_discount + $other_discount + $ZReadData->void + $returns + $refunds);
                 $z_counter = $ZReadData->zReadCounter;
                 $void_vat = (float)$ZReadData->total_void_vat;
                 $returnd_vat = (float)$ZReadData->vat_return;
                 $refund_vat = (float)$ZReadData->vat_refunded;
                 $netSales = (float)$ZReadData->net_amount;
+                $short_over = (float)$ZReadData->short_or_over;
 
                 $result[] = [
                     'dateRange' => $startDate . ' - ' . $endDate,
@@ -717,14 +756,15 @@ class BirFacade extends DBConnection {
                     'voids' => $voids,
                     'totalDeductions' => $totalDeductions,
                     'void_vat' => $void_vat,
-                    'returnd_vat' => $returnd_vat,
-                    'othersVatAdjustment' => ($void_vat + $refund_vat),
+                    'returnd_vat' => ($returnd_vat + $refund_vat),
+                    'othersVatAdjustment' => ($void_vat),
                     'totalVatAjustment' => ($void_vat + $refund_vat + $returnd_vat),
                     'refund_vat' => $refund_vat,
                     'netSales' => $netSales,
                     'totalIncome' => $totalIncome,
                     'resetCount' => $resetCount,
                     'z_counter' => $z_counter,
+                    'short_over' => $short_over,
                 ];
             }
         }

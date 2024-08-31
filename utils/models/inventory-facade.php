@@ -697,6 +697,49 @@ class InventoryFacade extends DBConnection
             'msg'=>'Quick inventory has been successfully saved!',	
         ];
     }
+
+    public function save_quickInventory1($data) 
+    {
+        $pdo = $this->connect();
+        foreach ($data as $datas) 
+        {
+            $sql = $pdo->prepare("UPDATE `received_items` SET `qty_received`= ?,`transaction_qty`= ? WHERE id = ?");
+            $sql->execute([$datas->inputs_qty, $datas->inputs_qty, $datas->ids]);
+        }
+
+        $inventory_id = $datas->product_id;
+        $qty_onhand = (float)$datas->totalOnHand;
+        $newqty = (float)$datas->totalQty;
+        date_default_timezone_set('Asia/Manila');
+        $currentDate = date('Y-m-d h:i:s');
+
+        $stmt = $pdo->prepare("UPDATE products SET product_stock = :new_stock WHERE id = :id");
+        $stmt->bindParam(":new_stock", $newqty); 
+        $stmt->bindParam(":id", $inventory_id); 
+        $stmt->execute();
+        
+        $currentStock = 0;
+        $newqty = "+".$newqty;
+        $stock_customer = 'Alexander Caones';
+        $document_number = "---";
+        $transaction_type = "Quick Inventory";
+        $stmt = $pdo->prepare("INSERT INTO stocks (inventory_id, stock_customer, stock_qty, stock, document_number, transaction_type, date)
+                                            VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+        $movement = $qty_onhand > $newqty ? "-".$qty_onhand-$newqty : "+".$newqty - $qty_onhand;
+        $stmt->bindParam(1, $inventory_id, PDO::PARAM_INT);
+        $stmt->bindParam(2, $stock_customer, PDO::PARAM_STR); 
+        $stmt->bindParam(3, $movement, PDO::PARAM_STR); 
+        $stmt->bindParam(4, $newqty, PDO::PARAM_STR); 
+        $stmt->bindParam(5, $document_number, PDO::PARAM_STR); 
+        $stmt->bindParam(6, $transaction_type, PDO::PARAM_STR); 
+        $stmt->bindParam(7, $currentDate, PDO::PARAM_STR); 
+        $stmt->execute();
+        
+        echo json_encode('SUCCESS');
+    }
+
+
     public function fetchProducts($search)
     {
         $stmt = $this->connect()->prepare("SELECT prod_desc FROM products WHERE prod_desc LIKE :p");
@@ -1594,5 +1637,30 @@ class InventoryFacade extends DBConnection
         $stmt->bindParam(':order_id', $order_id, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    public function getReceivedItems($id) {
+        $pdo = $this->connect();
+        $sql = $pdo->prepare("SELECT received_items.id,
+        received_items.inventory_id,
+        received_items.qty_received,
+        received_items.transaction_qty,
+        received_items.date_expired as expirations,
+        products.id as productIds,
+        products.prod_desc,
+        inventory.id AS inventoryIds
+        FROM `received_items` 
+        INNER JOIN inventory ON inventory.id = received_items.inventory_id
+        INNER JOIN products ON products.id = inventory.product_id
+        WHERE products.id = $id
+        AND received_items.transaction_qty <> 0");
+        $sql->execute();
+        $response = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        return [
+            'data' => $response,
+            'success' => true,
+        ];
     }
 }
