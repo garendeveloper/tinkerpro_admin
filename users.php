@@ -725,6 +725,14 @@ function refreshTable() {
           $prev.addClass('highlighteds');
         }
         e.preventDefault();
+      } else if (e.key === "Enter") {
+        // Trigger userForm on Enter or Space key press
+        userForm($highlighted);
+        e.preventDefault();
+      }else if (e.key === "Escape" || e.key === "Esc") {
+        // Close userForm on Esc key press
+        closeAddUserModal();
+        e.preventDefault();
       }
     }
   });

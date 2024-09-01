@@ -121,6 +121,17 @@ $(document).ready(function() {
           $prev.addClass('highlighteds');
         }
         e.preventDefault();
+      } else if (e.key === "Enter") {
+      
+        var $editButton = $highlighted.find('.editCustomer');
+        if ($editButton.length) {
+          $editButton.click();
+        }
+        e.preventDefault();
+      }else if (e.key === "Escape" || e.key === "Esc") {
+        // Close userForm on Esc key press
+        closeAddingModal();
+        e.preventDefault();
       }
     }
   });

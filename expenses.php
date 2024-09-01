@@ -687,7 +687,14 @@ document.addEventListener('DOMContentLoaded', function() {
           $prev.addClass('highlighteds');
         }
         e.preventDefault();
+      }else if (e.key === "Enter") {
+      
+      var $editButton = $highlighted.find('#add_expense_modal');
+      if ($editButton.length) {
+        $editButton.click();
       }
+      e.preventDefault();
+    }
     }
   });
 });

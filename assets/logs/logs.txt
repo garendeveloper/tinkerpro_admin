@@ -17484,3 +17484,6 @@
 2024-08-30 16:11:18 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
 >>>>>>> af6a2dbd7ce0ea619d397b67a3e6a5bce6fa33ff
 2024-09-01 09:42:41 | Noriel Bagacay | 112 | 2 | Login | User Noriel Bagacay 2 
+2024-09-01 13:53:26 | Noriel Bagacay | 112 | 2 | Users | Noriel Bagacay Updated ghdg dghgd 
+2024-09-01 14:22:09 | Noriel Bagacay | 112 | 2 | Logout | User Noriel Bagacay 2 
+2024-09-01 14:23:54 | Noriel Bagacay | 112 | 2 | Login | User Noriel Bagacay 2 

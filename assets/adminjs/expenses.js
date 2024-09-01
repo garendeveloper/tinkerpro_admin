@@ -259,6 +259,7 @@ $(document).ready(function()
       }
     })
   });
+  
   function addCommasToNumber(number) 
   {
     var roundedNumber = Number(number).toFixed(2);

@@ -115,8 +115,19 @@ $(document).ready(function() {
           $prev.addClass('highlighteds');
         }
         e.preventDefault();
+      }else if (e.key === "Enter") {
+      
+      var $editButton = $highlighted.find('.editSupplier');
+      if ($editButton.length) {
+        $editButton.click();
       }
-    }
+      e.preventDefault();
+    }else if (e.key === "Escape" || e.key === "Esc") {
+        // Close userForm on Esc key press
+        closeAddSupplierModal();
+        e.preventDefault();
+      }
+  }
   });
 });
 
