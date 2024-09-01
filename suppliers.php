@@ -332,10 +332,28 @@
 
 #responsive-data {
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch; 
-    scrollbar-width: thin;
     scrollbar-color: #555 ; 
         }
+
+
+        
+#responsive-data::-webkit-scrollbar {
+    height: 5px !important; 
+}
+/* Track */
+#responsive-data::-webkit-scrollbar-track {
+  background: #333; 
+
+}
+ 
+/* Handle */
+#responsive-data::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
 
         #recentsuppliers {
             min-width: 1800px; 

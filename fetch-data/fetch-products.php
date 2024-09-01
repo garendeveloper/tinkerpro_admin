@@ -192,9 +192,18 @@ $(document).ready(function() {
           $tableContainer.scrollLeft(prevOffsetLeft - $tableContainer.width() / 2);
         }
         e.preventDefault();
+      }else if (e.key === "Enter") {
+        // Trigger button click in the highlighted row
+        var $editButton = $highlighted.find('.editProductBtn');
+        if ($editButton.length) {
+          $editButton.click();
+        }
+        e.preventDefault();
       }
     }
   });
+
+
 });
 
     

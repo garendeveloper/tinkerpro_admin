@@ -171,15 +171,19 @@ if (isset($_SESSION['user_id'])) {
   zoom: 80%;
   margin-top: -60px;
  }
-
  #responsive-data {
-        width: 100%;  
-        overflow-x: auto; 
+    width: 100%;
+    overflow-x: auto; 
+    overflow-y: hidden; 
     -webkit-overflow-scrolling: touch; 
-    scrollbar-width: thin;
-    scrollbar-color: #333 ; 
     max-height: 530px !important;
-    }
+}
+
+#responsive-data::-webkit-scrollbar {
+    height: 5px; 
+}
+
+
 
     #recentusers {
         width: 1700px; 

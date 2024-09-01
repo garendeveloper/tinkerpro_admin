@@ -326,13 +326,28 @@
       
 #responsive-data {
     overflow-x: auto !important;
+    overflow-y: hidden !important;
     -webkit-overflow-scrolling: touch; 
-    scrollbar-width: thin;
     scrollbar-color: #555 ; 
     max-height: 530px !important;
 
         }
 
+               
+#responsive-data::-webkit-scrollbar {
+    height: 5px !important; 
+}
+/* Track */
+#responsive-data::-webkit-scrollbar-track {
+  background: #333; 
+
+}
+ 
+/* Handle */
+#responsive-data::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
 
         #recentsuppliers th{
           font-size: 14px;

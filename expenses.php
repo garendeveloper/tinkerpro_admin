@@ -491,11 +491,31 @@ if (isset($_SESSION['user_id'])) {
       }
 
       .table-wrapper {
-    overflow-x: auto;
+        overflow-x: auto ;
+  overflow-y: hidden;
     -webkit-overflow-scrolling: touch; 
-    scrollbar-width: thin;
-    scrollbar-color: #555 ; 
+    scrollbar-color: #333 ; 
 }
+
+
+.table-wrapper::-webkit-scrollbar {
+    height: 5px !important; 
+}
+/* Track */
+.table-wrapper::-webkit-scrollbar-track {
+  background: #333; 
+
+}
+ 
+/* Handle */
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+
+
+
 
 #paginationDiv{
   zoom: 80%;
@@ -671,6 +691,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
 
 
 </script>

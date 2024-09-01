@@ -526,12 +526,27 @@ i:hover{
 
 .wrapper{
   overflow-x: auto !important;
+  overflow-y: hidden;
     -webkit-overflow-scrolling: touch; 
-    scrollbar-width: thin;
     scrollbar-color: #333 ; 
- 
+}
+
+.wrapper::-webkit-scrollbar {
+    height: 5px !important; 
+}
+/* Track */
+.wrapper::-webkit-scrollbar-track {
+  background: #333; 
 
 }
+ 
+/* Handle */
+.wrapper::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+
 #tbl_all_stocks{
   width: 1200px !important;
       }
@@ -774,9 +789,17 @@ $(document).ready(function() {
           $tableContainer.scrollLeft(prevOffsetLeft - $tableContainer.width() / 2);
         }
         e.preventDefault();
-      }
+      // }else if (e.key === "Enter") {
+      //   // Trigger button click in the highlighted row
+      //   var $editButton = $highlighted.find('.editProductBtn');
+      //   if ($editButton.length) {
+      //     $editButton.click();
+      //   }
+      //   e.preventDefault();
+       }
     }
   });
+
 });
 
   </script> 
