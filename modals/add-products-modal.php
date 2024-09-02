@@ -327,6 +327,7 @@
 <!-- </div> -->
 <script>
 
+
   $('.express_add').off('click').on('click', function() {
     $('#express_add_modal').show();
     $('.express-entry').focus();

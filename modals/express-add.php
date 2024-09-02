@@ -69,6 +69,20 @@
         max-height: 200px;
     }
 
+    #search-results  {
+        padding-left: 10px;
+        padding-right: 10px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        z-index: 200;
+        background: #333;
+        border: none;
+        color: #ffff;
+        font-family: Century Gothic;
+    }
+
     /* .express-entry {
         max-width : 28.4vw;
         min-width : 28.4vw;
@@ -138,7 +152,6 @@
 <script>
 
     let selectedProdIndex = 0;
-
     function highlightSelectedResult(result, selected_result) {
         var p_color = 'var(--primary-color)';
         result.removeClass(selected_result).css('background-color', '');
