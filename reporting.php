@@ -501,7 +501,7 @@ body, html {
                   <div id="highlightDiv53" style="width: 100%"><a href="#" onclick=" highlightDiv(53)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-5 (Solo Parent)</span></a></div> 
                   <div id="highlightDiv54" style="width: 100%"><a href="#" onclick=" highlightDiv(54)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-6 (Medal of Valor)</span></a></div>           
+                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Medal of Valor</span></a></div>           
                   <!-- <div id="highlightDiv54" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(54)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                 </div> -->
@@ -2562,7 +2562,7 @@ function openModalDatePicker(){
 // USERS
 function generatePdf(id)
 {
-  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 55 || id == 56)
+  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 55 || id == 56)
   {
     $('#PDFBtn').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
@@ -2606,6 +2606,7 @@ function generatePdf(id)
         if(id === 51) e = 3;
         if(id === 52) e = 4;
         if(id === 53) e = 5;
+        if(id === 54) e = 6;
         $.ajax({
             url: './reports/generate_birE'+e+'Report_pdf.php',
             type: 'GET',
@@ -4162,6 +4163,8 @@ function generateExcel(id){
         if(id === 51) e = 3;
         if(id === 52) e = 4;
         if(id === 53) e = 5;
+        if(id === 54) e = 6;
+
       $.ajax({
           url: './reports/generate_birE'+e+'Report_excel.php',
           type: 'GET',
@@ -5634,7 +5637,8 @@ error: function(xhr, status, error) {
 }
 
 function printDocuments(id){
-  if(id==50 || id == 51 || id == 52 || id == 53 || id == 55 || id == 56){
+  
+  if(id==50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 55 || id == 56){
       $('#printDocu').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
@@ -5677,7 +5681,7 @@ function printDocuments(id){
         if(id === 52) e = 4;
         if(id === 53) e = 5;
         if(id === 55) e = 1;
-
+        if(id === 54) e = 6;
         $.ajax({
             url: './reports/generate_birE'+e+'Report_pdf.php',
             type: 'GET',
@@ -8251,9 +8255,8 @@ function showReports(id)
     })
   } 
 
-
   else if(id == 54) {
-    $('#showReport').off('click').on('click', function() {
+    $('#showReport').off('click').on('click', function(){
       $('#showReportsModal').show()
       if($('#showReportsModal').is(":visible"))
       {

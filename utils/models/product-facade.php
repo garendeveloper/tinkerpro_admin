@@ -40,7 +40,8 @@
         products.isSCEnabled as isSC,
         products.isPWDEnabled as isPWD,
         products.isNAACEnabled as isNAAC,
-        products.isSPEnabled as isSP
+        products.isSPEnabled as isSP,
+         products.isMOVEnabled as isMOV
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.prod_desc LIKE :searchQuery OR 
@@ -94,7 +95,8 @@
         products.isSCEnabled as isSC,
         products.isPWDEnabled as isPWD,
         products.isNAACEnabled as isNAAC,
-        products.isSPEnabled as isSP
+        products.isSPEnabled as isSP,
+         products.isMOVEnabled as isMOV
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id = :selectedProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -140,7 +142,8 @@
         products.isSCEnabled as isSC,
         products.isPWDEnabled as isPWD,
         products.isNAACEnabled as isNAAC,
-        products.isSPEnabled as isSP
+        products.isSPEnabled as isSP,
+         products.isMOVEnabled as isMOV
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.category_id= :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -185,7 +188,8 @@
         products.isSCEnabled as isSC,
         products.isPWDEnabled as isPWD,
         products.isNAACEnabled as isNAAC,
-        products.isSPEnabled as isSP
+        products.isSPEnabled as isSP,
+         products.isMOVEnabled as isMOV
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.variant_id= :selectedVariantroduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -230,7 +234,8 @@
         products.isSCEnabled as isSC,
         products.isPWDEnabled as isPWD,
         products.isNAACEnabled as isNAAC,
-        products.isSPEnabled as isSP
+        products.isSPEnabled as isSP,
+         products.isMOVEnabled as isMOV
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -276,7 +281,8 @@
         products.isSCEnabled as isSC,
         products.isPWDEnabled as isPWD,
         products.isNAACEnabled as isNAAC,
-        products.isSPEnabled as isSP
+        products.isSPEnabled as isSP,
+         products.isMOVEnabled as isMOV
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -322,7 +328,8 @@
         products.isSCEnabled as isSC,
         products.isPWDEnabled as isPWD,
         products.isNAACEnabled as isNAAC,
-        products.isSPEnabled as isSP
+        products.isSPEnabled as isSP,
+         products.isMOVEnabled as isMOV
     FROM products
     LEFT JOIN uom ON uom.id = products.uom_id WHERE 
         products.id= :selectedProduct AND products.category_id = :selectedCategoryProduct  AND products.variant_id = :selectedVariantProduct ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
@@ -369,7 +376,8 @@
         products.isSCEnabled as isSC,
         products.isPWDEnabled as isPWD,
         products.isNAACEnabled as isNAAC,
-        products.isSPEnabled as isSP
+        products.isSPEnabled as isSP,
+         products.isMOVEnabled as isMOV
     FROM products 
     LEFT JOIN uom ON uom.id = products.uom_id ORDER BY prod_desc ASC LIMIT  $offset, $recordsPerPage";
 
