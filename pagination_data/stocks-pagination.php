@@ -223,5 +223,73 @@
     }
 
     show_allStocksData(1);
+
+
+
+     
+ // for moving up and down using keyboard
+$(document).ready(function() {
+  // Handle row click to highlight
+  $(document).on("click", "#tbl_all_stocks tbody tr", function(e) {
+    e.preventDefault();
+    $(this).siblings().removeClass('highlightedss');
+    $(this).addClass('highlightedss');
+  });
+
+  // Handle keyboard navigation
+  $(document).on("keydown", function(e) {
+    var $highlighted = $("#tbl_all_stocks tbody tr.highlightedss");
+    if ($highlighted.length) {
+      var $next, $prev;
+      var $tableBody = $("#tbl_all_stocks tbody");
+      var $tableContainer = $("#responsive-data");
+      var tableBodyHeight = $tableBody.height();
+      var tableContainerHeight = $tableContainer.height();
+      var rowHeight = $highlighted.outerHeight();
+
+      if (e.key === "ArrowDown") {
+        // Move to the next row
+        $next = $highlighted.next('tr');
+        if ($next.length) {
+          $highlighted.removeClass('highlightedss');
+          $next.addClass('highlightedss');
+
+          // Scroll to the next row if needed
+          var nextOffsetTop = $next.position().top + $tableBody.scrollTop();
+          var visibleBottom = $tableBody.scrollTop() + tableBodyHeight;
+
+          if (nextOffsetTop > visibleBottom) {
+            $tableBody.scrollTop(nextOffsetTop - tableBodyHeight + rowHeight);
+          }
+
+          // Ensure horizontal scroll stays in sync
+          var nextOffsetLeft = $next.position().left + $tableBody.scrollLeft();
+          $tableContainer.scrollLeft(nextOffsetLeft - $tableContainer.width() / 2);
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        // Move to the previous row
+        $prev = $highlighted.prev('tr');
+        if ($prev.length) {
+          $highlighted.removeClass('highlightedss');
+          $prev.addClass('highlightedss');
+
+          // Scroll to the previous row if needed
+          var prevOffsetTop = $prev.position().top + $tableBody.scrollTop();
+          var visibleTop = $tableBody.scrollTop();  + tableBodyHeight;
+
+          if (prevOffsetTop < visibleTop) {
+            $tableBody.scrollTop(prevOffsetTop);
+          }
+
+          // Ensure horizontal scroll stays in sync
+          var prevOffsetLeft = $prev.position().left + $tableBody.scrollLeft();
+          $tableContainer.scrollLeft(prevOffsetLeft - $tableContainer.width() / 2);
+        }
+        e.preventDefault();
+      }
+    }
+  });
+});
    
 </script>

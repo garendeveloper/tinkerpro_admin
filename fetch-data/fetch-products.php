@@ -35,7 +35,7 @@ if ($fetchProduct->rowCount() > 0) {
         <td hidden class='text-center td-h'><span class="other"><?= $row['otherCharges'] ?></span><span class="displayOthers"><?= $row['displayOthers'] ?></span></td> 
         <td hidden class='text-center td-h'><span class="service"><?= $row['serviceCharge'] ?></span><span class="displayService"><?= $row['displayService'] ?></span></td>
         <td hidden class='text-center td-h'><span hidden class="isDiscounted"><?= $row['discounted'] ?></span><span hidden class="isTax"><?= $row['isVAT'] ?></span></td>
-        <td class='text-center td-h discountTypes' style="width: 5%"  data-isSC = "<?= $row['isSC']?>" data-isPWD = "<?= $row['isPWD']?>" data-isNAAC = "<?= $row['isNAAC']?>" data-isSP = "<?= $row['isSP']?>"><?= $counter?><span hidden class="productsId"><?= $row['id'] ?></span><span hidden class="oumId"><?= $row['uom_id'] ?></span></td>
+        <td class='text-center td-h discountTypes' style="width: 5%"  data-isSC = "<?= $row['isSC']?>" data-isPWD = "<?= $row['isPWD']?>" data-isNAAC = "<?= $row['isNAAC']?>" data-isSP = "<?= $row['isSP']?>"    ><?= $counter?><span hidden class="productsId"><?= $row['id'] ?></span><span hidden class="oumId"><?= $row['uom_id'] ?></span></td>
         <td class='productsName text-left td-h' style='padding-left: 10px; width: 20%' ><?= $row['prod_desc']?></td>
         <td class='barcode  td-h'  style='padding-left: 10px; width: 6%'><?= $row['barcode']?></td>
         <td class='sku text-center td-h'    style="width: 6%" ><?= $row['sku']?></td>
@@ -121,13 +121,90 @@ table tbody td {
 
 </style>
 <script>
-    function highlightBorder(element) {
-        var allTrs = document.querySelectorAll('tr');
-        allTrs.forEach(function(tr) {
-            tr.classList.remove('highlightedss');
-        });
+    // function highlightBorder(element) {
+    //     var allTrs = document.querySelectorAll('tr');
+    //     allTrs.forEach(function(tr) {
+    //         tr.classList.remove('highlightedss');
+    //     });
 
-        $('.highlighteds').removeClass('highlighteds');
-        element.classList.add('highlightedss');
+    //     $('.highlighteds').removeClass('highlighteds');
+    //     element.classList.add('highlightedss');
+    // }
+
+
+ // for moving up and down using keyboard
+$(document).ready(function() {
+  // Handle row click to highlight
+  $(document).on("click", "#recentusers tbody tr", function(e) {
+    e.preventDefault();
+    $(this).siblings().removeClass('highlightedss');
+    $(this).addClass('highlightedss');
+  });
+
+  // Handle keyboard navigation
+  $(document).on("keydown", function(e) {
+    var $highlighted = $("#recentusers tbody tr.highlightedss");
+    if ($highlighted.length) {
+      var $next, $prev;
+      var $tableBody = $("#recentusers tbody");
+      var $tableContainer = $("#responsive-data");
+      var tableBodyHeight = $tableBody.height();
+      var tableContainerHeight = $tableContainer.height();
+      var rowHeight = $highlighted.outerHeight();
+
+      if (e.key === "ArrowDown") {
+        // Move to the next row
+        $next = $highlighted.next('tr');
+        if ($next.length) {
+          $highlighted.removeClass('highlightedss');
+          $next.addClass('highlightedss');
+
+          // Scroll to the next row if needed
+          var nextOffsetTop = $next.position().top + $tableBody.scrollTop();
+          var visibleBottom = $tableBody.scrollTop() + tableBodyHeight;
+
+          if (nextOffsetTop > visibleBottom) {
+            $tableBody.scrollTop(nextOffsetTop - tableBodyHeight + rowHeight);
+          }
+
+          // Ensure horizontal scroll stays in sync
+          var nextOffsetLeft = $next.position().left + $tableBody.scrollLeft();
+          $tableContainer.scrollLeft(nextOffsetLeft - $tableContainer.width() / 2);
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        // Move to the previous row
+        $prev = $highlighted.prev('tr');
+        if ($prev.length) {
+          $highlighted.removeClass('highlightedss');
+          $prev.addClass('highlightedss');
+
+          // Scroll to the previous row if needed
+          var prevOffsetTop = $prev.position().top + $tableBody.scrollTop();
+          var visibleTop = $tableBody.scrollTop();  + tableBodyHeight;
+
+          if (prevOffsetTop < visibleTop) {
+            $tableBody.scrollTop(prevOffsetTop);
+          }
+
+          // Ensure horizontal scroll stays in sync
+          var prevOffsetLeft = $prev.position().left + $tableBody.scrollLeft();
+          $tableContainer.scrollLeft(prevOffsetLeft - $tableContainer.width() / 2);
+        }
+        e.preventDefault();
+      }else if (e.key === "Enter") {
+        // Trigger button click in the highlighted row
+        var $editButton = $highlighted.find('.editProductBtn');
+        if ($editButton.length) {
+          $editButton.click();
+        }
+        e.preventDefault();
+      }
     }
+  });
+
+
+});
+
+    
 </script>

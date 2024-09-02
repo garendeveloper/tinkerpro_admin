@@ -390,6 +390,7 @@
     $discount_sp = $formData['discount_sp'];
     $discount_naac = $formData['discount_naac'];
     $discount_pwd = $formData['discount_pwd'];
+    $discount_mov = $formData['discount_pwd'];
 
     $productname = $formData['productname'];
     $barcode = $formData['barcode'];
@@ -469,10 +470,10 @@
     }
 
     // Insert product information into the database
-    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty,is_stockable,stock_status,stock_count, isSCEnabled, isPWDEnabled, isNAACEnabled, isSPEnabled) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?, ?,?,?,? )';
+    $sql = 'INSERT INTO products(barcode, prod_desc, cost, markup, prod_price, isVAT, Description, sku, code, uom_id, is_discounted, is_taxIncluded, is_serviceCharge, is_otherCharges, is_srvcChrgeDisplay, is_othrChargeDisplay, status, productImage, brand, category_id, variant_id, category_details, is_BOM, is_warranty,is_stockable,stock_status,stock_count, isSCEnabled, isPWDEnabled, isNAACEnabled, isSPEnabled, isMOVEnabled) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?, ?,?,?,?,? )';
     $pdo = $this->connect();
     $stmt = $pdo->prepare($sql); 
-    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty,$stockable,$warning,$stockQuantity, $discount_sc, $discount_pwd, $discount_naac, $discount_sp]);
+    $stmt->execute([$barcode, $productname, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge, $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id, $var_id, $category_details, $bomStat, $warranty,$stockable,$warning,$stockQuantity, $discount_sc, $discount_pwd, $discount_naac, $discount_sp, $discount_mov]);
     $lastInsertId = $pdo->lastInsertId();
 
   
@@ -545,6 +546,9 @@ public function updateProduct($formData)
   $discount_sp = $formData['discount_sp'];
   $discount_naac = $formData['discount_naac'];
   $discount_pwd = $formData['discount_pwd'];
+  $discount_mov = $formData['discount_mov'];
+  
+  
 
 
   $productname = $formData['productname'] ?? null;
@@ -670,12 +674,13 @@ public function updateProduct($formData)
           isSCEnabled = ?,
           isPWDEnabled = ?,
           isNAACEnabled = ?,
-          isSPEnabled = ?
+          isSPEnabled = ?,
+          isMOVEnabled = ?
           WHERE id = ?';
 
   $stmt = $this->connect()->prepare($sql);
   $stmt->execute([$productname, $barcode, $cost, $markup, $sellingPrice, $vat, $description, $sku, $code, $oum_id, $discount, $display_tax, $service_charge,
-  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty,0,$stockable,$warning,$stockQuantity, $discount_sc, $discount_pwd, $discount_naac, $discount_sp, $id]);
+  $other_charges, $display_service_charge, $display_other_charges, $status, $fileName, $brand, $cat_id,$var_id, $category_details, $bomStat, $warranty,0,$stockable,$warning,$stockQuantity, $discount_sc, $discount_pwd, $discount_naac, $discount_sp,  $discount_mov, $id]);
   
   $bomData = $formData['productBOM'] ?? [];
   $updateData = [];

@@ -439,15 +439,21 @@ if (isset($_SESSION['user_id'])) {
 @media screen and (max-width: 1400px) {
      
      .d-flex{
-       zoom: 80%;
+       zoom: 90%;
      }
      
       .modal{
        zoom: 80%;
-       z-index: 9999;
+   
     
       }
-   
+   .modal-content{
+    height:1000px !important;
+   }
+    
+     
+    
+
       #tbl_expenses th:nth-child(1),
     #tbl_expenses th:nth-child(2),
     #tbl_expenses th:nth-child(3),
@@ -485,15 +491,35 @@ if (isset($_SESSION['user_id'])) {
       }
 
       .table-wrapper {
-    overflow-x: auto;
+        overflow-x: auto ;
+  overflow-y: hidden;
     -webkit-overflow-scrolling: touch; 
-    scrollbar-width: thin;
-    scrollbar-color: #555 ; 
+    scrollbar-color: #333 ; 
 }
+
+
+.table-wrapper::-webkit-scrollbar {
+    height: 5px !important; 
+}
+/* Track */
+.table-wrapper::-webkit-scrollbar-track {
+  background: #333; 
+
+}
+ 
+/* Handle */
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+
+
+
 
 #paginationDiv{
   zoom: 80%;
-  margin-top: 0px;
+  margin-top: 10px;
    z-index: 1000;
 }
 .printer{
@@ -502,10 +528,14 @@ if (isset($_SESSION['user_id'])) {
 
 #preview_records{
 zoom: 110%;
-margin-top: -15px;
+margin-top: -20px;
 font-weight: bold;
 }
 
+.btn-control{
+  margin-top: 2vh;
+ 
+}
        }
     
 
@@ -623,6 +653,52 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.focus();
   });
 });
+
+
+
+
+  // for moving up and down using keyboard
+  $(document).ready(function() {
+  // Handle row click to highlight
+  $(document).on("click", "#tbl_expenses tbody tr", function(e) {
+    e.preventDefault();
+    $(this).siblings().removeClass('highlighteds');
+    $(this).addClass('highlighteds');
+  });
+
+  // Handle keyboard navigation
+  $(document).on("keydown", function(e) {
+    var $highlighted = $("#tbl_expenses tbody tr.highlighteds");
+    if ($highlighted.length) {
+      var $next, $prev;
+      if (e.key === "ArrowDown") {
+        // Move to the next row
+        $next = $highlighted.next('tr');
+        if ($next.length) {
+          $highlighted.removeClass('highlighteds');
+          $next.addClass('highlighteds');
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        // Move to the previous row
+        $prev = $highlighted.prev('tr');
+        if ($prev.length) {
+          $highlighted.removeClass('highlighteds');
+          $prev.addClass('highlighteds');
+        }
+        e.preventDefault();
+      }else if (e.key === "Enter") {
+      
+      var $editButton = $highlighted.find('#add_expense_modal');
+      if ($editButton.length) {
+        $editButton.click();
+      }
+      e.preventDefault();
+    }
+    }
+  });
+});
+
 
 
 </script>

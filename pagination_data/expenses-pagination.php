@@ -80,13 +80,7 @@
     $("#responsive-data").html(tblData);
 
 
-// Add horizontal scroll on mouse wheel
-document.querySelector('.table-wrapper').addEventListener('wheel', function(e) {
-    if (e.deltaY !== 0) {
-        e.preventDefault();
-        this.scrollLeft += e.deltaY;
-    }
-});
+
 
     
  

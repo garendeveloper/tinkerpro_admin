@@ -88,5 +88,54 @@ $(document).ready(function() {
         $('.customer-modal').show(); 
     });
 });
+
+
+
+  // for moving up and down using keyboard
+  $(document).ready(function() {
+  // Handle row click to highlight
+  $(document).on("click", "#recentusers tbody tr", function(e) {
+    e.preventDefault();
+    $(this).siblings().removeClass('highlighteds');
+    $(this).addClass('highlighteds');
+  });
+
+  // Handle keyboard navigation
+  $(document).on("keydown", function(e) {
+    var $highlighted = $("#recentusers tbody tr.highlighteds");
+    if ($highlighted.length) {
+      var $next, $prev;
+      if (e.key === "ArrowDown") {
+        // Move to the next row
+        $next = $highlighted.next('tr');
+        if ($next.length) {
+          $highlighted.removeClass('highlighteds');
+          $next.addClass('highlighteds');
+        }
+        e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        // Move to the previous row
+        $prev = $highlighted.prev('tr');
+        if ($prev.length) {
+          $highlighted.removeClass('highlighteds');
+          $prev.addClass('highlighteds');
+        }
+        e.preventDefault();
+      } else if (e.key === "Enter") {
+      
+        var $editButton = $highlighted.find('.editCustomer');
+        if ($editButton.length) {
+          $editButton.click();
+        }
+        e.preventDefault();
+      }else if (e.key === "Escape" || e.key === "Esc") {
+        // Close userForm on Esc key press
+        closeAddingModal();
+        e.preventDefault();
+      }
+    }
+  });
+});
+
 </script>
 

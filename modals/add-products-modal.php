@@ -125,6 +125,10 @@
 
                               <label for="naac">PWD</label>
                               <input type="checkbox" id="discount_pwd" class="discountList" checked />
+
+                              <label for="mov">MOV</label>
+                              <input type="checkbox" id="discount_mov" class="discountList" checked />
+
                             </div>
                         </div>
                       </td>

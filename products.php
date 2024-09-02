@@ -131,7 +131,11 @@ if (isset($_SESSION['user_id'])) {
 
 /*   end for search bar css*/
 
-      
+   .paginationBtns{
+
+    margin-top: -100px;
+
+   }   
 
   @media screen and (max-width: 1400px) {
      
@@ -142,30 +146,57 @@ if (isset($_SESSION['user_id'])) {
    .modal{
     zoom: 90%;
    }
-   
+
+  
+   .modal-content{
+    height: 800px !important
+   }
+
+    #add_products_modal{
+      height: 1000px !important;
+     
+    }
+
+ 
+
  .card{
 
   width:100% !important;
   overflow: hidden !important;
+  height: 74vh !important;
  }
 
  .btn-control{
   zoom: 80%;
   margin-top: -60px;
  }
-
  #responsive-data {
-        width: 100%;  
-        overflow-x: auto; 
+    width: 100%;
+    overflow-x: auto; 
+    overflow-y: hidden; 
     -webkit-overflow-scrolling: touch; 
-    scrollbar-width: thin;
-    scrollbar-color: #333 ; 
-    }
+    max-height: 530px !important;
+}
+
+#responsive-data::-webkit-scrollbar {
+    height: 5px; 
+}
+
+
 
     #recentusers {
         width: 1700px; 
+       
     }
 
+    .paginactionClass{
+      zoom:80%;
+      bottom: 50px !important;
+    }
+    
+    .productHeader{
+      position: sticky;
+    }
   }
   
    
@@ -212,7 +243,7 @@ if (isset($_SESSION['user_id'])) {
           <div class="row">
             <div>
 
-              <div class="card p-0" style="height: 78vh; width: 100%; overflow: hidden">
+              <div class="card p-0" style="height: 77vh; width: 100%; overflow: hidden">
                 <!-- <div class="card-body" style="max-height: 80vh; border-radius: 0;"> -->
                   <?php include('errors.php'); ?>
 
@@ -253,7 +284,7 @@ if (isset($_SESSION['user_id'])) {
                 <!-- </div> -->
               </div>
               
-              <div id="paginationDiv" class="paginactionClass" style="position: absolute; bottom: 3px;"></div>
+              <div id="paginationDiv" class="paginactionClass" style="position: absolute; bottom: 33px;"></div>
          
               <div class="d-flex w-100 text-center justify-content-center" style="position: absolute; bottom: 0;">
                 <input type="file" id="fileImports" style="display: none;" accept=".csv, text/csv">
@@ -352,6 +383,18 @@ function openCategoryModal() {
     console.log('Category modal should now be visible');
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 $(document).ready(function() {
 
   var editClicked = false;
@@ -429,6 +472,7 @@ document.getElementById("fileImports").addEventListener("change", function(e) {
     console.error(error);
   });
 });
+
 
    $("#products").addClass('active');
     $("#pointer").html("Products");
@@ -950,6 +994,7 @@ $('#exportProducts').click(function() {
     var isPWD = discountTypes.getAttribute('data-isPWD');
     var isNAAC = discountTypes.getAttribute('data-isNAAC');
     var isSP = discountTypes.getAttribute('data-isSP');
+    var isMOV = discountTypes.getAttribute('data-isMOV');
 
     $('.highlighteds').removeClass('highlightedss');
     $('.highlightedss').removeClass('highlightedss');
@@ -958,7 +1003,7 @@ $('#exportProducts').click(function() {
 
     toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
-        stock_status,stock_count,  isSC, isPWD, isNAAC, isSP)
+        stock_status,stock_count,  isSC, isPWD, isNAAC, isSP, isMOV)
     }
 
     
