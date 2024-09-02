@@ -56,7 +56,7 @@ h4{
   justify-content: center; 
   text-align: center; 
   margin-left: 30px;
-  margin-top: 
+
 }
 .has-error{
     border: 1px solid red !important;
@@ -70,7 +70,7 @@ input::placeholder{
   <div class="modal-dialog modal-dialog-centered" >
     <div class="modal-content modal-logout" style = "background: #262626; height: 80px;">
       <div class = "modal-body" >
-        <h4 style = "color: #fffff; font-weight: bold">For security reason, please log back in</h4>
+        <h4 style = "color: #ffff">For security reason, please log back in</h4>
         <h4 style = "color: var(--primary-color); margin-top: -20px;">[<?= $_SESSION['first_name']." ".$_SESSION['last_name']?>]</h4>
         <h6 style = "color: #d3d3d3; margin-top: 30px;"></h6>
         <input type="password" id = "unlockPasswordTxt" placeholder = "Scan your ID or enter your password" style = "width: 380px; border: 1px solid #d3d3d3; background-color: grey;text-align: center" oninput = "$(this).removeClass('has-error'); $('.errorResponse').html('')" autocomplete = "off"/> 

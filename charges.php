@@ -192,7 +192,7 @@
                 <div class="charges-container" style="float: right">
                   <div class="inner-border p-2 d-flex">
                     <div class="col-8 charges-label pe-5">
-                        <label for="">NAAC</label>
+                        <label for="">NAAC and MOV</label>
                         <select name="" id="" class="mt-3 selectTypeAmount">
                           <option value="">Percentage</option>
                           <option value="">Fixed</option>

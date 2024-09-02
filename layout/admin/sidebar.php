@@ -327,6 +327,8 @@ if (isset($_SESSION['user_id'])) {
                 <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text dynamic-color">Users</span></a></li>
             <?php endif ?>
          
+            <li><a href="employee" id="employee"><i class="bi bi-people"></i>&nbsp;&nbsp; <span class="text dynamic-color">Employee</span></a></li>
+
             <?php if ($accessCoupon): ?>
             <li><a href="coupons" id="s_coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Coupons</span></a></li>

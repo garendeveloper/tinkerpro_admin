@@ -278,6 +278,7 @@ let deleteValidation = "false";
     var discount_sp = $("#discount_sp").is(":checked") ? 1 : 0;
     var discount_naac = $("#discount_naac").is(":checked") ? 1 : 0;
     var discount_pwd = $("#discount_pwd").is(":checked") ? 1 : 0;
+    var discount_mov = $("#discount_mov").is(":checked") ? 1 : 0;
 
 
     var formData = new FormData();
@@ -285,6 +286,7 @@ let deleteValidation = "false";
     formData.append("discount_sp", discount_sp);
     formData.append("discount_naac", discount_naac);
     formData.append("discount_pwd", discount_pwd);
+    formData.append("discount_mov", discount_mov);
     formData.append("uploadedImage", file);
     formData.append("productname", productname);
     formData.append("sku", sku);
@@ -383,7 +385,7 @@ let deleteValidation = "false";
 
   function toUpdateProducts(productId, productName, productSKU, productCode, productBarcode, productOUM, productuomid, productBrand, productCost, productMakup, productPrice,
     productStatus, isDiscounted, isTax, isTaxIncluded, serviceCharge, displayService, otherCharges, displayOtherCharges, status, image, desc, category, categoryid, variantid, isBOM, isWarranty,is_stockable,
-    stock_status,stock_count , isSC, isPWD, isNAAC, isSP) {
+    stock_status,stock_count , isSC, isPWD, isNAAC, isSP, isMOV) {
 
     $('#add_products_modal').show();
     productId ? document.getElementById('productid').value = productId : null;
@@ -403,6 +405,7 @@ let deleteValidation = "false";
     $("#discount_pwd").prop("checked", isPWD == 1);
     $("#discount_naac").prop("checked", isNAAC == 1);
     $("#discount_sp").prop("checked", isSP == 1);
+    $("#discount_mov").prop("checked", isMOV == 1);
 
     productSKU ? document.getElementById("skunNumber").value = productSKU : null;
     productCode ? document.getElementById("code").value = productCode : null;
@@ -581,6 +584,8 @@ let deleteValidation = "false";
   }
 
  
+
+  
   function updateProducts() {
     var p_id = document.getElementById('productid').value
     var productname = document.getElementById('productname').value;
@@ -673,12 +678,14 @@ let deleteValidation = "false";
     var discount_sp = $("#discount_sp").is(":checked") ? 1 : 0;
     var discount_naac = $("#discount_naac").is(":checked") ? 1 : 0;
     var discount_pwd = $("#discount_pwd").is(":checked") ? 1 : 0;
+    var discount_mov = $("#discount_mov").is(":checked") ? 1 : 0;
 
     var formData = new FormData();
     formData.append("discount_sc", discount_sc);
     formData.append("discount_sp", discount_sp);
     formData.append("discount_naac", discount_naac);
     formData.append("discount_pwd", discount_pwd);
+    formData.append("discount_mov", discount_mov);
     formData.append("uploadedImage", file);
     formData.append("productname", productname);
     formData.append("sku", sku);
@@ -751,12 +758,14 @@ let deleteValidation = "false";
           var discount_sp = $("#discount_sp").is(":checked") ? 1 : 0;
           var discount_naac = $("#discount_naac").is(":checked") ? 1 : 0;
           var discount_pwd = $("#discount_pwd").is(":checked") ? 1 : 0;
+          var discount_mov = $("#discount_mov").is(":checked") ? 1 : 0;
           var discountTypesElement = currentRow.querySelector('.discountTypes');
 
           discountTypesElement.setAttribute('data-isSC', discount_sc);
           discountTypesElement.setAttribute('data-isPWD', discount_pwd);
           discountTypesElement.setAttribute('data-isNAAC', discount_naac);
           discountTypesElement.setAttribute('data-isSP', discount_sp);
+          discountTypesElement.setAttribute('data-isMOV', discount_mov);
           
           currentRow.querySelector('.isDiscounted').innerText = isDiscounted;
           currentRow.querySelector('.service').innerText = s_charge;
@@ -975,19 +984,26 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
 }
 </style>
 
-<?php include ("./modals/lockscreen.php") ?>
-<?php include ("./modals/unlock-screen.php") ?>
+<?php include ("./modals/noriel-lockscreen.php") ?>
+<?php include ("./modals/noriel-unlockscreen.php") ?>
 
 <script>
+
+
     $(document).ready(function() {
       let inactivityTime = function () {
           let timer;
           let lockScreen = $('#lockscreen');
+          let modalfooter = $('#modalFooter');
 
           function resetTimer() {
               clearTimeout(timer);
               timer = setTimeout(function() {
+
+                console.log("Inactivity detected. Showing lock screen and modal footer.");
                   lockScreen.show(); 
+                  modalfooter.show(); 
+                 
                   disableRefresh();
               }, 300000); 
           }
@@ -1001,7 +1017,13 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
     $("#unlockscreen").fadeIn(100);
     $("#unlockPasswordTxt").focus();
     $("#unlockPasswordTxt").val("");
+
+    console.log("Hiding modal footer.");
+    $('#modalFooter').hide();
   }
+
+
+  
    $(document).on("keydown", "#lockscreen", function(event) {
         if (event.key === 'Enter') {
             openPasswordUnlock();
@@ -1010,7 +1032,10 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
     });
 
     $('.cancelT').on('click', function(){
+      console.log("Cancel button clicked. Opening password unlock screen.");
+      $('#modalFooter').hide();
       openPasswordUnlock();
+      
     })
     
     $(document).off("click").on("click", ".continueT", function(){
@@ -1019,9 +1044,26 @@ function modifiedMessageAlert(type, message, color, isButtonYes, isButtonCancel)
     })
 
 
-    $(document).on("click", "#unlockscreen #btnCancelUnlock", function(){
-      $("#unlockscreen").hide();
-    })
+    // $(document).on("click", "#unlockscreen #btnCancelUnlock", function(){
+    //   $("#unlockscreen").hide();
+    //   $('#lockscreen').show(); 
+    //   $('#modalFooter').show(); 
+     
+    // })
+
+    // Add Esc key functionality
+$(document).on("keydown", function(event) {
+    if (event.key === "Escape") {
+        console.log("Esc key pressed. Hiding unlock screen and showing lock screen.");
+        if ($("#unlockscreen").is(":visible")) {
+            $("#unlockscreen").hide();
+            $('#lockscreen').show(); 
+        
+        }
+    }
+});
+
+    
     function disableRefresh()
     {
       $(document).on("keydown", function(event){

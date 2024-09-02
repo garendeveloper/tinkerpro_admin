@@ -995,6 +995,7 @@ $('#exportProducts').click(function() {
     var isPWD = discountTypes.getAttribute('data-isPWD');
     var isNAAC = discountTypes.getAttribute('data-isNAAC');
     var isSP = discountTypes.getAttribute('data-isSP');
+    var isMOV = discountTypes.getAttribute('data-isMOV');
 
     $('.highlighteds').removeClass('highlightedss');
     $('.highlightedss').removeClass('highlightedss');
@@ -1003,7 +1004,7 @@ $('#exportProducts').click(function() {
 
     toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
-        stock_status,stock_count,  isSC, isPWD, isNAAC, isSP)
+        stock_status,stock_count,  isSC, isPWD, isNAAC, isSP, isMOV)
     }
 
     
