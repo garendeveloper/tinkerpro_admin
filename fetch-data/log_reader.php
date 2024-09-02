@@ -1,6 +1,6 @@
 <?php
     $ipAddress = gethostbyname(gethostname());
-    $remote_url = 'http://'.$ipAddress.'/tinkerpros/www/assets/logs/logs.txt';
+    $remote_url = 'http://192.168.0.116/tinkerpros/www/assets/logs/logs.txt';
 
     header("Access-Control-Allow-Origin: *"); 
     header("Access-Control-Allow-Methods: GET, OPTIONS");

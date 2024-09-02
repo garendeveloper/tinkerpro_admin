@@ -805,65 +805,16 @@ class BirFacade extends DBConnection {
         date_time_of_payment,
         VAT_EXEMPTS,
         vatable_price,
-        ROUND(
-          CASE 
-          WHEN customer_type = 'SP' THEN 0
-          ELSE vatable_price / 1.12
-          END, 2
-        ) AS VAT_SALES,
-
-        ROUND(
-            CASE 
-            WHEN customer_type = 'SP' THEN 0
-            ELSE (vatable_price / 1.12) * 0.12
-            END, 2
-        ) AS VAT_AMOUNT,
-
-        SUM(ROUND(
-            CASE 
-            WHEN (customer_type = 'SP') THEN
-            	(ROUND(vatable_price / 1.12, 2)) + nonVat
-            ELSE nonVat
-            END, 2
-        )) AS VAT_EXEMPT,
-       
-       SUM(
-        CASE
-            WHEN (customer_type = 'SP' OR customer_type = 'NAAC') THEN
-                ROUND((SP_NAAC_VAT_PRICE / 1.12) * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-        CASE
-            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) < 2500 THEN
-                ROUND(SC_PWD_VAT_PRICE * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-        CASE
-            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) >= 2500 THEN
-                ROUND(2500 * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-        CASE
-            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) >= 2500 AND ROUND(nonVat, 2) <> 0 THEN
-                ROUND(2500 * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-        CASE
-            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) < 2500 AND ROUND(nonVat, 2) <> 0 THEN
-                ROUND(nonVat * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-          
-        CASE
-            WHEN (customer_type = 'SP' OR customer_type = 'NAAC') AND ROUND(nonVat, 2) <> 0 THEN
-                ROUND(nonVat * (customer_discount / 100), 2)
-            ELSE 0
-        END  
-    	) AS CUSTOMER_DIS,
+        VAT_SALES,
+        VAT_AMOUNT,
+       	VAT_EXEMPT,
+    
+       CUSTOMER_DIS,
         change_amount,
         barcode
         FROM (
             SELECT 
+            		payments.sc_pwd_discount AS CUSTOMER_DIS,
                     users.first_name,
                     users.last_name,
                     customer.scOrPwdTIN,
@@ -892,6 +843,36 @@ class BirFacade extends DBConnection {
             		discounts.name AS customer_type,
                     discounts.discount_amount AS customer_discount,
                     payments.vatable_sales AS VAT_EXEMPTS,
+            
+                    SUM(ROUND(
+                        CASE 
+                        WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN 
+                        0
+                        WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
+                        ROUND((transactions.subtotal / 1.12),2)
+                        ELSE 0
+                        END, 2
+                    )) AS VAT_SALES,
+
+                    SUM(ROUND(
+                        CASE 
+                        WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN 
+                        0
+                        WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
+                        ROUND((transactions.subtotal / 1.12) * 0.12,2)
+                        ELSE 0
+                        END, 2
+                    )) AS VAT_AMOUNT,
+            
+                    SUM(ROUND(
+                        CASE 
+                        WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN
+                            ROUND((transactions.subtotal / 1.12), 2)
+                        WHEN products.isVAT = 0 THEN
+                            ROUND(transactions.subtotal, 2)
+                        ELSE 0
+                        END, 2
+                    )) AS VAT_EXEMPT, 
             
             		ROUND(
                         SUM(CASE WHEN products.isVAT = 1 AND (products.isSPEnabled = 1 OR products.isNAACEnabled = 1) THEN 

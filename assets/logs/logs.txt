@@ -17467,3 +17467,23 @@
 2024-08-30 13:48:28 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000061 Amount:₱ 30,000.00 
 2024-08-30 13:48:40 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000061 Supplier: GAISANO SUPERMARKET 
 2024-08-30 16:11:18 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-30 18:19:10 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-30 18:22:55 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-30 18:23:05 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000001 Amount:₱ 2,200.00 
+2024-08-30 18:23:27 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: METRO 
+2024-08-31 09:10:59 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-31 09:34:33 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-08-31 09:34:57 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Sample Product Barcode #:270212492225 
+2024-08-31 09:35:20 | Alexander Caones | 107 | 2 | Supplier | Alexander Caones Added supplier METRO 
+2024-08-31 09:36:11 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000001 Amount:₱ 12,000.00 
+2024-08-31 09:37:03 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: METRO 
+2024-08-31 09:37:24 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000068 Amount:₱ 24,000.00 
+2024-08-31 09:38:12 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000068 Supplier: METRO 
+2024-08-31 09:38:50 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Sample Product From: 200 To: 300 
+2024-08-31 09:39:30 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Sample Product From: 300 To: 300 
+2024-08-31 09:42:29 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Sample Product From: 300 To: 600 
+2024-09-01 16:44:44 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-09-01 16:47:42 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-09-02 17:54:44 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-02 18:03:56 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-09-02 18:04:00 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 

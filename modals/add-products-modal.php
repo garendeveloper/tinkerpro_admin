@@ -6,8 +6,9 @@
     <div class="modal-content product-modal">
       <!-- <div id="scrollable-data"> -->
       <div class="modal-title">
-        <div style="margin-top: 30px; margin-left: 20px">
+        <div class="d-flex justify-content-between mt-3" style="margin-left: 20px">
            <h5 class="text-custom modalHeaderTxt" id="modalHeaderTxt" style="color:var(--primary-color);">Add New Product</h5>
+           <button class="btn btn-secondary me-3 express_add">EXPRESS ADD</button>
         </div>
         <div class="warning-container">
           <div class="tableCard">
@@ -326,6 +327,10 @@
 <!-- </div> -->
 <script>
 
+  $('.express_add').off('click').on('click', function() {
+    $('#express_add_modal').show();
+    $('.express-entry').focus();
+  })
 
 // discount toogle
 $(document).on("change", "#discountToggle", function(e){

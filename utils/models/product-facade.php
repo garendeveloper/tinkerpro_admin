@@ -1418,10 +1418,14 @@ $dataValue =  $serviceValue/100;
   }
 
 
+  public function getAllCopyProducts() {
+    $pdo = $this->connect();
+    $product = $pdo->prepare('SELECT * FROM products_copy ORDER BY prod_desc ASC');
+    $product->execute();
+    $products = $product->fetchAll(PDO::FETCH_ASSOC);
 
-
-
-
+    echo json_encode($products);
+  }
 
 
   }  

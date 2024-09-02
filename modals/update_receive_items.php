@@ -64,19 +64,21 @@
 </div>
 
 
-
 <script>
-
+    var totalOnHand = 0;
+    var inputs_qty = 0; 
+    var totalUpdated = 0;
+    var PRODUCT_NAME = '';
     var data_to_update = [];
     function updateTotalQty() {
         var totalQty = 0;
         $('.received_items_row').each(function() {
             totalQty += parseFloat($(this).find('.update_qty_inputs').val()) || 0;
-            var totalOnHand = $('#totalOnHand').text();
-            var inputs_qty = $(this).find('.update_qty_inputs').val();
+            totalOnHand = parseFloat($('#totalOnHand').text());
+            inputs_qty = parseFloat($(this).find('.update_qty_inputs').val());
             var ids = $(this).data('receiveid');
             var product_id = $(this).data('prodid');
-
+            PRODUCT_NAME = $(this).data('prodname');
             var existingItem = data_to_update.find(item => item.ids === ids);
             if (existingItem) {
                 existingItem.inputs_qty = inputs_qty;
@@ -90,12 +92,15 @@
                 });
             }
         });
-
+        
         $('#UpdateQty').text(totalQty);
+        totalUpdated = totalQty;
+        
     }
 
     $(document).on('input', '.update_qty_inputs', function() {
         updateTotalQty();
+        
     });
 
     $('.quick_save').off('click').on('click', function() {
@@ -103,7 +108,9 @@
             'data_to_update' : data_to_update,
         })
         .then(function(res) {
-            console.log(res.data);
+            $('#update_received').hide();
+            insertLogs('Quick Inventory', "Quick inventory: "+PRODUCT_NAME + " From: "+totalOnHand + " To: "+totalUpdated);
+            show_sweetReponse('Quick inventory has been successfully saved!');
         })
         .catch(function(error) {
             console.log(error)

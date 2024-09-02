@@ -36,7 +36,6 @@ if (isset($_SESSION['user_id'])) {
 } else {
     header("Location: login.php");
     exit;
-
 }
 
   if (isset($_SESSION["user_id"])){
@@ -48,7 +47,6 @@ if (isset($_SESSION['user_id'])) {
   if (isset($_SESSION["last_name"])){
     $lastName = $_SESSION["last_name"];
   }
-
 
   // Redirect to login page if user has not been logged in
   if ($userId == 0) {
@@ -68,6 +66,7 @@ if (isset($_SESSION['user_id'])) {
 	}
 
   include('./modals/add-products-modal.php');
+  include('./modals/express-add.php');
   include('./modals/category_modal(noriel).php');
   include('./modals/add-bom.php');
   include('./modals/add-price-list.php');
