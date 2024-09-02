@@ -838,7 +838,7 @@ $('#exportProducts').click(function() {
 
         toUpdateProducts(productId,productName,productSKU,productCode,productBarcode,productOUM, productuomid,productBrand,productCost, productMakup, productPrice, productStatus, 
         isDiscounted,isTax,isTaxIncluded,serviceCharge,displayService,otherCharges,displayOtherCharges, status,image ,desc, category,categoryid,variantid,isBOM, isWarranty,is_stockable,
-        stock_status,stock_count, isSC, isPWD, isNAAC, isSP)
+        stock_status,stock_count, isSC, isPWD, isNAAC, isSP, isMOV)
     });
 
     $(document.body).off('click').on('click', '.deleteProducts', function() {
