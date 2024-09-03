@@ -313,8 +313,8 @@
                             }));
                         },
                         select: function (event, ui) {
-                            var selectedItem = ui.value;
-                            // $("#r_PONumbers").val(selectedItem);
+                            var selectedItem = ui.item.value;
+                            $("#r_PONumbers").val(selectedItem);
                             return false;
                         }
                     });

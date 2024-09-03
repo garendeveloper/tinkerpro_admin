@@ -660,10 +660,13 @@ class InventoryFacade extends DBConnection
     }
     public function save_quickInventory($formData)
     {
+        $pdo = $this->connect();
+        
         $tbl_data = json_decode($formData['tbl_data'], true);
         foreach($tbl_data as $row)
         {
             $inventory_id = $row['inventory_id'];
+            $received_id = $row['receive_id'];
             $qty_onhand = (float)$row['col_2'];
             $newqty = (float)$row['newqty'];
             date_default_timezone_set('Asia/Manila');
@@ -673,6 +676,9 @@ class InventoryFacade extends DBConnection
             $stmt->bindParam(":new_stock", $newqty); 
             $stmt->bindParam(":id", $inventory_id); 
             $stmt->execute();
+
+            $sql = $pdo->prepare("UPDATE `received_items` SET `qty_received`= ?,`transaction_qty`= ? WHERE id = ?");
+            $sql->execute([$newqty, $newqty, $received_id]);
             
             $currentStock = 0;
             $newqty = "+".$newqty;
@@ -800,7 +806,14 @@ class InventoryFacade extends DBConnection
     }
     public function get_productInfo($product)
     {
-        $sql = "SELECT *, isVat FROM products WHERE id = :id";
+        $sql = "SELECT 
+        products.*, products.isVat,
+        received_items.id AS received_ids
+        FROM products 
+        LEFT JOIN inventory ON products.id = inventory.product_id
+        LEFT JOIN received_items ON inventory.id = received_items.inventory_id
+        WHERE products.id = :id";
+
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(':id', $product, PDO::PARAM_STR);
         $stmt->execute();

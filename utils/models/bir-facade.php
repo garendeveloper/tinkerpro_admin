@@ -7,7 +7,7 @@ class BirFacade extends DBConnection {
         $pdo = $this->connect();
 
         $daily = "SELECT 
-            subquery.business_date_id,
+            subquery.paymentIds,
             all_data,
             z_read_date,
             first_receipt_num,
@@ -18,18 +18,21 @@ class BirFacade extends DBConnection {
             PWD_DIS,
             SP_DIS,
             NAAC_DIS,
+            MOV_DIS,
             CUSTOMER_DIS,
             VOID,
             VOID_DISCOUNT,
             VAT_ADJUST,
             VAT_SALES_ADJUST,
             VOID_NAAC_DISCOUNT,
+            VOID_MOV_DISCOUNT,
             VOID_PWD_DISCOUNT,
             VOID_SP_DISCOUNT,
             VOID_SC_DISCOUNT,
             VAT_SALES,
             VAT_AMOUNT,
-            VAT_EXEMPT
+            VAT_EXEMPT,
+            paymentIds
         FROM (
             SELECT
                 DATE(z_read.date_time) AS z_read_date,
@@ -37,6 +40,7 @@ class BirFacade extends DBConnection {
                 MIN(receipt.barcode) AS first_receipt_num,
                 MAX(receipt.barcode) AS last_receipt_num,
                 business_date.id AS business_date_id,
+            	payments.id AS paymentIds,
                 discounts.discount_amount AS customer_discount,
                 discounts.name AS customer_type,
                 transactions.receipt_id,
@@ -121,6 +125,14 @@ class BirFacade extends DBConnection {
                     END, 2
                 )) AS VOID_NAAC_DISCOUNT,
             
+            	SUM(DISTINCT ROUND(
+                    CASE 
+                        WHEN transactions.is_void = 2 AND discounts.name = 'MOV' THEN
+                            payments.sc_pwd_discount
+                        ELSE 0
+                    END, 2
+                )) AS VOID_MOV_DISCOUNT,
+            
             	SUM(ROUND(
                     CASE 
                         WHEN transactions.is_void = 2 THEN
@@ -178,6 +190,12 @@ class BirFacade extends DBConnection {
                         payments.sc_pwd_discount
                     ELSE 0
                 END) AS SP_DIS,
+            
+            	SUM(DISTINCT CASE
+                    WHEN discounts.name = 'MOV' THEN
+                        payments.sc_pwd_discount
+                    ELSE 0
+                END) AS MOV_DIS,
 
                 ROUND(
                 SUM(CASE 
@@ -217,9 +235,9 @@ class BirFacade extends DBConnection {
             INNER JOIN business_date ON business_date.id = payments.business_date_id
             LEFT JOIN z_read ON z_read.id = business_date.z_read_id
             
-            GROUP BY business_date.id
+            GROUP BY payments.id
         ) AS subquery
-        GROUP BY subquery.business_date_id";
+        GROUP BY subquery.paymentIds";
 
         $dailyReport = $pdo->prepare($daily);
         $dailyReport->execute();
@@ -245,6 +263,7 @@ class BirFacade extends DBConnection {
         refunded.otherDetails,
         refunded.payment_id,
         receipt.barcode,
+        payments.id AS paymentIds,
         payments.payment_amount,
         payments.change_amount,
         products.isVAT,
@@ -274,6 +293,12 @@ class BirFacade extends DBConnection {
             	JSON_UNQUOTE(JSON_EXTRACT(refunded.otherDetails, '$[0].discount'))
             ELSE 0
         END,2)) AS NAAC_DIS,
+
+        SUM(DISTINCT ROUND(CASE
+        	WHEN discounts.name = 'MOV' THEN
+            	JSON_UNQUOTE(JSON_EXTRACT(refunded.otherDetails, '$[0].discount'))
+            ELSE 0
+        END,2)) AS MOV_DIS,
 
         JSON_UNQUOTE(JSON_EXTRACT(refunded.otherDetails, '$[0].discount')) AS customer_discount,
             SUM( DISTINCT CASE
@@ -316,7 +341,7 @@ class BirFacade extends DBConnection {
             INNER JOIN discounts ON discounts.id = users.discount_id
             INNER JOIN receipt ON receipt.id = t.receipt_id
             INNER JOIN products ON products.id = refunded.prod_id
-       	GROUP BY payments.business_date_id";
+       	GROUP BY payments.id";
 
         $refundedSql = $pdo->prepare($refund_transactions);
         $refundedSql->execute();
@@ -344,6 +369,7 @@ class BirFacade extends DBConnection {
         payments.change_amount,
         products.isVAT,
         payments.business_date_id,
+        payments.id AS paymentIds,
         discounts.name AS customerType,
 
         SUM(DISTINCT ROUND(CASE
@@ -369,6 +395,12 @@ class BirFacade extends DBConnection {
             	JSON_UNQUOTE(JSON_EXTRACT(return_exchange.otherDetails, '$[0].discount'))
             ELSE 0
         END,2)) AS NAAC_DIS,
+
+        SUM(DISTINCT ROUND(CASE
+        	WHEN discounts.name = 'MOV' THEN
+            	JSON_UNQUOTE(JSON_EXTRACT(return_exchange.otherDetails, '$[0].discount'))
+            ELSE 0
+        END,2)) AS MOV_DIS,
 
         JSON_UNQUOTE(JSON_EXTRACT(return_exchange.otherDetails, '$[0].discount')) AS customer_discount,
             SUM( DISTINCT CASE
@@ -411,7 +443,7 @@ class BirFacade extends DBConnection {
             INNER JOIN discounts ON discounts.id = users.discount_id
             INNER JOIN receipt ON receipt.id = t.receipt_id
             INNER JOIN products ON products.id = return_exchange.product_id
-       	GROUP BY payments.business_date_id";
+       	GROUP BY payments.id";
 
         $returndSql = $pdo->prepare($returnTransaction);
         $returndSql->execute();
@@ -440,12 +472,12 @@ class BirFacade extends DBConnection {
 
         $return_map = [];
         foreach ($returnResult as $returns) {
-            $return_map[$returns['business_date_id']] = $returns;
+            $return_map[$returns['paymentIds']] = $returns;
         }
 
         $refunded_map = [];
         foreach ($refundedResult as $refunded) {
-            $refunded_map[$refunded['business_date_id']] = $refunded;
+            $refunded_map[$refunded['paymentIds']] = $refunded;
         }
 
         $result = [];
@@ -453,6 +485,7 @@ class BirFacade extends DBConnection {
             $z_read_data_report = $daily['all_data'];
             $z_read_date = $daily['z_read_date'];
             $business_date = $daily['business_date_id'];
+            $PAYMENT_ID = $daily['paymentIds'];
             $VOID = $daily['VOID'];
             $totalVoid = ($daily['VOID'] - $daily['VOID_DISCOUNT']);
             $paidAmount = $daily['paidAmount'];
@@ -461,6 +494,7 @@ class BirFacade extends DBConnection {
             $pwd_discount = $daily['PWD_DIS'] - $daily['VOID_PWD_DISCOUNT'];
             $naac_discount = $daily['NAAC_DIS'] - $daily['VOID_NAAC_DISCOUNT'];
             $sp_discount = $daily['SP_DIS'] - $daily['VOID_SP_DISCOUNT'];
+            $mov_discount = $daily['MOV_DIS'] - $daily['VOID_MOV_DISCOUNT'];
             $totalCustomerDiscount = (float)$daily['CUSTOMER_DIS'] - (float)$daily['VOID_DISCOUNT'];
 
             $VOID_DISCOUNT = $daily['VOID_DISCOUNT'];
@@ -469,6 +503,7 @@ class BirFacade extends DBConnection {
             $VOID_PWD_DISCOUNT = (float)$daily['VOID_PWD_DISCOUNT'];
             $VOID_SP_DISCOUNT = (float)$daily['VOID_SP_DISCOUNT'];
             $VOID_NAAC_DISCOUNT = (float)$daily['VOID_NAAC_DISCOUNT'];
+            $VOID_MOV_DISCOUNT = (float)$daily['VOID_MOV_DISCOUNT'];
 
             $VOID_ADJUST = $daily['VAT_ADJUST'];
             $VOID_SALES_ADJUST = $daily['VAT_SALES_ADJUST'];
@@ -487,6 +522,8 @@ class BirFacade extends DBConnection {
             $sp_ref_ret_void_discount = 0;
             $naac_ref_ret_void_discount = 0;
             $pwd_ref_ret_void_discount = 0;
+            $mov_ref_ret_void_discount = 0;
+
             $VAT_ADJUST = 0;
             $TOTAL_DEDUCTION = 0;
             $PRESENT_ACC_SALES = 0;
@@ -495,66 +532,73 @@ class BirFacade extends DBConnection {
             $pwd_ref_ret_void_discount += $VOID_PWD_DISCOUNT;
             $sp_ref_ret_void_discount += $VOID_SP_DISCOUNT;
             $naac_ref_ret_void_discount += $VOID_NAAC_DISCOUNT;
-            $total_Ref_Ret_amount = 0;
+            $mov_ref_ret_void_discount += $VOID_MOV_DISCOUNT;
 
-            if (isset($refunded_map[$business_date])) {
-                $total_Ref_Ret_amount += (floatval($refunded_map[$business_date]['totalRefunded']));
-                $totalAmount -= (floatval($refunded_map[$business_date]['totalRefunded']));
-                if ($refunded_map[$business_date]['customerType'] == 'SC') {
-                    $sc_discount -= max(0, $refunded_map[$business_date]['SC_DIS']);
-                    $sc_ref_ret_void_discount += $refunded_map[$business_date]['SC_DIS'];
-                } else if ($refunded_map[$business_date]['customerType'] == 'SP') {
-                    $sp_discount -= max(0, $refunded_map[$business_date]['SP_DIS']);
-                    $sp_ref_ret_void_discount += $refunded_map[$business_date]['SP_DIS'];
-                } else if ($refunded_map[$business_date]['customerType'] == 'NAAC') {
-                    $naac_discount -= max(0, $refunded_map[$business_date]['NAAC_DIS']);
-                    $naac_ref_ret_void_discount += $refunded_map[$business_date]['NAAC_DIS'];
-                } else if ($refunded_map[$business_date]['customerType'] == 'PWD') {
-                    $pwd_discount -= max(0, $refunded_map[$business_date]['PWD_DIS']);
-                    $pwd_ref_ret_void_discount += $refunded_map[$business_date]['PWD_DIS'];
+            $total_Ref_Ret_amount = 0;
+            
+            if (isset($refunded_map[$PAYMENT_ID])) {
+                $total_Ref_Ret_amount += (floatval($refunded_map[$PAYMENT_ID]['totalRefunded']));
+                $totalAmount -= (floatval($refunded_map[$PAYMENT_ID]['totalRefunded']));
+                if ($refunded_map[$PAYMENT_ID]['customerType'] == 'SC') {
+                    $sc_discount -= max(0, $refunded_map[$PAYMENT_ID]['SC_DIS']);
+                    $sc_ref_ret_void_discount += $refunded_map[$PAYMENT_ID]['SC_DIS'];
+                } else if ($refunded_map[$PAYMENT_ID]['customerType'] == 'SP') {
+                    $sp_discount -= max(0, $refunded_map[$PAYMENT_ID]['SP_DIS']);
+                    $sp_ref_ret_void_discount += $refunded_map[$PAYMENT_ID]['SP_DIS'];
+                } else if ($refunded_map[$PAYMENT_ID]['customerType'] == 'NAAC') {
+                    $naac_discount -= max(0, $refunded_map[$PAYMENT_ID]['NAAC_DIS']);
+                    $naac_ref_ret_void_discount += $refunded_map[$PAYMENT_ID]['NAAC_DIS'];
+                } else if ($refunded_map[$PAYMENT_ID]['customerType'] == 'PWD') {
+                    $pwd_discount -= max(0, $refunded_map[$PAYMENT_ID]['PWD_DIS']);
+                    $pwd_ref_ret_void_discount += $refunded_map[$PAYMENT_ID]['PWD_DIS'];
+                } else if ($refunded_map[$PAYMENT_ID]['customerType'] == 'MOV') {
+                    $mov_discount -= max(0, $refunded_map[$PAYMENT_ID]['MOV_DIS']);
+                    $mov_ref_ret_void_discount += $refunded_map[$PAYMENT_ID]['MOV_DIS'];
                 }
                 
-                $totalCustomerDiscount -= $refunded_map[$business_date]['customer_discount'];
-                $total_Ref_CustomerDiscount = $refunded_map[$business_date]['customer_discount'];
+                $totalCustomerDiscount -= $refunded_map[$PAYMENT_ID]['customer_discount'];
+                $total_Ref_CustomerDiscount = $refunded_map[$PAYMENT_ID]['customer_discount'];
 
-                $VAT_SALES -= $refunded_map[$business_date]['totalVatSales'];
-                $VAT_SALES_REF_RETURN = $refunded_map[$business_date]['totalVatSales'];
+                $VAT_SALES -= $refunded_map[$PAYMENT_ID]['totalVatSales'];
+                $VAT_SALES_REF_RETURN = $refunded_map[$PAYMENT_ID]['totalVatSales'];
 
-                $VAT_AMOUNT -= $refunded_map[$business_date]['VAT'];
-                $VAT_AMOUNT_REF_RET += $refunded_map[$business_date]['VAT'];
+                $VAT_AMOUNT -= $refunded_map[$PAYMENT_ID]['VAT'];
+                $VAT_AMOUNT_REF_RET += $refunded_map[$PAYMENT_ID]['VAT'];
 
-                $VAT_EXEMPT -= $refunded_map[$business_date]['vatExempt'];
+                $VAT_EXEMPT -= $refunded_map[$PAYMENT_ID]['vatExempt'];
                 $VAT_ADJUST = $VAT_AMOUNT_REF_RET;
             }
 
-
-            if (isset($return_map[$business_date])) {
-                $total_Ref_Ret_amount += (floatval($return_map[$business_date]['totalReturn']));
-                $totalAmount -= (floatval($return_map[$business_date]['totalReturn']));
-                if ($return_map[$business_date]['customerType'] == 'SC') {
-                    $sc_discount -= $return_map[$business_date]['SC_DIS'];
-                    $sc_ref_ret_void_discount += $return_map[$business_date]['SC_DIS'];
-                } else if ($return_map[$business_date]['customerType'] == 'SP') {
-                    $sp_discount -= $return_map[$business_date]['SP_DIS'];
-                    $sp_ref_ret_void_discount += $return_map[$business_date]['SP_DIS'];
-                } else if ($return_map[$business_date]['customerType'] == 'NAAC') {
-                    $naac_discount -= $return_map[$business_date]['NAAC_DIS'];
-                    $naac_ref_ret_void_discount += $return_map[$business_date]['NAAC_DIS'];
-                } else if ($return_map[$business_date]['customerType'] == 'PWD') {
-                    $pwd_discount -= $return_map[$business_date]['PWD_DIS'];
-                    $pwd_ref_ret_void_discount += $return_map[$business_date]['PWD_DIS'];
+            if (isset($return_map[$PAYMENT_ID])) {
+                $total_Ref_Ret_amount += (floatval($return_map[$PAYMENT_ID]['totalReturn']));
+                $totalAmount -= (floatval($return_map[$PAYMENT_ID]['totalReturn']));
+                if ($return_map[$PAYMENT_ID]['customerType'] == 'SC') {
+                    $sc_discount -= $return_map[$PAYMENT_ID]['SC_DIS'];
+                    $sc_ref_ret_void_discount += $return_map[$PAYMENT_ID]['SC_DIS'];
+                } else if ($return_map[$PAYMENT_ID]['customerType'] == 'SP') {
+                    $sp_discount -= $return_map[$PAYMENT_ID]['SP_DIS'];
+                    $sp_ref_ret_void_discount += $return_map[$PAYMENT_ID]['SP_DIS'];
+                } else if ($return_map[$PAYMENT_ID]['customerType'] == 'NAAC') {
+                    $naac_discount -= $return_map[$PAYMENT_ID]['NAAC_DIS'];
+                    $naac_ref_ret_void_discount += $return_map[$PAYMENT_ID]['NAAC_DIS'];
+                } else if ($return_map[$PAYMENT_ID]['customerType'] == 'PWD') {
+                    $pwd_discount -= $return_map[$PAYMENT_ID]['PWD_DIS'];
+                    $pwd_ref_ret_void_discount += $return_map[$PAYMENT_ID]['PWD_DIS'];
+                } else if ($return_map[$PAYMENT_ID]['customerType'] == 'MOV') {
+                    $mov_discount -= $return_map[$PAYMENT_ID]['MOV_DIS'];
+                    $mov_ref_ret_void_discount += $return_map[$PAYMENT_ID]['MOV_DIS'];
                 }
                 
-                $totalCustomerDiscount -= $return_map[$business_date]['customer_discount'];
-                $total_Ref_CustomerDiscount = $return_map[$business_date]['customer_discount'];
+                $totalCustomerDiscount -= $return_map[$PAYMENT_ID]['customer_discount'];
+                $total_Ref_CustomerDiscount = $return_map[$PAYMENT_ID]['customer_discount'];
 
-                $VAT_SALES -= $return_map[$business_date]['totalVatSales'];
-                $VAT_SALES_REF_RETURN = $return_map[$business_date]['totalVatSales'];
+                $VAT_SALES -= $return_map[$PAYMENT_ID]['totalVatSales'];
+                $VAT_SALES_REF_RETURN = $return_map[$PAYMENT_ID]['totalVatSales'];
 
-                $VAT_AMOUNT -= $return_map[$business_date]['VAT'];
-                $VAT_AMOUNT_REF_RET += $return_map[$business_date]['VAT'];
+                $VAT_AMOUNT -= $return_map[$PAYMENT_ID]['VAT'];
+                $VAT_AMOUNT_REF_RET += $return_map[$PAYMENT_ID]['VAT'];
 
-                $VAT_EXEMPT -= $return_map[$business_date]['vatExempt'];
+                $VAT_EXEMPT -= $return_map[$PAYMENT_ID]['vatExempt'];
                 $VAT_ADJUST += $VAT_AMOUNT_REF_RET;
             }
             $z_read_data = [];
@@ -571,37 +615,70 @@ class BirFacade extends DBConnection {
                 var_dump($previous_acc_sales['prev_acc_sales']);
                 $prev_acc_sales = $previous_acc_sales['prev_acc_sales'];
             }
-            
+
+
             $result[] = [
-                'DATE' => ($z_read_data_report) ? $z_read_date : date('Y-m-d'),
-                'PREVIOUS_ACC_SALES' => ($z_read_data_report) ? $z_read_data['previous_accumulated_sale'] : number_format(max(0, $prev_acc_sales), 2), 
-                'PRESENT_ACC_SALES' => ($z_read_data_report) ? $z_read_data['present_accumulated_sale'] : number_format(max(0, ($totalAmount - $totalCustomerDiscount) + $prev_acc_sales), 2),
-                'less_discount' => ($z_read_data_report) ? $totalDeduction : number_format($totalCustomerDiscount, 2),
-                'VOID' => ($z_read_data_report) ? $z_read_data['void'] : number_format($VOID - $VOID_DISCOUNT, 2),
-                'totalReturn' => ($z_read_data_report) ? ($z_read_data['refund'] + $z_read_data['return']) : number_format($total_Ref_Ret_amount, 2),
-                'BEG_SI' => ($z_read_data_report) ? $z_read_data['beg_si'] : $BEG_SI,
-                'END_SI' => ($z_read_data_report) ? $z_read_data['end_si'] : $END_SI,
-                'subtotal' => ($z_read_data_report) ? $z_read_data['gross_amount'] : number_format($totalAmount, 2),
-                'sc_discount' => ($z_read_data_report) ? $z_read_data['senior_discount'] : number_format($sc_discount, 2),
-                'sp_discount' => ($z_read_data_report) ? $z_read_data['solo_parent_discount'] : number_format($sp_discount, 2),
-                'naac_discount' => ($z_read_data_report) ? $z_read_data['naac_discount'] : number_format($naac_discount, 2),
-                'pwd_discount' => ($z_read_data_report) ? $z_read_data['pwd_discount'] : number_format($pwd_discount, 2),
-                'VAT_SALES' => ($z_read_data_report) ? $z_read_data['vatable_sales'] : number_format((float)$VAT_SALES - (float)$VOID_SALES_ADJUST, 2),
-                'VAT_AMOUNT' => ($z_read_data_report) ? $z_read_data['vat_amount'] : number_format((float)$VAT_AMOUNT - (float)$VOID_ADJUST, 2),
-                'VAT_EXEMPT' => ($z_read_data_report) ? $z_read_data['vat_exempt'] : number_format($VAT_EXEMPT, 2),
+                'DATE' => date('Y-m-d'),
+                'PREVIOUS_ACC_SALES' => number_format(max(0, 0), 2), 
+                'PRESENT_ACC_SALES' => number_format(max(0, 0), 2),
+                'less_discount' => number_format($totalCustomerDiscount, 2),
+                'VOID' => number_format($VOID - $VOID_DISCOUNT, 2),
+                'totalReturn' => number_format($total_Ref_Ret_amount, 2),
+                'BEG_SI' => $BEG_SI,
+                'END_SI' => $END_SI,
+                'subtotal' => number_format($totalAmount, 2),
+                'sc_discount' => number_format($sc_discount, 2),
+                'sp_discount' => number_format($sp_discount, 2),
+                'naac_discount' => number_format($naac_discount, 2),
+                'mov_discount' => number_format($mov_discount, 2),
+                'pwd_discount' => number_format($pwd_discount, 2),
+                'VAT_SALES' => number_format((float)$VAT_SALES - (float)$VOID_SALES_ADJUST, 2),
+                'VAT_AMOUNT' => number_format((float)$VAT_AMOUNT - (float)$VOID_ADJUST, 2),
+                'VAT_EXEMPT' => number_format($VAT_EXEMPT, 2),
                 'sc_ref_ret_void_discount' => number_format($sc_ref_ret_void_discount, 2),
                 'sp_ref_ret_void_discount' => number_format($sp_ref_ret_void_discount, 2),
                 'naac_ref_ret_void_discount' => number_format($naac_ref_ret_void_discount, 2),
                 'pwd_ref_ret_void_discount' => number_format($pwd_ref_ret_void_discount, 2),
                 'total_Ref_CustomerDiscount' => number_format($total_Ref_CustomerDiscount, 2),
                 'VAT_SALES_REF_RETURN' => number_format($VAT_SALES_REF_RETURN, 2),
-                'VAT_AMOUNT_REF_RET' => ($z_read_data_report) ? ($z_read_data['total_void_vat'] + $z_read_data['vat_refunded'] + $z_read_data['vat_return']) : number_format($VAT_AMOUNT_REF_RET + $VOID_ADJUST, 2),
+                'VAT_AMOUNT_REF_RET' => number_format($VAT_AMOUNT_REF_RET + $VOID_ADJUST, 2),
                 'VAT_ADJUST' => number_format($VAT_ADJUST, 2),
-                'Z_READ_COUNT' => ($z_read_data_report) ? $z_read_data['zReadCounter'] : null,
-                'RESET_COUNT' => ($z_read_data_report) ? $z_read_data['resetCount'] : null,
-                'SHORT_OVER' => ($z_read_data_report) ? $z_read_data['short_or_over'] : null,
-                'NET' => ($z_read_data_report) ? $z_read_data['net_amount'] : number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST), 2),
+                'Z_READ_COUNT' => null,
+                'RESET_COUNT' => null,
+                'SHORT_OVER' => null,
+                'NET' => max(0, number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST), 2)),
             ];
+            
+            // $result[] = [
+            //     'DATE' => ($z_read_data_report) ? $z_read_date : date('Y-m-d'),
+            //     'PREVIOUS_ACC_SALES' => ($z_read_data_report) ? $z_read_data['previous_accumulated_sale'] : number_format(max(0, $prev_acc_sales), 2), 
+            //     'PRESENT_ACC_SALES' => ($z_read_data_report) ? $z_read_data['present_accumulated_sale'] : number_format(max(0, ($totalAmount - $totalCustomerDiscount) + $prev_acc_sales), 2),
+            //     'less_discount' => ($z_read_data_report) ? $totalDeduction : number_format($totalCustomerDiscount, 2),
+            //     'VOID' => ($z_read_data_report) ? $z_read_data['void'] : number_format($VOID - $VOID_DISCOUNT, 2),
+            //     'totalReturn' => ($z_read_data_report) ? ($z_read_data['refund'] + $z_read_data['return']) : number_format($total_Ref_Ret_amount, 2),
+            //     'BEG_SI' => ($z_read_data_report) ? $z_read_data['beg_si'] : $BEG_SI,
+            //     'END_SI' => ($z_read_data_report) ? $z_read_data['end_si'] : $END_SI,
+            //     'subtotal' => ($z_read_data_report) ? $z_read_data['gross_amount'] : number_format($totalAmount, 2),
+            //     'sc_discount' => ($z_read_data_report) ? $z_read_data['senior_discount'] : number_format($sc_discount, 2),
+            //     'sp_discount' => ($z_read_data_report) ? $z_read_data['solo_parent_discount'] : number_format($sp_discount, 2),
+            //     'naac_discount' => ($z_read_data_report) ? $z_read_data['naac_discount'] : number_format($naac_discount, 2),
+            //     'pwd_discount' => ($z_read_data_report) ? $z_read_data['pwd_discount'] : number_format($pwd_discount, 2),
+            //     'VAT_SALES' => ($z_read_data_report) ? $z_read_data['vatable_sales'] : number_format((float)$VAT_SALES - (float)$VOID_SALES_ADJUST, 2),
+            //     'VAT_AMOUNT' => ($z_read_data_report) ? $z_read_data['vat_amount'] : number_format((float)$VAT_AMOUNT - (float)$VOID_ADJUST, 2),
+            //     'VAT_EXEMPT' => ($z_read_data_report) ? $z_read_data['vat_exempt'] : number_format($VAT_EXEMPT, 2),
+            //     'sc_ref_ret_void_discount' => number_format($sc_ref_ret_void_discount, 2),
+            //     'sp_ref_ret_void_discount' => number_format($sp_ref_ret_void_discount, 2),
+            //     'naac_ref_ret_void_discount' => number_format($naac_ref_ret_void_discount, 2),
+            //     'pwd_ref_ret_void_discount' => number_format($pwd_ref_ret_void_discount, 2),
+            //     'total_Ref_CustomerDiscount' => number_format($total_Ref_CustomerDiscount, 2),
+            //     'VAT_SALES_REF_RETURN' => number_format($VAT_SALES_REF_RETURN, 2),
+            //     'VAT_AMOUNT_REF_RET' => ($z_read_data_report) ? ($z_read_data['total_void_vat'] + $z_read_data['vat_refunded'] + $z_read_data['vat_return']) : number_format($VAT_AMOUNT_REF_RET + $VOID_ADJUST, 2),
+            //     'VAT_ADJUST' => number_format($VAT_ADJUST, 2),
+            //     'Z_READ_COUNT' => ($z_read_data_report) ? $z_read_data['zReadCounter'] : null,
+            //     'RESET_COUNT' => ($z_read_data_report) ? $z_read_data['resetCount'] : null,
+            //     'SHORT_OVER' => ($z_read_data_report) ? $z_read_data['short_or_over'] : null,
+            //     'NET' => ($z_read_data_report) ? $z_read_data['net_amount'] : number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST), 2),
+            // ];
             
             
         }
@@ -711,6 +788,7 @@ class BirFacade extends DBConnection {
                 $pwd_discount = $ZReadData->pwd_discount;
                 $naac_discount = $ZReadData->naac_discount;
                 $solo_parent_discount = $ZReadData->solo_parent_discount;
+                $mov_discount = $ZReadData->mov_discount;
 
                 $sc_discount_ret_ref_void = $ZReadData->sc_ret_ref_void_dis;
                 $pwd_discount_ret_ref_void = $ZReadData->pwd_ret_ref_void_dis;
@@ -721,7 +799,7 @@ class BirFacade extends DBConnection {
                 $returns =  $ZReadData->return;
                 $refunds =  $ZReadData->refund;
                 $voids = $ZReadData->void;
-                $totalDeductions = ($ZReadData->senior_discount + $ZReadData->pwd_discount + $ZReadData->naac_discount + $solo_parent_discount + $other_discount + $ZReadData->void + $returns + $refunds);
+                $totalDeductions = ($ZReadData->senior_discount + $ZReadData->pwd_discount + $ZReadData->naac_discount + $solo_parent_discount + $mov_discount + $other_discount + $ZReadData->void + $returns + $refunds);
                 $z_counter = $ZReadData->zReadCounter;
                 $void_vat = (float)$ZReadData->total_void_vat;
                 $returnd_vat = (float)$ZReadData->vat_return;
@@ -745,11 +823,13 @@ class BirFacade extends DBConnection {
                     'pwd_discount' => $pwd_discount,
                     'naac_discount' => $naac_discount,
                     'solo_parent_discount' => $solo_parent_discount,
+                    'mov_discount' => $mov_discount,
 
                     'sc_discount_ret_ref_void' => $sc_discount_ret_ref_void,
                     'pwd_discount_ret_ref_void' => $pwd_discount_ret_ref_void,
                     'naac_discount_ret_ref_void' => $naac_discount_ret_ref_void,
                     'solo_parent_discount_ret_ref_void' => $solo_parent_discount_ret_ref_void,
+                    
 
                     'other_discount' => $other_discount,
                     'returned' => $returns,
@@ -805,65 +885,16 @@ class BirFacade extends DBConnection {
         date_time_of_payment,
         VAT_EXEMPTS,
         vatable_price,
-        ROUND(
-          CASE 
-          WHEN customer_type = 'SP' THEN 0
-          ELSE vatable_price / 1.12
-          END, 2
-        ) AS VAT_SALES,
-
-        ROUND(
-            CASE 
-            WHEN customer_type = 'SP' THEN 0
-            ELSE (vatable_price / 1.12) * 0.12
-            END, 2
-        ) AS VAT_AMOUNT,
-
-        SUM(ROUND(
-            CASE 
-            WHEN (customer_type = 'SP') THEN
-            	(ROUND(vatable_price / 1.12, 2)) + nonVat
-            ELSE nonVat
-            END, 2
-        )) AS VAT_EXEMPT,
-       
-       SUM(
-        CASE
-            WHEN (customer_type = 'SP' OR customer_type = 'NAAC') THEN
-                ROUND((SP_NAAC_VAT_PRICE / 1.12) * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-        CASE
-            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) < 2500 THEN
-                ROUND(SC_PWD_VAT_PRICE * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-        CASE
-            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) >= 2500 THEN
-                ROUND(2500 * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-        CASE
-            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) >= 2500 AND ROUND(nonVat, 2) <> 0 THEN
-                ROUND(2500 * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-        CASE
-            WHEN (customer_type = 'SC' OR customer_type = 'PWD') AND ROUND(SP_NAAC_VAT_PRICE, 2) < 2500 AND ROUND(nonVat, 2) <> 0 THEN
-                ROUND(nonVat * (customer_discount / 100), 2)
-            ELSE 0
-        END +
-          
-        CASE
-            WHEN (customer_type = 'SP' OR customer_type = 'NAAC') AND ROUND(nonVat, 2) <> 0 THEN
-                ROUND(nonVat * (customer_discount / 100), 2)
-            ELSE 0
-        END  
-    	) AS CUSTOMER_DIS,
+        VAT_SALES,
+        VAT_AMOUNT,
+       	VAT_EXEMPT,
+    
+       CUSTOMER_DIS,
         change_amount,
         barcode
         FROM (
             SELECT 
+            		payments.sc_pwd_discount AS CUSTOMER_DIS,
                     users.first_name,
                     users.last_name,
                     customer.scOrPwdTIN,
@@ -892,6 +923,36 @@ class BirFacade extends DBConnection {
             		discounts.name AS customer_type,
                     discounts.discount_amount AS customer_discount,
                     payments.vatable_sales AS VAT_EXEMPTS,
+            
+                    SUM(ROUND(
+                        CASE 
+                        WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN 
+                        0
+                        WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
+                        ROUND((transactions.subtotal / 1.12),2)
+                        ELSE 0
+                        END, 2
+                    )) AS VAT_SALES,
+
+                    SUM(ROUND(
+                        CASE 
+                        WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN 
+                        0
+                        WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
+                        ROUND((transactions.subtotal / 1.12) * 0.12,2)
+                        ELSE 0
+                        END, 2
+                    )) AS VAT_AMOUNT,
+            
+                    SUM(ROUND(
+                        CASE 
+                        WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN
+                            ROUND((transactions.subtotal / 1.12), 2)
+                        WHEN products.isVAT = 0 THEN
+                            ROUND(transactions.subtotal, 2)
+                        ELSE 0
+                        END, 2
+                    )) AS VAT_EXEMPT, 
             
             		ROUND(
                         SUM(CASE WHEN products.isVAT = 1 AND (products.isSPEnabled = 1 OR products.isNAACEnabled = 1) THEN 

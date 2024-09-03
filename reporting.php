@@ -14,13 +14,8 @@
   $abilityFacade = new AbilityFacade;
 
 if (isset($_SESSION['user_id'])) {
- 
     $userID = $_SESSION['user_id'];
-
-    
     $permissions = $abilityFacade->perm($userID);
-
-    
     $accessGranted = false;
     foreach ($permissions as $permission) {
         if (isset($permission['Reports']) && $permission['Reports'] == "Access Granted") {
@@ -63,6 +58,8 @@ if (isset($_SESSION['user_id'])) {
 		$error = $_GET["delete_product"];
     array_push($info, $error);
 	}
+
+    include('./modals/downloadInvoice.php');
     include('./modals/datePickerModal.php');
     include('./modals/showReportsModal.php');
     include('./modals/sales_history.php');
@@ -502,7 +499,9 @@ body, html {
                   <div id="highlightDiv52" style="width: 100%"><a href="#" onclick=" highlightDiv(52)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                   <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-4 (National Athletes and Coaches )</span></a></div>      
                   <div id="highlightDiv53" style="width: 100%"><a href="#" onclick=" highlightDiv(53)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
-                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-5 (Solo Parent)</span></a></div>      
+                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">E-5 (Solo Parent)</span></a></div> 
+                  <div id="highlightDiv54" style="width: 100%"><a href="#" onclick=" highlightDiv(54)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                  <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Medal of Valor</span></a></div>           
                   <!-- <div id="highlightDiv54" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(54)" class="text-color lowStockWarningAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                 </div> -->
@@ -1674,7 +1673,7 @@ function highlightDiv(id) {
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
         }
-        else if(id === 50 || id === 55 || id === 51 || id === 52 || id === 53 || id === 56){
+        else if(id == 50 || id == 55 || id == 51 || id == 52 || id == 53 || id == 54 || id == 56) {
           contentTest(id)
         }
         else if(id == 1){
@@ -2563,7 +2562,7 @@ function openModalDatePicker(){
 // USERS
 function generatePdf(id)
 {
-  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 55 || id == 56)
+  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 55 || id == 56)
   {
     $('#PDFBtn').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
@@ -2607,6 +2606,7 @@ function generatePdf(id)
         if(id === 51) e = 3;
         if(id === 52) e = 4;
         if(id === 53) e = 5;
+        if(id === 54) e = 6;
         $.ajax({
             url: './reports/generate_birE'+e+'Report_pdf.php',
             type: 'GET',
@@ -4120,7 +4120,7 @@ function show_sweetReponse(message)
   }
 
 function generateExcel(id){
-  if(id == 55 || id == 50 || id == 51 || id == 52 || id == 53){
+  if(id == 55 || id == 50 || id == 51 || id == 52 || id == 53 || id == 54){
     $('#EXCELBtn').off('click').on('click', function(){
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
@@ -4163,6 +4163,8 @@ function generateExcel(id){
         if(id === 51) e = 3;
         if(id === 52) e = 4;
         if(id === 53) e = 5;
+        if(id === 54) e = 6;
+
       $.ajax({
           url: './reports/generate_birE'+e+'Report_excel.php',
           type: 'GET',
@@ -5635,7 +5637,8 @@ error: function(xhr, status, error) {
 }
 
 function printDocuments(id){
-  if(id==50 || id == 51 || id == 52 || id == 53 || id == 55 || id == 56){
+  
+  if(id==50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 55 || id == 56){
       $('#printDocu').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
@@ -5678,7 +5681,7 @@ function printDocuments(id){
         if(id === 52) e = 4;
         if(id === 53) e = 5;
         if(id === 55) e = 1;
-
+        if(id === 54) e = 6;
         $.ajax({
             url: './reports/generate_birE'+e+'Report_pdf.php',
             type: 'GET',
@@ -8250,7 +8253,90 @@ function showReports(id)
         });
      }
     })
-  }
+  } 
+
+  else if(id == 54) {
+    $('#showReport').off('click').on('click', function(){
+      $('#showReportsModal').show()
+      if($('#showReportsModal').is(":visible"))
+      {
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var customerSelect = document.getElementById('customersSelect')
+        var selectedCustomers = customerSelect.value;
+
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) 
+        {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } 
+        else 
+        {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+          url: './reports/generate_birE6Report_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+            singleDateData: singleDateData,
+            startDate: startDate,
+            endDate: endDate
+          },
+          success: function(response) 
+          {
+            if(response)
+            {
+              loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) 
+              {
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/bir/e6.pdf?t=' + timestamp; 
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+            }
+          },
+        
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+        });
+     }
+    })
+  } 
+
   else if(id == 1){
     $('#showReport').off('click').on('click', function(){
        $('#showReportsModal').show()

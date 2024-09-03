@@ -223,6 +223,7 @@ function filterDateRange(selectedDates, selectedUser) {
 $("#btn_reload").on("click", function() {
     $("#datepicker").val("");
     $("#user").val("");
+    // console.log(selectedApplicationValue)
     fetchData(selectedApplicationValue); // Fetch logs based on the stored application value
 });
 
@@ -248,11 +249,11 @@ function displayLogData(logText) {
                     if (datetime !== '') datetime = formatDateToAMPM(datetime);
 
                     if (role === "1") role = "Super Admin";
-                    if (role === "2") role = "Admin";
-                    if (role === "3") role = "Cashier";
+                    else if (role === "2") role = "Admin";
+                    else if (role === "3") role = "Cashier";
 
                     var row = $('<tr>');
-                    row.append($('<td style="width: 15%; ">').text(datetime));
+                    row.append($('<td style="width: 15%;">').text(datetime));
                     row.append($('<td style="width: 15%">').text(columns[1].trim() || ''));
                     row.append($('<td style="width: 10%">').text(role));
                     row.append($('<td style="width: 15%">').text(columns[4].trim() || ''));
@@ -263,22 +264,24 @@ function displayLogData(logText) {
             }
         });
     } else {
-        $('#logTable tbody').html("<tr><td colspan='5' style='text-align: center;'>No activity logs found.</td></tr>");
+        tableBody.html("<tr><td colspan='5' style='text-align: center;'>No activity logs found.</td></tr>");
     }
 }
+
+
 
 function fetchData(applicationValue) {
     $('#modalCashPrint').show();
     $("#logTable tbody").empty();
 
     var url = (applicationValue === "1") ? 'fetch-data/log_reader.php' : './assets/logs/logs.txt';
-
     $.ajax({
         type: 'GET',
         url: url,
         dataType: 'text',
         success: function(data) {
             displayLogData(data); 
+            console.log('Hello world');
             $('#modalCashPrint').hide();
         },
         error: function(xhr, status, error) {
@@ -289,7 +292,6 @@ function fetchData(applicationValue) {
 
 // Call fetchData initially with the default application value if needed
 // fetchData(initialApplicationValue);
-
 // Utility function to format date to AM/PM
 function formatDateToAMPM(dateString) {
     const dateObj = new Date(dateString);

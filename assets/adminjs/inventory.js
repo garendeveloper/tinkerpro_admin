@@ -1294,6 +1294,7 @@
               $("#tbl_quickInventories tbody tr").each(function () {
                 var rowData = {};
                 rowData['inventory_id'] = $(this).data('id');
+                rowData['receive_id'] = $(this).data('receivedid');
                 $(this).find("td").each(function (index, cell) {
                   if (index === 2)
                     rowData['newqty'] = $(cell).find("#qty").val();
@@ -1310,32 +1311,29 @@
                   user_name: $("#first_name").val()+" "+$("#last_name").val(),
                 },
                 success: function (response) {
+                  if (response.status) 
+                  {
+                    show_sweetReponse(response.msg);
+                    var po_number = $("#q_product").val();
+                    $("#tbl_quickInventories tbody").empty();
+                    hideModals();
 
-                  console.log(response);
+                    $(".inventoryCard").html("");
+                    $(".grid-container button").removeClass('active');
+                    $("#stocks").addClass('active');
+                    show_allStocks();
 
-                  // if (response.status) 
-                  // {
-                  //   show_sweetReponse(response.msg);
-                  //   var po_number = $("#q_product").val();
-                  //   $("#tbl_quickInventories tbody").empty();
-                  //   hideModals();
+                    var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                    var firstName = userInfo.firstName;
+                    var lastName = userInfo.lastName;
+                    var cid = userInfo.userId;
+                    var role_id = userInfo.roleId; 
 
-                  //   $(".inventoryCard").html("");
-                  //   $(".grid-container button").removeClass('active');
-                  //   $("#stocks").addClass('active');
-                  //   show_allStocks();
-
-                  //   var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                  //   var firstName = userInfo.firstName;
-                  //   var lastName = userInfo.lastName;
-                  //   var cid = userInfo.userId;
-                  //   var role_id = userInfo.roleId; 
-
-                  //   $.each(tbl_data, function(index, item){
-                  //     insertLogs('Quick Inventory', "Quick inventory: "+item.col_1 + " From: "+item.col_2 + " To: "+item.newqty);
-                  //   })
-                  //   $('#modalCashPrint').hide();
-                  // }
+                    $.each(tbl_data, function(index, item){
+                      insertLogs('Quick Inventory', "Quick inventory: "+item.col_1 + " From: "+item.col_2 + " To: "+item.newqty);
+                    })
+                    $('#modalCashPrint').hide();
+                  }
                 }
               })
             }

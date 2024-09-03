@@ -8,7 +8,7 @@
   bottom: 0;
   left: calc(100% - 500px); 
   width: 500px;
-   background-color: transparent;
+  background-color: transparent;
   overflow: hidden;
   height: 100%; 
   animation: slideInRight 0.5s; 

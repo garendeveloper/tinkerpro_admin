@@ -160,7 +160,17 @@
         <div class="row mt-2 me-1 row_button">
             <div class="col-lg-12 d-flex justify-content-between buttonActions">
                 <div class="d-flex" style="display: flex; justify-content: flex-end;width: 100%">
-                    <button style="width: 150px" class="btn btn-secondary shadow-none reprintBtn" style="align-items: right">
+                <!-- <form method="post" action="open_file.php"> -->
+                    <button type="submit" style="width: 150px" class="btn btn-secondary shadow-none downloadTxtFile" style="align-items: right">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
+                            <path d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27m.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0z"/>
+                            <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                        DOWNLOAD .txt</button>
+                <!-- </form> -->
+                    
+
+                    <button style="width: 150px" class="btn btn-secondary shadow-none reprintBtn ms-2" style="align-items: right">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
                         <path d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27m.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0z"/>
                         <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5"/>
@@ -872,6 +882,7 @@ function removeCommas(numberString) {
   }
   return parseFloat(numberString.replace(/,/g, ''));
 }
+
 function getTransactionSales(transaction) {
     axios.post('api.php?action=getTransactionsByNumJS', {
         'transNo': transaction,
@@ -1104,7 +1115,6 @@ function getRefundedSales(refunded, referenceNum) {
 
 function getAllSalesHistory() {
     $('.salesHistoryModal').focus();
-
     var existingData = [];
     var existingDataRefund = [];
     var salesIndexRow = -1;
@@ -1130,6 +1140,8 @@ function getAllSalesHistory() {
     var testRow = document.querySelectorAll('.selectable-sales-row');
     var texts = [];
     var lastCell;
+
+    var l_test = 0;
     function returnTextStat () {
         testRow.forEach(function(t_row) {
             var lastCell = t_row.querySelector('td:last-child');
@@ -1140,11 +1152,7 @@ function getAllSalesHistory() {
         return texts;
     }
 
-    $('.dateRange').css({
-        'color': 'var(--border-color)',
-        'background-color': 'transparent',
-    });
-    
+    $('.dateRange').css('color', 'var(--border-color)');
     if (selectedFilter === 'TODAY') {
         startDate = dateAndTimeFormat(currentDate()).formatted_date;
         $('.dateRange').prop('disabled', true);
@@ -1170,6 +1178,7 @@ function getAllSalesHistory() {
         startDate = dateAndTimeFormat(firstDayOfWeek).formatted_date;
         endDate = dateAndTimeFormat(lastDayOfWeek).formatted_date;
         $('.dateRange').prop('disabled', true);
+        
         $('.current_date').text(startDate + ' to ' + endDate);
     } else if (selectedFilter === 'THIS MONTH') {
         thisMonth.setDate(thisMonth.getMonth());
@@ -1190,11 +1199,7 @@ function getAllSalesHistory() {
         $('.current_date').text(startDate + ' to ' + endDate);
     } else if (selectedFilter === 'CUSTOM') {
         $('.dateRange').prop('disabled', false);
-
-        $('.dateRange').css({
-            'color': '#fff',
-            'background-color': 'transparent',
-        });
+        $('.dateRange').css('color', '#fff');
         var startDate = new Date(selectedDates[0]);
         var endDate = new Date(selectedDates[1]);
         startDate = dateAndTimeFormat(new Date(selectedDates[0])).formatted_date
@@ -1219,7 +1224,7 @@ function getAllSalesHistory() {
       $('.salesHistoryTable tbody').empty();
         
       $.each(salesHistory, function(index, sale) {
-        
+       
         if(selectedFilter === 'CUSTOM') {
             saleDate = dateAndTimeFormat(sale.date_time_of_payment).formatted_date;
         } else {
@@ -1232,6 +1237,7 @@ function getAllSalesHistory() {
             || (sale.is_paid == 1 && sale.is_refunded == 1 && refundedData.find(function(ref) { return ref.or_num === sale.or_num; }) && selected_doc == 'REFUNDED') 
             ||  (sale.is_paid == 1 && sale.is_refunded == 2 && selected_doc == 'RET&EX')
             || selected_doc == 'ALL')) {
+                
                 return saleDate == dateAndTimeFormat(startDate).formatted_date;
             } else if (selectedFilter == 'YESTERDAY' && ((sale.is_void == 2 && selected_doc == 'VOIDED') 
             || (sale.is_paid == 1 && sale.is_refunded == 0 && sale.is_void == 0 && selected_doc == 'SUCCESS' ) 
@@ -1264,19 +1270,19 @@ function getAllSalesHistory() {
         
         if (getFilterTable(saleDate, startDate, endDate) ) {
             displaySalesReport()
-            $('#receiptCount').text(receipt_count)
         } else {
             totalPayment = 0;
             totalChange = 0;
-            $('#receiptCount').text(receipt_count)
             $('#totalSalesHistory').text('₱' + parseFloat(totalPayment - totalChange).toFixed(2))
         }
 
         
         function displaySalesReport() {
             var descendingIndex = startingIndex - index;
-            receipt_count = startingIndex;
             if (existingData.indexOf(sale.or_num) === -1) {
+               
+                var getLength = [sale].length;
+                l_test += getLength;
 
                 var row = '<tr class="selectable-sales-row"' +
                     'data-transaction="' + sale.transaction_num + '" ' +
@@ -1305,7 +1311,7 @@ function getAllSalesHistory() {
                     var cartDiscounts = parseFloat(getPayments[0].cart_discount);
 
                     // var totalToBePay = parseFloat(sale.payment_amount) - parseFloat(cartDiscounts)
-                    var totalToBePay = parseFloat(sale.payment_amount)
+                    var totalToBePay = parseFloat(sale.payment_amount) - parseFloat(sale.change_amount);
                     row += '<td colspan="2">' + sale.customer_type + '</td>' +
                     '<td colspan="2">' + addCommas(parseFloat(totalToBePay).toFixed(2)) + '</td>';
                 }
@@ -1351,8 +1357,8 @@ function getAllSalesHistory() {
 
                 row += '</tr>';
                 $('.salesHistoryTable tbody').append(row);
+                $('.downloadTxtFile').data('report', row);
 
-                
                 if (sale.is_paid == 1 && sale.is_refunded == 1) {
                     var refunds = refundedData.filter(function(ref) { return ref.or_num === sale.or_num; });
                     refunds.sort(function(a, b) {
@@ -1403,6 +1409,13 @@ function getAllSalesHistory() {
                         return c.return_date.localeCompare(d.return_date);
                     });
 
+                    var overReturnQty = 0;
+                    var itemDiscountReturn = 0;
+
+                    returned.forEach(function(returns1) { 
+                        overReturnQty += parseFloat(returns1.return_qty);
+                    })
+                  
                     returned.forEach(function(returns) { 
                         var returnRow = '<tr class="selectable-sales-row"' +
                             'data-paymentid="'+ returns.payment_id +'"' + 
@@ -1421,18 +1434,23 @@ function getAllSalesHistory() {
 
                         returnRow += '<td class="color_text" colspan="2">' + returns.customer_type + '</td>';
                         var returnOtherDetails = JSON.parse(returns.otherDetails);
-                        var total_return = 0;
+                        var total_return_cus_dicount = 0;
                         var getCartDiscount = 0;
-                        var itemDiscountReturn = 0;
-                        
+                       
+                      
                         for(var i = 0; i < returnOtherDetails.length; i++) {
-                            var cartDiscounteRef = parseFloat(returnOtherDetails[i].cartRate)
-                            getCartDiscount = returns.totalReturn * cartDiscounteRef;
+                            var cartDiscounteRet = parseFloat(returnOtherDetails[i].cartRate)
+                            getCartDiscount = returns.totalReturn * cartDiscounteRet;
                             itemDiscountReturn = parseFloat(returnOtherDetails[i].itemDiscountsData);
-                            total_return = parseFloat(returnOtherDetails[i].discount);
+                            total_return_cus_dicount = parseFloat(returnOtherDetails[i].discount);
                         }
 
-                        var totalReturns = Math.abs(Math.abs(parseFloat(returns.totalReturn - total_return)) - getCartDiscount) - parseFloat(itemDiscountReturn);
+                        
+                        if(returns.is_refunded == 3) {
+                            returnedDiscount = Math.abs(total_return_cus_dicount);
+                        }
+
+                        var totalReturns = Math.abs(Math.abs(parseFloat(returns.totalReturn) - (total_return_cus_dicount / overReturnQty)) - getCartDiscount) - parseFloat(itemDiscountReturn);
                         totalReturn += totalReturns
                         returnRow += '<td class="color_text" colspan="2">' + addCommas(parseFloat('-' + (totalReturns)).toFixed(2)) + '</td>' +
                             '<td colspan="2" style="color: lightgreen;">' + 'SUCCESS' + '</td>' +
@@ -1447,13 +1465,15 @@ function getAllSalesHistory() {
         }
        
       });
-      scrollToSelectedRow_sales()
-      selectRow($('.selectable-sales-row').first());
 
-      var totalSalesValue = parseFloat(totalToBePaidSum) - parseFloat(refundedAmoutn) - Math.abs(parseFloat(totalReturn))
-      $('#totalSalesHistory').text('₱' + addCommas(parseFloat(totalSalesValue).toFixed(2)))
-      $('#totalSalesReturnHistory').text('₱' + addCommas(Math.abs(parseFloat(totalReturn)).toFixed(2)))
-      $('#totalSalesRefundedHistory').text('₱' + addCommas(parseFloat(refundedAmoutn).toFixed(2)))
+        scrollToSelectedRow_sales()
+        selectRow($('.selectable-sales-row').first());
+        receipt_count = l_test;
+        var totalSalesValue = Math.max(0, parseFloat(totalToBePaidSum - returnedDiscount) - parseFloat(refundedAmoutn) - Math.abs(parseFloat(totalReturn)))
+        $('#receiptCount').text(receipt_count)
+        $('#totalSalesHistory').text('₱' + addCommas(parseFloat(totalSalesValue).toFixed(2)))
+        $('#totalSalesReturnHistory').text('₱' + addCommas(Math.abs(parseFloat(totalReturn + returnedDiscount)).toFixed(2)))
+        $('#totalSalesRefundedHistory').text('₱' + addCommas(parseFloat(refundedAmoutn).toFixed(2)))
     })
     .catch(function(error) {
       console.error('Error fetching sales history:', error);
@@ -1547,16 +1567,66 @@ function getAllSalesHistory() {
         $('#search-input').focus()
     })
 
-    
 }
 
+    $('.downloadTxtFile').off('click').on('click', function() {
+        var reportData = '';
+        var rows = $('.salesHistoryTable tbody tr');
+        var colWidths = [5, 15, 15, 15, 20, 20, 20, 15];
 
+        rows.each(function() {
+            var rowText = '';
+            $(this).find('td').each(function(index) {
+                var cellText = $(this).text().trim();
+                rowText += cellText.padEnd(colWidths[index], ' ') + ' ';
+            });
+            reportData += rowText + '\n';
+        });
 
+        $.ajax({
+            url: './saveInvoice/save_report.php',
+            type: 'POST',
+            data: 
+            { 
+                reportData: reportData,
+            },
+            success: function(response) {
+                
+                toastr.success(
+                    'Report successfully downloaded. <br>' +
+                    '<div class="d-flex justify-content-end"><button id="openFileButton" class="btn btn-primary">Open Report</button></div>',
+                    {
+                        closeButton: true,
+                        timeOut: 0, 
+                        extendedTimeOut: 0, 
+                        tapToDismiss: false, 
+                        onHidden: function() {
+                            $('#openFileButton').off('click');
+                        }
+                    }
+                );
+
+                $('#openFileButton').off('click').on('click', function() {
+                    window.open('open_file.php', '_blank');
+                });
+                
+            },
+            error: function(xhr, status, error) {
+                console.error('Error saving file: ' + error);
+            }
+        });
+    });
 
 </script>
 
 
 <style>
+
+
+    #openFileButton {
+        font-size: x-small;
+        margin-top: 10px;
+    }
 
 option {
     background: #262626

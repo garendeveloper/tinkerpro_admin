@@ -14,6 +14,20 @@
 }
 
 
+.express_add {
+  background: var(--primary-color);
+  border: var(--border-color);
+  outline: none;
+  box-shadow: none;
+}
+
+.express_add:hover {
+  background: var(--primary-color);
+  box-shadow: none;
+  outline: none;
+}
+
+
 .product-modal {
   background-color: #fefefe;
   margin: 0 auto; 

@@ -78,7 +78,7 @@ class SalesHistoyFacade extends DBConnection {
             LEFT JOIN temporary_names ON temporary_names.id = transactions.tempo_name
             LEFT JOIN return_exchange ON payments.id = return_exchange.payment_id
             LEFT JOIN void_reason ON void_reason.id = transactions.void_id";
-
+        
         $whereClause = ($roleId == 1 || $allUsers == 1) ? "" : " WHERE transactions.cashier_id = ?";
         $groupClause = "
             GROUP BY
@@ -193,8 +193,7 @@ class SalesHistoyFacade extends DBConnection {
         LEFT JOIN temporary_names ON temporary_names.id = transactions.tempo_name
         WHERE return_exchange.payment_id = payments.id";
 
-
-        $groupClause3 = " GROUP BY return_exchange.id";
+        $groupClause3 = " GROUP BY return_exchange.payment_id;";
 
     
         $sql2 = $secondQuery . $whereClause2 . $groupClause2;

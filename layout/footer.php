@@ -753,7 +753,6 @@ let deleteValidation = "false";
         {
           
           var isDiscounted = $("#discountToggle").is(":checked") ? 1 : 0;
-  
           var discount_sc = $("#discount_sc").is(":checked") ? 1 : 0;
           var discount_sp = $("#discount_sp").is(":checked") ? 1 : 0;
           var discount_naac = $("#discount_naac").is(":checked") ? 1 : 0;

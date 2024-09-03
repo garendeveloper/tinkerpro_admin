@@ -37,7 +37,7 @@ class MYPDF extends TCPDF {
         $this->Ln(8);
         $this->Cell(0, 1, "{$shop['shop_name']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
         $this->SetFont('helvetica', 'B', 12);
-        $this->Cell(0, 1, 'ANNEX "E-4"', 0, false, 'R', 0, '', 0, false, 'M', 'M');
+        // $this->Cell(0, 1, 'ANNEX "E-4"', 0, false, 'R', 0, '', 0, false, 'M', 'M');
         $this->Ln();
         $this->SetFont('helvetica', '', 11);
         $this->Cell(0, 1, "{$shop['shop_address']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
@@ -146,9 +146,9 @@ $pdf->SetLineWidth(0.1);
 $pdf->SetFillColor($r, $g, $b);
 $pdf->SetFont('', 'B', 10);
 $maxCellHeight = 5; 
-$pdf->Cell(277, 8, "National Athletes and Coaches Sales Book/Report", 1, 0, 'C', true);
+$pdf->Cell(277, 8, "Medal of Valor Book Sales/Report", 1, 0, 'C', true);
 $pdf->Ln();
-$header = array('Date','Name of National Athlete/Coach','PNSTM ID No.', 'SI / OR Number', 'Gross Sales/Receipts', 'Sales Discount', 'Net Sales');
+$header = array('Date','Name of National Athlete/Coach','ID No.', 'SI / OR Number', 'Gross Sales/Receipts', 'Sales Discount', 'Net Sales');
 $headerWidths = array(30, 80, 33, 33, 33, 33, 35);
 $maxCellHeight = 10; 
 
@@ -184,7 +184,7 @@ if($singleDateData !== null && ($startDate === null && $endDate === null))
     $endDate = $singleDateData;
 }
 
-$items = $birFacade->E_reports(7, $startDate, $endDate);
+$items = $birFacade->E_reports(8, $startDate, $endDate);
 $pdf->Ln();
 $pdf->SetFont('', '', 7);
 $maxCellHeight = 5; 
@@ -246,7 +246,7 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 $pdf->SetFont('times', 'BI', 7);
 
 
-$pdfPath = $pdfFolder . 'e4.pdf';
+$pdfPath = $pdfFolder . 'e6.pdf';
 $pdf->Output($pdfPath, 'F');
 
-$pdf->Output('e4.pdf', 'I');
+$pdf->Output('e6.pdf', 'I');

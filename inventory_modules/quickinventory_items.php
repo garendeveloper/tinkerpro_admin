@@ -337,11 +337,13 @@
                     $(document).click();
                     $('#update_received').show();
                     $('.received_items tbody').empty();
+                    
                     $.each(received_items, function(index, receive) {
                         var expiring_date = receive.expirations ?? 'No Date!'
                         var row = '<tr class="received_items_row"' + 
                         'data-receiveid="' + receive.id +  '"' +
                         'data-prodid="' + receive.productIds +  '"' +
+                        'data-prodname="' + receive.prod_desc +  '"' +
                         '>'+
                         '<td class="text-center r_text">' + receive.id + '</td>' + 
                         '<td class="text-center r_text">' + receive.prod_desc + '</td>' + 
@@ -381,8 +383,8 @@
                 data: { data: inventory_id },
                 success: function (data) {
                     var row = "";
-                    row += "<tr data-id = " + data['id'] + ">";
-                    row += "<td data-id = " + data['id'] + " style = 'width: 50%'>" + data['prod_desc'] + "</td>";
+                    row += "<tr data-id = " + data['id'] + " data-receivedid = "+ data['received_ids'] +">";
+                    row += "<td data-id = " + data['id'] + " data-receivedid = "+ data['received_ids'] +" style = 'width: 50%'>" + data['prod_desc'] + "</td>";
                     row += "<td style = 'text-align:center; width: 30%' '>" + data['product_stock'] + "</td>";
                     row += "<td class = 'text-right'><input placeholder='QTY' class = 'italic-placeholder required' id = 'qty' style = 'width: 60px; text-align: center; height:20px;'></input></td>";
                     row += "<td class = 'text-center removeItem'><i class = 'bi bi-trash3'></i></td>";

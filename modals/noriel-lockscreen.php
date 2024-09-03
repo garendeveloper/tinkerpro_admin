@@ -95,7 +95,7 @@ h4{
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#fff" class="bi bi-upc-scan" viewBox="0 0 16 16">
               <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5M3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0z"></path>
             </svg>
-        <input type="password" id="unlockPasswordTxt" placeholder="Scan your ID or enter your password" style="width: 275px; border: 1px solid #d3d3d3; background-color: grey; text-align: center; display: block; margin-left:5px;" autocomplete="off"/>
+            <input type="password" id="unlockPasswordTxt" placeholder="Scan your ID or enter your password" style="width: 275px; border: 1px solid #d3d3d3; background-color: grey; text-align: center; display: block; margin-left:5px;" autocomplete="off"/>
             <button id = "btnContinueUnlock" style = "background-color: var(--primary-color); height: 30px; font-weight: normal; border-radius: 5px; margin-left: 5px;">CONTINUE</button>
             </div>
             <p class="errorResponse" style="color: red !important"></p>

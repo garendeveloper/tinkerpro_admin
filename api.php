@@ -592,6 +592,9 @@
             $inventory_id = isset($data->inventory_id) ? $data->inventory_id : null;
             echo json_encode($inventory->getReceivedItems($inventory_id));
             break;
+        case 'getCopyOfProduct' :
+            $products->getAllCopyProducts();
+            break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;

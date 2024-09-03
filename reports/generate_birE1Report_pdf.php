@@ -205,7 +205,7 @@ if($items)
                         <th style = "width: 3%" class = "hk" rowspan="3">VAT Amount</th>
                         <th style = "width: 3%" class = "hk" rowspan="3">VAT-Exempt Sales</th>
                         <th style = "width: 3%" class = "hk" rowspan="3">Zero-Rated Sales</th>
-                        <th style = "width: 24%; text-align: center" class = "ls" colspan = "4">Deductions</th>
+                        <th style = "width: 27%; text-align: center" class = "ls" colspan = "4">Deductions</th>
                         <th style = "width: 18%; text-align: center" class = "ty" colspan = "4">Adjustment on VAT</th>
 
                         <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">VAT Payable</th>
@@ -217,7 +217,7 @@ if($items)
                         <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">Remarks</th>
                     </tr> 
                     <tr>
-                        <th style = "width: 15%; text-align: center"class = "ls" colspan = "5">Discount</th>
+                        <th style = "width: 18%; text-align: center"class = "ls" colspan = "5">Discount</th>
                         <th style = "width: 3%; text-align: center" class = "ls" rowspan = "2">Returns</th>
                         <th style = "width: 3%" class = "ls" rowspan = "2">Voids</th>
                         <th style = "width: 3%" class = "ls" rowspan = "2">Total Deductions</th>
@@ -232,6 +232,7 @@ if($items)
                         <th style = "width: 3%" class = "ls">PWD</th>
                         <th style = "width: 3%" class = "ls">NAAC</th>
                         <th style = "width: 3%" class = "ls">Solo Parent</th>
+                        <th style = "width: 3%" class = "ls">MOV</th>
                         <th style = "width: 3%" class = "ls">Others</th>
 
                         <th style = "width: 3%" class = "ty">SC</th>
@@ -262,6 +263,7 @@ if($items)
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['pwd_discount']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['naac_discount']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['solo_parent_discount']) . '</td>
+                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['mov_discount']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['other_discount']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['returned']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['voids']) . '</td>
@@ -303,7 +305,7 @@ else
                     <th style = "width: 3%" class = "hk" rowspan="3">VAT Amount</th>
                     <th style = "width: 3%" class = "hk" rowspan="3">VAT-Exempt Sales</th>
                     <th style = "width: 3%" class = "hk" rowspan="3">Zero-Rated Sales</th>
-                    <th style = "width: 24%; text-align: center" class = "ls" colspan = "4">Deductions</th>
+                    <th style = "width: 27%; text-align: center" class = "ls" colspan = "4">Deductions</th>
                     <th style = "width: 18%; text-align: center" class = "ty" colspan = "4">Adjustment on VAT</th>
 
                     <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">VAT Payable</th>
@@ -315,7 +317,7 @@ else
                     <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">Remarks</th>
                 </tr> 
                 <tr>
-                    <th style = "width: 15%; text-align: center"class = "ls" colspan = "5">Discount</th>
+                    <th style = "width: 18%; text-align: center"class = "ls" colspan = "5">Discount</th>
                     <th style = "width: 3%; text-align: center" class = "ls" rowspan = "2">Returns</th>
                     <th style = "width: 3%" class = "ls" rowspan = "2">Voids</th>
                     <th style = "width: 3%" class = "ls" rowspan = "2">Total Deductions</th>
@@ -330,6 +332,7 @@ else
                     <th style = "width: 3%" class = "ls">PWD</th>
                     <th style = "width: 3%" class = "ls">NAAC</th>
                     <th style = "width: 3%" class = "ls">Solo Parent</th>
+                    <th style = "width: 3%" class = "ls">MOV</th>
                     <th style = "width: 3%" class = "ls">Others</th>
 
                     <th style = "width: 3%" class = "ty">SC</th>
