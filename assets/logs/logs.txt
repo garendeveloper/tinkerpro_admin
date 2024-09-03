@@ -17545,6 +17545,9 @@
 2024-09-02 16:59:55 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-09-02 17:21:12 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-09-02 17:21:16 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
+2024-09-02 17:23:39 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
+2024-09-02 17:25:40 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
+2024-09-02 17:26:09 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-08-30 18:19:10 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
 2024-08-30 18:22:55 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
 2024-08-30 18:23:05 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000001 Amount:₱ 2,200.00 
@@ -17579,3 +17582,12 @@
 2024-09-02 17:11:15 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
 2024-09-02 17:12:14 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
 2024-09-02 17:12:30 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Basket Ball Barcode #:796408896220 
+2024-09-02 18:15:40 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-02 18:17:37 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Paracetamol 1Box Barcode #:173304210920 
+2024-09-02 18:18:28 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Alaxan Forte 1Box Barcode #:453205865128 
+2024-09-02 18:18:58 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000062 Amount:₱ 135,000.00 
+2024-09-02 18:20:44 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000062 Supplier: GAISANO SUPERMARKET 
+2024-09-02 18:21:53 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Alaxan Forte 1Box Barcode #:453205865128 
+2024-09-02 18:22:04 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Paracetamol 1Box Barcode #:173304210920 
+2024-09-02 18:31:22 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
+2024-09-02 21:05:37 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 

@@ -1397,7 +1397,7 @@ $dataValue =  $serviceValue/100;
     
     $update_naac = $pdo->prepare("UPDATE `discounts`
     SET `discount_amount` = ?
-    WHERE `name` IN ('NAAC');");
+    WHERE `name` IN ('NAAC', 'MOV');");
     $update_naac->execute([$valusToUpdate->naac]);
 
 

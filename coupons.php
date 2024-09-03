@@ -344,12 +344,14 @@
 
     <!-- print coupon modal -->
 <?php include "./modals/print-coupon-modal.php"?>
+<?php include "./modals/add_coupons_modal.php"?>
 
   <div class="container-scroller">
     <!-- <div class="" > -->
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel">
         <div class="content-wrapper">
+
           <div class="d-flex mb-2 w-10">
             <input hidden id="couponID"/>
             <input  class="text-color searchCoupon w-100 ms-2 ps-3 searchInputs" id="searchInput" placeholder="Search QR CODE"/>
@@ -361,10 +363,16 @@
             </span>
 
 
-            <button class="searchbtn pe-2" style="border-radius: 0 20px 20px 0;">
+            <button class="searchbtn pe-2" >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
               </svg>
+            </button>
+
+            <button class="addCustomer searchAdd" style="border-radius: 0 20px 20px 0;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+              </svg> 
             </button>
 
             <?php include('errors.php'); ?>    

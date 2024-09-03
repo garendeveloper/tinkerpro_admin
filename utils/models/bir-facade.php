@@ -630,6 +630,7 @@ class BirFacade extends DBConnection {
                 'sc_discount' => number_format($sc_discount, 2),
                 'sp_discount' => number_format($sp_discount, 2),
                 'naac_discount' => number_format($naac_discount, 2),
+                'mov_discount' => number_format($mov_discount, 2),
                 'pwd_discount' => number_format($pwd_discount, 2),
                 'VAT_SALES' => number_format((float)$VAT_SALES - (float)$VOID_SALES_ADJUST, 2),
                 'VAT_AMOUNT' => number_format((float)$VAT_AMOUNT - (float)$VOID_ADJUST, 2),
@@ -645,7 +646,7 @@ class BirFacade extends DBConnection {
                 'Z_READ_COUNT' => null,
                 'RESET_COUNT' => null,
                 'SHORT_OVER' => null,
-                'NET' => number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST), 2),
+                'NET' => max(0, number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST), 2)),
             ];
             
             // $result[] = [
@@ -787,6 +788,7 @@ class BirFacade extends DBConnection {
                 $pwd_discount = $ZReadData->pwd_discount;
                 $naac_discount = $ZReadData->naac_discount;
                 $solo_parent_discount = $ZReadData->solo_parent_discount;
+                $mov_discount = $ZReadData->mov_discount;
 
                 $sc_discount_ret_ref_void = $ZReadData->sc_ret_ref_void_dis;
                 $pwd_discount_ret_ref_void = $ZReadData->pwd_ret_ref_void_dis;
@@ -797,7 +799,7 @@ class BirFacade extends DBConnection {
                 $returns =  $ZReadData->return;
                 $refunds =  $ZReadData->refund;
                 $voids = $ZReadData->void;
-                $totalDeductions = ($ZReadData->senior_discount + $ZReadData->pwd_discount + $ZReadData->naac_discount + $solo_parent_discount + $other_discount + $ZReadData->void + $returns + $refunds);
+                $totalDeductions = ($ZReadData->senior_discount + $ZReadData->pwd_discount + $ZReadData->naac_discount + $solo_parent_discount + $mov_discount + $other_discount + $ZReadData->void + $returns + $refunds);
                 $z_counter = $ZReadData->zReadCounter;
                 $void_vat = (float)$ZReadData->total_void_vat;
                 $returnd_vat = (float)$ZReadData->vat_return;
@@ -821,11 +823,13 @@ class BirFacade extends DBConnection {
                     'pwd_discount' => $pwd_discount,
                     'naac_discount' => $naac_discount,
                     'solo_parent_discount' => $solo_parent_discount,
+                    'mov_discount' => $mov_discount,
 
                     'sc_discount_ret_ref_void' => $sc_discount_ret_ref_void,
                     'pwd_discount_ret_ref_void' => $pwd_discount_ret_ref_void,
                     'naac_discount_ret_ref_void' => $naac_discount_ret_ref_void,
                     'solo_parent_discount_ret_ref_void' => $solo_parent_discount_ret_ref_void,
+                    
 
                     'other_discount' => $other_discount,
                     'returned' => $returns,
