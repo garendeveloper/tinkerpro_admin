@@ -17594,3 +17594,8 @@
 2024-09-02 18:22:04 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Paracetamol 1Box Barcode #:173304210920 
 2024-09-02 18:31:22 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-09-02 21:05:37 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+2024-09-03 08:27:03 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-03 13:26:59 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-09-03 13:27:05 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-09-03 17:01:34 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-09-03 17:02:39 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
