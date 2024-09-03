@@ -249,7 +249,6 @@ margin-top: 70px;
 .qr-section i{
     font-size: 30px;
     cursor: pointer;
-   
 }
 
 </style>
@@ -300,7 +299,7 @@ margin-top: 70px;
     <div class="qr-section">
         <label for="qrCode">Generate QR Code</label>
         <input type="text" id="qrCode" name="qrCode" placeholder="Generate QR">
-        <i class="bi bi-qr-code" id="generateQr"></i>
+        <i class="bi bi-arrow-clockwise" id="generateQr"></i>
         <br>
         <svg  width="250px" height="250px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="var(--primary-color)">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
