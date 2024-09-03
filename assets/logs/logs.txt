@@ -17548,3 +17548,9 @@
 2024-09-02 17:23:39 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-09-02 17:25:40 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-09-02 17:26:09 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
+2024-09-03 09:10:34 | Noriel Bagacay | 112 | 2 | Login | User Noriel Bagacay 2 
+2024-09-03 12:16:25 | Noriel Bagacay | 112 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000002 Amount:₱ 589.00 
+2024-09-03 13:24:13 | Noriel Bagacay | 112 | 2 | P.O Updated | Noriel Bagacay P.0 # 10-000000002 Amount:₱ 589.00 
+2024-09-03 13:24:39 | Noriel Bagacay | 112 | 2 | Received Items | Tender received items, PO Number: 10-000000002 Supplier: Gaisano 
+2024-09-03 13:34:52 | Noriel Bagacay | 112 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000003 Amount:₱ 1,700.00 
+2024-09-03 13:35:07 | Noriel Bagacay | 112 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: Gaisano 

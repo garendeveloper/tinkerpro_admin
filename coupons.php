@@ -281,6 +281,12 @@
   cursor: pointer;
 }
 
+.addCoupon{
+  background-color: #555;  
+  cursor: pointer;
+  border:none;
+  margin-left: -5px;
+}
 .clearBtn svg {
   transition: fill 0.3s ease, transform 0.3s ease; 
 }
@@ -369,11 +375,15 @@
               </svg>
             </button>
 
-            <button class="addCustomer searchAdd" style="border-radius: 0 20px 20px 0;">
+            <button onclick="addCoupon()" class="addCoupon" style="border-radius: 0 20px 20px 0; ">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
               </svg> 
             </button>
+
+          
+
+
 
             <?php include('errors.php'); ?>    
             <input class="custom-input texct-color filterStatus" readonly hidden name="filterStatus" id="filterStatus" style="width: 180px"/>
@@ -469,6 +479,21 @@
 
 <?php include("layout/footer.php") ?>
 <script>
+
+//add coupon modal js
+
+function addCoupon() {
+    $('#add_coupon_modal').show();
+
+    $(document).on('keydown', function(event) {
+        if (event.key === "Escape") { 
+            $('#add_coupon_modal').hide();
+            $(document).off('click');
+            $(document).off('keydown');
+        }
+    });
+}
+
 
 
 // for clear button in search bar
