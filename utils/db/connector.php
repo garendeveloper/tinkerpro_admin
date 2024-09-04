@@ -26,6 +26,14 @@ class DBConnection
         }
     }
 
+
+    //for add coupon
+    public function getConnection()
+    {
+        return $this->connect();
+    }
 }
+
+
 
 ?>
