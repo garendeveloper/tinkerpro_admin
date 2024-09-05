@@ -65,8 +65,8 @@ class BirFacade extends DBConnection {
             
                  SUM(ROUND(
                     CASE 
-                        WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN 
-                         0
+                        WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 0 THEN 
+                         	ROUND((transactions.subtotal / 1.12),2)
                         WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
                             ROUND((transactions.subtotal / 1.12),2)
                         ELSE 0
@@ -75,8 +75,8 @@ class BirFacade extends DBConnection {
 
                SUM(ROUND(
                     CASE 
-                     WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN 
-                         0
+                     WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 0 THEN 
+                         ROUND((transactions.subtotal / 1.12) * 0.12,2)
                     WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
                     	ROUND((transactions.subtotal / 1.12) * 0.12,2)
                     ELSE 0
@@ -159,7 +159,7 @@ class BirFacade extends DBConnection {
             
                 SUM(ROUND(
                     CASE 
-                    WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN
+                    WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 1 THEN
                         ROUND((transactions.subtotal / 1.12), 2)
                     WHEN products.isVAT = 0 THEN
                         ROUND(transactions.subtotal, 2)
