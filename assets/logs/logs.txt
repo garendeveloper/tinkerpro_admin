@@ -17548,6 +17548,14 @@
 2024-09-02 17:23:39 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-09-02 17:25:40 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-09-02 17:26:09 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
+<<<<<<< HEAD
+2024-09-03 09:10:34 | Noriel Bagacay | 112 | 2 | Login | User Noriel Bagacay 2 
+2024-09-03 12:16:25 | Noriel Bagacay | 112 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000002 Amount:₱ 589.00 
+2024-09-03 13:24:13 | Noriel Bagacay | 112 | 2 | P.O Updated | Noriel Bagacay P.0 # 10-000000002 Amount:₱ 589.00 
+2024-09-03 13:24:39 | Noriel Bagacay | 112 | 2 | Received Items | Tender received items, PO Number: 10-000000002 Supplier: Gaisano 
+2024-09-03 13:34:52 | Noriel Bagacay | 112 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000003 Amount:₱ 1,700.00 
+2024-09-03 13:35:07 | Noriel Bagacay | 112 | 2 | Received Items | Tender received items, PO Number: 10-000000003 Supplier: Gaisano 
+=======
 2024-09-02 17:23:39 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-09-02 17:25:40 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
 2024-09-02 17:26:09 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Updated 24/7 MANGO 40G Barcode #:888779 
@@ -17594,8 +17602,17 @@
 2024-09-02 18:22:04 | Alexander Caones | 107 | 2 | Products | Admin Admin Updated Paracetamol 1Box Barcode #:173304210920 
 2024-09-02 18:31:22 | Zeus Baculio | 50 | 2 | Login | User Zeus Baculio 2 
 2024-09-02 21:05:37 | Zeus Baculio | 50 | 2 | Logout | User Zeus Baculio 2 
+>>>>>>> 9a5e7e070f24e6c64f2873e27dc32d10087b2efe
+2024-09-03 15:01:53 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:6 
+2024-09-03 15:14:39 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Added choconut Barcode #:550680871539 
+2024-09-03 15:25:13 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:9 
+2024-09-03 15:25:14 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:9 
+2024-09-03 15:25:30 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:1 
+2024-09-03 15:25:39 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:1 
 2024-09-03 08:27:03 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
 2024-09-03 13:26:59 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
 2024-09-03 13:27:05 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-09-03 17:01:34 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
 2024-09-03 17:02:39 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-05 09:45:48 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-05 17:41:09 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
