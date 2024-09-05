@@ -79,6 +79,28 @@ h4{
 .unlockscreen svg{
   margin-left:50px ;
 }
+
+.modal-body{
+    background-color: transparent ;
+
+  }
+
+
+
+@media screen and (max-width: 1400px) {
+
+
+  .modal-body{
+    background-color: transparent !important;
+
+  }
+
+  #lockscreen .modal-content {
+    margin-top: 15vh;
+
+}
+
+}
 </style>
 
 

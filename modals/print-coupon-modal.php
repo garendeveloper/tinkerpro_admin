@@ -20,13 +20,31 @@ button.btn.btn-secondary.printBtn.printCoupon {
 
 
 
+@media screen and (max-width: 1400px) {
+
+.print-coupon-modal{
+    background: #262626;
+    color: #ffff;
+    max-height: 500px !important;
+    margin-top: -50px !important;
+}
+
+
+#print-coupon-modal-body{
+    background: #262626 !important;
+    color: #ffff;
+}
+
+}
+
+
 
 </style>
 
 <!-- Print Coupon Modal -->
 <div class="modal" id="confirmModal" tabindex="0" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.5)">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 30vw">
-        <div class="modal-content">
+        <div class="modal-content print-coupon-modal">
 
             <div style="position: relative; width: 100%; background: #262626; color: #ffff; height: 60px; border: 1px solid var(--border-color);" class="d-flex">
                 <div style="margin-left: 5px; margin-top:10px; color:#ffff;">
@@ -43,7 +61,7 @@ button.btn.btn-secondary.printBtn.printCoupon {
                 </div>
             </div>
 
-            <div class="modal-body" style="background: #262626; color: #ffff; border: 1px solid var(--border-color); text-align:center;">
+            <div class="modal-body" id="print-coupon-modal-body" style="background: #262626; color: #ffff; border: 1px solid var(--border-color); text-align:center;">
                 <h4>Are you sure you want to print this coupon?</h4>
 
                 <svg width="211px" height="211px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">

@@ -316,9 +316,9 @@
 @media screen and (max-width: 1400px) {
      
      #responsive-data th.child-a, #responsive-data td.child-a { width: 50px !important; }
-       #responsive-data th.child-b, #responsive-data td.child-b { width: 150px !important; }
-       #responsive-data th.child-c, #responsive-data td.child-c { width: 100px !important; }
-       #responsive-data th.child-d, #responsive-data td.child-d { width: 80px !important; }
+       #responsive-data th.child-b, #responsive-data td.child-b { width: 90px !important; }
+       #responsive-data th.child-c, #responsive-data td.child-c { width: 80px !important; }
+       #responsive-data th.child-d, #responsive-data td.child-d { width: 100px !important; }
        #responsive-data th.child-e, #responsive-data td.child-e { width: 120px !important; }
        #responsive-data th.child-f, #responsive-data td.child-f { width: 100px !important; }
        #responsive-data th.child-g, #responsive-data td.child-g { width: 90px !important; }
@@ -481,7 +481,6 @@
 <script>
 
 //add coupon modal js
-
 function addCoupon() {
     $('#add_coupon_modal').show();
 
@@ -494,10 +493,28 @@ function addCoupon() {
     });
 }
 
+// extracting qr to plain text
+document.getElementById('searchInput').addEventListener('input', function() {
+            // Get the value from the search input field
+            const inputValue = this.value;
+
+            try {
+                // Parse the input value as JSON
+                const data = JSON.parse(inputValue);
+
+                // Extract the couponNumber
+                if (data && data.couponNumber) {
+                    // Update the search input field with only the couponNumber
+                    this.value = data.couponNumber;
+                }
+            } catch (error) {
+                // If the input is not valid JSON, you might want to handle this
+                console.error('Invalid JSON data:', error);
+            }
+        });
 
 
 // for clear button in search bar
-
 document.addEventListener('DOMContentLoaded', function() {
   const input = document.getElementById('searchInput');
   const clearBtn = document.getElementById('clearbtn');
@@ -505,23 +522,22 @@ document.addEventListener('DOMContentLoaded', function() {
   // Function to update the visibility of the SVG
   function updateClearBtnVisibility() {
     if (input.value.trim() !== '') {
-      clearBtn.style.display = 'inline'; // Show the SVG
+      clearBtn.style.display = 'inline'; 
     } else {
-      clearBtn.style.display = 'none'; // Hide the SVG
+      clearBtn.style.display = 'none'; 
     }
   }
 
-  // Initial check
+
   updateClearBtnVisibility();
 
-  // Event listeners for input changes
   input.addEventListener('input', updateClearBtnVisibility);
 
-  // Optional: Clear input on SVG click
+
   clearBtn.addEventListener('click', function() {
     input.value = '';
-    updateClearBtnVisibility(); // Hide SVG after clearing input
-    input.focus(); // Optional: refocus input field
+    updateClearBtnVisibility(); 
+    input.focus(); 
   });
 });
 
@@ -563,6 +579,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   selectDataDisplay()
+  
   $(document.body).on('click', '.editBtn', function() {
     var id = $(this).closest('tr').find('.couponId').text();
 

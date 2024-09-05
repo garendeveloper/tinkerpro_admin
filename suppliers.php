@@ -305,6 +305,7 @@
       #add_supplier_modal{
         height: 900px;
       }
+      
       .button-container{
         zoom: 90%;
         margin-left: -70px !important;

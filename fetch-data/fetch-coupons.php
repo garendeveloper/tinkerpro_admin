@@ -75,3 +75,26 @@ echo $html;
 }
 
 </style>
+
+<script>
+    $(document).ready(function() {
+       
+        $('.table-row').click(function() {
+         
+            $('#add_coupon_modal').hide();
+        });
+
+
+        $('.table-row').click(function() {
+         
+            $('.table-row').removeClass('highlighteds');
+
+            $(this).addClass('highlighteds');
+
+           
+            $('#add_coupon_modal').hide();
+        });
+
+    });
+
+</script>

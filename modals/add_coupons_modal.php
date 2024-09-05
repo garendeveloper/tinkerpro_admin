@@ -164,7 +164,7 @@ label {
 /* QR Code Section */
 .qr-section {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .qr-section img {
@@ -173,6 +173,18 @@ label {
 
 /* Save & Print Button */
 .save-print {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    height: 35px;
+}
+
+#print {
     background-color: var(--primary-color);
     color: white;
     border: none;
@@ -239,17 +251,67 @@ label {
 }
 
 .coupon-button{
-margin-top: 70px;
+margin-top: 50px;
 }
 
 .qr-section svg{
     margin-top: 10px;
 }
 
-.qr-section i{
-    font-size: 30px;
-    cursor: pointer;
-   
+#generateQr{
+    cursor: pointer ;
+    margin-top: -2px;
+    margin-left: -45px;
+    position: absolute;
+    height: 45px;
+}
+
+.coupon-alert{
+    text-align: center;
+}
+
+
+@media screen and (max-width: 1400px) {
+
+
+.modal{
+    zoom:90%;
+}
+
+.modal-content{
+        height: 800px;
+        width:400px;
+        margin-right:-10px ;
+      
+      }
+
+      #add_coupon_modal{
+        height: 900px;
+      }
+
+      .coupon-button{
+        margin-top: -30px;
+      }
+
+      .add-customer{
+        margin-top: 10px;
+      }
+
+      #modalHeaderTxt{
+        font-size: 25px;
+      }
+      
+      .qr-section svg{
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.coupon-alert{
+    text-align: center;
+    margin-top: -30px;
+    padding-bottom: 20px;
+}
+
 }
 
 </style>
@@ -269,12 +331,12 @@ margin-top: 70px;
        
         <div class="input-group coupon-input-group">
       <label for="amount">Amount (Php):</label> 
-      <input type="text" id="amount" name="amount" placeholder="amount" >
+      <input type="text" id="amount" name="amount" placeholder="amount" required>
     </div>
 
     <div class="input-group coupon-input-group">
       <label for="validity">Validity (Days):</label>
-      <input type="date" id="validity" name="validity"  placeholder="validity days">
+      <input type="date" id="validity" name="validity"  placeholder="validity days" required>
     </div>
 
     <!-- <div class="input-group coupon-input-group">
@@ -285,6 +347,7 @@ margin-top: 70px;
     <div class="input-group coupon-input-group">
         <label for="multipleUse">Multiple Use:</label>
         <select id="multipleUse" name="multipleUse">
+            <!-- <option >Select</option> -->
             <option value="yes">Yes</option>
             <option value="no">No</option>
         </select>
@@ -299,8 +362,13 @@ margin-top: 70px;
 
     <div class="qr-section">
         <label for="qrCode">Generate QR Code</label>
-        <input type="text" id="qrCode" name="qrCode" placeholder="Generate QR">
-        <i class="bi bi-qr-code" id="generateQr"></i>
+        <input type="text" id="qrCode" name="qrCode" placeholder="Generate QR" required>
+         <svg  id="generateQr" width="50px" height="50px" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+          <path d="M9 5.30423C6.33576 6.60253 4.5 9.33688 4.5 12.5C4.5 16.9183 8.08172 20.5 12.5 20.5C16.9183 20.5 20.5 16.9183 20.5 12.5C20.5 8.08172 16.9183 4.5 12.5 4.5V14.5" stroke="var(--primary-color)" stroke-width="1.2"></path>
+          <path d="M16 11L12.5 14.5L9 11" stroke="var(--primary-color)" stroke-width="1.2"></path> </g>
+        </svg>
+         
         <br>
         <svg  width="250px" height="250px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="var(--primary-color)">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -308,11 +376,14 @@ margin-top: 70px;
         </svg>
     </div>
 
+    <div class="coupon-alert">
+    </div>
 
     <div class="coupon-button">   
         <button class="disabled">EDIT</button>
-        <button class="disabled">DELETE</button>
+        <button id="delete-customer" class="disabled">DELETE</button>
         <button class="save-print">SAVE & PRINT</button> 
+
     </div>
   
 
@@ -324,3 +395,93 @@ margin-top: 70px;
   </div>
 </div>
 
+<script>
+
+document.querySelector('#generateQr').addEventListener('click', function() {
+    const amount = document.getElementById('amount').value;
+    const validity = document.getElementById('validity').value;
+
+    const qrNumber = 'QR-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+    document.getElementById('qrCode').value = qrNumber;
+});
+
+document.querySelector('.save-print').addEventListener('click', function() {
+    const amount = document.getElementById('amount').value.trim();
+    const validity = document.getElementById('validity').value.trim();
+    const qrNumber = document.getElementById('qrCode').value.trim();
+    const multipleUse = document.getElementById('multipleUse').value;
+    const alertDiv = document.querySelector('.coupon-alert');
+
+    // Clear any previous alerts
+    alertDiv.innerHTML = "";
+
+    // Validate if amount, validity, and QR code fields are filled
+    if (amount === "" || validity === "" || qrNumber === "" || multipleUse === "") {
+        alertDiv.innerHTML = "<p style='color:red;'>Please fill out all required fields before saving.</p>";
+        return; 
+    }
+
+    // If validation passes, proceed with the fetch request
+    fetch('add_coupon.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            amount: amount,
+            validity: validity,
+            qrNumber: qrNumber,
+            multipleUse: multipleUse
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alertDiv.innerHTML = `<p style='color:green;'>Coupon saved successfully!</p>`;
+            $('#add_coupon_modal').hide();
+            couponIdToPrint = data.id;
+            refreshTable()
+            // location.reload()
+        } else {
+            alertDiv.innerHTML = "<p style='color:red;'>Server Error: " + data.error + "</p>";
+        }
+    })
+    .catch(error => {
+        alertDiv.innerHTML = "<p style='color:red;'>Fetch Error: " + error.message + "</p>";
+    });
+});
+
+
+document.getElementById('delete-customer').addEventListener('click', function() {
+    // Clear all input fields
+    document.getElementById('amount').value = '';
+    document.getElementById('validity').value = '';
+    document.getElementById('qrCode').value = '';
+    document.getElementById('coupon-customer').value = '';
+    document.getElementById('multipleUse').selectedIndex = 0; // Reset to the first option
+});
+
+
+// Print coupon when the print button is clicked
+$(document.body).on('click', '.save-print', function() {
+    if (couponIdToPrint !== null) {
+        console.log("Coupon ID to print:", couponIdToPrint);
+        
+    } else {
+        console.log("No coupon ID available to print.");
+    }
+ 
+    var id = couponIdToPrint;
+
+    $('#confirmModal').modal('show');
+  
+
+});
+
+</script>

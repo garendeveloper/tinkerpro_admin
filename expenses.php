@@ -472,7 +472,7 @@ if (isset($_SESSION['user_id'])) {
     }
    
     #tbl_expenses th:nth-child(12) {
-        width: 110px !important;
+        width: 130px !important;
     }
     
     #tbl_expenses td {
