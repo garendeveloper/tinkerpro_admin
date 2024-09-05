@@ -17630,3 +17630,22 @@
 2024-09-04 14:45:34 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:null 
 2024-09-04 14:54:02 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:62 
 2024-09-04 14:57:13 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:63 
+2024-09-05 09:01:40 | Noriel Bagacay | 112 | 2 | Login | User Noriel Bagacay 2 
+2024-09-05 09:02:37 | Noriel Bagacay | 112 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:64 
+2024-09-05 09:04:14 | Noriel Bagacay | 112 | 2 | Products | Noriel Bagacay Added mansion Barcode #:975639254647 
+2024-09-05 09:06:28 | Noriel Bagacay | 112 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000005 Amount:₱ 1,000,000,000.00 
+2024-09-05 09:06:46 | Noriel Bagacay | 112 | 2 | Received Items | Tender received items, PO Number: 10-000000005 Supplier: Gaisano 
+2024-09-05 09:20:18 | Noriel Bagacay | 112 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000006 Amount:₱ 4,300,000.00 
+2024-09-05 09:20:35 | Noriel Bagacay | 112 | 2 | Received Items | Tender received items, PO Number: 10-000000006 Supplier: Gaisano 
+2024-09-05 09:27:51 | Noriel Bagacay | 112 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000007 Amount:₱ 7,780,000.00 
+2024-09-05 09:28:49 | Noriel Bagacay | 112 | 2 | Received Items | Tender received items, PO Number: 10-000000007 Supplier: Gaisano 
+2024-09-05 09:58:20 | Noriel Bagacay | 112 | 2 | Logout | User Noriel Bagacay 2 
+2024-09-05 09:58:30 | Admin Admin | 1 | 2 | Login | User Admin Admin 2 
+2024-09-05 09:59:22 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
+2024-09-05 09:59:25 | Noriel Bagacay | 110 | 2 | Login | User Noriel Bagacay 2 
+2024-09-05 10:38:00 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added moriel Barcode #:237232535508 
+2024-09-05 10:38:32 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Updated noriel  Barcode #:237232535508 
+2024-09-05 10:40:08 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Updated noriel Barcode #:237232535508 
+2024-09-05 10:41:55 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added choconuts Barcode #:211788440904 
+2024-09-05 10:42:51 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added bagacay Barcode #:517998839727 
+2024-09-05 10:45:18 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Updated noriel Barcode #:237232535508 

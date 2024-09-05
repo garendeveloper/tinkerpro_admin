@@ -42,9 +42,9 @@ if ($fetchProduct->rowCount() > 0) {
         <td class='code text-center td-h'    style="width: 6%" ><?= $row['code']?></td>
         <td class='uom_name text-center td-h'    style="width: 6%" ><?= $row['uom_name'] ?? null ?></td>
         <td class='brand text-center td-h'    style="width: 6%" ><?= $row['brand']?></td>
-        <td class='prod_price text-end td-h pe-1'    style="width: 6%" ><?= number_format((float)$row['prod_price'], 2, '.', '')?></td>
+        <td class='prod_price text-end td-h pe-1'    style="width: 6%" ><?= number_format((float)$row['prod_price'], 2, '.', ',')?></td>
         <td class='markup text-end td-h pe-1'    style="width: 6%" ><?= number_format((float)$row['markup'], 2, '.', '')?></td>
-        <td class='cost text-end td-h pe-1'  style="width: 6%" ><?= number_format((float)$row['cost'], 2, '.', '') ?></td>
+        <td class='cost text-end td-h pe-1'  style="width: 6%" ><?= number_format((float)$row['cost'], 2, '.', ',') ?></td>
         <td class='category text-center td-h' style="width: 10%">
         <?php
         if ($row['category_details'] !== null) {

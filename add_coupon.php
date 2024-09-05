@@ -18,20 +18,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $amount = $data['amount'];
         $validity = $data['validity'];
         $qrNumber = $data['qrNumber'];
+        $multipleUse = $data['multipleUse'];
 
         // Calculate the expiry date and time
         $expiry_dateTime = date('Y-m-d H:i:s', strtotime($validity));
 
         // Prepare an SQL statement to prevent SQL injection
-        $sql = "INSERT INTO return_coupon (qrNumber, receipt_id, c_amount, isUse, transaction_dateTime, expiry_dateTime)
-                VALUES (:qrNumber, 0, :amount, 0, NOW(), :expiry_dateTime)";
+        $sql = "INSERT INTO return_coupon (qrNumber, receipt_id, c_amount, isUse, transaction_dateTime, expiry_dateTime, multiple_use)
+                VALUES (:qrNumber, 0, :amount, 0, NOW(), :expiry_dateTime, :multipleUse)";
 
         try {
-            // Prepare and execute the SQL statement
+          
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':qrNumber', $qrNumber);
             $stmt->bindParam(':amount', $amount);
             $stmt->bindParam(':expiry_dateTime', $expiry_dateTime);
+            $stmt->bindParam(':multipleUse', $multipleUse);
             
             if ($stmt->execute()) {
                 $insertedId = $conn->lastInsertId(); // Get the ID of the newly inserted row

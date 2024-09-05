@@ -114,7 +114,8 @@
                             <!-- </div> -->
                             <div class="checkbox-container" style = "width: 100%">
                             
-                              <label for="sc">SC</label>
+                            <!-- for automatic check -->
+                              <!-- <label for="sc">SC</label>
                               <input type="checkbox" id="discount_sc" class="discountList" checked />
 
                               <label for="sp">SP</label>
@@ -127,7 +128,22 @@
                               <input type="checkbox" id="discount_pwd" class="discountList" checked />
 
                               <label for="mov">MOV</label>
-                              <input type="checkbox" id="discount_mov" class="discountList" checked />
+                              <input type="checkbox" id="discount_mov" class="discountList" checked /> -->
+
+                              <label for="sc">SC</label>
+                              <input type="checkbox" id="discount_sc" class="discountList"  />
+
+                              <label for="sp">SP</label>
+                              <input type="checkbox" id="discount_sp" class="discountList"  />
+
+                              <label for="naac">NAAC</label>
+                              <input type="checkbox" id="discount_naac" class="discountList"  />
+
+                              <label for="naac">PWD</label>
+                              <input type="checkbox" id="discount_pwd" class="discountList"  />
+
+                              <label for="mov">MOV</label>
+                              <input type="checkbox" id="discount_mov" class="discountList"  />
 
                             </div>
                         </div>
@@ -141,7 +157,9 @@
                           $other_Charge = ($stockable == "no") ? "yes" : "no";
                           ?>
                           <label class="stockeable" style="margin-left: 5px">
-                              <input type="checkbox" id="stockeableToggle"<?php if($stockable  == "no") ?>  >
+                          <!-- < old code stockable not default> -->
+                        
+                              <input type="checkbox" id="stockeableToggle" <?php if ($stockable == "no") echo 'checked'; ?>>
                               <span class="stockeableSpan round"></span>
                           </label>
                             </div>

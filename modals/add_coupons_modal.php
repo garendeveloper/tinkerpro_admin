@@ -296,6 +296,22 @@ margin-top: 50px;
       .add-customer{
         margin-top: 10px;
       }
+
+      #modalHeaderTxt{
+        font-size: 25px;
+      }
+      
+      .qr-section svg{
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.coupon-alert{
+    text-align: center;
+    margin-top: -30px;
+    padding-bottom: 20px;
+}
+
 }
 
 </style>
@@ -394,13 +410,14 @@ document.querySelector('.save-print').addEventListener('click', function() {
     const amount = document.getElementById('amount').value.trim();
     const validity = document.getElementById('validity').value.trim();
     const qrNumber = document.getElementById('qrCode').value.trim();
+    const multipleUse = document.getElementById('multipleUse').value;
     const alertDiv = document.querySelector('.coupon-alert');
 
     // Clear any previous alerts
     alertDiv.innerHTML = "";
 
     // Validate if amount, validity, and QR code fields are filled
-    if (amount === "" || validity === "" || qrNumber === "") {
+    if (amount === "" || validity === "" || qrNumber === "" || multipleUse === "") {
         alertDiv.innerHTML = "<p style='color:red;'>Please fill out all required fields before saving.</p>";
         return; 
     }
@@ -414,7 +431,8 @@ document.querySelector('.save-print').addEventListener('click', function() {
         body: JSON.stringify({
             amount: amount,
             validity: validity,
-            qrNumber: qrNumber
+            qrNumber: qrNumber,
+            multipleUse: multipleUse
         })
     })
     .then(response => {
