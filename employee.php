@@ -4,6 +4,7 @@
   include( __DIR__ . '/utils/db/connector.php');
   include( __DIR__ . '/utils/models/user-facade.php');
   include(__DIR__ . '/utils/models/ability-facade.php');
+  include( __DIR__ . '/utils/models/employee-facade.php');
 
 
   $userId = 0;
@@ -62,7 +63,7 @@ if (isset($_SESSION['user_id'])) {
     array_push($info, $error);
 	}
 
-  include('./modals/add-users-modal.php');
+  include('./modals/add-employee-modal.php');
   include('./modals/permissionModal.php');
   include('./modals/access_denied.php');
   include('./modals/access_granted.php');
@@ -389,6 +390,20 @@ if (isset($_SESSION['user_id'])) {
       <?php include 'layout/admin/sidebar.php' ?>
       <div class="main-panel h-100">
         <div class="content-wrapper">
+
+     
+       
+                <button id="attendance" class="grid-item pos-setting text-color button"><i class="bi bi-calendar-check-fill"></i>&nbsp;
+                  Attendance</button>
+                <button id="stocks" class="grid-item pos-setting text-color button"><i class="bi bi-credit-card"></i>&nbsp;
+                  Payroll</button>
+                <button id="payroll" class="grid-item pos-setting text-color button"><i class="bi bi-card-list"></i>&nbsp;
+                  Leave <span id="leavemanagement" class="badge badge-danger"
+                  style="font-size: 11px; background-color: red; color: fff; "></span></button>
+              
+
+           
+          
           <div class="d-flex mb-2 w-10">
 
             <input  class="text-color searchEmployee w-100 ms-2 searchInputs" id="searchInput" placeholder="Search Employee"/>
@@ -479,11 +494,26 @@ if (isset($_SESSION['user_id'])) {
 <?php include("layout/footer.php") ?>
 <script>
 
-
 $("#employee").addClass('active');
   $("#pointer").html("Employee");
 
   $(document).ready(function () {
+
+
+
+    function refreshTable() {
+    $.ajax({
+      url: './fetch-data/fetch-employee.php',
+        type: 'GET',
+        success: function(response) {
+            $('#employeeTable').html(response); 
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText); 
+        }
+    });
+}
+
 
 
   function fetchEmployeeData() {
@@ -521,6 +551,44 @@ $("#employee").addClass('active');
 
 
     fetchEmployeeData();
+
+  
+   $(".addProducts").on("click", function(){
+    $('#add_employee_modal').show();
+  })
+
+
+  
+  function userForm(tableRow)
+  {
+    var empId = tableRow.closest('tr').find('.empId').text();
+    var dataFirstName =  tableRow.closest('tr').find('.f_name').text();
+    var dataLastName =  tableRow.closest('tr').find('.l_name').text();
+    var employeeNum =  tableRow.closest('tr').find('.employeeNum').text();
+    var pw =  tableRow.closest('tr').find('.pw').text();
+    var imageName =  tableRow.closest('tr').find('.imageName').text();
+    var datastats =  tableRow.closest('tr').find('.statsData').text();
+    var datastatsID =  tableRow.closest('tr').find('.statsDataID').text();
+    var roleN =  tableRow.closest('tr').find('.roleN').text();
+    var roleID =  tableRow.closest('tr').find('.roleidNum').text();
+    var identification =  tableRow.closest('tr').find('.identification').text();
+    var datehired =  tableRow.closest('tr').find('.datehired').text();
+    var perm =  tableRow.closest('tr').find('.permission').text();
+    $('.highlightedUser').removeClass('highlightedUser');
+
+
+    var $row = tableRow.closest('tr').addClass('highlightedUser');
+    updateUserForm(userId,dataFirstName,dataLastName,employeeNum,pw,imageName,datastats,datastatsID,roleN,roleID,identification,datehired,perm)
+  }
+  $(document.body).on('click', '.editBtn', function() {
+    userForm($(this));  
+  });
+  
+  $(document).on("dblclick", "#recentusers tbody tr", function(e){
+    e.preventDefault();
+    userForm($(this));
+  })
+
   });
 
 </script>

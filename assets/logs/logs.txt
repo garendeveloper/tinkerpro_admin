@@ -17650,3 +17650,28 @@
 2024-09-05 10:42:51 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added bagacay Barcode #:517998839727 
 2024-09-05 10:45:18 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Updated noriel Barcode #:237232535508 
 2024-09-05 17:24:35 | Noriel Bagacay | 110 | 2 | Login | User Noriel Bagacay 2 
+2024-09-06 09:00:27 | Noriel Bagacay | 110 | 2 | Login | User Noriel Bagacay 2 
+2024-09-06 09:23:40 | Noriel Bagacay | 110 | 2 | Received Items | Tender received items, PO Number: 10-000000052 Supplier: GAISANO SUPERMARKET 
+2024-09-06 09:24:03 | Noriel Bagacay | 110 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000063 Amount:₱ 850.00 
+2024-09-06 09:25:55 | Noriel Bagacay | 110 | 2 | Coupons | Noriel Bagacay Updated the coupon expiration to 1 DAY 
+2024-09-06 09:26:17 | Noriel Bagacay | 110 | 2 | Coupons | Noriel Bagacay Updated the coupon expiration to 1 WEEK 
+2024-09-06 09:27:03 | Noriel Bagacay | 110 | 2 | Coupons | Noriel Bagacay Printed a coupon id #:1 
+2024-09-06 10:19:03 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added noriel1 Barcode #:205453559876 
+2024-09-06 13:09:34 | Noriel Bagacay | 110 | 2 | Users | Added ewfewfe wfwefewf 
+2024-09-06 13:11:00 | Noriel Bagacay | 110 | 2 | Users | Added darth zeether 
+2024-09-06 13:12:03 | Noriel Bagacay | 110 | 2 | Users | Added dfwafeas fedfer 
+2024-09-06 13:23:35 | Noriel Bagacay | 110 | 2 | Users | Added Julia fasfsaf 
+2024-09-06 13:26:46 | Noriel Bagacay | 110 | 2 | Users | Added darth zeether 
+2024-09-06 13:28:39 | Noriel Bagacay | 110 | 2 | Users | Added fbnujsdnbfsdf gsegfdsgs 
+2024-09-06 13:29:11 | Noriel Bagacay | 110 | 2 | Users | Added fefsd afefewf 
+2024-09-06 17:41:29 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added noriel2 Barcode #:473647963585 
+2024-09-06 17:45:56 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added noriel4 Barcode #:356636820133 
+2024-09-06 17:52:26 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added noriel5 Barcode #:127158147691 
+2024-09-06 17:54:34 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Added fsafsa Barcode #:714621497922 
+2024-09-06 17:57:04 | Noriel Bagacay | 110 | 2 | Products | Noriel Bagacay Updated fsafsa Barcode #:714621497922 
+2024-09-06 18:08:24 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-06 18:19:54 | Alexander Caones | 107 | 2 | Products | Alexander Caones Deleted noriel5 Barcode #:127158147691 
+2024-09-06 18:20:12 | Alexander Caones | 107 | 2 | Products | Alexander Caones Deleted noriel4 Barcode #:356636820133 
+2024-09-06 18:20:22 | Alexander Caones | 107 | 2 | Products | Alexander Caones Deleted noriel2 Barcode #:473647963585 
+2024-09-06 18:20:36 | Alexander Caones | 107 | 2 | Products | Alexander Caones Deleted noriel Barcode #:237232535508 
+2024-09-06 18:20:39 | Alexander Caones | 107 | 2 | Products | Alexander Caones Deleted noriel1 Barcode #:205453559876 

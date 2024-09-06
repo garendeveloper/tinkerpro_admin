@@ -412,6 +412,14 @@ class UserFacade extends DBConnection {
                     $jsonData = json_encode($permissionData);
                     $insertPermission = $this->connect()->prepare('INSERT INTO abilities (permission, user_id, created_at) VALUES (?, ?, now())');
                     $insertPermission->execute([$jsonData, $userId]);
+
+                    // Check if roleName is 'Cashier' or 'Inventory' and insert into the 'employee' table
+                if (in_array($roleName, ['Cashier', 'Inventory'])) {
+                    $sqlEmployee = 'INSERT INTO employee (fname, lname, position, user_id, employee_number, username, password, date_hired, status_id, profileimage) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    $stmtEmployee = $pdo->prepare($sqlEmployee);
+                    $stmtEmployee->execute([$first_name, $last_name, $roleName, $userId, $employeeNum, $username, $password, $newDateHired, $status, $fileName]);
+                }
+
                 }
             }
         
