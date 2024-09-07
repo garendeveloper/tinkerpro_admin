@@ -4,38 +4,55 @@ include(__DIR__ . '/..//utils/db/connector.php');
 include(__DIR__ . '/..//utils/models/employee-facade.php');
 // include(__DIR__ . '/..//utils/models/user-facade.php');
 
-
-
 $employeeFacade = new Employee_facade();
 // $userFacade = new UserFacade();
 
-
 $fetchEmployee = $employeeFacade->fetchEmployee();
 
-$counter = 1; 
+$counter = 1;
 
 ob_start(); 
 
-
 if ($fetchEmployee->rowCount() > 0) {
-  
+
     while ($row = $fetchEmployee->fetch(PDO::FETCH_ASSOC)) {
         ?>
-        <tr class="table-row employee-row">
-            <td hidden>
-                <span hidden class="empPosition"><?= $row['position'] ?></span>
+       <tr class="table-row employee-row">
+         
+            <td style="border-left: 1px solid transparent !important" class="text-center td-h child-a">
+                <?= $counter ?>
                 <span hidden class="empId"><?= $row['id'] ?></span>
-                <span hidden class="dateHired"><?= $row['date_hired'] ?></span>
-                <span hidden class="status_id"><?= $row['status_id'] ?></span>
             </td>
-            <td style="border-left: 1px solid transparent !important" class="text-center td-h child-a"><?= $counter ?></td>
-            <td class="text-left text-color td-h child-b" style="padding-left: 10px !important"><?= $row['fname'] . ' ' . $row['lname'] ?></td>
-            <td class="text-center text-color td-h child-c"><?= $row['position'] ?></td>
-            <td class="text-center text-color td-h child-d"><?= $row['employee_number'] ?? 'N/A' ?></td>
-            <td class="text-center text-color td-h child-e"><?= date('F d, Y', strtotime($row['date_hired'])) ?></td>
-            <td class="text-center td-h child-f <?= ($row['status_id'] == 1) ? 'text-success' : (($row['status_id'] == 2) ? 'text-danger' : 'text-warning') ?>">
-                <?= $row['status_id'] == 1 ? 'Active' : ($row['status_id'] == 2 ? 'Inactive' : 'Suspended') ?>
+            
+            <td class="text-left text-color td-h child-b" style="padding-left: 10px !important">
+                <?= $row['fname'] . ' ' . $row['lname'] ?>
+                <span hidden class="f_name"><?= $row['fname'] ?></span>
+                <span hidden class="l_name"><?= $row['lname'] ?></span>
             </td>
+
+            <td class="text-center text-color td-h child-c"><?= $row['position'] ?>
+            <span hidden class="empPosition"><?= $row['position'] ?></span></td>
+
+            <td class="text-center text-color td-h child-d">
+                <?= $row['employee_number'] ?? 'N/A' ?>
+                <span hidden class="empNumber"><?= $row['employee_number'] ?></span>
+                <span hidden class="pw"><?= $row['password'] ?></span>
+                <span hidden class="imageName"><?= $row['profileimage'] ?? '' ?></span>
+            </td>
+
+            <td class="text-center text-color td-h child-f">
+                <?= date('F d, Y', strtotime($row['date_hired'])) ?>
+                 
+            <span hidden class="dateHired"><?= $row['date_hired'] ?></span>
+          
+            </td>
+
+            <td class="text-center td-h child-g <?= ($row["status"] == 'Active') ? 'text-success' : (($row["status"] == 'Inactive') ? 'text-danger' : (($row["status"] == 'Suspended') ? 'text-warning' : '')) ?>">
+                <?= $row['status'] ?? null ?>
+                <span hidden class="status_name"><?= $row['status']?></span>
+                <span hidden class="status_id"><?= $row['status_id']?></span>
+            </td>
+
             <td class="text-center action-td td-h child-h" style="border-right: 1px solid transparent !important">
                 <a href="#" class="text-success editBtn" style="text-decoration: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#fff" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -56,7 +73,7 @@ if ($fetchEmployee->rowCount() > 0) {
         $counter++; 
     }
 } else {
-  
+
     ?>
     <tr>
         <td colspan="7" style="text-align: center; padding: 20px; border: 1px solid transparent !important">
@@ -70,6 +87,7 @@ $html = ob_get_clean();
 echo $html; 
 
 ?>
+
 
 <script>
 
@@ -128,6 +146,8 @@ echo $html;
                         if (result.success) {
                             alert('Employee deleted successfully.');
                             location.reload(); 
+                            insertLogs('Employee', 'Deleted' + ' ' + firstname + ' '+ lastname);
+
                         } else {
                             alert('Failed to delete employee.');
                         }
@@ -137,7 +157,10 @@ echo $html;
         });
         
 
+        
+
     });
 
 
 </script>
+

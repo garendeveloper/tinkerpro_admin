@@ -559,34 +559,39 @@ $("#employee").addClass('active');
 
 
   
-  function userForm(tableRow)
+  function EmployeeForm(tableRow)
   {
     var empId = tableRow.closest('tr').find('.empId').text();
     var dataFirstName =  tableRow.closest('tr').find('.f_name').text();
     var dataLastName =  tableRow.closest('tr').find('.l_name').text();
-    var employeeNum =  tableRow.closest('tr').find('.employeeNum').text();
+    var empPosition =  tableRow.closest('tr').find('.empPosition').text();
+    var empNumber =  tableRow.closest('tr').find('.empNumber').text();
     var pw =  tableRow.closest('tr').find('.pw').text();
     var imageName =  tableRow.closest('tr').find('.imageName').text();
-    var datastats =  tableRow.closest('tr').find('.statsData').text();
-    var datastatsID =  tableRow.closest('tr').find('.statsDataID').text();
-    var roleN =  tableRow.closest('tr').find('.roleN').text();
-    var roleID =  tableRow.closest('tr').find('.roleidNum').text();
-    var identification =  tableRow.closest('tr').find('.identification').text();
-    var datehired =  tableRow.closest('tr').find('.datehired').text();
-    var perm =  tableRow.closest('tr').find('.permission').text();
+    var status_name =  tableRow.closest('tr').find('.status_name').text();
+    var status_id =  tableRow.closest('tr').find('.status_id').text();
+    var datehired =  tableRow.closest('tr').find('.dateHired').text();
+  
+
+
+
+    console.log({
+      empId, dataFirstName, dataLastName, empPosition, empNumber, pw, imageName, status_name, status_id, datehired
+  });
+
     $('.highlightedUser').removeClass('highlightedUser');
 
 
     var $row = tableRow.closest('tr').addClass('highlightedUser');
-    updateUserForm(userId,dataFirstName,dataLastName,employeeNum,pw,imageName,datastats,datastatsID,roleN,roleID,identification,datehired,perm)
+    updateEmployeeForm(empId,dataFirstName,dataLastName,empPosition,empNumber,pw,imageName,status_name,status_id,datehired)
   }
   $(document.body).on('click', '.editBtn', function() {
-    userForm($(this));  
+    EmployeeForm($(this));  
   });
   
-  $(document).on("dblclick", "#recentusers tbody tr", function(e){
+  $(document).on("dblclick", "#recent_employee tbody tr", function(e){
     e.preventDefault();
-    userForm($(this));
+    EmployeeForm($(this));
   })
 
   });

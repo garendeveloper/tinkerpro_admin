@@ -17679,3 +17679,24 @@
 2024-09-06 18:32:54 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added sadsadfaws Barcode #:209636838455 
 2024-09-06 18:33:09 | Alexander Caones | 107 | 2 | Products | Alexander Caones Deleted fsafsa Barcode #:714621497922 
 2024-09-06 18:33:12 | Alexander Caones | 107 | 2 | Products | Alexander Caones Deleted fafeasfsa Barcode #:182496259708 
+2024-09-06 18:34:20 | Alexander Caones | 107 | 2 | Products | Alexander Caones Updated bagacay Barcode #:517998839727 
+2024-09-06 18:41:07 | Alexander Caones | 107 | 2 | Coupons | Alexander Caones Printed a coupon id #:5 
+2024-09-07 09:04:56 | Noriel Bagacay | 110 | 2 | Login | User Noriel Bagacay 2 
+2024-09-07 09:19:42 | Noriel Bagacay | 110 | 2 | Users | Added darth zeether 
+2024-09-07 10:11:18 | Noriel Bagacay | 110 | 2 | Users | Added dfwf fgef 
+2024-09-07 11:37:20 | Noriel Bagacay | 110 | 2 | Users | Added safgas fsafsaf 
+2024-09-07 13:32:00 | Noriel Bagacay | 110 | 2 | Users | Added dfwf fgef 
+2024-09-07 13:32:19 | Noriel Bagacay | 110 | 2 | Users | Added dfwf fgef 
+2024-09-07 13:32:41 | Noriel Bagacay | 110 | 2 | Users | Added dfwf fgef 
+2024-09-07 13:35:22 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated aaas asfsafsaf 
+2024-09-07 14:08:18 | Noriel Bagacay | 110 | 2 | Logout | User Noriel Bagacay 2 
+2024-09-07 14:08:23 | Noriel Bagacay | 110 | 2 | Login | User Noriel Bagacay 2 
+2024-09-07 14:12:53 | Noriel Bagacay | 110 | 2 | Logout | User Noriel Bagacay 2 
+2024-09-07 14:12:57 | Noriel Bagacay | 110 | 2 | Login | User Noriel Bagacay 2 
+2024-09-07 14:13:10 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated Noriel Bagacay 
+2024-09-07 14:27:24 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated darthdd zeether 
+2024-09-07 14:27:59 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated darth zeether 
+2024-09-07 14:28:56 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated darths zeether 
+2024-09-07 14:29:03 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated darth zeether 
+2024-09-07 14:31:29 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated diwata pares 
+2024-09-07 14:35:22 | Noriel Bagacay | 110 | 2 | Employee | Added fewfew fewfewfds 

@@ -350,7 +350,7 @@
             <div class="button-container position-absolute d-flex justify-content-end w-100" style="bottom: 10px;">
                 <button onclick="closeAddEmployeeModal()" class="cancelAddUser btn-error-custom" style="margin-right: 20px;width: 100px; height: 40px">Cancel</button>
                 <button onclick="addEmployee()"  class="btn-success-custom saveBtn" style="margin-right: 10px; width: 100px; height: 40px">Save</button>
-                <!-- <button hidden onclick="updateDataUser()" class="btn-success-custom updateBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button> -->
+                <button hidden onclick="UpdateEmployee()" class="btn-success-custom updateBtn" style="margin-right: 10px; width: 100px; height: 40px">Update</button>
             </div>
         </div>
       </div>
@@ -640,7 +640,7 @@ function addEmployee()
                 }, 1500);
                 
                 if(response.data.success) {
-                    insertLogs('Users', 'Added' + ' ' + firstname + ' '+ lastname);
+                    insertLogs('Employee', 'Added' + ' ' + firstname + ' '+ lastname);
                 } 
             })
             .catch(function(error) {
@@ -702,295 +702,142 @@ function clearAllInputs(){
 
 
 
-function updateUserForm(id, dataFirstName, dataLastName, employeeNum, pw, imageName, datastats, datastatsID, roleN, roleID, identification, datehired,perm) {
+
+function updateEmployeeForm(empId, dataFirstName, dataLastName, empPosition, empNumber, pw, imageName, status_name, status_id, datehired) {
     $('#add_employee_modal').show();
-    id? document.getElementById('id').value = id : null;
-    dataFirstName ? (document.getElementById("firstN").value = dataFirstName, $('.firstName').html(dataFirstName + '&nbsp;')) : null;
-    dataLastName ? (document.getElementById("lastN").value = dataLastName, $('.lastName').text(dataLastName)) : null;
-    employeeNum ? document.getElementById('employeeNum').value = employeeNum : null;
-    pw ? (document.getElementById("password").value = pw, document.getElementById("confirmPass").value = pw) : null;
-    imageName ? displayImage('./assets/profile/' + imageName) : null;
-    datastats ? document.getElementById("StatusName").value = datastats : null;
-    datastatsID ? document.getElementById("status").value = datastatsID : null;
-    roleN ? document.getElementById("roleName").value = roleN : null;
-    roleID ? document.getElementById("role").value = roleID : null;
-    identification ? document.getElementById("user_ID").value = identification : null;
-    datehired ? (() => {
-        var dateObj = new Date(datehired);
-        !isNaN(dateObj.getTime()) ? (() => {
-            var month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
-            var day = dateObj.getDate().toString().padStart(2, '0');
-            var year = dateObj.getFullYear();
-            var formattedDate = month + '-' + day + '-' + year;
-            var input = document.getElementById('dateHired');
-            input._flatpickr.setDate(formattedDate, true);
-        })() : console.error("Invalid date format: ", datehired);
-    })() : null;
-  if(perm){
-    var jsonPermissionData = perm;
-    var data = JSON.parse(jsonPermissionData);
-    var refundAccess = data[0]?.Refund;
-    var returnAccess = data[0]?.ReturnExchange;
-    var xreading = data[0]?.XReading;
-    var zreading = data[0]?.ZReading;
-    var cashcount = data[0]?.CashCount;
-    var saleshistory = data[0]?.SalesHistory;
-    var inventory = data[0]?.Inventory;
-    var reports = data[0]?.Reports;
-    var startingCash = data[0]?.StartingCash;
-    var products = data[0]?.Products;
-    var documentFile = data[0]?.Documents;
-    var purchaseOrder = data[0]?.PurchaseOrder;
-    var voidItem = data[0]?.VoidItem;
-    var voidCart = data[0]?.VoidCart;
-    var cancelReceipt = data[0]?.CancelReceipt;
-    var us_er = data[0]?.Users;
-    var promo = data[0]?.Promotion;
-    var coupon = data[0]?.Coupon;
-    var charges = data[0]?.Charges;
-    var price_list = data[0]?.Pricelist;
-    var expenses = data[0]?.Expenses;
-    var supplier = data[0]?.Supplier;
-    var customer = data[0]?.Customer;
-    var pricetag = data[0]?.Pricetag;
-    var activitylogs = data[0]?.Activitylogs;
-    var management = data[0]?.Management;
 
+    if (empId) {
+        document.getElementById('id').value = empId;
+    }
 
+    if (dataFirstName) {
+        document.getElementById("firstN").value = dataFirstName;
+        $('.firstName').html(dataFirstName + '&nbsp;');
+    }
 
-    var refundCheckbox = document.getElementById("refund_permission");
-    refundCheckbox.checked = refundAccess === "Access Granted" ? true : false;
-    var returnCheckbox = document.getElementById("retAndExPermission");
-    returnCheckbox.checked = returnAccess === "Access Granted" ? true : false;
-    var xreadingCheckbox = document.getElementById("xReadingPermission");
-    xreadingCheckbox.checked = xreading === "Access Granted" ? true : false;
-    var zreadingCheckbox = document.getElementById("zReadingPermission");
-    zreadingCheckbox.checked = zreading === "Access Granted" ? true : false;
-    var cashCountCheckbox = document.getElementById("cashCountPermission");
-    cashCountCheckbox.checked = cashcount === "Access Granted" ? true : false;
-    var salesHistoryCheckbox = document.getElementById("salesHistoryPermission");
-    salesHistoryCheckbox.checked = saleshistory === "Access Granted" ? true : false;
-    var inventoryCheckbox = document.getElementById("inventoryPermission");
-    inventoryCheckbox.checked = inventory === "Access Granted" ? true : false;
-    var reportsCheckbox = document.getElementById("reportingPermission");
-    reportsCheckbox.checked = reports === "Access Granted" ? true : false;
-    var startingCheckbox = document.getElementById("startingCashPermission");
-    startingCheckbox.checked = startingCash === "Access Granted" ? true : false;
-    var productsCheckbox = document.getElementById("productsPermission");
-    productsCheckbox.checked = products === "Access Granted" ? true : false;
-    var documentCheckbox = document.getElementById("documentsPermission");
-    documentCheckbox.checked = documentFile === "Access Granted" ? true : false;
-    var purchaseCheckbox = document.getElementById("purchaseOrderPermission");
-    purchaseCheckbox.checked = purchaseOrder === "Access Granted" ? true : false;
-    var voidItemCheckbox = document.getElementById("voidItemPermission");
-    voidItemCheckbox.checked = voidItem === "Access Granted" ? true : false;
-    var voidCartCheckbox = document.getElementById("voidCartPermission");
-    voidCartCheckbox.checked = voidCart === "Access Granted" ? true : false;
-    var cancelOfficialCheckbox = document.getElementById("cancelOfficialReceiptPermission");
-    cancelOfficialCheckbox.checked = cancelReceipt === "Access Granted" ? true : false;
-    var usersCheckbox = document.getElementById("usersPermission");
-    usersCheckbox.checked = us_er === "Access Granted" ? true : false;
-    //new
-    var promotionCheckbox = document.getElementById("promotionPermission");
-    promotionCheckbox.checked = promo === "Access Granted" ? true : false;
-    //coupon
-    var couponCheckbox = document.getElementById("couponPermission");
-    couponCheckbox.checked = coupon === "Access Granted" ? true : false;
-    //charges
-    var chargesCheckbox = document.getElementById("chargesPermission");
-    chargesCheckbox.checked = charges === "Access Granted" ? true : false;
-     //pricelist
-    var pricelistCheckbox = document.getElementById("pricelistPermission");
-    pricelistCheckbox.checked = price_list === "Access Granted" ? true : false;
-     //expenses
-    var expensesCheckbox = document.getElementById("expensesPermission");
-    expensesCheckbox.checked = expenses === "Access Granted" ? true : false;
-    //supplier
-    var supplierCheckbox = document.getElementById("supplierPermission");
-     supplierCheckbox.checked = supplier === "Access Granted" ? true : false;
-    //customer
-    var customerCheckbox = document.getElementById("customerPermission");
-    customerCheckbox.checked = customer  === "Access Granted" ? true : false;
-    //price tag
-    var pricetagCheckbox = document.getElementById("pricetagPermission");
-    pricetagCheckbox.checked = pricetag  === "Access Granted" ? true : false;
-    //activity logs
-    var activitylogsCheckbox = document.getElementById("activitylogsPermission");
-    activitylogsCheckbox.checked = activitylogs  === "Access Granted" ? true : false;
-    //management
-    var managementCheckbox = document.getElementById("managementPermission");
-    managementCheckbox.checked = management  === "Access Granted" ? true : false;
-   
+    if (dataLastName) {
+        document.getElementById("lastN").value = dataLastName;
+        $('.lastName').text(dataLastName);
+    }
+
+    if (empPosition) {
+        document.getElementById('empPosition').value = empPosition;
+    }
+
+    if (empNumber) {
+        document.getElementById('employeeNum').value = empNumber;
+    }
+
+    if (pw) {
+        document.getElementById("password").value = pw;
+        document.getElementById("confirmPass").value = pw;
+    }
+    if (imageName) {
+        displayImage('./assets/profile/' + imageName);
+    }
+
+    if (status_name) {
+        document.getElementById("StatusName").value = status_name;
+    }
     
-  }
+    if (status_id) {
+        document.getElementById("status").value = status_id;
+    }
+  
+   
+    if (datehired) {
+        let dateObj = new Date(datehired);
+        if (!isNaN(dateObj.getTime())) {
+            let month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+            let day = dateObj.getDate().toString().padStart(2, '0');
+            let year = dateObj.getFullYear();
+            let formattedDate = `${month}-${day}-${year}`;
+            let input = document.getElementById('dateHired');
+
+            // Ensure that flatpickr is initialized before calling setDate
+            if (input && input._flatpickr) {
+                input._flatpickr.setDate(formattedDate, true);
+            } else {
+                console.error("Flatpickr is not initialized on the dateHired input");
+            }
+        } else {
+            console.error("Invalid date format: ", datehired);
+        }
+    }
+
+    // Show or hide buttons based on the presence of empId
     var uptBtn = document.querySelector('.updateBtn');
     var saveBtn = document.querySelector('.saveBtn');
-    id ? (uptBtn.removeAttribute('hidden'), saveBtn.setAttribute('hidden', true)) : (uptBtn.setAttribute('hidden', true), saveBtn.removeAttribute('hidden'));
- 
+    if (empId) {
+        uptBtn.removeAttribute('hidden');
+        saveBtn.setAttribute('hidden', true);
+    } else {
+        uptBtn.setAttribute('hidden', true);
+        saveBtn.removeAttribute('hidden');
+    }
 }
 
-function updateDataUser(){
+
+
+
+function UpdateEmployee(){
     $(".statusDropDown a[data-value='0']").click();
-    var u_id = document.getElementById('id').value;
-    var role_id = document.getElementById("role").value;
-    var roleName = document.getElementById("roleName").value;
+    //employee
+    var empId= document.getElementById('id').value;
     var lastname = document.getElementById("lastN").value;
     var firstname = document.getElementById("firstN").value;
+    var empPosition = document.getElementById("empPosition").value;
     var pass = document.getElementById("password").value;
     var cpass = document.getElementById("confirmPass").value;
     var file = document.getElementById("fileInput").files[0]; 
-    var identification = document.getElementById('user_ID').value;
     var employeeNum = document.getElementById('employeeNum').value;
     var dateHired = document.getElementById('dateHired').value;
     var status= document.getElementById("status").value;
     var username = generateUsername(firstname);
-    //abilities
- 
-    //refund
-    var checkbox = document.getElementById("refund_permission");
-    var refundPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //ret&ex
-    var checkbox = document.getElementById("retAndExPermission");
-    var retexPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //x-reading 
-    var checkbox = document.getElementById("xReadingPermission");
-    var xReadingPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //zreading
-    var checkbox = document.getElementById("zReadingPermission");
-    var zReadingPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //cash count
-    var checkbox = document.getElementById("cashCountPermission");
-    var cashCountPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //sales history
-    var checkbox = document.getElementById("salesHistoryPermission");
-    var salesHistoryPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //inventory
-    var checkbox = document.getElementById("inventoryPermission");
-    var inventoryPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //reporting
-    var checkbox = document.getElementById("reportingPermission");
-    var reportingPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //starting cash
-    var checkbox = document.getElementById("startingCashPermission");
-    var startingPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //products
-    var checkbox = document.getElementById("productsPermission");
-    var productsPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //documents
-    var checkbox = document.getElementById("documentsPermission");
-    var documentsPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //purchase
-    var checkbox = document.getElementById("purchaseOrderPermission");
-    var purchasePermissionValue = checkbox.checked ? checkbox.value : "0";
-    //void item
-    var checkbox = document.getElementById("voidItemPermission");
-    var voidItemPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //void card
-    var checkbox = document.getElementById("voidCartPermission");
-    var voidCartPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //cancel O.R
-    var checkbox = document.getElementById("cancelOfficialReceiptPermission");
-    var cancelReceiptPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //users
-    var checkbox = document.getElementById("usersPermission");
-    var userPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //promotion and action
-    var checkbox = document.getElementById("promotionPermission");
-    var promotionPermissionValue = checkbox.checked ? checkbox.value : "0";
-     //coupon
-     var checkbox = document.getElementById("couponPermission");
-    var couponPermissionValue = checkbox.checked ? checkbox.value : "0";
-     //charges
-     var checkbox = document.getElementById("chargesPermission");
-    var chargesPermissionValue = checkbox.checked ? checkbox.value : "0";
-     //price list
-     var checkbox = document.getElementById("pricelistPermission");
-    var pricelistPermissionValue = checkbox.checked ? checkbox.value : "0";
-     //expenses
-     var checkbox = document.getElementById("expensesPermission");
-    var expensesPermissionValue = checkbox.checked ? checkbox.value : "0";
-     //supplier
-    var checkbox = document.getElementById("supplierPermission");
-    var supplierPermissionValue = checkbox.checked ? checkbox.value : "0";
-     //customer
-     var checkbox = document.getElementById("customerPermission");
-    var customerPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //Price Tag
-    var checkbox = document.getElementById("pricetagPermission");
-    var pricetagPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //Activity Logs
-    var checkbox = document.getElementById("activitylogsPermission");
-    var activitylogsPermissionValue = checkbox.checked ? checkbox.value : "0";
-    //Activity Logs
-    var checkbox = document.getElementById("managementPermission");
-    var managementPermissionValue = checkbox.checked ? checkbox.value : "0";
 
     document.getElementById('firstNAME').style.color = (firstname == "" || firstname == null) ? "red" : "var(--primary-color)";
     document.getElementById('lastNAME').style.color = (lastname == "" || lastname == null) ? "red" : "var(--primary-color)";
-    document.getElementById('roleNAME').style.color = (roleName == "" || roleName == null) ? "red" : "var(--primary-color)";
+    document.getElementById('empPOSITION').style.color = (empPosition == "" || empPosition == null) ? "red" : "var(--primary-color)";
     document.getElementById('passWORD').style.color = (pass == "" || pass == null) ? "red" : "var(--primary-color)";
     document.getElementById('confirmPassword').style.color = (cpass == "" || cpass == null) ? "red" : "var(--primary-color)";
 
     var formData = new FormData();
     formData.append("uploadedImage", file); 
-    formData.append("role_id", role_id); 
-    formData.append("roleName", roleName); 
     formData.append("last_name", lastname); 
     formData.append("first_name", firstname); 
+    formData.append("position", empPosition); 
     formData.append("password", pass); 
     formData.append("username",username);
-    formData.append("userID", identification);
     formData.append("employeeNum", employeeNum);
     formData.append("dateHired", dateHired);
     formData.append("status", status);
-    formData.append("refund", refundPermissionValue);
-    formData.append("return", retexPermissionValue);
-    formData.append("xreading",xReadingPermissionValue);
-    formData.append("zreading",zReadingPermissionValue);
-    formData.append("cashcount",cashCountPermissionValue);
-    formData.append("saleshistory",salesHistoryPermissionValue);
-    formData.append("inventory",inventoryPermissionValue);
-    formData.append("reporting",reportingPermissionValue);
-    formData.append("starting",startingPermissionValue);
-    formData.append("products",productsPermissionValue);
-    formData.append("documents", documentsPermissionValue);
-    formData.append("purchase", purchasePermissionValue);
-    formData.append("voiditem", voidItemPermissionValue);
-    formData.append("voidcart", voidCartPermissionValue);
-    formData.append("cancelreceipt", cancelReceiptPermissionValue);
-    formData.append("users", userPermissionValue);
-    formData.append("promotion", promotionPermissionValue);
-    // new add
-    formData.append("coupon", couponPermissionValue);
-    formData.append("charges", chargesPermissionValue);
-    formData.append("pricelist", pricelistPermissionValue);
-    formData.append("expenses", expensesPermissionValue);
-    formData.append("supplier", supplierPermissionValue);
-    formData.append("customer", customerPermissionValue);
-    formData.append("pricetag", pricetagPermissionValue);
-    formData.append("activitylogs", activitylogsPermissionValue);
-    formData.append("management", managementPermissionValue);
-    formData.append("id",u_id);
+    formData.append("id",empId);
 
    
-    if(role_id && lastname && firstname && pass && cpass){
+    if(empPosition && lastname && firstname && pass && cpass){
         if(pass == cpass){
-            axios.post('api.php?action=updateUserData', formData)
+            console.log("hello")
+            axios.post('api.php?action=UpdateEmployee', formData)
              .then(function(response) { 
+               
                 var userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 var firstName = userInfo.firstName;
                 var lastName = userInfo.lastName;
                 var cid = userInfo.userId;
                 var role_id = userInfo.roleId; 
-                insertLogs('Users',firstName + ' ' + lastName + ' '+ 'Updated' + ' ' + firstname + ' '+ lastname);
+                insertLogs('Employee',firstName + ' ' + lastName + ' '+ 'Updated' + ' ' + firstname + ' '+ lastname);
 
-                fetchEmployeeData()
-                location.reload()
-               showResponse("User updated successfully", 1);
-              closeAddUserModal()
-           
+          
+               showResponse("Employee updated successfully", 1);
+
+               setTimeout(function() {
+                    location.reload();
+                }, 1500);
+             
             })
+            
             .catch(function(error) {
+           
               console.log(error);
            });
         }else{
@@ -998,6 +845,7 @@ function updateDataUser(){
         }  
     }
 }
+
 
 
 </script>

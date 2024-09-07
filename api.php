@@ -616,6 +616,12 @@
                 echo json_encode(['success' => false]);
             }
             break;
+
+        case 'UpdateEmployee':
+                $formData = $_POST;
+                $result = $employeeFacade->updateEmployee($formData);
+                echo json_encode( $formData);
+                break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
