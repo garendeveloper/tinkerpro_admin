@@ -17700,3 +17700,11 @@
 2024-09-07 14:29:03 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated darth zeether 
 2024-09-07 14:31:29 | Noriel Bagacay | 110 | 2 | Users | Noriel Bagacay Updated diwata pares 
 2024-09-07 14:35:22 | Noriel Bagacay | 110 | 2 | Employee | Added fewfew fewfewfds 
+2024-09-10 13:45:56 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-10 13:45:59 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-09-10 13:46:02 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-10 13:46:40 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added C2 Barcode #:4800016052774 
+2024-09-10 13:47:11 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Cabbage Barcode #:00000010 
+2024-09-10 13:47:43 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Carrots Barcode #:00000020 
+2024-09-10 13:48:21 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Hotdog Barcode #:4808887300260 
+2024-09-10 13:48:59 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000001 Amount:₱ 25,000.00 
