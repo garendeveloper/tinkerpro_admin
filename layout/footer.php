@@ -340,6 +340,9 @@ let deleteValidation = "false";
         var role_id = userInfo.roleId; 
         insertLogs('Products',firstName + ' ' + lastName + ' '+ 'Added' + ' ' +  productname +' '+ 'Barcode #:'+barcode)
         refreshProductsTable()
+        setTimeout(function() {
+                    location.reload();
+                }, 1500);
         // show_allProducts();
         closeAddProductsModal()
       }).catch(function (error) {

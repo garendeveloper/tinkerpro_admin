@@ -15,7 +15,11 @@
     include( __DIR__ . '/utils/models/bir-facade.php');
     include( __DIR__ . '/utils/models/other-reports-facade.php');
     include( __DIR__ . '/utils/models/promotion-facade.php');
+    //employee
+    include( __DIR__ . '/utils/models/employee-facade.php');
    
+    $employeeFacade = new Employee_facade();
+
     $userFacade = new UserFacade();
     $products = new ProductFacade();
     $inventory = new InventoryFacade();
@@ -595,6 +599,29 @@
         case 'getCopyOfProduct' :
             $products->getAllCopyProducts();
             break;
+
+              //for employee
+        case 'addEmployeeData': 
+            $formData = $_POST;
+            $result = $employeeFacade->addNewEmployee($formData);
+            echo json_encode($result);
+            break;
+
+        case 'DeleteEmployee':
+            $employeeId = $_POST['id'];
+            $result = $employeeFacade->deleteEmployee($employeeId);
+            if ($result) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false]);
+            }
+            break;
+
+        case 'UpdateEmployee':
+                $formData = $_POST;
+                $result = $employeeFacade->updateEmployee($formData);
+                echo json_encode( $formData);
+                break;
         default:
             header("HTTP/1.0 400 Bad Request");
             break;
