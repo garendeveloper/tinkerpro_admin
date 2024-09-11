@@ -137,7 +137,6 @@ $pdf->SetFont('', 'B', 10);
 
 
 
-
 $amountPerRef = array();
 $amountPerRefs = array();
 $previousRefNum = null;

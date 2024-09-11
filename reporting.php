@@ -367,11 +367,11 @@ body, html {
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Return and Exchange by Customers</span>
                     </a>
                   </div>
-                  <div id="highlightDiv6" style="width: 100%">
+                  <!-- <div id="highlightDiv6" style="width: 100%">
                     <a href="#" onclick="highlightDiv(6)" class="text-color taxRatesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Tax Rates</span>
                     </a>
-                  </div>
+                  </div> -->
                   <div id="highlightDiv7" style="width: 100%">
                     <a href="#" onclick="highlightDiv(7)" class="text-color paymentTypesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Payment Types</span>
@@ -392,11 +392,11 @@ body, html {
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Profit & margin</span>
                     </a>
                   </div>
-                  <div id="highlightDiv11" style="width: 100%">
+                  <!-- <div id="highlightDiv11" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(11)" class="text-color profitAndLossAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Income Statement</span>
                     </a>
-                  </div>
+                  </div> -->
                   <div id="highlightDiv12" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(12)" class="text-color unpaidSalesAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Unpaid Sales</span>
@@ -417,16 +417,16 @@ body, html {
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Voided Items</span>
                     </a>
                   </div>
-                  <div id="highlightDiv15" style="width: 100%">
+                  <!-- <div id="highlightDiv15" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(15)" class="text-color discountsGrantedAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Discounts Granted</span>
                     </a>
-                  </div>
-                  <div id="highlightDiv16" style="width: 100%">
+                  </div> -->
+                  <!-- <div id="highlightDiv16" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(16)" class="text-color itemsDiscountssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Items Discounts</span>
                     </a>
-                  </div>
+                  </div> -->
                   <div hidden id="highlightDiv17" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(17)" class="text-color stocksMovementsAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Stock movement</span>

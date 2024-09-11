@@ -9,6 +9,7 @@ class BirFacade extends DBConnection {
         $daily = "SELECT 
             subquery.paymentIds,
             all_data,
+            GROSS_SALES,
             z_read_date,
             first_receipt_num,
             last_receipt_num,
@@ -49,6 +50,9 @@ class BirFacade extends DBConnection {
                 transactions.cashier_id,
                 SUM(DISTINCT payments.sc_pwd_discount) AS CUSTOMER_DIS,
                 SUM(DISTINCT payments.payment_amount - payments.change_amount) AS paidAmount,
+
+                SUM(DISTINCT (transactions.subtotal)) AS GROSS_SALES,
+
                 SUM(
                     CASE
                     	WHEN discounts.name = 'SP' AND products.isVAT = 1 THEN
@@ -482,6 +486,9 @@ class BirFacade extends DBConnection {
 
         $result = [];
         foreach ($dailyResult as $daily) {
+
+            $GROSS_SALES = $daily['GROSS_SALES'];
+
             $z_read_data_report = $daily['all_data'];
             $z_read_date = $daily['z_read_date'];
             $business_date = $daily['business_date_id'];
@@ -489,13 +496,13 @@ class BirFacade extends DBConnection {
             $VOID = $daily['VOID'];
             $totalVoid = ($daily['VOID'] - $daily['VOID_DISCOUNT']);
             $paidAmount = $daily['paidAmount'];
-            $totalAmount = (float)$daily['subtotal'] - (float)$VOID;
+            $totalAmount = (float)$daily['subtotal'];
             $sc_discount = $daily['SC_DIS'] - $daily['VOID_SC_DISCOUNT'];
             $pwd_discount = $daily['PWD_DIS'] - $daily['VOID_PWD_DISCOUNT'];
             $naac_discount = $daily['NAAC_DIS'] - $daily['VOID_NAAC_DISCOUNT'];
             $sp_discount = $daily['SP_DIS'] - $daily['VOID_SP_DISCOUNT'];
             $mov_discount = $daily['MOV_DIS'] - $daily['VOID_MOV_DISCOUNT'];
-            $totalCustomerDiscount = (float)$daily['CUSTOMER_DIS'] - (float)$daily['VOID_DISCOUNT'];
+            $totalCustomerDiscount = (float)$daily['CUSTOMER_DIS'];
 
             $VOID_DISCOUNT = $daily['VOID_DISCOUNT'];
 
@@ -514,7 +521,7 @@ class BirFacade extends DBConnection {
             $BEG_SI = $daily['first_receipt_num'];
             $END_SI = $daily['last_receipt_num'];
 
-            $NET = ($daily['subtotal'] - ($totalCustomerDiscount - $daily['VOID_DISCOUNT']));
+            $NET = ($daily['subtotal'] - ($totalCustomerDiscount));
 
             $VAT_SALES_REF_RETURN = 0;
             $VAT_AMOUNT_REF_RET = 0;
@@ -537,6 +544,9 @@ class BirFacade extends DBConnection {
             $total_Ref_Ret_amount = 0;
             
             if (isset($refunded_map[$PAYMENT_ID])) {
+
+                $GROSS_SALES -= (floatval($refunded_map[$PAYMENT_ID]['totalRefunded']));
+
                 $total_Ref_Ret_amount += (floatval($refunded_map[$PAYMENT_ID]['totalRefunded']));
                 $totalAmount -= (floatval($refunded_map[$PAYMENT_ID]['totalRefunded']));
                 if ($refunded_map[$PAYMENT_ID]['customerType'] == 'SC') {
@@ -570,6 +580,9 @@ class BirFacade extends DBConnection {
             }
 
             if (isset($return_map[$PAYMENT_ID])) {
+
+                $GROSS_SALES -= (floatval($return_map[$PAYMENT_ID]['totalReturn']));
+
                 $total_Ref_Ret_amount += (floatval($return_map[$PAYMENT_ID]['totalReturn']));
                 $totalAmount -= (floatval($return_map[$PAYMENT_ID]['totalReturn']));
                 if ($return_map[$PAYMENT_ID]['customerType'] == 'SC') {
@@ -632,8 +645,8 @@ class BirFacade extends DBConnection {
                 'naac_discount' => number_format($naac_discount, 2),
                 'mov_discount' => number_format($mov_discount, 2),
                 'pwd_discount' => number_format($pwd_discount, 2),
-                'VAT_SALES' => number_format((float)$VAT_SALES - (float)$VOID_SALES_ADJUST, 2),
-                'VAT_AMOUNT' => number_format((float)$VAT_AMOUNT - (float)$VOID_ADJUST, 2),
+                'VAT_SALES' => number_format((float)$VAT_SALES, 2),
+                'VAT_AMOUNT' => number_format((float)$VAT_AMOUNT, 2),
                 'VAT_EXEMPT' => number_format($VAT_EXEMPT, 2),
                 'sc_ref_ret_void_discount' => number_format($sc_ref_ret_void_discount, 2),
                 'sp_ref_ret_void_discount' => number_format($sp_ref_ret_void_discount, 2),
@@ -646,7 +659,8 @@ class BirFacade extends DBConnection {
                 'Z_READ_COUNT' => null,
                 'RESET_COUNT' => null,
                 'SHORT_OVER' => null,
-                'NET' => max(0, number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST), 2)),
+                'NET' => max(0, number_format($paidAmount, 2)),
+                // 'NET' => max(0, number_format(($totalAmount - $totalCustomerDiscount) - ($VAT_AMOUNT_REF_RET + $VOID_ADJUST), 2)),
             ];
             
             // $result[] = [

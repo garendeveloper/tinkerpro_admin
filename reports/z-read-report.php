@@ -258,10 +258,10 @@ $pdf->Ln();
 $pdf->SetFont('', '', 10);
 $dataRows = array(
     array('SC Discount',  number_format($data['total_senior_discount'] ?? 0, 2)),
-    array('UP Discount',  number_format($data['total_officer_discount'] ?? 0, 2)),
     array('PWD Discount', number_format($data['total_pwd_discount'] ?? 0,2)),
     array('NAAC Discount', number_format($data['total_naac_discount'] ?? 0,2)),
     array('SOLO Parent Discount',  number_format($data['total_solo_parent_discount'] ?? 0, 2)),
+    array('MOV Discount',  number_format($data['total_mov_discount'] ?? 0, 2)),
     array('Other Discount',  number_format($data['total_other_discount'] ?? 0, 2)),
     
    
@@ -271,7 +271,8 @@ foreach ($dataRows as $row) {
     $pdf->Cell(150, $maxCellHeight, $row[0], 1, 0, 'L');
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
-}  
+} 
+
 $pdf->SetFont('', 'B', 10);
 $pdf->SetFillColor(137, 148, 153);
 $pdf->Cell(198, $maxCellHeight, "SALES ADJUSTMENT", 1, 0, 'L',true);
@@ -289,6 +290,7 @@ foreach ($dataRows as $row) {
     $pdf->Cell(48, $maxCellHeight, $row[1], 1, 0, 'R');
     $pdf->Ln();
 }  
+
 $pdf->SetFont('', 'B', 10);
 $pdf->SetFillColor(137, 148, 153);
 $pdf->Cell(198, $maxCellHeight, "VAT ADJUSTMENT", 1, 0, 'L', true);
@@ -296,10 +298,10 @@ $pdf->Ln();
 $pdf->SetFont('', '', 10);
 
 $dataRows = array(
+    array('SP VAT',  number_format($data['total_senior_citizen_vat'] ?? 0, 2)),
     array('SC VAT',  number_format($data['total_senior_citizen_vat'] ?? 0, 2)),
-    array('SC VAT',  number_format($data['total_senior_citizen_vat'] ?? 0, 2)),
-    array('UP VAT',  number_format($data['total_officers_vat'] ?? 0 , 2)),
     array('PWD VAT',  number_format($data['total_pwd_vat'] ?? 0, 2)),
+    array('MOV VAT',  number_format($data['total_mov_vat'] ?? 0, 2)),
     array('Zero Rated VAT', number_format($data['total_zero_rated'] ?? 0,2)),
     array('Void VAT', number_format($data['total_void_vat'] ?? 0, 2)),
     array('VAT on Return', number_format($data['total_vat_return'] ?? 0,2)),

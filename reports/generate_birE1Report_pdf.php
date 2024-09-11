@@ -251,8 +251,8 @@ if($items)
                                 <td style="width: 3%">' . ($items[$i]['dateRange']) . '</td>
                                 <td style="width: 3%">' . ($items[$i]['beginning_si']) . '</td>
                                 <td style="width: 3%">' . ($items[$i]['end_si']) . '</td>
-                                <td style="width: 5%">' . ($items[$i]['grandEndAccumulated']) . '</td>
-                                <td style="width: 5%">' . ($items[$i]['grandBegAccumulated']) . '</td>
+                                <td style="width: 5%">' . formatValue(($items[$i]['grandEndAccumulated'])) . '</td>
+                                <td style="width: 5%">' . formatValue(($items[$i]['grandBegAccumulated'])) . '</td>
                                 <td style="width: 5%; text-align: center">' . ($items[$i]['issued_si']) . '</td>
                                 <td style="width: 5%; text-align: right">' . formatValue($items[$i]['grossSalesToday']) . '</td>
                                 <td style="width: 3%; text-align: right">' . formatValue($items[$i]['vatable_sales']) . '</td>

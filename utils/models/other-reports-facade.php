@@ -5,8 +5,7 @@ class OtherReportsFacade extends DBConnection {
 
     public function getRefundData( $selectedProduct, $singleDateData, $startDate, $endDate ) {
 
-        if ( $selectedProduct && !$singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
+        $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
         r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
         r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
         FROM refunded AS r
@@ -17,109 +16,55 @@ class OtherReportsFacade extends DBConnection {
         ) AS t ON t.payment_id = p.id
         INNER JOIN receipt AS rt ON rt.id = t.receipt_id
         LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
-        INNER JOIN products ON r.prod_id = products.id 
-        WHERE r.prod_id = :selectedProduct';
+        INNER JOIN products ON r.prod_id = products.id';
 
-            $sql = $this->connect()->prepare( $sql );
+
+        if ( $selectedProduct && !$singleDateData && !$startDate && !$endDate ) {
+           
+            $whereClause = ' WHERE r.prod_id = :selectedProduct';
+            $sql = $this->connect()->prepare($sql . $whereClause);
             $sql->bindParam( ':selectedProduct', $selectedProduct );
             $sql->execute();
             return $sql;
 
         } else if ( !$selectedProduct && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
-        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
-        FROM refunded AS r
-        INNER JOIN payments AS p ON r.payment_id = p.id 
-        INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id
-            FROM transactions
-        ) AS t ON t.payment_id = p.id
-        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
-        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
-        INNER JOIN products ON r.prod_id = products.id
-        WHERE DATE(r.date) = :singleDateData';
 
-            $sql = $this->connect()->prepare( $sql );
+            $whereClause = ' WHERE DATE(r.date) = :singleDateData';
+            $sql = $this->connect()->prepare( $sql . $whereClause);
             $sql->bindParam( ':singleDateData', $singleDateData );
             $sql->execute();
             return $sql;
 
         } else if ( !$selectedProduct && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
-        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
-        FROM refunded AS r
-        INNER JOIN payments AS p ON r.payment_id = p.id 
-        INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id
-            FROM transactions
-        ) AS t ON t.payment_id = p.id
-        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
-        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
-        INNER JOIN products ON r.prod_id = products.id
-        WHERE DATE(r.date) BETWEEN :startDate AND :endDate ';
-
-            $sql = $this->connect()->prepare( $sql );
+            
+            $whereClause = ' WHERE DATE(r.date) BETWEEN :startDate AND :endDate';
+            $sql = $this->connect()->prepare( $sql . $whereClause);
             $sql->bindParam( ':startDate', $startDate );
             $sql->bindParam( ':endDate', $endDate );
             $sql->execute();
             return $sql;
-        } else if ( $selectedProduct && $singleDateData && !$startDate && !$endDate ) {
-            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
-            r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-            r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
-        FROM refunded AS r
-        INNER JOIN payments AS p ON r.payment_id = p.id 
-        INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id
-            FROM transactions
-        ) AS t ON t.payment_id = p.id
-        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
-        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
-        INNER JOIN products ON r.prod_id = products.id
-        WHERE r.prod_id = :selectedProduct AND DATE(r.date) = :singleDateData';
 
-            $sql = $this->connect()->prepare( $sql );
+            
+        } else if ( $selectedProduct && $singleDateData && !$startDate && !$endDate ) {
+            
+            $whereClause = ' WHERE r.prod_id = :selectedProduct AND DATE(r.date) = :singleDateData';
+            $sql = $this->connect()->prepare( $sql . $whereClause);
             $sql->bindParam( ':selectedProduct', $selectedProduct );
             $sql->bindParam( ':singleDateData', $singleDateData );
             $sql->execute();
             return $sql;
 
         } else if ( $selectedProduct && !$singleDateData && $startDate && $endDate ) {
-            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
-        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
-        FROM refunded AS r
-        INNER JOIN payments AS p ON r.payment_id = p.id 
-        INNER JOIN (
-            SELECT DISTINCT payment_id, receipt_id
-            FROM transactions
-        ) AS t ON t.payment_id = p.id
-        INNER JOIN receipt AS rt ON rt.id = t.receipt_id
-        LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
-        INNER JOIN products ON r.prod_id = products.id 
-        WHERE r.prod_id = :selectedProduct AND DATE(r.date) BETWEEN :startDate AND :endDate';
 
-            $sql = $this->connect()->prepare( $sql );
+            $whereClause = ' WHERE r.prod_id = :selectedProduct AND DATE(r.date) BETWEEN :startDate AND :endDate';
+            $sql = $this->connect()->prepare( $sql . $whereClause);
             $sql->bindParam( ':selectedProduct', $selectedProduct );
             $sql->bindParam( ':startDate', $startDate );
             $sql->bindParam( ':endDate', $endDate );
             $sql->execute();
             return $sql;
+
         } else {
-            $sql = 'SELECT r.id  AS refunded_id,r.refunded_method_id as method, p.id AS payment_id, products.prod_desc AS prod_desc,rc.qrNumber as qrNumber,
-        r.refunded_qty AS qty, r.reference_num AS reference_num, r.refunded_amt AS amount, products.barcode as barcode,products.sku as sku,
-        r.date AS date, r.refunded_method_id AS method, t.receipt_id AS receipt_id,r.otherDetails as otherDetails
-    FROM refunded AS r
-    INNER JOIN payments AS p ON r.payment_id = p.id 
-    INNER JOIN (
-        SELECT DISTINCT payment_id, receipt_id
-        FROM transactions
-    ) AS t ON t.payment_id = p.id
-    INNER JOIN receipt AS rt ON rt.id = t.receipt_id
-    LEFT JOIN return_coupon as rc ON rc.receipt_id = rt.id
-    INNER JOIN products ON r.prod_id = products.id;';
             $stmt = $this->connect()->query( $sql );
             return $stmt;
         }
@@ -6373,8 +6318,8 @@ END AS tobe_deducted_credits
     }
 
     public function zReadingReport( $singleDateData, $startDate, $endDate ) {
-        if ( $singleDateData && !$startDate && !$endDate ) {
-            $sql = "SELECT 
+
+        $sql = "SELECT 
         JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
         JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
         JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
@@ -6434,12 +6379,14 @@ END AS tobe_deducted_credits
         SUM(JSON_VALUE(all_data, '$.pwd_discount')) AS total_pwd_discount,
         SUM(JSON_VALUE(all_data, '$.naac_discount')) AS total_naac_discount,
         SUM(JSON_VALUE(all_data, '$.solo_parent_discount')) AS total_solo_parent_discount,
+        SUM(JSON_VALUE(all_data, '$.mov_discount')) AS total_mov_discount,
         SUM(JSON_VALUE(all_data, '$.other_discount')) AS total_other_discount,
         SUM(JSON_VALUE(all_data, '$.void')) AS total_void,
         SUM(JSON_VALUE(all_data, '$.return')) AS total_return,
         SUM(JSON_VALUE(all_data, '$.refund')) AS total_refund,
         SUM(JSON_VALUE(all_data, '$.senior_citizen_vat')) AS total_senior_citizen_vat,
         SUM(JSON_VALUE(all_data, '$.officers_vat')) AS total_officers_vat,
+        SUM(JSON_VALUE(all_data, '$.mov_vat')) AS total_mov_vat,
         SUM(JSON_VALUE(all_data, '$.pwd_vat')) AS total_pwd_vat,
         SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
         SUM(JSON_VALUE(all_data, '$.total_void_vat')) AS total_void_vat,
@@ -6454,181 +6401,26 @@ END AS tobe_deducted_credits
         SUM(JSON_VALUE(all_data, '$.totalCashOut')) AS total_totalCashOut,
         SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
          date_time as date_time
-      FROM z_read WHERE DATE(date_time) = :singleDateData";
+      FROM z_read";
 
-            $sql = $this->connect()->prepare( $sql );
+        if ( $singleDateData && !$startDate && !$endDate ) {
+            
+            $whereClause = " WHERE DATE(date_time) = :singleDateData";
+            $sql = $this->connect()->prepare( $sql . $whereClause );
             $sql->bindParam( ':singleDateData',  $singleDateData );
             $sql->execute();
             return $sql;
+
         } else if ( !$singleDateData && $startDate && $endDate ) {
-            $sql = "SELECT 
-        JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
-        JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
-        JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
-        JSON_VALUE(all_data, '$[0].void_beg') AS void_beg,
-        (SELECT 
-        JSON_VALUE(all_data, '$.end_si') AS end_si
-        FROM z_read
-        ORDER BY id DESC
-        LIMIT 1) as end_si,
-        (SELECT 
-        JSON_VALUE(all_data, '$.return_end') AS return_end
-        FROM z_read
-        ORDER BY id DESC
-        LIMIT 1) as return_end,
-        (SELECT 
-        JSON_VALUE(all_data, '$.refund_end') AS refund_end
-        FROM z_read
-        ORDER BY id DESC
-        LIMIT 1) as refund_end,
-        (SELECT 
-        JSON_VALUE(all_data, '$.void_end') AS void_end
-        FROM z_read
-        ORDER BY id DESC
-        LIMIT 1) as void_end,
-        (SELECT 
-        IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.totalSales'), 0) AS total_sales
-        FROM z_read
-        ORDER BY id DESC
-        LIMIT 1) as total_sales,
-        (SELECT 
-    IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.present_accumulated_sale'), 0) AS total_present_accumulated_sale
-    FROM z_read  
-    ORDER BY id DESC
-    LIMIT 1) AS total_present_accumulated_sale,
- (SELECT 
-    IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.previous_accumulated_sale'), 0)AS total_previous_accumulated_sale
-    FROM z_read  
-    ORDER BY id DESC
-    LIMIT 1) AS total_previous_accumulated_sale,
-    (SELECT 
-        IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.zReadCounter'), 0) AS zReadCounter
-        FROM z_read  
-        ORDER BY id DESC
-        LIMIT 1) AS zReadCounter,
-        SUM(JSON_VALUE(all_data, '$.vatable_sales')) AS total_vatable_sales,
-        SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount,
-        SUM(JSON_VALUE(all_data, '$.vat_exempt')) AS total_vat_exempt,
-        SUM(JSON_VALUE(all_data, '$.gross_amount')) AS total_gross_amount,
-        SUM(JSON_VALUE(all_data, '$.less_discount')) AS total_less_discount,
-        SUM(JSON_VALUE(all_data, '$.less_return_amount')) AS total_less_return_amount,
-        SUM(JSON_VALUE(all_data, '$.less_refund_amount')) AS total_less_refund_amount,
-        SUM(JSON_VALUE(all_data, '$.less_void')) AS total_less_void,
-        SUM(JSON_VALUE(all_data, '$.less_vat_adjustment')) AS total_less_vat_adjustment,
-        SUM(JSON_VALUE(all_data, '$.net_amount')) AS total_net_amount,
-        SUM(JSON_VALUE(all_data, '$.senior_discount')) AS total_senior_discount,
-        SUM(JSON_VALUE(all_data, '$.officer_discount')) AS total_officer_discount,
-        SUM(JSON_VALUE(all_data, '$.pwd_discount')) AS total_pwd_discount,
-        SUM(JSON_VALUE(all_data, '$.naac_discount')) AS total_naac_discount,
-        SUM(JSON_VALUE(all_data, '$.solo_parent_discount')) AS total_solo_parent_discount,
-        SUM(JSON_VALUE(all_data, '$.other_discount')) AS total_other_discount,
-        SUM(JSON_VALUE(all_data, '$.void')) AS total_void,
-        SUM(JSON_VALUE(all_data, '$.return')) AS total_return,
-        SUM(JSON_VALUE(all_data, '$.refund')) AS total_refund,
-        SUM(JSON_VALUE(all_data, '$.senior_citizen_vat')) AS total_senior_citizen_vat,
-        SUM(JSON_VALUE(all_data, '$.officers_vat')) AS total_officers_vat,
-        SUM(JSON_VALUE(all_data, '$.pwd_vat')) AS total_pwd_vat,
-        SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
-        SUM(JSON_VALUE(all_data, '$.total_void_vat')) AS total_void_vat,
-        SUM(JSON_VALUE(all_data, '$.vat_refunded')) AS total_vat_refunded,
-        SUM(JSON_VALUE(all_data, '$.vat_return')) AS total_vat_return,
-        SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS total_cash_in_receive,
-        SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS total_totalCcDb,
-        SUM(JSON_VALUE(all_data, '$.credit')) AS total_credit,
-        SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS total_totalEwallet,
-        SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS total_totalCoupon,
-        SUM(JSON_VALUE(all_data, '$.totalCashIn')) AS total_totalCashIn,
-        SUM(JSON_VALUE(all_data, '$.totalCashOut')) AS total_totalCashOut,
-        SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
-         date_time as date_time
-      FROM z_read WHERE DATE(date_time) BETWEEN :stratDate AND :endDate";
-            $sql = $this->connect()->prepare( $sql );
+
+            $whereClause = " WHERE DATE(date_time) BETWEEN :stratDate AND :endDate";
+            $sql = $this->connect()->prepare( $sql . $whereClause );
             $sql->bindParam( ':stratDate',  $startDate );
             $sql->bindParam( ':endDate',  $endDate );
             $sql->execute();
             return $sql;
+
         } else {
-            $sql = "SELECT 
-    JSON_VALUE(all_data, '$[0].beg_si') AS beg_si,
-    JSON_VALUE(all_data, '$[0].return_beg') AS return_beg,
-    JSON_VALUE(all_data, '$[0].refund_beg') AS refund_beg,
-    JSON_VALUE(all_data, '$[0].void_beg') AS void_beg,
-    (SELECT 
-    JSON_VALUE(all_data, '$.end_si') AS end_si
-    FROM z_read
-    ORDER BY id DESC
-    LIMIT 1) as end_si,
-    (SELECT 
-    JSON_VALUE(all_data, '$.return_end') AS return_end
-    FROM z_read
-    ORDER BY id DESC
-    LIMIT 1) as return_end,
-    (SELECT 
-    JSON_VALUE(all_data, '$.refund_end') AS refund_end
-    FROM z_read
-    ORDER BY id DESC
-    LIMIT 1) as refund_end,
-    (SELECT 
-    JSON_VALUE(all_data, '$.void_end') AS void_end
-    FROM z_read
-    ORDER BY id DESC
-    LIMIT 1) as void_end,
-    (SELECT 
-    IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.totalSales'), 0) AS total_sales
-    FROM z_read  
-    ORDER BY id DESC
-    LIMIT 1) as total_sales,
-    (SELECT 
-    IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.present_accumulated_sale'), 0) AS total_present_accumulated_sale
-    FROM z_read  
-    ORDER BY id DESC
-    LIMIT 1) AS total_present_accumulated_sale,
- (SELECT 
-    IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.previous_accumulated_sale'), 0)AS total_previous_accumulated_sale
-    FROM z_read  
-    ORDER BY id DESC
-    LIMIT 1) AS total_previous_accumulated_sale,
-    (SELECT 
-        IF(CURDATE() = DATE(date_time), JSON_VALUE(all_data, '$.zReadCounter'), 0) AS zReadCounter
-        FROM z_read  
-        ORDER BY id DESC
-        LIMIT 1) AS zReadCounter,
-    SUM(JSON_VALUE(all_data, '$.vatable_sales')) AS total_vatable_sales,
-    SUM(JSON_VALUE(all_data, '$.vat_amount')) AS total_vat_amount,
-    SUM(JSON_VALUE(all_data, '$.vat_exempt')) AS total_vat_exempt,
-    SUM(JSON_VALUE(all_data, '$.gross_amount')) AS total_gross_amount,
-    SUM(JSON_VALUE(all_data, '$.less_discount')) AS total_less_discount,
-    SUM(JSON_VALUE(all_data, '$.less_return_amount')) AS total_less_return_amount,
-    SUM(JSON_VALUE(all_data, '$.less_refund_amount')) AS total_less_refund_amount,
-    SUM(JSON_VALUE(all_data, '$.less_void')) AS total_less_void,
-    SUM(JSON_VALUE(all_data, '$.less_vat_adjustment')) AS total_less_vat_adjustment,
-    SUM(JSON_VALUE(all_data, '$.net_amount')) AS total_net_amount,
-    SUM(JSON_VALUE(all_data, '$.senior_discount')) AS total_senior_discount,
-    SUM(JSON_VALUE(all_data, '$.officer_discount')) AS total_officer_discount,
-    SUM(JSON_VALUE(all_data, '$.pwd_discount')) AS total_pwd_discount,
-    SUM(JSON_VALUE(all_data, '$.naac_discount')) AS total_naac_discount,
-    SUM(JSON_VALUE(all_data, '$.solo_parent_discount')) AS total_solo_parent_discount,
-    SUM(JSON_VALUE(all_data, '$.other_discount')) AS total_other_discount,
-    SUM(JSON_VALUE(all_data, '$.void')) AS total_void,
-    SUM(JSON_VALUE(all_data, '$.return')) AS total_return,
-    SUM(JSON_VALUE(all_data, '$.refund')) AS total_refund,
-    SUM(JSON_VALUE(all_data, '$.senior_citizen_vat')) AS total_senior_citizen_vat,
-    SUM(JSON_VALUE(all_data, '$.officers_vat')) AS total_officers_vat,
-    SUM(JSON_VALUE(all_data, '$.pwd_vat')) AS total_pwd_vat,
-    SUM(JSON_VALUE(all_data, '$.zero_rated')) AS total_zero_rated,
-    SUM(JSON_VALUE(all_data, '$.total_void_vat')) AS total_void_vat,
-    SUM(JSON_VALUE(all_data, '$.vat_refunded')) AS total_vat_refunded,
-    SUM(JSON_VALUE(all_data, '$.vat_return')) AS total_vat_return,
-    SUM(JSON_VALUE(all_data, '$.cash_in_receive')) AS total_cash_in_receive,
-    SUM(JSON_VALUE(all_data, '$.totalCcDb')) AS total_totalCcDb,
-    SUM(JSON_VALUE(all_data, '$.credit')) AS total_credit,
-    SUM(JSON_VALUE(all_data, '$.totalEwallet')) AS total_totalEwallet,
-    SUM(JSON_VALUE(all_data, '$.totalCoupon')) AS total_totalCoupon,
-    SUM(JSON_VALUE(all_data, '$.totalCashIn')) AS total_totalCashIn,
-    SUM(JSON_VALUE(all_data, '$.totalCashOut')) AS total_totalCashOut,
-    SUM(JSON_VALUE(all_data, '$.payment_receive')) AS total_payment_receive,
-     date_time as date_time
-  FROM z_read;";
             $stmt = $this->connect()->query( $sql );
             return $stmt;
         }

@@ -43,7 +43,7 @@ if(empty($singleDateData) && (empty($startDate) && empty($endDate)))
     $startDate = date('Y-m-d');
     $endDate = date('Y-m-d');
 }
-$sales= $dashboardfacade->get_salesByPeriod($startDate,$endDate);
+$sales = $dashboardfacade->get_salesByPeriod($startDate,$endDate);
 $fetchShop = $products->getShopDetails();
 $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
 
@@ -57,7 +57,6 @@ $pdf->SetKeywords('TCPDF, PDF, TAX RATES, table');
 
 $pdf->AddPage();
 
-
 $pdf->SetCellHeightRatio(1.5);
 $imageFile = './../assets/img/tinkerpro-logo-dark.png'; 
 $imageWidth = 45; 
@@ -65,7 +64,6 @@ $imageHeight = 15;
 $imageX = 10; 
 $pdf->Image($imageFile, $imageX, $y = 10, $w = $imageWidth, $h = $imageHeight, $type = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
 $pdf->SetFont('', 'I', 8);
-
 
 $pdf->SetFont('', 'B', 10);
 $pdf->Cell(0, 10, 'TAX RATES', 0, 1, 'R', 0); 
@@ -117,8 +115,7 @@ if ($singleDateData && !$startDate && !$endDate) {
     if (!empty($dates)) {
         $startDate = min($dates);
         $endDate = max($dates);
-    
-      
+
         $formattedStartDate = date('M j, Y', strtotime($startDate));
         $formattedEndDate = date('M j, Y', strtotime($endDate));
         $pdf->SetFont('', '', 11); 
@@ -137,7 +134,6 @@ $hexColor = '#F5F5F5';
 list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
 
 $pdf->SetFillColor($r, $g, $b);
-
 
 $pdf->SetFont('', 'B', 8);
 for ($i = 0; $i < count($header); $i++) {
