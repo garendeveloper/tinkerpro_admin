@@ -25,3 +25,13 @@
 2024-09-11 15:01:50 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Cashier 1   
 2024-09-11 15:28:16 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
 2024-09-11 16:05:50 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 08:48:23 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 08:58:17 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 08:59:14 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 09:42:06 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 10:28:51 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 13:17:44 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 14:10:42 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 15:24:01 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000072 Amount:₱ 20,900.00 
+2024-09-12 15:24:06 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000072 Supplier: Unknown 
+2024-09-12 15:30:15 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 

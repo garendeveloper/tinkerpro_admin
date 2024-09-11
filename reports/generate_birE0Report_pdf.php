@@ -44,6 +44,7 @@ class MYPDF extends TCPDF {
         $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
         
         $this->Ln(8);
+        $this->SetFont('helvetica', 'B', 14);
         $this->Cell(0, 1, "{$shop['shop_name']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
         $this->SetFont('helvetica', 'B', 12);
         $this->Cell(0, 1, '', 0, false, 'R', 0, '', 0, false, 'M', 'M');
@@ -52,8 +53,10 @@ class MYPDF extends TCPDF {
         $this->Cell(0, 1, "{$shop['shop_address']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
         $this->Ln();
         $this->SetFont('helvetica', '', 11);
-        $this->Cell(0, 1, "{$shop['tin']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
-       
+        $this->Cell(0, 1, " Vat Reg. {$shop['tin']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
+        $this->Ln();
+        $this->SetFont('helvetica', '', 11);
+        $this->Cell(0, 1, " MIN: XXXXXXXXXX ", 0, false, 'C', 0, '', 0, false, 'M', 'M');
     }
     public function Footer() 
     {
@@ -147,10 +150,7 @@ $pdf->SetLineWidth(0.1);
 $pdf->SetMargins(10, 10, 20); 
 
 $html = '<style>
-             table {
-                border-collapse: collapse;
-                table-layout: fixed;
-            }
+        
             table td {
                 border: solid 1px black;
                 word-wrap: break-word;
@@ -188,37 +188,41 @@ $html = '<style>
             .ty{
                 background-color: #92D050;
             }
+              
+            .daily-reports{
+                width: 946vw;
+
+            }
+
+
         </style>';
 
 if($items)
 {
-    $html .= '<table border="1" cellpadding="3">
+    $html .= '<table  class="daily-reports">
                 <thead >
                     <tr >
-                        <th style = "text-align: center; font-size: 12px; width: 104%; font-weight: bold;">DAILY TRANSACTION</th>
+                        <th  style = " margin-left:-50px; width: 105%; font-size: 12px;  font-weight: bold;">DAILY TRANSACTION</th>
                     </tr>
                     <tr>
                         <th style = "width: 3%;"class = "ac" rowspan="3">Date</th>
-                        <th style = "width: 3%" class = "ac" rowspan="3">Beginning SI/OR No.</th>
-                        <th style = "width: 3%" class = "ac" rowspan="3">Ending SI/OR No.</th>
-                        <th style = "width: 5%" class = "dg" rowspan="3">Grand Accum. Sales Ending Balance</th>
-                        <th style = "width: 5%" class = "dg" rowspan="3">Grand Accum. Beg. Balance</th>
+                        <th style = "width: 5%" class = "ac" rowspan="3">SI No.</th>
                         <th style = "width: 5%" class = "dg" rowspan="3">Sales Issued w/ Manual SI/OR (per RR 16-2018)</th>
                         <th style = "width: 5%" class = "dg" rowspan="3">Gross Sales for the Day</th>
-                        <th style = "width: 3%" class = "hk" rowspan="3">VATable Sales</th>
-                        <th style = "width: 3%" class = "hk" rowspan="3">VAT Amount</th>
-                        <th style = "width: 3%" class = "hk" rowspan="3">VAT-Exempt Sales</th>
+                        <th style = "width: 5%" class = "hk" rowspan="3">VATable Sales</th>
+                        <th style = "width: 5%" class = "hk" rowspan="3">VAT Amount</th>
+                        <th style = "width: 5%" class = "hk" rowspan="3">VAT-Exempt Sales</th>
                         <th style = "width: 3%" class = "hk" rowspan="3">Zero-Rated Sales</th>
                         <th style = "width: 27%; text-align: center" class = "ls" colspan = "4">Deductions</th>
                         <th style = "width: 18%; text-align: center" class = "ty" colspan = "4">Adjustment on VAT</th>
 
                         <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">VAT Payable</th>
-                        <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">Net Sales</th>
+                        <th style = "width: 4%; text-align: center" class = "ac" rowspan = "3">Net Sales</th>
                         <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">Sales Overrun/Overflow</th>
                         <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">Total Income</th>
                         <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">Reset Counter</th>
                         <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">Z-Counter</th>
-                        <th style = "width: 3%; text-align: center" class = "ac" rowspan = "3">Remarks</th>
+                        <th style = "width: 5%; text-align: center" class = "ac" rowspan = "3">Remarks</th>
                     </tr> 
                     <tr>
                         <th style = "width: 18%; text-align: center"class = "ls" colspan = "5">Discount</th>
@@ -245,50 +249,158 @@ if($items)
                     </tr>
                 </thead>
                 <tbody>';
+
+
+                $totals = [
+                    'subtotal' => 0,
+                    'VAT_SALES' => 0,
+                    'VAT_AMOUNT' => 0,
+                    'VAT_EXEMPT' => 0,
+                    'sc_discount' => 0,
+                    'pwd_discount' => 0,
+                    'naac_discount' => 0,
+                    'sp_discount' => 0,
+                    'mov_discount' => 0,
+                    'totalReturn' => 0,
+                    'VOID' => 0,
+                    'less_discount' => 0,
+                    'sc_ref_ret_void_discount' => 0,
+                    'pwd_ref_ret_void_discount' => 0,
+                    'sp_ref_ret_void_discount' => 0,
+                    'naac_ref_ret_void_discount' => 0,
+                    'VAT_PAYABLE' => 0,
+                    'VAT_AMOUNT_REF_RET' => 0,
+                    'othersVatAdjustment' => 0,
+                    'NET' => 0,
+                    'SHORT_OVER' => 0,
+                    'RESET_COUNT' => 0,
+                    'Z_READ_COUNT' => 0,
+                ];
+            
+
                 function formatValue($value) 
                 {
                     return ($value == 0 || empty($value)) ? '' : $value;
                 }
+
+            
                 for($i = 0; $i<count($items); $i++)
                 {
+
+                   
+
+                    $totals['subtotal'] += $items[$i]['GROSS_SALES'];
+                    $totals['VAT_SALES'] += $items[$i]['VAT_SALES'];
+                    $totals['VAT_AMOUNT'] += $items[$i]['VAT_AMOUNT'];
+                    $totals['VAT_EXEMPT'] += $items[$i]['VAT_EXEMPT'];
+                    $totals['sc_discount'] += $items[$i]['sc_discount'];
+                    $totals['pwd_discount'] += $items[$i]['pwd_discount'];
+                    $totals['naac_discount'] += $items[$i]['naac_discount'];
+                    $totals['sp_discount'] += $items[$i]['sp_discount'];
+                    $totals['mov_discount'] += $items[$i]['mov_discount'];
+                    $totals['totalReturn'] += $items[$i]['totalReturn'];
+                    $totals['VOID'] += $items[$i]['VOID'];
+                    $totals['less_discount'] += $items[$i]['less_discount'];
+                    $totals['sc_ref_ret_void_discount'] += $items[$i]['sc_ref_ret_void_discount'];
+                    $totals['pwd_ref_ret_void_discount'] += $items[$i]['pwd_ref_ret_void_discount'];
+                    $totals['sp_ref_ret_void_discount'] += $items[$i]['sp_ref_ret_void_discount'];
+                    $totals['naac_ref_ret_void_discount'] += $items[$i]['naac_ref_ret_void_discount'];
+                    $totals['VAT_AMOUNT_REF_RET'] += $items[$i]['VAT_AMOUNT_REF_RET'];
+                    $totals['othersVatAdjustment'] += $items[$i]['othersVatAdjustment'];
+                    $totals['VAT_PAYABLE'] += (($items[$i]['VAT_AMOUNT'] - $items[$i]['VAT_AMOUNT_REF_RET']) - $items[$i]['othersVatAdjustment']);
                     
+                    $totals['NET'] += $items[$i]['NET'];
+                    $totals['SHORT_OVER'] += $items[$i]['SHORT_OVER'];
+                    $totals['RESET_COUNT'] += $items[$i]['RESET_COUNT'];
+                    $totals['Z_READ_COUNT'] += $items[$i]['Z_READ_COUNT'];
+
+
                     $html .= '<tr style="border: 1px solid black; font-size: 6px;">
-                                <td style="width: 3%">' . ($items[$i]['DATE']) . '</td>
-                                <td style="width: 3%">' . ($items[$i]['BEG_SI']) . '</td>
-                                <td style="width: 3%">' . ($items[$i]['END_SI']) . '</td>
-                                <td style="width: 5%">' . ($items[$i]['PRESENT_ACC_SALES']) . '</td>
-                                <td style="width: 5%">' . ($items[$i]['PREVIOUS_ACC_SALES']) . '</td>
+                    <td style="width: 3%">' . htmlspecialchars($items[$i]['date_time_payment']) . '</td>
+                    <td style="width: 5%">' . htmlspecialchars($items[$i]['BEG_SI']) . '</td>
+
+                    <td style="width: 5%; text-align: center">' . (null) . '</td>';
+
+                    if ($items[$i]['customer_type'] != 'SP') {
+                        $html .= '<td style="width: 5%; text-align: right">' . formatValue($items[$i]['subtotal']) . '</td>';
+                    } else {
+                        $html .= '<td style="width: 5%; text-align: right">' . formatValue($items[$i]['GROSS_SALES']) . '</td>';
+                    }
+
+                    $html .= '<td style="width: 5%; text-align: right">' . formatValue($items[$i]['VAT_SALES']) . '</td>
+                    <td style="width: 5%; text-align: right">' . formatValue($items[$i]['VAT_AMOUNT']) . '</td>
+                    <td style="width: 5%; text-align: right">' . formatValue($items[$i]['VAT_EXEMPT']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sc_discount']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['pwd_discount']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['naac_discount']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sp_discount']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['mov_discount']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalReturn']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['VOID']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue(($items[$i]['totalReturn'] + $items[$i]['VOID'] + $items[$i]['less_discount'])) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sc_ref_ret_void_discount']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['pwd_ref_ret_void_discount']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sp_ref_ret_void_discount'] + $items[$i]['naac_ref_ret_void_discount']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['VAT_AMOUNT_REF_RET']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['othersVatAdjustment']) . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['VAT_AMOUNT_REF_RET']) . '</td>
+                    <td style="width: 3%; text-align: right">' . ($items[$i]['VAT_AMOUNT'] - $items[$i]['VAT_AMOUNT_REF_RET']) - $items[$i]['othersVatAdjustment'] . '</td>
+                    <td style="width: 4%; text-align: right">' . $items[$i]['NET'] . '</td>
+                    <td style="width: 3%; text-align: right">' . formatValue($items[$i]['SHORT_OVER']) . '</td>
+                    <td style="width: 3%; text-align: right">' . $items[$i]['NET'] . '</td>
+                    <td style="width: 3%; text-align: right">' . htmlspecialchars($items[$i]['RESET_COUNT']) . '</td>
+                    <td style="width: 3%; text-align: right">' . htmlspecialchars($items[$i]['Z_READ_COUNT']) . '</td>';
+        
+                    if ($items[$i]['VOID'] != 0) {
+                        $html .= '<td style="width: 5%; text-align: center; margin: 2px;">CANCELLED</td>';
+                    } else if ($items[$i]['is_fully_refunded'] == 1) {
+                        $html .= '<td style="width: 5%; text-align: center; margin: 2px;">'. 'FULL REFUND' .'</td>';
+                    } else if ($items[$i]['is_parcially_refunded'] == 1) {
+                        $html .= '<td style="width: 5%; text-align: center; margin: 2px;">'. 'PAR. REFUNDED' .'</td>';
+                    } else if ($items[$i]['is_fully_return'] == 1) {
+                        $html .= '<td style="width: 5%; text-align: center; margin: 2px;">'. 'FULL RETURN' .'</td>';
+                    } else if ($items[$i]['is_parcially_return'] == 1) {
+                        $html .= '<td style="width: 5%; text-align: center; margin: 2px;">'. 'PAR. RETURN' .'</td>';
+                    } else {
+                        $html .= '<td style="width: 5%; text-align: center; margin: 2px;"></td>';
+                    }
+                    
+                    $html .= '</tr>';
+                            
                                 
-                                <td style="width: 5%; text-align: center">' . (null) . '</td>
-                                <td style="width: 5%; text-align: right">' . formatValue(($items[$i]['subtotal'])) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(($items[$i]['VAT_SALES'])) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(($items[$i]['VAT_AMOUNT'])) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(($items[$i]['VAT_EXEMPT'])) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sc_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['pwd_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['naac_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sp_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['mov_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['totalReturn']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(($items[$i]['VOID'])) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(($items[$i]['less_discount'])) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sc_ref_ret_void_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['pwd_ref_ret_void_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['sp_ref_ret_void_discount'] + $items[$i]['naac_ref_ret_void_discount']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['VAT_AMOUNT_REF_RET']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['othersVatAdjustment']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['VAT_AMOUNT_REF_RET']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['NET']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['SHORT_OVER']) . '</td>
-                                <td style="width: 3%; text-align: right">' . formatValue($items[$i]['NET']) . '</td>
-                                <td style="width: 3%; text-align: right">' . ($items[$i]['RESET_COUNT']) . '</td>
-                                <td style="width: 3%; text-align: right">' . ($items[$i]['Z_READ_COUNT']) . '</td>
-                                <td style="width: 3%; text-align: right"></td>
-                            </tr>';
                 }
+                $html .= '<tr style="border: 1px solid black; font-size: 6px; font-weight: bold;">
+                <td colspan="3" style="text-align: right">Total:</td>
+                <td style="text-align: right">' . formatValue($totals['subtotal']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['VAT_SALES']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['VAT_AMOUNT']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['VAT_EXEMPT']) . '</td>
+                <td style="text-align: right">' . formatValue(0) . '</td>
+                <td style="text-align: right">' . formatValue($totals['sc_discount']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['pwd_discount']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['naac_discount']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['sp_discount']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['mov_discount']) . '</td>
+                <td style="text-align: right">' . formatValue(0) . '</td>
+                <td style="text-align: right">' . formatValue($totals['totalReturn']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['VOID']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['less_discount']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['sc_ref_ret_void_discount']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['pwd_ref_ret_void_discount']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['sp_ref_ret_void_discount'] + $totals['naac_ref_ret_void_discount']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['VAT_AMOUNT_REF_RET']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['othersVatAdjustment']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['VAT_AMOUNT_REF_RET']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['VAT_PAYABLE']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['NET']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['SHORT_OVER']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['NET']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['RESET_COUNT']) . '</td>
+                <td style="text-align: right">' . formatValue($totals['Z_READ_COUNT']) . '</td>
+                <td style="text-align: right"></td>
+            </tr>';
                 $html.='</tbody>
             </table>';
 }
