@@ -417,6 +417,12 @@ body, html {
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Voided Items</span>
                     </a>
                   </div>
+
+                  <div id="highlightDiv60" style="width: 100%">
+                    <a href="#" onclick=" highlightDiv(60)" class="text-color voidedItemssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
+                      <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Void Transactions Report</span>
+                    </a>
+                  </div>
                   <!-- <div id="highlightDiv15" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(15)" class="text-color discountsGrantedAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Discounts Granted</span>
@@ -1046,7 +1052,7 @@ function highlightDiv(id) {
     if (id == 36) {
       $('#salesHistoryModal').show();
     }
- 
+
      if (id == 2) {
           generatePdf(id)
           generateExcel(id)
@@ -1673,7 +1679,7 @@ function highlightDiv(id) {
           var toggleDivExcludes = document.getElementById('statusExcludes');
           toggleDivExcludes.checked = false
         }
-        else if(id == 50 || id == 55 || id == 51 || id == 52 || id == 53 || id == 54 || id == 56) {
+        else if(id == 50 || id == 55 || id == 51 || id == 52 || id == 53 || id == 54 || id == 56 || id == 60) {
           contentTest(id)
         }
         else if(id == 1){
@@ -2562,7 +2568,7 @@ function openModalDatePicker(){
 // USERS
 function generatePdf(id)
 {
-  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 55 || id == 56)
+  if(id == 50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 55 || id == 56 || id == 60)
   {
     $('#PDFBtn').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
@@ -2607,6 +2613,7 @@ function generatePdf(id)
         if(id === 52) e = 4;
         if(id === 53) e = 5;
         if(id === 54) e = 6;
+        if(id === 60) e = 60;
         $.ajax({
             url: './reports/generate_birE'+e+'Report_pdf.php',
             type: 'GET',
@@ -4120,7 +4127,7 @@ function show_sweetReponse(message)
   }
 
 function generateExcel(id){
-  if(id == 55 || id == 50 || id == 51 || id == 52 || id == 53 || id == 54){
+  if(id == 55 || id == 50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 60){
     $('#EXCELBtn').off('click').on('click', function(){
         var datepicker = document.getElementById('datepicker').value
         var singleDateData = null;
@@ -4164,7 +4171,7 @@ function generateExcel(id){
         if(id === 52) e = 4;
         if(id === 53) e = 5;
         if(id === 54) e = 6;
-
+        if(id === 60) e = 60;
       $.ajax({
           url: './reports/generate_birE'+e+'Report_excel.php',
           type: 'GET',
@@ -5638,7 +5645,7 @@ error: function(xhr, status, error) {
 
 function printDocuments(id){
   
-  if(id==50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 55 || id == 56){
+  if(id==50 || id == 51 || id == 52 || id == 53 || id == 54 || id == 55 || id == 56 || id == 60){
       $('#printDocu').off('click').on('click',function() {
       var usersSelect = document.getElementById("usersSelect");
       var selectedUser = usersSelect.value;
@@ -5682,6 +5689,7 @@ function printDocuments(id){
         if(id === 53) e = 5;
         if(id === 55) e = 1;
         if(id === 54) e = 6;
+        if(id === 60) e = 60;
         $.ajax({
             url: './reports/generate_birE'+e+'Report_pdf.php',
             type: 'GET',
@@ -8241,6 +8249,89 @@ function showReports(id)
               {
                 var timestamp = new Date().getTime(); 
                 var pdfUrl = './assets/pdf/bir/e5.pdf?t=' + timestamp; 
+                  $('#pdfViewer').attr('src', pdfUrl);
+              }
+            }
+          },
+        
+          error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              console.log(searchData)
+          }
+        });
+     }
+    })
+  } 
+
+
+  else if(id == 60) {
+    $('#showReport').off('click').on('click', function(){
+      $('#showReportsModal').show()
+      if($('#showReportsModal').is(":visible"))
+      {
+        var loadingImage = document.getElementById("loadingImage");
+        loadingImage.removeAttribute("hidden");
+        var pdfFile= document.getElementById("pdfFile");
+        pdfFile.setAttribute('hidden',true)
+        var customerSelect = document.getElementById('customersSelect')
+        var selectedCustomers = customerSelect.value;
+
+        var datepicker = document.getElementById('datepicker').value
+        var singleDateData = null;
+        var startDate;
+        var endDate;
+        if (datepicker.includes('-')) 
+        {
+          var dateRange = datepicker.split(' - ');
+          var startDates = new Date(dateRange[0].trim());
+          var endDate = new Date(dateRange[1].trim());
+
+          var formattedStartDate = startDates.getFullYear() + '-' + ('0' + (startDates.getMonth()+1)).slice(-2) + '-' + ('0' + startDates.getDate()).slice(-2);
+          var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth()+1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+          startDate = formattedStartDate;
+          endDate = formattedEndDate;
+        } 
+        else 
+        {
+          var singleDate = datepicker.trim();
+          var singleDate = datepicker.trim();
+          var dateObj = new Date(singleDate);
+          var formattedDate = dateObj.getFullYear() + '-' + ('0' + (dateObj.getMonth()+1)).slice(-2) + '-' + ('0' + dateObj.getDate()).slice(-2);
+          singleDateData =  formattedDate
+        
+        }
+        if(singleDateData == "NaN-aN-aN" || singleDateData == "" || singleDateData == null ){
+          singleDateData = ""
+        }
+        if(startDate == "" || startDate == null){
+          startDate = ""
+        }
+          if(endDate == "" || endDate == null){
+          endDate = ""
+        }
+      $.ajax({
+          url: './reports/generate_birE60Report_pdf.php',
+          type: 'GET',
+          xhrFields: {
+              responseType: 'blob'
+          },
+          data: {
+            singleDateData: singleDateData,
+            startDate: startDate,
+            endDate: endDate
+          },
+          success: function(response) 
+          {
+            if(response)
+            {
+              loadingImage.setAttribute("hidden",true);
+              var pdfFile= document.getElementById("pdfFile");
+              pdfFile.removeAttribute('hidden')
+              if( loadingImage.hasAttribute('hidden')) 
+              {
+                var timestamp = new Date().getTime(); 
+                var pdfUrl = './assets/pdf/bir/e60.pdf?t=' + timestamp; 
                   $('#pdfViewer').attr('src', pdfUrl);
               }
             }

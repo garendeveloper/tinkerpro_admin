@@ -55,11 +55,13 @@ class BirFacade extends DBConnection {
                 transactions.cashier_id,
                 SUM(DISTINCT payments.sc_pwd_discount) AS CUSTOMER_DIS,
                 SUM(DISTINCT payments.payment_amount - payments.change_amount) AS paidAmount,
-                SUM(DISTINCT (transactions.subtotal)) AS GROSS_SALES,
+                SUM((transactions.subtotal)) AS GROSS_SALES,
                 SUM(
                     CASE
                     	WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 1 THEN
                     		(transactions.subtotal) / 1.12 
+                        WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 0 THEN
+                    		(transactions.subtotal)
                     	WHEN discounts.name = 'SP' AND products.isVAT = 0 THEN
                     		(transactions.subtotal)
                     	WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
@@ -174,6 +176,8 @@ class BirFacade extends DBConnection {
                     CASE 
                         WHEN transactions.is_void = 2 AND discounts.name <> 'SP' AND products.isVAT = 1 THEN
                             ROUND((transactions.subtotal / 1.12) * 0.12, 2)
+                        WHEN transactions.is_void = 2 AND discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 0 THEN
+                            ROUND((transactions.subtotal / 1.12) * 0.12, 2)
                         ELSE 0
                     END, 2
                 )) AS VAT_ADJUST,
@@ -272,6 +276,8 @@ class BirFacade extends DBConnection {
             CASE
             WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 1 THEN
             (refunded.refunded_amt) / 1.12 
+            WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 0 THEN
+            (refunded.refunded_amt)
             WHEN discounts.name = 'SP' AND products.isVAT = 0 THEN
             (refunded.refunded_amt)
             WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
@@ -328,19 +334,38 @@ class BirFacade extends DBConnection {
                     WHEN products.isVAT = 1 AND discounts.name <> 'SP' THEN 
                         ROUND(
                             (
-                                (refunded.refunded_qty * products.prod_price) - 
-                                ((refunded.refunded_qty * products.prod_price) * (( refunded.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                                (refunded.refunded_amt) - 
+                                ((refunded.refunded_amt) * (( refunded.itemDiscount / (t.subtotal)) * 100) / 100)
                             ) / 1.12,
                             2
                         )
+                
+                	WHEN products.isVAT = 1 AND discounts.name = 'SP' AND products.isSPEnabled = 0 THEN 
+                        ROUND(
+                            (
+                                (refunded.refunded_amt) - 
+                                ((refunded.refunded_amt) * (( refunded.itemDiscount / (t.subtotal)) * 100) / 100)
+                            ) / 1.12,
+                            2
+                        )
+                
                     ELSE 0
                 END) AS totalVatSales,
                 SUM(DISTINCT CASE
                     WHEN products.isVAT = 1 AND discounts.name <> 'SP' THEN 
                         ROUND(
                         (
-                                ((refunded.refunded_qty * products.prod_price) - 
-                                ((refunded.refunded_qty * products.prod_price) * ((refunded.itemDiscount/ (t.prod_qty * products.prod_price)) * 100) / 100)
+                                ((refunded.refunded_amt) - 
+                                ((refunded.refunded_amt) * ((refunded.itemDiscount/ (t.subtotal)) * 100) / 100)
+                            ) / 1.12) * 0.12,
+                            2
+                        )
+                    
+                    WHEN products.isVAT = 1 AND discounts.name = 'SP' AND products.isSPEnabled = 0 THEN 
+                        ROUND(
+                        (
+                                ((refunded.refunded_amt) - 
+                                ((refunded.refunded_amt) * ((refunded.itemDiscount/ (t.subtotal)) * 100) / 100)
                             ) / 1.12) * 0.12,
                             2
                         )
@@ -348,12 +373,12 @@ class BirFacade extends DBConnection {
                 END) AS VAT,
                 SUM(DISTINCT 
                     ROUND(CASE 
-                        WHEN products.isVAT = 1 AND discounts.name = 'SP' THEN
-                        ((refunded.refunded_qty * products.prod_price) / 1.12)
+                        WHEN products.isVAT = 1 AND discounts.name = 'SP' AND products.isSPEnabled = 1 THEN
+                        ((refunded.refunded_amt) / 1.12)
                         WHEN products.isVAT = 0 AND discounts.name = 'SP' THEN
-                        ((refunded.refunded_qty * products.prod_price))
+                        ((refunded.refunded_amt))
                         WHEN products.isVAT = 0 AND discounts.name <> 'SP' THEN
-                        ((refunded.refunded_qty * products.prod_price))
+                        ((refunded.refunded_amt))
                         ELSE 0
                         END
                 ,2)) AS vatExempt
@@ -376,6 +401,8 @@ class BirFacade extends DBConnection {
             CASE
             WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 1 THEN
             (return_exchange.return_amount) / 1.12 
+            WHEN discounts.name = 'SP' AND products.isVAT = 1 AND products.isSPEnabled = 0 THEN
+            (return_exchange.return_amount) 
             WHEN discounts.name = 'SP' AND products.isVAT = 0 THEN
             (return_exchange.return_amount)
             WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
@@ -435,6 +462,14 @@ class BirFacade extends DBConnection {
                             ) / 1.12,
                             2
                         )
+                    WHEN products.isVAT = 1 AND discounts.name = 'SP' AND  products.isSPEnabled = 0 THEN 
+                        ROUND(
+                            (
+                                (return_exchange.return_qty * products.prod_price) - 
+                                ((return_exchange.return_qty * products.prod_price) * (( return_exchange.itemDiscount / (t.prod_qty * products.prod_price)) * 100) / 100)
+                            ) / 1.12,
+                            2
+                        )
                     ELSE 0
                 END) AS totalVatSales,
                 SUM(DISTINCT CASE
@@ -446,11 +481,19 @@ class BirFacade extends DBConnection {
                             ) / 1.12) * 0.12,
                             2
                         )
+                    WHEN products.isVAT = 1 AND discounts.name = 'SP' AND products.isSPEnabled = 0 THEN 
+                        ROUND(
+                        (
+                                ((return_exchange.return_qty * products.prod_price) - 
+                                ((return_exchange.return_qty * products.prod_price) * ((return_exchange.itemDiscount/ (t.prod_qty * products.prod_price)) * 100) / 100)
+                            ) / 1.12) * 0.12,
+                            2
+                        )
                     ELSE 0
                 END) AS VAT,
                 SUM(DISTINCT 
                     ROUND(CASE 
-                        WHEN products.isVAT = 1 AND discounts.name = 'SP' THEN
+                        WHEN products.isVAT = 1 AND discounts.name = 'SP' AND products.isSPEnabled = 1 THEN
                         ((return_exchange.return_qty * products.prod_price) / 1.12)
                         WHEN products.isVAT = 0 AND discounts.name = 'SP' THEN
                         ((return_exchange.return_qty * products.prod_price))
@@ -509,25 +552,25 @@ class BirFacade extends DBConnection {
         foreach ($dailyResult as $daily) {
             $date_time_payment = $daily['date_time_payment'];
             $z_read_data_report = $daily['all_data'];
-            $GROSS_SALES = $daily['GROSS_SALES'];
-            $customer_type = $daily['customer_type'];
-            $customer_discount = $daily['customer_discount'];
-            $z_read_date = $daily['z_read_date'];
-            $business_date = $daily['business_date_id'];
-            $PAYMENT_ID = $daily['paymentIds'];
-            $VOID = $daily['VOID'];
-            $totalVoid = ($daily['VOID'] - $daily['VOID_DISCOUNT']);
-            $paidAmount = $daily['paidAmount'];
-            $totalAmount = (float)$daily['subtotal'];
-            $totalAmount2 = (float)$daily['subtotal'] - (float)$daily['CUSTOMER_DIS'];
-            $sc_discount = $daily['SC_DIS'];
-            $pwd_discount = $daily['PWD_DIS'];
-            $naac_discount = $daily['NAAC_DIS'];
-            $sp_discount = $daily['SP_DIS'];
-            $mov_discount = $daily['MOV_DIS'];
+            $GROSS_SALES = (float)$daily['GROSS_SALES'];
+            $customer_type = (float)$daily['customer_type'];
+            $customer_discount = (float)$daily['customer_discount'];
+            $z_read_date = (float)$daily['z_read_date'];
+            $business_date = (float)$daily['business_date_id'];
+            $PAYMENT_ID = (float)$daily['paymentIds'];
+            $VOID = (float)$daily['VOID'];
+            $totalVoid = ((float)$daily['VOID'] - (float)$daily['VOID_DISCOUNT']);
+            $paidAmount = (float)$daily['paidAmount'];
+            $totalAmount = (float)$daily['paidAmount'];
+            $totalAmount2 = (float)$daily['paidAmount'];
+            $sc_discount = (float)$daily['SC_DIS'];
+            $pwd_discount = (float)$daily['PWD_DIS'];
+            $naac_discount = (float)$daily['NAAC_DIS'];
+            $sp_discount = (float)$daily['SP_DIS'];
+            $mov_discount = (float)$daily['MOV_DIS'];
             $totalCustomerDiscount = (float)$daily['CUSTOMER_DIS'];
 
-            $VOID_DISCOUNT = $daily['VOID_DISCOUNT'];
+            $VOID_DISCOUNT = (float)$daily['VOID_DISCOUNT'];
 
             $VOID_SC_DISCOUNT = (float)$daily['VOID_SC_DISCOUNT'];
             $VOID_PWD_DISCOUNT = (float)$daily['VOID_PWD_DISCOUNT'];
@@ -536,16 +579,16 @@ class BirFacade extends DBConnection {
             $VOID_MOV_DISCOUNT = (float)$daily['VOID_MOV_DISCOUNT'];
             $VOID_VAT_EXEMPT = (float)$daily['VOID_VAT_EXEMPT'];
             
-            $VOID_ADJUST = $daily['VAT_ADJUST'];
-            $VOID_SALES_ADJUST = $daily['VAT_SALES_ADJUST'];
-            $VAT_SALES = $daily['VAT_SALES'];
-            $VAT_AMOUNT = $daily['VAT_AMOUNT'];
-            $VAT_EXEMPT = $daily['VAT_EXEMPT'];
+            $VOID_ADJUST = (float)$daily['VAT_ADJUST'];
+            $VOID_SALES_ADJUST = (float)$daily['VAT_SALES_ADJUST'];
+            $VAT_SALES = (float)$daily['VAT_SALES'];
+            $VAT_AMOUNT = (float)$daily['VAT_AMOUNT'];
+            $VAT_EXEMPT = (float)$daily['VAT_EXEMPT'];
 
             $BEG_SI = $daily['first_receipt_num'];
             $END_SI = $daily['last_receipt_num'];
 
-            $NET = ($daily['subtotal'] - ($totalCustomerDiscount - $daily['VOID_DISCOUNT']));
+            $NET = ((float)$daily['subtotal'] - ((float)$totalCustomerDiscount - (float)$daily['VOID_DISCOUNT']));
 
             $VAT_SALES_REF_RETURN = 0;
             $VAT_AMOUNT_REF_RET = 0;
@@ -559,11 +602,11 @@ class BirFacade extends DBConnection {
             $TOTAL_DEDUCTION = 0;
             $PRESENT_ACC_SALES = 0;
 
-            $sc_ref_ret_void_discount += $VOID_SC_DISCOUNT;
-            $pwd_ref_ret_void_discount += $VOID_PWD_DISCOUNT;
-            $sp_ref_ret_void_discount += $VOID_SP_DISCOUNT;
-            $naac_ref_ret_void_discount += $VOID_NAAC_DISCOUNT;
-            $mov_ref_ret_void_discount += $VOID_MOV_DISCOUNT;
+            $sc_ref_ret_void_discount += (float)$VOID_SC_DISCOUNT;
+            $pwd_ref_ret_void_discount += (float)$VOID_PWD_DISCOUNT;
+            $sp_ref_ret_void_discount += (float)$VOID_SP_DISCOUNT;
+            $naac_ref_ret_void_discount += (float)$VOID_NAAC_DISCOUNT;
+            $mov_ref_ret_void_discount += (float)$VOID_MOV_DISCOUNT;
 
             $total_Ref_Ret_amount = 0;
 
@@ -577,12 +620,13 @@ class BirFacade extends DBConnection {
             
             if (isset($refunded_map[$PAYMENT_ID])) {
                 $total_Ref_Ret_amount += (floatval($refunded_map[$PAYMENT_ID]['totalRefunded']));
+                // $total_Ref_Ret_amount += (floatval($refunded_map[$PAYMENT_ID]['totalRefunded']) - floatval($refunded_map[$PAYMENT_ID]['customer_discount']));
                 // $totalAmount -= (floatval($refunded_map[$PAYMENT_ID]['totalRefunded']));
-                $totalAmount2 -= (floatval($refunded_map[$PAYMENT_ID]['totalRefunded'] - $refunded_map[$PAYMENT_ID]['customer_discount']));
+                $totalAmount2 -= max(0,(floatval($refunded_map[$PAYMENT_ID]['totalRefunded'] - $refunded_map[$PAYMENT_ID]['customer_discount'])));
 
-                if ($totalAmount2 != 0) {
+                if (max(0,$totalAmount2) != 0) {
                     $is_parcially_refunded = 1;
-                } else if ($totalAmount2 == 0) {
+                } else if (max(0,$totalAmount2) == 0) {
                     $is_fully_refunded = 1;
                 }
 
@@ -618,13 +662,14 @@ class BirFacade extends DBConnection {
 
             if (isset($return_map[$PAYMENT_ID])) {
                 $total_Ref_Ret_amount += (floatval($return_map[$PAYMENT_ID]['totalReturn']));
+                // $total_Ref_Ret_amount += (floatval($return_map[$PAYMENT_ID]['totalReturn']) - floatval($return_map[$PAYMENT_ID]['customer_discount']));
                 // $totalAmount -= (floatval($return_map[$PAYMENT_ID]['totalReturn']));
 
-                $totalAmount2 -= (floatval($return_map[$PAYMENT_ID]['totalReturn']) - $return_map[$PAYMENT_ID]['customer_discount']);
+                $totalAmount2 -= max(0,(floatval($return_map[$PAYMENT_ID]['totalReturn']) - $return_map[$PAYMENT_ID]['customer_discount']));
 
-                if ($totalAmount2 != 0) {
+                if (max(0,$totalAmount2) != 0) {
                     $is_parcially_return = 1;
-                } else if ($totalAmount2 == 0) {
+                } else if (max(0,$totalAmount2) == 0) {
                     $is_fully_return = 1;
                 }
 
@@ -674,9 +719,10 @@ class BirFacade extends DBConnection {
 
            
             $result[] = [
+                'totalAmount2' => $totalAmount2,
                 'customer_type' => $customer_type,
                 'date_time_payment' => $date_time_payment,
-                'GROSS_SALES' => $GROSS_SALES,
+                'g_sales' => $GROSS_SALES,
                 'customer_discount' => $customer_discount,
                 'DATE' => date('Y-m-d'),
                 'is_fully_refunded' => $is_fully_refunded,
@@ -697,8 +743,8 @@ class BirFacade extends DBConnection {
                 'mov_discount' => number_format($mov_discount, 2),
                 'pwd_discount' => number_format($pwd_discount, 2),
                 'VAT_SALES' => number_format((float)$VAT_SALES, 2),
-                'VAT_AMOUNT' => number_format((float)$VAT_AMOUNT, 2),
-                'VAT_EXEMPT' => number_format((float)$VAT_EXEMPT, 2),
+                'VAT_AMOUNT' => number_format($VAT_AMOUNT, 2),
+                'VAT_EXEMPT' => number_format($VAT_EXEMPT, 2),
                 'sc_ref_ret_void_discount' => number_format($sc_ref_ret_void_discount, 2),
                 'sp_ref_ret_void_discount' => number_format($sp_ref_ret_void_discount, 2),
                 'naac_ref_ret_void_discount' => number_format($naac_ref_ret_void_discount, 2),
@@ -1455,6 +1501,165 @@ class BirFacade extends DBConnection {
         }
         if($startDate !== $endDate)
             return $result;
+    }
+
+
+    public function getCancelledTransactions() {
+        $pdo = $this->connect();
+
+        $void = "SELECT
+        date_of_payment,
+        time_of_payment,
+        or_num,
+        barcode,
+        is_void,
+        scId,
+        customer_id,
+        customer_type,
+        customer_discount,
+        customer_fname,
+        cutomer_lname,
+        temporary_name,
+        contact, 
+        pwdOrScId,
+        address,
+        scOrPwdTIN,
+        total,
+        totalDis,
+        totalQty,
+        transaction_num,
+        is_transact,
+        change_amount,
+        payment_amount,
+        payment_details,
+        cart_discount,
+        method,
+        ROUND((totalServiceCharge),2) AS totalCharges,
+        ROUND((totalOtherCharge),2) AS totalOtherCharges,
+        payment_method_id,
+        date_time_of_payment,
+        (totalDis + total) AS totalAmount,
+        ROUND((((total)) * 0.12), 2) AS VAT, 
+        ROUND((ROUND(((total)), 2) * (customer_discount / 100)),2) AS fcustomer_discount,
+        date_cancelled,
+        reason,
+        toBePaid,
+        isVAT,
+        finalDiscountCustomer,
+        0 AS finalDiscountCustomerNonVat,
+        nonVatPrices,
+        VAT_SALES,
+        VAT_AMOUNT,
+        VAT_EXEMPT,
+        ROUND(((nonVatPrices) * customer_discount / 100), 2) AS customerDisType
+            FROM (
+                SELECT
+                void_reason.reason,
+                void_reason.date_void AS date_cancelled,
+                SUM(ROUND(
+                    CASE 
+                    WHEN discounts.name = 'SP' AND products.isSPEnabled = 0 AND products.isVAT = 1 THEN
+                        ROUND(transactions.subtotal / 1.12, 2)
+                    WHEN discounts.name <> 'SP'  AND products.isVAT = 1 THEN
+                        ROUND(transactions.subtotal / 1.12, 2)
+                ELSE 0
+                    END, 2
+                )) AS VAT_SALES,
+
+                SUM(ROUND(
+                    CASE 
+                    WHEN discounts.name = 'SP' AND products.isSPEnabled = 0 AND products.isVAT = 1 THEN
+                        ROUND((transactions.subtotal / 1.12) * 0.12 , 2)
+                    WHEN discounts.name <> 'SP' AND products.isVAT = 1 THEN
+                        ROUND((transactions.subtotal / 1.12) * 0.12 , 2)
+                        ELSE 0
+                    END, 2
+                )) AS VAT_AMOUNT,
+
+                SUM(ROUND(
+                    CASE 
+                    WHEN (discounts.name = 'SP' AND products.isSPEnabled = 1 AND products.isVAT = 1) THEN
+                        (ROUND((transactions.subtotal) / 1.12, 2))
+                    WHEN (discounts.name = 'SP' AND products.isVAT = 0) THEN
+                        (ROUND((transactions.subtotal), 2))
+                    WHEN (discounts.name <> 'SP' AND products.isVAT = 0) THEN
+                        (ROUND((transactions.subtotal), 2))
+                    ELSE 0
+                    END,2
+                )) AS VAT_EXEMPT,
+
+                DATE(payments.date_time_of_payment) AS date_of_payment,
+                TIME(payments.date_time_of_payment) AS time_of_payment,
+                payments.sc_pwd_discount AS finalDiscountCustomer,
+                (payments.payment_amount - payments.change_amount) AS toBePaid,
+                (users.id) AS customer_id,
+                (discounts.discount_amount) AS customer_discount,
+                (users.first_name) AS customer_fname,
+                customer.pwdOrScId AS scId,
+                (users.last_name) AS cutomer_lname,
+                (temporary_names.name) AS temporary_name,
+                (discounts.name) AS customer_type,
+                transactions.transaction_num,
+                transactions.is_transact,
+                payments.change_amount,   
+                payments.payment_amount,
+                payments.cart_discount,
+                payments.payment_details,
+                payments.date_time_of_payment,
+                payment_method.method,
+                payments.payment_method_id,
+                SUM(transactions.subtotal) AS total,
+                SUM(transactions.discount_amount) AS totalDis,
+                SUM(transactions.service_charge) AS totalServiceCharge,
+                SUM(transactions.other_charge) AS totalOtherCharge,
+                SUM(transactions.prod_qty) AS totalQty,
+                
+                ROUND(
+                    SUM(CASE WHEN products.isVAT = 1 AND (products.isSPEnabled = 1 OR products.isNAACEnabled = 1) THEN 
+                    transactions.subtotal ELSE 0 
+                END),2) AS SP_NAAC_VAT_PRICE,
+                
+                ROUND(
+                    SUM(CASE WHEN products.isVAT = 1 AND (products.isSCEnabled = 1 OR products.isPWDEnabled = 1) THEN 
+                    transactions.subtotal ELSE 0 
+                END),2) AS SC_PWD_VAT_PRICE,
+
+                ROUND(
+                    SUM(CASE WHEN products.isVAT = 1 AND (products.isSCEnabled = 0) THEN 
+                    transactions.subtotal ELSE 0 
+                END),2) AS totalNotDiscounted,
+                
+                ROUND(SUM(CASE WHEN products.isVAT = 1 THEN transactions.subtotal ELSE 0 END),2) AS VatPrices2,
+                ROUND(SUM( CASE WHEN products.isVAT = 0 AND (products.isSCEnabled = 1 OR products.isSPEnabled = 1 OR
+                products.isNAACEnabled = 1 OR products.isPWDEnabled = 1) THEN
+                    transactions.subtotal ELSE 0 END),2) AS nonVatPrices,
+                ROUND(SUM(CASE WHEN products.isVAT = 0 THEN transactions.subtotal ELSE 0 END),2) AS nonVatPrices1, 
+                transactions.is_void,
+                products.isVAT,
+                (receipt.id) AS or_num,
+                receipt.barcode,
+                customer.contact,
+                customer.pwdOrScId,
+                customer.address,
+                customer.scOrPwdTIN
+                FROM transactions
+                INNER JOIN payments ON payments.id = transactions.payment_id
+                INNER JOIN products ON products.id = transactions.prod_id
+                INNER JOIN users ON users.id = transactions.user_id
+                INNER JOIN customer ON users.id = customer.user_id
+                INNER JOIN discounts ON discounts.id = users.discount_id
+                INNER JOIN receipt ON receipt.id = transactions.receipt_id
+                INNER JOIN payment_method ON payment_method.id = payments.payment_method_id
+                LEFT JOIN temporary_names ON temporary_names.id = transactions.tempo_name
+                INNER JOIN void_reason ON void_reason.id = transactions.void_id
+                WHERE transactions.is_void = 2
+                GROUP BY transactions.transaction_num, transactions.is_transact, payments.id
+            ) AS subquery";
+
+            $void_sql = $pdo->prepare($void);
+            $void_sql->execute();
+
+            return $void_sql;
     }
 }
 ?>

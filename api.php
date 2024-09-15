@@ -257,6 +257,9 @@
             break;
         case 'save_quickInventory1':
             $data_to_update = isset($data->data_to_update) ? $data->data_to_update : null;
+
+            // echo json_encode($data_to_update);
+
             $inventory->save_quickInventory1($data_to_update);
             break;
         case 'get_allSuppliers':

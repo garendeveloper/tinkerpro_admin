@@ -35,3 +35,16 @@
 2024-09-12 15:24:01 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000072 Amount:₱ 20,900.00 
 2024-09-12 15:24:06 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000072 Supplier: Unknown 
 2024-09-12 15:30:15 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-13 13:55:20 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-13 18:00:33 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-14 09:51:24 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-15 10:33:39 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-15 10:34:38 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: C2 From: 1100 To: 40 
+2024-09-15 10:36:46 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: C2 From: 40 To: 100 
+2024-09-15 10:42:23 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: C2 From: 100 To: 200 
+2024-09-15 11:04:25 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: C2 From: 40 To: 20 
+2024-09-15 13:10:44 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Sample Product Barcode #:405245512622 
+2024-09-15 13:10:53 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000068 Amount:₱ 12,000.00 
+2024-09-15 13:11:16 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000068 Supplier: Unknown 
+2024-09-15 13:12:05 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Sample Product From: 100.00 To: 200 
+2024-09-15 13:34:13 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Sample Product From: 200.00 To: 100 

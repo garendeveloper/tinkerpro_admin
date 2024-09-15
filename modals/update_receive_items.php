@@ -108,14 +108,31 @@
             'data_to_update' : data_to_update,
         })
         .then(function(res) {
+            var totalQty = 0;
+            $.each(data_to_update, function(index, value) {
+                totalQty += value.inputs_qty;
+            })
             $('#update_received').hide();
-            insertLogs('Quick Inventory', "Quick inventory: "+PRODUCT_NAME + " From: "+totalOnHand + " To: "+totalUpdated);
-            show_sweetReponse('Quick inventory has been successfully saved!');
+            insertLogs('Quick Inventory', "Quick inventory: "+PRODUCT_NAME + " From: "+totalOnHand + " To: "+totalQty);
+            window.location.reload();
+        
+            localStorage.setItem('showMessageAfterReload', 'true');
+            window.location.reload();
         })
         .catch(function(error) {
             console.log(error)
         })
     })
+
+
+    window.onload = function() {
+        if (localStorage.getItem('showMessageAfterReload') === 'true') {
+            setTimeout(function() {
+                show_sweetReponse('Quick inventory has been successfully saved!');
+                localStorage.removeItem('showMessageAfterReload');
+            }, 1000);
+        }
+    };
 
     $('.quick_cancel, .closeModalRec').off('click').on('click', function() {
         $('#update_received').hide();

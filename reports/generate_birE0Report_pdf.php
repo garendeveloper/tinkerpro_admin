@@ -287,32 +287,30 @@ if($items)
                 for($i = 0; $i<count($items); $i++)
                 {
 
-                   
-
-                    $totals['subtotal'] += $items[$i]['GROSS_SALES'];
-                    $totals['VAT_SALES'] += $items[$i]['VAT_SALES'];
-                    $totals['VAT_AMOUNT'] += $items[$i]['VAT_AMOUNT'];
-                    $totals['VAT_EXEMPT'] += $items[$i]['VAT_EXEMPT'];
-                    $totals['sc_discount'] += $items[$i]['sc_discount'];
-                    $totals['pwd_discount'] += $items[$i]['pwd_discount'];
-                    $totals['naac_discount'] += $items[$i]['naac_discount'];
-                    $totals['sp_discount'] += $items[$i]['sp_discount'];
-                    $totals['mov_discount'] += $items[$i]['mov_discount'];
-                    $totals['totalReturn'] += $items[$i]['totalReturn'];
-                    $totals['VOID'] += $items[$i]['VOID'];
-                    $totals['less_discount'] += $items[$i]['less_discount'];
-                    $totals['sc_ref_ret_void_discount'] += $items[$i]['sc_ref_ret_void_discount'];
-                    $totals['pwd_ref_ret_void_discount'] += $items[$i]['pwd_ref_ret_void_discount'];
-                    $totals['sp_ref_ret_void_discount'] += $items[$i]['sp_ref_ret_void_discount'];
-                    $totals['naac_ref_ret_void_discount'] += $items[$i]['naac_ref_ret_void_discount'];
-                    $totals['VAT_AMOUNT_REF_RET'] += $items[$i]['VAT_AMOUNT_REF_RET'];
-                    $totals['othersVatAdjustment'] += $items[$i]['othersVatAdjustment'];
-                    $totals['VAT_PAYABLE'] += (($items[$i]['VAT_AMOUNT'] - $items[$i]['VAT_AMOUNT_REF_RET']) - $items[$i]['othersVatAdjustment']);
+                    $totals['subtotal'] += (float)str_replace(',', '', $items[$i]['g_sales']);
+                    $totals['VAT_SALES'] += (float)str_replace(',', '', $items[$i]['VAT_SALES']);
+                    $totals['VAT_AMOUNT'] += (float)str_replace(',', '', $items[$i]['VAT_AMOUNT']);
+                    $totals['VAT_EXEMPT'] += (float)str_replace(',', '', $items[$i]['VAT_EXEMPT']);
+                    $totals['sc_discount'] += (float)str_replace(',', '', $items[$i]['sc_discount']);
+                    $totals['pwd_discount'] += (float)str_replace(',', '', $items[$i]['pwd_discount']);
+                    $totals['naac_discount'] += (float)str_replace(',', '', $items[$i]['naac_discount']);
+                    $totals['sp_discount'] += (float)str_replace(',', '', $items[$i]['sp_discount']);
+                    $totals['mov_discount'] += (float)str_replace(',', '', $items[$i]['mov_discount']);
+                    $totals['totalReturn'] += (float)str_replace(',', '', $items[$i]['totalReturn']);
+                    $totals['VOID'] += (float)str_replace(',', '', $items[$i]['VOID']);
+                    $totals['less_discount'] += (float)str_replace(',', '', $items[$i]['less_discount']);
+                    $totals['sc_ref_ret_void_discount'] += (float)str_replace(',', '', $items[$i]['sc_ref_ret_void_discount']);
+                    $totals['pwd_ref_ret_void_discount'] += (float)str_replace(',', '', $items[$i]['pwd_ref_ret_void_discount']);
+                    $totals['sp_ref_ret_void_discount'] += (float)str_replace(',', '', $items[$i]['sp_ref_ret_void_discount']);
+                    $totals['naac_ref_ret_void_discount'] += (float)str_replace(',', '', $items[$i]['naac_ref_ret_void_discount']);
+                    $totals['VAT_AMOUNT_REF_RET'] += (float)str_replace(',', '', $items[$i]['VAT_AMOUNT_REF_RET']);
+                    $totals['othersVatAdjustment'] += (float)str_replace(',', '', $items[$i]['othersVatAdjustment']);
+                    $totals['VAT_PAYABLE'] += (((float)str_replace(',', '', $items[$i]['VAT_AMOUNT'] - (float)$items[$i]['VAT_AMOUNT_REF_RET']) - (float)$items[$i]['othersVatAdjustment']));
                     
-                    $totals['NET'] += $items[$i]['NET'];
-                    $totals['SHORT_OVER'] += $items[$i]['SHORT_OVER'];
-                    $totals['RESET_COUNT'] += $items[$i]['RESET_COUNT'];
-                    $totals['Z_READ_COUNT'] += $items[$i]['Z_READ_COUNT'];
+                    $totals['NET'] += (float)str_replace(',', '', $items[$i]['NET']);
+                    $totals['SHORT_OVER'] += (float)str_replace(',', '', $items[$i]['SHORT_OVER']);
+                    $totals['RESET_COUNT'] += (float)str_replace(',', '', $items[$i]['RESET_COUNT']);
+                    $totals['Z_READ_COUNT'] += (float)str_replace(',', '', $items[$i]['Z_READ_COUNT']);
 
 
                     $html .= '<tr style="border: 1px solid black; font-size: 6px;">
@@ -321,13 +319,9 @@ if($items)
 
                     <td style="width: 5%; text-align: center">' . (null) . '</td>';
 
-                    if ($items[$i]['customer_type'] != 'SP') {
-                        $html .= '<td style="width: 5%; text-align: right">' . formatValue($items[$i]['subtotal']) . '</td>';
-                    } else {
-                        $html .= '<td style="width: 5%; text-align: right">' . formatValue($items[$i]['GROSS_SALES']) . '</td>';
-                    }
-
-                    $html .= '<td style="width: 5%; text-align: right">' . formatValue($items[$i]['VAT_SALES']) . '</td>
+            
+                    $html .= '<td style="width: 5%; text-align: right">' . formatValue($items[$i]['g_sales']) . '</td>
+                    <td style="width: 5%; text-align: right">' . formatValue($items[$i]['VAT_SALES']) . '</td>
                     <td style="width: 5%; text-align: right">' . formatValue($items[$i]['VAT_AMOUNT']) . '</td>
                     <td style="width: 5%; text-align: right">' . formatValue($items[$i]['VAT_EXEMPT']) . '</td>
                     <td style="width: 3%; text-align: right">' . formatValue(0) . '</td>
@@ -367,9 +361,8 @@ if($items)
                         $html .= '<td style="width: 5%; text-align: center; margin: 2px;"></td>';
                     }
                     
-                    $html .= '</tr>';
-                            
-                                
+                    $html .= '</tr>';     
+                
                 }
                 $html .= '<tr style="border: 1px solid black; font-size: 6px; font-weight: bold;">
                 <td colspan="3" style="text-align: right">Total:</td>
