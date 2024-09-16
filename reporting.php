@@ -417,7 +417,7 @@ body, html {
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Voided Items</span>
                     </a>
                   </div>
-
+ 
                   <div id="highlightDiv60" style="width: 100%">
                     <a href="#" onclick=" highlightDiv(60)" class="text-color voidedItemssAnchrBtn highlightAll allAnchrBtn" style="text-decoration: none;">
                       <i class="bi bi-folder2-open"></i>&nbsp; <span style="margin-top:5px; margin-left: 3px" class = "dynamic-color">Void Transactions Report</span>
