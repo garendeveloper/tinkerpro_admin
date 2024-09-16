@@ -42,6 +42,7 @@ class MYPDF extends TCPDF {
         $fetchShop = $products->getShopDetails();
         $shop = $fetchShop->fetch(PDO::FETCH_ASSOC);
         $this->Ln(8);
+        $this->SetFont('helvetica', 'B', 14);
         $this->Cell(0, 1, "{$shop['shop_name']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
         $this->SetFont('helvetica', 'B', 12);
         $this->Cell(0, 1, 'ANNEX "E-1"', 0, false, 'R', 0, '', 0, false, 'M', 'M');
@@ -51,6 +52,9 @@ class MYPDF extends TCPDF {
         $this->Ln();
         $this->SetFont('helvetica', '', 11);
         $this->Cell(0, 1, "{$shop['tin']}", 0, false, 'C', 0, '', 0, false, 'M', 'M');
+        $this->Ln();
+        $this->SetFont('helvetica', '', 11);
+        $this->Cell(0, 1, " MIN: XXXXXXXXXX ", 0, false, 'C', 0, '', 0, false, 'M', 'M');
     }
 
     public function Footer() 
@@ -181,17 +185,23 @@ $html = '<style>
             .ls{
                 background-color: #FFC000;
             }
-            .ty{
+            .ty{add
                 background-color: #92D050;
+            }
+
+             .table-summary-reports{
+                width: 925vw;
+        
+
             }
         </style>';
 
 if($items)
 {
-    $html .= '<table border="1" cellpadding="3">
+    $html .= '<table class="table-summary-reports">
                 <thead >
                     <tr >
-                        <th style = "text-align: center; font-size: 12px; width: 104%; font-weight: bold;">BIR SALES SUMMARY REPORT</th>
+                        <th style = "text-align: center; font-size: 12px; width: 107%; font-weight: bold;">BIR SALES SUMMARY REPORT</th>
                     </tr>
                     <tr>
                         <th style = "width: 3%;"class = "ac" rowspan="3">Date</th>
@@ -288,10 +298,10 @@ if($items)
 }
 else
 {
-    $html .= '<table border="1" cellpadding="3">
+    $html .= '<table class="table-summary-reports" >
             <thead >
                 <tr >
-                    <th style = "text-align: center; font-size: 12px; width: 104%; font-weight: bold;">BIR SALES SUMMARY REPORT</th>
+                    <th style = "text-align: center; font-size: 12px; width: 107%; font-weight: bold;">BIR SALES SUMMARY REPORT</th>
                 </tr>
                 <tr>
                     <th style = "width: 3%;"class = "ac" rowspan="3">Date</th>
@@ -342,7 +352,7 @@ else
             </thead>
             <tbody >
                 <tr style = "border: 1px solid black; font-size: 6px;">
-                    <td style = "text-align: center; width: 104%" colspan = "19">No available data. ***</td>
+                    <td style = "text-align: center; width: 107%" colspan = "30">No available data. ***</td>
                 </tr>
             </tbody>
         </table>';
