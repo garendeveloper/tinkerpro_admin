@@ -1295,6 +1295,7 @@
                 var rowData = {};
                 rowData['inventory_id'] = $(this).data('id');
                 rowData['receive_id'] = $(this).data('receivedid');
+                console.log($(this).data('receivedid'),  'Hello world')
                 $(this).find("td").each(function (index, cell) {
                   if (index === 2)
                     rowData['newqty'] = $(cell).find("#qty").val();

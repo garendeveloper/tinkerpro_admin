@@ -95,6 +95,7 @@ $pdf->Ln(-9);
 $current_date = date('F j, Y');
 $pdf->Cell(0, 10, "Date: $current_date", 0, 'L');
 $pdf->Ln(-3);
+
 if ($singleDateData && !$startDate && !$endDate) {
     $formattedDate = date('M j, Y', strtotime($singleDateData));
     $pdf->SetFont('', '', 11); 
@@ -124,16 +125,14 @@ if ($singleDateData && !$startDate && !$endDate) {
     } 
 }
 
-$pdf->SetDrawColor(192, 192, 192); 
-$pdf->SetLineWidth(0.3); 
-$header = array('Product','Cashier/User','Receipt No.','Discount', 'Price', 'Qty.', 'Created', 'Voided', 'Reasons', 'Total');
-$pageWidth = $pdf->getPageWidth();
-$pageHeight = $pdf->getPageHeight();
+    $pdf->SetDrawColor(192, 192, 192); 
+    $pdf->SetLineWidth(0.3); 
+    $header = array('Product','Cashier/User','Receipt No.','Discount', 'Price', 'Qty.', 'Created', 'Voided', 'Reasons', 'Total');
+    $pageWidth = $pdf->getPageWidth();
+    $pageHeight = $pdf->getPageHeight();
 
-$headerWidths = array();
-
-
-        $headerWidths = array(35, 35, 20, 30, 20, 10, 40, 39, 29, 20);
+    $headerWidths = array();
+    $headerWidths = array(35, 35, 20, 30, 20, 10, 40, 39, 29, 20);
     
 
 

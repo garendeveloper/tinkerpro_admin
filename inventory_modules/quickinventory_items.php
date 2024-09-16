@@ -382,6 +382,7 @@
                 url: 'api.php?action=get_productInfo',
                 data: { data: inventory_id },
                 success: function (data) {
+                    console.log(data['received_ids']);
                     var row = "";
                     row += "<tr data-id = " + data['id'] + " data-receivedid = "+ data['received_ids'] +">";
                     row += "<td data-id = " + data['id'] + " data-receivedid = "+ data['received_ids'] +" style = 'width: 50%'>" + data['prod_desc'] + "</td>";

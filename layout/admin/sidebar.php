@@ -327,7 +327,7 @@ if (isset($_SESSION['user_id'])) {
                 <li><a href="users" id="users"><i class="bi bi-person"></i>&nbsp;&nbsp; <span class="text dynamic-color">Users</span></a></li>
             <?php endif ?>
          
-            <li><a href="employee" id="employee"><i class="bi bi-people"></i>&nbsp;&nbsp; <span class="text dynamic-color">Employee</span></a></li>
+            <!-- <li><a href="employee" id="employee"><i class="bi bi-people"></i>&nbsp;&nbsp; <span class="text dynamic-color">Employee</span></a></li> -->
 
             <?php if ($accessCoupon): ?>
             <li><a href="coupons" id="s_coupons"><i class="bi bi-ticket"></i>&nbsp;&nbsp; <span
@@ -341,23 +341,23 @@ if (isset($_SESSION['user_id'])) {
             <?php endif ?>
 
         
-            <?php if ($accessPromotions): ?>
+            <!-- <?php if ($accessPromotions): ?>
             <li><a href="promotions" id="promotions"><i class="bi bi-megaphone"></i>&nbsp;&nbsp; <span
             class="text dynamic-color">Promotions</span></a></li>
-            <?php endif ?>
-            
+            <?php endif ?> -->
+<!--             
             <?php if ($accessPricelist): ?>
             <li><a href="priceLists" id="price_list"><i class="bi bi-cash-coin"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price List</span></a>
             </li>
-            <?php endif ?>
+            <?php endif ?> -->
 
-
+<!-- 
             <?php if ($accessPricetag): ?>
             <li><a href="priceTags" id="price_tags"><i class="bi bi-tag fa-lg"></i>&nbsp;&nbsp; <span
                         class="text dynamic-color">Price Tags</span></a>
             </li>
-            <?php endif ?>
+            <?php endif ?> -->
 
             <?php if ($accessReporting): ?>
                 <li><a href="reporting" id="reporting"><i class="bi bi-bar-chart"></i>&nbsp;&nbsp; <span

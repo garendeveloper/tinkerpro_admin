@@ -707,15 +707,21 @@ class InventoryFacade extends DBConnection
     public function save_quickInventory1($data) 
     {
         $pdo = $this->connect();
+
+        $totalQty = 0;
+
         foreach ($data as $datas) 
         {
+
+            $totalQty += $datas->inputs_qty;
+
             $sql = $pdo->prepare("UPDATE `received_items` SET `qty_received`= ?,`transaction_qty`= ? WHERE id = ?");
             $sql->execute([$datas->inputs_qty, $datas->inputs_qty, $datas->ids]);
         }
 
         $inventory_id = $datas->product_id;
         $qty_onhand = (float)$datas->totalOnHand;
-        $newqty = (float)$datas->totalQty;
+        $newqty = (float)$totalQty;
         date_default_timezone_set('Asia/Manila');
         $currentDate = date('Y-m-d h:i:s');
 
@@ -812,7 +818,7 @@ class InventoryFacade extends DBConnection
         FROM products 
         LEFT JOIN inventory ON products.id = inventory.product_id
         LEFT JOIN received_items ON inventory.id = received_items.inventory_id
-        WHERE products.id = :id";
+        WHERE products.id = :id AND received_items.id IS NOT NULL LIMIT 1";
 
         $stmt = $this->connect()->prepare($sql);
         $stmt->bindParam(':id', $product, PDO::PARAM_STR);

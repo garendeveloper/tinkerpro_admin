@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 2024-06-29 09:06:04 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-06-29 09:11:03 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
 2024-06-29 09:12:48 | Admin Admin | 1 | 2 | Logout | User Admin Admin 2 
@@ -17731,3 +17732,65 @@
 2024-09-15 15:23:31 | Noriel Bagacay | 138 | 2 | Logout | User Noriel Bagacay 2 
 2024-09-15 15:23:48 | Noriel Bagacay | 138 | 2 | Login | User Noriel Bagacay 2 
 2024-09-16 10:38:57 | Noriel Bagacay | 138 | 2 | Login | User Noriel Bagacay 2 
+=======
+2024-09-11 09:29:07 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 09:29:10 | Alexander Caones | 107 | 2 | Logout | User Alexander Caones 2 
+2024-09-11 09:29:13 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 09:35:04 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Cashier 2   
+2024-09-11 09:36:08 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Zeus Baculio 
+2024-09-11 09:37:24 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Cashier 1   
+2024-09-11 09:38:04 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Cabbage Barcode #:00000010 
+2024-09-11 09:38:33 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added C2 Barcode #:4800016052774 
+2024-09-11 09:38:57 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Carrots Barcode #:00000020 
+2024-09-11 09:39:28 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Pancit Canton Barcode #:4807770273742 
+2024-09-11 09:39:58 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Nature Spring Barcode #:4800049720114 
+2024-09-11 09:40:47 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000001 Amount:₱ 41,800.00 
+2024-09-11 09:41:08 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000001 Supplier: Unknown 
+2024-09-11 13:24:13 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 13:40:56 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 13:41:08 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Cashier 2   
+2024-09-11 13:41:19 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Cashier 1   
+2024-09-11 13:50:06 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 14:16:32 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 14:18:16 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 14:49:04 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 14:53:17 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 14:58:10 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Cashier 2   
+2024-09-11 14:58:18 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Cashier 1   
+2024-09-11 15:01:50 | Alexander Caones | 107 | 2 | Users | Alexander Caones Updated Cashier 1   
+2024-09-11 15:28:16 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 16:05:50 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 08:48:23 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 08:58:17 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 08:59:14 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-11 09:42:06 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 10:28:51 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 13:17:44 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 14:10:42 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-12 15:24:01 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000072 Amount:₱ 20,900.00 
+2024-09-12 15:24:06 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000072 Supplier: Unknown 
+2024-09-12 15:30:15 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-13 13:55:20 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-13 18:00:33 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-14 09:51:24 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-15 10:33:39 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+2024-09-15 10:34:38 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: C2 From: 1100 To: 40 
+2024-09-15 10:36:46 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: C2 From: 40 To: 100 
+2024-09-15 10:42:23 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: C2 From: 100 To: 200 
+2024-09-15 11:04:25 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: C2 From: 40 To: 20 
+2024-09-15 13:10:44 | Alexander Caones | 107 | 2 | Products | Alexander Caones Added Sample Product Barcode #:405245512622 
+2024-09-15 13:10:53 | Alexander Caones | 107 | 2 | P.O Created | Alexander Caones P.0 # 10-000000068 Amount:₱ 12,000.00 
+2024-09-15 13:11:16 | Alexander Caones | 107 | 2 | Received Items | Tender received items, PO Number: 10-000000068 Supplier: Unknown 
+2024-09-15 13:12:05 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Sample Product From: 100.00 To: 200 
+2024-09-15 13:34:13 | Alexander Caones | 107 | 2 | Quick Inventory | Quick inventory: Sample Product From: 200.00 To: 100 
+2024-09-16 10:30:22 | Alexander Caones | 107 | 2 | Login | User Alexander Caones 2 
+>>>>>>> 2605de4f5e489545e69945d91f6033b49cca7e0a
+2024-09-16 15:02:39 | Noriel Bagacay | 138 | 2 | Products | Noriel Bagacay Added Bonakid Barcode #:830492379712 
+2024-09-16 15:12:15 | Noriel Bagacay | 138 | 2 | Supplier | Noriel Bagacay Updated supplier Unknown 
+2024-09-16 15:29:38 | Noriel Bagacay | 138 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000072 Amount:₱ 18,900.00 
+2024-09-16 15:29:49 | Noriel Bagacay | 138 | 2 | Received Items | Tender received items, PO Number: 10-000000072 Supplier: Unknown 
+2024-09-16 15:33:26 | Noriel Bagacay | 138 | 2 | Products | Noriel Bagacay Updated Cabbage Barcode #:00000010 
+2024-09-16 15:33:38 | Noriel Bagacay | 138 | 2 | Products | Noriel Bagacay Updated Carrots Barcode #:00000020 
+2024-09-16 15:42:36 | Noriel Bagacay | 138 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000073 Amount:₱ 1,200.00 
+2024-09-16 15:53:57 | Noriel Bagacay | 138 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000074 Amount:₱ 1,200.00 
+2024-09-16 15:54:41 | Noriel Bagacay | 138 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000075 Amount:₱ 800.00 
