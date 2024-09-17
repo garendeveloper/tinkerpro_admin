@@ -17794,3 +17794,5 @@
 2024-09-16 15:42:36 | Noriel Bagacay | 138 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000073 Amount:₱ 1,200.00 
 2024-09-16 15:53:57 | Noriel Bagacay | 138 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000074 Amount:₱ 1,200.00 
 2024-09-16 15:54:41 | Noriel Bagacay | 138 | 2 | P.O Created | Noriel Bagacay P.0 # 10-000000075 Amount:₱ 800.00 
+2024-09-17 09:05:24 | Noriel Bagacay | 138 | 2 | Login | User Noriel Bagacay 2 
+2024-09-17 09:31:14 | Noriel Bagacay | 138 | 2 | Products | Noriel Bagacay Updated Cabbage Barcode #:00000010 

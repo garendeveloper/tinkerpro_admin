@@ -180,7 +180,7 @@ $html = '<style>
                 background-color: #f2f2f2; 
                 font-weight: bold; 
             }
-            .ac{
+            .ac{ 
                 background-color: #A6A6A6;
             }
             .dg{

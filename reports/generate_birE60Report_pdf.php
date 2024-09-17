@@ -183,7 +183,7 @@ $html .= '
 <table class="daily-reports">
     <thead>
         <tr>
-            <th colspan="11" style="font-size: large ">VOIDED TRANSACTIONS REPORT</th>
+            <th colspan="11" style="font-size: large; height: 20px; padding-top:20px; ">VOIDED TRANSACTIONS REPORT</th>
         </tr>
         <tr>
             <th >Date of Payment</th>
